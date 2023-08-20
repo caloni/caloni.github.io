@@ -198,15 +198,11 @@ role="navigation" aria-label="main navigation">
 <p>Windows 10 provides a biometric credential provider: face recognition, known as Windows Hello.</p>
 <p>Upon successful authentication, Lsass.exe calls a function in the SRM (for example, NtCreateToken) to generate an access token object that contains the user’s security profile. If User Account Control (UAC) is used and the user logging on is a member of the administrators group or has administrator privileges, Lsass.exe will create a second, restricted version of the token. This access token is then used by Winlogon to create the initial process(es) in the user’s session.</p>
 <p>Creating a modern application process requires more than just calling CreateProcess with the correct executable path. There are some required command-line arguments. Yet another requirement is adding an undocumented process attribute (using UpdateProcThreadAttribute) with a key named PROC_THREAD_ATTRIBUTE_PACKAGE_FULL_NAME with the value set to the full store app package name.</p>
-<<<<<<< HEAD
 <p>(...) the same internal routines are used to perform the work: PspAllocateProcess and PspInsertProcess. All the possible ways we’ve enumerated so far to create a process, and any ways you can imagine, from a WMI PowerShell cmdlet to a kernel driver, will end up there.</p>
 <p>For each process that is executing a Windows program, the Windows subsystem process (Csrss) maintains a parallel structure called the CSR_PROCESS. Additionally, the kernel-mode part of the Windows subsystem (Win32k.sys) maintains a per-process data structure, W32PROCESS, which is created the first time a thread calls a Windows USER or GDI function that is implemented in kernel mode.</p>
 <p>Since the kernel-mode Windows subsystem makes heavy use of DirectX-based hardware accelerated graphics, the Graphics Device Interface (GDI) component infrastructure causes the DirectX Graphics Kernel (Dxgkrnl.sys) to initialize a structure of its own, DXGPROCESS.</p>
 <p>Because processes are not named objects, they are not visible in the WinObj tool (from Sysinternals). You can, however, see the Type object called Process in the \ObjectTypes directory (in WinObj).</p>
 <p>Although routines in the executive store information in the EPROCESS, the dispatcher, scheduler, and interrupt/time accounting code—being part of the operating system kernel—use the KPROCESS instead.</p>
-=======
-<p>the same internal routines are used to perform the work: PspAllocateProcess and PspInsertProcess. All the possible ways we’ve enumerated so far to create a process, and any ways you can imagine, from a WMI PowerShell cmdlet to a kernel driver, will end up there.</p>
->>>>>>> 28dde3891d3c383bf45385aaca68cc3a8ecf0941
 </section><hr/>
 
 

@@ -238,11 +238,7 @@ END { print " - DONE -" }
 <section>
 <p class="title"><a href="2020-06.html#batalha">#</a> Batalha <a class="external" href="http://vinhosbatalha.com.br/">[link]</a></p>
 <p class="note-title"><small>2020-06-07  <a href="wine.html">wine</a> <a href="writting.html">writting</a> </small><a href="2020-06.html">^</a></p>
-<<<<<<< HEAD
 
-=======
-</pre>
->>>>>>> 28dde3891d3c383bf45385aaca68cc3a8ecf0941
 <p>Em 1836 ocorre a Batalha do Seival, onde hoje fica o município de Candiota, RS. Esse conflito militar ocorreu quando os revolucionários da Revolução Farroupilha venceram o exército do Império Brasileiro e ensejaram a sonhada República Riograndense. Bons tempos. Em um dos melhores momentos da Guerra dos Farrapos.</p>
 <p>Este vinho produzido na região é um reserva de 2014 que passou por maturação em barricas de carvalho francês. A complexidade e elegância desse Cabernet Sauvigon é incomparável na região. Seu corpo é leve, mas possui tanta personalidade que é difícil de beber rapidamente. Também, quem faria tamanha desfeita.</p>
 <p>Esta garrafa foi um presente de amigos queridos, e me senti particularmente ao lado deles quando provei a primeira taça. Me fez abrir um pouco os olhos para as surpresas enófilas que podem estar escondidas no Sul do Brasil.</p>
@@ -306,11 +302,7 @@ END { print " - DONE -" }
 <section>
 <p class="title"><a href="2020-06.html#historical-price">#</a> Historical Price <a class="external" href="https://gist.github.com/Caloni/368a8ce88206c13aac6ca27a56975af2">[link]</a></p>
 <p class="note-title"><small>2020-06-13  <a href="coding.html">coding</a> </small><a href="2020-06.html">^</a></p>
-<<<<<<< HEAD
 </ul>
-=======
-
->>>>>>> 28dde3891d3c383bf45385aaca68cc3a8ecf0941
 <p>Havia um job esta semana de um assunto que me encanta desde a época de investidor: base histórica de cotações. Estamos falando de ações da Bovespa. Na época que era investidor frequente mantinha uma base que era atualizada por um programinha em Java (esqueci o nome), mas nunca tive certeza se os ajustes feitos pelo programa eram os corretos. Surgiu agora a possibilidade de eu realizar código que converte uma base histórica recebida com um minuto por linha em campos divididos por ponto-e-vírgula (o CSV do Windows) para candles de várias periodicidades. E isso justo agora que ando estudando awk. Então não deu outra: usei esta linguagem clássica como ferramenta para esta conversão.</p>
 <p>O código ficou, em minha humilde opinião, elegante e pequeno, pois se aproveita da composição das periodicidades. Ou seja, o período de cinco minutos é a consolidação de cinco linhas de um minuto, mas a de quinze minutos não são quinze linhas de um minuto, mas três de cinco minutos, que já estão sendo calculados a cada cinco linha. E assim por diante. Usando os arrays associativos do awk é possível manter o estado de cada candle até o momento de gerar a saída desejada, que no exemplo que codifiquei ficou como um comando SQL de insert em um banco fictício que grava cada tipo de candle em uma tabela.</p>
 <p>O uso de um array por candle simplificou o código, pois ao criar uma função que manipula o candle que está finalizando e o próximo eu posso simplesmente passá-los como argumentos. Dessa forma eu só preciso compor os filtros de linhas de acordo com o resto da divisão do seu número. No exemplo inicial, o candle de cinco minutos está finalizando quando RN é igual a cinco ou múltiplos de cinco, enquanto um novo candle se inicia em múltiplos de seis.</p>
