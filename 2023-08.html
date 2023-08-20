@@ -81,6 +81,7 @@ role="navigation" aria-label="main navigation">
 <li><small><a href="2023-08.html#oppenheimer">Oppenheimer</a></small></li>
 <li><small><a href="2023-08.html#vinia-le-fruite-2021-frances">Vinia Le Fruité I.G.P. Pays d'Oc 2021</a></small></li>
 <li><small><a href="2023-08.html#eami">Eami</a></small></li>
+<li><small><a href="2023-08.html#blogawk">Finalmente blogawk</a></small></li>
 </ul>
 
 
@@ -244,6 +245,25 @@ bp AAD_Core!Windows::Internal::UserDeviceRegistration::IUserDeviceRegManagerStat
 <p>E não é o surgimento do cinema, este mecanismo de pausterização de dramas. Há várias outras histórias de opressão de outros povos onde entendemos a língua que está sendo falada. O drama consegue ser transmitido, mesmo que pelo próprio povo que massacrou o derrotado.</p>
 <p>Talvez seja esse mito do bom selvagem misturado com políticas sociais e uma pitada de nascisismo geopolítico. Nós gostamos de nos sentir importantes ao falar sobre algo no sentido de denúncia, pois nos posicionamos como salvadores, ou parte da salvação. Nem que seja assistindo, dialogando sobre o filme ou expressando nossa opinião muito original e independente a respeito de concordarmos com tudo que a cineasta mostra. Este é o verdadeiro debate do século: só há um lado e é sempre o lado certo.</p>
 <p>As imagens de Eima não fazem sentido. Suas trucagens com filtro de cor, luz e transições entre cenas , além de bregas, são o combustível que dá mais sono ainda. Nada do que você ver neste filme te salvará do sono eterno. Estamos fadados a acompanhar o drama indígena em nossos sonhos. Nosso único consolo é que o tormento acaba logo.</p>
+</section><hr/>
+
+
+<span id="blogawk" title="Finalmente blogawk"/></span>
+<section>
+<p class="title"><a href="2023-08.html#blogawk">#</a> Finalmente blogawk <a class="external" href="https://github.com/caloni/blog/blob/master/scripts/txt2blog.awk">[link]</a></p>
+<p class="note-title"><small>2023-08-20  <a href="blogging.html">blogging</a> <a href="coding.html">coding</a> </small><a href="2023-08.html">^</a></p>
+
+<p>Fiquei muito empolgado com a solução awk que converte meus posts para um epub "carregável" em um leitor de ebook e no computador e parti para usar a mesma estratégia em meu blog para abandonar dessa vez o Hugo, um renderizador de sites estáticos feito em golang extremamente rápido, mas que não está dando conta dos meus mais de 4000 posts.</p>
+<p>O maior peso dessa conversão é o file system. A leitura e escrita de milhares de arquivos, mesmo que não seja feita nenhuma conversão, por si só já é a parte mais pesada. Sendo assim, adotei duas estratégias de otimização:</p>
+<p>1. Usar um único arquivo de leitura.</p>
+<p>Com isso eu consigo aplicar a leitura deste arquivo pelo script awk em um passo só. De quebra, as mudanças sistêmicas no blogue serão muito mais fáceis.</p>
+<p>2. Usar um arquivo por mês na escrita.</p>
+<p>Esse foi o maior economizador de tempo. Gerar 4000 novas entradas no file system do Windows estava custando caro, em torno de um minuto. Transformar isso em uns 300 arquivos fez a escrita levar de dois a três segundos!</p>
+<p>A tradução do site para awk levou no total uns dois dias. A ideia foi copiar o HTML gerado pelo Hugo e fazer os mapeamentos de data, tags e estruturas de listagem no awk, que lida com isso através de seus arrays dinâmicos com muita facilidade e rapidez.</p>
+<p>Um ponto de atenção aos novatos do awk que eu destacaria dessa experiência é sobre as variáveis. Exceto os argumentos de funções, todas as variáveis são globais, o que pode dar alguns pesadelos quando há mais de um uso do mesmo nome, especialmente quando há diferença entre tipos escalares e arrays. Se eu fosse fazer do zero novamente eu não economizaria na largura dos nomes e nos prefixos, como g_ para denotar as globais. Um truque muito bom do awk também é declarar variáveis da função como parâmetros que não são recebíveis pelo chamador. Há <a href="https://www.gnu.org/software/gawk/manual/gawk.html#Variable-Scope">uma convenção</a> de separar por espaços os parâmetros reais dos locais.</p>
+<p>De resto, agora tenho a liberdade de renderizar meu blogue em questão de segundos. Aposentei a estrutura do Hugo e estou usando awk para gerar tanto o blogue quanto o ebook.</p>
+<p>Não achei justo fazer benchmarks de comparação com o Hugo pelo motivo do file system já citado e também pelas diferentes estratégias adotadas. Pelo própria estrutura engessada e necessáriado Hugo em unir estrutura de arquivos fontes e estrutura final do saite eu sei que não seria viável continuar usando a ferramenta.</p>
+<p>Além disso, awk me dará a liberdade que gostaria de indexar pesadamente meus textos com o poder dos arrays associativos de awk. Já conhecia eles do PHP, mas agora que conheci os do awk estou pensando seriamente em adotar para outros tipos de tratamento de texto. Talvez até use para minhas finanças pessoais.</p>
 </section><hr/>
 
 <span style="float: left;">
