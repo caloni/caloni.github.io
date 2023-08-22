@@ -475,7 +475,6 @@ role="navigation" aria-label="main navigation">
 <p class="note-title"><small>2007-09-24  <a href="english.html">english</a> <a href="coding.html">coding</a> </small><a href="2007-09.html">^</a></p>
 
 <p>The Windows code responsible to call DllMain for each loaded and unloaded DLLs uses an exclusive access object, the so-called mutex, to synchronize its calls. The result is that inside a process just one DllMain can be called at a given moment. This object-mutex is called "loader lock" into the Microsoft documentation.</p>
-<img src="img/why-is-my-dll-locked-loader_lock.gif" caption="Loader Lock explained"/>
 <p>I wrote a <a href="dll_lock.cpp">silly code</a> that represents quite well what I've seen in lots of production code. For many times I was unable to realize what was going on (whether because I didn't know about the loader lock or the code readability was too bad). The code say by itself: calling CreateThread inside DllMain must lock your execution forever.</p>
 <p>A simple victim of all this can be an executable using a poorly written DLL, just like the code above:</p>
 <pre>   int main()

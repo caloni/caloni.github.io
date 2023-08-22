@@ -81,7 +81,7 @@ role="navigation" aria-label="main navigation">
 <li><small><a href="2011-07.html#carros-2">Carros 2</a></small></li>
 <li><small><a href="2011-07.html#harry-potter-e-as-reliquias-da-morte-parte-2">Harry Potter e as Relíquias da Morte - Parte 2</a></small></li>
 <li><small><a href="2011-07.html#cuidado-com-variaveis-temporarias">Cuidado com variáveis temporárias</a></small></li>
-<li><small><a href="2011-07.html#depuracao-de-emergencia">Depuração de emergência</a></small></li>
+<li><small><a href="2011-07.html#depuracao-de-emergencia-receita-de-bolo">Depuração de emergência</a></small></li>
 <li><small><a href="2011-07.html#a-serbian-film">A Serbian Film - Terror sem Limites</a></small></li>
 <li><small><a href="2011-07.html#apenas-o-fim">Apenas o Fim</a></small></li>
 <li><small><a href="2011-07.html#edward-maos-de-tesoura">Edward Mãos de Tesoura</a></small></li>
@@ -295,18 +295,18 @@ int main()
 <p>Particularmente, gosto de instruções simples que me permitam ver claramente o que está acontecendo de forma simples pelo depurador (até porque sei que o compilador irá otimizar tudo no final em versão Release, ainda mais se estiver quebrado em instruções simples). Porém, toda solução que evita o uso da variável temporária após a execução do método str é válida.</p>
 </section><hr/>
 
-<span id="depuracao-de-emergencia" title="Depuração de emergência"/></span>
+<span id="depuracao-de-emergencia-receita-de-bolo" title="Depuração de emergência"/></span>
 <section>
-<p class="title"><a href="2011-07.html#depuracao-de-emergencia">#</a> Depuração de emergência</p>
+<p class="title"><a href="2011-07.html#depuracao-de-emergencia-receita-de-bolo">#</a> Depuração de emergência</p>
 <p class="note-title"><small>2011-07-26  <a href="coding.html">coding</a> </small><a href="2011-07.html">^</a></p>
 
 <p>O programa está rodando no servidor do cliente, que é acessível por sessão remota do Windows, mas de repente ele capota. Existem aí duas possibilidades fora o debug remoto (que, nesse caso, não é possível):</p>
 <pre> 1. Analisar um dump gerado.
  2. Depurar localmente o problema.</pre>
-<img src="img/depuracao-de-emergencia-imt8kmB.png" caption=""/>
+<img src="img/depuracao-de-emergencia-receita-de-bolo-imt8kmB.png" caption=""/>
 <h4>Analisar um dump gerado</h4>
 <p>Para a primeira opção, basta abrir o Gerenciador de Tarefas, localizar o processo e gerar o dump através do menu de contexto.</p>
-<img src="img/depuracao-de-emergencia-RWPemAU.png" caption=""/>
+<img src="img/depuracao-de-emergencia-receita-de-bolo-RWPemAU.png" caption=""/>
 <p>Com o dump e o Windbg em mãos, basta analisá-lo. Porém, se o seu processo é 32 bits e o servidor é 64 bits (geralmente é), o dump gerado será de 64 bits, EMBORA seja de um process 32. Ou seja, ao abri-lo, o sistema vai mostrar as threads de manipulação do SO para sistemas 32 (todos com o nosso amigo wow64cpu).</p>
 <pre>   Microsoft (R) Windows Debugger Version 6.12.0002.633 AMD64
    Copyright (c) Microsoft Corporation. All rights reserved.
@@ -362,7 +362,7 @@ int main()
 <p>Os fontes, no caso de uma conexão por Terminal Server, podem ser disponibilizados através do mapeamento de drives entre as máquinas. Os símbolos, no entanto, por serem usados extensivamente pelo WinDbg, é recomendável que estejam locais na máquina depurada, pois do contrário você terá que tomar uma quantidade excessiva de cafés para executar meia-dúzia de instruções.</p>
 <p>Supondo que temos tudo isso, só precisamos executar alguns passos básicos para o setup:</p>
 <h5>1. Abrir o WinDbg e escolher File, Open Executable. Escolha o executável e pare por aí.</h5>
-<img src="img/depuracao-de-emergencia-A2p4Q9y.png" caption=""/>
+<img src="img/depuracao-de-emergencia-receita-de-bolo-A2p4Q9y.png" caption=""/>
 <h5>2. Na tela de comando do WinDbg (View, Command, ou Alt + 1) execute os comandos abaixo:</h5>
 <pre>   .symfix 
    .sympath+ 
