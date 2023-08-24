@@ -83,6 +83,7 @@ role="navigation" aria-label="main navigation">
 <li><small><a href="2023-08.html#eami">Eami</a></small></li>
 <li><small><a href="2023-08.html#blogawk">Finalmente blogawk</a></small></li>
 <li><small><a href="2023-08.html#hstring">Explorando a HSTRING</a></small></li>
+<li><small><a href="2023-08.html#repaginada-do-mes">Muitos animes, lugares e séries</a></small></li>
 </ul>
 
 
@@ -274,7 +275,7 @@ bp AAD_Core!Windows::Internal::UserDeviceRegistration::IUserDeviceRegManagerStat
 <p class="note-title"><small>2023-08-21  <a href="coding.html">coding</a> <a href="reversing.html">reversing</a> </small><a href="2023-08.html">^</a></p>
 
 <p>Estava me enveredando hoje nos bytes usados para montar e demonstar os argumentos de uma interface COM proxy da WinRT quando quis saber qual era o leiaute da nova string do Windows, a HSTRING, usada na WinRT e em todo o ecossistema dos Universal apps.</p>
-<p>Bom, para quem sabe assembly básico, não há nada prático que fazer uma sessão simples de debugging chamando as funções da API. Inspirado na primeira sessão do livro <a href="{{< ref reversing >}}">reversing</a>, fiz as chamadas básicas para obter o tamanho da string, o raw buffer, etc, e fui adentrando no disassembly de cada uma, obtendo as linhas-chave para montar a struct que representa uma HSTRING. Abaixo o código-fonte:</p>
+<p>Bom, para quem sabe assembly básico, não há nada prático que fazer uma sessão simples de debugging chamando as funções da API. Inspirado na primeira sessão do livro <a href="posts.html?q=reversing">reversing</a>, fiz as chamadas básicas para obter o tamanho da string, o raw buffer, etc, e fui adentrando no disassembly de cada uma, obtendo as linhas-chave para montar a struct que representa uma HSTRING. Abaixo o código-fonte:</p>
 <pre>
 #include <winstring.h>
 #include <string>
@@ -334,6 +335,16 @@ struct HSTRING {
   UINT32 RefCounter;  // +0x18
 };</pre>
 <p>Para mais detalhes do uso dessa string dê uma olhada no ótimo <a href="https://devblogs.microsoft.com/oldnewthing/20160615-00/?p=93675">artigo de Raymond Chen</a>.</p>
+
+</section><hr/>
+
+
+<span id="repaginada-do-mes" title="Muitos animes, lugares e séries"/></span>
+<section>
+<p class="title"><a href="2023-08.html#repaginada-do-mes">#</a> Muitos animes, lugares e séries</p>
+<p class="note-title"><small>2023-08-23  <a href="blogging.html">blogging</a> </small><a href="2023-08.html">^</a></p>
+
+<p>A ideia de fazer um apanhado da semana como havia feito em um <a href="posts.html?q=repaginada-da-semana">post anterior</a> não se sustenta se eu deixo de escrever por um mês. Especialmente se a Sra. Mitiko inventa de assistir um milhão de animes. Além do mais, agora que não existe mais uma página por post e a indexação é feita por hashtags fica muito mais simples apenas ir encadeando post a post, como subseções pequenas de um escrito maior. Bom, dependendo do caso, claro. Algumas vezes é bom ligar os pontos (como irei fazer agora).</p>
 
 </section><hr/>
 
