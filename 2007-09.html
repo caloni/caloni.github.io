@@ -70,15 +70,25 @@ role="navigation" aria-label="main navigation">
 <div style="min-height:56vh">
 <div style="padding-bottom: 1em;"></div>
 <ul style="list-style: none;">
+
 <li><small><a href="2007-09.html#historia-do-windows-parte-40">História do Windows - parte 4.0</a></small></li>
+
 <li><small><a href="2007-09.html#o-passado-torto-de-um-programador-por-acaso">O passado torto de um programador por acaso</a></small></li>
+
 <li><small><a href="2007-09.html#antidebug-detectando-attach">Antidebug: Detectando Attach</a></small></li>
+
 <li><small><a href="2007-09.html#guia-basico-de-controle-de-codigo-source-safe">Guia básico de controle de código (Source Safe)</a></small></li>
+
 <li><small><a href="2007-09.html#aquisicao-de-recurso-e-inicializacao">Aquisição de recurso é inicialização</a></small></li>
+
 <li><small><a href="2007-09.html#hook-de-com-no-windbg">Hook de COM no WinDbg</a></small></li>
+
 <li><small><a href="2007-09.html#a-mobilidade-das-variaveis-no-printf">A mobilidade das variáveis no printf</a></small></li>
+
 <li><small><a href="2007-09.html#why-is-my-dll-locked">Why is my DLL locked?</a></small></li>
+
 <li><small><a href="2007-09.html#introducao-ao-c-builderturbo-c">Introdução ao C++ Builder...Turbo C++</a></small></li>
+
 <li><small><a href="2007-09.html#developer-you-need-to-know-english">Developer: you need to know English!</a></small></li>
 </ul>
 
@@ -215,7 +225,7 @@ role="navigation" aria-label="main navigation">
 <span id="aquisicao-de-recurso-e-inicializacao" title="Aquisição de recurso é inicialização"/></span>
 <section>
 <p class="title"><a href="2007-09.html#aquisicao-de-recurso-e-inicializacao">#</a> Aquisição de recurso é inicialização</p>
-<p class="note-title"><small>2007-09-14  <a href="ccpp.html">ccpp</a> <a href="coding.html">coding</a> </small><a href="2007-09.html">^</a></p>
+<p class="note-title"><small>2007-09-14  <a href="coding.html">coding</a> <a href="ccpp.html">ccpp</a> </small><a href="2007-09.html">^</a></p>
 
 <p>O título desse artigo é uma técnica presente no paradigma da programação em C++, razão pela qual não temos o operador finally. A idéia por trás dessa técnica é conseguirmos usar recursos representados por objetos locais de maneira que ao final da função esses objetos sejam destruídos e, junto com eles, os recursos que foram alocados. Podemos chamar de recursos aquele arquivo que necessita ser aberto para escrita, o bitmap que é exibido na tela, o ponteiro de uma interface COM, etc. O nosso exemplo é sobre arquivos:</p>
 <pre>   #include <stdio.h>
@@ -446,7 +456,7 @@ role="navigation" aria-label="main navigation">
 <span id="a-mobilidade-das-variaveis-no-printf" title="A mobilidade das variáveis no printf"/></span>
 <section>
 <p class="title"><a href="2007-09.html#a-mobilidade-das-variaveis-no-printf">#</a> A mobilidade das variáveis no printf</p>
-<p class="note-title"><small>2007-09-20  <a href="ccpp.html">ccpp</a> <a href="coding.html">coding</a> </small><a href="2007-09.html">^</a></p>
+<p class="note-title"><small>2007-09-20  <a href="coding.html">coding</a> <a href="ccpp.html">ccpp</a> </small><a href="2007-09.html">^</a></p>
 
 <p>O printf (e derivados) tem sérios problemas por conta de sua falta de tipagem. Não vou aqui dizer que cout é a alternativa óbvia e melhorada porque não é. Mas isso é uma discussão que eu não deveria começar aqui. E não começarei. Portanto, ignorem essa linha =).</p>
 <p>O erro mais comum de todos é a passagem de tipo na string de formatação diferente da variável passada:</p>
@@ -472,7 +482,7 @@ role="navigation" aria-label="main navigation">
 <span id="why-is-my-dll-locked" title="Why is my DLL locked?"/></span>
 <section>
 <p class="title"><a href="2007-09.html#why-is-my-dll-locked">#</a> Why is my DLL locked?</p>
-<p class="note-title"><small>2007-09-24  <a href="english.html">english</a> <a href="coding.html">coding</a> </small><a href="2007-09.html">^</a></p>
+<p class="note-title"><small>2007-09-24  <a href="coding.html">coding</a> <a href="english.html">english</a> </small><a href="2007-09.html">^</a></p>
 
 <p>The Windows code responsible to call DllMain for each loaded and unloaded DLLs uses an exclusive access object, the so-called mutex, to synchronize its calls. The result is that inside a process just one DllMain can be called at a given moment. This object-mutex is called "loader lock" into the Microsoft documentation.</p>
 <p>I wrote a <a href="dll_lock.cpp">silly code</a> that represents quite well what I've seen in lots of production code. For many times I was unable to realize what was going on (whether because I didn't know about the loader lock or the code readability was too bad). The code say by itself: calling CreateThread inside DllMain must lock your execution forever.</p>
