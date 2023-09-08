@@ -333,7 +333,7 @@ copy *.md copia > NUL</pre>
 <span id="critical-sections-and-outlook" title="Critical Sections and Outlook"/></span>
 <section>
 <p class="title"><a href="2023-06.html#critical-sections-and-outlook">#</a> Critical Sections and Outlook</p>
-<p class="note-title"><small>2023-06-15  <a href="coding.html">coding</a> <a href="debug.html">debug</a> <a href="english.html">english</a> <a href="reversing.html">reversing</a> </small><a href="2023-06.html">^</a></p>
+<p class="note-title"><small>2023-06-15  <a href="coding.html">coding</a> <a href="debugging.html">debugging</a> <a href="english.html">english</a> <a href="reversing.html">reversing</a> </small><a href="2023-06.html">^</a></p>
 
 <p>Today was a happy crush analysis day, because I receive an Outlook memory dump the moment it frooze the main window in the beginning of the process. I asked for one because it could be useful to another analysis I was doing with Office server communication.</p>
 <p>I discovered that the main window thread was waiting for a critical section used by a part of the Office code called `OsfIdentityManager` when calling the function `EnsureInit`. The code responsible for acquire the lock is associated with the name `OsfLock`. The same cs was trying to be acquired by another thread. Looking at another similar threads it seems a group of worker threads starting at the entry `mso20win32client!CIOPort::ThreadProc`. Bellow is the result of the `!cs` command in WinDbg:</p>
@@ -387,7 +387,7 @@ cxd4 9. Nxd4 O-O 10. Nf3 e5 11. Nd5 Nxd5 12. Bxd5 Be6 13. a3 Qc7 14. Nh2 Rac8
 <span id="debugging-non-signed-driver-windows-10" title="Debugging a non signed driver in Windows 10"/></span>
 <section>
 <p class="title"><a href="2023-06.html#debugging-non-signed-driver-windows-10">#</a> Debugging a non signed driver in Windows 10</p>
-<p class="note-title"><small>2023-06-15  <a href="coding.html">coding</a> <a href="debug.html">debug</a> <a href="english.html">english</a> </small><a href="2023-06.html">^</a></p>
+<p class="note-title"><small>2023-06-15  <a href="coding.html">coding</a> <a href="debugging.html">debugging</a> <a href="english.html">english</a> </small><a href="2023-06.html">^</a></p>
 
 <p>Not always just to disable driver signing enforcement work in Windows. In Windows 10 when tried to start a driver after reboot with `bcdedit -set TESTSIGNING ON` I still got the `StartService FAILED 577: Windows cannot verify the digital signature for this file` message.</p>
 <p>In order to start a driver non signed by Microsoft you still need some signature in the binary.</p>
