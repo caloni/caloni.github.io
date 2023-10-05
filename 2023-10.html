@@ -80,6 +80,10 @@ role="navigation" aria-label="main navigation">
 <li><small><a href="2023-10.html#na-mira-do-juri">Na Mira do Júri</a></small></li>
 <li><small><a href="2023-10.html#como-investigar-a-vtable-de-uma-interface-ou-objeto-com">Como investigar a vtable de uma interface ou objeto COM</a></small></li>
 <li><small><a href="2023-10.html#flow-com-enfase-na-teoria-de-sistemas">Flow com ênfase na teoria de sistemas</a></small></li>
+
+<li><small><a href="2023-10.html#setando-proxima-instruçao-no-windbg">Setando próxima instrução no WinDbg</a></small></li>
+
+<li><small><a href="2023-10.html#como-saber-quais-classes-winrt-estao-sendo-ativadas">Como saber quais classes winrt estão sendo ativadas</a></small></li>
 </ul>
 
 
@@ -201,6 +205,79 @@ Windows_Security_Authentication_Web_Core!Windows::Security::Authentication::Web:
 <p>&gt; "For most people, goals are shaped directly by biological needs and social conventions, and therefore their origin is outside the self. For an autotelic person, the primary goals emerge from experience evaluated in consciousness, and therefore from the self proper." </p>
 <p>&gt; "To be distracted against one's will is the surest sign that one is not in control." </p>
 <p>&gt; Goals justify the effort they demand at the outset, but later it is the effort that justifies the goal." </p>
+
+</section><hr/>
+
+
+<span id="setando-proxima-instruçao-no-windbg" title="Setando próxima instrução no WinDbg"/></span>
+<section id="section-setando-proxima-instruçao-no-windbg">
+<p class="title"><a href="2023-10.html#setando-proxima-instruçao-no-windbg">#</a> Setando próxima instrução no WinDbg</p>
+<p class="note-title"><small>2023-10-04  <a href="windbg.html">windbg</a> <a href="reversing.html">reversing</a> <a href="debugging.html">debugging</a> <a href="til.html">til</a> </small><a href="2023-10.html">^</a> <button onclick="copy_clipboard('section#section-setando-proxima-instruçao-no-windbg')">ctrl_c</button></p>
+
+<p>Procurando onde setar a próxima instrução no WinDbg? Dica: curiosamente ela não fica no meio dos comandos de debug, mas no menu Edit. Selecione a linha desejada no assembly ou código-fonte para onde deseja alterar o fluxo de execução e use a opção "Set Current Instruction".</p>
+<p>Ou mude o RIP diretamente ☠️</p>
+</section><hr/>
+
+
+<span id="como-saber-quais-classes-winrt-estao-sendo-ativadas" title="Como saber quais classes winrt estão sendo ativadas"/></span>
+<section id="section-como-saber-quais-classes-winrt-estao-sendo-ativadas">
+<p class="title"><a href="2023-10.html#como-saber-quais-classes-winrt-estao-sendo-ativadas">#</a> Como saber quais classes winrt estão sendo ativadas</p>
+<p class="note-title"><small>2023-10-05  <a href="reversing.html">reversing</a> <a href="windbg.html">windbg</a> </small><a href="2023-10.html">^</a> <button onclick="copy_clipboard('section#section-como-saber-quais-classes-winrt-estao-sendo-ativadas')">ctrl_c</button></p>
+
+<p>Quando analisando o comportamento de programas Windows que usam winrt é sempre útil dar uma olhada nas classes sendo ativadas. Uma função-chave para isso é a <a href="https://learn.microsoft.com/en-us/windows/win32/api/roapi/nf-roapi-rogetactivationfactory">RoGetActivationFactory</a>:</p>
+<pre>
+// Gets the activation factory for the specified runtime class.
+Copy
+HRESULT RoGetActivationFactory(
+  [in]  HSTRING activatableClassId,
+  [in]  REFIID  iid,
+  [out] void    **factory
+);</pre>
+<p>Sabendo como <a href="posts.html?q=hstring">obter a string raw de uma HSTRING</a> basta colocar um breakpoint no WinDbg que imprima esta string e siga vazando:</p>
+<pre>
+bp combase!_RoGetActivationFactory "du poi(@rcx+0x10) ; g"</pre>
+<p>Estou olhando em meu trabalho o comportamento do Teams quando me autentico com um email corporativo. Essa é a saída do breakpoint:</p>
+<pre>
+0:044> g
+00007ffe`6f8a4190  "Windows.Security.Authentication."
+00007ffe`6f8a41d0  "Web.Core.WebAuthenticationCoreMa"
+00007ffe`6f8a4210  "nager"
+00007ffe`64a52ae8  "Windows.Foundation.Uri"
+00007ffe`64a52a30  "Windows.Internal.Security.Authen"
+00007ffe`64a52a70  "tication.Web.WamProviderRegistra"
+00007ffe`64a52ab0  "tion"
+00007ffe`64a528a0  "Windows.Internal.Security.Creden"
+00007ffe`64a528e0  "tials.WebAccountProviderInternal"
+00007ffe`64a52920  ""
+00007ffe`64a52ae8  "Windows.Foundation.Uri"
+00007ffe`6f8a4910  "Windows.Security.Authentication."
+00007ffe`6f8a4950  "Web.Core.WebTokenRequest"
+00007ffe`6f8a42c0  "Windows.Security.Authentication."
+00007ffe`6f8a4300  "Web.Core.WebAuthenticationCoreMa"
+00007ffe`6f8a4340  "nager"
+...
+00007ffe`7abc9c30  "Windows.Foundation.PropertyValue"
+00007ffe`7abc9c70  ""
+00007ffe`7abc9c30  "Windows.Foundation.PropertyValue"
+00007ffe`7abc9c70  ""
+00007ffe`7abc9c30  "Windows.Foundation.PropertyValue"
+00007ffe`7abc9c70  ""</pre>
+<p>Há muitas saídas repetidas, claro, além de quebra de linha. Nada que conhecimentos básicos de Vim não resolvam para montar esta lista:</p>
+<pre>
+Web.Core.WebAuthenticationCoreManager
+Web.Core.WebTokenRequest
+Web.Core.WebTokenRequestResult
+Windows.Foundation.Diagnostics.AsyncCausalityTracer
+Windows.Foundation.PropertyValue
+Windows.Foundation.Uri
+Windows.Internal.Security.Authentication.Web.TokenBrokerInternal
+Windows.Internal.Security.Authentication.Web.WamProviderRegistration
+Windows.Internal.Security.Credentials.WebAccountProviderInternal
+Windows.Security.Authentication.
+Windows.Security.Authentication.Web.Core.WebAuthenticationCoreManager
+Windows.Storage.Streams.DataReader</pre>
+<p>Note que há classes internas e classes documentadas. Ou seja, há diversão dos dois lados.</p>
+
 
 </section><hr/>
 
