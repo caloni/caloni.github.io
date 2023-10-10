@@ -468,7 +468,7 @@ role="navigation" aria-label="main navigation">
 <li>Mudar a senha.</li>
 <li>Efetuar conexão de rede (antes do logon).</li></ul>
 <p>Baseado no número de CPs registrados no sistema, o LogonUI (processo responsável por exibir a tela de boas vindas) irá exibir as respectivas credenciais para cada um dos CPs envolvidos no logon.</p>
-<p>Com [o exemplo de GINA stub] do Ferdinando desenvolvi uma versão um pouco mais perigosa, da época de laboratório da faculdade. Se trata igualmente de uma GINA que se aproveita da implementação da GINA original, porém na hora de autenticar um usuário ela captura os dados do logon (usuário e senha) e grava em uma parte do registro acessível apenas pelo sistema (lembre-se que a GINA, por fazer parte do WinLogon, roda na conta de sistema).</p>
+<p>Com <a href="posts.html?q=o exemplo de GINA stub">o exemplo de GINA stub</a> do Ferdinando desenvolvi uma versão um pouco mais perigosa, da época de laboratório da faculdade. Se trata igualmente de uma GINA que se aproveita da implementação da GINA original, porém na hora de autenticar um usuário ela captura os dados do logon (usuário e senha) e grava em uma parte do registro acessível apenas pelo sistema (lembre-se que a GINA, por fazer parte do WinLogon, roda na conta de sistema).</p>
 <p>&gt; É claro que para utilizar essa GINA, você deve possuir direitos de administração, ou conhecer alguma brecha de segurança. Eu optei pela segunda opção, já que não tinha a primeira. Podemos dizer apenas que o artigo sobre falhas de segurança relacionadas a usuários avançados do Russinovich pôde resolver meu problema.</p>
 
 </section><hr/>
@@ -596,7 +596,7 @@ role="navigation" aria-label="main navigation">
    
    	COMPUTER_NAME_FORMAT CF = ComputerNameDnsDomain;
    
-   	char szDomainName[MAX_COMPUTERNAME_LENGTH];
+   	char szDomainName<a href="posts.html?q=MAX_COMPUTERNAME_LENGTH">MAX_COMPUTERNAME_LENGTH</a>;
    
    	DWORD dwSize = sizeof(szDomainName);
    
@@ -661,8 +661,8 @@ role="navigation" aria-label="main navigation">
    
    void _tmain(void)
    {
-   	TCHAR buffer[256] = TEXT("");
-   	TCHAR szDescription[8][32] = {TEXT("NetBIOS"), 
+   	TCHAR buffer<a href="posts.html?q=256">256</a> = TEXT("");
+   	TCHAR szDescription<a href="posts.html?q=8">8</a><a href="posts.html?q=32">32</a> = {TEXT("NetBIOS"), 
    	TEXT("DNS hostname"), 
    	TEXT("DNS domain"), 
    	TEXT("DNS fully-qualified"), 
@@ -681,7 +681,7 @@ role="navigation" aria-label="main navigation">
    			GetLastError());
    			return;
    		}
-   			else _tprintf(TEXT("%s: %s\n"), szDescription[cnf], buffer);
+   			else _tprintf(TEXT("%s: %s\n"), szDescription<a href="posts.html?q=cnf">cnf</a>, buffer);
    
    		dwSize = sizeof(buffer);
    		ZeroMemory(buffer, dwSize);
@@ -787,7 +787,7 @@ Breakpoints disparados.</li>
 <p class="title"><a href="2007-08.html#hook-de-api-no-windbg">#</a> Hook de API no WinDbg</p>
 <p class="note-title"><small>2007-08-29  <a href="coding.html">coding</a> </small><a href="2007-08.html">^</a> <button onclick="copy_clipboard('section#section-hook-de-api-no-windbg')">ctrl_c</button></p>
 
-<p>Basicamente existem duas maneiras de um executável obter o endereço de uma função API do Windows: ou ele usa uma lib de interface com a DLL (o chamado "link estático") ou ele chama a função GetProcAddress explicitamente [^1].</p>
+<p>Basicamente existem duas maneiras de um executável obter o endereço de uma função API do Windows: ou ele usa uma lib de interface com a DLL (o chamado "link estático") ou ele chama a função GetProcAddress explicitamente <a href="posts.html?q=^1">^1</a>.</p>
 <p>Para conseguir saber as funções das quais um executável obtém o endereço através da primeira técnica podemos utilizar o mundialmente famoso Dependency Walker. Ele nos mostrará quais DLLs ele utiliza e quais funções por DLL ele quer o endereço. Ele também nos avisa sobre as DLLs que estão utilizando delay load, uma técnica inventada no Visual Studio para que os executáveis não dependam estaticamente de APIs muito novas que podem não existir em versões do Windows mais antigas. Com o (carinhosamente chamado) Depends também é possível fazer hook de chamadas de API utilizando a opção profiling (F7), mas não costuma funcionar muito bem com trojans, pois eles capotam antes que alguma coisa interessante ocorra.</p>
 <p>O importante do Dependency Walker para o WinDbg é que com um editor é possível copiar todas as funções exibidas em sua interface para um editor, usar um pouco de regular expressions e criar uma batelada de breakpoints:</p>
 <pre>   
@@ -830,7 +830,7 @@ Breakpoints disparados.</li>
    746e2b10  "ImmGetOpenStatus"
    ...</pre>
 <p>Daí é só organizar a lista obtida em ordem alfabética, acabar com duplicidades e criar o mesmo tipo de breakpoint que foi usado para as funções estáticas (pode ser sem o nome da DLL porque, embora não recomendado, o WinDbg se vira para encontrar os símbolos). Depois de criados os comandos, rodamos novamente o executável e, logo no início, já colocamos todos os breakpoints das funções coletadas.</p>
-<p>Essa é uma maneira rústica, porém eficaz e rápida de obter a lista de execução da API utilizada por um programa [^2].</p>
+<p>Essa é uma maneira rústica, porém eficaz e rápida de obter a lista de execução da API utilizada por um programa <a href="posts.html?q=^2">^2</a>.</p>
 
 
 </section><hr/>

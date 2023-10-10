@@ -352,17 +352,17 @@ int main()
 <p>Com isso fui fazendo as calls e encontrando os offsets pelas instruções referentes ao rcx, primeiro parâmetro passado em x64:</p>
 <pre>
 UINT32 hstrLen = WindowsGetStringLen(hstr);
-00007FFC84D8BBE7  mov         eax,dword ptr [rcx+4]  
+00007FFC84D8BBE7  mov         eax,dword ptr <a href="posts.html?q=rcx+4">rcx+4</a>  
 PCWSTR rawHstr = WindowsGetStringRawBuffer(hstr, &hstrLen);
-00007FFC84D22345  mov         rax,qword ptr [rcx+10h]  
+00007FFC84D22345  mov         rax,qword ptr <a href="posts.html?q=rcx+10h">rcx+10h</a>  
 BOOL isEmpty = WindowsIsStringEmpty(hstr);
-00007FFC84D23019  mov         edx,dword ptr [rcx+4]  
+00007FFC84D23019  mov         edx,dword ptr <a href="posts.html?q=rcx+4">rcx+4</a>  
 00007FFC84D2301C  test        edx,edx  
 00007FFC84D2301E  sete        al  
 hr = WindowsDuplicateString(hstr, &hstr2);
-00007FFC84D1789A  lock inc    dword ptr [rcx+18h]
+00007FFC84D1789A  lock inc    dword ptr <a href="posts.html?q=rcx+18h">rcx+18h</a>
 hr = WindowsDeleteString(hstr2);
-00007FFC84D176A8  lock xadd   dword ptr [rcx+18h],eax
+00007FFC84D176A8  lock xadd   dword ptr <a href="posts.html?q=rcx+18h">rcx+18h</a>,eax
 hr = WindowsCreateStringReference(...
 layout:
 0x0000009C0230F848  00000001</pre>

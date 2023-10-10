@@ -202,11 +202,11 @@ role="navigation" aria-label="main navigation">
 <p>Capture este cachorro e dou mate em 1.</p>
 <img src="img/nao-capture-este-cachorro-board.png"/>
 <pre>
-[Event "Live Chess"]
-[Site "Chess.com"]
-[Date "2023.04.04"]
-[White "cavaloni"]
-[Black "Momo422"]
+<a href="posts.html?q=Event "Live Chess"">Event "Live Chess"</a>
+<a href="posts.html?q=Site "Chess.com"">Site "Chess.com"</a>
+<a href="posts.html?q=Date "2023.04.04"">Date "2023.04.04"</a>
+<a href="posts.html?q=White "cavaloni"">White "cavaloni"</a>
+<a href="posts.html?q=Black "Momo422"">Black "Momo422"</a>
 1. Nf3 d5 2. g3 Nc6 3. Bg2 Nf6 4. d4 e6 5. b3 Bd6 6. Bb2 O-O 7. Nbd2 b5 8. O-O
 a6 9. Re1 Bb7 10. Rc1 Nb4 11. a3 Nc6 12. Ba1 Bxa3 13. Rb1 Re8 14. c3 Bd6 15. b4
 Ne7 16. Qb3 Nf5 17. e3 Nh6 18. Qc2 Nhg4 19. Ng5 g6 20. Ndf3 h6 21. Nh3 Ne4 22.
@@ -273,9 +273,9 @@ mov         r8d,3
 mov         edx,2
 mov         ecx,1
 call        FastCall
-mov         dword ptr [res],eax
+mov         dword ptr <a href="posts.html?q=res">res</a>,eax
 	return res;
-mov         eax,dword ptr [res]
+mov         eax,dword ptr <a href="posts.html?q=res">res</a>
 }
 add         rsp,30h # RBP is no longer used as frame pointer.
 pop         rdi
@@ -289,7 +289,7 @@ with a jump to the callee. This avoids the overhead of setting up the stack
 frame for the callee." - x64 Deep Dive
 # TailCall3
 	return a + b;
-lea         eax,[rcx+rdx]
+lea         eax,<a href="posts.html?q=rcx+rdx">rcx+rdx</a>
 }
 ret
 # TestTailCallElimination
@@ -297,7 +297,7 @@ ret
 	TailCall2(2);
 	return TailCall3(1, 2);
 mov         edx,2
-lea         ecx,[rdx-1]
+lea         ecx,<a href="posts.html?q=rdx-1">rdx-1</a>
 jmp         TailCall3
 */</pre>
 <h3>Frame Pointer Omission</h3>
@@ -334,21 +334,21 @@ push        ebp
 mov         ebp,esp
 # prolog-end
 	RSPIsTheSameCall1(p1);
-mov         eax,dword ptr [p1]
+mov         eax,dword ptr <a href="posts.html?q=p1">p1</a>
 push        eax # RSP--
 call        RSPIsTheSameCall1
 add         esp,4 # RSP++
 	RSPIsTheSameCall4(p1, p2, p3, p4);
-mov         ecx,dword ptr [p4]
+mov         ecx,dword ptr <a href="posts.html?q=p4">p4</a>
 push        ecx # RSP--
-mov         edx,dword ptr [p3]
+mov         edx,dword ptr <a href="posts.html?q=p3">p3</a>
 push        edx # RSP--
-mov         eax,dword ptr [p2]
+mov         eax,dword ptr <a href="posts.html?q=p2">p2</a>
 ...
 call        RSPIsTheSameCall4
 add         esp,10h # RSP++
 	RSPIsTheSameCall8(p1, p2, p3, p4, p5, p6, p7, p8);
-mov         edx,dword ptr [p8]
+mov         edx,dword ptr <a href="posts.html?q=p8">p8</a>
 push        edx # RSP--
 ...
 call        RSPIsTheSameCall8
@@ -363,23 +363,23 @@ ret
 # Win64
 int RSPIsTheSame(int p1, int p2, int p3, int p4, int p5, int p6, int p7, int p8) {
 # prolog-begin
-mov         dword ptr [rsp+20h],r9d
-mov         dword ptr [rsp+18h],r8d
-mov         dword ptr [rsp+10h],edx
-mov         dword ptr [rsp+8],ecx
+mov         dword ptr <a href="posts.html?q=rsp+20h">rsp+20h</a>,r9d
+mov         dword ptr <a href="posts.html?q=rsp+18h">rsp+18h</a>,r8d
+mov         dword ptr <a href="posts.html?q=rsp+10h">rsp+10h</a>,edx
+mov         dword ptr <a href="posts.html?q=rsp+8">rsp+8</a>,ecx
 push        rdi
 sub         rsp,40h # RSP last change
 # prolog-end
 	RSPIsTheSameCall1(p1);
-mov         ecx,dword ptr [p1]
+mov         ecx,dword ptr <a href="posts.html?q=p1">p1</a>
 call        RSPIsTheSameCall1
 	RSPIsTheSameCall4(p1, p2, p3, p4);
-mov         r9d,dword ptr [p4]
+mov         r9d,dword ptr <a href="posts.html?q=p4">p4</a>
 ...
 call        RSPIsTheSameCall4
 	RSPIsTheSameCall8(p1, p2, p3, p4, p5, p6, p7, p8);
-mov         eax,dword ptr [p8]
-mov         dword ptr [rsp+38h],eax
+mov         eax,dword ptr <a href="posts.html?q=p8">p8</a>
+mov         dword ptr <a href="posts.html?q=rsp+38h">rsp+38h</a>,eax
 ...
 call        RSPIsTheSameCall8
 	return 1;
@@ -404,10 +404,10 @@ compiler uses it to save non-volatile registers." - x64 Deep Dive
 functions." - x64 Deep Dive
 # Win64 Debug
 int HomingSpaceNonLeaf(int p1, int p2, int p3, int p4) {
-mov         dword ptr [rsp+20h],r9d # homing space saving params
-mov         dword ptr [rsp+18h],r8d
-mov         dword ptr [rsp+10h],edx
-mov         dword ptr [rsp+8],ecx
+mov         dword ptr <a href="posts.html?q=rsp+20h">rsp+20h</a>,r9d # homing space saving params
+mov         dword ptr <a href="posts.html?q=rsp+18h">rsp+18h</a>,r8d
+mov         dword ptr <a href="posts.html?q=rsp+10h">rsp+10h</a>,edx
+mov         dword ptr <a href="posts.html?q=rsp+8">rsp+8</a>,ecx
 push        rdi
 sub         rsp,20h
 # Win64 Release
@@ -415,9 +415,9 @@ int TestHomingSpaceNonLeaf() {
 sub         rsp,28h
 	int ret = HomingSpaceNonLeaf(1, 2, 3, 4);
 mov         edx,2 # even begin non-leaf function, params are not saved in release
-lea         r9d,[rdx+2]
-lea         r8d,[rdx+1]
-lea         ecx,[rdx-1]
+lea         r9d,<a href="posts.html?q=rdx+2">rdx+2</a>
+lea         r8d,<a href="posts.html?q=rdx+1">rdx+1</a>
+lea         ecx,<a href="posts.html?q=rdx-1">rdx-1</a>
 call        HomingSpaceNonLeaf
 */</pre>
 <h3>Child-SP</h3>
@@ -434,42 +434,42 @@ includes access to stack based parameters and local variables." - x64 Deep Dive
 */
 # Win64 Debug
 			p5 = i + j + (i % 2 ? p1 : p2) + (j % 2 ? p3 : p4);
-mov         eax,dword ptr [rsp+0Ch]
+mov         eax,dword ptr <a href="posts.html?q=rsp+0Ch">rsp+0Ch</a>
 cdq
 and         eax,1
 xor         eax,edx
 sub         eax,edx
 test        eax,eax
 je          ChildSPF3+0BBh
-mov         rax,qword ptr [p1]
-mov         eax,dword ptr [rax]
-mov         dword ptr [rsp+14h],eax # reference child-sp
+mov         rax,qword ptr <a href="posts.html?q=p1">p1</a>
+mov         eax,dword ptr <a href="posts.html?q=rax">rax</a>
+mov         dword ptr <a href="posts.html?q=rsp+14h">rsp+14h</a>,eax # reference child-sp
 jmp         ChildSPF3+0C6h
-mov         rax,qword ptr [p2]
-mov         eax,dword ptr [rax]
-mov         dword ptr [rsp+14h],eax # reference child-sp
-mov         eax,dword ptr [rsp+10h] # reference child-sp
+mov         rax,qword ptr <a href="posts.html?q=p2">p2</a>
+mov         eax,dword ptr <a href="posts.html?q=rax">rax</a>
+mov         dword ptr <a href="posts.html?q=rsp+14h">rsp+14h</a>,eax # reference child-sp
+mov         eax,dword ptr <a href="posts.html?q=rsp+10h">rsp+10h</a> # reference child-sp
 cdq
 and         eax,1
 xor         eax,edx
 sub         eax,edx
 test        eax,eax
 je          ChildSPF3+0E3h
-mov         rax,qword ptr [p3]
-mov         eax,dword ptr [rax]
-mov         dword ptr [rsp+18h],eax # reference child-sp
+mov         rax,qword ptr <a href="posts.html?q=p3">p3</a>
+mov         eax,dword ptr <a href="posts.html?q=rax">rax</a>
+mov         dword ptr <a href="posts.html?q=rsp+18h">rsp+18h</a>,eax # reference child-sp
 jmp         ChildSPF3+0EEh
-mov         rax,qword ptr [p4]
-mov         eax,dword ptr [rax]
-mov         dword ptr [rsp+18h],eax # reference child-sp
-mov         eax,dword ptr [rsp+10h] # reference child-sp
-mov         ecx,dword ptr [rsp+0Ch] # reference child-sp
+mov         rax,qword ptr <a href="posts.html?q=p4">p4</a>
+mov         eax,dword ptr <a href="posts.html?q=rax">rax</a>
+mov         dword ptr <a href="posts.html?q=rsp+18h">rsp+18h</a>,eax # reference child-sp
+mov         eax,dword ptr <a href="posts.html?q=rsp+10h">rsp+10h</a> # reference child-sp
+mov         ecx,dword ptr <a href="posts.html?q=rsp+0Ch">rsp+0Ch</a> # reference child-sp
 add         ecx,eax
 mov         eax,ecx
-add         eax,dword ptr [rsp+14h] # reference child-sp
-add         eax,dword ptr [rsp+18h] # reference child-sp
-mov         rcx,qword ptr [p5]
-mov         dword ptr [rcx],eax</pre>
+add         eax,dword ptr <a href="posts.html?q=rsp+14h">rsp+14h</a> # reference child-sp
+add         eax,dword ptr <a href="posts.html?q=rsp+18h">rsp+18h</a> # reference child-sp
+mov         rcx,qword ptr <a href="posts.html?q=p5">p5</a>
+mov         dword ptr <a href="posts.html?q=rcx">rcx</a>,eax</pre>
 <h3>Parameter Retrieval</h3>
 <pre>
 /*
@@ -491,47 +491,47 @@ those registers are saved by the callee. If so, the saved non-volatile register
 values can be examined to determine the parameter values." - x64 Deep Dive
 # Win64 Release
 1. Parameters are loaded into the registers from memory.
-mov         dword ptr [rbp+30h],5 # p5 = 5
-mov         dword ptr [rbp+28h],6 # p6 = 6
-mov         dword ptr [rbp+20h],7 # p7 = 7
-mov         dword ptr [rbp+18h],8 # p8 = 8
+mov         dword ptr <a href="posts.html?q=rbp+30h">rbp+30h</a>,5 # p5 = 5
+mov         dword ptr <a href="posts.html?q=rbp+28h">rbp+28h</a>,6 # p6 = 6
+mov         dword ptr <a href="posts.html?q=rbp+20h">rbp+20h</a>,7 # p7 = 7
+mov         dword ptr <a href="posts.html?q=rbp+18h">rbp+18h</a>,8 # p8 = 8
 call        ChildSPF1
 2. Parameters are loaded from non-volatile registers and those registers
 are saved by the callee.
 	int oldP7 = *g_ParameterRetrieval_p7_retrieval;
 	return p1 + p2 + p3 + p4 + p5 + p6 + oldP7 + p8;
-mov         eax,dword ptr [rdx]
+mov         eax,dword ptr <a href="posts.html?q=rdx">rdx</a>
 mov         r10,rcx
-add         eax,dword ptr [r8]
-add         eax,dword ptr [r9]
-mov         rdx,qword ptr [p5]
-mov         rcx,qword ptr [g_ParameterRetrieval_p7_retrieval]
+add         eax,dword ptr <a href="posts.html?q=r8">r8</a>
+add         eax,dword ptr <a href="posts.html?q=r9">r9</a>
+mov         rdx,qword ptr <a href="posts.html?q=p5">p5</a>
+mov         rcx,qword ptr <a href="posts.html?q=g_ParameterRetrieval_p7_retrieval">g_ParameterRetrieval_p7_retrieval</a>
 3. Parameters are saved from the registers into memory.
 # Win64 Release
 	g_ParameterRetrieval_p7_retrieval = &p7;
-mov         r10,qword ptr [p7]
+mov         r10,qword ptr <a href="posts.html?q=p7">p7</a>
 mov         r11,rcx
 	return p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8;
-mov         rcx,qword ptr [p8]
-mov         qword ptr [g_ParameterRetrieval_p7_retrieval],r10 # save nonvolatile register
+mov         rcx,qword ptr <a href="posts.html?q=p8">p8</a>
+mov         qword ptr <a href="posts.html?q=g_ParameterRetrieval_p7_retrieval">g_ParameterRetrieval_p7_retrieval</a>,r10 # save nonvolatile register
 4. Parameters are saved into non-volatile registers and those registers
 are saved by the callee.
 # Win64 Release
 int ParameterRetrieval3(int& p1, int& p2, int& p3, int& p4, int& p5, int& p6, int& p7, int& p8) {
-mov         qword ptr [rsp+8],rbx
-mov         qword ptr [rsp+10h],rsi
-mov         qword ptr [rsp+18h],rdi
-mov         qword ptr [rsp+20h],r14
+mov         qword ptr <a href="posts.html?q=rsp+8">rsp+8</a>,rbx
+mov         qword ptr <a href="posts.html?q=rsp+10h">rsp+10h</a>,rsi
+mov         qword ptr <a href="posts.html?q=rsp+18h">rsp+18h</a>,rdi
+mov         qword ptr <a href="posts.html?q=rsp+20h">rsp+20h</a>,r14
 push        r15 # saves what will be p7
 	int oldP7 = p7;
 	for (int i = 0; i < 7; ++i) {
 		p7 += p1;
-mov         r10d,dword ptr [rcx]
+mov         r10d,dword ptr <a href="posts.html?q=rcx">rcx</a>
 mov         r14,rcx
-mov         r15,qword ptr [p7] # going to use p7
+mov         r15,qword ptr <a href="posts.html?q=p7">p7</a> # going to use p7
 mov         rbx,rdx
 mov         rdi,r9
-mov         esi,dword ptr [r15] # Parameters are saved into non-volatile registers...
+mov         esi,dword ptr <a href="posts.html?q=r15">r15</a> # Parameters are saved into non-volatile registers...
 add         r10d,esi
 ...
 	}
@@ -541,8 +541,8 @@ add         r10d,esi
 	return ret;
 }
 ...
-mov         dword ptr [r15],esi # ... and those registers are saved by the callee.
-mov         rsi,qword ptr [rsp+18h]
+mov         dword ptr <a href="posts.html?q=r15">r15</a>,esi # ... and those registers are saved by the callee.
+mov         rsi,qword ptr <a href="posts.html?q=rsp+18h">rsp+18h</a>
 pop         r15
 ret
 */</pre>
@@ -660,9 +660,9 @@ vector<int> BubbleSort(vector<int> array)
     {
         for (size_t j = 0; j < array.size() - 1 - i; ++j)
         {
-            if (array[j] > array[j + 1])
+            if (array<a href="posts.html?q=j">j</a> > array<a href="posts.html?q=j + 1">j + 1</a>)
             {
-                swap(array[j], array[j + 1]);
+                swap(array<a href="posts.html?q=j">j</a>, array<a href="posts.html?q=j + 1">j + 1</a>);
             }
         }
     }
@@ -716,9 +716,9 @@ vector<int> InsertionSort(vector<int> array)
         size_t j = i;
         while ( j > 0 )
         {
-            if (array[j-1] > array[j])
+            if (array<a href="posts.html?q=j-1">j-1</a> > array<a href="posts.html?q=j">j</a>)
             {
-                swap(array[j-1], array[j]);
+                swap(array<a href="posts.html?q=j-1">j-1</a>, array<a href="posts.html?q=j">j</a>);
             }
             --j;
         }
@@ -796,9 +796,9 @@ string ReverseString(string s)
     size_t end = s.size() - 1; // posição final
     while (begin < end) // enquanto não invertemos as posições
     {
-        char buf = s[begin]; // troca elementos de posição
-        s[begin] = s[end];
-        s[end] = buf;
+        char buf = s<a href="posts.html?q=begin">begin</a>; // troca elementos de posição
+        s<a href="posts.html?q=begin">begin</a> = s<a href="posts.html?q=end">end</a>;
+        s<a href="posts.html?q=end">end</a> = buf;
         ++begin; // atualize a posição inicial e final da string
         --end;
     }
@@ -822,7 +822,7 @@ string ReverseString(string s)
 void MatchingCharacters(string s)
 {
     map<char, int> m; // declarar um map entre char e int
-    for_each(s.begin(), s.end(), [&m](char c) { m[c] += 1; }); // loop caractere a caractere incrementando contador para cada um
+    for_each(s.begin(), s.end(), <a href="posts.html?q=&m">&m</a>(char c) { m<a href="posts.html?q=c">c</a> += 1; }); // loop caractere a caractere incrementando contador para cada um
     for( auto c: m ) {
       cout << c.first << ": " << c.second << "\n";
     }
@@ -887,18 +887,18 @@ shared_ptr<LinkedList> LinkedListTraverseToTheMiddle(shared_ptr<LinkedList>& hea
 <pre>
 int SecondLargest(vector<int> array)
 {
-    int first = max(array[0], array[1]);
-    int second = min(array[0], array[1]);
+    int first = max(array<a href="posts.html?q=0">0</a>, array<a href="posts.html?q=1">1</a>);
+    int second = min(array<a href="posts.html?q=0">0</a>, array<a href="posts.html?q=1">1</a>);
     for (size_t i = 2; i < array.size(); ++i)
     {
-        if (array[i] >= first)
+        if (array<a href="posts.html?q=i">i</a> >= first)
         {
             second = first;
-            first = array[i];
+            first = array<a href="posts.html?q=i">i</a>;
         }
-        else if( array[i] > second )
+        else if( array<a href="posts.html?q=i">i</a> > second )
         {
-            second = array[i];
+            second = array<a href="posts.html?q=i">i</a>;
         }
     }
     return second;
@@ -934,9 +934,9 @@ int ReverseNumberStringVersion(int number)
     size_t beg = 0, end = s.size() - 1;
     while (beg < end)
     {
-        char buf = s[beg];
-        s[beg] = s[end];
-        s[end] = buf;
+        char buf = s<a href="posts.html?q=beg">beg</a>;
+        s<a href="posts.html?q=beg">beg</a> = s<a href="posts.html?q=end">end</a>;
+        s<a href="posts.html?q=end">end</a> = buf;
         ++beg;
         --end;
     }
@@ -1070,7 +1070,7 @@ int countingValleys(int steps, string path) {
     int altitude = 0;
     for (int s = 0; s < steps; ++s)
     {
-        int step = path[s] == 'D' ? -1 : 1;
+        int step = path<a href="posts.html?q=s">s</a> == 'D' ? -1 : 1;
         int newAltitude = altitude + step;
         if (altitude < 0 && newAltitude == 0)
         {
@@ -1088,7 +1088,7 @@ int jumpingOnClouds(vector<int> c) {
     int jumps = 0;
     size_t i = 0;
     while (i < c.size()) {
-        if (i < c.size() - 2 && c[i + 2] == 0) {
+        if (i < c.size() - 2 && c<a href="posts.html?q=i + 2">i + 2</a> == 0) {
             i += 2;
             ++jumps;
         }
@@ -1168,13 +1168,13 @@ int sockMerchant(int n, vector<int> ar)
 <p>No entanto, o tamanho para estocar uma segment tree não é esse, mas tipicamente `4*N`. O motivo disso é que nós precisamos de `2*next_power_of_two(N)-1` para garantir que as divisões da árvore todas vão estar representadas, mas como custa processamento descobrir qual a próxima potência de 2 que é maior que N uma aproximação válida é usar `4*N`.</p>
 <p>Vamos observar a implementação de uma árvore de segmentos. A primeira coisa é alocar o espaço necessário em um vetor. Digamos que nossa árvore irá conter os intervalos de 1 a 1000 (inclusive).</p>
 <pre>
-vector<int> tree[4*1000];</pre>
+vector<int> tree<a href="posts.html?q=4*1000">4*1000</a>;</pre>
 <p>Nossa árvore está pronta. =)</p>
 <p>Vamos atualizar algum valor nela. Por exemplo, definir o valor 42 para o node 666:</p>
 <pre>
 void update(int node, int left, int right, int pos, int value, vector<int>& tree) {
     if (left == right) {
-        tree[node] = value;
+        tree<a href="posts.html?q=node">node</a> = value;
     } else {
         int nodeLeft = 2 * node;
         int nodeRight = 2 * node + 1;
@@ -1183,7 +1183,7 @@ void update(int node, int left, int right, int pos, int value, vector<int>& tree
             update(nodeLeft, left, middle, pos, value, tree);
         else
             update(nodeRight, middle+1, right, pos, value, tree);
-        tree[node] = tree[nodeLeft] + tree[nodeRight];
+        tree<a href="posts.html?q=node">node</a> = tree<a href="posts.html?q=nodeLeft">nodeLeft</a> + tree<a href="posts.html?q=nodeRight">nodeRight</a>;
     }
 }
 int main() {
@@ -1209,18 +1209,18 @@ int main() {
     update(1, 1, 999, 999, 55, tree);
 }</pre>
 <p>Com isso a soma dos seguintes intervalos deve contar os seguintes totais:</p>
-<ul><li>o intervalo [666,666] deve conter o valor 42, da única folha selecionada;</li>
-<li>o intervalo [600,700] deve conter o valor 145, da soma de 666, 600 e 700;</li>
-<li>o intervalo [600,999] deve conter o valor 200, da soma adiciona de 999;</li>
-<li>a raiz, ou o intervalo [1,999] deve conter o mesmo valor;</li>
-<li>intervalos abaixo de [1,599] devem conter 0.</li></ul>
+<ul><li>o intervalo <a href="posts.html?q=666,666">666,666</a> deve conter o valor 42, da única folha selecionada;</li>
+<li>o intervalo <a href="posts.html?q=600,700">600,700</a> deve conter o valor 145, da soma de 666, 600 e 700;</li>
+<li>o intervalo <a href="posts.html?q=600,999">600,999</a> deve conter o valor 200, da soma adiciona de 999;</li>
+<li>a raiz, ou o intervalo <a href="posts.html?q=1,999">1,999</a> deve conter o mesmo valor;</li>
+<li>intervalos abaixo de <a href="posts.html?q=1,599">1,599</a> devem conter 0.</li></ul>
 <p>Vamos implementar a função de soma e descobrir.</p>
 <pre>
 int sum(int node, int left, int right, int posLeft, int posRight, const vector<int>& tree) {
     if (posLeft > posRight)
         return 0;
     if (posLeft == left && posRight == right)
-        return tree[node];
+        return tree<a href="posts.html?q=node">node</a>;
     int nodeLeft = 2 * node;
     int nodeRight = 2 * node + 1;
     int middle = (left + right) / 2;
@@ -1237,8 +1237,8 @@ int main() {
         {666, 666}, {600, 700}, {600, 999}, 
         {1, 999}, {1, 599} };
     for (const vector<int>& i : intervals) {
-        int isum = sum(1, 1, 999, i[0], i[1], tree);
-        cout << "the interval [" << i[0] << "," << i[1] 
+        int isum = sum(1, 1, 999, i<a href="posts.html?q=0">0</a>, i<a href="posts.html?q=1">1</a>, tree);
+        cout << "the interval <a href="posts.html?q=" << i[0">" << i[0</a> << "," << i<a href="posts.html?q=1">1</a> 
             << "] has the value " << isum << endl;
     }
 }</pre>
@@ -1297,13 +1297,13 @@ struct HashTable {
     typedef vector<vector<int>> BufferType;
     HashTable(int tableSize) {
         this->tableSize = tableSize;
-        bufferRaw = new BufferType[tableSize];
+        bufferRaw = new BufferType<a href="posts.html?q=tableSize">tableSize</a>;
         buffer = shared_ptr<BufferType>(bufferRaw, default_delete<BufferType[]>());
         currentPosition = tableSize / 2; // for positive and negative room
     }
     BufferType& operator [] (int position) {
         int actualPosition = (currentPosition + position) % tableSize;
-        return buffer.get()[actualPosition];
+        return buffer.get()<a href="posts.html?q=actualPosition">actualPosition</a>;
     }
     int tableSize;
     shared_ptr<BufferType> buffer;
@@ -1314,8 +1314,8 @@ int HashFunction(int key, int tableSize) {
     return key % tableSize;
 }
 vector<int>* FindItem(HashTable& hashTable, int key) {
-    for (vector<int>& items : hashTable[HashFunction(key, hashTable.tableSize)]) {
-        if (items[0] == key) {
+    for (vector<int>& items : hashTable<a href="posts.html?q=HashFunction(key, hashTable.tableSize)">HashFunction(key, hashTable.tableSize)</a>) {
+        if (items<a href="posts.html?q=0">0</a> == key) {
             return &items;
         }
     }
@@ -1330,26 +1330,26 @@ vector<int> TestCase(vector<string> operations, vector<vector<int>> operands) {
     HashTable hashTable(DEFAULT_HASH_TABLE_SIZE);
     vector<int> results;
     for( int i = 0; i < operations.size(); ++i ) {
-        if (operations[i] == "get") {
-            if (auto* item = FindItem(hashTable, operands[i][0]))
-                results.push_back((*item)[1]);
+        if (operations<a href="posts.html?q=i">i</a> == "get") {
+            if (auto* item = FindItem(hashTable, operands<a href="posts.html?q=i">i</a><a href="posts.html?q=0">0</a>))
+                results.push_back((*item)<a href="posts.html?q=1">1</a>);
         }
-        else if (operations[i] == "insert") {
-            if (auto* item = FindItem(hashTable, operands[i][0]))
-                (*item)[1] = operands[i][1];
+        else if (operations<a href="posts.html?q=i">i</a> == "insert") {
+            if (auto* item = FindItem(hashTable, operands<a href="posts.html?q=i">i</a><a href="posts.html?q=0">0</a>))
+                (*item)<a href="posts.html?q=1">1</a> = operands<a href="posts.html?q=i">i</a><a href="posts.html?q=1">1</a>;
             else
-                hashTable[HashFunction(operands[i][0], hashTable.tableSize)].push_back(operands[i]);
+                hashTable<a href="posts.html?q=HashFunction(operands[i">HashFunction(operands[i</a><a href="posts.html?q=0">0</a>, hashTable.tableSize)].push_back(operands<a href="posts.html?q=i">i</a>);
         }
-        else if (operations[i] == "add_to_values") {
+        else if (operations<a href="posts.html?q=i">i</a> == "add_to_values") {
             for (int j = 0; j < hashTable.tableSize; ++j)
-                for (auto& item : hashTable[j])
-                    item[1] += operands[i][0];
+                for (auto& item : hashTable<a href="posts.html?q=j">j</a>)
+                    item<a href="posts.html?q=1">1</a> += operands<a href="posts.html?q=i">i</a><a href="posts.html?q=0">0</a>;
         }
-        else if (operations[i] == "add_to_keys") {
+        else if (operations<a href="posts.html?q=i">i</a> == "add_to_keys") {
             for (int j = 0; j < hashTable.tableSize; ++j)
-                for (auto& item : hashTable[j])
-                    item[0] += operands[i][0];
-            hashTable.currentPosition -= operands[i][0];
+                for (auto& item : hashTable<a href="posts.html?q=j">j</a>)
+                    item<a href="posts.html?q=0">0</a> += operands<a href="posts.html?q=i">i</a><a href="posts.html?q=0">0</a>;
+            hashTable.currentPosition -= operands<a href="posts.html?q=i">i</a><a href="posts.html?q=0">0</a>;
         }
     }
     return results;
@@ -1371,7 +1371,7 @@ void TestCase005() {
     operands.push_back({ -148 });
     vector<int> results = TestCase(operations, operands);
     assert(results.size() == 1);
-    assert(results[0] == 5);
+    assert(results<a href="posts.html?q=0">0</a> == 5);
 }</pre>
 <p>E dessa forma é possível gastar apenas O(N) para atualizar chaves ou valores dentro de uma hash table, sem movimentação de memória alguma.</p>
 </section><hr/>
@@ -1462,7 +1462,7 @@ void TestCase005() {
 <p>&gt; A subproblem is a version of the very same problem applied to a smaller input.</p>
 <p>Jay vai passando seu conhecimento aos poucos. Primeiro ele simplifica demais e usa analogias que nos deixam em uma zona de conforto. Depois ele vai complicando aos poucos. Quando menos esperamos já estamos sabendo o porquê de detalhes da computação que antigamente apenas aceitávamos como verdade. Ele me faz lembrar muito a didática do Tanenbaum, que constrói um argumento usando bom senso.</p>
 <p>Bom, o título de seu livro já denuncia: este é um guia livre de bullshitagem escrito por quem coloca a mão na massa. Parei de lê-lo na parte de recursão porque comecei a parar de fazer entrevistas técnicas e projetos começaram a vir. O meu próximo exercício seria o seguinte:</p>
-<p>"Use recursion to write a function that accepts an array of strings and returns the total number of characters across all the strings. For example, if the input array is ["ab", "c", "def", "ghij"], the output should be 10 since there are 10 characters in total. Use recursion to write a function that accepts an array of numbers and returns a new array containing just the even numbers. There is a numerical sequence known as “Triangular Numbers.” The pattern begins as 1, 3, 6, 10, 15, 21, and continues onward with the Nth number in the pattern, which is N plus the previous number. For example, the 7th number in the sequence is 28, since it’s 7 (which is N) plus 21 (the previous number in the sequence). Write a function that accepts a number for N and returns the correct number from the series. That is, if the function was passed the number 7, the function would return 28. Use recursion to write a function that accepts a string and returns the first index that contains the character “x.” For example, the string, "abcdefghijklmnopqrstuvwxyz" has an “x” at index 23. To keep things simple, assume the string definitely has at least one “x.” This problem is known as the “Unique Paths” problem: Let’s say you have a grid of rows and columns. Write a function that accepts a number of rows and a number of columns, and calculates the number of possible “shortest” paths from the upper-leftmost square to the lower-rightmost square. For example, here’s what the grid looks like with three rows and seven columns. You want to get from the “S” (Start) to the “F” (Finish). By “shortest” path, I mean that at every step, you’re moving either one step to the right: or one step downward: Again, your function should calculate the number of shortest paths."</p>
+<p>"Use recursion to write a function that accepts an array of strings and returns the total number of characters across all the strings. For example, if the input array is <a href="posts.html?q="ab", "c", "def", "ghij"">"ab", "c", "def", "ghij"</a>, the output should be 10 since there are 10 characters in total. Use recursion to write a function that accepts an array of numbers and returns a new array containing just the even numbers. There is a numerical sequence known as “Triangular Numbers.” The pattern begins as 1, 3, 6, 10, 15, 21, and continues onward with the Nth number in the pattern, which is N plus the previous number. For example, the 7th number in the sequence is 28, since it’s 7 (which is N) plus 21 (the previous number in the sequence). Write a function that accepts a number for N and returns the correct number from the series. That is, if the function was passed the number 7, the function would return 28. Use recursion to write a function that accepts a string and returns the first index that contains the character “x.” For example, the string, "abcdefghijklmnopqrstuvwxyz" has an “x” at index 23. To keep things simple, assume the string definitely has at least one “x.” This problem is known as the “Unique Paths” problem: Let’s say you have a grid of rows and columns. Write a function that accepts a number of rows and a number of columns, and calculates the number of possible “shortest” paths from the upper-leftmost square to the lower-rightmost square. For example, here’s what the grid looks like with three rows and seven columns. You want to get from the “S” (Start) to the “F” (Finish). By “shortest” path, I mean that at every step, you’re moving either one step to the right: or one step downward: Again, your function should calculate the number of shortest paths."</p>
 <h2>Recortes</h2>
 <p>&gt; Here’s what the notation means. It expresses the answer to what we’ll call the “key question.” The key question is: if there are N data elements, how many steps will the algorithm take? Go ahead and read that sentence again. Then, emblazon it on your forehead, as this is the definition of Big O Notation that we’ll be using throughout the rest of this book.</p>
 <p>&gt; Big O is originally a concept from mathematics, and therefore, it’s often described in mathematical terms. For example, one way of describing Big O is that it describes the upper bound of the growth rate of a function, or that if a function g(x) grows no faster than a function f(x), then g is said to be a member of O(f).</p>
@@ -1518,22 +1518,22 @@ void TestCase005() {
 // Segment tree to array manipulation implementation
 long query(int node, int left, int right, int pos, const vector<long>& tree) {
     if (left == right) {
-        return tree[node];
+        return tree<a href="posts.html?q=node">node</a>;
     }
     else {
         int nodeLeft = 2 * node;
         int nodeRight = 2 * node + 1;
         int middle = (left + right) / 2;
         if (pos <= middle)
-            return tree[node] + query(nodeLeft, left, middle, pos, tree);
+            return tree<a href="posts.html?q=node">node</a> + query(nodeLeft, left, middle, pos, tree);
         else
-            return tree[node] + query(nodeRight, middle + 1, right, pos, tree);
+            return tree<a href="posts.html?q=node">node</a> + query(nodeRight, middle + 1, right, pos, tree);
     }
 }
 void update(int node, int left, int right, int posLeft, int posRight, int value, vector<long>& tree) {
     if (posLeft > posRight) return;
     if (posLeft == left && posRight == right) {
-        tree[node] += value;
+        tree<a href="posts.html?q=node">node</a> += value;
     }
     else {
         int nodeLeft = 2 * node;
@@ -1549,9 +1549,9 @@ long arrayManipulation(int n, vector<vector<int>> queries) {
     vector<long> t(4 * n); // room for binary tree
     for (int i = 0; i < m; i++) {
         int l, r, x;
-        l = queries[i][0];
-        r = queries[i][1];
-        x = queries[i][2];
+        l = queries<a href="posts.html?q=i">i</a><a href="posts.html?q=0">0</a>;
+        r = queries<a href="posts.html?q=i">i</a><a href="posts.html?q=1">1</a>;
+        x = queries<a href="posts.html?q=i">i</a><a href="posts.html?q=2">2</a>;
         update(1, 1, n, l, r, x, t);
     }
     long max_val = 0;

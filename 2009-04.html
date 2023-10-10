@@ -137,7 +137,7 @@ role="navigation" aria-label="main navigation">
    t2 9
    t2 10</pre>
 <p>Peraí, o mesmo contador? Isso pode gerar problemas. Se duas threads tentarem incrementar o mesmo contador ao mesmo tempo, quem garante que elas não irão incrementar o mesmo valor? Bom, se você é bom observador já deve ter reparado que na execução acima ocorreu exatamente isso, com mais de uma thread incrementando o contador com o mesmo valor.</p>
-<p>Para forçar isso acontecer mais rápido e de maneira mais gritante podemos fazer a thread ir para o final da fila antes de incrementarmos e após pegarmos o valor atual do contador. Note que nesses testes a saída muda completamente dependendo de quantos processadores sua máquina tem. O resultado às vezes pode ser bem bizarro do que o visto nesse artigo. [^1]</p>
+<p>Para forçar isso acontecer mais rápido e de maneira mais gritante podemos fazer a thread ir para o final da fila antes de incrementarmos e após pegarmos o valor atual do contador. Note que nesses testes a saída muda completamente dependendo de quantos processadores sua máquina tem. O resultado às vezes pode ser bem bizarro do que o visto nesse artigo. <a href="posts.html?q=^1">^1</a></p>
 <pre>   increment() {
      while( count < 10 ) {
        int c = count;
@@ -293,8 +293,8 @@ role="navigation" aria-label="main navigation">
    
    int main()
    {
-     HANDLE threads[3];
-     DWORD tids[3];
+     HANDLE threads<a href="posts.html?q=3">3</a>;
+     DWORD tids<a href="posts.html?q=3">3</a>;
    
      // precisamos inicializar 
      // nosso recurso de 
@@ -303,16 +303,16 @@ role="navigation" aria-label="main navigation">
    
      for( int i = 0; i < 3; ++i )
      {
-       threads[i] 
+       threads<a href="posts.html?q=i">i</a> 
          = CreateThread(NULL, 
          0, 
          IncrementGlobalCounter, 
          0, 
          0, 
-         &tids[i]);
+         &tids<a href="posts.html?q=i">i</a>);
        printf("Thread %i: %d\n", 
          i, 
-         tids[i]);
+         tids<a href="posts.html?q=i">i</a>);
      }
    
      // aguarda as threads

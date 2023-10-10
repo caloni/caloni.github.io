@@ -212,8 +212,8 @@ role="navigation" aria-label="main navigation">
 <pre>
 void MessageError(DWORD err, PCSTR msg, ...)
 {
-	CHAR errBuffer[100];
-	CHAR msgBuffer[ERR_STR_BUF_SIZE];
+	CHAR errBuffer<a href="posts.html?q=100">100</a>;
+	CHAR msgBuffer<a href="posts.html?q=ERR_STR_BUF_SIZE">ERR_STR_BUF_SIZE</a>;
 	va_list vaList;
 	va_start(vaList, msg);
 	vsprintf(msgBuffer, msg, vaList);
@@ -312,7 +312,7 @@ int main()
 	if( hFile )
 	{
 		DWORD read = 0;
-		CHAR buffer[100];
+		CHAR buffer<a href="posts.html?q=100">100</a>;
 		if( ReadFile(hFile, buffer, sizeof(buffer), &read, NULL) )
 		{
 			WriteBuffer(buffer);
@@ -415,7 +415,7 @@ int Start()
 	for( int i = 0; i < sizeof(FunctionsToBeCalled); ++i )
 	{
 		// 4. tells the thread to run the function number N
-		TellExecutionThreadToExecuteWellDefinedFunction( FunctionToBeCalled[i] );
+		TellExecutionThreadToExecuteWellDefinedFunction( FunctionToBeCalled<a href="posts.html?q=i">i</a> );
 	}
 	// 6. end of execution.
 	return 0;
@@ -471,7 +471,7 @@ bool Help(const string&)
 {
    cout << "AntiDebug Test Program\n"
       << " Echo string to be printed\n"
-      << " System command [params]\n"
+      << " System command <a href="posts.html?q=params">params</a>\n"
       << " Quit\n\n";
    return true;
 }
@@ -500,10 +500,10 @@ map<string, int> g_miniFuncIdx;
 // start minifunctions mapping
 void InitializeMiniFuncIdx()
 {
-   g_miniFuncIdx["Help"] = 0;
-   g_miniFuncIdx["System"] = 1;
-   g_miniFuncIdx["Echo"] = 2;
-   g_miniFuncIdx["Quit"] = 3;
+   g_miniFuncIdx<a href="posts.html?q="Help"">"Help"</a> = 0;
+   g_miniFuncIdx<a href="posts.html?q="System"">"System"</a> = 1;
+   g_miniFuncIdx<a href="posts.html?q="Echo"">"Echo"</a> = 2;
+   g_miniFuncIdx<a href="posts.html?q="Quit"">"Quit"</a> = 3;
 }
 // last line read from input
 string g_currentLine;
@@ -522,7 +522,7 @@ DWORD FilterException()
       line >> function;
       getline(line, params);
       // 5. run some well-defined function by number
-      if( ! g_miniFuncs[g_miniFuncIdx[function] ](params) )
+      if( ! g_miniFuncs<a href="posts.html?q=g_miniFuncIdx[function">g_miniFuncIdx[function</a> ](params) )
          ret = EXCEPTION_CONTINUE_SEARCH;
    }
    return ret;

@@ -141,9 +141,9 @@ role="navigation" aria-label="main navigation">
    0CDD:0165 CB                RETF
    
    ; Confere assinatura 'NTFS' inicial
-   0CDD:0166 88160E00          MOV     [000E],DL
+   0CDD:0166 88160E00          MOV     <a href="posts.html?q=000E">000E</a>,DL
    0CDD:016A 66813E03004E5446
-             53                CMP     DWORD PTR [0003],5346544E
+             53                CMP     DWORD PTR <a href="posts.html?q=0003">0003</a>,5346544E
    0CDD:0173 7515              JNZ     018A
    
    ; Confere instalação do disco
@@ -162,16 +162,16 @@ role="navigation" aria-label="main navigation">
    0CDD:018E 83EC18            SUB     SP,+18
    0CDD:0191 681A00            PUSH    WORD 001A
    0CDD:0194 B448              MOV     AH,48
-   0CDD:0196 8A160E00          MOV     DL,[000E]
+   0CDD:0196 8A160E00          MOV     DL,<a href="posts.html?q=000E">000E</a>
    0CDD:019A 8BF4              MOV     SI,SP
    0CDD:019C 16                PUSH    SS
    ...
    0CDD:01BE 2BC8              SUB     CX,AX
-   0CDD:01C0 66FF061100        INC     DWORD PTR [0011]
+   0CDD:01C0 66FF061100        INC     DWORD PTR <a href="posts.html?q=0011">0011</a>
    ; Loop de leitura do disco
-   0CDD:01C5 03160F00          ADD     DX,[000F]
+   0CDD:01C5 03160F00          ADD     DX,<a href="posts.html?q=000F">000F</a>
    0CDD:01C9 8EC2              MOV     ES,DX
-   0CDD:01CB FF061600          INC     WORD PTR [0016]
+   0CDD:01CB FF061600          INC     WORD PTR <a href="posts.html?q=0016">0016</a>
    0CDD:01CF E84B00            CALL    021D
    0CDD:01D2 2BC8              SUB     CX,AX
    0CDD:01D4 77EF              JA      01C5
@@ -196,14 +196,14 @@ role="navigation" aria-label="main navigation">
    ...</pre>
 <p>Se fuçarmos por um tempo esse código podemos encontrar várias coisas interessantes, como por exemplo a mensagem que é exibida quando o setor de boot não contém a assinatura padrão 0x55 0xAA em seu final:</p>
 <img src="img/o-boot-no-windows-pre-ntldr-7dZZZag.png" caption="error-checking-part-sect-signature.png"/>
-<pre>Outra coisa interessante é encontrar a sub-rotina que carrega blocos e blocos de conteúdo do disco na memória, utilizando-se para isso da [interrupção 0x13 função 0x42](http://www.ctyme.com/intr/rb-0708.htm): a leitura estendida!
+<pre>Outra coisa interessante é encontrar a sub-rotina que carrega blocos e blocos de conteúdo do disco na memória, utilizando-se para isso da <a href="posts.html?q=interrupção 0x13 função 0x42">interrupção 0x13 função 0x42</a>(http://www.ctyme.com/intr/rb-0708.htm): a leitura estendida!
    
    ; Leitura de blocos bem grandes no disco
    0CDD:021D 6660              PUSHAD
    0CDD:021F 1E                PUSH    DS
    0CDD:0220 06                PUSH    ES
-   0CDD:0221 66A11100          MOV     EAX,[0011]
-   0CDD:0225 6603061C00        ADD     EAX,[001C]
+   0CDD:0221 66A11100          MOV     EAX,<a href="posts.html?q=0011">0011</a>
+   0CDD:0225 6603061C00        ADD     EAX,<a href="posts.html?q=001C">001C</a>
    0CDD:022A 1E                PUSH    DS
    0CDD:022B 666800000000      PUSH    DWORD 00000000
    0CDD:0231 6650              PUSH    EAX
@@ -212,7 +212,7 @@ role="navigation" aria-label="main navigation">
    0CDD:0235 680100            PUSH    WORD 0001
    0CDD:0238 681000            PUSH    WORD 0010
    0CDD:023B B442              MOV     AH,42
-   0CDD:023D 8A160E00          MOV     DL,[000E]
+   0CDD:023D 8A160E00          MOV     DL,<a href="posts.html?q=000E">000E</a>
    0CDD:0241 16                PUSH    SS
    0CDD:0242 1F                POP     DS
    0CDD:0243 8BF4              MOV     SI,SP
@@ -224,10 +224,10 @@ role="navigation" aria-label="main navigation">
    0CDD:024D 6659              POP     ECX
    0CDD:024F 1F                POP     DS
    0CDD:0250 0F821600          JB      026A
-   0CDD:0254 66FF061100        INC     DWORD PTR [0011]
-   0CDD:0259 03160F00          ADD     DX,[000F]
+   0CDD:0254 66FF061100        INC     DWORD PTR <a href="posts.html?q=0011">0011</a>
+   0CDD:0259 03160F00          ADD     DX,<a href="posts.html?q=000F">000F</a>
    0CDD:025D 8EC2              MOV     ES,DX
-   0CDD:025F FF0E1600          DEC     WORD PTR [0016]
+   0CDD:025F FF0E1600          DEC     WORD PTR <a href="posts.html?q=0016">0016</a>
    0CDD:0263 75BC              JNZ     0221
    0CDD:0265 07                POP     ES
    0CDD:0266 1F                POP     DS

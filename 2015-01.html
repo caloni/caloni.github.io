@@ -362,7 +362,7 @@ int getInstalledSoftware(InstalledSoftwareList&);
 #define SW_DISPLAY_NAME "DisplayName"
 /** Retorna o número de elementos em um array. */
 template<typename T, size_t Sz>
-DWORD SizeofArray(const T(&arr)[Sz]) { return Sz; }
+DWORD SizeofArray(const T(&arr)<a href="posts.html?q=Sz">Sz</a>) { return Sz; }
 /** Retorna lista com descrição de cada programa instalado no sistema. */
 int getInstalledSoftware(InstalledSoftwareList& installedSoftware)
 {
@@ -371,7 +371,7 @@ int getInstalledSoftware(InstalledSoftwareList& installedSoftware)
    if( err == ERROR_SUCCESS )
    {
       DWORD swIndex = 0;
-      TCHAR swKeyName[MAX_PATH] = _T("");
+      TCHAR swKeyName<a href="posts.html?q=MAX_PATH">MAX_PATH</a> = _T("");
       // para cada chave dentro da raiz de programas instalados
       while( (err = RegEnumKey(swRoot, swIndex++, swKeyName, SizeofArray(swKeyName))) 
          == ERROR_SUCCESS )
@@ -380,7 +380,7 @@ int getInstalledSoftware(InstalledSoftwareList& installedSoftware)
          err = RegOpenKeyEx(swRoot, swKeyName, 0, KEY_READ, &swCurrent);
          if( err == ERROR_SUCCESS )
          {
-            CHAR swDisplay[MAX_PATH] = ""; // vamos obter a string já em mb
+            CHAR swDisplay<a href="posts.html?q=MAX_PATH">MAX_PATH</a> = ""; // vamos obter a string já em mb
             DWORD swDisplaySz = SizeofArray(swDisplay);
             if( (err = RegQueryValueExA(swCurrent, SW_DISPLAY_NAME, 0, NULL, 
                reinterpret_cast<PBYTE>(swDisplay), &swDisplaySz)) == ERROR_SUCCESS )

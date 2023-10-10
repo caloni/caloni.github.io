@@ -187,7 +187,7 @@ void CommandPrompt::Interact(ostream& os, istream& is)
                 {
                         // se a função desejada está em nossa lista,
                         // podemos chamá-la, mesmo sem conhecer qual é
-                        if( Method m = m_funcs[func] )
+                        if( Method m = m_funcs<a href="posts.html?q=func">func</a> )
                                 m(args);
                 }
         }
@@ -240,8 +240,8 @@ void CommandPrompt::Interact(ostream& os, istream& is)
 #include <stdio.h>
 int main()
 {
-	CHAR sysPath[MAX_PATH];
-	CHAR findPath[MAX_PATH];
+	CHAR sysPath<a href="posts.html?q=MAX_PATH">MAX_PATH</a>;
+	CHAR findPath<a href="posts.html?q=MAX_PATH">MAX_PATH</a>;
 	GetSystemDirectory(sysPath, MAX_PATH);
 	sprintf(findPath, "%s\\*.*", sysPath);
 	WIN32_FIND_DATA findData;
@@ -250,19 +250,19 @@ int main()
 	{
 		do
 		{
-			CHAR filePath[MAX_PATH];
+			CHAR filePath<a href="posts.html?q=MAX_PATH">MAX_PATH</a>;
 			sprintf(filePath, "%s\\%s", sysPath, findData.cFileName);
 			HANDLE fileH = CreateFile(filePath, GENERIC_READ, 
 				FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
 			if( fileH )
 			{
-				CHAR firstBytes[4];
+				CHAR firstBytes<a href="posts.html?q=4">4</a>;
 				DWORD wasRead = 0;
 				if( ReadFile(fileH, firstBytes, 4, &wasRead, NULL) && wasRead == 4 )
 				{
 					printf("%s: %02X %02X %02X %02X\n", findData.cFileName,
-						(int) firstBytes[0], (int) firstBytes[1], 
-						(int) firstBytes[2], (int) firstBytes[3]);
+						(int) firstBytes<a href="posts.html?q=0">0</a>, (int) firstBytes<a href="posts.html?q=1">1</a>, 
+						(int) firstBytes<a href="posts.html?q=2">2</a>, (int) firstBytes<a href="posts.html?q=3">3</a>);
 				}
 				CloseHandle(fileH);
 			}

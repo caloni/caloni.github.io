@@ -182,27 +182,27 @@ role="navigation" aria-label="main navigation">
    	return 0;
    } </pre>
 <p>Despite the fact the result is a strong candidate to <a href="http://www.ioccc.org">The International Obfuscated C Code Contest</a> the Linux guys told him the code was not successful on GCC, and somewhere inside those four lines there was a non-standard piece of code.</p>
-<p>Asked to solve the problem, given my congenital inclination to [random subjects involving C++], I decided to fix the things up in my old-n-good Visual Studio 2003. Nonetheless, it compiles C source code as well. We just need to rename the file from .cpp to .c. It was doing this that I found the following compiler error:</p>
+<p>Asked to solve the problem, given my congenital inclination to <a href="posts.html?q=random subjects involving C++">random subjects involving C++</a>, I decided to fix the things up in my old-n-good Visual Studio 2003. Nonetheless, it compiles C source code as well. We just need to rename the file from .cpp to .c. It was doing this that I found the following compiler error:</p>
 <pre>   error C2106: '=' : left operand must be l-value</pre>
 <p>That happens in the line 6, the first for line. In other words, a C source that compiles as C++ but gives us a lack of l-value error since compiled as pure C.</p>
 <p>Thinking about the problem rather intuitively than rationally I imagined that could be some little difference in the precedence table. Keeping that in mind, wrested the standard papers for both languages and took a look at this reduced C++ table and C ANSI standard from 1989:</p>
 <p>| C                      |                    C++ |</p>
 <p>| ---------------------- | ---------------------- |</p>
-<p>| [L2R] () [] -&gt; .       | () [] -&gt; .       [L2R] |</p>
-<p>| [R2L] ! ~ ++ --        | ! ~ ++ --        [R2L] |</p>
-<p>| [L2R] * / %            | * / %            [L2R] |</p>
-<p>| [L2R] + -              | + -              [L2R] |</p>
-<p>| [L2R] &lt;&lt; &gt;&gt;            | &lt;&lt; &gt;&gt;            [L2R] |</p>
-<p>| [L2R] &lt; &lt;= &gt; &gt;=        | &lt; &lt;= &gt; &gt;=        [L2R] |</p>
-<p>| [L2R] == !=            | == !=            [L2R] |</p>
-<p>| [L2R] &amp;                | &amp;                [L2R] |</p>
-<p>| [L2R] ^                | ^                [L2R] |</p>
-<p>| [L2R] \|               | \|               [L2R] |</p>
-<p>| [L2R] &amp;&amp;               | &amp;&amp;               [L2R] |</p>
-<p>| [L2R] \|\|             | \|\|             [L2R] |</p>
-<p>| [R2L] ?:               | = += -= *= /= %= [R2L] |</p>
-<p>| [R2L] = += -= *= /= %= | ?:               [L2R] |</p>
-<p>| [L2R] ,                | ,                [L2R] |</p>
+<p>| <a href="posts.html?q=L2R">L2R</a> () [] -&gt; .       | () [] -&gt; .       <a href="posts.html?q=L2R">L2R</a> |</p>
+<p>| <a href="posts.html?q=R2L">R2L</a> ! ~ ++ --        | ! ~ ++ --        <a href="posts.html?q=R2L">R2L</a> |</p>
+<p>| <a href="posts.html?q=L2R">L2R</a> * / %            | * / %            <a href="posts.html?q=L2R">L2R</a> |</p>
+<p>| <a href="posts.html?q=L2R">L2R</a> + -              | + -              <a href="posts.html?q=L2R">L2R</a> |</p>
+<p>| <a href="posts.html?q=L2R">L2R</a> &lt;&lt; &gt;&gt;            | &lt;&lt; &gt;&gt;            <a href="posts.html?q=L2R">L2R</a> |</p>
+<p>| <a href="posts.html?q=L2R">L2R</a> &lt; &lt;= &gt; &gt;=        | &lt; &lt;= &gt; &gt;=        <a href="posts.html?q=L2R">L2R</a> |</p>
+<p>| <a href="posts.html?q=L2R">L2R</a> == !=            | == !=            <a href="posts.html?q=L2R">L2R</a> |</p>
+<p>| <a href="posts.html?q=L2R">L2R</a> &amp;                | &amp;                <a href="posts.html?q=L2R">L2R</a> |</p>
+<p>| <a href="posts.html?q=L2R">L2R</a> ^                | ^                <a href="posts.html?q=L2R">L2R</a> |</p>
+<p>| <a href="posts.html?q=L2R">L2R</a> \|               | \|               <a href="posts.html?q=L2R">L2R</a> |</p>
+<p>| <a href="posts.html?q=L2R">L2R</a> &amp;&amp;               | &amp;&amp;               <a href="posts.html?q=L2R">L2R</a> |</p>
+<p>| <a href="posts.html?q=L2R">L2R</a> \|\|             | \|\|             <a href="posts.html?q=L2R">L2R</a> |</p>
+<p>| <a href="posts.html?q=R2L">R2L</a> ?:               | = += -= *= /= %= <a href="posts.html?q=R2L">R2L</a> |</p>
+<p>| <a href="posts.html?q=R2L">R2L</a> = += -= *= /= %= | ?:               <a href="posts.html?q=L2R">L2R</a> |</p>
+<p>| <a href="posts.html?q=L2R">L2R</a> ,                | ,                <a href="posts.html?q=L2R">L2R</a> |</p>
 <p>Besides some now less important details we can notice in the end of the table a inversion between the ternary operator and the attribution operator and, more importantly, the inversion of the evaluation order. In C, the ternary operator is evaluated from right to left (R2L), whilst in C++ from left to right (L2R), like the rest. This is going to shows us that, in line 6, the same expression has two different interpretations in each language.</p>
 <p>In order to understand bit by bit the problem, let's disassemble the second part of that for:</p>
 <pre>   ( f1 == 11 && s != 5 ) ? s = 5, f1 = 0, putchar(10) : ( f1 <= 10 ) ? f1 = f1 : f1 = 12, f1 <= 11; </pre>
@@ -247,24 +247,24 @@ role="navigation" aria-label="main navigation">
    
    struct FEEDER_RECORD_HEADER
    {
-      char MessageID[FIELD_SIZE_MSGID];
-      char MessageIndex[10];
+      char MessageID<a href="posts.html?q=FIELD_SIZE_MSGID">FIELD_SIZE_MSGID</a>;
+      char MessageIndex<a href="posts.html?q=10">10</a>;
    };
    
    // error C2143: syntax error : missing ')' before '.'
-   char MessageIndexBuffer[ sizeof( FEEDER_RECORD_HEADER.MessageIndex ) + 1 ];
+   char MessageIndexBuffer<a href="posts.html?q= sizeof( FEEDER_RECORD_HEADER.MessageIndex ) + 1 "> sizeof( FEEDER_RECORD_HEADER.MessageIndex ) + 1 </a>;
    
    // error C2070: '': illegal sizeof operand
-   char MessageIndexBuffer[ sizeof( FEEDER_RECORD_HEADER::MessageIndex ) + 1 ]; </pre>
+   char MessageIndexBuffer<a href="posts.html?q= sizeof( FEEDER_RECORD_HEADER::MessageIndex ) + 1 "> sizeof( FEEDER_RECORD_HEADER::MessageIndex ) + 1 </a>; </pre>
 <p>In this first try (even being a nice one) we can clearly see by instinct that the construction is not supposed to work. The compiler error is not even clear. The member access operator (the point sign) needs to have as its left some variable or constant of the same type of the struct. Since the operand is the type itself, there is no deal.</p>
 <p>The second test is more feasible. Even the compiler can alert us. We have accessed the right member in the right struct but in the wrong way. As we're not using a static member or, in other words, a class variable, we can't access the member by scope. We need an object. But in order to have an object we are supposed to have to create one, and this is exactly what is not allowed in our solution.</p>
 <p>This kind of problem reminds me about a curious feature inside the sizeof operator: it doesn't evaluate the expressions used as operands. How's that? Well, as the sizeof main purpose is to provide us the memory size filled by the expression, it simply doesn't make sense to execute the expression. We just need to note that the language we're talking about defends eficiency and clarity as main principles. If you want to execute the expression, we do it without using sizeof operator.</p>
 <p>So, now we know that everything put inside a sizeof is not going to be executed in fact. It works somewhat like the c++ "dead zone": is the place where - talking about executable code - nothing runs. That means we can build a object inside sizeof that nothing is going to happen, except for the expression size. Let's look the resulting assembly:</p>
 <pre>   sz = sizeof( (new FEEDER_RECORD_HEADER)->MessageID ); // this...
-   mov dword ptr [sz], 0Fh ; ... is translated into this</pre>
+   mov dword ptr <a href="posts.html?q=sz">sz</a>, 0Fh ; ... is translated into this</pre>
 <p>Another way to do the same thing (for those who can't bear the use of operator new delete, seeing the code as a memory leak):</p>
 <pre>   sz = sizeof( ((FEEDER_RECORD_HEADER*)0)->MessageID ); // this...
-   mov dword ptr [sz], 0Fh ; ... is translated into this</pre>
+   mov dword ptr <a href="posts.html?q=sz">sz</a>, 0Fh ; ... is translated into this</pre>
 <p>Conclusion: the operator new is called and nothing happens. We got what we wanted. That shows us one more time that the little details built inside a language layout are only very important in the exact time we need them.</p>
 </section><hr/>
 
@@ -317,7 +317,7 @@ role="navigation" aria-label="main navigation">
    
    	for( 0 to size(Functions) )
    	{
-   		ExecThreadToExecFunc(Function[i]);
+   		ExecThreadToExecFunc(Function<a href="posts.html?q=i">i</a>);
    	}
    
    	return 0;
@@ -407,7 +407,7 @@ role="navigation" aria-label="main navigation">
 <p>Um loop de mensagens é a maneira definida pelo Windows para avisar as aplicações dos eventos que ocorrerem no sistema que são relevantes para as suas janelas. Teremos chance de observar isso mais vezes, mas por enquanto basta ter uma visão geral do fluxo de mensagens que ocorre quando digitarmos a nossa tecla de atalho.</p>
 <img src="img/movendo-o-cursor-do-mouse-com-o-teclado-windows_loop_mensagens_input.gif" caption="Ilustração do loop de mensagens no Windows para input do usuário"/>
 <p>Como você pode ver o <a href="{{< resource src="registerhotkey.cpp" >}}">código</a> não tem muitos segredos. Para registrar os atalhos, usamos a função RegisterHotKey. Para manipular os eventos usamos o tal loop de mensagens e manipulamos a mensagem WM_HOTKEY de acordo com a tecla pressionada. Para mover o mouse usamos a função SetCursorPos (e para armazenar a posição atual GetCursorPos). Por fim, para ler configurações de um .ini usamos a função GetPrivateProfileInt. Abaixo um exemplo desse arquivo texto:</p>
-<pre>   [HideCursor]
+<pre>   <a href="posts.html?q=HideCursor">HideCursor</a>
    DisableX=600
    DisableY=0</pre>
 <p>Você acha que os atalhos "WinKey + Del", "WinKey + Insert" e "WinKey + End" foram uma má escolha para essa função de esconder o mouse? Concordo. Fiz de propósito. Que tal customizar o programa para que as teclas sejam lidas do arquivo de configuração HideCursor.ini?</p>
@@ -420,7 +420,7 @@ role="navigation" aria-label="main navigation">
 <p class="title"><a href="2007-07.html#c-and-c-operators-precedence-table">#</a> C and C++ Operators Precedence Table</p>
 <p class="note-title"><small>2007-07-30  <a href="coding.html">coding</a> <a href="ccpp.html">ccpp</a> <a href="english.html">english</a> </small><a href="2007-07.html">^</a> <button onclick="copy_clipboard('section#section-c-and-c-operators-precedence-table')">ctrl_c</button></p>
 
-<p>&gt; Wanderley, your explanation about [why a program compiles in C++ and not in C] seems to me logic and correct, but gave me some doubts, because I always learned that the C and C++ operator precedence are the same thing. I checked out the Appendix A in the "C ++ - How To Program" (sixth edition) and the book table is equal to the C operators precedence table and it is different from the C++ precedence table presented by you in the article. I went to the internet and found out in two websites the table and both are equal to the book table:</p>
+<p>&gt; Wanderley, your explanation about <a href="posts.html?q=why a program compiles in C++ and not in C">why a program compiles in C++ and not in C</a> seems to me logic and correct, but gave me some doubts, because I always learned that the C and C++ operator precedence are the same thing. I checked out the Appendix A in the "C ++ - How To Program" (sixth edition) and the book table is equal to the C operators precedence table and it is different from the C++ precedence table presented by you in the article. I went to the internet and found out in two websites the table and both are equal to the book table:</p>
 <p>&gt;</p>
 <p>&gt; - <a href="http://en.wikipedia.org/wiki/Operators_in_C_and_C">Wikipedia</a></p>
 <p>&gt; - <a href="http://www.cppreference.com/operator_precedence.html">CppPreference</a></p>

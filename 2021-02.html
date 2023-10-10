@@ -121,7 +121,7 @@ role="navigation" aria-label="main navigation">
 <p>No meio das minhas compras de estocagem de café peguei 250g deste grão que veio lá da região de Média Mogiana, em São Sebastião da Grama, interior de SP (mas do lado de MG). Ele pode ser encontrado no mercado Santa Luzia e comprado online.</p>
 <ul><li>2021-02-16 O sabor dele não é frutado: é herbáceo. A torra me pareceu média ou média-fraca e comecei a reparar em seus tons a partir da terceira passada com moagem nível 3 na Hario Slim, temperatura acima de 95 graus e 27g por 350ml. Não é nada perene, mas ao menos agradável. Puxa mais doce que amargo e tem um tanino médio para leve. A moagem nível 3 ficou muito fina e emperrou na Aeropress; próxima tentativa é aumentar dois níveis.</li>
 <li>2021-02-17 Hoje usei nível 5 da Hario com 24g para 300ml de água aquecida em fogo baixo na temperatura com início de bolhas subindo rápido. Fiz perculação inicial seguido de mexida com espátula. E o sabor ficou bem forte, muito mais do que o de ontem. Pegou um pouco de amargor.</li>
-<li>2023-10-04 Este é o café usado no [Café Casinha] e o espresso deles é doce e cítrico na medida certa. Todas essas notas mais o chocolate dá para sentir no espresso. Comprei para testar na Moca e o resultado ficou bem aquém, pois não consegui extrair toda a água com a moagem para Aeropress. Agora dei um passo para trás e fiz na própria Aeropress, e o resultado ficou bem saboroso, embora não com as notas do espresso. De fato espresso é outra bebida.</li>
+<li>2023-10-04 Este é o café usado no <a href="posts.html?q=Café Casinha">Café Casinha</a> e o espresso deles é doce e cítrico na medida certa. Todas essas notas mais o chocolate dá para sentir no espresso. Comprei para testar na Moca e o resultado ficou bem aquém, pois não consegui extrair toda a água com a moagem para Aeropress. Agora dei um passo para trás e fiz na própria Aeropress, e o resultado ficou bem saboroso, embora não com as notas do espresso. De fato espresso é outra bebida.</li>
 </section><hr/>
 
 <span id="uma-breve-historia-sobre-preconceito-e-cafe" title="Uma Breve História Sobre Preconceito (e Café)"/></span>
@@ -209,7 +209,7 @@ role="navigation" aria-label="main navigation">
 <p>Em 2014 eu palestrei na trilha de segurança do TDC em São Paulo um tema que me deixou muito animado: um exploit baseado em falhas de programação em um código de 10 linhas. O código era tão simples que achei válido traduzir para C e demonstrar como atacar uma simulação de cassino online.</p>
 <p>Esta palestra (e o código) se perdeu no tempo, mas eu anotei o nome da pesquisadora que escreveu o post pelo qual me baseei: Laura Diane Hamilton (que também estuda Machine Learning em seu blog). <a href="http://www.lauradhamilton.com/random-lessons-online-poker-exploit">Seu post</a> comenta sobre uma história de 1990 quando hackers se aproveitaram de falhas básicas no algoritmo de embaralhamento de cartas de pôquer.</p>
 <p>O código original estava escrito em Pascal, mas é facilmente traduzido para C:</p>
-<pre>   unsigned char Card[52];
+<pre>   unsigned char Card<a href="posts.html?q=52">52</a>;
    unsigned char CurrentCard = 0;
    unsigned char JustShuffled = 0;
    
@@ -221,16 +221,16 @@ role="navigation" aria-label="main navigation">
    
      /* Fill the deck with unique cards */
      for( ctr = 0; ctr < 52; ctr++ )
-       Card[ctr] = ctr + 1;
+       Card<a href="posts.html?q=ctr">ctr</a> = ctr + 1;
      /* Generate a new seed based on the system clock */
      srand(time(NULL));
      /* Randomly rearrange each card */
      for( ctr = 0; ctr < 52; ctr++ )
      {
        random_number = rand() % 51;
-       tmp = card[random_number];
-       card[random_number] = card[ctr];
-       card[ctr] = tmp;
+       tmp = card<a href="posts.html?q=random_number">random_number</a>;
+       card<a href="posts.html?q=random_number">random_number</a> = card<a href="posts.html?q=ctr">ctr</a>;
+       card<a href="posts.html?q=ctr">ctr</a> = tmp;
      }
      CurrentCard = 0;
      JustShuffled = 1;
@@ -246,10 +246,10 @@ role="navigation" aria-label="main navigation">
    {
      DeckShuffle();
    }
-   while( Card[51] != 52 );</pre>
+   while( Card<a href="posts.html?q=51">51</a> != 52 );</pre>
 <p>Este loop nunca irá terminar. Faça o teste. Depois compare com a rapidez com que o loop encontra a carta 52 em qualquer outra posição.</p>
 <p>A segunda falha, "The Shuffle Isn't Uniform", diz respeito à distribuição não-uniforme da igual probabilidade de certas cartas estarem em qualquer posição da pilha. Da maneira com que é implementado o algoritmo essa distribuição é enviesada. Temos como provar isso atribuindo pesos a cada embaralhada e depois de um certo tempo exibir os totais:</p>
-<pre>   int CardStats[52];
+<pre>   int CardStats<a href="posts.html?q=52">52</a>;
    int j, j2;
    for( j = 0; j < 1000; ++j )
    {
@@ -257,14 +257,14 @@ role="navigation" aria-label="main navigation">
      {
        DeckShuffle();
        for( i = 0; i < 52; ++i )
-         if( Card[i] == i+1 )
-           CardStats[i]++;
+         if( Card<a href="posts.html?q=i">i</a> == i+1 )
+           CardStats<a href="posts.html?q=i">i</a>++;
      }
    }
    printf("cards stats: \n");
    for( i = 0; i < 52; ++i )
    {
-     printf("%d ", CardStats[i]);
+     printf("%d ", CardStats<a href="posts.html?q=i">i</a>);
    }</pre>
 <p>A versão original do algoritmo rodando um milhão de vezes demonstra o viés de forma descarada:</p>
 <pre>   cards stats:
@@ -307,12 +307,12 @@ role="navigation" aria-label="main navigation">
    while( 1 )
    {
      DeckShuffle(curr_time);
-     if( Card[0] == flop1 && Card[1] == flop2 && Card[2] == flop3 )
+     if( Card<a href="posts.html?q=0">0</a> == flop1 && Card<a href="posts.html?q=1">1</a> == flop2 && Card<a href="posts.html?q=2">2</a> == flop3 )
      {
        printf("%d: ", (int) curr_time);
        for( i = 0; i < 52; ++i )
        {
-         printf("%d ", Card[i]);
+         printf("%d ", Card<a href="posts.html?q=i">i</a>);
        }
        printf("\n");
      }
@@ -322,10 +322,10 @@ role="navigation" aria-label="main navigation">
 <pre>   DeckShuffle();
  
    printf("(for you) your cards, player#%d: %d %d\n", 
-     player, Card[3 + (player-1) * 2], Card[3 + (player-1) * 2 + 1]);
-   printf("(for all) flop: %d %d %d\n", Card[0], Card[1], Card[2]);
-   player1_card1 = Card[3];
-   player1_card2 = Card[4];
+     player, Card<a href="posts.html?q=3 + (player-1) * 2">3 + (player-1) * 2</a>, Card<a href="posts.html?q=3 + (player-1) * 2 + 1">3 + (player-1) * 2 + 1</a>);
+   printf("(for all) flop: %d %d %d\n", Card<a href="posts.html?q=0">0</a>, Card<a href="posts.html?q=1">1</a>, Card<a href="posts.html?q=2">2</a>);
+   player1_card1 = Card<a href="posts.html?q=3">3</a>;
+   player1_card2 = Card<a href="posts.html?q=4">4</a>;
  
    printf("do you know which cards have player #1? ");
    scanf("%d %d", &player1_guess1, &player1_guess2);

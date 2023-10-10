@@ -247,9 +247,9 @@ DWORD WINAPI InsertItems(LPVOID pvQueue) // insere, insere, insere....
     Queue& queue = *(Queue*) pvQueue;
     for( int i = 0; i < 10 * 1000; ++i ) // 10k itens!
     {
-        char* buffer = new char[queue.bufferSize];
+        char* buffer = new char<a href="posts.html?q=queue.bufferSize">queue.bufferSize</a>;
         memset(buffer, (int) (i % ('Z' - 'A')) + 'A', queue.bufferSize); // teoricamente de A a Z
-        buffer[queue.bufferSize - 1] = 0; // string C pra facilitar nossa depuração
+        buffer<a href="posts.html?q=queue.bufferSize - 1">queue.bufferSize - 1</a> = 0; // string C pra facilitar nossa depuração
         EnterCriticalSection(&queue.cs); // deixa eu entrar!
         queue.items.push_back(buffer);
         LeaveCriticalSection(&queue.cs); // deixa eu sair!
@@ -278,16 +278,16 @@ int main(int argc, char* argv[]) // No princípio havia a pilha, quando Deus dis
     static const size_t QUEUES_SIZE = 20; // número de filas sendo processadas
     static const size_t QUEUE_ITEM_SIZE = 0x1000; // 1KB é o chunk alocado por item
     static const DWORD WAIT_TIMES[] = { 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 1000 }; // alguém vai esperar demais
-    Queue queues[QUEUES_SIZE]; // as filas
-    HANDLE queueThreads[QUEUES_SIZE * 2]; // as threads que processam as filas
+    Queue queues<a href="posts.html?q=QUEUES_SIZE">QUEUES_SIZE</a>; // as filas
+    HANDLE queueThreads<a href="posts.html?q=QUEUES_SIZE * 2">QUEUES_SIZE * 2</a>; // as threads que processam as filas
     srand((unsigned int)time(0)); // randomizemos tudo
     for( size_t i = 0; i < QUEUES_SIZE; ++i )
     {
-        queues[i].bufferSize = QUEUE_ITEM_SIZE + i; // para diferenciarmos as filas
-        queues[i].wait = WAIT_TIMES[ rand() % (sizeof(WAIT_TIMES) / sizeof(DWORD)) ]; // vamos esperar por... por quanto mesmo?
-        InitializeCriticalSection(&queues[i].cs); // deu crash em algumas situações em release (stl deveria ser thread-safe...)
-        queueThreads[i] = CreateThread(NULL, 0, InsertItems, &queues[i], 0, NULL); // criamos thread de inserção
-        queueThreads[QUEUES_SIZE + i] = CreateThread(NULL, 0, ProcessItems, &queues[i], 0, NULL); // criamos thread de processamento
+        queues<a href="posts.html?q=i">i</a>.bufferSize = QUEUE_ITEM_SIZE + i; // para diferenciarmos as filas
+        queues<a href="posts.html?q=i">i</a>.wait = WAIT_TIMES<a href="posts.html?q= rand() % (sizeof(WAIT_TIMES) / sizeof(DWORD)) "> rand() % (sizeof(WAIT_TIMES) / sizeof(DWORD)) </a>; // vamos esperar por... por quanto mesmo?
+        InitializeCriticalSection(&queues<a href="posts.html?q=i">i</a>.cs); // deu crash em algumas situações em release (stl deveria ser thread-safe...)
+        queueThreads<a href="posts.html?q=i">i</a> = CreateThread(NULL, 0, InsertItems, &queues<a href="posts.html?q=i">i</a>, 0, NULL); // criamos thread de inserção
+        queueThreads<a href="posts.html?q=QUEUES_SIZE + i">QUEUES_SIZE + i</a> = CreateThread(NULL, 0, ProcessItems, &queues<a href="posts.html?q=i">i</a>, 0, NULL); // criamos thread de processamento
     }
     WaitForMultipleObjects(QUEUES_SIZE * 2, queueThreads, TRUE, INFINITE); // espera a 'gaguera'
     return 0; // "tá tudo certo!" (by Starcraft 2)
@@ -317,19 +317,19 @@ int main(int argc, char* argv[]) // No princípio havia a pilha, quando Deus dis
     _HEAP @ 420000
     _HEAP @ 670000
     HEAP_ENTRY Size Prev Flags UserPtr UserSize - state
-   <span style="color: #ff0000;"> 00558600 0221 0000 [00] 00558618 01037 - (busy)</span>         <--- vamos usar esse primeiro mais tarde
-    0055fd38 0221 0221 [00] 0055fd50 01037 - (busy)
-    00561f48 0221 0221 [00] 00561f60 01037 - (busy)
-    00565260 0221 0221 [00] 00565278 01037 - (busy)
-    0056c998 0221 0221 [00] 0056c9b0 01037 - (busy)
-    0056daa0 0221 0221 [00] 0056dab8 01037 - (busy)
-    0056eba8 0221 0221 [00] 0056ebc0 01037 - (busy)
-    00570db8 0221 0221 [00] 00570dd0 01037 - (busy)
-    00572fc8 0221 0221 [00] 00572fe0 01037 - (busy)
-    005740d0 0221 0221 [00] 005740e8 01037 - (busy)
-    0058abc8 0221 0221 [00] 0058abe0 01037 - (busy)
-    00595618 0221 0221 [00] 00595630 01037 - (busy)
-    00599a38 0221 0221 [00] 00599a50 01037 - (busy)
+   <span style="color: #ff0000;"> 00558600 0221 0000 <a href="posts.html?q=00">00</a> 00558618 01037 - (busy)</span>         <--- vamos usar esse primeiro mais tarde
+    0055fd38 0221 0221 <a href="posts.html?q=00">00</a> 0055fd50 01037 - (busy)
+    00561f48 0221 0221 <a href="posts.html?q=00">00</a> 00561f60 01037 - (busy)
+    00565260 0221 0221 <a href="posts.html?q=00">00</a> 00565278 01037 - (busy)
+    0056c998 0221 0221 <a href="posts.html?q=00">00</a> 0056c9b0 01037 - (busy)
+    0056daa0 0221 0221 <a href="posts.html?q=00">00</a> 0056dab8 01037 - (busy)
+    0056eba8 0221 0221 <a href="posts.html?q=00">00</a> 0056ebc0 01037 - (busy)
+    00570db8 0221 0221 <a href="posts.html?q=00">00</a> 00570dd0 01037 - (busy)
+    00572fc8 0221 0221 <a href="posts.html?q=00">00</a> 00572fe0 01037 - (busy)
+    005740d0 0221 0221 <a href="posts.html?q=00">00</a> 005740e8 01037 - (busy)
+    0058abc8 0221 0221 <a href="posts.html?q=00">00</a> 0058abe0 01037 - (busy)
+    00595618 0221 0221 <a href="posts.html?q=00">00</a> 00595630 01037 - (busy)
+    00599a38 0221 0221 <a href="posts.html?q=00">00</a> 00599a50 01037 - (busy)
     0059de58 0(...)</pre>
 <p>A listagem do depurador nos dá o endereço onde o chunk foi alocado no heap e o endereço devolvido para o usuário, onde colocamos nossas tralhas. Através de ambos é possível trackear a pilha da chamada que alocou cada pedaço de memória. Isso, claro, se previamente tivermos habilitado essa informação através do <a href="http://msdn.microsoft.com/en-us/library/windows/hardware/ff549596(v=vs.85">GFlags</a>.aspx):</p>
 <img src="img/consumo-abusivo-de-memoria-JeqoBju.png" caption=""/>
@@ -338,7 +338,7 @@ int main(int argc, char* argv[]) // No princípio havia a pilha, quando Deus dis
     address 00558600 found in
     _HEAP @ 670000
     HEAP_ENTRY Size Prev Flags UserPtr UserSize - state
-    <span style="color: #ff0000;">00558600 0221 0000 [00] 00558618 01037 - (busy)</span>
+    <span style="color: #ff0000;">00558600 0221 0000 <a href="posts.html?q=00">00</a> 00558618 01037 - (busy)</span>
     Trace: b7a24
     7722dfa2 ntdll!RtlAllocateHeap+0x00000274
     5b628343 MSVCR100D!_heap_alloc_base+0x00000053
@@ -355,15 +355,15 @@ int main(int argc, char* argv[]) // No princípio havia a pilha, quando Deus dis
 <p>Dessa forma temos onde cada memória foi alocada, o que nos dará uma informação valiosa, dependendo qual o tipo de problema estamos tentando resolver.</p>
 <pre>   
    0:004> u <span style="color: #ff0000;">e818be</span>
-   MemoryConsumption!InsertItems+0x4e [c:\...\memoryconsumption.cpp @ 18]:
+   MemoryConsumption!InsertItems+0x4e <a href="posts.html?q=c:\...\memoryconsumption.cpp @ 18">c:\...\memoryconsumption.cpp @ 18</a>:
    00e818be 83c404 add esp,4
-   00e818c1 898514ffffff mov dword ptr [ebp-0ECh],eax
-   00e818c7 8b9514ffffff mov edx,dword ptr [ebp-0ECh]
-   00e818cd 8955e0 mov dword ptr [ebp-20h],edx
-   00e818d0 8b45f8 mov eax,dword ptr [ebp-8]
-   00e818d3 8b08 mov ecx,dword ptr [eax]
+   00e818c1 898514ffffff mov dword ptr <a href="posts.html?q=ebp-0ECh">ebp-0ECh</a>,eax
+   00e818c7 8b9514ffffff mov edx,dword ptr <a href="posts.html?q=ebp-0ECh">ebp-0ECh</a>
+   00e818cd 8955e0 mov dword ptr <a href="posts.html?q=ebp-20h">ebp-20h</a>,edx
+   00e818d0 8b45f8 mov eax,dword ptr <a href="posts.html?q=ebp-8">ebp-8</a>
+   00e818d3 8b08 mov ecx,dword ptr <a href="posts.html?q=eax">eax</a>
    00e818d5 51 push ecx
-   00e818d6 8b45ec mov eax,dword ptr [ebp-14h]</pre>
+   00e818d6 8b45ec mov eax,dword ptr <a href="posts.html?q=ebp-14h">ebp-14h</a></pre>
 <p>Outra informação relevante é o que está gravado na memória, que pode nos dar insights de que tipo de objeto estamos lidando:</p>
 <pre>   
    0:004> db <span style="color: #ff0000;">00558618</span>
@@ -378,15 +378,15 @@ int main(int argc, char* argv[]) // No princípio havia a pilha, quando Deus dis
 <p>Não é o caso, mas vamos supor que fosse um objeto/tipo conhecido. Poderíamos simplesmente "importar" o tipo diretamente do PDB que estamos para modelar a memória que encontramos em volta. Mais detalhes <a href="http://www.caloni.com.br/importando-tipos-de-outros-projetos">em outro artigo</a>.</p>
 <h5>Funções/classes usadas nesse artigo</h5>
 <pre>   
- * [CreateThread](http://msdn.microsoft.com/en-us/library/windows/desktop/ms682453(v=vs.85).aspx). Cria uma nova linha de execução.
+ * <a href="posts.html?q=CreateThread">CreateThread</a>(http://msdn.microsoft.com/en-us/library/windows/desktop/ms682453(v=vs.85).aspx). Cria uma nova linha de execução.
    
- * [WaitForMultipleObjects](http://msdn.microsoft.com/en-us/library/windows/desktop/ms687025(v=vs.85).aspx). Pode aguardar diferentes linhas de execução terminarem.
+ * <a href="posts.html?q=WaitForMultipleObjects">WaitForMultipleObjects</a>(http://msdn.microsoft.com/en-us/library/windows/desktop/ms687025(v=vs.85).aspx). Pode aguardar diferentes linhas de execução terminarem.
    
- * [std::list](http://www.cplusplus.com/reference/stl/list/front/). Lista na STL para inserir/remover objetos na frente e atrás (ui).
+ * <a href="posts.html?q=std::list">std::list</a>(http://www.cplusplus.com/reference/stl/list/front/). Lista na STL para inserir/remover objetos na frente e atrás (ui).
    
- * [Initialize](http://msdn.microsoft.com/en-us/library/windows/desktop/ms683472(v=vs.85).aspx), [Enter](http://msdn.microsoft.com/en-us/library/windows/desktop/ms682608(v=vs.85).aspx) e [LeaveCriticalSection](http://msdn.microsoft.com/en-us/library/windows/desktop/ms684169(v=vs.85).aspx). Uma maneira simples de criar blocos de entrada atômica (apenas uma thread entra por vez).
+ * <a href="posts.html?q=Initialize">Initialize</a>(http://msdn.microsoft.com/en-us/library/windows/desktop/ms683472(v=vs.85).aspx), <a href="posts.html?q=Enter">Enter</a>(http://msdn.microsoft.com/en-us/library/windows/desktop/ms682608(v=vs.85).aspx) e <a href="posts.html?q=LeaveCriticalSection">LeaveCriticalSection</a>(http://msdn.microsoft.com/en-us/library/windows/desktop/ms684169(v=vs.85).aspx). Uma maneira simples de criar blocos de entrada atômica (apenas uma thread entra por vez).
    
- * [memset](http://www.cplusplus.com/reference/clibrary/cstring/memset/). Se você não sabe usar memset, provavelmente não entendeu nada desse artigo.
+ * <a href="posts.html?q=memset">memset</a>(http://www.cplusplus.com/reference/clibrary/cstring/memset/). Se você não sabe usar memset, provavelmente não entendeu nada desse artigo.
 </section><hr/>
 
 

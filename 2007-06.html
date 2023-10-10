@@ -94,7 +94,7 @@ role="navigation" aria-label="main navigation">
 <p class="title"><a href="2007-06.html#about">#</a> About</p>
 <p class="note-title"><small>2007-06-14  </small><a href="2007-06.html">^</a> <button onclick="copy_clipboard('section#section-about')">ctrl_c</button></p>
 
-<p>Quer entrar em contato? Mande o bom e velho <a href="mailto:wanderley.caloni@gmail.com">email</a>. Quer um resumo profissional? Busque no blogue por [Wanderley Caloni].</p>
+<p>Quer entrar em contato? Mande o bom e velho <a href="mailto:wanderley.caloni@gmail.com">email</a>. Quer um resumo profissional? Busque no blogue por <a href="posts.html?q=Wanderley Caloni">Wanderley Caloni</a>.</p>
 <p>Wanderley Caloni é um <a href="https://github.com/Caloni">programador</a> C/C++ especializado em backend para Windows que decidiu ter seu próprio blogue técnico a pedidos insistentes do seu amigo Rodrigo Strauss, que estava blogando já fazia alguns anos no www.1bit.com.br. Busco mantê-lo atualizado por esses longos anos de programação, depuração e transpiração com minhas peripécias do dia-a-dia. Eventualmente me tornei crítico de cinema e juntei aqui essas duas escovas de dentes, textos técnicos e cinematográficos, o que acabou tornando o saite gigante a ponto de eu precisar trocar meu static site generator para algo mais rápido como <a href="https://gohugo.io/">Hugo</a>.</p>
 <h3>Overview geral por cima</h3>
 <p>Colaborador frequente do Grupo C/C++ Brasil, eu e o Strauss nos consideramos fundadores do grupo por organizar e participar do Primeiro Encontro de Programadores e Aficionados da Linguagem C/C++ do Brasil, que ocorreu em São Paulo exatamente no dia dezessete de dezembro de dois mil e cinco, às três horas da tarde, no restaurante Outback do Shopping Eldorado. Desde então o grupo vem realizando encontros mais técnicos no decorrer dos anos, com palestras e debates. A cerveja tradicional se manteve ao final do evento.</p>
@@ -343,12 +343,12 @@ Logger: tracer de chamadas de funções da API. Pode ser usado para análise de 
    
    int WINAPI WinMain(...)
    {
-     CHAR wndTxt[MAX_PATH];
+     CHAR wndTxt<a href="posts.html?q=MAX_PATH">MAX_PATH</a>;
    
      while( true )
      {
        HWND fgWin = GetForegroundWindow();
-       wndTxt[0] = 0;
+       wndTxt<a href="posts.html?q=0">0</a> = 0;
    
        if( GetWindowText(...) )
        {
@@ -390,7 +390,7 @@ Module: determina quem chamou a API, o próprio executável ou alguma DLL.</li>
 
 <p>Arrays are fascinating in C language because they are so simple and so powerful at the same time. When we start to really understand them and realize all its power we are very close to understand another awesome feature of the language: pointers.</p>
 <p>When I was reading the K&amp;R book (again) I was enjoying the language specification details in the Appendix A. It was specially odd the description as an array must be accessed:</p>
-<p>&gt; A postfix expression followed by an expression in square brackets is a postfix expression. One of the expressions shall have the type "pointer to T" and the other shall have enumeration or integral type. The result is an lvalue of type "T". (...) The expression E1 [ E2 ] is identical (by definition) to *( (E1) + (E2) ).</p>
+<p>&gt; A postfix expression followed by an expression in square brackets is a postfix expression. One of the expressions shall have the type "pointer to T" and the other shall have enumeration or integral type. The result is an lvalue of type "T". (...) The expression E1 <a href="posts.html?q= E2 "> E2 </a> is identical (by definition) to *( (E1) + (E2) ).</p>
 <p>Notice that the rules don't specify the order of expressions to access the array. In other words, it doesn't matter for the language if we use a pointer before the integer or an integer before the pointer.</p>
 <pre>   #include <iostream>
    #include <cassert>
@@ -403,28 +403,28 @@ Module: determina quem chamou a API, o próprio executável ou alguma DLL.</li>
    	
    	std::cout 
        << "And the language is: " 
-       << q [ i ] 
+       << q <a href="posts.html?q= i "> i </a> 
        << std::endl;
    	
-   	assert( q[i] == i[q] );
-   	assert( q[13] == 13[q] );
-   	assert( *(q + i) == "That's C!"[7] );
+   	assert( q<a href="posts.html?q=i">i</a> == i<a href="posts.html?q=q">q</a> );
+   	assert( q<a href="posts.html?q=13">13</a> == 13<a href="posts.html?q=q">q</a> );
+   	assert( *(q + i) == "That's C!"<a href="posts.html?q=7">7</a> );
    	
-   	return 13[q] - "CThings"[0];
+   	return 13<a href="posts.html?q=q">q</a> - "CThings"<a href="posts.html?q=0">0</a>;
    } </pre>
-<p>The q[i] bellow shows that we can use both orders and the code will compile successfully.</p>
+<p>The q<a href="posts.html?q=i">i</a> bellow shows that we can use both orders and the code will compile successfully.</p>
 <pre>   std::cout 
      << "And the language is: " 
-     << i [ q ] 
+     << i <a href="posts.html?q= q "> q </a> 
      << std::endl;</pre>
 <p>This code doesn't show how obscure we can be. If we use a constant integer replacing the i, by example, the code starts to be an <a href="http://www.ioccc.org/">IOCCC</a> participant:</p>
 <pre>   std::cout 
      << "And the language is: " 
-     << 13 [ q ] 
+     << 13 <a href="posts.html?q= q "> q </a> 
      << std::endl;</pre>
 <p>Is this a valid code yet, right? The expression types are following the rule. It is easy to see if we always think about using the "universal match" *( (E1) + (E2) ). Even bizarre things like this are easy to realize:</p>
 <pre>   std::cout 
-     << 8["Is this Code right?"] 
+     << 8<a href="posts.html?q="Is this Code right?"">"Is this Code right?"</a> 
      << std::endl;</pre>
 <p>Obs.: this kind of "obscure rule" hardly will pass in a code review since it is a useless feature. Be wise and don't use it in production code. This is just an amusing detail in the language specification scope. It can help in analysis, never in programming.</p>
 
@@ -493,7 +493,7 @@ Module: determina quem chamou a API, o próprio executável ou alguma DLL.</li>
 <pre>   001 set memA, 006
    002 set memB, 005
    003 cmp memC, memD # muda ZF
-   004 jump [memA + ZF]
+   004 jump <a href="posts.html?q=memA + ZF">memA + ZF</a>
    005 code # ZF=1
    006 code # ZF=0
    007 ...</pre>

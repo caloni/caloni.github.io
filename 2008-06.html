@@ -200,9 +200,9 @@ role="navigation" aria-label="main navigation">
    struct Teste
    {
      /* tamanho em memória: zero bytes */
-   	char bufao[0x100000]; 
+   	char bufao<a href="posts.html?q=0x100000">0x100000</a>; 
      /* tamanho em memória: zero bytes */
-   	int intao[0xffffff];
+   	int intao<a href="posts.html?q=0xffffff">0xffffff</a>;
    };
    
    /* tamanho em memória: adivinha! */
@@ -424,18 +424,18 @@ role="navigation" aria-label="main navigation">
    branch          Create a new copy of a branch.
    ...
    push            Update a mirror of this branch.
-   rebase          Re-base a branch. [rebase]
-   rebase-abort    Abort an interrupted rebase [rebase]
-   rebase-continue Continue an interrupted rebase after resolving conflicts [rebase]
-   rebase-todo     Print list of revisions that still need to be replayed as part of the  [rebase]
+   rebase          Re-base a branch. <a href="posts.html?q=rebase">rebase</a>
+   rebase-abort    Abort an interrupted rebase <a href="posts.html?q=rebase">rebase</a>
+   rebase-continue Continue an interrupted rebase after resolving conflicts <a href="posts.html?q=rebase">rebase</a>
+   rebase-todo     Print list of revisions that still need to be replayed as part of the  <a href="posts.html?q=rebase">rebase</a>
    reconcile       Reconcile bzr metadata in a branch.
    reconfigure     Reconfigure the type of a bzr directory.
-   register-branch Register a branch with launchpad.net. [launchpad]
+   register-branch Register a branch with launchpad.net. <a href="posts.html?q=launchpad">launchpad</a>
    remerge         Redo a merge.
    remove          Remove files or directories.
    remove-tree     Remove the working tree from a given branch/checkout.
    renames         Show list of renamed files.
-   replay          Replay commits from another branch on top of this one. [rebase]
+   replay          Replay commits from another branch on top of this one. <a href="posts.html?q=rebase">rebase</a>
    resolve         Mark a conflict as resolved.
    revert          Revert files to a previous revision.
    ...
@@ -567,7 +567,7 @@ role="navigation" aria-label="main navigation">
        /* 4 bytes */
        int size;
        /* 31 bytes */
-       char name[31];
+       char name<a href="posts.html?q=31">31</a>;
    };
    /* 4 + 31 = 35 bytes */</pre>
 <p>Se usarmos a construção "sizeof(struct S)", podemos obter o valor 35 caso o alinhamento seja feito em 1 byte, ou podemos obter o valor 40 se o alinhamento estiver configurado em 8 bytes. E é aí que começa o problema.</p>
@@ -579,18 +579,24 @@ role="navigation" aria-label="main navigation">
    {
      struct S
      {
-       char buf[13];
+       char buf<a href="posts.html?q=13">13</a>;
        int x;
      }
      t;
    
-     unsigned char align[
+     unsigned char align<a href="posts.html?q=
        sizeof(struct S) % 8 
        ?
        (sizeof(struct S) / 8 + 1) * 8
        :
        (sizeof(struct S))
-     ];
+     ">
+       sizeof(struct S) % 8 
+       ?
+       (sizeof(struct S) / 8 + 1) * 8
+       :
+       (sizeof(struct S))
+     </a>;
    };</pre>
 <p>O código acima usa o conceito de união de estruturas (union) para fazer valer um alinhamento na marra (no caso, 8). Uma estrutura, como todos sabem, amontoa os seus membros um após o outro na memória. Dessa forma podemos tratar um bloco de memória com um leiaute que definimos com outros tipos. Em uma união, os membros não são amontoados um após o outro. Todos eles começam no mesmo ponto da memória. Eles se sobrescrevem. O tamanho da união sempre é o tamanho do seu maior membro, e não a soma de todos. É um tanto difícil de descrever esse leiaute, mas imagine que você tenha apenas uma posição na memória e queira chamá-la de vários nomes e tamanhos diferentes. Essa é a união.</p>
 <p>Como deve ser fácil de imaginar, uma união não tem tanto uso quanto uma estrutura, mas ainda assim faz parte da linguagem. Ela possibilita enxergar a mesma região de memória sob vários ângulos. Podemos descobrir a organização de um inteiro na memória, por exemplo, byte a byte. Dependendo se a plataforma onde o programa acima é compilado, esse leiaute pode mudar. O motivo é que cada plataforma e compilador terá sua maneira de traduzir o código C na memória.</p>
@@ -608,13 +614,19 @@ role="navigation" aria-label="main navigation">
    {
      T t;
    
-     unsigned char align[
+     unsigned char align<a href="posts.html?q=
        sizeof(T) % A
        ?
        (sizeof(T) / A + 1) * A
        :
        (sizeof(T))
-     ];
+     ">
+       sizeof(T) % A
+       ?
+       (sizeof(T) / A + 1) * A
+       :
+       (sizeof(T))
+     </a>;
    };</pre>
 <p>E essa é a melhor parte de descobrir um padrão em um tipo: o template nasce quase que naturalmente. A beleza da linguagem floresce.</p>
 </section><hr/>
@@ -832,7 +844,7 @@ BOOL WINAPI DllMain(HINSTANCE inst, DWORD reason, PVOID reserv)
    * Essa função tem por objetivo exemplificar o uso do Doxygen
    *
    * @param firstParam Serve como primeiro parâmetro da função
-   * @param[out] anotherParam Esse é outro parâmetro que recebemos
+   * @param<a href="posts.html?q=out">out</a> anotherParam Esse é outro parâmetro que recebemos
    *
    * @return Se der erro, retorna -1. Se der tudo certo, 0.
    *

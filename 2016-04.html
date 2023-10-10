@@ -223,14 +223,14 @@ def PublishToTwitter(postInfo):
     """
     t = twitter.Twitter(auth=twitter_credentials.auth)
     
-    with open("C:\\daytoday\\caloni.github.io\\images\\" + postInfo["permalink"] + ".jpg", "rb") as imagefile:
+    with open("C:\\daytoday\\caloni.github.io\\images\\" + postInfo<a href="posts.html?q="permalink"">"permalink"</a> + ".jpg", "rb") as imagefile:
     	imagedata = imagefile.read()
     t_up = twitter.Twitter(domain='upload.twitter.com', auth=twitter_credentials.auth)
-    id_img1 = t_up.media.upload(media=imagedata)["media_id_string"]
-    st = postInfo['title'] + '\n\n' + postInfo['tagline'] + '\n\n' + postInfo['shortlink'].encode('utf-8')
+    id_img1 = t_up.media.upload(media=imagedata)<a href="posts.html?q="media_id_string"">"media_id_string"</a>
+    st = postInfo<a href="posts.html?q='title'">'title'</a> + '\n\n' + postInfo<a href="posts.html?q='tagline'">'tagline'</a> + '\n\n' + postInfo<a href="posts.html?q='shortlink'">'shortlink'</a>.encode('utf-8')
     if len(st) > 120: # giving space to image attachment
-        st = stars + ' ' + postInfo['title'] + '\n\n' + '\n\n' + postInfo['shortlink'].encode('utf-8')
-    t.statuses.update(status=st, media_ids=",".join([id_img1]))</pre>
+        st = stars + ' ' + postInfo<a href="posts.html?q='title'">'title'</a> + '\n\n' + '\n\n' + postInfo<a href="posts.html?q='shortlink'">'shortlink'</a>.encode('utf-8')
+    t.statuses.update(status=st, media_ids=",".join(<a href="posts.html?q=id_img1">id_img1</a>))</pre>
 <h4>Postando no Facebook</h4>
 <p>Já postar no Facebook é mais ou menos uma tortura. As chaves de acesso costumam expirar, e para conseguir uma que não expira este <a href="http://nodotcom.org/python-facebook-tutorial.html">tutorial</a> é femonenal, pois economiza muito, muito tempo de pesquisa.</p>
 <p>Curiosamente, o código para postar é muito semelhante ao do Twitter, até mais simples, talvez:</p>
@@ -239,9 +239,9 @@ def PublishToFacebook(postInfo):
     """
     http://nodotcom.org/python-facebook-tutorial.html
     """
-    with open("C:\\daytoday\\caloni.github.io\\images\\" + postInfo["permalink"] + ".jpg", "rb") as imagefile:
+    with open("C:\\daytoday\\caloni.github.io\\images\\" + postInfo<a href="posts.html?q="permalink"">"permalink"</a> + ".jpg", "rb") as imagefile:
     	imagedata = imagefile.read()
-    st = postInfo['title'] + '\n\n' + postInfo['paragraph'] + '\n\n' + baseUrl + postInfo['permalink']
+    st = postInfo<a href="posts.html?q='title'">'title'</a> + '\n\n' + postInfo<a href="posts.html?q='paragraph'">'paragraph'</a> + '\n\n' + baseUrl + postInfo<a href="posts.html?q='permalink'">'permalink'</a>
     post = facebook_credentials.auth.put_photo(image=imagedata, message=st)</pre>
 </section><hr/>
 
@@ -310,17 +310,17 @@ def PublishToFacebook(postInfo):
 <p>Basicamente, o problema pede que, dado um quadrado de tamanho N, e 2*N-1 linhas fornecidas (que podem ser linhas ou colunas), imprimir a Nésima linha. A regra das linhas é que ela possui números crescentes.</p>
 <p>Bom, não consegui chegar numa solução para o problema errado (encaixar as linhas), mas fui, como sempre, dar uma espiada nas respostas dos competidores, em especial a do <a href="https://code.google.com/codejam/contest/4304486/scoreboard#vf=1">primeiro colocado</a>. O grande barato de competições como essa é aprender com a inteligência e genialidade dos outros. Para mim, esse é um exemplo de genialidade:</p>
 <pre>
-int cnt[2501] = {}; // zerando o array
+int cnt<a href="posts.html?q=2501">2501</a> = {}; // zerando o array
 int main()
 {
 	for(int i = 0; i < n * (2 * n - 1); i++)
 	{
 		cin >> j;
-		cnt[j] ^= 1; // inverte primeiro bit do inteiro
+		cnt<a href="posts.html?q=j">j</a> ^= 1; // inverte primeiro bit do inteiro
 	}
 	printf("Case #%d:", t);
 	for(int i = 1; i < 2500; i++)
-		if (cnt[i]) 
+		if (cnt<a href="posts.html?q=i">i</a>) 
 			cout << " " << i; // se não for zero (ou seja, ímpar) imprime
 	cout << endl;
 }</pre>

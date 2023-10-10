@@ -255,9 +255,9 @@ CMake projects should use: "-DCMAKE_TOOLCHAIN_FILE=c:/Libs/vcpkg/scripts/buildsy
 <pre>
 int main(int argc, char* argv[])
 {
-    wchar_t *program = Py_DecodeLocale(argv[0], NULL);
+    wchar_t *program = Py_DecodeLocale(argv<a href="posts.html?q=0">0</a>, NULL);
     if (program == NULL) {
-        fprintf(stderr, "Fatal error: cannot decode argv[0]\n");
+        fprintf(stderr, "Fatal error: cannot decode argv<a href="posts.html?q=0">0</a>\n");
         exit(1);
     }
     Py_SetProgramName(program);  /* optional but recommended */
@@ -289,8 +289,8 @@ c:\Libs\vcpkg>mv c:\Libs\vcpkg\installed\x86-windows\debug\lib\python36_d.lib \T
 <AdditionalDependencies Condition="'$(VcpkgNormalizedConfiguration)' == 'Debug' and '$(VcpkgAutoLink)' != 'false'">%(AdditionalDependencies);$(VcpkgRoot)debug\lib\*.lib</AdditionalDependencies>
 <AdditionalDependencies Condition="'$(VcpkgNormalizedConfiguration)' == 'Release' and '$(VcpkgAutoLink)' != 'false'">%(AdditionalDependencies);$(VcpkgRoot)lib\*.lib</AdditionalDependencies></pre>
 <p>É isso que resolve o problema de saber qual o nome da lib resultante de um pacote instalado. Porém, isso não é o ideal, principalmente por dois motivos:</p>
-<pre>1. Os nomes de configuração do projeto tem que ser Debug ou Release (maneiras de melhorar já está sendo discutido [no GitHub](https://github.com/Microsoft/vcpkg/issues/1638)).
-2. O usuário final não tem qualquer controle do que adicionar como dependência; simplesmente vai todos os pacotes instalados (mais uma discussão [no GitHub](https://github.com/Microsoft/vcpkg/issues/306)).</pre>
+<pre>1. Os nomes de configuração do projeto tem que ser Debug ou Release (maneiras de melhorar já está sendo discutido <a href="posts.html?q=no GitHub">no GitHub</a>(https://github.com/Microsoft/vcpkg/issues/1638)).
+2. O usuário final não tem qualquer controle do que adicionar como dependência; simplesmente vai todos os pacotes instalados (mais uma discussão <a href="posts.html?q=no GitHub">no GitHub</a>(https://github.com/Microsoft/vcpkg/issues/306)).</pre>
 <p>Porém, no momento é assim que funciona. Para o problema #1 a solução paliativa é o próprio usuário adicionar em seu msbuild as condições de sua configuração. A sugestão da thread é boa:</p>
 <pre>
 <AdditionalDependencies Condition="$(VcpkgConfiguration.StartsWith('Debug')) and '$(VcpkgAutoLink)' != 'false'">%(AdditionalDependencies);$(VcpkgRoot)debug\lib\*.lib</AdditionalDependencies></pre>
@@ -301,7 +301,7 @@ c:\Libs\vcpkg>mv c:\Libs\vcpkg\installed\x86-windows\debug\lib\python36_d.lib \T
     <VcpkgConfiguration Condition="'$(VcpkgConfiguration)' == ''">$(Configuration)</VcpkgConfiguration>
     <VcpkgNormalizedConfiguration Condition="$(VcpkgConfiguration.StartsWith('Debug'))">Debug</VcpkgNormalizedConfiguration>
     <VcpkgNormalizedConfiguration Condition="$(VcpkgConfiguration.StartsWith('Release')) or '$(VcpkgConfiguration)' == 'RelWithDebInfo' or '$(VcpkgConfiguration)' == 'MinSizeRel'">Release</VcpkgNormalizedConfiguration>
-    <VcpkgRoot Condition="'$(VcpkgRoot)' == ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), .vcpkg-root))\installed\$(VcpkgTriplet)\</VcpkgRoot>
+    <VcpkgRoot Condition="'$(VcpkgRoot)' == ''">$(<a href="posts.html?q=MSBuild">MSBuild</a>::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), .vcpkg-root))\installed\$(VcpkgTriplet)\</VcpkgRoot>
     <VcpkgApplocalDeps Condition="'$(VcpkgApplocalDeps)' == ''">true</VcpkgApplocalDeps>
   </PropertyGroup></pre>
 <p>Assim o que seguir é Debug ou Release =).</p>
@@ -312,7 +312,7 @@ c:\Libs\vcpkg>mv c:\Libs\vcpkg\installed\x86-windows\debug\lib\python36_d.lib \T
   <Target Name="AppLocalFromInstalled" AfterTargets="CopyFilesToOutputDirectory" BeforeTargets="CopyLocalFilesOutputGroup;RegisterOutput" Condition="'$(VcpkgEnabled)' == 'true' and '$(VcpkgApplocalDeps)' == 'true'">
     <WriteLinesToFile
     File="$(TLogLocation)$(ProjectName).write.1u.tlog"
-    Lines="^$(TargetPath);$([System.IO.Path]::Combine($(ProjectDir),$(IntDir)))vcpkg.applocal.log" Encoding="Unicode"/>
+    Lines="^$(TargetPath);$(<a href="posts.html?q=System.IO.Path">System.IO.Path</a>::Combine($(ProjectDir),$(IntDir)))vcpkg.applocal.log" Encoding="Unicode"/>
     <Exec Condition="$(VcpkgConfiguration.StartsWith('Debug'))"
       Command="$(SystemRoot)\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -noprofile -File %22$(MSBuildThisFileDirectory)applocal.ps1%22 %22$(TargetPath)%22 %22$(VcpkgRoot)debug\bin%22 %22$(TLogLocation)$(ProjectName).write.1u.tlog%22 %22$(IntDir)vcpkg.applocal.log%22"
       StandardOutputImportance="Normal">
@@ -331,7 +331,7 @@ c:\Libs\vcpkg>mv c:\Libs\vcpkg\installed\x86-windows\debug\lib\python36_d.lib \T
   </Target></pre>
 <p>O script executado pelo PowerShell fica em **vcpkg\scripts\buildsystems\msbuild** e recebe o TargetPath (o binário-alvo) como parâmetro e onde estão os binários instalados pelo vcpkg, e com base na saída da ferramenta dumpbin extrai as dependências do executável e as busca no diretório bin:</p>
 <pre>
-$a = $(dumpbin /DEPENDENTS $targetBinary | ? { $_ -match "^    [^ ].*\.dll" } | % { $_ -replace "^    ","" })</pre>
+$a = $(dumpbin /DEPENDENTS $targetBinary | ? { $_ -match "^    <a href="posts.html?q=^ ">^ </a>.*\.dll" } | % { $_ -replace "^    ","" })</pre>
 <p>Isso é o equivalente ao uso padrão de dumpbin com grep e sed:</p>
 <pre>
 c:\Libs\vcpkg>dumpbin /DEPENDENTS  c:\...\Debug\ConsoleApplication1.exe | grep "^    .*.dll" | sed "s/^    \(.*.dll\)/\1/"
@@ -368,7 +368,7 @@ Creating 7zip archive...
 Creating 7zip archive... done
 7zip archive exported at: c:/Libs/vcpkg/vcpkg-export-20180912-172712.7z
 To use the exported libraries in CMake projects use:
-    "-DCMAKE_TOOLCHAIN_FILE=[...]/scripts/buildsystems/vcpkg.cmake"</pre>
+    "-DCMAKE_TOOLCHAIN_FILE=<a href="posts.html?q=...">...</a>/scripts/buildsystems/vcpkg.cmake"</pre>
 <h4>Montando seu próprio pacote</h4>
 <p>Para trabalhar em equipe é vital que todos falem a mesma língua. Uma das formas disso acontecer é usar um gerenciamento de pacotes que inclua todos os ambientes que a equipe usa. Como geralmente esses ambiente não são os mesmos, o uso de pacotes próprios do vcpkg é um plus da ferramenta que vem para somar em padronização de fontes e compilação.</p>
 <p>Primeiro de tudo é interessante existir um local público de download dos fontes (caso o projeto seja opensource; se bem que é possível que o endereço seja apenas visível para usuários logados ou outro mecanismo de proteção).</p>
@@ -428,7 +428,7 @@ submit an issue at https://github.com/Microsoft/vcpkg/issues including:
   Vcpkg version: 0.0.113-nohash
 Additionally, attach any relevant sections from the log files above.
 c:\Libs\vcpkg>cat C:\Libs\vcpkg\buildtrees\bitforge\config-x86-windows-out.log
-[1/2] cmd /c "cd .. && "C:/Libs/vcpkg/downloads/tools/cmake-3.11.4-windows/cmake-3.11.4-win32-x86/bin/cmake.exe" "C:/Libs/vcpkg/buildtrees/bitforge/src/bitforge-18.9.12" "-DCMAKE_MAKE_PROGRAM=C:/Program Files (x86)/Microsoft Visual Studio/Preview/Enterprise/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe" "-DBUILD_SHARED_LIBS=ON" "-DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=C:/Libs/vcpkg/scripts/toolchains/windows.cmake" "-DVCPKG_TARGET_TRIPLET=x86-windows" "-DVCPKG_PLATFORM_TOOLSET=v141" "-DCMAKE_EXPORT_NO_PACKAGE_REGISTRY=ON" "-DCMAKE_FIND_PACKAGE_NO_PACKAGE_REGISTRY=ON" "-DCMAKE_FIND_PACKAGE_NO_SYSTEM_PACKAGE_REGISTRY=ON" "-DCMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP=TRUE" "-DCMAKE_VERBOSE_MAKEFILE=ON" "-DVCPKG_APPLOCAL_DEPS=OFF" "-DCMAKE_TOOLCHAIN_FILE=C:/Libs/vcpkg/scripts/buildsystems/vcpkg.cmake" "-DCMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION=ON" "-DVCPKG_CXX_FLAGS=" "-DVCPKG_CXX_FLAGS_RELEASE=" "-DVCPKG_CXX_FLAGS_DEBUG=" "-DVCPKG_C_FLAGS=" "-DVCPKG_C_FLAGS_RELEASE=" "-DVCPKG_C_FLAGS_DEBUG=" "-DVCPKG_CRT_LINKAGE=dynamic" "-DVCPKG_LINKER_FLAGS=" "-DCMAKE_INSTALL_LIBDIR:STRING=lib" "-DCMAKE_INSTALL_BINDIR:STRING=bin" "-G" "Ninja" "-DCMAKE_BUILD_TYPE=Release" "-DCMAKE_INSTALL_PREFIX=C:/Libs/vcpkg/packages/bitforge_x86-windows""
+<a href="posts.html?q=1/2">1/2</a> cmd /c "cd .. && "C:/Libs/vcpkg/downloads/tools/cmake-3.11.4-windows/cmake-3.11.4-win32-x86/bin/cmake.exe" "C:/Libs/vcpkg/buildtrees/bitforge/src/bitforge-18.9.12" "-DCMAKE_MAKE_PROGRAM=C:/Program Files (x86)/Microsoft Visual Studio/Preview/Enterprise/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe" "-DBUILD_SHARED_LIBS=ON" "-DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=C:/Libs/vcpkg/scripts/toolchains/windows.cmake" "-DVCPKG_TARGET_TRIPLET=x86-windows" "-DVCPKG_PLATFORM_TOOLSET=v141" "-DCMAKE_EXPORT_NO_PACKAGE_REGISTRY=ON" "-DCMAKE_FIND_PACKAGE_NO_PACKAGE_REGISTRY=ON" "-DCMAKE_FIND_PACKAGE_NO_SYSTEM_PACKAGE_REGISTRY=ON" "-DCMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP=TRUE" "-DCMAKE_VERBOSE_MAKEFILE=ON" "-DVCPKG_APPLOCAL_DEPS=OFF" "-DCMAKE_TOOLCHAIN_FILE=C:/Libs/vcpkg/scripts/buildsystems/vcpkg.cmake" "-DCMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION=ON" "-DVCPKG_CXX_FLAGS=" "-DVCPKG_CXX_FLAGS_RELEASE=" "-DVCPKG_CXX_FLAGS_DEBUG=" "-DVCPKG_C_FLAGS=" "-DVCPKG_C_FLAGS_RELEASE=" "-DVCPKG_C_FLAGS_DEBUG=" "-DVCPKG_CRT_LINKAGE=dynamic" "-DVCPKG_LINKER_FLAGS=" "-DCMAKE_INSTALL_LIBDIR:STRING=lib" "-DCMAKE_INSTALL_BINDIR:STRING=bin" "-G" "Ninja" "-DCMAKE_BUILD_TYPE=Release" "-DCMAKE_INSTALL_PREFIX=C:/Libs/vcpkg/packages/bitforge_x86-windows""
 FAILED: ../CMakeCache.txt
 cmd /c "cd .. && "C:/Libs/vcpkg/downloads/tools/cmake-3.11.4-windows/cmake-3.11.4-win32-x86/bin/cmake.exe" "C:/Libs/vcpkg/buildtrees/bitforge/src/bitforge-18.9.12" "-DCMAKE_MAKE_PROGRAM=C:/Program Files (x86)/Microsoft Visual Studio/Preview/Enterprise/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja/ninja.exe" "-DBUILD_SHARED_LIBS=ON" "-DVCPKG_CHAINLOAD_TOOLCHAIN_FILE=C:/Libs/vcpkg/scripts/toolchains/windows.cmake" "-DVCPKG_TARGET_TRIPLET=x86-windows" "-DVCPKG_PLATFORM_TOOLSET=v141" "-DCMAKE_EXPORT_NO_PACKAGE_REGISTRY=ON" "-DCMAKE_FIND_PACKAGE_NO_PACKAGE_REGISTRY=ON" "-DCMAKE_FIND_PACKAGE_NO_SYSTEM_PACKAGE_REGISTRY=ON" "-DCMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP=TRUE" "-DCMAKE_VERBOSE_MAKEFILE=ON" "-DVCPKG_APPLOCAL_DEPS=OFF" "-DCMAKE_TOOLCHAIN_FILE=C:/Libs/vcpkg/scripts/buildsystems/vcpkg.cmake" "-DCMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION=ON" "-DVCPKG_CXX_FLAGS=" "-DVCPKG_CXX_FLAGS_RELEASE=" "-DVCPKG_CXX_FLAGS_DEBUG=" "-DVCPKG_C_FLAGS=" "-DVCPKG_C_FLAGS_RELEASE=" "-DVCPKG_C_FLAGS_DEBUG=" "-DVCPKG_CRT_LINKAGE=dynamic" "-DVCPKG_LINKER_FLAGS=" "-DCMAKE_INSTALL_LIBDIR:STRING=lib" "-DCMAKE_INSTALL_BINDIR:STRING=bin" "-G" "Ninja" "-DCMAKE_BUILD_TYPE=Release" "-DCMAKE_INSTALL_PREFIX=C:/Libs/vcpkg/packages/bitforge_x86-windows""
 --- IMPORTANTE ---
@@ -506,9 +506,9 @@ Elapsed time for package bitforge:x86-windows: 4.224 s</pre>
 <pre>
 c:\Libs\vcpkg>vcpkg.exe install bitforge
 The following packages will be built and installed:
-    bitforge[core]:x86-windows
+    bitforge<a href="posts.html?q=core">core</a>:x86-windows
 Starting package 1/1: bitforge:x86-windows
-Building package bitforge[core]:x86-windows...
+Building package bitforge<a href="posts.html?q=core">core</a>:x86-windows...
 -- Using cached C:/Libs/vcpkg/downloads/bitforge-18.9.12.zip
 -- Configuring x86-windows
 -- Building x86-windows-dbg
@@ -516,9 +516,9 @@ Building package bitforge[core]:x86-windows...
 -- Installing: C:/Libs/vcpkg/packages/bitforge_x86-windows/share/bitforge/copyright
 -- Performing post-build validation
 -- Performing post-build validation done
-Building package bitforge[core]:x86-windows... done
-Installing package bitforge[core]:x86-windows...
-Installing package bitforge[core]:x86-windows... done
+Building package bitforge<a href="posts.html?q=core">core</a>:x86-windows... done
+Installing package bitforge<a href="posts.html?q=core">core</a>:x86-windows...
+Installing package bitforge<a href="posts.html?q=core">core</a>:x86-windows... done
 Elapsed time for package bitforge:x86-windows: 4.239 s
 Total elapsed time: 4.239 s
 c:\Libs\vcpkg>dir /s /b installed\x86-windows\bitforge.*
@@ -731,10 +731,10 @@ int main()
 <pre>
 0:000> ~kvn
  # ChildEBP RetAddr  Args to Child              
-00 00b707c4 00f39668 00b708c8 075d31e5 00b70a08 coroutines_cooperative!cooperative+0xa0 (FPO: [Non-Fpo]) (CONV: cdecl) [c:\projects\caloni\static\samples\coroutines_cooperative\coroutines_cooperative.cpp @ 19] 
-01 00b70910 00f18b5b cdcdcdcd cdcdcdcd 00f01fd2 coroutines_cooperative!boost::coroutines::detail::pull_coroutine_object<boost::coroutines::push_coroutine<void>,void,void (__cdecl*)(boost::coroutines::push_coroutine<void> &),boost::coroutines::basic_standard_stack_allocator<boost::coroutines::stack_traits> >::run+0xf8 (FPO: [Non-Fpo]) (CONV: thiscall) [c:\libs\vcpkg\installed\x86-windows\include\boost\coroutine\detail\pull_coroutine_object.hpp @ 281] 
+00 00b707c4 00f39668 00b708c8 075d31e5 00b70a08 coroutines_cooperative!cooperative+0xa0 (FPO: <a href="posts.html?q=Non-Fpo">Non-Fpo</a>) (CONV: cdecl) <a href="posts.html?q=c:\projects\caloni\static\samples\coroutines_cooperative\coroutines_cooperative.cpp @ 19">c:\projects\caloni\static\samples\coroutines_cooperative\coroutines_cooperative.cpp @ 19</a> 
+01 00b70910 00f18b5b cdcdcdcd cdcdcdcd 00f01fd2 coroutines_cooperative!boost::coroutines::detail::pull_coroutine_object<boost::coroutines::push_coroutine<void>,void,void (__cdecl*)(boost::coroutines::push_coroutine<void> &),boost::coroutines::basic_standard_stack_allocator<boost::coroutines::stack_traits> >::run+0xf8 (FPO: <a href="posts.html?q=Non-Fpo">Non-Fpo</a>) (CONV: thiscall) <a href="posts.html?q=c:\libs\vcpkg\installed\x86-windows\include\boost\coroutine\detail\pull_coroutine_object.hpp @ 281">c:\libs\vcpkg\installed\x86-windows\include\boost\coroutine\detail\pull_coroutine_object.hpp @ 281</a> 
 *** ERROR: Symbol file could not be found.  Defaulted to export symbols for C:\Projects\caloni\static\samples\coroutines_cooperative\Debug\boost_context-vc141-mt-gd-x32-1_67.dll - 
-02 00b70a08 54261075 0075f4f0 0075f528 ffffffff coroutines_cooperative!boost::coroutines::detail::trampoline_pull<boost::coroutines::detail::pull_coroutine_object<boost::coroutines::push_coroutine<void>,void,void (__cdecl*)(boost::coroutines::push_coroutine<void> &),boost::coroutines::basic_standard_stack_allocator<boost::coroutines::stack_traits> > >+0x9b (FPO: [Non-Fpo]) (CONV: cdecl) [c:\libs\vcpkg\installed\x86-windows\include\boost\coroutine\detail\trampoline_pull.hpp @ 42] 
+02 00b70a08 54261075 0075f4f0 0075f528 ffffffff coroutines_cooperative!boost::coroutines::detail::trampoline_pull<boost::coroutines::detail::pull_coroutine_object<boost::coroutines::push_coroutine<void>,void,void (__cdecl*)(boost::coroutines::push_coroutine<void> &),boost::coroutines::basic_standard_stack_allocator<boost::coroutines::stack_traits> > >+0x9b (FPO: <a href="posts.html?q=Non-Fpo">Non-Fpo</a>) (CONV: cdecl) <a href="posts.html?q=c:\libs\vcpkg\installed\x86-windows\include\boost\coroutine\detail\trampoline_pull.hpp @ 42">c:\libs\vcpkg\installed\x86-windows\include\boost\coroutine\detail\trampoline_pull.hpp @ 42</a> 
 WARNING: Stack unwind information not available. Following frames may be wrong.
 03 00b70a14 ffffffff 77c49ec1 cdcdcdcd cdcdcdcd boost_context_vc141_mt_gd_x32_1_67!make_fcontext+0x75
 ...
@@ -746,14 +746,14 @@ WARNING: Stack unwind information not available. Following frames may be wrong.
 0:000> ~*kvn
 .  0  Id: 1b50.a58 Suspend: 1 Teb: 00b8c000 Unfrozen
  # ChildEBP RetAddr  Args to Child              
-00 00cff9cc 00f3cc8e 00000001 030b6998 030b84d8 coroutines_cooperative!main+0x9a (FPO: [Non-Fpo]) (CONV: cdecl) [c:\projects\caloni\static\samples\coroutines_cooperative\coroutines_cooperative.cpp @ 32] 
-01 00cff9e0 00f3cb27 3c5cdfac 00f02a9a 00f02a9a coroutines_cooperative!invoke_main+0x1e (FPO: [Non-Fpo]) (CONV: cdecl) [f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl @ 78] 
-02 00cffa3c 00f3c9bd 00cffa4c 00f3cd08 00cffa60 coroutines_cooperative!__scrt_common_main_seh+0x157 (FPO: [Non-Fpo]) (CONV: cdecl) [f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl @ 288] 
-03 00cffa44 00f3cd08 00cffa60 760f8654 00b89000 coroutines_cooperative!__scrt_common_main+0xd (FPO: [Non-Fpo]) (CONV: cdecl) [f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl @ 331] 
-04 00cffa4c 760f8654 00b89000 760f8630 af8d0600 coroutines_cooperative!mainCRTStartup+0x8 (FPO: [Non-Fpo]) (CONV: cdecl) [f:\dd\vctools\crt\vcstartup\src\startup\exe_main.cpp @ 17] 
-05 00cffa60 77c24a47 00b89000 7348514c 00000000 KERNEL32!BaseThreadInitThunk+0x24 (FPO: [Non-Fpo])
-06 00cffaa8 77c24a17 ffffffff 77c49ee4 00000000 ntdll!__RtlUserThreadStart+0x2f (FPO: [SEH])
-07 00cffab8 00000000 00f02a9a 00b89000 00000000 ntdll!_RtlUserThreadStart+0x1b (FPO: [Non-Fpo])</pre>
+00 00cff9cc 00f3cc8e 00000001 030b6998 030b84d8 coroutines_cooperative!main+0x9a (FPO: <a href="posts.html?q=Non-Fpo">Non-Fpo</a>) (CONV: cdecl) <a href="posts.html?q=c:\projects\caloni\static\samples\coroutines_cooperative\coroutines_cooperative.cpp @ 32">c:\projects\caloni\static\samples\coroutines_cooperative\coroutines_cooperative.cpp @ 32</a> 
+01 00cff9e0 00f3cb27 3c5cdfac 00f02a9a 00f02a9a coroutines_cooperative!invoke_main+0x1e (FPO: <a href="posts.html?q=Non-Fpo">Non-Fpo</a>) (CONV: cdecl) <a href="posts.html?q=f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl @ 78">f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl @ 78</a> 
+02 00cffa3c 00f3c9bd 00cffa4c 00f3cd08 00cffa60 coroutines_cooperative!__scrt_common_main_seh+0x157 (FPO: <a href="posts.html?q=Non-Fpo">Non-Fpo</a>) (CONV: cdecl) <a href="posts.html?q=f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl @ 288">f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl @ 288</a> 
+03 00cffa44 00f3cd08 00cffa60 760f8654 00b89000 coroutines_cooperative!__scrt_common_main+0xd (FPO: <a href="posts.html?q=Non-Fpo">Non-Fpo</a>) (CONV: cdecl) <a href="posts.html?q=f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl @ 331">f:\dd\vctools\crt\vcstartup\src\startup\exe_common.inl @ 331</a> 
+04 00cffa4c 760f8654 00b89000 760f8630 af8d0600 coroutines_cooperative!mainCRTStartup+0x8 (FPO: <a href="posts.html?q=Non-Fpo">Non-Fpo</a>) (CONV: cdecl) <a href="posts.html?q=f:\dd\vctools\crt\vcstartup\src\startup\exe_main.cpp @ 17">f:\dd\vctools\crt\vcstartup\src\startup\exe_main.cpp @ 17</a> 
+05 00cffa60 77c24a47 00b89000 7348514c 00000000 KERNEL32!BaseThreadInitThunk+0x24 (FPO: <a href="posts.html?q=Non-Fpo">Non-Fpo</a>)
+06 00cffaa8 77c24a17 ffffffff 77c49ee4 00000000 ntdll!__RtlUserThreadStart+0x2f (FPO: <a href="posts.html?q=SEH">SEH</a>)
+07 00cffab8 00000000 00f02a9a 00b89000 00000000 ntdll!_RtlUserThreadStart+0x1b (FPO: <a href="posts.html?q=Non-Fpo">Non-Fpo</a>)</pre>
 </section><hr/>
 
 

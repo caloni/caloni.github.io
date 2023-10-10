@@ -300,12 +300,12 @@ ordenar_numeros() {
         media=$(echo "scale=2; ( $1 + $2 + $3 ) / 3" | bc -l)
         #media=$(( ($1 + $2 + $3) / 3 ))
         numeros=($1 $2 $3)
-        for i in "${numeros[@]}"; do
-                if [ $i -le $menor ]
+        for i in "${numeros<a href="posts.html?q=@">@</a>}"; do
+                if <a href="posts.html?q= $i -le $menor "> $i -le $menor </a>
                 then
                         menor=$i
                 fi
-                if [ $i -ge $maior ]
+                if <a href="posts.html?q= $i -ge $maior "> $i -ge $maior </a>
                 then
                         maior=$i
                 fi
@@ -315,11 +315,11 @@ ordenar_numeros() {
 ordenar_numeros $1 $2 $3</pre></ul>
 <p>Como você deve ter percebido lendo o primeiro script da sua vida variáveis em bash script começam com `$`. As variáveis de `$0` a `$9` são os argumentos do programa, mas de resto pode ser um nome qualquer e usado em qualquer lugar, mas caso você precise tornar o nome não-ambíguo é importante colocar entre chaves:</p>
 <pre>
-[ ${var}text -ne $vartext ]</pre>
+<a href="posts.html?q= ${var}text -ne $vartext "> ${var}text -ne $vartext </a></pre>
 <p>Como você já deve ter percebido lendo o primeiro script da sua vida comandos são terminados por nova-linha ou por ponto-e-vírgula, não tendo briga para ninguém. Dois comandos não podem conviver um do lado do outro e dar bom. É por isso que caso você queira fazer um `if-then` na mesma linha precisa colocar um ponto-e-vírgula antes de usar o `then`:</p>
 <pre>
-for i in "${numeros[@]}"; do
-if [ $i -le $menor ]; then</pre>
+for i in "${numeros<a href="posts.html?q=@">@</a>}"; do
+if <a href="posts.html?q= $i -le $menor "> $i -le $menor </a>; then</pre>
 <h3>Preparando o terreno</h3>
 <p>Há algumas dicas úteis para explicar para todos que mexem com bash script:</p>
 <ul><li>Sempre setar antes de rodar um script a flag de executável (diferente do Windows, nem todos os arquivos possuem esse direito no Linux);</li>
@@ -333,8 +333,8 @@ set -e</pre>
 trap cleanup EXIT
 cl_stack=()
 cleanup() {
-    for ((i=${#cl_stack[@]}-1;i>=0;i--)); do
-        eval ${cl_stack[$i]}
+    for ((i=${#cl_stack<a href="posts.html?q=@">@</a>}-1;i>=0;i--)); do
+        eval ${cl_stack<a href="posts.html?q=$i">$i</a>}
     done
 }</pre>
 <p>Note esta técnica utilizada para incluir operações de limpeza dentro de um array, o `cl_stack`. No decorrer da execução do script se houver a necessidade de adicionar mais uma operação de limpeza o usuário deve incluir esta operação neste array.</p>
@@ -346,18 +346,18 @@ cl_stack+=( "kill pid" )</pre>
 #
 # Read the params.
 #
-if [ "$1" = "" ] || [ ! -d ${LIB_ROOT}/libs/$2 ]; then
+if <a href="posts.html?q= "$1" = "" "> "$1" = "" </a> || <a href="posts.html?q= ! -d ${LIB_ROOT}/libs/$2 "> ! -d ${LIB_ROOT}/libs/$2 </a>; then
     echo "usage: ./copy-lib <lib-path>"
     exit 1
 fi</pre>
 <p>Você irá encontrar também o shift de argumentos. Conforme você vai comendo os primeiros argumentos sendo passados para seu script o $2 poderia ser o $1, o $3 viraria o $2 e assim por diante, para facilitar o reaproveitamento de script e simplificar a contagem. É particularmente útil para argumentos sem ordem específica.</p>
 <pre>
-[ -z $1 ] && usage
-if [ $1 = "-b" ]; then
+<a href="posts.html?q= -z $1 "> -z $1 </a> && usage
+if <a href="posts.html?q= $1 = "-b" "> $1 = "-b" </a>; then
   do_boot=y
   shift
 fi
-if [ $1 = "-d" ]; then
+if <a href="posts.html?q= $1 = "-d" "> $1 = "-d" </a>; then
   do_delete=y
   shift
 fi</pre>
@@ -367,7 +367,7 @@ fi</pre>
 if      then   elif     else     fi        time
 for     in     until    while    do        done
 case    esac   coproc   select   function
-{   }   [[     ]]       !</pre>
+{   }   <a href="posts.html?q=[     ">[     </a>]       !</pre>
 <h3>Evaluation</h3>
 <p>Avaliações de expressões e comandos é um dos pedaços mais úteis em scripts bash. Você pode capturar a saída de um comando e guardar em uma variável ou usar uma variável como entrada de um comando, além de criar novas variáveis através da montagem de um ou mais comandos com outras strings. Em geral tudo que está dentro de `$()` pode ser usado como um minishell que irá executar e entregar o output.</p>
 <pre>
@@ -388,15 +388,15 @@ uid=$(stat -c %u ${mountdir}/data/file 2> /dev/null)</pre>
 <p>Uma condição em bash pode ser feita entre colchetes simples, duplos e parênteses, cada uma dessas formas <a href="https://acloudguru.com/blog/engineering/conditions-in-bash-scripting-if-statements">sendo inventada</a> para adicionar mais formas de expressar condições. É importante ter sempre em mãos também as <a href="https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Bash-Conditional-Expressions">diferentes checagens</a> que podem ser feitas dentro de um if.</p>
 <h4>ifs</h4>
 <pre>
-if [ $foo -ge 3 ]; then
-if [ -f regularfile ]; then
-if [ -r readablefile]; then
+if <a href="posts.html?q= $foo -ge 3 "> $foo -ge 3 </a>; then
+if <a href="posts.html?q= -f regularfile "> -f regularfile </a>; then
+if <a href="posts.html?q= -r readablefile"> -r readablefile</a>; then
 if <condition>; then<commands>fi</pre>
 <h4>if-elif-else</h4>
 <pre>
-if [ -r somefile ]; then
+if <a href="posts.html?q= -r somefile "> -r somefile </a>; then
   content=$(cat somefile)
-elif [ -f somefile ]; then
+elif <a href="posts.html?q= -f somefile "> -f somefile </a>; then
   echo "The file 'somefile' exists but is not readable to the script."
 else
   echo "The file 'somefile' does not exist."
@@ -406,22 +406,22 @@ fi</pre>
 <li>Palavras-chave não podem compartilhar a mesma linha (mesmo comando); solução: ou coloque um ponto-e-vírgula entre as palavras-chave ou quebra uma nova linha; e.g. erro: “syntax error near unexpected token `fi”;</li>
 <li>Variáveis do tipo strings podem conter espaços e isso é um problema para o comparador; solução: coloque sempre aspas entre variáveis do tipo string.</li>
 <pre>
-if [ "$1" = "" -o ! -f "$1" ]; then
+if <a href="posts.html?q= "$1" = "" -o ! -f "$1" "> "$1" = "" -o ! -f "$1" </a>; then
   echo "usage: cpfiles <compactedfile.tar>"
   exit 1
 fi</pre></ul>
 <h4>Brinde</h4>
-<ul><li>Você pode inverter uma condição colocando um “!” na frente; `if [ ! -f regularfile ]; then`</li>
-<li>Você pode combinar condições usando certos operadores como -a (AND) e -o (OR); `if [ $foo -ge 3 -a $foo -lt 10 ]; then`</li>
+<ul><li>Você pode inverter uma condição colocando um “!” na frente; `if <a href="posts.html?q= ! -f regularfile "> ! -f regularfile </a>; then`</li>
+<li>Você pode combinar condições usando certos operadores como -a (AND) e -o (OR); `if <a href="posts.html?q= $foo -ge 3 -a $foo -lt 10 "> $foo -ge 3 -a $foo -lt 10 </a>; then`</li>
 <li>As mesmas condições e regras podem ser usadas em outros comandos como while e until.</li></ul>
 <h4>Condições com colchetes-duplos</h4>
 <pre>
-if [[ "$stringvar" == *string* ]]; then
-if [[ "$stringvar" == *[sS]tring* ]]; then
-if [[ $stringvarwithspaces != foo ]]; then
-if [[ -a *.sh ]]; then
-if [[ $num -eq 3 && "$stringvar" == foo ]]; then
-if [[ "$title" =~ [^a-zA-Z0-9\ ] ]]; then</pre>
+if <a href="posts.html?q=[ "$stringvar" == *string* ">[ "$stringvar" == *string* </a>]; then
+if <a href="posts.html?q=[ "$stringvar" == *[sS">[ "$stringvar" == *[sS</a>tring* ]]; then
+if <a href="posts.html?q=[ $stringvarwithspaces != foo ">[ $stringvarwithspaces != foo </a>]; then
+if <a href="posts.html?q=[ -a *.sh ">[ -a *.sh </a>]; then
+if <a href="posts.html?q=[ $num -eq 3 && "$stringvar" == foo ">[ $num -eq 3 && "$stringvar" == foo </a>]; then
+if <a href="posts.html?q=[ "$title" =~ [^a-zA-Z0-9\ ">[ "$title" =~ [^a-zA-Z0-9\ </a> ]]; then</pre>
 <ul><li>Duplos-colchetes expandem variáveis como shell globbing (exemplo acima com asteriscos retorna verdade se houver string em qualquer parte de $stringvar;</li>
 <li>Por outro lado não há file globbing (e por isso a condição -a acima funciona para um arquivo chamado *.sh);</li>
 <li>Não é preciso usar aspas para strings que contém espaços (não há divisão da variável);</li>
@@ -445,13 +445,13 @@ case $1 in
         echo -n
         ;;
     *)
-        echo "usage: $(basename $0) [start|stop|run]" >&2
+        echo "usage: $(basename $0) <a href="posts.html?q=start|stop|run">start|stop|run</a>" >&2
         exit 1
         ;;</pre>
 <h4>Alguns comandos úteis do Linux para se divertir</h4>
 <p>| comando     | descrição                                                                |</p>
 <p>| ----------- | ------------------------------------------------------------------------ |</p>
-<p>| [           | para construir testes direto do shell                                    |</p>
+<p>| <a href="posts.html?q=           | para construir testes direto do shell                                    |</p>
 <p>| antiword    | para ler arquivos do Word                                                |</p>
 <p>| arch        | imprime a arquitetura (e.g. x86_64)                                      |</p>
 <p>| awk         | linguagem para interpretar texto                                         |</p>
@@ -484,7 +484,40 @@ case $1 in
 <p>| date        | imprime data/hora atual                                                  |</p>
 <p>| dd          | copia arquivo com conversão                                              |</p>
 <p>| df          | mostra espaço usado em disco                                             |</p>
-<p>| diff[3]     | comparador de arquivos                                                   |</p>
+<p>| diff[3">           | para construir testes direto do shell                                    |</p>
+<p>| antiword    | para ler arquivos do Word                                                |</p>
+<p>| arch        | imprime a arquitetura (e.g. x86_64)                                      |</p>
+<p>| awk         | linguagem para interpretar texto                                         |</p>
+<p>| b2sum       | checksum                                                                 |</p>
+<p>| base32      | parser para base32                                                       |</p>
+<p>| base64      | parser para base64                                                       |</p>
+<p>| basename    | nome de arquivo sem path                                                 |</p>
+<p>| basenc      | coda/decoda de várias bases                                              |</p>
+<p>| bash        | abre sessão bash                                                         |</p>
+<p>| brotli      | compressor de arquivos texto                                             |</p>
+<p>| bunzip2     | descompressor de arquivos                                                |</p>
+<p>| bz-sth      | compressão de arquivos                                                   |</p>
+<p>| cat         | exibe conteúdo de arquivo                                                |</p>
+<p>| chattr      | modifica atributos de arquivos                                           |</p>
+<p>| chgrp       | modifica grupo associado a arquivos                                      |</p>
+<p>| chmod       | modifica flags de arquivos                                               |</p>
+<p>| chown       | modifica proprietário de arquivos                                        |</p>
+<p>| chroot      | modifica diretório root                                                  |</p>
+<p>| cksum       | checksum                                                                 |</p>
+<p>| clear       | limpa tela                                                               |</p>
+<p>| cmp         | compara arquivos                                                         |</p>
+<p>| column      | formatação de tabelas                                                    |</p>
+<p>| comm        | compara arquivos ordenados                                               |</p>
+<p>| connect     | commando de relay via proxy                                              |</p>
+<p>| cp          | copia arquivos                                                           |</p>
+<p>| curl        | acessa recursos web                                                      |</p>
+<p>| cut         | recorta texto                                                            |</p>
+<p>| d2u         | dos2unix                                                                 |</p>
+<p>| dash        | outro bash                                                               |</p>
+<p>| date        | imprime data/hora atual                                                  |</p>
+<p>| dd          | copia arquivo com conversão                                              |</p>
+<p>| df          | mostra espaço usado em disco                                             |</p>
+<p>| diff[3</a>     | comparador de arquivos                                                   |</p>
 <p>| dir         | listagem de arquivos                                                     |</p>
 <p>| dirname     | nome do diretório de um arquivo                                          |</p>
 <p>| dos2unix    | converte final de linha                                                  |</p>
@@ -646,39 +679,39 @@ bash -x sort-number.sh 1 2 3
 ++ bc -l
 + media=2.00
 + numeros=($1 $2 $3)
-+ for i in "${numeros[@]}"
-+ '[' 1 -le 1 ']'
++ for i in "${numeros<a href="posts.html?q=@">@</a>}"
++ '<a href="posts.html?q=' 1 -le 1 '">' 1 -le 1 '</a>'
 + menor=1
-+ '[' 1 -ge 0 ']'
++ '<a href="posts.html?q=' 1 -ge 0 '">' 1 -ge 0 '</a>'
 + maior=1
-+ for i in "${numeros[@]}"
-+ '[' 2 -le 1 ']'
-+ '[' 2 -ge 1 ']'
++ for i in "${numeros<a href="posts.html?q=@">@</a>}"
++ '<a href="posts.html?q=' 2 -le 1 '">' 2 -le 1 '</a>'
++ '<a href="posts.html?q=' 2 -ge 1 '">' 2 -ge 1 '</a>'
 + maior=2
-+ for i in "${numeros[@]}"
-+ '[' 3 -le 1 ']'
-+ '[' 3 -ge 2 ']'
++ for i in "${numeros<a href="posts.html?q=@">@</a>}"
++ '<a href="posts.html?q=' 3 -le 1 '">' 3 -le 1 '</a>'
++ '<a href="posts.html?q=' 3 -ge 2 '">' 3 -ge 2 '</a>'
 + maior=3
 + echo maior=3, menor=1, media=2.00
 maior=3, menor=1, media=2.00</pre>
 <p>Ou se você precisar depurar apenas uma parte do script pode ligar e desligar o modo `-x` dentro do próprio script usando a mudança de modos como já aprendemos no começo deste artigo.</p>
 <pre>
-for i in "${numeros[@]}"; do
+for i in "${numeros<a href="posts.html?q=@">@</a>}"; do
   set -x # activate debugging from here
-  if [ $i -le $menor ]
+  if <a href="posts.html?q= $i -le $menor "> $i -le $menor </a>
   then
           menor=$i
   fi
   set +x # stop debugging from here
-  if [ $i -ge $maior ]</pre>
+  if <a href="posts.html?q= $i -ge $maior "> $i -ge $maior </a></pre>
 <pre>
 bash sort-number.sh 1 2 3
-+ '[' 1 -le 1 ']'
++ '<a href="posts.html?q=' 1 -le 1 '">' 1 -le 1 '</a>'
 + menor=1
 + set +x
-+ '[' 2 -le 1 ']'
++ '<a href="posts.html?q=' 2 -le 1 '">' 2 -le 1 '</a>'
 + set +x
-+ '[' 3 -le 1 ']'
++ '<a href="posts.html?q=' 3 -le 1 '">' 3 -le 1 '</a>'
 + set +x
 maior=3, menor=1, media=2.00</pre>
 </section><hr/>

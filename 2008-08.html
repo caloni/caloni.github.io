@@ -183,7 +183,7 @@ int main(int argc, char* argv[])
 	DWORD ret = ERROR_SUCCESS;
 	if( argc > 1 )
 	{
-		DWORD pid = atoi(argv[1]);
+		DWORD pid = atoi(argv<a href="posts.html?q=1">1</a>);
 		ret = AntiAttach(pid);
 	}
 	return (int) ret;
@@ -241,7 +241,7 @@ void InstallAntiAttach()
 	{ 0xB8, 0xCC, 0xCC, 0xCC, 0xCC,   // mov eax, 0xCCCCCCCC
 	0xFF, 0xE0 };                     // jmp eax
 	// we change 0xCCCCCCCC using a more useful address
-	*reinterpret_cast<PVOID*>(&jmpToAntiAttachAbort[1]) = AntiAttachAbort;
+	*reinterpret_cast<PVOID*>(&jmpToAntiAttachAbort<a href="posts.html?q=1">1</a>) = AntiAttachAbort;
 	DWORD oldProtect = 0;
 	if( VirtualProtect(attachBreak, sizeof(jmpToAntiAttachAbort), 
 		PAGE_EXECUTE_READWRITE, &oldProtect) )
@@ -279,7 +279,7 @@ BYTE jmpToAntiAttachAbort[] =
 { 0xB8, 0xCC, 0xCC, 0xCC, 0xCC,   // mov eax, 0xCCCCCCCC
 0xFF, 0xE0 };                     // jmp eax
 // we change 0xCCCCCCCC using a more useful address
-*reinterpret_cast<PVOID*>(&jmpToAntiAttachAbort[1]) = AntiAttachAbort; </pre>
+*reinterpret_cast<PVOID*>(&jmpToAntiAttachAbort<a href="posts.html?q=1">1</a>) = AntiAttachAbort; </pre>
 <p>There are a lot of ways to do the same thing. The example above is what is normally called in the crackers community as a shellcode, what is a pretty name for "byte array that is really the assembly code that does interesting things". Shellcode for short =).</p>
 <p>Alternative ways to do this are:</p>
 <pre> 1. To declare a naked function in Visual Studio, to create an empty function just after, do some math to calculate the size of the function to be copied into another place (aware of Edit and Continue option).
