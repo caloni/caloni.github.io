@@ -153,7 +153,7 @@ role="navigation" aria-label="main navigation">
 <span id="como-colocar-breakpoint-nas-chamadas-a-outputdebugstring" title="Como colocar breakpoint nas chamadas a OutputDebugString"/></span>
 <section id="section-como-colocar-breakpoint-nas-chamadas-a-outputdebugstring">
 <p class="title"><a href="2023-10.html#como-colocar-breakpoint-nas-chamadas-a-outputdebugstring">#</a> Como colocar breakpoint nas chamadas a OutputDebugString</p>
-<p class="note-title"><small>2023-10-03  <a href="reversing.html">reversing</a> <a href="windbg.html">windbg</a> <a href="til.html">til</a> </small><a href="2023-10.html">^</a> <button onclick="copy_clipboard('section#section-como-colocar-breakpoint-nas-chamadas-a-outputdebugstring')">ctrl_c</button></p>
+<p class="note-title"><small>2023-10-03  <a href="reversing.html">reversing</a> <a href="windbg.html">windbg</a> </small><a href="2023-10.html">^</a> <button onclick="copy_clipboard('section#section-como-colocar-breakpoint-nas-chamadas-a-outputdebugstring')">ctrl_c</button></p>
 
 <p>Usando `sxe out` é possível parar a execução de um programa sendo depurado pelo WinDbg sempre que ele disparar alguma saída para o depurador através da função OutputDebugString. Isso permite em nossa sessão de debug descobrir de onde vem a chamada, pois o depurador para e podemos usar o comando `k` para dar uma espiada.</p>
 <p>Usei isso analisando o comportamento do AAD Broker Plugin, um componente do sistema usado para logar no Azure Active Directory. Ele é um UWP app, então para depurá-lo usando WinDbg é necessário usar a ferramenta do Debugging Tools plmdebug.</p>
@@ -170,7 +170,7 @@ role="navigation" aria-label="main navigation">
 <span id="como-investigar-a-vtable-de-uma-interface-ou-objeto-com" title="Como investigar a vtable de uma interface ou objeto COM"/></span>
 <section id="section-como-investigar-a-vtable-de-uma-interface-ou-objeto-com">
 <p class="title"><a href="2023-10.html#como-investigar-a-vtable-de-uma-interface-ou-objeto-com">#</a> Como investigar a vtable de uma interface ou objeto COM</p>
-<p class="note-title"><small>2023-10-03  <a href="reversing.html">reversing</a> <a href="windbg.html">windbg</a> <a href="til.html">til</a> </small><a href="2023-10.html">^</a> <button onclick="copy_clipboard('section#section-como-investigar-a-vtable-de-uma-interface-ou-objeto-com')">ctrl_c</button></p>
+<p class="note-title"><small>2023-10-03  <a href="reversing.html">reversing</a> <a href="windbg.html">windbg</a> </small><a href="2023-10.html">^</a> <button onclick="copy_clipboard('section#section-como-investigar-a-vtable-de-uma-interface-ou-objeto-com')">ctrl_c</button></p>
 
 <p>Uma vez que você encontre onde está a `vtable` -- por exemplo, como o primeiro parâmetro da chamada em um método, vide <a href="posts.html?q=x64-deep-dive">convenção de chamadas do x64</a> -- liste no WinDbg os endereços contidos neste endereço (o parâmetro `L` é a quantidade de bytes para mostrar):</p>
 <pre>
@@ -250,7 +250,7 @@ Windows_Security_Authentication_Web_Core!Windows::Security::Authentication::Web:
 <span id="setando-proxima-instruçao-no-windbg" title="Setando próxima instrução no WinDbg"/></span>
 <section id="section-setando-proxima-instruçao-no-windbg">
 <p class="title"><a href="2023-10.html#setando-proxima-instruçao-no-windbg">#</a> Setando próxima instrução no WinDbg</p>
-<p class="note-title"><small>2023-10-04  <a href="windbg.html">windbg</a> <a href="reversing.html">reversing</a> <a href="debugging.html">debugging</a> <a href="til.html">til</a> </small><a href="2023-10.html">^</a> <button onclick="copy_clipboard('section#section-setando-proxima-instruçao-no-windbg')">ctrl_c</button></p>
+<p class="note-title"><small>2023-10-04  <a href="windbg.html">windbg</a> <a href="reversing.html">reversing</a> <a href="debugging.html">debugging</a> </small><a href="2023-10.html">^</a> <button onclick="copy_clipboard('section#section-setando-proxima-instruçao-no-windbg')">ctrl_c</button></p>
 
 <p>Procurando onde setar a próxima instrução no WinDbg? Dica: curiosamente ela não fica no meio dos comandos de debug, mas no menu Edit. Selecione a linha desejada no assembly ou código-fonte para onde deseja alterar o fluxo de execução e use a opção "Set Current Instruction".</p>
 <p>Ou mude o RIP diretamente ☠️</p>
@@ -445,7 +445,7 @@ Windows.Storage.Streams.DataReader</pre>
 <span id="windowsapp.lib" title="WindowsApp.lib"/></span>
 <section id="section-windowsapp.lib">
 <p class="title"><a href="2023-10.html#windowsapp.lib">#</a> WindowsApp.lib</p>
-<p class="note-title"><small>2023-10-17  <a href="til.html">til</a> <a href="coding.html">coding</a> </small><a href="2023-10.html">^</a> <button onclick="copy_clipboard('section#section-windowsapp.lib')">ctrl_c</button></p>
+<p class="note-title"><small>2023-10-17  <a href="coding.html">coding</a> </small><a href="2023-10.html">^</a> <button onclick="copy_clipboard('section#section-windowsapp.lib')">ctrl_c</button></p>
 
 <p>Este é o nome da lib que você precisa usar para conseguir linkar com funções da biblioteca de apps do Windows, incluindo as funções de suporte ao HSTRING, a nova string usada pelo framework. Andei caçando esta lib por algumas horas, já que nenhuma documentação da Microsoft dizia sobre ela e apenas ao criar um projeto do tipo WinRT ela foi linkada (de qualquer forma, não sei de onde veio a configuração para linkar). Só colocando a saída do build no modo diagnostic foi possível encontrar a lib usada. Note que ela define qual é a DLL onde estará a implementação necessária. Dependendo da versão do SDK isso deve mudar com o tempo.</p>
 </section><hr/>
