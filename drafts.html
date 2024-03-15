@@ -84,6 +84,8 @@ role="navigation" aria-label="main navigation">
 <li><small><a href="drafts.html#treinamento-do-datilografo-the-typewriter-training">Treinamento do Datilógrafo (The Typewriter Training)</a></small></li>
 <li><small><a href="drafts.html#dividendo-cafe-punhado-de-dolares-coffee-lab-microtorrefacao-coffee-walk">Os dividendos do Café</a></small></li>
 <li><small><a href="drafts.html#bitcoin-offline-cold-wallet">Mantendo carteiras BTC de forma segura</a></small></li>
+
+<li><small><a href="drafts.html#comparando-logs-no-procmon">Comparando logs no procmon</a></small></li>
 </ul>
 
 
@@ -422,6 +424,30 @@ role="navigation" aria-label="main navigation">
 <li>Retire e coloque o PenDrive para ele montar a unidade USB para copiar a master public key</li>
 <li>Cole endereços para efetuar transações offline e salve em arquivo no PenDrive (validar)</li>
 <li>Envie as transações do device online (validar) importando do PenDrive</li>
+</section><hr/>
+
+
+<span id="comparando-logs-no-procmon" title="Comparando logs no procmon"/></span>
+<section id="section-comparando-logs-no-procmon">
+<p class="title"><a href="drafts.html#comparando-logs-no-procmon">#</a> Comparando logs no procmon</p>
+<p class="note-title"><small>2024-03-14  <a href="tag_debugging.html">tag_debugging</a> </small><a href="drafts.html">^</a> <button onclick="copy_clipboard('section#section-comparando-logs-no-procmon')">ctrl_c</button></p>
+
+<p>Quando precisar comparar duas execuções distintas pelos logs do procmon primeiro você precisa eliminar as colunas que serão obviamente diferentes, como data e hora e talvez detalhes da operação. Mantenha o PID, pois com o PID é possível identificar o processo no meio de vários que precisar logar.</p>
+<p>No entanto, como comparar execuções distintas com PIDs distintos? É preciso modificar o CSV exportado desses eventos.</p>
+<p>Imagine que você tem um arquivo nesse formato:</p>
+<pre>
+"PID","Operation","Path","Result"
+"1332","Process Start","","SUCCESS"
+"1332","Thread Create","","SUCCESS"
+"1332","Load Image","C:\Treasury Navigator Secure Browser\mscbssb.exe","SUCCESS"
+...
+"14456","Load Image","C:\Treasury Navigator Secure Browser\mscbssb.exe","SUCCESS"
+"14456","Load Image","C:\Windows\System32\ntdll.dll","SUCCESS"
+...</pre>
+<p>Elimine o header do início e rode o seguinte programa awk para seu arquivo:</p>
+<pre>
+gawk 'BEGIN { FS=","; PID=1 } { if( !($1 in PIDS) ) PIDS<a href="posts.html?q=$1">$1</a>=PID++ ; $1 = PIDS<a href="posts.html?q=$1">$1</a> ; print $0 }' Logfile.CSV > Logfile_PSEUDOPIDS.CSV</pre>
+<p>O programa acima troca o separador de campos por vírgula e inicia uma variável PID como 1. Depois a cada passada de linha ele popula um mapa de PIDs reais por pseudo-PIDs e troca o campo do PID real pelo valor do pseudo-PID. Ao final você terá um arquivo com pseudo-PIDs 1, 2, 3, etc, em vez dos PIDs reais. Com isso é possível comparar mais de uma execução com os "mesmos" PIDs, ou ao menos PIDs que vão mudando de maneira ordenada.</p>
 </section><hr/>
 
 <span style="float: left;">
