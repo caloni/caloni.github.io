@@ -76,6 +76,8 @@ role="navigation" aria-label="main navigation">
 
 <li><small><a href="2024-03.html#the-unwritten-laws-of-engineering">The Unwritten Laws of Engineering</a></small></li>
 <li><small><a href="2024-03.html#tortugas-e-garages">Tortugas e Garages</a></small></li>
+
+<li><small><a href="2024-03.html#windbg-travado">WinDbg travado</a></small></li>
 </ul>
 
 
@@ -111,6 +113,17 @@ role="navigation" aria-label="main navigation">
 <p>Na última viagem à Argentina fiquei interessado em variar de casta e portanto abandonei o Malbec por um tempo. Pedi nas casas de vinhos alguns exemplares de Bonarda para entender melhor a fruta.</p>
 <p>O primeiro que abri foi este da Paso a Paso, 2019, da linha Vinos de Garage. São microlotes pensados aos poucos por enólogos que desejam produzir vinhos com o mínimo de intervenção, como a adição do carvalho. O Bonarda desse vinho é bem azedo, mas ao decorrer dos dias ele foi ficando mais azedo ainda, apesar de menos alcoólico. Ele é gostoso para beber sozinho. Ele lembra o azedo do Burbujas de Altura, de Cafayate, mas que azedou, que acho que estava estragado, mas tudo bem. Nesse da Paso a Paso há um frescor além do azedo, e tons muito vibrantes.</p>
 <p>A segunda garrafa foi este Las Tortugas Estate, de 2020, da Nieto Senetiner, mais conhecida no Brasil por vinhos industriais. Este Bonarda é completamente diferente do anterior. Não é azedo e seu aroma é enebriante, muito mais que o sabor, que lembra coisas que são mais cheiradas que bebidas, como charuto, mas também embutidos. Há um equilíbrio de acidez perene na boca e uma personalidade forte. Não é para amadores. Aroma e paladar são distintos. Ficou 12 meses em carvalho francês e 6 meses em guarda na garrafa. A safra deste ano foi atípica por causa dos fatores climáticos e hídricos com a antecipação da colheita em 10 a até quase um mês (4 de abril). Da região de Agrelo da Finda Las Tortugas (daí o nome). O fechamento em cera da rolha me fez cortar o dedo.</p>
+</section><hr/>
+
+
+<span id="windbg-travado" title="WinDbg travado"/></span>
+<section id="section-windbg-travado">
+<p class="title"><a href="2024-03.html#windbg-travado">#</a> WinDbg travado</p>
+<p class="note-title"><small>2024-03-14  <a href="tag_windbg.html">tag_windbg</a> </small><a href="2024-03.html">^</a> <button onclick="copy_clipboard('section#section-windbg-travado')">ctrl_c</button></p>
+</ul>
+<p>Uma das coisas mais irritantes no WinDbg é quando ele trava sem motivo aparente. Isso pode acontecer porque ele está baixando símbolos de módulos que precisa para mostrar o resultado do comando enviado ou procurando por eles. O comando !sym noisy ajuda a manter alguma saída na tela para entender esse cenário. Entre esses cenários o mais irritante é quando colocamos um breakpoint em um ponto no código fonte e ele precisa encontrar qual o módulo correspondente se ele ainda não souber. Para fazer isso ele sai baixando os símbolos de todos os módulos até encontrar. E ele não para facilmente nesse caso, então os comandos de break não irão funcionar. A janela do WinDbg parecerá travada e não há nada o que fazer.</p>
+<p>Para evitar isso coloque um breakpoint deferido para uma função conhecida do código fonte onde quer colocar o breakpoint original. Tendo um nome o WinDbg saberá pelo escopo do módulo que quando este módulo for carregado na memória ele precisa baixar os símbolos deste módulo e setar este breakpoint. Quando isso acontecer e o breakpoint for ativado você pode colocar o breakpoint específico pela janela do código fonte e isso ocorrerá de maneira instantânea, pois agora o debugger já sabe do que você está falando.</p>
+<p>Isso pode economizar de alguns minutos a mais de uma hora de espera.</p>
 </section><hr/>
 
 <span style="float: left;">
