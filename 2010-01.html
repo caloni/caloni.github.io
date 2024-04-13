@@ -112,7 +112,7 @@ role="navigation" aria-label="main navigation">
    PROCESS 89068700  SessionId: 0  Cid: 0ec4    Peb: 7ffda000  ParentCid: 0b0c
        DirBase: 0ac80a80  ObjectTable: e143a7d8  HandleCount: 152.
        Image: notepad.exe</pre>
-<p>O comando <a href="http://windbg.info/doc/1-common-cmds.html#11_process">!peb</a> traz inúmeras informações sobre essa estrutura. Mas talvez estivéssemos interessados em coisas não mostradas por esse comando, mas <a href="http://undocumented.ntinternals.net/UserMode/Undocumented%20Functions/NT%20Objects/Process/PEB.html">que existem na estrutura</a>.</p>
+<p>O comando <a href="http://windbg.info/doc/1-common-cmds.html#11_process">!peb</a> traz inúmeras informações sobre essa estrutura. Mas talvez estivéssemos interessados em coisas não mostradas por esse comando, mas <a href="posts.html?q=que existem na estrutura">que existem na estrutura</a>.</p>
 <img src="img/importando-tipos-de-outros-projetos-L3E4KSS.png" caption="PEB ¿não-documentado¿"/>
 <p>Nesse caso, podemos criar um projeto vazio que contenha a definição da estrutura **como acreditamos** que esteja na versão do kernel que estamos depurando.</p>
 <img src="img/importando-tipos-de-outros-projetos-l4oLJHR.png" caption="MyPEB"/>
@@ -187,6 +187,11 @@ role="navigation" aria-label="main navigation">
    ...</pre>
 <p>Para que isso funcione, a estrutura definida tem que bater offset por offset com os dados na memória, o que envolve alinhamento (se lembre do <a href="http://msdn.microsoft.com/en-us/library/2e70t5y1%28VS.80%29.aspx">pragma pack</a>) e versionamento corretos. Se isso não ocorrer, logo aparecerá algum lixo nos membros da estrutura que não fará sentido. Se isso ocorrer, detecte onde o lixo começa e verifique se o membro existe nessa versão do sistema operacional, ou se o alinhamento está de acordo com o módulo analisado.</p>
 <p>Acho que não é preciso dizer que isso não serve apenas para kernel mode =)</p>
+
+
+<p><a href="http://windbg.info/doc/1-common-cmds.html#11_process">!peb</a> traz inúmeras informações sobre essa estrutura. Mas talvez estivéssemos interessados em coisas não mostradas por esse comando, mas <a href="posts.html?q=que existem na estrutura">que existem na estrutura</a>: http://undocumented.ntinternals.net/UserMode/Undocumented%20Functions/NT%20Objects/Process/PEB.html</p>
+
+
 </section><hr/>
 
 

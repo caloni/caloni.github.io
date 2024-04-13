@@ -110,6 +110,7 @@ role="navigation" aria-label="main navigation">
 <p>BitForge é minha empresa principal e onde eu trabalho resolvendo os problemas mais difíceis de computação; nos contrate para resolver seu problema <a href="https://www.linkedin.com/company/bit-forge">pelo Linkedin</a> ou enviando um email para wanderley.caloni@gmail.com. Conversar sobre seu projeto e até gastar uma horinha entendendo ele faz parte do nossa forma de se aproximar de você sem precisar da burocracia de um contrato ou pagamento de consultoria. Marque um café ou uma call conosco =)</p>
 <p>Somos especialistas em software que já ajudamos dezenas de empresas a alcançar seus objetivos. Nós podemos fazer o mesmo por você desde a concepção, estudo de viabilidade e escolha de tecnologia até a solução de problemas de produção, como performance insuficiente ou bugs intermitentes. Se sua empresa precisa de um apoio na área de software para plataformas Windows e Linux (e outros nixes), nós podemos ajudá-lo.</p>
 <p>Nosso foco é oferecer consultoria, suporte e desenvolvimento especializado para ajudar sua empresa com problemas técnicos que parecem insolúveis. Contamos com know-how completo em sistemas operacionais Linux e MS Windows, e nas linguagens C/C++/C#, Python, Java, Rust e até Assembly!</p>
+
 </section><hr/>
 
 
@@ -148,7 +149,7 @@ role="navigation" aria-label="main navigation">
 <p class="note-title"><small>2014-07-22  <a href="tag_coding.html">tag_coding</a> </small><a href="2014-07.html">^</a> <button onclick="copy_clipboard('section#section-integrando-bitbucketgithub-com-trello')">ctrl_c</button></p>
 
 <p>Eu nem acredito que estou escrevendo sobre desenvolvimento web, mas como foi algo que me fez dedicar algumas horas do meu fim-de-semana, e não encontrei facilmente uma solução já feita, acredito que pode ser útil para mais alguém que usa Trello e GitHub (ou BitBucket).</p>
-<p>Mas o que é <a href="http://www.trello.com">Trello</a>? Basicamente é um TodoList feito da maneira mais inteligente possível: uma lista de listas de listas! Os espaços, ou desktops, onde você organiza suas tarefas são chamados de Boards. Em cada board vivem L listas, e em cada lista vivem C cards. Cada card pode conter comentários, histórico de mudanças, labels, checklists, due dates e todas as tranqueiras que geralmente existe em uma lista de tarefas. É um sistema online, desenvolvido pela empresa do Joel Spolsky (o mesmo do excelente blogue de programador <a href="http://www.joelonsoftware.com/">Joel on Software</a> (ou em <a href="http://brazil.joelonsoftware.com/">português</a>, e que contém algo que eu adoro em sistemas web: atalhos!</p>
+<p>Mas o que é <a href="http://www.trello.com">Trello</a>? Basicamente é um TodoList feito da maneira mais inteligente possível: uma lista de listas de listas! Os espaços, ou desktops, onde você organiza suas tarefas são chamados de Boards. Em cada board vivem L listas, e em cada lista vivem C cards. Cada card pode conter comentários, histórico de mudanças, labels, checklists, due dates e todas as tranqueiras que geralmente existe em uma lista de tarefas. É um sistema online, desenvolvido pela empresa do Joel Spolsky (o mesmo do excelente blogue de programador <a href="posts.html?q=Joel on Software">Joel on Software</a> e que contém algo que eu adoro em sistemas web: atalhos!</p>
 <img src="img/integrando-bitbucketgithub-com-trello-747UasT.png" caption="Atalhos do Trello"/>
 <p>A ideia que tive foi usar os webhooks dos saites de repositórios de fontes para permitir comentar dentro dos cards o commit que foi feito, sua mensagem e o linque para o commit. OK, mas por que não usar o sistema de issues dos já feitos pra isso GitHub e BitBucket? Ele já faz isso muito melhor. De fato. Porém, fica espalhado pelos repositórios, e não é sempre que uma tarefa envolve código (comprar pão, por exemplo). Além do mais, praticamente qualquer serviço desses oferece hooks para a integração de outros projetos/serviços, então se um dia nascer mais um sistema de controle de fonte ou mais um saite que organiza essas tralhas haverá um hook e consequentemente mais uma adaptação do meu código PHP.</p>
 <p>E por que PHP? Bom, PHP é uma linguagem fácil de mexer (se parece com C, mas é um script) e praticamente qualquer servidor web do universo, mesmo o mais baratinho, vem com o pacote Apache + PHP (e geralmente uma base MySql). Dessa forma, é uma solução que pode ser implantada fácil e rapidamente.</p>
@@ -249,6 +250,13 @@ foreach( $bitData->commits as $c )
     $result = file_get_contents($url, false, $context);
 }
 ?></pre>
+
+
+
+
+
+
+
 </section><hr/>
 
 

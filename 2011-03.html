@@ -174,6 +174,7 @@ int main()
    cl /Zi vtable3.cpp
    windbg vtable3.exe</pre>
 <img src="img/vtable-vtable2.png" caption="vtable2.png"/>
+
 </section><hr/>
 
 
@@ -201,22 +202,22 @@ int main()
 <p>&gt; Salve Caloni,</p>
 <p>&gt; </p>
 <p>&gt; Já leio o seu site a algum tempo. Realmente acho complicado, alguns eu nem entendo =D.  Mais eh o seguinte, eu estou montando um projeto, mas eu não entendo nada de trabalhar com binários. Então pesquisei na internet, e achei um algoritmo que pode me ajudar, <a href="http://base64.sourceforge.net/b64.c">na lógica</a>. É o base64 mas eu não entendi como ele converte e desconverte em binário. Será que vc pode me ajudar, obrigado!!</p>
-<p>Não é a primeira pessoa que pede informações sobre algo específico demais para explicar (para isso existe a <a href="http://en.wikipedia.org/wiki/Base64">Wikipedia</a> e o <a href="http://www.google.com/search?q=base64">Google</a>, não?). No meio da minha escrita, percebi que já havia escrito sobre os fundamentos do conhecimento por trás da criação do Base64, conhecimento esse, acredito eu, todo programador que quer sair do lugar com os próprios pés deve ter.</p>
-<pre> * <a href="posts.html?q=Básico do básico: assembly">Básico do básico: assembly</a>(http://www.caloni.com.br/basico-do-basico-assembly)
- * <a href="posts.html?q=Básico do básico: binário">Básico do básico: binário</a>(http://www.caloni.com.br/basico-do-basico-binario) <-- Luiz, você está procurando por esse!
- * <a href="posts.html?q=Básico do básico: tipos">Básico do básico: tipos</a>(http://www.caloni.com.br/basico-do-basico-tipos)
- * <a href="posts.html?q=Básico do básico: ponteiros">Básico do básico: ponteiros</a>(http://www.caloni.com.br/basico-do-basico-ponteiros)</pre>
+<p>Não é a primeira pessoa que pede informações sobre algo específico demais para explicar (para isso existe a <a href="http://en.wikipedia.org/wiki/Base64">Wikipedia</a> e o <a href="posts.html?q=Google">Google</a>, não?). No meio da minha escrita, percebi que já havia escrito sobre os fundamentos do conhecimento por trás da criação do Base64, conhecimento esse, acredito eu, todo programador que quer sair do lugar com os próprios pés deve ter.</p>
+<pre> * <a href="posts.html?q=Básico do básico: assembly">Básico do básico: assembly</a>
+ * <a href="posts.html?q=Básico do básico: binário">Básico do básico: binário</a> <-- Luiz, você está procurando por esse!
+ * <a href="posts.html?q=Básico do básico: tipos">Básico do básico: tipos</a>
+ * <a href="posts.html?q=Básico do básico: ponteiros">Básico do básico: ponteiros</a></pre>
 <p>Bônus:</p>
-<pre> * <a href="posts.html?q=Como ofuscar strings">Como ofuscar strings</a>(http://www.caloni.com.br/como-ofuscar-strings)
- * <a href="posts.html?q=Passagem por valor e emails com anexo">Passagem por valor e emails com anexo</a>(http://www.caloni.com.br/passagem-por-valor-e-emails-com-anexo)
- * <a href="posts.html?q=Como funcionam as strings">Como funcionam as strings</a>(http://www.caloni.com.br/strings)</pre>
+<pre> * <a href="http://www.caloni.com.br/como-ofuscar-strings">Como ofuscar strings</a>
+ * <a href="http://www.caloni.com.br/passagem-por-valor-e-emails-com-anexo">Passagem por valor e emails com anexo</a>
+ * <a href="http://www.caloni.com.br/strings">Como funcionam as strings</a></pre>
 <p>REALMENTE para iniciantes:</p>
-<pre> * <a href="posts.html?q=Configurando seus projetos no Visual Studio">Configurando seus projetos no Visual Studio</a>(http://www.caloni.com.br/configurando-seus-projetos-no-visual-studio)
- * <a href="posts.html?q=Como criar uma LIB no Visual Studio">Como criar uma LIB no Visual Studio</a>(http://www.caloni.com.br/como-criar-uma-lib-no-visual-studio)</pre>
+<pre> * <a href="http://www.caloni.com.br/configurando-seus-projetos-no-visual-studio">Configurando seus projetos no Visual Studio</a>
+ * <a href="http://www.caloni.com.br/como-criar-uma-lib-no-visual-studio">Como criar uma LIB no Visual Studio</a></pre>
 <p>Acredito que tudo que um programador precisa saber é o básico. O problema é que esse básico cresce a cada ano, mas, de qualquer forma, continua sendo necessário voltar às raízes de vez em quando, e se existe algo que ele nunca deve esquecer, é isso.</p>
 <p>Até porque na programação, 90% não se cria, se copia.</p>
 <p>Imaginemos o cenário para a criação do Base64:</p>
-<p>Alguns meios de comunicação, notadamente <a href="http://pt.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol">envio de e-mails</a> e a <a href="http://pt.wikipedia.org/wiki/Hypertext_Transfer_Protocol">navegação web</a>, por incrível que pareça, trabalham em um protocolo totalmente em modo texto. É até fácil de entender, pois quando essas tecnologias nasceram as limitações de velocidade e estabilidade das conexões permitiam apenas o envio de texto puro de uma ponta a outra.</p>
+<p>Alguns meios de comunicação, notadamente <a href="http://pt.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol">envio de e-mails</a> e a <a href="posts.html?q=navegação web">navegação web</a>, por incrível que pareça, trabalham em um protocolo totalmente em modo texto. É até fácil de entender, pois quando essas tecnologias nasceram as limitações de velocidade e estabilidade das conexões permitiam apenas o envio de texto puro de uma ponta a outra.</p>
 <p>Isso quer dizer que, na prática, os anexos de um e-mail e as imagens de uma página trafegam, pelo protocolo definido, em modo texto.</p>
 <p>Como isso é possível?</p>
 <p>A solução não é tão obscura quanto possa parecer. Se um programador médio tivesse esse problema e nenhuma solução existisse ainda, ele faria o que sempre fez para resolver problemas desse tipo: codificar a mensagem na forma permitida. Isso já é feito com o próprio texto, que é apenas <a href="http://www.caloni.com.br/basico-do-basico-binario">uma interpretação de tabelas de caracteres</a>.</p>
@@ -224,6 +225,22 @@ int main()
 <p>A forma mais básica binária de comunicação é um byte, constituído por 8 bits, que combinados darão 2^8 entradas em nossa tabela, que precisaria de 256 caracteres diferentes. Como isso ultrapassa o limite dos protocolos que estamos lidando, que em sua maioria utilizam a tabela ascii básica, que possui 128 posições, sendo que algumas posições não possuem caracteres imprimíveis, decidiu-se usar o múltiplo anterior: 64 posições, o que nos dá a chance de codificar 6 bits de cada vez (2^6).</p>
 <p>Esse padrão de codificação se chama Base64. Se quiser mais detalhes, basta ler a <a href="http://tools.ietf.org/html/rfc989">RFC</a>, que é pequena e muito simples de se ler.</p>
 <p>Agora, como codificar essa solução? Só entendendo o básico, é claro.</p>
+
+
+<p><a href="http://en.wikipedia.org/wiki/Base64">Wikipedia</a> e o <a href="posts.html?q=Google">Google</a>: http://www.google.com/search?q=base64</p>
+
+
+
+
+
+
+
+
+
+
+<p><a href="http://pt.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol">envio de e-mails</a> e a <a href="posts.html?q=navegação web">navegação web</a>: http://pt.wikipedia.org/wiki/Hypertext_Transfer_Protocol</p>
+
+
 </section><hr/>
 
 <span id="esposa-de-mentirinha" title="Esposa de Mentirinha"/></span>
@@ -411,6 +428,7 @@ int main()
    Committed revision 3.
    C:\Projetos\caloni>bzr qlog</pre>
 <img src="img/bazaar-com-subversion-bazaar-subversion.png" caption=""/>
+
 </section><hr/>
 
 

@@ -125,7 +125,7 @@ role="navigation" aria-label="main navigation">
 <p class="title"><a href="2013-11.html#ponto-flutuante-afundando">#</a> Ponto Flutuante Afundando</p>
 <p class="note-title"><small>2013-11-07  <a href="tag_coding.html">tag_coding</a> </small><a href="2013-11.html">^</a> <button onclick="copy_clipboard('section#section-ponto-flutuante-afundando')">ctrl_c</button></p>
 
-<p>Quando armazenamos valores monetários em doubles seus cálculos conseguem manter a precisão e na maioria das vezes o ajuste de precisão funciona. Porém, encontrei alguns casos onde a subtração de dois valores fazia "perder" um centavo (ou comparações exatas) justamente pela limitação da precisão do ponto flutuante. Nesse exemplo os valores são 2.358,93 - 1.386,93, que em uma conta de padaria (mas correta) dá 972,00 (<a href="http://www.codinghorror.com/blog/2009/01/if-you-dont-change-the-ui-nobody-notices.html">até a Calc do Windows</a> e <a href="http://dqsoft.blogspot.com.br/2007/09/ser-que-o-excel-2007-desaprendeu.html">o Excel</a> funcionam), mas pelo Visual Studio 2010 chega perto, mas erra o alvo:</p>
+<p>Quando armazenamos valores monetários em doubles seus cálculos conseguem manter a precisão e na maioria das vezes o ajuste de precisão funciona. Porém, encontrei alguns casos onde a subtração de dois valores fazia "perder" um centavo (ou comparações exatas) justamente pela limitação da precisão do ponto flutuante. Nesse exemplo os valores são 2.358,93 - 1.386,93, que em uma conta de padaria (mas correta) dá 972,00 (<a href="http://www.codinghorror.com/blog/2009/01/if-you-dont-change-the-ui-nobody-notices.html">até a Calc do Windows</a> e <a href="posts.html?q=o Excel">o Excel</a> funcionam), mas pelo Visual Studio 2010 chega perto, mas erra o alvo:</p>
 <pre>
 #include <iostream>
 int main()
@@ -177,7 +177,11 @@ int main()
 <p>**UPDATE**</p>
 <p>Não estou de acordo com o armazenamento de valores monetários em doubles em vez de inteiros pelo simples motivo que **não há moedas no sistema financeiro com unidades que se dividem ad infinitum**. Por consequência, existe sempre uma unidade básica e indivisível (que no caso do Brasil é o centavo de real). Ou seja, como o objetivo é contar o total dessas unidades **que não se dividem**, o uso de inteiros é brainless.</p>
 <p>**UPDATE 2**</p>
-<p>Existe uma discussão exatamente sobre isso no <a href="https://groups.google.com/forum/#!topic/ccppbrasil/uzn6i0PJi8UEu">Grupo C/C++ Brasil</a>, que recomendo a leitura, o que me levou a escrever o post. Particularmente, sigo o raciocínio do Pedro Lamarão.</p>
+<p>Existe uma discussão exatamente sobre isso no <a href="posts.html?q=Grupo C/C++ Brasil">Grupo C/C++ Brasil</a>, que recomendo a leitura, o que me levou a escrever o post. Particularmente, sigo o raciocínio do Pedro Lamarão.</p>
+
+<p><a href="http://www.codinghorror.com/blog/2009/01/if-you-dont-change-the-ui-nobody-notices.html">até a Calc do Windows</a> e <a href="posts.html?q=o Excel">o Excel</a>: http://dqsoft.blogspot.com.br/2007/09/ser-que-o-excel-2007-desaprendeu.html</p>
+
+
 </section><hr/>
 
 

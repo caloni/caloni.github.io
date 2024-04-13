@@ -420,7 +420,7 @@ Date:   Sat Feb 4 10:47:11 2017 -0200
 <p class="note-title"><small>2017-02-08  <a href="tag_coding.html">tag_coding</a> </small><a href="2017-02.html">^</a> <button onclick="copy_clipboard('section#section-pacotes-perdidos-nuget-em-projetos-cpp-no-visual-studio')">ctrl_c</button></p>
 
 <p>É muito bom (para quem gosta) usar a IDE e viver feliz sem precisar se preocupar em digitar comandos estranhos no prompt. Porém, essa vida acaba quando ocorre o primeiro erro inexplicável, aquele tipo de erro que não importa onde você olhe, não há nada para olhar. Até você apelar para ferramentas de macho.</p>
-<p>Que nem hoje de manhã, quando fui inocentemente baixar uma versão limpa do <a href="https://github.com/tiodb/tiodb">tiodb</a> e após baixar todos os pacotes do <a href="https://docs.microsoft.com/pt-br/nuget/consume-packages/overview-and-workflow">NuGet</a>, o gerenciador de pacotes do Visual Studio (inclusive para C++, agora) acusou a falta do boost, sendo que ele havia acabado de baixá-lo:</p>
+<p>Que nem hoje de manhã, quando fui inocentemente baixar uma versão limpa do <a href="posts.html?q=tiodb">tiodb</a> e após baixar todos os pacotes do <a href="posts.html?q=NuGet">NuGet</a>, o gerenciador de pacotes do Visual Studio (inclusive para C++, agora) acusou a falta do boost, sendo que ele havia acabado de baixá-lo:</p>
 <img src="img/pacotes-perdidos-nuget-em-projetos-cpp-no-visual-studio-HUp5S4K.png" caption=""/>
 <img src="img/pacotes-perdidos-nuget-em-projetos-cpp-no-visual-studio-IfVDNN9.png" caption=""/>
 <img src="img/pacotes-perdidos-nuget-em-projetos-cpp-no-visual-studio-Yi8kVgC.png" caption=""/>
@@ -461,6 +461,8 @@ gvim server\tio\tioserver.vcxproj</pre>
 <pre>
 1>------ Build started: Project: tioclientdll, Configuration: Debug x64 ------
 2>------ Build started: Project: tioserver, Configuration: Debug x64 ------
+<a href="posts.html?q=tiodb">tiodb</a>: https://github.com/tiodb/tiodb
+<a href="posts.html?q=tiodb">tiodb</a> e após baixar todos os pacotes do <a href="posts.html?q=NuGet">NuGet</a>: https://docs.microsoft.com/pt-br/nuget/consume-packages/overview-and-workflow
 2>  tioserver.vcxproj -> C:\Projects\tiocoin\tiodb\server\tio\..\..\bin\x64\Debug\tio.exe
 2>  tioserver.vcxproj -> ..\..\bin\x64\Debug\tio.pdb (Full PDB)</pre>
 <p>Recarregado o projeto no Visual Studio após a intervenção cirúrgica, tudo voltou a funcionar. A lição de hoje é: nunca confie completamente em uma IDE. Às vezes o bom e velho grep e o bom e velho editor de sua escolha podem resolver uma situação.</p>
@@ -733,7 +735,7 @@ try
     {
         tio::containers::list<string> transactionsMonitor;
         transactionsMonitor.open(&conn, "transactions");
-        transactionsMonitor.subscribe([](auto container, auto containerEvt, auto key, auto value)
+        transactionsMonitor.subscribe([]
                 {
                 int eventCode = stoi(containerEvt);
                 switch (eventCode)
@@ -790,6 +792,8 @@ catch (...)
 <img src="img/palestra-como-criar-moedas-digitais-em-casa-com-cpp-kick-off-kLrPawv.png" caption=""/>
 <p>Voilà! Agora temos um sistema inicial com um contêiner que irá manter os IDs de supostas transações de nossa moeda digital. Está compilando e está rodando, e em cima disso poderemos ir adicionando as funcionalidades.</p>
 <p>Atenção: você poderá encontrar o repositório do tiocoin <a href="https://github.com/bitforgebr/tiocoin">aqui</a>.</p>
+<p>[]: auto container, auto containerEvt, auto key, auto value</p>
+
 </section><hr/>
 
 
@@ -936,6 +940,7 @@ Como aprender a programar? Ache um cliente com um deadline absurdo. Alcance-o. R
 (char*)str.d + str.d->offset,su</pre>
 <p>Mas não foi o caso dessa vez. Tudo funcionou perfeitamente assim que incluí os valores da Wiki logo no começo da sessão __Visualizer__.</p>
 <img src="img/visualizando-qstring-no-visual-studio-3dnGwGK.gif" caption=""/>
+
 </section><hr/>
 
 

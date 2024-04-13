@@ -450,7 +450,7 @@ void ExecutionThread()
 	}
 } </pre>
 <p>The execution thread algorithm is the same. Just the point where each instruction is executed depends to the exception throw system. Note that this exception has to be thrown in order to the next instruction run. This is fundamental, since this way nobody can just rip of the int 3 code to avoid the exception. If one does that, so no instruction will be executed at all.</p>
-<p>In practice, if one tries to debug such a program one will have to deal with tons of exceptions until find out what's happening. Of course, as in every software protection, is's not definitive; it has as a purpose to make hard the reverse engineering understanding. That's not going to stop those who are <a href="http://www.codebreakers-journal.com/">really good</a> doing that stuff.</p>
+<p>In practice, if one tries to debug such a program one will have to deal with tons of exceptions until find out what's happening. Of course, as in every software protection, is's not definitive; it has as a purpose to make hard the reverse engineering understanding. That's not going to stop those who are <a href="http://www.codebreakers-journal.com">really good</a> doing that stuff.</p>
 <p>Nothing is for free</p>
 <p>The price paid for this protection stays on the source code visibility and understanding, compromised by the use of this technique. The programming is state machine based, and the functions are limited to some kind of behavior standard. So much smaller the code blocks inside the minifunctions, so much hard the code understanding will be.</p>
 <p>The example bellow receives input through a command prompt and maps the first word typed to the function that must be called. The rest of the typed line is passed as arguments to the functions. The interpreter thread reads the user input and writes into a global string variable, at the same time the executor thread waits the string to be completed to starts the action. It was used the variable pool to let the code simpler, but the ideal would be some kind of synchronise, just like events, by example.</p>
@@ -582,6 +582,7 @@ int main()
 } </pre>
 <p>The strength in this protection is to confound the attacker easily in the first steps (days, months...). Its weakness is the simplicity for the solution, since the attacker eventually realize what is going on. It is so easy that I will let it as an exercise for my readers.</p>
 <p>In the next part we will se an alternative to make the code clearer and easy to use in the every day by a security software developer.</p>
+
 </section><hr/>
 
 

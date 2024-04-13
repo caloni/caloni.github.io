@@ -191,18 +191,18 @@ role="navigation" aria-label="main navigation">
 <p>A Windows Runtime nada mais é que o COM repaginado. O COM já previa o uso de proxies para comunicação remota entre processos. A WinRT adicionou mais uma interface e uma função. Vou neste post descrever o processo pelo qual descobri como funciona o registro de um dispositivo no Azure Active Directory (AAD).</p>
 <p>O teste feito é logar no Microsoft Teams com uma conta de empresa pertencente a um domínio federado, o que significa que para fazer o login existe um plugin feito pela empresa que será carregado e autenticar o usuário. TL;DR isto é feito por um processo chamado `Microsoft.AAD.BrokerPlugin.exe`, que usa WinRT para se comunicar com o servidor AAD e com o sistema.</p>
 <p>Analisando o disassembly pelo IDA e realizando algumas sessões de debug eu estava caminhando pela interface `IUserDeviceRegManagerStatics` que havia encontrado anteriormente. Eu sabia que essa interface estava por trás do registro da máquina porque depois que alguns de seus métodos são chamados o comando `dsregcmd.exe /status` lista o computador como joined dentro do AAD e se você for na parte de contas do usuário naquela tela de configurações do Windows irá aparecer a mesma conta usada para logar no Teams.</p>
-<p>Buscando no registro pelo nome dessa interface existe uma entrada em `HKEY_CLASSES_ROOT\Interface\{b5decd05-58ef-4cd3-ae25-d177bcbcea9e}` aonde existe uma subkey `ProxyStubClsid32`. Essa subkey, de acordo com o <a href="https://learn.microsoft.com/en-us/windows/win32/com/proxystubclsid32">MSDN</a>, é usado para traduzir um IID -- ID de Interface -- para um CLSID -- ID de classe. Nas palavras do MSDN (em inglês, por favor): "Maps an IID to a CLSID in 32-bit proxy DLLs".</p>
+<p>Buscando no registro pelo nome dessa interface existe uma entrada em `HKEY_CLASSES_ROOT\Interface\{b5decd05-58ef-4cd3-ae25-d177bcbcea9e}` aonde existe uma subkey `ProxyStubClsid32`. Essa subkey, de acordo com o <a href="https://learn.microsoft.com/en-us/previous-versions/br205771(v=vs.85">MSDN</a>, é usado para traduzir um IID -- ID de Interface -- para um CLSID -- ID de classe. Nas palavras do MSDN (em inglês, por favor): "Maps an IID to a CLSID in 32-bit proxy DLLs".</p>
 <p>&gt;</p>
 <p>&gt; If you add interfaces, you must use this entry to register them (32-bit systems) so that OLE can find the appropriate remoting code to establish interprocess communication.</p>
 <p>&gt;</p>
 <p>Eu acredito que a mesma lógica se aplica a ambientes de 64 bits, que é o caso do Windows 10 onde estou analisando.</p>
 <p>Então esse ID é um CLSID para o código de um proxy que irá me ajudar a chamar esta interface `IUserDeviceRegManagerStatics`. Tudo bem, vamos lá. O valor default dentro dessa subkey é `{65704743-2513-4987-9fc9-826bbedde743}` e eu devo fazer a busca por este ID dentro de `HKEY_CLASSES_ROOT\CLSID`, já que se trata de um ID de classe. Eu encontro. O valor default dessa chave diz "UserDeviceRegistration", então eu penso ser este o cara que estou procurando.</p>
-<p>Existe uma chave `InProcServer32` dentro desta chave. Novamente vamos à documentação, e de acordo com o <a href="https://learn.microsoft.com/en-us/windows/win32/com/inprocserver32">MSDN</a>:</p>
+<p>Existe uma chave `InProcServer32` dentro desta chave. Novamente vamos à documentação, e de acordo com o <a href="https://learn.microsoft.com/en-us/previous-versions/br205771(v=vs.85">MSDN</a>:</p>
 <p>&gt;</p>
 <p>&gt; Registers a 32-bit in-process server and specifies the threading model of the apartment the server can run in.</p>
 <p>&gt;</p>
 <p>Isso faz todo o sentido, porque o valor default para esta mesma chave é "C:\Windows\System32\UserDeviceRegistration.dll"  e existe uma string `ThreadingModel` também especificando "Both". Olhando para as funções exportadas por esta DLL `UserDeviceRegistration.dll` são listadas as bem conhecidas `DllCanUnloadNow`, `DllGetActivationFactory` e `DllGetClassObject`. Isso é bê-a-bá de COM. O código que eu quero usar deve carregar esta DLL e chamar `DllGetActivationFactory` ou `DllGetClassObject` para obter um ponteiro para uma classe implementando esta interface ou um proxy para chamar esta classe remotamente.</p>
-<p>Ao analisar pelo OleView pela `IUserDeviceRegManagerStatics` não há uma biblioteca de tipos com os nomes dos métodos e argumentos. Existe uma vtable genérica com algumas procedures chamadas "Proc1", "Proc2" e assim por diante. Já que desde minha sessão de debugging anterior eu vi um monte de funções RPC sendo chamadas eu irei assumir que `UserDeviceRegistration!DllGetActivationFactory` está sendo chamada. E, mais uma vez, de acordo com o <a href="https://learn.microsoft.com/en-us/previous-versions/br205771(v=vs.85">MSDN</a>), este entry point:</p>
+<p>Ao analisar pelo OleView pela `IUserDeviceRegManagerStatics` não há uma biblioteca de tipos com os nomes dos métodos e argumentos. Existe uma vtable genérica com algumas procedures chamadas "Proc1", "Proc2" e assim por diante. Já que desde minha sessão de debugging anterior eu vi um monte de funções RPC sendo chamadas eu irei assumir que `UserDeviceRegistration!DllGetActivationFactory` está sendo chamada. E, mais uma vez, de acordo com o <a href="https://learn.microsoft.com/en-us/previous-versions/br205771(v=vs.85">MSDN</a>, este entry point:</p>
 <p>&gt;</p>
 <p>&gt; Retrieves the activation factory from a DLL that contains activatable Windows Runtime classes.</p>
 <p>&gt;</p>
@@ -221,6 +221,9 @@ x UserDeviceRegistration!Windows::Internal::UserDeviceRegistration::CUserDeviceR
 bp UserDeviceRegistration!Windows::Internal::UserDeviceRegistration::CUserDeviceRegManagerStatic::DelegatedWorkplaceJoinWithRequestId ".echotime; .echo UserDeviceRegistration!Windows::Internal::UserDeviceRegistration::CUserDeviceRegManagerStatic::DelegatedWorkplaceJoinWithRequestId; g"
 bp AAD_Core!Windows::Internal::UserDeviceRegistration::IUserDeviceRegManagerStatics::GetJoinInfo ".echotime; .echo AAD_Core!Windows::Internal::UserDeviceRegistration::IUserDeviceRegManagerStatics::GetJoinInfo; g"</pre>
 <p>Com isso eu descobri qual o processo e qual a classe envolvida neste processo de registro de máquina. Graças também aos símbolos disponibilizados pela Microsoft fica muito mais fácil entender o fluxo. Pretendo usar esta técnica mais vezes no futuro.</p>
+
+
+
 </section><hr/>
 
 
@@ -307,6 +310,7 @@ bp AAD_Core!Windows::Internal::UserDeviceRegistration::IUserDeviceRegManagerStat
 <p>De resto, agora tenho a liberdade de renderizar meu blogue em questão de segundos. Aposentei a estrutura do Hugo e estou usando awk para gerar tanto o blogue quanto o ebook.</p>
 <p>Não achei justo fazer benchmarks de comparação com o Hugo pelo motivo do file system já citado e também pelas diferentes estratégias adotadas. Pelo própria estrutura engessada e necessáriado Hugo em unir estrutura de arquivos fontes e estrutura final do saite eu sei que não seria viável continuar usando a ferramenta.</p>
 <p>Além disso, awk me dará a liberdade que gostaria de indexar pesadamente meus textos com o poder dos arrays associativos de awk. Já conhecia eles do PHP, mas agora que conheci os do awk estou pensando seriamente em adotar para outros tipos de tratamento de texto. Talvez até use para minhas finanças pessoais.</p>
+
 </section><hr/>
 
 
@@ -376,6 +380,7 @@ struct HSTRING {
   UINT32 RefCounter;  // +0x18
 };</pre>
 <p>Para mais detalhes do uso dessa string dê uma olhada no ótimo <a href="https://devblogs.microsoft.com/oldnewthing/20160615-00/?p=93675">artigo de Raymond Chen</a>.</p>
+
 
 </section><hr/>
 

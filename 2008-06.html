@@ -172,6 +172,7 @@ role="navigation" aria-label="main navigation">
 
 
 
+
 </section><hr/>
 
 
@@ -584,19 +585,13 @@ role="navigation" aria-label="main navigation">
      }
      t;
    
-     unsigned char align<a href="posts.html?q=
+     unsigned char align[
        sizeof(struct S) % 8 
        ?
        (sizeof(struct S) / 8 + 1) * 8
        :
        (sizeof(struct S))
-     ">
-       sizeof(struct S) % 8 
-       ?
-       (sizeof(struct S) / 8 + 1) * 8
-       :
-       (sizeof(struct S))
-     </a>;
+     ];
    };</pre>
 <p>O código acima usa o conceito de união de estruturas (union) para fazer valer um alinhamento na marra (no caso, 8). Uma estrutura, como todos sabem, amontoa os seus membros um após o outro na memória. Dessa forma podemos tratar um bloco de memória com um leiaute que definimos com outros tipos. Em uma união, os membros não são amontoados um após o outro. Todos eles começam no mesmo ponto da memória. Eles se sobrescrevem. O tamanho da união sempre é o tamanho do seu maior membro, e não a soma de todos. É um tanto difícil de descrever esse leiaute, mas imagine que você tenha apenas uma posição na memória e queira chamá-la de vários nomes e tamanhos diferentes. Essa é a união.</p>
 <p>Como deve ser fácil de imaginar, uma união não tem tanto uso quanto uma estrutura, mas ainda assim faz parte da linguagem. Ela possibilita enxergar a mesma região de memória sob vários ângulos. Podemos descobrir a organização de um inteiro na memória, por exemplo, byte a byte. Dependendo se a plataforma onde o programa acima é compilado, esse leiaute pode mudar. O motivo é que cada plataforma e compilador terá sua maneira de traduzir o código C na memória.</p>
@@ -614,19 +609,13 @@ role="navigation" aria-label="main navigation">
    {
      T t;
    
-     unsigned char align<a href="posts.html?q=
+     unsigned char align[
        sizeof(T) % A
        ?
        (sizeof(T) / A + 1) * A
        :
        (sizeof(T))
-     ">
-       sizeof(T) % A
-       ?
-       (sizeof(T) / A + 1) * A
-       :
-       (sizeof(T))
-     </a>;
+     ];
    };</pre>
 <p>E essa é a melhor parte de descobrir um padrão em um tipo: o template nasce quase que naturalmente. A beleza da linguagem floresce.</p>
 </section><hr/>

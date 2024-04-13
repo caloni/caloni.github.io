@@ -160,7 +160,7 @@ SetConsoleOutputCP(CP_UTF8);</pre>
 <p>Outro ponto interessante é que o fonte é muito C++ moderno, com direito a inclusive usar headers ainda experimentais, como o filesystem (C++ 17). Ele usa também um conjunto de paths sobre onde estão as coisas (instalação, pacotes, etc). Há muito código no vcpkg que são módulos independentes que soam como retrabalho de coisas comuns, como <a href="posts.html?q=getarg">parseamento de argumentos</a> (e a já citada transformação em UTF-8), mas o objetivo do projeto é ser independente de tudo. Do contrário ele não seria um bom gerenciador de pacotes.</p>
 <p>O arquivo vcpkg\installed\vcpkg\status contém em formato texto simples o status de todos os pacotes instalados (se foi instalado com sucesso ou não, etc). A pasta vcpkg\ports contém todos os pacotes, instalados ou não. O início de tudo é o executável na pasta-raiz após compilado, vcpkg.exe, feito em C++ e que realiza todas as bruxarias para montar a hierarquia de pastas e arquivos em texto. Tudo é tão simples e baseado em arquivos de texto que vejo que a M$ finalmente se rendeu ao jeito unix de fazer as coisas (mais conhecido como o jeito certo).</p>
 <h4>Triplets</h4>
-<p>No gerenciador de pacotes há um conceito chamado de <a href="https://github.com/Microsoft/vcpkg/blob/master/docs/users/triplets.md">triplet</a>, que não é uma novidade; é uma forma de especificar um conjunto de elementos do ambiente para cross compiling utilizando um simples nome.</p>
+<p>No gerenciador de pacotes há um conceito chamado de <a href="posts.html?q=triplet">triplet</a>, que não é uma novidade; é uma forma de especificar um conjunto de elementos do ambiente para cross compiling utilizando um simples nome.</p>
 <pre>
 c:\Libs\vcpkg>vcpkg help triplet
 Available architecture triplets:
@@ -184,7 +184,7 @@ Available architecture triplets:
 <li>VCPKG_CMAKE_SYSTEM_NAME. A plataforma alvo, que pode ser vazio (o Windows desktop padrão), WindowsStore, Darwin (Mac OSX) ou Linux.</li>
 <li>VCPKG_PLATFORM_TOOLSET. O toolset do Visual Studio (mais uma coisa do Zwindows); v141, v140 são valores válidos (vazio também).</li>
 <li>VCPKG_VISUAL_STUDIO_PATH. Onde está a instalação do Visual Studio (é, o vcpkg tem uma certa tendência pro Zwindows).</li>
-<li>VCPKG_CHAINLOAD_TOOLCHAIN_FILE. Esse não é do Zwindows, mas do <a href="https://cmake.org/cmake/help/v3.11/manual/cmake-toolchains.7.html">CMake</a>; a possibilidade de escolher outro toolchain (diferente de scripts/toolchains) para o CMake.</li></ul>
+<li>VCPKG_CHAINLOAD_TOOLCHAIN_FILE. Esse não é do Zwindows, mas do <a href="posts.html?q=CMake">CMake</a>; a possibilidade de escolher outro toolchain (diferente de scripts/toolchains) para o CMake.</li></ul>
 <h5>VCPKG_CXX_FLAGS</h5>
 <p>Há diversas flags de compilação que podem ser especificadas direto no triplet:</p>
 <ul><li>VCPKG_CXX_FLAGS_DEBUG</li>
@@ -250,7 +250,7 @@ CMake projects should use: "-DCMAKE_TOOLCHAIN_FILE=c:/Libs/vcpkg/scripts/buildsy
   </Target>
 </Project></pre>
 <p>Note como as pastas de instalação dos pacotes do triplet selecionado são incluídas na configuração de um projeto do Visual Studio. As libs ficam na subpasta installed/triplet/lib, os binários em installed/triplet/bin, os includes em installed/triplet/include e assim por diante. A ramificação dos pacotes está de acordo com o basename de cada um deles.</p>
-<p>A mágica ocorre já na hora de dar include. E é mágica desde o autocomplete até o link. Por exemplo, digamos que vamos fazer um embedded de Python usando o <a href="https://docs.python.org/3/extending/embedding.html">exemplo do help</a>:</p>
+<p>A mágica ocorre já na hora de dar include. E é mágica desde o autocomplete até o link. Por exemplo, digamos que vamos fazer um embedded de Python usando o <a href="posts.html?q=exemplo do help">exemplo do help</a>:</p>
 <img src="img/vcpkg-internals-7XMj026.png" caption=""/>
 <pre>
 int main(int argc, char* argv[])
@@ -282,6 +282,9 @@ c:\Libs\vcpkg>mv c:\Libs\vcpkg\installed\x86-windows\debug\lib\python36_d.lib \T
 1>------ Rebuild All started: Project: ConsoleApplication1, Configuration: Debug Win32 ------
 1>pch.cpp
 1>ConsoleApplication1.cpp
+<a href="posts.html?q=triplet">triplet</a>: https://github.com/Microsoft/vcpkg/blob/master/docs/users/triplets.md
+<a href="posts.html?q=CMake">CMake</a>: https://cmake.org/cmake/help/v3.11/manual/cmake-toolchains.7.html
+<a href="posts.html?q=exemplo do help">exemplo do help</a>: https://docs.python.org/3/extending/embedding.html
 1>LINK : fatal error LNK1104: cannot open file 'python36_d.lib'
 1>Done building project "ConsoleApplication1.vcxproj" -- FAILED.</pre>
 <p>Se você prestou atenção ao conteúdo de msbuild\vcpkg.targets lá em cima vai ter visto que há uma condição que adiciona toda e qualquer lib como dependência adicional ao projeto compilando:</p>
@@ -289,8 +292,8 @@ c:\Libs\vcpkg>mv c:\Libs\vcpkg\installed\x86-windows\debug\lib\python36_d.lib \T
 <AdditionalDependencies Condition="'$(VcpkgNormalizedConfiguration)' == 'Debug' and '$(VcpkgAutoLink)' != 'false'">%(AdditionalDependencies);$(VcpkgRoot)debug\lib\*.lib</AdditionalDependencies>
 <AdditionalDependencies Condition="'$(VcpkgNormalizedConfiguration)' == 'Release' and '$(VcpkgAutoLink)' != 'false'">%(AdditionalDependencies);$(VcpkgRoot)lib\*.lib</AdditionalDependencies></pre>
 <p>É isso que resolve o problema de saber qual o nome da lib resultante de um pacote instalado. Porém, isso não é o ideal, principalmente por dois motivos:</p>
-<pre>1. Os nomes de configuração do projeto tem que ser Debug ou Release (maneiras de melhorar já está sendo discutido <a href="posts.html?q=no GitHub">no GitHub</a>(https://github.com/Microsoft/vcpkg/issues/1638)).
-2. O usuário final não tem qualquer controle do que adicionar como dependência; simplesmente vai todos os pacotes instalados (mais uma discussão <a href="posts.html?q=no GitHub">no GitHub</a>(https://github.com/Microsoft/vcpkg/issues/306)).</pre>
+<pre>1. Os nomes de configuração do projeto tem que ser Debug ou Release (maneiras de melhorar já está sendo discutido <a href="https://github.com/Microsoft/vcpkg/issues/306">no GitHub</a>).
+2. O usuário final não tem qualquer controle do que adicionar como dependência; simplesmente vai todos os pacotes instalados (mais uma discussão <a href="https://github.com/Microsoft/vcpkg/issues/306">no GitHub</a>).</pre>
 <p>Porém, no momento é assim que funciona. Para o problema #1 a solução paliativa é o próprio usuário adicionar em seu msbuild as condições de sua configuração. A sugestão da thread é boa:</p>
 <pre>
 <AdditionalDependencies Condition="$(VcpkgConfiguration.StartsWith('Debug')) and '$(VcpkgAutoLink)' != 'false'">%(AdditionalDependencies);$(VcpkgRoot)debug\lib\*.lib</AdditionalDependencies></pre>
@@ -529,6 +532,8 @@ c:\Libs\vcpkg\installed\x86-windows\share\bitforge</pre>
 <p>E voilá! Agora o include está disponível, as funções estão disponíveis, o link está funcionando e seu pacote pode ser compartilhado com toda a empresa. Basta copiar a pasta ports/bitforge ou adicioná-la no repositório por um commit.</p>
 <img src="img/vcpkg-internals-XeeD4Se.png" caption=""/>
 
+
+
 </section><hr/>
 
 
@@ -538,6 +543,7 @@ c:\Libs\vcpkg\installed\x86-windows\share\bitforge</pre>
 <p class="note-title"><small>2018-09-13  <a href="tag_food.html">tag_food</a> </small><a href="2018-09.html">^</a> <button onclick="copy_clipboard('section#section-cafe-do-reddit')">ctrl_c</button></p>
 
 <p>Acabei de fazer o café seguindo as dicas do Reddit (que li novamente na insônia). O Loretto ficou absurdamente melhor apenas seguindo algumas dicas: proporção 1:15 do pó, coagem mais fina para menos tempo em contato com a água, deixando a água mais próxima da fervura (o <a href="https://pt.m.wikihow.com/Verificar-a-Temperatura-da-%C3%81gua-Sem-um-Term%C3%B4metro?amp=1">colar de pérolas</a>). O sabor do café ficou mais presente (menos aguado) com dez segundos mexendo, um minuto e meio em contato com a água desde o começo e trinta segundos baixando o êmbolo.</p>
+
 </section><hr/>
 
 
@@ -910,7 +916,11 @@ WARNING: Stack unwind information not available. Following frames may be wrong.
 <p>Native Floripa virou já uma tradição. Ano que vem nos vemos de novo.</p>
 <h5>Minhas palestras</h5>
 <ul><li><a href="https://www.slideshare.net/WanderleyCaloni/vcpkg-e-vc-td-a-ver">Vcpkg e vc td a ver</a></li>
-<li><a href="https://www.slideshare.net/WanderleyCaloni/co-cococococorrotinas">Co co-co-co-co-corrotinas</a></li>
+<li><a href="https://www.slideshare.net/WanderleyCaloni/co-cococococorrotinas">Co co-co-co-co-corrotinas</a></li></ul>
+
+
+
+
 </section><hr/>
 
 
@@ -918,7 +928,7 @@ WARNING: Stack unwind information not available. Following frames may be wrong.
 <section id="section-maniac">
 <p class="title"><a href="2018-09.html#maniac">#</a> Maniac <a class="external" href="https://www.imdb.com/title/tt5580146">[link]</a></p>
 <p class="note-title"><small>2018-09-30  <a href="tag_series.html">tag_series</a> </small><a href="2018-09.html">^</a> <button onclick="copy_clipboard('section#section-maniac')">ctrl_c</button></p>
-</ul>
+
 <p>Dois estranhos se encontram casualmente. Ambos possuem traumas no passado. Um deles é curável, e o outro tem esquizofrenia. Ambos parecem pensar na mesma frequência e frequentam os mesmos sonhos gerados por computador. Ambientado em um mundo ligeiramente futurista e esquisito, com um toque de retrô, a série Maniac tem um quê estético (e temático) que aos poucos nos revela ser um sci-fi pautado em algumas ideias muito mais psicológicas e filosóficas que poderia-se esperar.</p>
 <p>Dirigido do começo ao fim por Cary Joji Fukunaga (do sensacional Beasts of No Nation e Jane Eyre), os episódios são pequenos momentos em um experimento que pretende curar o sofrimento humano (no sentido psicológico). Visto como máquinas defeituosas pelos pesquisadores Dr. James K. Mantleray (Justin Theroux) e a Dra. Azumi Fujita (a deliciosa andróide de Ex-Machina Sonoya Mizuno), o trabalho de uma vida de Mantleray se baseia na personalidade de sua mãe, autora de sucesso de livros de auto-ajuda (Sally Field, interessante). Além disso, esta é uma das inúmeras iterações que através de três drogas que geram fases distintas de tratamento, pretende criar a droga mais aguardada da humanidade: a que nos tira a própria humanidade e nos transforma em robôs.</p>
 <p>A pegada da série é lúdica e cheia de detalhes divertidos para acompanhar, como as diferentes referências da vida real que viram elementos importantíssimos nas aventuras virtuais dos pacientes (como o livro de Miguel de Cervantes, Don Quixote, não por acaso sobre um maluco que vê gigantes onde há moinhos de vento). E ela nos entrega de bandeja uma análise não dos pacientes em si, mas apenas do casal principal, interpretados por Emma Stone (La La Land) e um Jonah Hill magrinho (O Homem que Mudou o Jogo). Porém, mais que isso, essa também é uma análise dos cientistas por trás da pesquisa, e embora essa seja a parte mais interessante do "longa" (são 10 episódios com menos de 1 hora cada) ela sempre se mantém abaixo da superfície, para que os espectadores mais atentos percebam os detalhes não tão sutis das interações entre a casa de cientistas já citados e os trejeitos e como cada um lida com os problemas que eventualmente começam a acontecer no centro de pesquisa. Não é apenas a pilha gigantesca de cigarros da Dra. Fujita; olhe mais de perto.</p>

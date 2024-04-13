@@ -213,7 +213,7 @@ role="navigation" aria-label="main navigation">
    eip=77ee7543 esp=0012fd5c ebp=0012ff68 iopl=0         nv up ei pl nz ac pe nc
    cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000216
    SHLWAPI!PathIsDirectoryA+0xb:
-   77ee7543 a180d2f077      mov     eax,dword ptr <a href="posts.html?q=SHLWAPI!__security_cookie
+   77ee7543 a180d2f077      mov     eax,dword ptr [SHLWAPI!__security_cookie
    0:000>
    eax=00007a43 ebx=7ffde000 ecx=00000001 edx=00422828 esi=0006f4cc edi=7c911970
    eip=77ee7548 esp=0012fd5c ebp=0012ff68 iopl=0         nv up ei pl nz ac pe nc
@@ -226,20 +226,7 @@ role="navigation" aria-label="main navigation">
    cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000216
    SHLWAPI!PathIsDirectoryA+0x11:
    *** WARNING: Unable to verify checksum for IsPathDir.exe
-   77ee7549 8b7508          mov     esi,dword ptr [ebp+8">SHLWAPI!__security_cookie
-   0:000>
-   eax=00007a43 ebx=7ffde000 ecx=00000001 edx=00422828 esi=0006f4cc edi=7c911970
-   eip=77ee7548 esp=0012fd5c ebp=0012ff68 iopl=0         nv up ei pl nz ac pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000216
-   SHLWAPI!PathIsDirectoryA+0x10:
-   77ee7548 56              push    esi
-   0:000>
-   eax=00007a43 ebx=7ffde000 ecx=00000001 edx=00422828 esi=0006f4cc edi=7c911970
-   eip=77ee7549 esp=0012fd58 ebp=0012ff68 iopl=0         nv up ei pl nz ac pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000216
-   SHLWAPI!PathIsDirectoryA+0x11:
-   *** WARNING: Unable to verify checksum for IsPathDir.exe
-   77ee7549 8b7508          mov     esi,dword ptr [ebp+8</a> ss:0023:0012ff70=0041dc5c
+   77ee7549 8b7508          mov     esi,dword ptr <a href="posts.html?q=ebp+8">ebp+8</a> ss:0023:0012ff70=0041dc5c
    0:000>
    eax=00007a43 ebx=7ffde000 ecx=00000001 edx=00422828 esi=0041dc5c edi=7c911970
    eip=77ee754c esp=0012fd58 ebp=0012ff68 iopl=0         nv up ei pl nz ac pe nc
@@ -474,6 +461,7 @@ role="navigation" aria-label="main navigation">
 
 
 
+
 </section><hr/>
 
 
@@ -519,16 +507,16 @@ role="navigation" aria-label="main navigation">
 <p class="note-title"><small>2008-09-23  <a href="tag_coding.html">tag_coding</a> </small><a href="2008-09.html">^</a> <button onclick="copy_clipboard('section#section-windows-jobs-com-completion-port')">ctrl_c</button></p>
 
 <p>Ou "Como esperar o término de todos os processos-filho criados a partir de um conjunto de processos".</p>
-<p>Dessa vez confesso que esperava um pouco mais de documentação do MSDN, ou pelo menos um sistema de referências cruzadas eficiente. Outro dia demorei cerca de duas horas para conseguir <a href="http://msdn.microsoft.com/en-us/library/ms682409(VS.85">criar um _**job**_</a>.aspx), anexar o processo desejado e, a pior parte, esperar que todos os processos (o principal e seus filhos e netos) terminassem.</p>
-<p>Além da <a href="http://msdn.microsoft.com/en-us/library/ms684161(VS.85">pouca documentação</a>.aspx), parece que não são muitas as pessoas que fazem isso e publicam na web, ou eu <a href="http://www.google.com.br/search?q=wait+all+processes+inside+job+object">não sei procurar direito</a>.</p>
+<p>Dessa vez confesso que esperava um pouco mais de documentação do MSDN, ou pelo menos um sistema de referências cruzadas eficiente. Outro dia demorei cerca de duas horas para conseguir <a href="posts.html?q=criar um _**job**_">criar um _**job**_</a>, anexar o processo desejado e, a pior parte, esperar que todos os processos (o principal e seus filhos e netos) terminassem.</p>
+<p>Além da pouca documentação, parece que não são muitas as pessoas que fazem isso e publicam na web, ou eu <a href="http://www.google.com.br/search?q=wait+all+processes+inside+job+object">não sei procurar direito</a>.</p>
 <p>Mas, pra início de conversa, o que é um job mesmo?</p>
 <h5>Leve introdução sobre o conceito de jobs</h5>
 <p>Um job é um objeto "novo" no kernel do Windows 2000 em diante, e se prontifica a suprir a carência que havia anteriormente de **controle sobre o que os processos podem fazer e por quanto tempo**.</p>
 <p>A abstração mais coerente que eu consigo tirar de um job é como **um trabalho a ser executada por um ou mais processos**. O objeto job controla a criação, o término e as exceções que ocorrem dentro dele mesmo.</p>
 <img src="img/windows-jobs-com-completion-port-job.gif" caption="Windows Jobs"/>
 <p>Entre as funções mais úteis de um job estão limitar o tempo de execução do conjunto de processos, o número de handles/arquivos/outros objetos abertos, limite de memória RAM ocupada e a possibilidade de terminar todos os processos de uma só vez.</p>
-<p>Para informações básicas de como criar um job e anexar processos recomendo o ótimo artigo de <a href="http://www.microsoft.com/msj/0399/jobkernelobj/jobkernelobj.aspx">Jeffrey Richter</a>.</p>
-<p>No final de um artigo de Jeffrey Richter (não mais disponível) sobre o assunto ele chega a citar o controle mais refinado dos processos através de uma <a href="http://msdn.microsoft.com/en-us/library/aa365198(VS.85">**completion port**</a>.aspx), que permitirá receber eventos que ocorrem dentro de um job durante sua vida útil. Apesar de citar, não há código de exemplo que faça isso.</p>
+<p>Para informações básicas de como criar um job e anexar processos recomendo o ótimo artigo de Jeffrey Richter (se você conseguir encontrar, meu último link está quebrado).</p>
+<p>No final desse artigo ele chega a citar o controle mais refinado dos processos através de uma <a href="posts.html?q=**completion port**">**completion port**</a>, que permitirá receber eventos que ocorrem dentro de um job durante sua vida útil. Apesar de citar, não há código de exemplo que faça isso.</p>
 <p>Bom, agora há:</p>
 <pre>
 #define _WIN32_WINNT 0x0500 // Jobs só existem do 2000 em diante
@@ -604,6 +592,9 @@ int main(int argc, char* argv[])
  * JOB_OBJECT_MSG_PROCESS_MEMORY_LIMIT. O limite de memória de um processo já foi alcançado.
  * JOB_OBJECT_MSG_END_OF_PROCESS_TIME. O limite de tempo de processamento de um processo já foi alcançado.</pre>
 <p>Enfim, jobs não terminam por aí. Dê mais uma olhada no MSDN e veja se encontra mais alguma utilidade interessante para o nosso amigo job. Eu encontrei e fiquei feliz.</p>
+
+
+
 </section><hr/>
 
 

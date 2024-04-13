@@ -331,7 +331,7 @@ int main(int argc, char* argv[]) // No princípio havia a pilha, quando Deus dis
     00595618 0221 0221 <a href="posts.html?q=00">00</a> 00595630 01037 - (busy)
     00599a38 0221 0221 <a href="posts.html?q=00">00</a> 00599a50 01037 - (busy)
     0059de58 0(...)</pre>
-<p>A listagem do depurador nos dá o endereço onde o chunk foi alocado no heap e o endereço devolvido para o usuário, onde colocamos nossas tralhas. Através de ambos é possível trackear a pilha da chamada que alocou cada pedaço de memória. Isso, claro, se previamente tivermos habilitado essa informação através do <a href="http://msdn.microsoft.com/en-us/library/windows/hardware/ff549596(v=vs.85">GFlags</a>.aspx):</p>
+<p>A listagem do depurador nos dá o endereço onde o chunk foi alocado no heap e o endereço devolvido para o usuário, onde colocamos nossas tralhas. Através de ambos é possível trackear a pilha da chamada que alocou cada pedaço de memória. Isso, claro, se previamente tivermos habilitado essa informação através do <a href="http://msdn.microsoft.com/en-us/library/windows/hardware/ff549596(v=vs.85">GFlags</a>:</p>
 <img src="img/consumo-abusivo-de-memoria-JeqoBju.png" caption=""/>
 <pre>   
    0:004> !heap -p -a <span style="color: #ff0000;">00558600</span>
@@ -378,15 +378,25 @@ int main(int argc, char* argv[]) // No princípio havia a pilha, quando Deus dis
 <p>Não é o caso, mas vamos supor que fosse um objeto/tipo conhecido. Poderíamos simplesmente "importar" o tipo diretamente do PDB que estamos para modelar a memória que encontramos em volta. Mais detalhes <a href="http://www.caloni.com.br/importando-tipos-de-outros-projetos">em outro artigo</a>.</p>
 <h5>Funções/classes usadas nesse artigo</h5>
 <pre>   
- * <a href="posts.html?q=CreateThread">CreateThread</a>(http://msdn.microsoft.com/en-us/library/windows/desktop/ms682453(v=vs.85).aspx). Cria uma nova linha de execução.
+ * <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms682453(v=vs.85">CreateThread</a>. Cria uma nova linha de execução.
    
- * <a href="posts.html?q=WaitForMultipleObjects">WaitForMultipleObjects</a>(http://msdn.microsoft.com/en-us/library/windows/desktop/ms687025(v=vs.85).aspx). Pode aguardar diferentes linhas de execução terminarem.
+ * <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms687025(v=vs.85">WaitForMultipleObjects</a>. Pode aguardar diferentes linhas de execução terminarem.
    
- * <a href="posts.html?q=std::list">std::list</a>(http://www.cplusplus.com/reference/stl/list/front/). Lista na STL para inserir/remover objetos na frente e atrás (ui).
+ * <a href="posts.html?q=std::list">std::list</a>. Lista na STL para inserir/remover objetos na frente e atrás (ui).
    
- * <a href="posts.html?q=Initialize">Initialize</a>(http://msdn.microsoft.com/en-us/library/windows/desktop/ms683472(v=vs.85).aspx), <a href="posts.html?q=Enter">Enter</a>(http://msdn.microsoft.com/en-us/library/windows/desktop/ms682608(v=vs.85).aspx) e <a href="posts.html?q=LeaveCriticalSection">LeaveCriticalSection</a>(http://msdn.microsoft.com/en-us/library/windows/desktop/ms684169(v=vs.85).aspx). Uma maneira simples de criar blocos de entrada atômica (apenas uma thread entra por vez).
+ * <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms683472(v=vs.85">Initialize</a>, <a href="posts.html?q=Enter">Enter</a> e <a href="posts.html?q=LeaveCriticalSection">LeaveCriticalSection</a>. Uma maneira simples de criar blocos de entrada atômica (apenas uma thread entra por vez).
    
- * <a href="posts.html?q=memset">memset</a>(http://www.cplusplus.com/reference/clibrary/cstring/memset/). Se você não sabe usar memset, provavelmente não entendeu nada desse artigo.
+ * <a href="http://www.cplusplus.com/reference/clibrary/cstring/memset/">memset</a>. Se você não sabe usar memset, provavelmente não entendeu nada desse artigo.</pre>
+
+
+
+
+
+
+
+<p><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms683472(v=vs.85">Initialize</a>, <a href="posts.html?q=Enter">Enter</a>: http://msdn.microsoft.com/en-us/library/windows/desktop/ms682608(v=vs.85</p>
+<p><a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms683472(v=vs.85">Initialize</a>, <a href="posts.html?q=Enter">Enter</a> e <a href="posts.html?q=LeaveCriticalSection">LeaveCriticalSection</a>: http://msdn.microsoft.com/en-us/library/windows/desktop/ms684169(v=vs.85</p>
+
 </section><hr/>
 
 
@@ -394,7 +404,7 @@ int main(int argc, char* argv[]) // No princípio havia a pilha, quando Deus dis
 <section id="section-sobrecarga-de-funcao-as-avessas">
 <p class="title"><a href="2012-05.html#sobrecarga-de-funcao-as-avessas">#</a> Sobrecarga de função às avessas</p>
 <p class="note-title"><small>2012-05-20  <a href="tag_coding.html">tag_coding</a> <a href="tag_ccpp.html">tag_ccpp</a> </small><a href="2012-05.html">^</a> <button onclick="copy_clipboard('section#section-sobrecarga-de-funcao-as-avessas')">ctrl_c</button></p>
-</pre>
+
 <p>&gt; Nota do autor: navegando pelo Archive.org, que possibilita viajar no tempo e encontrar coisas enterradas que seria melhor deixar por lá, consegui encontrar um post que se perdeu na dobra espaço-temporal entre o old-fashioned Caloni.com.br (com direito à velha joaninha psicodélica, desenho do meu amigo que uso até hoje no blogue) e um finado outro domínio meu, o CThings. No final, consegui <a href="posts.html?q=feitico-do-tempo">matar a marmota</a>, chegar a <a href="posts.html?q=de-volta-para-o-futuro">80 milhas por hora</a> e voltar para o presente. Enjoy!</p>
 <p>Alguém já se perguntou se é possível usar sobrecarga de função quando a diferença não está nos parâmetros recebidos, mas no tipo de retorno? Melhor dizendo, imagine que eu tenha o seguinte código:</p>
 <pre>   void CreateNewGUID(wstring&);
@@ -476,6 +486,9 @@ int main(int argc, char* argv[]) // No princípio havia a pilha, quando Deus dis
 <p>E, como brinde, um grande aliado da produtividade: **como evitar que o WinDbg bloqueie seu PDB enquanto você precisa constantemente recompilar seu driver:**</p>
 <p>.reload -u modulo</p>
 <p>Fonte: Blog do <a href="http://www.nynaeve.net/?p=164">Nynaeve</a>.</p>
+
+
+
 </section><hr/>
 
 <span style="float: left;">

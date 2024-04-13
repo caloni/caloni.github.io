@@ -123,9 +123,9 @@ role="navigation" aria-label="main navigation">
 <p>No entanto, num belo dia, qual não foi minha surpresa ao notar umas pastinhas chamadas atl21, atl30 e atl71 dentro da distribuição do WDK (o finado DDK, renomeado sabe-se-lá-por-quê)? Pelo visto, tem alguém arrastando coisa errada pra onde não devia nos instaladores de Seattle. Esses estagiários!</p>
 <img src="img/como-usar-wtl-com-o-atl-do-ddk-OoiV6X7.png" caption=""/>
 <p>O fato é que eles fizeram isso, e agora é possível ter o WTL mais novo compilado com o WDK. E nem é tão difícil assim.</p>
-<p>A primeira coisa a fazer é obter o tal doWDK. Para variar um pouco, agora existe um <a href="http://www.microsoft.com/whdc/DevTools/WDK/WDKpkg.mspx">processo de registro</a> antes de obter acesso ao _download_, mais ou menos nos termos da Borland para baixar o <a href="http://cc.codegear.com/free/turbo">Builder</a> / <a href="http://cc.codegear.com/free/turbo">Turbo</a> / <a href="http://cc.codegear.com/free/turbo">Developer Studio</a>.</p>
+<p>A primeira coisa a fazer é obter o tal do WDK. Para variar um pouco, agora existe (existia) um processo de registro antes de obter acesso ao _download_, mais ou menos nos termos da Borland para baixar o C++ Builder ou Turbo Pascal ou o Developer Studio.</p>
 <p>&lt;blockquote&gt;Aliás, para os que baixaram esses produtos gratuitos da Borland versão C++ e não funcionou em algumas máquinas, como foi o meu caso, está disponível para baixar uma versão mais nova; dessa vez não vi nenhum problema na compilação e depuração. Ainda.&lt;/blockquote&gt;</p>
-<p>Após instalado, em qualquer lugar da sua escolha, configure no seu <a href="http://www.microsoft.com/Express/">Visual Studio Express</a> o caminho de onde se encontra a pasta atl71 (ou a 30, ou a 21). Aproveite também para colocar a pasta do WTL e o diretório de LIBs:</p>
+<p>Após instalado, em qualquer lugar da sua escolha, configure no seu Visual Studio o caminho de onde se encontra a pasta atl71 (ou a 30, ou a 21). Aproveite também para colocar a pasta do WTL e o diretório de LIBs:</p>
 <img src="img/como-usar-wtl-com-o-atl-do-ddk-TJyNrlE.png" caption="Configurando o diretório de cabeçalhos no Visual Studio."/>
 <img src="img/como-usar-wtl-com-o-atl-do-ddk-VLryS9L.png" caption="Configurando o diretório de biblioteca no Visual Studio."/>
 <p>Isso vai fazer com que pelo menos os exemplos que vêem com o WTL compilem.</p>
@@ -189,9 +189,12 @@ role="navigation" aria-label="main navigation">
 <p>E pronto! Agora temos todo o poder das 500 milhões de classes da ATL aliadas à ilimitada flexibilidade das classes de janelas da WTL.</p>
 <h5>Para aprender a usar WTL</h5>
 <p>	</p>
-<pre> * <a href="posts.html?q=Explicando a sopa de letrinhas da programação C/C++ para Windows: WTL">Explicando a sopa de letrinhas da programação C/C++ para Windows: WTL</a>(http://www.1bit.com.br/content.1bit/weblog/sopa_de_letrinhas_wtl)</pre>
-<p>	</p>
-<pre> * <a href="posts.html?q=WTL for MFC Programmers">WTL for MFC Programmers</a>(http://www.codeproject.com/KB/wtl/wtl4mfc1.aspx)
+<pre> * <a href="posts.html?q=Explicando a sopa de letrinhas da programação C/C++ para Windows: WTL">Explicando a sopa de letrinhas da programação C/C++ para Windows: WTL</a>
+ * <a href="http://www.codeproject.com/KB/wtl/wtl4mfc1.aspx">WTL for MFC Programmers</a></pre>
+
+
+
+
 </section><hr/>
 
 
@@ -199,7 +202,7 @@ role="navigation" aria-label="main navigation">
 <section id="section-a-alca-dentro-do-fio-gerou-um-bloqueio-da-morte">
 <p class="title"><a href="2008-10.html#a-alca-dentro-do-fio-gerou-um-bloqueio-da-morte">#</a> A Alça Dentro do Fio Gerou um Bloqueio da Morte</p>
 <p class="note-title"><small>2008-10-21  <a href="tag_coding.html">tag_coding</a> </small><a href="2008-10.html">^</a> <button onclick="copy_clipboard('section#section-a-alca-dentro-do-fio-gerou-um-bloqueio-da-morte')">ctrl_c</button></p>
-</pre>
+
 <p>Estava folheando um livro fenomenal que meu amigo havia pedido emprestado para ler quando me deparei com algumas traduções no mínimo curiosas. O exemplar em questão era o primeiro Windows Internals, publicado após o lançamento da primeira versão do Windows NT, uma plataforma escrita (quase) inteiramente do zero para suplantar as versões 9x (Windows 95 e 98), que herdaram do DOS algumas partes indesejáveis em sistemas operacionais modernos.</p>
 <p>Sabe-se lá por que essa edição foi traduzida. É interessante notar que naquela época foi dado um tratamento especial a alguns termos e conceitos já comuns no dia-a-dia do programador americano, apesar de quase nenhum desses termos ter se mantido em sua versão original. Os exemplos mais gritantes são as threads (fios ou linhas), os dead locks (bloqueios da morte) e os handles (alças). Apesar de não ter nada contra traduzir termos do inglês para português (e vice-versa) algumas coisas incomodam em tradução de livros técnicos.</p>
 <p>Um bom exemplo são ponteiros. Ler em um dado capítulo "(...) é muito importante inicializar seus ponteiros antes de usá-los" para, depois de nos acostumarmos com o termo, ler em outro capítulo "(...) sabe-se que a pior desgraça para um programador C são os famigerados apontadores selvagens". Você resolveria esse tipo de problema definindo um vocabulário em comum com todo o livro (importantíssimo se ele está sendo traduziro por mais de uma pessoa) e ainda informaria o leitor qual o termo original, caso ele precise pesquisar sobre ele fora do livro. Com essa informação, que pode ser usada apenas nos primeiros usos da palavra ou em um glossário à parte, agradaria gregos e troianos: "os ponteiros em C (pointers) são um recurso rico e necessário para a escrita de programas de baixo/médio nível".</p>
@@ -218,9 +221,9 @@ role="navigation" aria-label="main navigation">
 <p class="title"><a href="2008-10.html#como-funciona-o-psexec">#</a> Como funciona o PsExec</p>
 <p class="note-title"><small>2008-10-29  <a href="tag_coding.html">tag_coding</a> </small><a href="2008-10.html">^</a> <button onclick="copy_clipboard('section#section-como-funciona-o-psexec')">ctrl_c</button></p>
 
-<p>Semana passada precisei reproduzir o comportamento da ferramenta PsExec em um projeto, o que me fez sentir alguma nostalgia dos tempos em que eu fazia <a href="http://www.caloni.com.br/engenharia-reversa-para-idiotas">engenharia reversa</a> todo dia. Este breve relato (espero) reproduz os passos que segui para descobrir o que esse programa tão útil quanto perigoso faz.</p>
+<p>Semana passada precisei reproduzir o comportamento da ferramenta PsExec em um projeto, o que me fez sentir alguma nostalgia dos tempos em que eu fazia <a href="posts.html?q=engenharia reversa">engenharia reversa</a> todo dia. Este breve relato (espero) reproduz os passos que segui para descobrir o que esse programa tão útil quanto perigoso faz.</p>
 <h5>Dados conhecidos</h5>
-<p>Sabe-se que o PsExec consegue **executar um programa remotamente**, ou seja, de uma máquina para outra, outra essa que chamaremos de **máquina-alvo**. O programa a ser executado geralmente deve estar disponível na própria máquina-alvo (condição ideal). Além da simples execução, para aplicativos console ele permite ainda a interação como se estivéssemos executando o programa remoto em nossa própria máquina local. Ele consegue isso redirecionando sua entrada e saída, o que o torna, como nos descreve <a href="http://technet.microsoft.com/en-us/sysinternals/bb897553.aspx">o próprio autor</a>, um "_telnet light_":</p>
+<p>Sabe-se que o PsExec consegue **executar um programa remotamente**, ou seja, de uma máquina para outra, outra essa que chamaremos de **máquina-alvo**. O programa a ser executado geralmente deve estar disponível na própria máquina-alvo (condição ideal). Além da simples execução, para aplicativos console ele permite ainda a interação como se estivéssemos executando o programa remoto em nossa própria máquina local. Ele consegue isso redirecionando sua entrada e saída, o que o torna, como nos descreve o próprio autor, um "_telnet light_":</p>
 <pre>   
    psexec \\maquina-alvo <a href="posts.html?q=-u admin-na-maquina-alvo">-u admin-na-maquina-alvo</a> cmd.exe</pre>
 <p>Além desse comportamento já muito útil ainda existe um bônus que se trata de especificar um executável local que será **copiado remotamente** para a máquina-alvo e executado. **Esse é o comportamento que espero imitar**:</p>
@@ -233,14 +236,14 @@ role="navigation" aria-label="main navigation">
    (C) Copyright 1985-2001 Microsoft Corp.</pre>
 <p>No teste acima o **myprogram.exe** é somente o **cmd.exe** renomeado. Um teste básico =)</p>
 <h5>Primeiro passo: reproduzir o comportamento analisado e coletar pistas</h5>
-<p>Já fizemos isso logo acima. Se trata apenas de observar o programa funcionando. Ao mesmo tempo em que entendemos seu _modus operandi_ coletamos pistas sobre suas entranhas. No caso do PsExec, que faz coisas além-mar, como redirecionar os _pipes_ de entrada/saída de um programa console, iremos checar a existência de algum serviço novo na máquina-alvo e arquivos novos que foram copiados, além de opcionalmente dar uma olhada no registro. Ferramentas da própria SysInternals como <a href="http://technet.microsoft.com/en-us/sysinternals/bb896653.aspx">Process Explorer</a> e <a href="http://technet.microsoft.com/en-us/sysinternals/bb896645.aspx">Process Monitor</a> também são úteis nessa análise inicial.</p>
+<p>Já fizemos isso logo acima. Se trata apenas de observar o programa funcionando. Ao mesmo tempo em que entendemos seu _modus operandi_ coletamos pistas sobre suas entranhas. No caso do PsExec, que faz coisas além-mar, como redirecionar os _pipes_ de entrada/saída de um programa console, iremos checar a existência de algum serviço novo na máquina-alvo e arquivos novos que foram copiados, além de opcionalmente dar uma olhada no registro. Ferramentas da própria SysInternals como <a href="posts.html?q=Process Explorer">Process Explorer</a> e <a href="posts.html?q=Process Monitor">Process Monitor</a> também são úteis nessa análise inicial.</p>
 <img src="img/como-funciona-o-psexec-lCf4KiT.png" caption="Serviço do PsExec criado na máquina-alvo."/>
 <p>Como podemos ver, um serviço com o nome de PsExec foi criado na máquina-alvo. Se procurarmos saber o caminho do arquivo que corresponde a esse serviço, tanto pelo Process Explorer ou o Service Manager, descobriremos que se trata de um arquivo no diretório do windows chamado **psexecsvc.exe**.</p>
 <img src="img/como-funciona-o-psexec-qo6PZWS.png" caption="Instalação do Serviço PsExec na máquina-alvo no registro do Windows."/>
 <img src="img/como-funciona-o-psexec-2sSwUA9.png" caption="Arquivo do serviço do PsExec instalado na máquina-alvo na pasta c:\Windows."/>
 <p>Se o arquivo existe nessa pasta, então é óbvio que alguém o copiou. Resta saber **como**.</p>
 <h5>Segundo passo: acompanhar o processo lentamente</h5>
-<p>Nessa segunda fase, podemos refazer o comportamento esperado inúmeras vezes, coletando dados e pensando a partir dos dados obtidos. Para esse caso,  como quase todos que analiso, vou usar o nosso amigo <a href="http://www.caloni.com.br/brincando-com-o-windbg">WinDbg</a>. Para isso, como tenho sempre minhas ferramentas disponíveis no ambiente onde trabalho, basta digitar "windbg" antes do comando anterior e **dar uma olhada em algumas APIs-chave**, como a criação/abertura de arquivos e a criação de serviços. Note que é importante fazer isso em um **escopo limitado** para não perdermos horas de análise. Descobrir coisas como, por exemplo, que as ações do PsExec só começam a ser executadas após a digitação da senha do usuário, pode ajudar, pois daí só começo minha análise a partir desse ponto.</p>
+<p>Nessa segunda fase, podemos refazer o comportamento esperado inúmeras vezes, coletando dados e pensando a partir dos dados obtidos. Para esse caso,  como quase todos que analiso, vou usar o nosso amigo <a href="posts.html?q=WinDbg">WinDbg</a>. Para isso, como tenho sempre minhas ferramentas disponíveis no ambiente onde trabalho, basta digitar "windbg" antes do comando anterior e **dar uma olhada em algumas APIs-chave**, como a criação/abertura de arquivos e a criação de serviços. Note que é importante fazer isso em um **escopo limitado** para não perdermos horas de análise. Descobrir coisas como, por exemplo, que as ações do PsExec só começam a ser executadas após a digitação da senha do usuário, pode ajudar, pois daí só começo minha análise a partir desse ponto.</p>
 <pre>   
    windbg psexec \\maquina-alvo -u admin cmd.exe
    
@@ -302,7 +305,7 @@ role="navigation" aria-label="main navigation">
    001225d4 0030002e 0x32002e
    001225d8 0034002e 0x30002e
    001225dc 00000000 0x34002e</pre>
-<p>Uma <a href="http://www.google.com/search?q=\\.\PIPE\wkssvc">rápida busca no Google</a> nos informa que o _pipe _querendo ser aberto pertence à lista de _pipes _que estão sempre disponíveis nas máquinas para responder às requisições do sistema. São importantes para a **comunicação entre processos** (IRP, _Inter Process Communication_). No entanto, quem usa esse pipe é o sistema, e ele foi chamado, como pudemos ver, pela função <a href="http://msdn.microsoft.com/en-us/library/aa385413(VS.85">WNetAddConnection2W</a>.aspx).</p>
+<p>Uma rápida busca no Google nos informa que o _pipe _querendo ser aberto pertence à lista de _pipes _que estão sempre disponíveis nas máquinas para responder às requisições do sistema. São importantes para a **comunicação entre processos** (IRP, _Inter Process Communication_). No entanto, quem usa esse pipe é o sistema, e ele foi chamado, como pudemos ver, pela função WNetAddConnection2W.</p>
 <p>Se analisarmos mais a fundo a pilha de chamadas conseguiremos dar um olhada nos parâmetros passados. Para isso existe a opção de mostrar os argumentos passados para as funções ao exibir a pilha:</p>
 <pre>   
    0:000> kv 50
@@ -376,7 +379,7 @@ role="navigation" aria-label="main navigation">
 <p>Também podemos notar que, enquanto estamos parados depurando o processo psexec.exe, temos acesso ao compartilhamento admin$:</p>
 <img src="img/como-funciona-o-psexec-vBGHXoC.png" caption="Compartilhamento admin$ disponível enquanto depuramos o PsExec."/>
 <p>A análise desses fatos demonstra como é importante fazer as coisas, pelo menos na fase "iniciante",  bem lentamente, e entender a **mudança de estado** durante o processo. Nem sempre isso é possível, é verdade, ainda mais quando estamos falando de análise de kernel. Mas, quando as condições permitem, vale a pena pensar antes de fazer.</p>
-<p>Voltando à analise: temos direitos remotos nessa máquina. Dessa forma, fica fácil <a href="http://msdn.microsoft.com/en-us/library/ms682450(VS.85">criar um serviço</a>.aspx) remotamente, que é o que faz o nosso amigo PsExec:</p>
+<p>Voltando à analise: temos direitos remotos nessa máquina. Dessa forma, fica fácil criar um serviço remotamente, que é o que faz o nosso amigo PsExec:</p>
 <pre>   
    0:000> g
    Breakpoint 1 hit

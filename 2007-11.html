@@ -193,7 +193,7 @@ role="navigation" aria-label="main navigation">
 <p class="title"><a href="2007-11.html#ponteiro-de-metodo-qual-this-e-usado">#</a> Ponteiro de método: qual this é usado?</p>
 <p class="note-title"><small>2007-11-07  <a href="tag_coding.html">tag_coding</a> </small><a href="2007-11.html">^</a> <button onclick="copy_clipboard('section#section-ponteiro-de-metodo-qual-this-e-usado')">ctrl_c</button></p>
 
-<p>Depois de publicado o artigo anterior sobre ponteiros de métodos surgiu uma dúvida muito pertinente do autor do blogue <a href="http://codebehind.wordpress.com/">CodeBehind</a>, um escovador de bits disfarçado de programador .NET: qual objeto que vale na hora de chamar um método pelo ponteiro?</p>
+<p>Depois de publicado o artigo anterior sobre ponteiros de métodos surgiu uma dúvida muito pertinente do autor do blogue <a href="http://codebehind.wordpress.com">CodeBehind</a>, um escovador de bits disfarçado de programador .NET: qual objeto que vale na hora de chamar um método pelo ponteiro?</p>
 <p>Isso me estimulou a desdobrar um pouco mais os mistérios por trás dos ponteiro de métodos e de membros, e descobrir os detalhes mais ocultos desse lado esotérico da linguagem.</p>
 <p>Para entender por inteiro o que acontece quando uma chamada ou acesso utilizando ponteiros dependentes de escopo, algumas pequenas mudanças foram feitas na nossa pequena classe Rand.</p>
 <pre>   #include <iostream>
@@ -305,6 +305,7 @@ role="navigation" aria-label="main navigation">
    mov eax,dword ptr r3<a href="posts.html?q=rax">rax</a> 
    mov dword ptr <a href="posts.html?q=i3">i3</a>,eax</pre>
 <p>Como podemos ver, não é nenhuma magia negra a responsável por fazer os ponteiros de métodos e de membros funcionarem em C++. Porém, eles não são ponteiros ordinário que costumamos misturar a torto e a direito. Essa distinção na linguagem é importante para manter o código "minimamente sadio".</p>
+
 </section><hr/>
 
 
@@ -347,6 +348,7 @@ role="navigation" aria-label="main navigation">
    	HINSTANCE hMod,
    	DWORD dwThreadId);</pre>
 <p>Relembrando nosso passeio pela pilha, ao entrar em uma função stdcall, os primeiros 4 bytes são o endereço de retorno, os próximos o primeiro parâmetro e assim por diante. O que quer dizer que poi ( esp + (4 * 4) ). É o apontado do quarto parâmetro (4*4) que está sendo verificado. Concluindo, se o parâmetro dwThreadId for igual a zero, estamos diante de um hook global, e é o momento em que meu .echo vai exibir na tela "*** GLOBAL HOOK ***". Do contrário, a execução vai continuar silenciosamente.</p>
+
 
 </section><hr/>
 
@@ -662,6 +664,7 @@ role="navigation" aria-label="main navigation">
 <pre>   bp /1 @$t2 ".dvfree @$t0 0"</pre>
 <p>Eu não me responsabilizo por qualquer (mau) uso do script aqui disponibilizado, assim como as eventuais perdas de código-fonte, trilhas de HD e placas de memória RAM pela sua execução. Assim sendo, bom divertimento.</p>
 <p>O criador do <a href="http://www.driverentry.com.br">DriverEntry</a> me questionou se não seria mais fácil, em vez de escrever todos os opcodes em hexa, usar o comando a, que permite entrar o código assembly diretamente a partir de um endereço especificado. Essa realmente é uma ótima idéia, e de fato eu tentei isso no começo de meus testes. Porém, infelizmente para scripts isso não funciona bem. A partir do comando a o prompt fica esperando uma entrada do usuário, não lendo o assembly que estaria no próprio script. Pior ainda, a escrita do assembly não permite usar os registradores temporários, como $t0 ou $t1, o que nos força a escrever um código dependende de valores constantes. Por esses motivos, tive que apelar para o comando e, que é a forma mais confusa de escrever e entender assembly. Nesse tipo de edição é vital comentar bem cada linha que se escreve.</p>
+
 
 
 

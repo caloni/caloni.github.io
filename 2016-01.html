@@ -285,7 +285,7 @@ void MinhaClasse::MeuMetodo()
    MinhaPropriedade = 42; // ou seja: this->MinhaPropriedade = 42;
    MeuOutroMetodo(); // ou seja: this->MeuOutroMetodo();
 }</pre>
-<p>E contexto nesse sentido nada mais é que um endereço na memória para alguma coisa que nos interessa. Tal qual uma função API do Windows -- tal qual <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa364418(v=vs.85">FindFirstFile</a>.aspx) -- que recebe ou retorna uma __struct__ com o que precisamos, esse geralmente é o contexto procurado.</p>
+<p>E contexto nesse sentido nada mais é que um endereço na memória para alguma coisa que nos interessa. Tal qual uma função API do Windows -- tal qual <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa364418(v=vs.85">FindFirstFile</a> -- que recebe ou retorna uma __struct__ com o que precisamos, esse geralmente é o contexto procurado.</p>
 <pre>
 WIN32_FIND_DATA findData;
 HANDLE findH = FindFirstFile("*.txt", &findData);
@@ -314,6 +314,7 @@ void MinhaClasse_MeuMetodo(MinhaClasse* pThis)
    ///@todo Chamar pThis->MeuOutroMetodo();
 }</pre>
 <p>Em um <a href="posts.html?q=classe-objeto-contexto-metodo">próximo post</a> vamos ver como fazer para chamar MeuOutroMetodo a partir de uma estrutura em C.</p>
+
 
 </section><hr/>
 
@@ -553,6 +554,8 @@ int main()
 <p>Mais sobre isso em um próximo post.</p>
 
 
+
+
 </section><hr/>
 
 
@@ -575,7 +578,7 @@ int main()
 <p class="note-title"><small>2016-01-14  <a href="tag_coding.html">tag_coding</a> </small><a href="2016-01.html">^</a> <button onclick="copy_clipboard('section#section-templates-em-c-no-lugar-de-macros')">ctrl_c</button></p>
 
 <p>A grande vantagem dos templates é manter o tipo de seus argumentos. Infelizmente, eles não existem na linguagem C, mas podem ser usados em construções C feitas com a linguagem C++, como ocorre com quem desenvolve device drivers para Windows.</p>
-<p>Imagine, por exemplo, a estrutura <a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff554296(v=vs.85">LIST_ENTRY</a>.aspx), que é uma tentativa de generalizar não só o tipo de uma lista ligada, como seu posicionamento:</p>
+<p>Imagine, por exemplo, a estrutura <a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff554296(v=vs.85">LIST_ENTRY</a>, que é uma tentativa de generalizar não só o tipo de uma lista ligada, como seu posicionamento:</p>
 <pre>
 typedef struct _LIST_ENTRY {
   struct _LIST_ENTRY  *Flink;
@@ -654,6 +657,7 @@ int main()
     cout << "X is " << elem->x << endl;
 }</pre>
 <p>"Nossa, tudo isso para substituir uma macro já consagrada no WDK??" Sim, nesse post o objetivo não ficou muito útil. É apenas uma ideia de substituição possível de ser feita em macros em geral. Pode ser bem documentada, usada há 30 anos, mas ainda é uma macro. Meu conselho: se funciona bem, use. Se vai fazer algo novo, tente sempre templates.</p>
+
 </section><hr/>
 
 <span id="veludo-azul" title="Veludo Azul"/></span>
@@ -967,6 +971,9 @@ git log --all -- MyRemovedPath</pre>
 <p>Tive alguns problemas em rastrear o histórico utilizando a estratégia de fazer merge no mesmo branch. A solução que encontrei, embora não exatamente direta, foi realizar os merges em branches apartados primeiro, mover os arquivos (de preferência, usando o git, para que ele detecte o rename), aplicar o commit e realizar o merge com o master. Há uma vantagem nessa estratégia, além do log --follow funcionar melhor: mantenha os branches originais, além do ponteiro para remote. Dessa forma, depois de alguns anos, saberá de onde veio esse merge maluco.</p>
 <h3>Update2</h3>
 <p>Depois de um tempo testando essa técnica, descobri que o Git se perde novamente e não encontra mais todos os logs, mesmo com --follow  mesmo movendo os arquivos. O meu problema está relacionado com mesmos paths dos arquivos em repositórios diferentes. Paciência.</p>
+
+
+
 </section><hr/>
 
 

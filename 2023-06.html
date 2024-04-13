@@ -200,7 +200,9 @@ Ba6 47. f7 Bb7 48. Rxb7 c4 49. f8=Q c3 50. Qa3# 1-0</pre>
 <p class="title"><a href="2023-06.html#aldeia-numa-boa-vovo-vick">#</a> Aldeia Numa Boa <a class="external" href="http://www.numaboa.com.br">[link]</a></p>
 <p class="note-title"><small>2023-06-06  </small><a href="2023-06.html">^</a> <button onclick="copy_clipboard('section#section-aldeia-numa-boa-vovo-vick')">ctrl_c</button></p>
 
-<p>Segue aqui uma pequena nota de arrependimento por não saber da existência <a href="http://www.numaboa.com.br">deste saite</a> até o Fernando Mercês do <a href="https://www.mentebinaria.com.br/">Mente Binária</a> me informar. A Vovó Vick era uma médica formada e começou a se interessar por computação e nunca mais parou. Ela publicou um livro sobre criptografia. Ela escreveu artigos e mais artigos sobre programação, sistema operacional, linguagem assembly e muito mais. Ela viveu o boom dos PCs como nós, jovens, mas ela já estava na terceira idade, o que se tornou um mero detalhe e curiosidade, já que o conteúdo de seu saite dá de dez a zero em muitos jovens apenas curiosos com a área ou querendo ganhar dinheiro. A Vovó mergulhou fundo na tecnologia. E é muito bom apenas saber disso. Uma pena não conhecê-la a tempo. Que faça boa viagem. E que nos encontremos em outras configurações da matéria e da energia.</p>
+<p>Segue aqui uma pequena nota de arrependimento por não saber da existência <a href="http://www.numaboa.com.br">deste saite</a> até o Fernando Mercês do <a href="https://www.mentebinaria.com.br">Mente Binária</a> me informar. A Vovó Vick era uma médica formada e começou a se interessar por computação e nunca mais parou. Ela publicou um livro sobre criptografia. Ela escreveu artigos e mais artigos sobre programação, sistema operacional, linguagem assembly e muito mais. Ela viveu o boom dos PCs como nós, jovens, mas ela já estava na terceira idade, o que se tornou um mero detalhe e curiosidade, já que o conteúdo de seu saite dá de dez a zero em muitos jovens apenas curiosos com a área ou querendo ganhar dinheiro. A Vovó mergulhou fundo na tecnologia. E é muito bom apenas saber disso. Uma pena não conhecê-la a tempo. Que faça boa viagem. E que nos encontremos em outras configurações da matéria e da energia.</p>
+
+
 </section><hr/>
 
 <span id="el-porvenir-laborum-malbec" title="El Porvenir: Laborum Malbec 2020"/></span>
@@ -217,6 +219,7 @@ Ba6 47. f7 Bb7 48. Rxb7 c4 49. f8=Q c3 50. Qa3# 1-0</pre>
 <p class="note-title"><small>2023-06-06  <a href="tag_wine.html">tag_wine</a> </small><a href="2023-06.html">^</a> <button onclick="copy_clipboard('section#section-el-porvenir-laborum-tannat')">ctrl_c</button></p>
 
 <p>É revoltante o quão bom são os vinhos da El Porvenir. A agressividade dos taninos que lembram as uvas regadas a conta-gotas no meio de um deserto árido, arenoso e praticamente infértil se traduz em uma taça sempre memorável, e que de brinde remete a memórias da própria vinícola. A garrafa que bebo agora é um Tannat de 2019, ou seja, não traumatizado pela pandemia. A Finca é a El Retiro, a mais antiga da vinícola, plantada em 1945. Se trata de um terreno arenoso com poucas rochas. Pela idade das parreiras elas foram plantadas no <a href="https://pt.wikipedia.org/wiki/P%C3%A9rgula">esquema pérgola</a>. Ele é ríspido, mas ainda frutado. O tanino raspa na boca e a envolve em um abraço que acolhe o paladar. Há tons vegetais e minerais na mesma taça. O teor alcoólico ainda é forte, mas faz parte da experiência completa.</p>
+
 </section><hr/>
 
 <span id="onboarding-no-baixo-nivel" title="OnBoarding no baixo nível"/></span>
@@ -282,6 +285,21 @@ bcdedit /debug {new-id} ON
 bcdedit /dbgsettings SERIAL DEBUGPORT:1 BAUDRATE:115200</pre>
 <p>Isso irá criar uma segunda opção de boot que irá aparecer quando ligar a máquina (timeout padrão de 30 segundos para escolher). Se configurar debug pela porta serial crie uma na máquina virtual apontando para um named pipe. No WinDbg conecte usando este pipe (e.g. `\\.\pipe\com_1´).</p>
 <p>Agora começa a diversão =).</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </section><hr/>
 
 
@@ -331,6 +349,7 @@ rem 4K lines</pre>
 <pre>
 mkdir copia
 copy *.md copia > NUL</pre>
+
 </section><hr/>
 
 <span id="critical-sections-and-outlook" title="Critical Sections and Outlook"/></span>
@@ -350,7 +369,7 @@ OwningThread       = 0x0000000000018e9c
 RecursionCount     = 0x1
 LockSemaphore      = 0xFFFFFFFF
 SpinCount          = 0x00000000020007d0</pre>
-<p>The moment the dump was generated the thread that had acquired this cs was inside the same function `OsfIdentityManager::EnsureInit` and several frames above was calling the native API `ntdll!NtQueryFullAttributesFile`, when I discovered that this application is using <a href="https://learn.microsoft.com/en-us/windows/application-management/app-v/appv-getting-started">Microsoft Application Virtualization (App-V)</a> based on the hook it was installed:</p>
+<p>The moment the dump was generated the thread that had acquired this cs was inside the same function `OsfIdentityManager::EnsureInit` and several frames above was calling the native API `ntdll!NtQueryFullAttributesFile`, when I discovered that this application is using <a href="https://learn.microsoft.com/en-us/windows/application-management/app-v/appv-getting-started">Microsoft Application Virtualization </a> based on the hook it was installed:</p>
 <pre>
 . 58  Id: 661c.18e9c Suspend: -1 Teb: 0000003c`34078000 Unfrozen
       Start: mso20win32client!CIOPort::ThreadProc (00007ff8`70ba3ef0)
@@ -367,6 +386,8 @@ SpinCount          = 0x00000000020007d0</pre>
 <p>&gt; Virtual applications are installed on centrally managed servers and delivered to users as a service in real time and on an as-needed basis. Users launch virtual applications from familiar access points and interact with them as if they were installed locally.</p>
 <p>Considering that that is the thread that is locking the cs that is freezing other two threads, including the main window thread, I believe that somehow there is a connection with the delivery service from the App-V with the Outlook slowliness when opening or perhaps in other moments where a unavailable module is requested. Results from the web have the usual troubleshooting sugestions as restore Office installation, run in safe mode and disable AppData network redirection, but I am not sure if this is the case.</p>
 <p>Two main commands used in WinDbg for the analysis was `!uniqstack` to show the... unique stacks in the process, and `!cs`, to show all critical sections and its states.</p>
+<p>[Microsoft Application Virtualization : App-V</p>
+
 </section><hr/>
 
 <span id="cuidado-de-ambos-gafe-final-dama" title="Cuidado de ambos e a gafe no final com a dama"/></span>
@@ -455,6 +476,7 @@ signtool sign /v /fd sha256 /s PrivateCertStore /n My.com(Test) /t http://timest
 <p>Eu experimentei esta torra em casa extremamente clara porque ele me deu uma prova de 20g. Foi bem difícil moer no Timemore, o que seria ainda mais difícil no Hario. Os grãos ficaram emperrando por quase todo o processo (moagem para Aeropress). A cor dele é de paçoca e minha memória ficava tentando me dizer que estava também cheirando a paçoca. A cor final dele é de caramelo, não é de café, e o sabor lembra grama e vegetais em geral. Há um nível perceptível de doçura, provavelmente proveniente da fruta do café, e zero de amargor. Não se assemelha em nada ao café tradicional que é passado, mas pode ser interessante para os fãs dessa moda de grãos fermentados e notas mais diferentonas. Lembrando que nesse caso o resultado também possui zero acidez.</p>
 <h2>2023-06-20</h2>
 <p>Agora voltando para o doce de leite. Até então não sabia se conseguiria transferir esse aroma maravilhoso de doce de leite enquanto moía os grãos para a bebida final. Várias passadas na Aeropress e no coador de pano deram um resultado aquém do que eu esperava. Até que hoje eu passei no Melitta e ele veio! Exatamente o aroma que eu sinto quando os grãos viram pó eu consegui sentir no resultado de 18g para 240ml de água em três passadas. Agora posso sentir se tratar de um café delicado, mas que ao mesmo tempo contém uma textura perene. O doce sobressai à acidez. Não existe amargor presente.</p>
+
 </section><hr/>
 
 <span id="wireguard" title="WireGuard"/></span>
@@ -468,6 +490,7 @@ signtool sign /v /fd sha256 /s PrivateCertStore /n My.com(Test) /t http://timest
 <p>&gt;</p>
 <p>&gt; This is what we call a Cryptokey Routing Table: the simple association of public keys and allowed IPs.</p>
 <p>&gt;</p>
+
 </section><hr/>
 
 
