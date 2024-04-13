@@ -283,7 +283,7 @@ role="navigation" aria-label="main navigation">
  6. Se não deu erro, testar os passos 3 e 4 com a outra metade.</pre>
 <img src="img/suporte-tecnico-hhxZgqZ.png" caption="Snapshots da VMWare"/>
 <p>Essa série de passos foi reproduzida em menos de uma hora até chegarmos a apenas uma linha no registro:</p>
-<pre>   <a href="posts.html?q=-HKEY_CLASSES_ROOT\CLSID\{C5598E60-B307-11D1-B27D-006008C3FBFB}">-HKEY_CLASSES_ROOT\CLSID\{C5598E60-B307-11D1-B27D-006008C3FBFB}</a></pre>
+<pre>   [-HKEY_CLASSES_ROOT\CLSID\{C5598E60-B307-11D1-B27D-006008C3FBFB}]</pre>
 <p>Que se revelou pertencer à DLL <a href="http://www.google.com.br/search?q=dispex.dll">dispex.dll</a>:</p>
 <p>_"dispex.dll is a module that contains COM interfaces used by Visual Basic scripts"_</p>
 <p>Pesquisando soluções de restauração achei <a href="http://support.microsoft.com/kb/836929">esse KB</a> que explica que existe um aplicativo chamado McRepair que teoricamente conserta a bagunça.</p>
@@ -379,8 +379,8 @@ int main()
    Função antiga: bool even = nextNumber % 2;
    test    edx,edx
    setne   al
-   mov     byte ptr <a href="posts.html?q=ebp-1">ebp-1</a>,al
-   movzx   ecx,byte ptr <a href="posts.html?q=ebp-1">ebp-1</a>
+   mov     byte ptr [ebp-1],al
+   movzx   ecx,byte ptr [ebp-1]
    test    ecx,ecx
    je      criticalservice!DoProcess+0x3f (0040105f)
    
@@ -388,8 +388,8 @@ int main()
    neg     edx
    sbb     edx,edx
    inc     edx
-   mov     byte ptr <a href="posts.html?q=ebp-1">ebp-1</a>,dl
-   movzx   eax,byte ptr <a href="posts.html?q=ebp-1">ebp-1</a>
+   mov     byte ptr [ebp-1],dl
+   movzx   eax,byte ptr [ebp-1]
    test    eax,eax
    je      criticalservice!DoProcess+0x3f (0040105f)</pre>
 <p>Podemos começar escrevendo a função nova da memória do processo de teste para um arquivo, e lendo em seguida para cima da função antiga. Só que para isso temos que nos certificar que os endereços que referenciam para fora da função sejam os mesmos. Nesse caso, felizmente, são.</p>
@@ -418,7 +418,7 @@ int main()
    windbg criticalservice3.exe
    
    0:000> uf DoProcess
-   criticalservice3!DoProcess <a href="posts.html?q=s:\docs\artigos\criticalservice3.cpp @ 8">s:\docs\artigos\criticalservice3.cpp @ 8</a>:
+   criticalservice3!DoProcess [s:\docs\artigos\criticalservice3.cpp @ 8]:
        8 00401020 55              push    ebp
       ...
       12 0040107d 5d              pop     ebp
@@ -471,10 +471,10 @@ int main()
    0003005e c3              ret
    
    0:000> uf main
-   criticalservice2!main <a href="posts.html?q=s:\docs\artigos\criticalservice2.cpp @ 16">s:\docs\artigos\criticalservice2.cpp @ 16</a>:
+   criticalservice2!main [s:\docs\artigos\criticalservice2.cpp @ 16]:
       16 00401080 55              push    ebp
    ...
-   criticalservice2!main+0x1f <a href="posts.html?q=s:\docs\artigos\criticalservice2.cpp @ 21">s:\docs\artigos\criticalservice2.cpp @ 21</a>:
+   criticalservice2!main+0x1f [s:\docs\artigos\criticalservice2.cpp @ 21]:
       21 0040109f e861ffffff      call    criticalservice2!ILT+0(?DoProcessYAXXZ) (00401005)
       22 004010a4 ebf0            jmp     criticalservice2!main+0x16 (00401096)</pre>
 <p>É nessa parte que trocaremos o endereço o endereço 00401005 pela memória alocada. Note que essa escrita é muito rápida e o programa lê esse endereço por muito pouco tempo se compararmos com todas as intruções que são executadas. No entanto, essa escrita não é atômica, e mesmo que as chances sejam extremamente remotas, ainda assim pode haver uma colisão no acesso à essa parte.</p>

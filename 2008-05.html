@@ -190,7 +190,7 @@ role="navigation" aria-label="main navigation">
    
    void DoAnotherJob()
    {
-     char buf<a href="posts.html?q=100">100</a> = "";
+     char buf[100] = "";
      fgets(buf, sizeof(buf), stdin);
      printf("New line: %s", buf);
    }
@@ -236,7 +236,7 @@ role="navigation" aria-label="main navigation">
    }
    void DoAnotherJob()
    {
-     char buf<a href="posts.html?q=100">100</a> = "";
+     char buf[100] = "";
      fgets(buf, sizeof(buf), stdin);
      printf("New line: %s\n", buf);
    }
@@ -247,7 +247,7 @@ role="navigation" aria-label="main navigation">
 <p>Em vermelho podemos notar as linhas alteradas. Uma mudança diferente foi feita para o bug do buffer overflow, em seu branch correspondente:</p>
 <pre>   void DoAnotherJob()
    {
-     char buf<a href="posts.html?q=200">200</a> = "";
+     char buf[200] = "";
      fgets(buf, sizeof(buf), stdin);
      printf("New line: %s", buf);
    }</pre>
@@ -262,7 +262,7 @@ role="navigation" aria-label="main navigation">
    }
    void DoAnotherJob()
    {
-     char buf<a href="posts.html?q=ENOUGH_BYTES">ENOUGH_BYTES</a> = "";
+     char buf[ENOUGH_BYTES] = "";
      fgets(buf, sizeof(buf), stdin);
      printf("New line: %s\n", buf);
    }</pre>
@@ -329,9 +329,9 @@ role="navigation" aria-label="main navigation">
    void DoAnotherJob()
    {
    <<<<<<< TREE
-     char buf<a href="posts.html?q=ENOUGH_BYTES">ENOUGH_BYTES</a> = "";
+     char buf[ENOUGH_BYTES] = "";
    =======
-     char buf<a href="posts.html?q=200">200</a> = "";
+     char buf[200] = "";
    >>>>>>> MERGE-SOURCE
      fgets(buf, sizeof(buf), stdin);
      printf("New line: %s\n", buf);
@@ -357,7 +357,7 @@ role="navigation" aria-label="main navigation">
    }
    void DoAnotherJob()
    {
-     char buf<a href="posts.html?q=ENOUGH_BYTES">ENOUGH_BYTES</a> = "";
+     char buf[ENOUGH_BYTES] = "";
      fgets(buf, sizeof(buf), stdin);
      printf("New line: %s\n", buf);
    }</pre>
@@ -463,7 +463,7 @@ role="navigation" aria-label="main navigation">
    #else
    #define MYTRACE(message)  \
    	{ \
-   		char buffer<a href="posts.html?q=500">500</a>; \
+   		char buffer[500]; \
    		sprintf(buffer, \
    			"DBG: %s(%d) %s\n", \
    			__FILE__, \
@@ -482,7 +482,7 @@ role="navigation" aria-label="main navigation">
 <p>Por que isso? Para responder a essa questão nós precisamos olhar um pouco mais de perto no resultado do preprocessador da linguagem, que apenas troca nossa macro pelo pedaço de código que ela representa:</p>
 <pre>   if( exploded() )
    {
-     char buffer<a href="posts.html?q=500">500</a>;
+     char buffer[500];
      sprintf(buffer,
          "DBG: %s(%d) %s\n",
          __FILE__,
@@ -492,7 +492,7 @@ role="navigation" aria-label="main navigation">
    };
    else
    {
-     char buffer<a href="posts.html?q=500">500</a>;
+     char buffer[500];
      sprintf(buffer,
          "DBG: %s(%d) %s\n",
          __FILE__,
@@ -539,7 +539,7 @@ role="navigation" aria-label="main navigation">
    #define MYTRACE(message)  \
    do  \
    { \
-     char buffer<a href="posts.html?q=500">500</a>; \
+     char buffer[500]; \
      sprintf(buffer, \
        "DBG: %s(%d) %s\n", \
        __FILE__, \
@@ -553,7 +553,7 @@ role="navigation" aria-label="main navigation">
 <pre>   if( exploded() )
      do
      {
-       char buffer<a href="posts.html?q=500">500</a>;
+       char buffer[500];
        sprintf(buffer,
            "MYTRACE: %s(%d) %s\n",
            __FILE__,
@@ -565,7 +565,7 @@ role="navigation" aria-label="main navigation">
    else
      do
      {
-       char buffer<a href="posts.html?q=500">500</a>;
+       char buffer[500];
        sprintf(buffer,
            "MYTRACE: %s(%d) %s\n",
            __FILE__,

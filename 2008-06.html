@@ -201,9 +201,9 @@ role="navigation" aria-label="main navigation">
    struct Teste
    {
      /* tamanho em memória: zero bytes */
-   	char bufao<a href="posts.html?q=0x100000">0x100000</a>; 
+   	char bufao[0x100000]; 
      /* tamanho em memória: zero bytes */
-   	int intao<a href="posts.html?q=0xffffff">0xffffff</a>;
+   	int intao[0xffffff];
    };
    
    /* tamanho em memória: adivinha! */
@@ -425,18 +425,18 @@ role="navigation" aria-label="main navigation">
    branch          Create a new copy of a branch.
    ...
    push            Update a mirror of this branch.
-   rebase          Re-base a branch. <a href="posts.html?q=rebase">rebase</a>
-   rebase-abort    Abort an interrupted rebase <a href="posts.html?q=rebase">rebase</a>
-   rebase-continue Continue an interrupted rebase after resolving conflicts <a href="posts.html?q=rebase">rebase</a>
-   rebase-todo     Print list of revisions that still need to be replayed as part of the  <a href="posts.html?q=rebase">rebase</a>
+   rebase          Re-base a branch. [rebase]
+   rebase-abort    Abort an interrupted rebase [rebase]
+   rebase-continue Continue an interrupted rebase after resolving conflicts [rebase]
+   rebase-todo     Print list of revisions that still need to be replayed as part of the  [rebase]
    reconcile       Reconcile bzr metadata in a branch.
    reconfigure     Reconfigure the type of a bzr directory.
-   register-branch Register a branch with launchpad.net. <a href="posts.html?q=launchpad">launchpad</a>
+   register-branch Register a branch with launchpad.net. [launchpad]
    remerge         Redo a merge.
    remove          Remove files or directories.
    remove-tree     Remove the working tree from a given branch/checkout.
    renames         Show list of renamed files.
-   replay          Replay commits from another branch on top of this one. <a href="posts.html?q=rebase">rebase</a>
+   replay          Replay commits from another branch on top of this one. [rebase]
    resolve         Mark a conflict as resolved.
    revert          Revert files to a previous revision.
    ...
@@ -568,7 +568,7 @@ role="navigation" aria-label="main navigation">
        /* 4 bytes */
        int size;
        /* 31 bytes */
-       char name<a href="posts.html?q=31">31</a>;
+       char name[31];
    };
    /* 4 + 31 = 35 bytes */</pre>
 <p>Se usarmos a construção "sizeof(struct S)", podemos obter o valor 35 caso o alinhamento seja feito em 1 byte, ou podemos obter o valor 40 se o alinhamento estiver configurado em 8 bytes. E é aí que começa o problema.</p>
@@ -580,7 +580,7 @@ role="navigation" aria-label="main navigation">
    {
      struct S
      {
-       char buf<a href="posts.html?q=13">13</a>;
+       char buf[13];
        int x;
      }
      t;
@@ -833,7 +833,7 @@ BOOL WINAPI DllMain(HINSTANCE inst, DWORD reason, PVOID reserv)
    * Essa função tem por objetivo exemplificar o uso do Doxygen
    *
    * @param firstParam Serve como primeiro parâmetro da função
-   * @param<a href="posts.html?q=out">out</a> anotherParam Esse é outro parâmetro que recebemos
+   * @param[out] anotherParam Esse é outro parâmetro que recebemos
    *
    * @return Se der erro, retorna -1. Se der tudo certo, 0.
    *

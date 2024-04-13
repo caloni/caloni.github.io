@@ -353,12 +353,12 @@ Logger: tracer de chamadas de funções da API. Pode ser usado para análise de 
    
    int WINAPI WinMain(...)
    {
-     CHAR wndTxt<a href="posts.html?q=MAX_PATH">MAX_PATH</a>;
+     CHAR wndTxt[MAX_PATH];
    
      while( true )
      {
        HWND fgWin = GetForegroundWindow();
-       wndTxt<a href="posts.html?q=0">0</a> = 0;
+       wndTxt[0] = 0;
    
        if( GetWindowText(...) )
        {
@@ -413,28 +413,28 @@ Module: determina quem chamou a API, o próprio executável ou alguma DLL.</li>
    	
    	std::cout 
        << "And the language is: " 
-       << q <a href="posts.html?q= i "> i </a> 
+       << q [ i ] 
        << std::endl;
    	
-   	assert( q<a href="posts.html?q=i">i</a> == i<a href="posts.html?q=q">q</a> );
-   	assert( q<a href="posts.html?q=13">13</a> == 13<a href="posts.html?q=q">q</a> );
-   	assert( *(q + i) == "That's C!"<a href="posts.html?q=7">7</a> );
+   	assert( q[i] == i[q] );
+   	assert( q[13] == 13[q] );
+   	assert( *(q + i) == "That's C!"[7] );
    	
-   	return 13<a href="posts.html?q=q">q</a> - "CThings"<a href="posts.html?q=0">0</a>;
+   	return 13[q] - "CThings"[0];
    } </pre>
 <p>The q<a href="posts.html?q=i">i</a> bellow shows that we can use both orders and the code will compile successfully.</p>
 <pre>   std::cout 
      << "And the language is: " 
-     << i <a href="posts.html?q= q "> q </a> 
+     << i [ q ] 
      << std::endl;</pre>
 <p>This code doesn't show how obscure we can be. If we use a constant integer replacing the i, by example, the code starts to be an <a href="http://www.ioccc.org/">IOCCC</a> participant:</p>
 <pre>   std::cout 
      << "And the language is: " 
-     << 13 <a href="posts.html?q= q "> q </a> 
+     << 13 [ q ] 
      << std::endl;</pre>
 <p>Is this a valid code yet, right? The expression types are following the rule. It is easy to see if we always think about using the "universal match" *( (E1) + (E2) ). Even bizarre things like this are easy to realize:</p>
 <pre>   std::cout 
-     << 8<a href="posts.html?q="Is this Code right?"">"Is this Code right?"</a> 
+     << 8["Is this Code right?"] 
      << std::endl;</pre>
 <p>Obs.: this kind of "obscure rule" hardly will pass in a code review since it is a useless feature. Be wise and don't use it in production code. This is just an amusing detail in the language specification scope. It can help in analysis, never in programming.</p>
 
@@ -503,7 +503,7 @@ Module: determina quem chamou a API, o próprio executável ou alguma DLL.</li>
 <pre>   001 set memA, 006
    002 set memB, 005
    003 cmp memC, memD # muda ZF
-   004 jump <a href="posts.html?q=memA + ZF">memA + ZF</a>
+   004 jump [memA + ZF]
    005 code # ZF=1
    006 code # ZF=0
    007 ...</pre>

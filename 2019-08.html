@@ -357,7 +357,7 @@ role="navigation" aria-label="main navigation">
    
        while( sz > 1 ) 
        {
-           if( a<a href="posts.html?q=new_element">new_element</a> < a<a href="posts.html?q=median">median</a> ) 
+           if( a[new_element] < a[median] ) 
    			end = median;
            else
    			begin = median + 1;
@@ -365,8 +365,8 @@ role="navigation" aria-label="main navigation">
    		median = median == begin? begin : begin + sz / 2 - (sz % 2 ? 0 : 1);
        }
    
-   	size_t insert_offset = a<a href="posts.html?q=new_element">new_element</a> < a<a href="posts.html?q=median">median</a> ? median : median + 1;
-   	int element = a<a href="posts.html?q=new_element">new_element</a>;
+   	size_t insert_offset = a[new_element] < a[median] ? median : median + 1;
+   	int element = a[new_element];
    	a.erase(a.begin() + new_element);
    	a.insert(a.begin() + insert_offset, element);
    }</pre>
@@ -375,12 +375,12 @@ role="navigation" aria-label="main navigation">
    {
        //...
    
-   	size_t insert_offset = a<a href="posts.html?q=new_element">new_element</a> < a<a href="posts.html?q=median">median</a> ? median : median + 1;
-   	int element = a<a href="posts.html?q=new_element">new_element</a>;
+   	size_t insert_offset = a[new_element] < a[median] ? median : median + 1;
+   	int element = a[new_element];
        //a.erase(a.begin() + new_element);
        //a.insert(a.begin() + insert_offset, element);
-   	memmove(&a<a href="posts.html?q=insert_offset + 1">insert_offset + 1</a>, &a<a href="posts.html?q=insert_offset">insert_offset</a>, (new_element - insert_offset) * sizeof(int));
-   	a<a href="posts.html?q=insert_offset">insert_offset</a> = element;
+   	memmove(&a[insert_offset + 1], &a[insert_offset], (new_element - insert_offset) * sizeof(int));
+   	a[insert_offset] = element;
    }</pre>
 <p>And it worked. Now what I learned looking the other solutions.</p>
 <p>There are incredible tools in C++, even since 98 or 11, that are frequently overlooked, but it is important to notice that the language has a framework for processing: containers, algorithms and so on. By example, looking for other solutions I learned about the characteristics of multiset and priorityqueue (spoiler: both have a ordering predicate and are logarithmic). There are smart functions in algorithm, too, as lowerbound.</p>

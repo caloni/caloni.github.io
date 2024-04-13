@@ -317,19 +317,19 @@ int main(int argc, char* argv[]) // No princípio havia a pilha, quando Deus dis
     _HEAP @ 420000
     _HEAP @ 670000
     HEAP_ENTRY Size Prev Flags UserPtr UserSize - state
-   <span style="color: #ff0000;"> 00558600 0221 0000 <a href="posts.html?q=00">00</a> 00558618 01037 - (busy)</span>         <--- vamos usar esse primeiro mais tarde
-    0055fd38 0221 0221 <a href="posts.html?q=00">00</a> 0055fd50 01037 - (busy)
-    00561f48 0221 0221 <a href="posts.html?q=00">00</a> 00561f60 01037 - (busy)
-    00565260 0221 0221 <a href="posts.html?q=00">00</a> 00565278 01037 - (busy)
-    0056c998 0221 0221 <a href="posts.html?q=00">00</a> 0056c9b0 01037 - (busy)
-    0056daa0 0221 0221 <a href="posts.html?q=00">00</a> 0056dab8 01037 - (busy)
-    0056eba8 0221 0221 <a href="posts.html?q=00">00</a> 0056ebc0 01037 - (busy)
-    00570db8 0221 0221 <a href="posts.html?q=00">00</a> 00570dd0 01037 - (busy)
-    00572fc8 0221 0221 <a href="posts.html?q=00">00</a> 00572fe0 01037 - (busy)
-    005740d0 0221 0221 <a href="posts.html?q=00">00</a> 005740e8 01037 - (busy)
-    0058abc8 0221 0221 <a href="posts.html?q=00">00</a> 0058abe0 01037 - (busy)
-    00595618 0221 0221 <a href="posts.html?q=00">00</a> 00595630 01037 - (busy)
-    00599a38 0221 0221 <a href="posts.html?q=00">00</a> 00599a50 01037 - (busy)
+   <span style="color: #ff0000;"> 00558600 0221 0000 [00] 00558618 01037 - (busy)</span>         <--- vamos usar esse primeiro mais tarde
+    0055fd38 0221 0221 [00] 0055fd50 01037 - (busy)
+    00561f48 0221 0221 [00] 00561f60 01037 - (busy)
+    00565260 0221 0221 [00] 00565278 01037 - (busy)
+    0056c998 0221 0221 [00] 0056c9b0 01037 - (busy)
+    0056daa0 0221 0221 [00] 0056dab8 01037 - (busy)
+    0056eba8 0221 0221 [00] 0056ebc0 01037 - (busy)
+    00570db8 0221 0221 [00] 00570dd0 01037 - (busy)
+    00572fc8 0221 0221 [00] 00572fe0 01037 - (busy)
+    005740d0 0221 0221 [00] 005740e8 01037 - (busy)
+    0058abc8 0221 0221 [00] 0058abe0 01037 - (busy)
+    00595618 0221 0221 [00] 00595630 01037 - (busy)
+    00599a38 0221 0221 [00] 00599a50 01037 - (busy)
     0059de58 0(...)</pre>
 <p>A listagem do depurador nos dá o endereço onde o chunk foi alocado no heap e o endereço devolvido para o usuário, onde colocamos nossas tralhas. Através de ambos é possível trackear a pilha da chamada que alocou cada pedaço de memória. Isso, claro, se previamente tivermos habilitado essa informação através do <a href="http://msdn.microsoft.com/en-us/library/windows/hardware/ff549596(v=vs.85">GFlags</a>:</p>
 <img src="img/consumo-abusivo-de-memoria-JeqoBju.png" caption=""/>
@@ -338,7 +338,7 @@ int main(int argc, char* argv[]) // No princípio havia a pilha, quando Deus dis
     address 00558600 found in
     _HEAP @ 670000
     HEAP_ENTRY Size Prev Flags UserPtr UserSize - state
-    <span style="color: #ff0000;">00558600 0221 0000 <a href="posts.html?q=00">00</a> 00558618 01037 - (busy)</span>
+    <span style="color: #ff0000;">00558600 0221 0000 [00] 00558618 01037 - (busy)</span>
     Trace: b7a24
     7722dfa2 ntdll!RtlAllocateHeap+0x00000274
     5b628343 MSVCR100D!_heap_alloc_base+0x00000053
@@ -355,15 +355,15 @@ int main(int argc, char* argv[]) // No princípio havia a pilha, quando Deus dis
 <p>Dessa forma temos onde cada memória foi alocada, o que nos dará uma informação valiosa, dependendo qual o tipo de problema estamos tentando resolver.</p>
 <pre>   
    0:004> u <span style="color: #ff0000;">e818be</span>
-   MemoryConsumption!InsertItems+0x4e <a href="posts.html?q=c:\...\memoryconsumption.cpp @ 18">c:\...\memoryconsumption.cpp @ 18</a>:
+   MemoryConsumption!InsertItems+0x4e [c:\...\memoryconsumption.cpp @ 18]:
    00e818be 83c404 add esp,4
-   00e818c1 898514ffffff mov dword ptr <a href="posts.html?q=ebp-0ECh">ebp-0ECh</a>,eax
-   00e818c7 8b9514ffffff mov edx,dword ptr <a href="posts.html?q=ebp-0ECh">ebp-0ECh</a>
-   00e818cd 8955e0 mov dword ptr <a href="posts.html?q=ebp-20h">ebp-20h</a>,edx
-   00e818d0 8b45f8 mov eax,dword ptr <a href="posts.html?q=ebp-8">ebp-8</a>
-   00e818d3 8b08 mov ecx,dword ptr <a href="posts.html?q=eax">eax</a>
+   00e818c1 898514ffffff mov dword ptr [ebp-0ECh],eax
+   00e818c7 8b9514ffffff mov edx,dword ptr [ebp-0ECh]
+   00e818cd 8955e0 mov dword ptr [ebp-20h],edx
+   00e818d0 8b45f8 mov eax,dword ptr [ebp-8]
+   00e818d3 8b08 mov ecx,dword ptr [eax]
    00e818d5 51 push ecx
-   00e818d6 8b45ec mov eax,dword ptr <a href="posts.html?q=ebp-14h">ebp-14h</a></pre>
+   00e818d6 8b45ec mov eax,dword ptr [ebp-14h]</pre>
 <p>Outra informação relevante é o que está gravado na memória, que pode nos dar insights de que tipo de objeto estamos lidando:</p>
 <pre>   
    0:004> db <span style="color: #ff0000;">00558618</span>
@@ -378,15 +378,15 @@ int main(int argc, char* argv[]) // No princípio havia a pilha, quando Deus dis
 <p>Não é o caso, mas vamos supor que fosse um objeto/tipo conhecido. Poderíamos simplesmente "importar" o tipo diretamente do PDB que estamos para modelar a memória que encontramos em volta. Mais detalhes <a href="http://www.caloni.com.br/importando-tipos-de-outros-projetos">em outro artigo</a>.</p>
 <h5>Funções/classes usadas nesse artigo</h5>
 <pre>   
- * <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms682453(v=vs.85">CreateThread</a>. Cria uma nova linha de execução.
+ * [CreateThread]. Cria uma nova linha de execução.
    
- * <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms687025(v=vs.85">WaitForMultipleObjects</a>. Pode aguardar diferentes linhas de execução terminarem.
+ * [WaitForMultipleObjects]. Pode aguardar diferentes linhas de execução terminarem.
    
- * <a href="posts.html?q=std::list">std::list</a>. Lista na STL para inserir/remover objetos na frente e atrás (ui).
+ * [std::list]. Lista na STL para inserir/remover objetos na frente e atrás (ui).
    
- * <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms683472(v=vs.85">Initialize</a>, <a href="posts.html?q=Enter">Enter</a> e <a href="posts.html?q=LeaveCriticalSection">LeaveCriticalSection</a>. Uma maneira simples de criar blocos de entrada atômica (apenas uma thread entra por vez).
+ * [Initialize], [Enter] e [LeaveCriticalSection]. Uma maneira simples de criar blocos de entrada atômica (apenas uma thread entra por vez).
    
- * <a href="http://www.cplusplus.com/reference/clibrary/cstring/memset/">memset</a>. Se você não sabe usar memset, provavelmente não entendeu nada desse artigo.</pre>
+ * [memset]. Se você não sabe usar memset, provavelmente não entendeu nada desse artigo.</pre>
 
 
 

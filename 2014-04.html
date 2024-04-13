@@ -649,10 +649,10 @@ def FieldRenderWrong(row, col, mines):
    from itertools import islice
    
    TilePositions = [
-           <a href="posts.html?q=32, 216">32, 216</a>, <a href="posts.html?q=153, 216">153, 216</a>, <a href="posts.html?q=274, 216">274, 216</a>, <a href="posts.html?q=395, 216">395, 216</a>,
-           <a href="posts.html?q=32, 339">32, 339</a>, <a href="posts.html?q=153, 339">153, 339</a>, <a href="posts.html?q=274, 339">274, 339</a>, <a href="posts.html?q=395, 339">395, 339</a>,
-           <a href="posts.html?q=32, 461">32, 461</a>, <a href="posts.html?q=153, 461">153, 461</a>, <a href="posts.html?q=274, 461">274, 461</a>, <a href="posts.html?q=395, 461">395, 461</a>,
-           <a href="posts.html?q=32, 584">32, 584</a>, <a href="posts.html?q=153, 584">153, 584</a>, <a href="posts.html?q=274, 584">274, 584</a>, <a href="posts.html?q=395, 584">395, 584</a>
+           [32, 216], [153, 216], [274, 216], [395, 216],
+           [32, 339], [153, 339], [274, 339], [395, 339],
+           [32, 461], [153, 461], [274, 461], [395, 461],
+           [32, 584], [153, 584], [274, 584], [395, 584]
    	]
    TileSize = 106
    
@@ -667,10 +667,10 @@ def FieldRenderWrong(row, col, mines):
    	smallFont = ImageFont.truetype('DejaVuSans-Bold.ttf', 24)
    	dbgFont = ImageFont.truetype('DejaVuSans-Bold.ttf', 8)
    	for r in range(len(board)):
-   		for c in range(len(board<a href="posts.html?q=r">r</a>)):
-   			number = 2 ** board<a href="posts.html?q=r">r</a><a href="posts.html?q=c">c</a>
+   		for c in range(len(board[r])):
+   			number = 2 ** board[r][c]
    			if number > 1:
-   				tileX, tileY = TilePositions<a href="posts.html?q=r*4 +c">r*4 +c</a><a href="posts.html?q=0">0</a>, TilePositions<a href="posts.html?q=r*4 +c">r*4 +c</a><a href="posts.html?q=1">1</a>
+   				tileX, tileY = TilePositions[r*4 +c][0], TilePositions[r*4 +c][1]
    				font = smallFont if number > 64 else bigFont
    				text = str(number)
    				textW, textH = draw.textsize(text, font=font)
@@ -680,13 +680,13 @@ def FieldRenderWrong(row, col, mines):
    	return img
    
    def ReadNextBoard(f):
-   	lines = <a href="posts.html?q=lines for lines in islice(f, 4)">lines for lines in islice(f, 4)</a>
+   	lines = [lines for lines in islice(f, 4)]
    	if (len(lines)) == 4:
    		board = [
-   			<a href="posts.html?q= int(lines[0"> int(lines[0</a><a href="posts.html?q=0">0</a>, 16), int(lines<a href="posts.html?q=0">0</a><a href="posts.html?q=1">1</a>, 16), int(lines<a href="posts.html?q=0">0</a><a href="posts.html?q=2">2</a>, 16), int(lines<a href="posts.html?q=0">0</a><a href="posts.html?q=3">3</a>, 16) ],
-   			<a href="posts.html?q= int(lines[1"> int(lines[1</a><a href="posts.html?q=0">0</a>, 16), int(lines<a href="posts.html?q=1">1</a><a href="posts.html?q=1">1</a>, 16), int(lines<a href="posts.html?q=1">1</a><a href="posts.html?q=2">2</a>, 16), int(lines<a href="posts.html?q=1">1</a><a href="posts.html?q=3">3</a>, 16) ],
-   			<a href="posts.html?q= int(lines[2"> int(lines[2</a><a href="posts.html?q=0">0</a>, 16), int(lines<a href="posts.html?q=2">2</a><a href="posts.html?q=1">1</a>, 16), int(lines<a href="posts.html?q=2">2</a><a href="posts.html?q=2">2</a>, 16), int(lines<a href="posts.html?q=2">2</a><a href="posts.html?q=3">3</a>, 16) ],
-   			<a href="posts.html?q= int(lines[3"> int(lines[3</a><a href="posts.html?q=0">0</a>, 16), int(lines<a href="posts.html?q=3">3</a><a href="posts.html?q=1">1</a>, 16), int(lines<a href="posts.html?q=3">3</a><a href="posts.html?q=2">2</a>, 16), int(lines<a href="posts.html?q=3">3</a><a href="posts.html?q=3">3</a>, 16) ]
+   			[ int(lines[0][0], 16), int(lines[0][1], 16), int(lines[0][2], 16), int(lines[0][3], 16) ],
+   			[ int(lines[1][0], 16), int(lines[1][1], 16), int(lines[1][2], 16), int(lines[1][3], 16) ],
+   			[ int(lines[2][0], 16), int(lines[2][1], 16), int(lines[2][2], 16), int(lines[2][3], 16) ],
+   			[ int(lines[3][0], 16), int(lines[3][1], 16), int(lines[3][2], 16), int(lines[3][3], 16) ]
    			]
    		return board
    	return None

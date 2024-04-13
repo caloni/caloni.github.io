@@ -596,7 +596,7 @@ role="navigation" aria-label="main navigation">
    
    	COMPUTER_NAME_FORMAT CF = ComputerNameDnsDomain;
    
-   	char szDomainName<a href="posts.html?q=MAX_COMPUTERNAME_LENGTH">MAX_COMPUTERNAME_LENGTH</a>;
+   	char szDomainName[MAX_COMPUTERNAME_LENGTH];
    
    	DWORD dwSize = sizeof(szDomainName);
    
@@ -661,8 +661,8 @@ role="navigation" aria-label="main navigation">
    
    void _tmain(void)
    {
-   	TCHAR buffer<a href="posts.html?q=256">256</a> = TEXT("");
-   	TCHAR szDescription<a href="posts.html?q=8">8</a><a href="posts.html?q=32">32</a> = {TEXT("NetBIOS"), 
+   	TCHAR buffer[256] = TEXT("");
+   	TCHAR szDescription[8][32] = {TEXT("NetBIOS"), 
    	TEXT("DNS hostname"), 
    	TEXT("DNS domain"), 
    	TEXT("DNS fully-qualified"), 
@@ -681,7 +681,7 @@ role="navigation" aria-label="main navigation">
    			GetLastError());
    			return;
    		}
-   			else _tprintf(TEXT("%s: %s\n"), szDescription<a href="posts.html?q=cnf">cnf</a>, buffer);
+   			else _tprintf(TEXT("%s: %s\n"), szDescription[cnf], buffer);
    
    		dwSize = sizeof(buffer);
    		ZeroMemory(buffer, dwSize);

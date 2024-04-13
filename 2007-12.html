@@ -345,7 +345,7 @@ role="navigation" aria-label="main navigation">
 <p>&gt; A string literal is a sequence of characters (as defined in 2.13.2) surrounded by double quotes, optionally beginning with the letter L, as in "..." or L"...". (...) An ordinary string literal has type "array of n const char" and static storage duration (...).</p>
 <p>Esses textos do padrão demonstram que o operador sizeof irá retornar o número de bytes baseado no tipo do operando, e que o tipo de uma string literal é de array de caracteres com o tamanho justo para caber a string.</p>
 <p>Bem, todos sabemos o resultado das linhas abaixo:</p>
-<pre>   char charArray<a href="posts.html?q=100">100</a>;
+<pre>   char charArray[100];
    size_t len = sizeof(charArray);</pre>
 <p>Nesse caso é simples de observar que o operador sizeof irá retornar 100, que é o número em bytes para abrigar o tipo do operando, que é de "array de 100 caracteres". Podemos, então, imaginar que a nossa idiomática expressão do início é no fundo um resumo das linhas que se seguem.</p>
 <pre>   ...
@@ -403,9 +403,9 @@ role="navigation" aria-label="main navigation">
    		{
    			for( int i = 0; i < listBox->Count; ++i )
    			{
-   				if( listBox->Selected<a href="posts.html?q=i">i</a> )
+   				if( listBox->Selected[i] )
    				{
-   					ctrl = this->FindChildControl(listBox->Items->Strings<a href="posts.html?q=i">i</a>);
+   					ctrl = this->FindChildControl(listBox->Items->Strings[i]);
    					listBox->Items->Delete(i);
    					break;
    				}
@@ -539,14 +539,14 @@ role="navigation" aria-label="main navigation">
    	char ditado[] = "Diga-me com que programas e eu te direi quem és.";
    	int indice = 8;
    
-   	std::cout << "E a linguagem é: " << ditado<a href="posts.html?q=indice">indice</a> << std::endl;
+   	std::cout << "E a linguagem é: " << ditado[indice] << std::endl;
    } </pre>
 <p>A teoria comprovada na prática: temos duas expressões no formato E1 <a href="posts.html?q= E2 "> E2 </a> sendo uma do tipo ponteiro para char e a outra do tipo int, exatamente como a regra define. O detalhe obscuro que permaneceu durante a evolução dessas duas linguagens é que a regra de acesso a elementos não define a ordem das expressões. Assim sendo, me aproveito dessa flexibilidade e inverto os elementos do subscrito:</p>
-<pre>   std::cout << "E a linguagem é: " << indice<a href="posts.html?q=ditado">ditado</a> << std::endl;</pre>
+<pre>   std::cout << "E a linguagem é: " << indice[ditado] << std::endl;</pre>
 <p>Isso também compila e tem o mesmo resultado, pois também é equivalente a *( (E1) + (E2) ). No final dá na mesma. E do jeito que está a inversão nem dá tanto susto assim, pois estamos lidando com duas variáveis. A coisa começa a ficar mais <a href="http://www.ioccc.org">IOCCC</a> se colocarmos em vez de uma delas uma constante:</p>
-<pre>   std::cout << "E a linguagem é: " << 8<a href="posts.html?q=ditado">ditado</a> << std::endl;</pre>
+<pre>   std::cout << "E a linguagem é: " << 8[ditado] << std::endl;</pre>
 <p>Isso ainda é válido, certo? Os tipos das expressões estão de acordo com a regra. Fica simples de visualizar se sempre pensarmos no "equivalente universal" *( (E1) + (E2) ). Até coisas bizarras como essa acabam ficando simples:</p>
-<pre>   std::cout << 5<a href="posts.html?q="Isso Compila?"">"Isso Compila?"</a> << std::endl;</pre>
+<pre>   std::cout << 5["Isso Compila?"] << std::endl;</pre>
 <p>Nota do autor: esse tipo de "recurso obscuro" dificilmente passará por uma revisão de código, e com razão, dado que não é um método útil e muito menos conhecido. Sábio é saber evitar. Não acredito, porém, que o conhecimento de certos detalhes da linguagem em que se programa sejam completamente inúteis. Conhecimento nunca é demais, pois quanto mais se conhece maior é o número de ferramentas conceituais que se dispõe para resolver um certo problema. Em muitas vezes o "conhecimento inútil" de hoje se torna um guia sábio quando se precisa de bons conceitos sobre a coisa toda. No entanto, que não venha um <a href="http://www.google.com.br/search?q=boi+corneta+site%3Asualingua.com.br">boi-corneta</a> me dizer que esse código fere as boas práticas de programação. Tenho dito.</p>
 
 
@@ -639,7 +639,7 @@ role="navigation" aria-label="main navigation">
          && i < sizeof(second);
        ++i )
      {
-       pResult<a href="posts.html?q=i">i</a> = pFirst<a href="posts.html?q=i">i</a> ^ pSecond<a href="posts.html?q=i">i</a>;
+       pResult[i] = pFirst[i] ^ pSecond[i];
      }
    }
    
@@ -655,8 +655,8 @@ role="navigation" aria-label="main navigation">
      cout << "x: " << x 
        << ", y: " << y << "\n\n";
    
-     char str1<a href="posts.html?q=50">50</a> = "teste de xor";
-     char str2<a href="posts.html?q=50">50</a> = "aceita strings!";
+     char str1[50] = "teste de xor";
+     char str2[50] = "aceita strings!";
    
      cout << "str1: " << str1 
        << ", str2: " << str2 << '\n';

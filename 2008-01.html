@@ -214,10 +214,10 @@ Essa é uma coisa que está faltando aqui no Caloni.com.br, que é a manutençã
    push ebx
    push edi
    call ds:KeWaitForMultipleObjects
-   mov eax, <a href="posts.html?q=esp+30h+var_14">esp+30h+var_14</a>
+   mov eax, [esp+30h+var_14]
    mov edi, ds:ExFreePoolWithTag
    ...
-   mov ecx, <a href="posts.html?q=esp+20h">esp+20h</a>
+   mov ecx, [esp+20h]
    push 0</pre>
 <p>Por sorte o caminho não foi tão longo e cheguei rapidamente no ponto onde é chamada a função KeWaitForMultipleObject que, de acordo com o WinDbg e com a OSR, pode gerar uma tela azul se esperarmos por mais de três objetos e não especificarmos um buffer no parâmetro WaitBlockArray. Agora podemos olhar no fonte e ver por quantos objetos esperamos e tirar nossa própria conclusão do que está acontecendo.</p>
 <pre>   //...
@@ -324,7 +324,7 @@ Essa é uma coisa que está faltando aqui no Caloni.com.br, que é a manutençã
    0575f458  63 61 63 61 20 66 61 6e-74 61 73 6d 61 73 00 63  caca fantasmas.c</pre>
 <p>De fato, a lista de respostas é tudo que encontramos.</p>
 <p>Assim como no <a href="posts.html?q=carregando-dlls-arbitrarias-pelo-windbg-parte-2">artigo sobre carregamento de DLLs arbitrárias</a>,  vamos usar o muito útil comando .foreach, que caminha em uma lista de resultados de um comando para executar uma lista secundária de comandos. Apenas para relembrar, a sintaxe do foreach é a seguinte:</p>
-<pre>   .foreach <a href="posts.html?q=Options">Options</a> ( Variable  { InCommands } ) { OutCommands }
+<pre>   .foreach [Options] ( Variable  { InCommands } ) { OutCommands }
  * Variable. Um nome que usamos no OutCommands. Representa cada token do resultado de InCommands.
  * InCommands. Um ou mais comandos que executamos para gerar uma saída na tela. Essa saída será usada em OutCommands, onde Variable é substituído por cada token da saída.
  * OutCommands. Um ou mais comandos executados usando a saída na tela de InCommands.</pre>
@@ -352,10 +352,10 @@ Essa é uma coisa que está faltando aqui no Caloni.com.br, que é a manutençã
 <p>Isso acontece porque ele utilizada cada palavra separada por espaços da saída da busca.</p>
 <pre>   0575f458 63 61 63 61 20 66 61 6e-74 61 73 6d 61 73 00 63 caca fantasmas.c</pre>
 <p>Por isso usamos a flag `-<a href="posts.html?q=1">1</a>`, que faz com que o comando imprima apenas o endereço onde ele encontrou a string.</p>
-<pre>   0:017> s -<a href="posts.html?q=1">1</a>a 0 0fffffff "caca fantasmas"
+<pre>   0:017> s -[1]a 0 0fffffff "caca fantasmas"
    0x0575f458</pre>
 <p>Enfim, vamos ao que interessa. Para imprimir todas as strings que representam as respostas, podemos simplesmente, no OutCommands, fazer uma nova busca por string, só que dessa vez genérica, dentro de uma faixa razoável (digamos, 4KB).</p>
-<pre>   0:006> .foreach ( answerList { s -<a href="posts.html?q=1">1</a>a 0 0fffffff "caca fantasmas" } ) { s -sa answerList L1000 }
+<pre>   0:006> .foreach ( answerList { s -[1]a 0 0fffffff "caca fantasmas" } ) { s -sa answerList L1000 }
    059ff458  "caca fantasmas"
    059ff467  "caca-fantasmas"
    059ff47a  "a fantasmas"
@@ -801,14 +801,14 @@ Essa é uma coisa que está faltando aqui no Caloni.com.br, que é a manutençã
    {
        if( argc == 2 )
        {
-           int num = atoi(argv<a href="posts.html?q=1">1</a>);
+           int num = atoi(argv[1]);
            int ret = factorial(num, 1);
            printf("factorial %d = %d\n", num, ret);
            return ret;
        }
        else
        {
-           printf("how to use: %s <number>\n", argv<a href="posts.html?q=0">0</a>);
+           printf("how to use: %s <number>\n", argv[0]);
            return 1;
        }
    }</pre>
@@ -877,7 +877,7 @@ Essa é uma coisa que está faltando aqui no Caloni.com.br, que é a manutençã
    		if( ptzChar )
    		{
    			size_t offset = ptzChar - g_tzRussAlphabet;
-   			pMsg->wParam = (WPARAM) g_tzPortAlphabet<a href="posts.html?q=offset">offset</a>;
+   			pMsg->wParam = (WPARAM) g_tzPortAlphabet[offset];
    		}
    	}
    } </pre>
@@ -1109,7 +1109,7 @@ Essa é uma coisa que está faltando aqui no Caloni.com.br, que é a manutençã
      {
        system("pause");
    
-       TCHAR (*sharedVar)<a href="posts.html?q=100">100</a> = 0; // ponteiro para array de 100 TCHARs
+       TCHAR (*sharedVar)[100] = 0; // ponteiro para array de 100 TCHARs
        HANDLE varH = AllocSharedVariable(&sharedVar, _T(SHARED_VAR));
    
        if( varH && sharedVar )
@@ -1122,14 +1122,14 @@ Essa é uma coisa que está faltando aqui no Caloni.com.br, que é a manutençã
      else // não passou parâmetro: escreve na variável 
      // compartilhada e chama nova instância
      {
-       TCHAR (*sharedVar)<a href="posts.html?q=100">100</a> = 0; // ponteiro para array de 100 TCHARs
+       TCHAR (*sharedVar)[100] = 0; // ponteiro para array de 100 TCHARs
        HANDLE varH = AllocSharedVariable(&sharedVar, _T(SHARED_VAR));
    
        if( varH && sharedVar )
        {
-         PTSTR cmd = new TCHAR<a href="posts.html?q= _tcslen(argv[0"> _tcslen(argv[0</a>) + 10 ];
+         PTSTR cmd = new TCHAR[ _tcslen(argv[0]) + 10 ];
          _tcscpy(cmd, _T("\""));
-         _tcscat(cmd, argv<a href="posts.html?q=0">0</a>);
+         _tcscat(cmd, argv[0]);
          _tcscat(cmd, _T("\" 2"));
    
          _tcscpy(*sharedVar, _T("Tuintuintuclaim"));

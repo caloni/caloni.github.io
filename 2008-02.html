@@ -154,7 +154,7 @@ role="navigation" aria-label="main navigation">
          system("pause");
    
          // array de 100 TCHARs
-         SharedVar<TCHAR <a href="posts.html?q=100">100</a>> sharedVar(_T(SHARED_VAR));
+         SharedVar<TCHAR [100]> sharedVar(_T(SHARED_VAR));
    
          _tprintf(_T("Frase secreta: \'%s\'\n"), *sharedVar);
          _tprintf(_T("Pressione <enter> para retornar..."));
@@ -164,11 +164,11 @@ role="navigation" aria-label="main navigation">
        // compartilhada e chama nova instância
        {
          // array de 100 TCHARs
-         SharedVar<TCHAR <a href="posts.html?q=100">100</a>> sharedVar(_T(SHARED_VAR));
+         SharedVar<TCHAR [100]> sharedVar(_T(SHARED_VAR));
    
-         PTSTR cmd = new TCHAR<a href="posts.html?q= _tcslen(argv[0"> _tcslen(argv[0</a>) + 10 ];
+         PTSTR cmd = new TCHAR[ _tcslen(argv[0]) + 10 ];
          _tcscpy(cmd, _T("\""));
-         _tcscat(cmd, argv<a href="posts.html?q=0">0</a>);
+         _tcscat(cmd, argv[0]);
          _tcscat(cmd, _T("\" 2"));
    
          _tcscpy(*sharedVar,
@@ -268,7 +268,7 @@ role="navigation" aria-label="main navigation">
    Build log was saved at "file://c:Projects...ReleaseBuildLog.htm"
    FailedProj - 2 error(s), 0 warning(s)</pre>
 <p>If you think "what about when a project generates more than 9 errors? the regex wouldn't be able to catch this case", well, you're right. Anyway, that's the quicker form to search for the unsuccessful project inside a big solution. A more complex yet complete regex would be:</p>
-<pre>   <a href="posts.html?q=1-9">1-9</a><a href="posts.html?q=0-9">0-9</a>* err</pre>
+<pre>   [1-9][0-9]* err</pre>
 <p>For me, the first version is enough. It is faster to type, simpler to catch and solves my problem. I hope it can solve yours =)</p>
 </section><hr/>
 
@@ -281,14 +281,14 @@ role="navigation" aria-label="main navigation">
 <p>Como alguns devem saber, e outros não (ou não deveriam), existe uma competição internacional para escolher quem escreve o código em C mais ofuscado. Isso mesmo. O evento se chama <a href="http://www.ioccc.org">The International Obfuscated C Code Contest</a> (IOCCC resumidamente) e costuma premiar anualmente os melhores "do ramo" com a chamada "menção desonrosa".</p>
 <p>Acredito que a real valia de um campeonato desse porte é fazer as pessoas pensarem mais a fundo sobre as regras da linguagem. Isso faz com que erros mais obscuros que encontramos no dia-a-dia se tornem mais fáceis. Claro que ninguém deveria programar como os caras desse torneio, mas a título de aprendizagem, é uma grande aula sobre C.</p>
 <p>Publico aqui a interpretação do primeiro programa a ganhar a tal <a href="http://www.ioccc.org/1984/anonymous/anonymous.c">menção desonrosa</a>, em 1984. Se trata do batidíssimo "Hello World", só que um pouco compactado e confuso. Vejamos o fonte original:</p>
-<pre>   int i;main(){for(;i<a href="posts.html?q="">"</a><i;++i){--i;}"];read('-'-'-',i+++"hell\
+<pre>   int i;main(){for(;i["]<i;++i){--i;}"];read('-'-'-',i+++"hell\
    o, world!\n",'/'/'/'));}read(j,i,p){write(j/p+p,i---j,i/i);}</pre>
 <p>Aparentemente o fonte é bem confuso, apesar de podermos já ver a famosa string escondida no meio do código. Depois de aplicar uma formatação mais adequada para nossa tarefa de desfazer o feito, o resultado é bem mais legível:</p>
 <pre>   int i;
    
    main()
    {
-     for( ; i<a href="posts.html?q="">"</a> < i; ++i ){--i;}"]; read('-' - '-', i++ + "hello, world!\n", '/' / '/') )
+     for( ; i["] < i; ++i ){--i;}"]; read('-' - '-', i++ + "hello, world!\n", '/' / '/') )
        ;
    }
    
@@ -305,18 +305,18 @@ role="navigation" aria-label="main navigation">
 <pre>   for( ; <censurado>; <censurado> )
        ;</pre>
 <p>Outra coisa óbvia, mas não tanto, é um laço for sem corpo. Ele possui apenas um ponto-e-vírgula, que identifica uma instrução nula. Não faz nada no corpo, mas pode fazer coisas interessantes no cabeçalho, ou seja, na inicialização, no teste e no incremento. Como podemos ver, a inicialização também está vazia, contendo esse laço apenas o teste e o incremento. No teste temos a seguinte comparação:</p>
-<pre>   i<a href="posts.html?q="">"</a> < i; ++i ){--i;}"]</pre>
+<pre>   i["] < i; ++i ){--i;}"]</pre>
 <p>Ora, sabendo que a variável "i" inicialmente tem o valor zero, o que estamos vendo aqui é a mesma coisa que</p>
-<pre>   0<a href="posts.html?q="">"</a> < i; ++i ){--i;}"]</pre>
+<pre>   0["] < i; ++i ){--i;}"]</pre>
 <p>E uma vez que aprendemos algumas <a href="posts.html?q=curiosidades-inuteis-o-operador-de-subscrito-em-c">peculiaridades sobre o operador de subscrito</a> em C, sabemos que a linha acima é equivalente a essa linha abaixo:</p>
-<pre>   "] < i; ++i ){--i;}"<a href="posts.html?q=0">0</a></pre>
+<pre>   "] < i; ++i ){--i;}"[0]</pre>
 <p>Agora ficou mais fácil de entender. Se trocarmos a nossa string literal por uma variável (forma mais usual), temos um acesso típico a um dos caracteres de uma string:</p>
 <pre>   char* str = "] < i; ++i ){--i;}";
-   str<a href="posts.html?q=0">0</a>;</pre>
+   str[0];</pre>
 <p>Só precisamos lembrar que a variável i é que define a posição, e por ser uma variável, pode mudar durante a execução:</p>
 <pre>   int i = 0;
    char* str = "] < i; ++i ){--i;}";
-   str<a href="posts.html?q=i">i</a>;</pre>
+   str[i];</pre>
 <p>Pois bem. Agora sabemos que o laço irá ser testado pelo menos uma vez, o que quer dizer que a parte do incremento vai executar pelo menos uma vez. E essa parte é a seguinte:</p>
 <pre>   read('-' - '-', i++ + "hello, world!\n", '/' / '/')</pre>
 <p>Uma chamada de função. Nada mais simples. Podemos anular algumas coisas por aqui. Por exemplo, se subtraímos um número dele mesmo encontramos zero, e se dividirmos um número por ele mesmo o resultado é um:</p>
@@ -330,7 +330,7 @@ role="navigation" aria-label="main navigation">
 <p>A primeira forma é a resposta correta devido à regra de precedência (deferida pela gramática). Antes os operadores unários, depois os binários. Dessa forma, um "i+" não quer dizer nada, mas "i++" é um operando com um operador unário.</p>
 <p>Voltando à expressão, imagino que a essa altura você já deva ter decifrado que i++ + "hello, world!\n" é o mesmo que:</p>
 <pre>   char* str = "hello, world"\n";
-   &str<a href="posts.html?q=i++">i++</a>;</pre>
+   &str[i++];</pre>
 <p>Ou seja, obtemos o endereço do primeiro caractere da string e incrementamos nossa variável "i" que, como sabemos, é usada no teste do laço for. Na primeira vez, testamos se o primeiro caractere de "] &lt; i; ++i ){--i;}" é diferente de zero. Na segunda iteração, portanto, iremos testar se o segundo caractere será zero. Sabendo disso, podemos deduzir que o laço irá correr por todos os caracteres da string de teste, até encontrar o zero finalizador de string. Ao mesmo tempo, iremos enviar para a função read sempre o endereço do i'ésimo caractere da string "hello, world!\n", pois essa string também é indexada pela variável "i".</p>
 <p>Isso quer dizer que nosso laço irá terminar exatamente no final de ambas as strings! (Note, que para comparar as strings, usamos as strings originais do programa, sem melhorar a formatação).</p>
 <pre>   "] < i ; + + i ) { - - i ; }"
@@ -377,7 +377,7 @@ role="navigation" aria-label="main navigation">
      char* indexString = "]<i;++i){--i;}";
      char* outputString = "hello, world!\n";
    
-     for( ; indexString<a href="posts.html?q=i">i</a> != 0; read(&outputString<a href="posts.html?q=i++">i++</a>) )
+     for( ; indexString[i] != 0; read(&outputString[i++]) )
        ;
    }
    
@@ -408,7 +408,7 @@ role="navigation" aria-label="main navigation">
    
    #define MYTRACE( message )   \
    {                            \
-     char buffer<a href="posts.html?q=500">500</a>;          \
+     char buffer[500];          \
      sprintf(buffer,            \
        "MYTRACE: %s(%d) %s\n",  \
        __FILE__,                \
@@ -427,7 +427,7 @@ role="navigation" aria-label="main navigation">
 <p>Why's that? In order to answer this question, we need to look closer into the result code from the preprocessor, just replacing the macro for its piece of code:</p>
 <pre>   if( exploded() )
    {
-     char buffer<a href="posts.html?q=500">500</a>;
+     char buffer[500];
      sprintf(buffer,
        "MYTRACE: %s(%d) %s\n",
        __FILE__,
@@ -437,7 +437,7 @@ role="navigation" aria-label="main navigation">
    };
    else
    {
-     char buffer<a href="posts.html?q=500">500</a>;
+     char buffer[500];
      sprintf(buffer,
        "MYTRACE: %s(%d) %s\n",
        __FILE__,
@@ -487,7 +487,7 @@ role="navigation" aria-label="main navigation">
    #define MYTRACE( message )   \
    do                           \
    {                            \
-     char buffer<a href="posts.html?q=500">500</a>;          \
+     char buffer[500];          \
      sprintf(buffer,            \
        "MYTRACE: %s(%d) %s\n",  \
        __FILE__,                \
@@ -502,7 +502,7 @@ role="navigation" aria-label="main navigation">
 <pre>   if( exploded() )
    do
    {
-     char buffer<a href="posts.html?q=500">500</a>;
+     char buffer[500];
      sprintf(buffer,
        "MYTRACE: %s(%d) %s\n",
        __FILE__,
@@ -514,7 +514,7 @@ role="navigation" aria-label="main navigation">
    else
    do
    {
-     char buffer<a href="posts.html?q=500">500</a>;
+     char buffer[500];
      sprintf(buffer,
        "MYTRACE: %s(%d) %s\n",
        __FILE__,
@@ -581,7 +581,7 @@ role="navigation" aria-label="main navigation">
 <p>Na compilação você irá encontrar geralmente erros bem comportados, como conversão entre tipos, else sem if e esquecimento de pontuação ou parênteses.</p>
 <pre>   int cannotConvertError(const char* message)
    {
-   	int ret = message<a href="posts.html?q=0">0</a>;
+   	int ret = message[0];
    	return ret;
    }
    
@@ -766,10 +766,10 @@ role="navigation" aria-label="main navigation">
 <p>Depois da leitura, não temos muitas alternativas a não ser fazer o tracking de chamadas até que o mesmo buffer esteja desencriptado. Esse é o caminho natural das coisas, mas poderia haver complicações secundárias, como uma cópia de buffer antes de seu uso. Estou usando passos simples porque realmente foi muito simples descobrir o segredo da ofuscação.</p>
 <pre>   0:000> p
    Houaiss2+0xa7ab:
-   0040a7ab 7507            jne     Houaiss2+0xa7b4 (0040a7b4)              <a href="posts.html?q=br=1">br=1</a>
+   0040a7ab 7507            jne     Houaiss2+0xa7b4 (0040a7b4)              [br=1]
    0:000> p
    Houaiss2+0xa7b4:
-   0040a7b4 8b0424          mov     eax,dword ptr <a href="posts.html?q=esp">esp</a>  ss:0023:0012fa88=00000200
+   0040a7b4 8b0424          mov     eax,dword ptr [esp]  ss:0023:0012fa88=00000200
    0:000> p
    Houaiss2+0xa7b7:
    0040a7b7 5a              pop     edx
@@ -787,22 +787,22 @@ role="navigation" aria-label="main navigation">
    0040a7bb c3              ret
    0:000> p
    Houaiss2+0xb9062:
-   004b9062 8945f8          mov     dword ptr <a href="posts.html?q=ebp-8">ebp-8</a>,eax ss:0023:0012fac4=00000000
+   004b9062 8945f8          mov     dword ptr [ebp-8],eax ss:0023:0012fac4=00000000
    0:000> p
    Houaiss2+0xb9065:
-   004b9065 0375f8          add     esi,dword ptr <a href="posts.html?q=ebp-8">ebp-8</a> ss:0023:0012fac4=00000200
+   004b9065 0375f8          add     esi,dword ptr [ebp-8] ss:0023:0012fac4=00000200
    0:000> p
    Houaiss2+0xb9068:
-   004b9068 807b1900        cmp     byte ptr <a href="posts.html?q=ebx+19h">ebx+19h</a>,0       ds:0023:090cf1f9=01
+   004b9068 807b1900        cmp     byte ptr [ebx+19h],0       ds:0023:090cf1f9=01
    0:000> p
    Houaiss2+0xb906c:
-   004b906c 7410            je      Houaiss2+0xb907e (004b907e)             <a href="posts.html?q=br=0">br=0</a>
+   004b906c 7410            je      Houaiss2+0xb907e (004b907e)             [br=0]
    0:000> p
    Houaiss2+0xb906e:
-   004b906e 8b4df8          mov     ecx,dword ptr <a href="posts.html?q=ebp-8">ebp-8</a> ss:0023:0012fac4=00000200
+   004b906e 8b4df8          mov     ecx,dword ptr [ebp-8] ss:0023:0012fac4=00000200
    0:000> p
    Houaiss2+0xb9071:
-   004b9071 8b933c200300    mov     edx,dword ptr <a href="posts.html?q=ebx+3203Ch">ebx+3203Ch</a> ds:0023:0910121c=00000000
+   004b9071 8b933c200300    mov     edx,dword ptr [ebx+3203Ch] ds:0023:0910121c=00000000
    0:000> p
    Houaiss2+0xb9077:
    004b9077 8bc3            mov     eax,ebx
@@ -852,7 +852,7 @@ role="navigation" aria-label="main navigation">
    eip=004b8a72 esp=0012fa94 ebp=0012facc iopl=0         nv up ei pl nz na pe nc
    cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000206
    Houaiss2+0xb8a72:
-   004b8a72 7c12            jl      Houaiss2+0xb8a86 (004b8a86)             <a href="posts.html?q=br=0">br=0</a>
+   004b8a72 7c12            jl      Houaiss2+0xb8a86 (004b8a86)             [br=0]
    0:000> p
    eax=08bbf1a0 ebx=08bbf1a0 ecx=000001ff edx=00000000 esi=00000200 edi=02fe8661
    eip=004b8a74 esp=0012fa94 ebp=0012facc iopl=0         nv up ei pl nz na pe nc
@@ -870,7 +870,7 @@ role="navigation" aria-label="main navigation">
    eip=004b8a77 esp=0012fa94 ebp=0012facc iopl=0         nv up ei pl zr na pe nc
    cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
    Houaiss2+0xb8a77:
-   004b8a77 8a5c1030        mov     bl,byte ptr <a href="posts.html?q=eax+edx+30h">eax+edx+30h</a>  ds:0023:08bbf1d0=1f
+   004b8a77 8a5c1030        mov     bl,byte ptr [eax+edx+30h]  ds:0023:08bbf1d0=1f
    0:000> p
    eax=08bbf1a0 ebx=0000001f ecx=00000200 edx=00000000 esi=00000200 edi=02fe8661
    eip=004b8a7b esp=0012fa94 ebp=0012facc iopl=0         nv up ei pl zr na pe nc
@@ -882,7 +882,7 @@ role="navigation" aria-label="main navigation">
    eip=004b8a7e esp=0012fa94 ebp=0012facc iopl=0         nv up ei pl nz ac po nc
    cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000212
    Houaiss2+0xb8a7e:
-   004b8a7e 885c1030        mov     byte ptr <a href="posts.html?q=eax+edx+30h">eax+edx+30h</a>,bl ds:0023:08bbf1d0=1f
+   004b8a7e 885c1030        mov     byte ptr [eax+edx+30h],bl ds:0023:08bbf1d0=1f
    0:000> p
    eax=08bbf1a0 ebx=0000002a ecx=00000200 edx=00000000 esi=00000200 edi=02fe8661
    eip=004b8a82 esp=0012fa94 ebp=0012facc iopl=0         nv up ei pl nz ac po nc
@@ -901,7 +901,7 @@ role="navigation" aria-label="main navigation">
    cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000216
    Houaiss2+0xb8a84:
    004b8a84 75ef            jne
-   Houaiss2+0xb8a75 (004b8a75)             <a href="posts.html?q=br=1">br=1</a>
+   Houaiss2+0xb8a75 (004b8a75)             [br=1]
    0:000> p
    eax=08bbf1a0 ebx=0000002a ecx=000001ff edx=00000001 esi=00000200 edi=02fe8661
    eip=004b8a75 esp=0012fa94 ebp=0012facc iopl=0         nv up ei pl nz ac pe nc
@@ -922,11 +922,11 @@ role="navigation" aria-label="main navigation">
    
    int WINAPI WinMain(HINSTANCE, HINSTANCE, PSTR cmdLine, int)
    {
-   	CHAR HOUAISS_PATH<a href="posts.html?q=MAX_PATH">MAX_PATH</a> = { };
+   	CHAR HOUAISS_PATH[MAX_PATH] = { };
    
-   	sscanf(cmdLine, "-p \"%<a href="posts.html?q=^\"">^\"</a>s", HOUAISS_PATH);
+   	sscanf(cmdLine, "-p \"%[^\"]s", HOUAISS_PATH);
    
-   	if( HOUAISS_PATH<a href="posts.html?q=0">0</a> == 0 )
+   	if( HOUAISS_PATH[0] == 0 )
    	{
    		MessageBox(NULL, "How to use:\r\nHouCalc.exe -p \"C:\\HouaissPath\\\"", 
    			"Houaiss Decipher v. alpha", 0);
@@ -935,8 +935,8 @@ role="navigation" aria-label="main navigation">
    
    	for( int fileIdx = 1; fileIdx < 64; ++fileIdx )
    	{
-   		CHAR path1<a href="posts.html?q=MAX_PATH">MAX_PATH</a>;
-   		CHAR path2<a href="posts.html?q=MAX_PATH">MAX_PATH</a>;
+   		CHAR path1[MAX_PATH];
+   		CHAR path2[MAX_PATH];
    
    		sprintf(path1, "%sdeah%03d.dhx", HOUAISS_PATH, fileIdx);
    		sprintf(path2, "%sdeah%03d.txt", HOUAISS_PATH, fileIdx);
@@ -967,7 +967,7 @@ role="navigation" aria-label="main navigation">
    					{
    						for( DWORD i = 0; i < fileSize; ++i )
    						{
-   							view2<a href="posts.html?q=i">i</a> = view1<a href="posts.html?q=i">i</a> + 0x0B;
+   							view2[i] = view1[i] + 0x0B;
    						}
    					}
    

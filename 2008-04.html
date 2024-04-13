@@ -209,7 +209,7 @@ role="navigation" aria-label="main navigation">
    
    	while( getline(cin, line) )
    	{
-   		cmd = line<a href="posts.html?q=0">0</a>; // guardamos o comando
+   		cmd = line[0]; // guardamos o comando
    		line.erase(0, 1); // tiramos o comando da linha
    		format(line); // formatação da linha (explicações adiante)
    
@@ -244,7 +244,7 @@ role="navigation" aria-label="main navigation">
    
    	while( (pos1 = str.find('{')) != string::npos )
    	{
-   		if( pos1 && str<a href="posts.html?q=pos1 - 1">pos1 - 1</a> == '\\' ) // caractere de escape
+   		if( pos1 && str[pos1 - 1] == '\\' ) // caractere de escape
    			str.replace(pos1 - 1, 2, "{");
    		else
    		{
@@ -263,7 +263,7 @@ role="navigation" aria-label="main navigation">
    			string word;
    			is >> fmt;
    			getline(is, word);
-   			if( word<a href="posts.html?q=0">0</a> == ' ' )
+   			if( word[0] == ' ' )
    			word.erase(0, 1);
    
    			if( fmt.find("\\i") != string::npos )

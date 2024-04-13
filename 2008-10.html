@@ -189,8 +189,8 @@ role="navigation" aria-label="main navigation">
 <p>E pronto! Agora temos todo o poder das 500 milhões de classes da ATL aliadas à ilimitada flexibilidade das classes de janelas da WTL.</p>
 <h5>Para aprender a usar WTL</h5>
 <p>	</p>
-<pre> * <a href="posts.html?q=Explicando a sopa de letrinhas da programação C/C++ para Windows: WTL">Explicando a sopa de letrinhas da programação C/C++ para Windows: WTL</a>
- * <a href="http://www.codeproject.com/KB/wtl/wtl4mfc1.aspx">WTL for MFC Programmers</a></pre>
+<pre> * [Explicando a sopa de letrinhas da programação C/C++ para Windows: WTL]
+ * [WTL for MFC Programmers]</pre>
 
 
 
@@ -225,14 +225,14 @@ role="navigation" aria-label="main navigation">
 <h5>Dados conhecidos</h5>
 <p>Sabe-se que o PsExec consegue **executar um programa remotamente**, ou seja, de uma máquina para outra, outra essa que chamaremos de **máquina-alvo**. O programa a ser executado geralmente deve estar disponível na própria máquina-alvo (condição ideal). Além da simples execução, para aplicativos console ele permite ainda a interação como se estivéssemos executando o programa remoto em nossa própria máquina local. Ele consegue isso redirecionando sua entrada e saída, o que o torna, como nos descreve o próprio autor, um "_telnet light_":</p>
 <pre>   
-   psexec \\maquina-alvo <a href="posts.html?q=-u admin-na-maquina-alvo">-u admin-na-maquina-alvo</a> cmd.exe</pre>
+   psexec \\maquina-alvo [-u admin-na-maquina-alvo] cmd.exe</pre>
 <p>Além desse comportamento já muito útil ainda existe um bônus que se trata de especificar um executável local que será **copiado remotamente** para a máquina-alvo e executado. **Esse é o comportamento que espero imitar**:</p>
 <pre>   
-   psexec \\maquina-alvo <a href="posts.html?q=-c c:\tests\myprogram.exe">-c c:\tests\myprogram.exe</a> <a href="posts.html?q=-u admin-na-maquina-alvo">-u admin-na-maquina-alvo</a>
+   psexec \\maquina-alvo [-c c:\tests\myprogram.exe] [-u admin-na-maquina-alvo]
    
    PsExec v1.72 - Execute processes remotely Copyright (C) 2001-2006 Mark Russinovich
    Sysinternals - www.sysinternals.com
-   Microsoft Windows XP <a href="posts.html?q=versão 5.1.2600">versão 5.1.2600</a>
+   Microsoft Windows XP [versão 5.1.2600]
    (C) Copyright 1985-2001 Microsoft Corp.</pre>
 <p>No teste acima o **myprogram.exe** é somente o **cmd.exe** renomeado. Um teste básico =)</p>
 <h5>Primeiro passo: reproduzir o comportamento analisado e coletar pistas</h5>
@@ -313,10 +313,10 @@ role="navigation" aria-label="main navigation">
    0011ee6c 77dc4b92 0011ee90 c0000000 00000003 kernel32!CreateFileW (FPO:
    0011eed0 77dc4369 00147140 001463f8 005b4b46 RPCRT4!NMP_Open+0x17a (FPO:
    ...
-   00121e98 71ae50f0 00000000 00121ee4 004182a0 MPR!WNetUseConnectionW+0x58 (FPO: <a href="posts.html?q=Non-Fpo">Non-Fpo</a>)
+   00121e98 71ae50f0 00000000 00121ee4 004182a0 MPR!WNetUseConnectionW+0x58 (FPO: [Non-Fpo])
    *** WARNING: Unable to verify checksum for image00400000
    *** ERROR: Module load completed but symbols could not be loaded for image00400000
-   00121ec0 00401796 <font color="#0000ff">00121ee4 </font><font color="#000000">004182a0 004139e0</font><font color="#000000"> </font>MPR!WNetAddConnection2W+0x1c (FPO: <a href="posts.html?q=Non-Fpo">Non-Fpo</a>)
+   00121ec0 00401796 <font color="#0000ff">00121ee4 </font><font color="#000000">004182a0 004139e0</font><font color="#000000"> </font>MPR!WNetAddConnection2W+0x1c (FPO: [Non-Fpo])
    WARNING: Stack unwind information not available. Following frames may be wrong.
    001225d0 0032002e 0030002e 0034002e 00000030 image00400000+0x1796
    001225d4 0030002e 0034002e 00000030 00000000 0x32002e
@@ -415,7 +415,7 @@ role="navigation" aria-label="main navigation">
    1 arquivo(s) copiado(s).
    
    C:\Tests>sc \\10.2.0.40 create MyProgram binPath= %systemroot%\myprogram.exe
-   <a href="posts.html?q=SC">SC</a> CreateService SUCCESS</pre>
+   [SC] CreateService SUCCESS</pre>
 <p>O resto do comportamento, como o redirecionamento de entrada e saída e execução do processo na conta especificada, embora muito interessante, não me interessa de imediato. Quem sabe interesse a você, e não tenhamos uma continuação dessa análise em um outro blogue de "desmontagem" por aí =)</p>
 </section><hr/>
 

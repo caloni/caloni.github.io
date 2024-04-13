@@ -293,8 +293,8 @@ role="navigation" aria-label="main navigation">
    
    int main()
    {
-     HANDLE threads<a href="posts.html?q=3">3</a>;
-     DWORD tids<a href="posts.html?q=3">3</a>;
+     HANDLE threads[3];
+     DWORD tids[3];
    
      // precisamos inicializar 
      // nosso recurso de 
@@ -303,16 +303,16 @@ role="navigation" aria-label="main navigation">
    
      for( int i = 0; i < 3; ++i )
      {
-       threads<a href="posts.html?q=i">i</a> 
+       threads[i] 
          = CreateThread(NULL, 
          0, 
          IncrementGlobalCounter, 
          0, 
          0, 
-         &tids<a href="posts.html?q=i">i</a>);
+         &tids[i]);
        printf("Thread %i: %d\n", 
          i, 
-         tids<a href="posts.html?q=i">i</a>);
+         tids[i]);
      }
    
      // aguarda as threads

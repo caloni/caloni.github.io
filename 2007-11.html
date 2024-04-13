@@ -141,7 +141,7 @@ role="navigation" aria-label="main navigation">
    
        FP GiveMeFunc()
        {
-         return m_funcs<a href="posts.html?q=rand() % 3">rand() % 3</a>;
+         return m_funcs[rand() % 3];
        }
    
      private:
@@ -149,10 +149,10 @@ role="navigation" aria-label="main navigation">
        void FuncTwo()   { std::cout << "Two!\n"; }
        void FuncThree() { std::cout << "Three!\n"; }
    
-       static FP m_funcs<a href="posts.html?q=3">3</a>;
+       static FP m_funcs[3];
    };
    
-   FP Rand::m_funcs<a href="posts.html?q=3">3</a> = { &FuncOne, &FuncTwo, &FuncThree };
+   FP Rand::m_funcs[3] = { &FuncOne, &FuncTwo, &FuncThree };
    
    void passThrough(FP fp)
    {
@@ -179,9 +179,9 @@ role="navigation" aria-label="main navigation">
 <p>E, por fim, a chamada. Como é a chamada de um método, é quase intuitiva a necessidade de um objeto para chamá-la. Do contrário não teríamos um this para alterar o objeto em qualquer método não-estático, certo? Daí a necessidade do padrão C++ especificar dois operadores especialistas para esse fim, construídos a partir da combinação de operadores já existentes em C:</p>
 <pre>   Rand r;
    Rand* pr = &r;
-   // <a href="posts.html?q=obj">obj</a> .* <a href="posts.html?q=method ptr">method ptr</a>
+   // [obj] .* [method ptr]
    ( r.*pMethod )();
-   // <a href="posts.html?q=obj ptr">obj ptr</a> ->* <a href="posts.html?q=method ptr">method ptr</a> 
+   // [obj ptr] ->* [method ptr] 
    ( pr->*pMethod )();</pre>
 <p>Esses operadores obrigam o programador a sempre ter um objeto e um ponteiro. Daí não tem como errar. Infelizmente, devido à ordem de precedência, temos que colocar os parênteses em torno da expressão para chamar o método. Pelo menos fica equivalente ao que precisávamos fazer antes da padronização da linguagem C.</p>
 
@@ -270,17 +270,17 @@ role="navigation" aria-label="main navigation">
 <img src="img/ponteiro-de-metodo-qual-this-e-usado-fuzzycall.gif" caption="Ponteiros de método"/>
 <p>Em assembly teremos algo assim:</p>
 <pre>   ; FP fp = &Rand::Print;
-   lea rax,<a href="posts.html?q=Rand::Print">Rand::Print</a>  
-   mov qword ptr <a href="posts.html?q=fp">fp</a>,rax
+   lea rax,[Rand::Print]  
+   mov qword ptr [fp],rax
    ; (r1.*fp)();
-   lea rcx,<a href="posts.html?q=r1">r1</a>  
-   call qword ptr <a href="posts.html?q=fp">fp</a>  
+   lea rcx,[r1]  
+   call qword ptr [fp]  
    ; (r2.*fp)();
-   lea rcx,<a href="posts.html?q=r2">r2</a>  
-   call qword ptr <a href="posts.html?q=fp">fp</a>  
+   lea rcx,[r2]  
+   call qword ptr [fp]  
    ; (r3.*fp)();
-   lea rcx,<a href="posts.html?q=r3">r3</a>  
-   call qword ptr <a href="posts.html?q=fp">fp</a>  </pre>
+   lea rcx,[r3]  
+   call qword ptr [fp]  </pre>
 <p>Além do ponteiro de métodos, também é possível no C++ apontar para membros de um dado objeto como foi feito no exemplo acima. Para tanto, como vimos no código, basta declarar um tipo de ponteiro de membro de acordo com o tipo desejado com o escopo da classe: typedef int Rand::*MP. Nesse caso, a técnica de usar o próprio enderenço não funciona, já que cada objeto possui um membro próprio em um lugar de memória próprio. Porém, assim como os ponteiros de métodos, os ponteiros de membros exigem um objeto para serem acessados, o que já nos dá a dica de onde o objeto começa. Sabendo onde ele começa, fica fácil saber onde fica o membro através do seu offset, ou seja, a distância dele a partir do início da memória do objeto. O código abaixo simplifica a obtenção de um objeto dentro da classe usando ponteiro para membros:</p>
 <pre>   MP mp = &Rand::m_num;
    int i1 = r1.*mp;
@@ -288,22 +288,22 @@ role="navigation" aria-label="main navigation">
    int i3 = r3.*mp;</pre>
 <p>Note no assembly gerado que para isso funcionar o código precisa do offset armazenado em algum lugar. E, nada mais óbvio, o "ponteiro" de um membro de uma classe nada mais é que o offset deste membro dentro desta classe.</p>
 <pre>   ; MP mp = &Rand::m_num;
-   mov dword ptr <a href="posts.html?q=mp">mp</a>,0
+   mov dword ptr [mp],0
    
    ; int i1 = r1.*mp;
-   movsxd rax,dword ptr <a href="posts.html?q=mp">mp</a> 
-   mov eax,dword ptr r1<a href="posts.html?q=rax">rax</a> 
-   mov dword ptr <a href="posts.html?q=i1">i1</a>,eax 
+   movsxd rax,dword ptr [mp] 
+   mov eax,dword ptr r1[rax] 
+   mov dword ptr [i1],eax 
    
    ; int i2 = r2.*mp;
-   movsxd rax,dword ptr <a href="posts.html?q=mp">mp</a> 
-   mov eax,dword ptr r2<a href="posts.html?q=rax">rax</a> 
-   mov dword ptr <a href="posts.html?q=i2">i2</a>,eax 
+   movsxd rax,dword ptr [mp] 
+   mov eax,dword ptr r2[rax] 
+   mov dword ptr [i2],eax 
    
    ; int i3 = r3.*mp;
-   movsxd rax,dword ptr <a href="posts.html?q=mp">mp</a> 
-   mov eax,dword ptr r3<a href="posts.html?q=rax">rax</a> 
-   mov dword ptr <a href="posts.html?q=i3">i3</a>,eax</pre>
+   movsxd rax,dword ptr [mp] 
+   mov eax,dword ptr r3[rax] 
+   mov dword ptr [i3],eax</pre>
 <p>Como podemos ver, não é nenhuma magia negra a responsável por fazer os ponteiros de métodos e de membros funcionarem em C++. Porém, eles não são ponteiros ordinário que costumamos misturar a torto e a direito. Essa distinção na linguagem é importante para manter o código "minimamente sadio".</p>
 
 </section><hr/>
