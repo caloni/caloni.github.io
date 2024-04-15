@@ -1,17 +1,14 @@
 function copy_clipboard(id) {
-  var copyText = document.querySelector(id).textContent;
-  if( copyText[0] == "\n" ) {
-    copyText = copyText.substring(1);
-  }
-  if( copyText[0] == "#" ) {
-    copyText = copyText.substring(2);
-  }
-  copyText = copyText.replace(" ^ ctrl_c","")
-  copyText = copyText.replace(" [link]","")
-  afterTitle = copyText.search("\n")
-  if( afterTitle != -1 ) {
-    copyText = copyText.slice(0, afterTitle) + "\nWanderley Caloni" + copyText.slice(afterTitle);
-  }
+  var buttonCopy = " \\^ ctrl_c";
+  var copyText = document.querySelector(id).textContent.substring(3);
+  var afterTitle = copyText.search("\n");
+  var afterHeader = copyText.search(buttonCopy);
+  var title = copyText.substring(0, afterTitle);
+  var header = copyText.substring(afterTitle + 1, afterHeader);
+  var content = copyText.substring(afterHeader + buttonCopy.length + 1);
+
+  content = content.replace(/(?:\r\n|\r|\n)/g, "\n\n");
+  copyText = title + "\nWanderley Caloni, " + header + "\n\n" + content;
   navigator.clipboard.writeText(copyText);
 }
 
