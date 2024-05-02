@@ -73,6 +73,8 @@ role="navigation" aria-label="main navigation">
 <ul style="list-style: none;">
 
 <li><small><a href="2024-05.html#linha-wr-wolff-cafe">Linha WR (Wolff Café)</a></small></li>
+<li><small><a href="2024-05.html#vinland-burbujas-de-altura">Vinland (Burbujas de Altura)</a></small></li>
+<li><small><a href="2024-05.html#mantendo-o-mesmo-repo-com-dados-publicos-e-privados">Mantendo o mesmo repo com dados públicos e privados</a></small></li>
 </ul>
 
 
@@ -84,6 +86,64 @@ role="navigation" aria-label="main navigation">
 <p>Provei dois grãos convidados na Kiki deste fabricante. Você já deve ter visto a embalagem quadrada dele papel diferentona com um lobo em origami.</p>
 <p>O que mais gostei foi o Damasco, Pêssego Verde e Mel passado no V60 porque ele ficou com uma doçura agradável que toma conta do copo e junto embala os tons de pêssego e talves damasco (não detectei tão fácil). A acidez deste é bem equilibrada. Diz a Kiki que era para ser o mais cítrico, mas não achei.</p>
 <p>Também no V60 foi passado um Laranja, Champanhe e Baunilha. Esse eu achei mais cítrico, mas pode ser a lembrança da laranja e o sabor adstringente se sua casca junto da baunilha que me deu essa sensação. Estranhamente tem gosto de champanhe também. Esses rótulos têm cada vez mais sugestões bizarras.</p>
+</section><hr/>
+
+<span id="vinland-burbujas-de-altura" title="Vinland (Burbujas de Altura)"/></span>
+<section id="section-vinland-burbujas-de-altura">
+<p class="title"><a href="2024-05.html#vinland-burbujas-de-altura">#</a> Vinland (Burbujas de Altura)</p>
+<p class="note-title"><small>2024-05-01  <a href="tag_wine.html">tag_wine</a> </small><a href="2024-05.html">^</a> <button onclick="copy_clipboard('section#section-vinland-burbujas-de-altura')">ctrl_c</button></p>
+
+<p>Nossa visita mais simpática da viagem em Cafayate foi esta Burbujas de Altura, onde descobrimos uma bodega nova indo de motinha, a alguns kms da cidade. O proprietário trabalhou a vida da bodega ao lado, Ele Esterco, e agora com os filhos criados (uma enóloga) e sua esposa o ajudando, a família conseguiu com sucesso desenvolver um Torrontés espumante.</p>
+<p>Mas este post não é sobre ele, mas sobre este Blend de Blends. O nome Vinland vem das origens Viking da família (norueguesa) e este é o primeiro reserva produzido no terreno do Burbujas no Valles Calchaquíes. Se trata de uma mistura de Cabernet Franc e Malbec.</p>
+<p>Ao abrir seu aroma de bodega é inebriante. Seu sabor vai se mostrando aos poucos, conforme respira. Se trata de um corpo médio, um pouco de acidez das uvas e um outro tanto de frutas mais maduras.</p>
+</section><hr/>
+
+<span id="mantendo-o-mesmo-repo-com-dados-publicos-e-privados" title="Mantendo o mesmo repo com dados públicos e privados"/></span>
+<section id="section-mantendo-o-mesmo-repo-com-dados-publicos-e-privados">
+<p class="title"><a href="2024-05.html#mantendo-o-mesmo-repo-com-dados-publicos-e-privados">#</a> Mantendo o mesmo repo com dados públicos e privados</p>
+<p class="note-title"><small>2024-05-01  <a href="tag_coding.html">tag_coding</a> </small><a href="2024-05.html">^</a> <button onclick="copy_clipboard('section#section-mantendo-o-mesmo-repo-com-dados-publicos-e-privados')">ctrl_c</button></p>
+
+<p>Como isso é possível? No git você pode publicar o repositório orientado a branches, o que quer dizer que é possível manter uma branch com dados públicos e outra branch com dados privados (e esta última não é acessível).</p>
+<p>Mas para isso funcionar você precisa que essas branches ou nunca se comuniquem com merge ou se comuniquem apenas do sentido do público para o privado. E para essa segunda opção, caso você já possua o repositório, é necessário criar uma branch órfã.</p>
+<p>Em suma, os comandos abaixo.</p>
+<pre>
+git init # or just use existing and rename master
+gvim journal.txt journal_private.txt
+# write write write
+git add --all
+git commit -m "first private commit"
+git branch -m master private_branch
+git checkout --orphan public_branch
+git checkout private_branch -- .
+git reset
+echo private_stuff >> .gitignore
+git add --all
+git commit -m "first public commit."
+git checkout private_branch
+git merge --allow-unrelated-histories -X ours public_branch
+git status
+On branch private_branch
+nothing to commit, working tree clean
+git log --graph
+ private_branch)
+|\  Merge: de55682 5dbe679
+| | Date:   Wed May 1 21:39:01 2024 -0300
+| |
+| |     Merge branch 'public_branch' into private_branch
+| |
+| * commit 5dbe679aa2466eeaedd1a675a09b4913b56f2270 (public_branch)
+|   Date:   Wed May 1 21:38:10 2024 -0300
+|
+|       first public commit.
+|
+* commit de55682a3ce3ce55114b05ecf466c664e60f11c6
+  Date:   Wed May 1 21:37:01 2024 -0300
+      first private commit.
+git remote add private <private_address>
+git push -u private private_branch
+git remote add public <public_address>
+git push -u public public_branch
+# do not mix public and private upstreams =)</pre>
 </section><hr/>
 
 <span style="float: left;">
