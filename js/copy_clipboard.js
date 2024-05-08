@@ -8,6 +8,7 @@ function copy_clipboard(id) {
   var content = copyText.substring(afterHeader + buttonCopy.length + 1);
 
   content = content.replace(/(?:\r\n|\r|\n)/g, "\n\n");
+  title = title.replace(" [link]", "");
   copyText = title + "\nWanderley Caloni, " + header + "\n\n" + content;
   navigator.clipboard.writeText(copyText);
 }

@@ -75,6 +75,9 @@ role="navigation" aria-label="main navigation">
 <li><small><a href="2024-05.html#linha-wr-wolff-cafe">Linha WR (Wolff Café)</a></small></li>
 <li><small><a href="2024-05.html#vinland-burbujas-de-altura">Vinland (Burbujas de Altura)</a></small></li>
 <li><small><a href="2024-05.html#mantendo-o-mesmo-repo-com-dados-publicos-e-privados">Mantendo o mesmo repo com dados públicos e privados</a></small></li>
+
+<li><small><a href="2024-05.html#flexibilizando-retorno-de-metodos-mockados">Flexibilizando retorno de métodos mockados</a></small></li>
+<li><small><a href="2024-05.html#jurassic-park">Jurassic Park</a></small></li>
 </ul>
 
 
@@ -144,6 +147,31 @@ git push -u private private_branch
 git remote add public <public_address>
 git push -u public public_branch
 # do not mix public and private upstreams =)</pre>
+</section><hr/>
+
+
+<span id="flexibilizando-retorno-de-metodos-mockados" title="Flexibilizando retorno de métodos mockados"/></span>
+<section id="section-flexibilizando-retorno-de-metodos-mockados">
+<p class="title"><a href="2024-05.html#flexibilizando-retorno-de-metodos-mockados">#</a> Flexibilizando retorno de métodos mockados <a class="external" href="https://myadventuresincoding.wordpress.com/2014/02/24/c-setting-up-a-mocked-method-to-return-a-different-value-when-called-a-second-time-using-moq/">[link]</a></p>
+<p class="note-title"><small>2024-05-08  <a href="tag_coding.html">tag_coding</a> </small><a href="2024-05.html">^</a> <button onclick="copy_clipboard('section#section-flexibilizando-retorno-de-metodos-mockados')">ctrl_c</button></p>
+
+<p>Usando Moq para criar testes unitários em C# e penando para conseguir retornar valores diferentes para chamadas diferentes da interface mockada descobri finalmente este artigo que dá alguns exemplos para retornar múltiplos valores através da mesma chamada de um método mockado.</p>
+<p>A chave da questão que eu ignorava alguns dias atrás era que o método `Returns` do tipo mockado pode receber não apenas um valor a ser retornado, mas também o endereço de um functor que irá ser chamado cada vez que o método mockado for chamado.</p>
+<p>Isso quer dizer que em vez de usar a criação de uma nova instância:</p>
+<pre>
+mockFactory.Setup(...).Returns(Mock.Of<ReturnType>());</pre>
+<p>Deve-se usar o endereço de uma função que retorna uma nova instância:</p>
+<pre>
+mockFactory.Setup(...).Returns(Mock.Of<ReturnType>);</pre>
+<p>Observe que na segunda versão não há chamada, mas apenas a passagem do "endereço" (ou o que quer que valha em C#).</p>
+</section><hr/>
+
+<span id="jurassic-park" title="Jurassic Park"/></span>
+<section id="section-jurassic-park">
+<p class="title"><a href="2024-05.html#jurassic-park">#</a> Jurassic Park</p>
+<p class="note-title"><small>2024-05-08  <a href="tag_movies.html">tag_movies</a> </small><a href="2024-05.html">^</a> <button onclick="copy_clipboard('section#section-jurassic-park')">ctrl_c</button></p>
+
+<p>Envelheceu bem. Os efeitos quase convencem. A junção da computação com partes mecânicas e bom uso de ângulos fez um ótimo serviço. Este é um roteiro simples para não estragar o apelo comercial de uma produção bem cara para a época, mas não evita tratar das questões éticas por trás da manipulação biológica dos cientistas do parque em trazer de volta à vida criaturas de outra era para conviver com os humanos. Seu ritmo definitivamente é bem mais lento que as aventuras de hoje e a segunda trilha de John Williams soa amassada. O mesmo não posso dizer da música tema, um hino até hoje inesquecível pela solenidade da ocasião, da comemoração dos milagres da ciência e da vida. Todo o elenco é escolhido a dedo para viverem a aventura do americano branco médio. Jeff Goblin adiciona um pouco de caos e irreverência e as crianças, particularmente a menina, mantém o pique através das diferentes situações em que o filme os coloca em perigo. Spielberg, sóbrio e se divertindo como sempre, mantém os mínimos detalhes em foco. Repare que o enquadramento coloca o gordinho traíra ao fundo de costas apenas para nas próximas cenas revelar o conflito na história. Samuel L. Jackson está invisível, nem parece que no ano seguinte protagonizou nada menos que Pulp Fiction. Esta é uma aventura nos moldes clássicos que cria uma lenda reverberando a casa continuação. A lenda de que o homem verá monstros entre eles com o advindo dos milagres biológicos.</p>
 </section><hr/>
 
 <span style="float: left;">
