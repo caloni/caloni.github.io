@@ -77,6 +77,12 @@ role="navigation" aria-label="main navigation">
 <li><small><a href="2024-06.html#tribunal-noturno">Tribunal Noturno</a></small></li>
 
 <li><small><a href="2024-06.html#assassino-por-acaso">Assassino por Acaso</a></small></li>
+
+<li><small><a href="2024-06.html#legacy_stdio_definitions">legacy_stdio_definitions</a></small></li>
+<li><small><a href="2024-06.html#our-coffee">Our Coffee</a></small></li>
+<li><small><a href="2024-06.html#alocaçao-sem-construçao">Alocação sem construção</a></small></li>
+<li><small><a href="2024-06.html#sensory-coffee-roasters">Sensory Coffee Roasters</a></small></li>
+<li><small><a href="2024-06.html#a-semente-do-mal">A Semente do Mal</a></small></li>
 </ul>
 
 
@@ -119,6 +125,103 @@ role="navigation" aria-label="main navigation">
 <p>Não à toa Linklater é o anfitrião de temas existenciais com uma irreverência quase impossível. E não à toa acompanhei este filme com pelo menos um pouco de ceticismo.</p>
 <p>O resultado não é dos melhores. Ele é engraçado, isso ele é. Um humor em alguns momentos sombrio e até condenável, dependendo de como você enxerga o sistema de justiça. Esse tema infelizmente não é desenvolvido o suficiente até o momento em que um personagem chave morre e esta seria uma rima perfeita (não foi dessa vez).</p>
 <p>Mas se o pecado do filme é não ser profundo demais em uma comédia dark, acho que ele está mais que perdoado pelo espectador comum, que vai se divertir imensamente com a trama principal. Há uma tensão tremenda que nunca termina, mas que te engana em alguns momentos que parece que tudo irá dar certo até não dar. Gente que vai ao cinema adora isso.</p>
+</section><hr/>
+
+
+<span id="legacy_stdio_definitions" title="legacy_stdio_definitions"/></span>
+<section id="section-legacy_stdio_definitions">
+<p class="title"><a href="2024-06.html#legacy_stdio_definitions">#</a> legacy_stdio_definitions <a class="external" href="https://stackoverflow.com/questions/32418766/c-unresolved-external-symbol-sprintf-and-sscanf-in-visual-studio-2015">[link]</a></p>
+<p class="note-title"><small>2024-06-11  <a href="tag_coding.html">tag_coding</a> </small><a href="2024-06.html">^</a> <button onclick="copy_clipboard('section#section-legacy_stdio_definitions')">ctrl_c</button></p>
+
+<p>Estava eu com meu Visual Studio compilando um arquivo C e de repente:</p>
+<pre>
+unresolved external symbol sprintf</pre>
+<p>Uai. Depois de 30 segundos descubro que isso não ecxiste mais e que preciso adicionar esta lib para linkar:</p>
+<pre>
+legacy_stdio_definitions.lib</pre>
+<p>E tudo se resolveu =/</p>
+</section><hr/>
+
+<span id="our-coffee" title="Our Coffee"/></span>
+<section id="section-our-coffee">
+<p class="title"><a href="2024-06.html#our-coffee">#</a> Our Coffee</p>
+<p class="note-title"><small>2024-06-11  <a href="tag_coffee.html">tag_coffee</a> </small><a href="2024-06.html">^</a> <button onclick="copy_clipboard('section#section-our-coffee')">ctrl_c</button></p>
+
+<p>Pedi um espresso para viagem. O atendimento é bem relapso, nem olham na sua cara. O café é bom, acima da média. Pode pedir que vai ser melhor que o bar da esquina (e levemente mais caro). Boa opção para coffee to go do lado do metrô.</p>
+</section><hr/>
+
+<span id="alocaçao-sem-construçao" title="Alocação sem construção"/></span>
+<section id="section-alocaçao-sem-construçao">
+<p class="title"><a href="2024-06.html#alocaçao-sem-construçao">#</a> Alocação sem construção</p>
+<p class="note-title"><small>2024-06-11  <a href="tag_coding.html">tag_coding</a> </small><a href="2024-06.html">^</a> <button onclick="copy_clipboard('section#section-alocaçao-sem-construçao')">ctrl_c</button></p>
+
+<p>Meu amigo está mexendo com allocator e fez o seguinte teste, o que pode dar a ideia errada para o iniciante, porque testei aqui e deu tudo certo:</p>
+<pre>
+#include <iostream>
+struct A {
+    A() = default;
+    uint64_t x;
+};
+int main()
+{
+    auto alloc = std::allocator<A>();
+    A* p = alloc.allocate(2);
+    p<a href="posts.html?q=1">1</a>.x = 10;
+}</pre>
+<p>Porém, ele não havia revelado que a “struct” que ele usou não era dessas sem complexidade alguma, mas a std::string, que depende da construção porque possui membros que controlam o estado do objeto. E aí sim apenas alocar o espaço na memória não é suficiente. É preciso construir o objeto chamando o construtor.</p>
+<pre>
+#include <iostream>
+#include <string>
+struct A {
+    A() = default;
+    uint64_t x;
+    std::string y; // new member
+};
+int main()
+{
+    auto alloc = std::allocator<A>();
+    A* p = alloc.allocate(2);
+    p<a href="posts.html?q=1">1</a>.y = "y"; // crash
+}</pre>
+<p>Ao depurar a chamada ao `operator =` que chama por sua vez o método `std::string::assign` é possível ver que o objeto está com os membros `size` e `capacity` com lixo. O que faz sentido, já que o construtor dessa string nunca foi chamado.</p>
+<pre>
+-		this	0x00000216888f5858 <Error reading characters of string.>	std::string *
+		<a href="posts.html?q=size">size</a>	14829735431805717965	unsigned __int64
+		<a href="posts.html?q=capacity">capacity</a>	14829735431805717965	unsigned __int64
++		<a href="posts.html?q=allocator">allocator</a>	allocator	std::_Compressed_pair<std::allocator<char>,std::_String_val<std::_Simple_types<char>>,1>
+		<a href="posts.html?q=0">0</a>	<Unable to read memory>	char</pre>
+<p>Para corrigir isso podemos usar o que C++ chama de placement new: uma construção de objeto em memória previamente disponível.</p>
+<pre>
+A* p = alloc.allocate(2);
+new (p) A<a href="posts.html?q=2">2</a>; // remember to use new array operator!</pre>
+</section><hr/>
+
+<span id="sensory-coffee-roasters" title="Sensory Coffee Roasters"/></span>
+<section id="section-sensory-coffee-roasters">
+<p class="title"><a href="2024-06.html#sensory-coffee-roasters">#</a> Sensory Coffee Roasters</p>
+<p class="note-title"><small>2024-06-11  <a href="tag_coffee.html">tag_coffee</a> </small><a href="2024-06.html">^</a> <button onclick="copy_clipboard('section#section-sensory-coffee-roasters')">ctrl_c</button></p>
+
+<p>Cafeteria tranquila distante das ruas comerciais e que oferece um espaço amplo e tranquilo para passar a tarde tomando café e comendo alguns dos variados pratos de doces e salgados. Os pães são de fabricação própria e há o de longa fermentação que é uma delícia (experimentei o pão na chapa). O brioche também é bem legal (experimentei um com rúcula e tomate seco).</p>
+<p>O atendimento é muito bom. Pessoas atenciosas demais. Mesmo sentado na parte de cima há um cuidado em levar os pedidos e verificar se você precisa de mais alguma coisa. Achei muito diferente de outros lugares com dois ambientes que apenas te largam em um deles.</p>
+<p>Sobre o café, eu experimentei quatro: um espresso, dois coados e um cappuccino. O espresso estava interessante, os coados maravilhosos e o cappuccino um dos mais bem feitos que já vi. Iria de novo apenas pelo café.</p>
+<p>Ah, e pelo ambiente :)</p>
+</section><hr/>
+
+<span id="a-semente-do-mal" title="A Semente do Mal"/></span>
+<section id="section-a-semente-do-mal">
+<p class="title"><a href="2024-06.html#a-semente-do-mal">#</a> A Semente do Mal</p>
+<p class="note-title"><small>2024-06-11  <a href="tag_cinemaqui.html">tag_cinemaqui</a> <a href="tag_movies.html">tag_movies</a> </small><a href="2024-06.html">^</a> <button onclick="copy_clipboard('section#section-a-semente-do-mal')">ctrl_c</button></p>
+
+<p>O título original deste filme é Amelia's Children (as crianças de Amélia), o que faz muito mais sentido que A Semente do Mal, que além de vago lembra qualquer outro terror de sustos que já tenha estreado.</p>
+<p>O que seria uma injustiça, pois este é um entretenimento sem sustos baratos. Ele mantém o terror psicológico, o que está de bom tamanho quando olhamos para a matriarca de uma família muito estranha. Ela passou por cirurgias plásticas o suficiente para perdermos o elo entre uma máscara e um ser humano, a linha tênue entre a feiura e a caricatura.</p>
+<p>Anabela Moreira é a Amélia do título original desta produção belga-portuguesa. Ela emana e sugere uma figura conhecida da mãe que precisa comer seus filhos para permanecer jovem, um tema recorrente em muitos contos de fadas e mitos antigos. Esta figura é frequentemente retratada como uma bruxa ou uma criatura sobrenatural. Embora a origem exata deste tema seja difícil de rastrear, ele aparece em várias culturas ao redor do mundo.</p>
+<p>No contexto de "A Semente do Mal", este mito atemporal é usado para explorar temas de vaidade, obsessão pela juventude e a degeneração do amor materno em uma obsessão doentia. A mãe, Amélia, torna-se um símbolo de terror, com suas cirurgias plásticas excessivas e sua transformação de uma figura materna em uma caricatura grotesca e assustadora.</p>
+<p>A construção do enredo merece destaque. Ele parte de um lugar comum na tecnologia de hoje em dia com rastreamento de descendentes através da análise genética e nos remete para uma casa secular no meio de uma floresta portuguesa, terra-natal de Ed, que mora em Nova Iorque junto da jovem Riley. Ambos são yuppies e não possuem família próxima. Ed principalmente. Ele nunca soube de suas origens até ser presenteado por Riley com um desses serviços de rastreamento, o que o faz se reencontrar com sua mãe e seu até então desconhecido irmão gêmeo Manuel.</p>
+<p>E quando você descobre que há um irmão gêmeo na jogada, o formato de uma novela vem à mente. O casal parte para o casarão isolado e, encantados a princípio, logo cada um irá trilhar caminhos diferentes nesta história.</p>
+<p>Ed e Manuel são interpretados por Carloto Cotta e não há momento algum que você duvide que são duas pessoas distintas, com histórias de vida totalmente diferentes. Tudo bem que Ed com seu moletom surrado e usado logo se assemelha a um paciente em hospital psiquiátrico, sem muita personalidade para exibir. É Riley a responsável por mover a trama.</p>
+<p>Ela é interpretada por Brigette Lundy-Paine com uma leveza inicial que lentamente se transforma em medo, angústia, desgosto e puro pavor. Sua voz oscila da certeza da intuição feminina até o ápice de não saber se sairá viva deste pesadelo da “vida real”.</p>
+<p>A Semente do Mal poderia ser um estudo de personagens perturbador não fosse seu roteiro esquemático que está em busca daqueles fãs do “neo terror” da última década. A estrutura do suspense dramático segue todas as fórmulas que foram aos poucos sendo redescobertas no cinema dos últimos anos. Desde o moletom de Ed remetendo às vestes de dormir de Amelia Vanek tendo que cuidar de seu filho inquieto em Babadook sem conseguir ter um momento de paz, dormindo acordada, até a alusão leve e sutil de herdeiros que se aproveitam do status quo construído ao longo de gerações para permanecerem impunes ao que quer que façam, criminosos ou não (Corra!).</p>
+<p>Infelizmente, ao se entregar demais às fórmulas, a produção bem dirigida por Gabriel Abrantes não mergulha junto na loucura do seu universo pecaminoso e cruel. Em contrapartida irá soar muito mais palatável à “elite” dos consumidores de terror desta década, um grupo de cinéfilos tão exigentes que existe uma fórmula a ser seguida para agradá-los. Para alguns (muitos) a ironia se perde entre as palavras que acabei de escrever.</p>
 </section><hr/>
 
 <span style="float: left;">
