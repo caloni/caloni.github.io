@@ -177,12 +177,12 @@ role="navigation" aria-label="main navigation">
 
 <p>Fazer o setup inicial de testes unitários em seu projeto C++ pode ser algo enfadonho se você precisa baixar e compilar uma lib do Google ou do Boost. Há uma alternativa mais leve e bem direta, que um dia apareceu nesses CodeProject da vida, mas que hoje está, até onde eu vi, no <a href="https://github.com/gcross/unit--">GitHub</a>.</p>
 <p>E como se faz para começar a montar os testes unitários? Bom, suponha que você tenha um projeto qualque que já compila, roda e faz alguma coisa de útil:</p>
-<img src="img/unitmenosmenos-HjYVkyp.png" caption=""/>
+<img src="img/unitmenosmenos-HjYVkyp.png"/>
 <p>Apenas crie um projeto do lado, console, ou copie e cole o projeto, mas use os arquivos-fonte do projeto original. Dessa forma ele irá compilar com os fontes que estão sendo modificados/compilados.</p>
-<img src="img/unitmenosmenos-NT2C1SC.png" caption=""/>
+<img src="img/unitmenosmenos-NT2C1SC.png"/>
 <p>Apenas se lembra de não incluir o módulo que contém o int main. Esse módulo deve ficar apartado do projeto principal.</p>
 <p>Depois basta incluir apenas um arquivo do projeto unit--, que é seu cpp principal.</p>
-<img src="img/unitmenosmenos-P8bEvns.png" caption=""/>
+<img src="img/unitmenosmenos-P8bEvns.png"/>
 <p>Com isso existirá um main lá dentro, definido em algum lugar. E tudo o que você precisa fazer é ir criando seus testes em outro arquivo fonte gerado para isso. O corpo e o formato dos unit cases é bem simples. Note que tudo que você fez para já sair testando seu projeto foi copiar um projeto já existente e inserir um módulo de outro projeto. Tudo compilando junto e já podemos fazer os primeiros testes do programa original (desde, claro, que ele seja testável, algo primordial):</p>
 <pre>
 // Precisamos definir uma suíte de testes.
@@ -490,22 +490,22 @@ C:\Projects\samples\ConsoleApplication5></pre>
 <pre></pre>
 <p>As opções específicas são para gerar o path completo, as barras invertidas são por causa dessa mania do Vim de dar pau quando tem espaço em tudo.</p>
 <p>A partir dessa configuração já é possível compilar um projeto estando em sua pasta:</p>
-<img src="img/usando-gvim-com-projetos-do-visual-studio-GmIwJ19.png" caption=""/>
+<img src="img/usando-gvim-com-projetos-do-visual-studio-GmIwJ19.png"/>
 <p>Para o Visual Studio 2003 (ou qualquer um usando o devenv.com) é necessário mudar esse comando:</p>
 <pre></pre>
 <p>Sim, temos que escolher uma configuração (o msbuild já escolhe por você). E note que ele usa o arquivo atual (%) para compilar. Isso quer dizer que isso irá exigir do usuário de Vim abrir o sln ou o vcproj e executar o :make a partir daí. De qualquer forma, ele funciona também:</p>
-<img src="img/usando-gvim-com-projetos-do-visual-studio-PEr73NL.png" caption=""/>
+<img src="img/usando-gvim-com-projetos-do-visual-studio-PEr73NL.png"/>
 <h4>Refinando a saída</h4>
 <p>Note que em nenhum dos casos erros conseguirão ser capturados para irmos direto no ponto do código-fonte onde ele está. Para isso funcionar, em nosso último passo, é necessário configurar o errorformat para que ele tenha um padrão que funcione com ambas as ferramentas. Depois de testar um pouco, cheguei nesse formato:</p>
 <pre>
 set errorformat=%f(%l)%m</pre>
 <p>Ele pega também os warnings, mas fazer o quê. Você não quer conviver com warnings em seu código pelo resto da vida, né? =)</p>
 <p>VS2010:</p>
-<img src="img/usando-gvim-com-projetos-do-visual-studio-4FymFj0.png" caption=""/>
+<img src="img/usando-gvim-com-projetos-do-visual-studio-4FymFj0.png"/>
 <p>VS2003:</p>
-<img src="img/usando-gvim-com-projetos-do-visual-studio-hXaP1X8.png" caption=""/>
+<img src="img/usando-gvim-com-projetos-do-visual-studio-hXaP1X8.png"/>
 <p>Note que depois de clicar em Enter ele pula para o primeiro erro da lista:</p>
-<img src="img/usando-gvim-com-projetos-do-visual-studio-Xjbb5p3.png" caption=""/>
+<img src="img/usando-gvim-com-projetos-do-visual-studio-Xjbb5p3.png"/>
 <p>E para navegar na lista é como o resultado de comandos como :vimgrep. :cnext e :cprevious vão para frente e para trás na lista, sempre pulando para o ponto no código onde está o erro.</p>
 <h4>Dica final: convivendo com dois mundos</h4>
 <p>Como deu pra perceber, para conseguir usar o msbuild e o devenv ao mesmo tempo você seria obrigado a trocar o makeprg sempre que precisasse. Para facilitar seu uso, nada como fazer um mapeamento de atalhos:</p>

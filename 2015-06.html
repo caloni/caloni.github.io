@@ -175,7 +175,7 @@ role="navigation" aria-label="main navigation">
 <p class="note-title"><small>2015-06-05  <a href="tag_coding.html">tag_coding</a> </small><a href="2015-06.html">^</a> <button onclick="copy_clipboard('section#section-logs-em-servicos-e-outras-coisas')">ctrl_c</button></p>
 
 <p>Já uso logs há muito tempo. Me lembro muito bem que quando programava em BASIC o "passou por aqui" já era útil. Depois de fazer muitas bibliotecas super-flexíveis de escrita em saídas diferentes, níveis configuráveis e uso do mais complexo ao mais banal, cheguei à seguinte conclusão:</p>
-<img src="img/logs-em-servicos-e-outras-coisas-p9kH1LW.jpg" caption=""/>
+<img src="img/logs-em-servicos-e-outras-coisas-p9kH1LW.jpg"/>
 <h4>Log("Quero um log mais simples possível (de preferência ", 15, " vezes mais simples)");</h4>
 <p>Vou tentar defender meu ponto de vista.</p>
 <p>Esse <a href="http://www.drdobbs.com/cpp/a-lightweight-logger-for-c/240147505">artigo do Dr. Dobbs</a> explica de uma maneira bem completa como fazer uma lib de log leve e configurável. O que eu peguei desse exemplo foi a forma mais C++ de formatar as linhas, deixando para trás o estilão printf que depois de variadic templates já está datado.</p>
@@ -205,7 +205,7 @@ void Log(Rest...parm)
 <li>Se for executado em um prompt já exibe as informações para serem filtradas; se for executado como um serviço encapsulo a saída.</li></ul>
 <p>Encapsular a saída e o comportamento de um serviço hoje em dia é algo banal. Há diversos programas que fazem isso para você, sendo desnecessário programar toda aquela parte de comunicação com o Windows. O <a href="http://driverentry.com.br/blog/?p=461">cara do DriverEntry</a>  fez um aplicativo que faz isso, que é simples de usar e continua funcionando no Windows 8.1. Atualmente uso um outro encontrado pelo igualmente fodástico <a href="posts.html?q=Rodrigo Strauss">Rodrigo Strauss</a>: o Non Sucking Service Manager (seu nome já explica por que defendo utilizar o mínimo possível das firulas da Microsoft).</p>
 <p>Além de ser extremamente flexível e não ter falhado nas vezes que o utilizei, o NSSM consegue redirecionar a saída do aplicativo que encapsula como um serviço para um arquivo e rotacionar o arquivo por tamanho ou data (ou reexecução do serviço):</p>
-<img src="img/logs-em-servicos-e-outras-coisas-v12mGG3.png" caption=""/>
+<img src="img/logs-em-servicos-e-outras-coisas-v12mGG3.png"/>
 <p>Abaixo uma receitinha básica para configurar seu aplicativo:</p>
 <pre>
 nssm.exe install MyService C:\Path\MyService.exe <args>

@@ -282,10 +282,10 @@ Essa é uma coisa que está faltando aqui no Caloni.com.br, que é a manutençã
 <p>Essa foi a última resposta "honesta". Depois resolvi apelar para o WinDbg =)</p>
 <p>A primeira coisa que pensei a respeito desse jogo foi que ele não seria tão ingênuo a ponto de colocar as respostas em texto aberto, do contrário, qual seria a graça, certo? Errado! Bom, no final das contas, um passo-a-passo bem simples me levou a encontrar a lista de respostas.</p>
 <p>A primeira coisa a fazer é carregar o jogo na memória do navegador. Em seguida, seguindo meu raciocínio inicial, digitei a primeira resposta do jogo.</p>
-<img src="img/encontrando-as-respostas-do-flash-pops-flash-pops-jogo.png" caption="Flash Pops (Filmes 1)"/>
+<img src="img/encontrando-as-respostas-do-flash-pops-flash-pops-jogo.png"/>
 <p>A partir daí, podemos "atachar" o WinDbg no processo do navegador e rastrear a memória do processo.</p>
 <pre>   windbg -pn firefox.exe</pre>
-<img src="img/encontrando-as-respostas-do-flash-pops-gpfnow.gif" caption="GPF Now!"/>
+<img src="img/encontrando-as-respostas-do-flash-pops-gpfnow.gif"/>
 <p>Então, como eu dizia, não faça isso em casa enquanto estiver digitando um artigo de seu blogue dentro do navegador. Ele vai travar!</p>
 <pre>   windbg %programfiles%\Mozilla Firefox\firefox.exe</pre>
 <p>OK. A primeira coisa é procurar pela string digitada, na esperança de achar a estrutura que escreve as respostas de acordo com a digitação. Isso pode ser feito facilmente graças ao WinDbg e ao <a href="http://voneinem-windbg.blogspot.com/2007/06/scan-full-process-memory-for-pattern.html">artigo de Volker von Einem</a> que ensina como procurar strings por toda a memória de um processo (mais tarde iremos também usar o comando-bônus do comentário de Roberto Farah).</p>
@@ -382,7 +382,7 @@ Essa é uma coisa que está faltando aqui no Caloni.com.br, que é a manutençã
    ...</pre>
 <p>Bom, vou parar o dump por aqui, já que, entre os leitores, pode haver quem queria se divertir primeiro do jeito certo =)</p>
 <p>Vimos que o jogo é facilmente quebrável porque armazena as respostas em texto claro. Uma solução alternativa seria utilizar um hash com colisão próxima de zero. Com isso bastaria trocar as respostas possíveis por hashs possíveis e armazená-los no lugar. Quando o usuário digitasse, tudo que o programa precisaria mudar era gerar um hash a partir da resposta do usuário e comparar com o hashs das respostas válidas.</p>
-<img src="img/encontrando-as-respostas-do-flash-pops-flash-pops.gif" caption="Flash Pops Seguro"/>
+<img src="img/encontrando-as-respostas-do-flash-pops-flash-pops.gif"/>
 <p>Por uma incrível coincidência, esse truquezinho eu aprendi com meu amigo <a href="http://codebehind.wordpress.com/">Thiago</a> há poucos dias, que está lendo o livro Reversing. Simples, porém funcional.</p>
 
 
@@ -861,7 +861,7 @@ Essa é uma coisa que está faltando aqui no Caloni.com.br, que é a manutençã
    Д == D
    ...</pre>
 <p>Porém, após a tradução de uma letra no teclado, a posição dela geralmente não é a mesma posição do nosso teclado. Daí temos uma letra de nosso alfabeto em outro lugar. Se for feita uma tradução aproximada entre os dois alfabetos, nossas letras em um teclado russo ficariam dispostas assim:</p>
-<img src="img/keychanger-de-crianca-russian-keyboard.png" caption="Russian Keyboard"/>
+<img src="img/keychanger-de-crianca-russian-keyboard.png"/>
 <p>Bem diferente do QWERT ASDFG que estamos acostumados, não?</p>
 <p>Ao digitar usando esse pseudo-leiaute o treino do leiaute do teclado russo estaria sendo feito mesmo escrevendo com o alfabeto latino. Legal, não? Poderia programar com as letras todas trocadas, porque a saída final é a mesma. Basta treinar os dedos para acertarem as mesmas letras nos novos lugares. Assim, quando precisasse escrever no alfabeto cirílico saberia melhor onde cada letra fica.</p>
 <p>A idéia é simples, e o código também não é nada complexo. Só preciso de um EXE e uma DLL. No EXE chamo uma função exportada pela DLL que por sua vez instala um hook de mensagens:</p>

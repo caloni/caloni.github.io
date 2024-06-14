@@ -344,9 +344,9 @@ role="navigation" aria-label="main navigation">
 <li>__variable_templates_test__. Mais algo já velho, que demonstro aqui com minha <a href="posts.html?q=logs-em-servicos-e-outras-coisas">superlib de log</a>.</li></ul>
 <h3>constexpr para especialização em ifs</h3>
 <p>A otimização no if através do uso da palavra-chave __constexpr__ possibilita a criação de diferentes instâncias da chamada que não contém o if, mas um dos dois branches dependendo do tipo ser integral ou não.</p>
-<img src="img/cpptests-ivRwuGm.png" caption=""/>
+<img src="img/cpptests-ivRwuGm.png"/>
 <p>Para que a compilação dessa opção funcione no Visual Studio 2017 15.3 é necessário inserir o parâmetro /std:c++latest nas opções do projeto em __C/C++, Command Line__:</p>
-<img src="img/cpptests-tPIS4wL.png" caption=""/>
+<img src="img/cpptests-tPIS4wL.png"/>
 <p>Todos (ou a maioria) deles ainda está em teste. Acabei de baixar o preview 5, conforma um dos membros da ML dos MVPs C++ me informou que saiu quentinha do forno. Em breve novidades.</p>
 
 
@@ -412,7 +412,7 @@ role="navigation" aria-label="main navigation">
 <p>Em primeiro lugar, como vimos anteriormente, a ponta server do depurador é um programa que você executa com alguns parâmetros e ele fica escutando em uma porta. Simples assim. Para que isso funcione antes do logon é necessário instalar esse programa como um serviço. Tanto no caso de depuradores mais antigos (msvCmon) quando nos mais novos (msvSmon) há sempre um executável com alguns parâmetros passados via linha de comando.</p>
 <p>O depurador do Visual Studio mais novo fica em sua pasta de instalação Program Files, etc, Microsoft Visual Studio, 2017, Enterprise, Common7, IDE, Remote Debugger ou derivados. Dentro dessa pasta há subpastas para cada arquitetura, x64 ou x86. É essa pasta que deve ser copiada para a máquina que será depurada. Se você estiver depurando um processo 32 bits, use o x86; do contrário, vá de x64.</p>
 <p>No caso do msvsmon, se executado com /? (padrão entre programas Windows) ele abre um pequeno help com a ajuda necessária para executar os parâmetros corretos:</p>
-<img src="img/forma-mais-simples-de-depurar-processos-antes-do-logon-CZIHbHZ.png" caption=""/>
+<img src="img/forma-mais-simples-de-depurar-processos-antes-do-logon-CZIHbHZ.png"/>
 <p>No caso o comando maroto é o seguinte:</p>
 <pre>
 msvsmon.exe /timeout 999999 /anyuser /silent /noauth</pre>
@@ -457,11 +457,11 @@ void DLL_Stop()
 <p>Depois de copiar Service.exe e DLL.dll para a máquina-alvo (e não se esquecer de instalar as <a href="https://www.google.com.br/search?q=visual+c%2B%2B+redistributable+2017<a href="posts.html?q=dependências">dependências</a>oq=visual+c%2B%2B+redistributable">dependências</a>) instalar da mesma forma com que foi instalado o msvsmon:</p>
 <pre>
 nssm.exe install Service service.exe</pre>
-<img src="img/forma-mais-simples-de-depurar-processos-antes-do-logon-lgPCGyW.png" caption=""/>
+<img src="img/forma-mais-simples-de-depurar-processos-antes-do-logon-lgPCGyW.png"/>
 <p>Agora ache o IP da máquina-alvo e vá em Debug, Attach to Process (Ctrl+Alt+P) no Visual Studio, modo remoto e digite o IP.</p>
 <pre>
 cmd /k ipconfig | find "192"</pre>
-<img src="img/forma-mais-simples-de-depurar-processos-antes-do-logon-GpNPhiC.png" caption=""/>
+<img src="img/forma-mais-simples-de-depurar-processos-antes-do-logon-GpNPhiC.png"/>
 <p>Lembre-se de iniciar o serviço.</p>
 <p>Após esse teste podemos modificar a DLL para aguardar por um depurador:</p>
 <pre>
@@ -473,7 +473,7 @@ void DLL_Start()
     std::cout << "DLL started\n";
 }</pre>
 <p>Depois que houver o attach você irá continuar a execução. Portanto, coloque um breakpoint logo depois.</p>
-<img src="img/forma-mais-simples-de-depurar-processos-antes-do-logon-hja6Y2Y.png" caption=""/>
+<img src="img/forma-mais-simples-de-depurar-processos-antes-do-logon-hja6Y2Y.png"/>
 <p>Depois que isso funcionar já é possível iniciar sua depuração antes da tela de login. Os serviços executarão, e sua DLL estará aguardando um debugger ser atachado. Se houver necessidade é possível deixar esse modo de espera configurável, por timeout, etc.</p>
 
 

@@ -195,7 +195,7 @@ role="navigation" aria-label="main navigation">
 <p>A primeira parte de toda análise é a busca por padrões com um pouco de bom senso. O Houaiss armazena suas definições em um conjunto de arquivos de nome deahNNN.dhx (provavelmente deah de Dicionario Eletrônico Antônio Houaiss). Os NNN variam de 001 -- o maior arquivo -- até 065, com algumas poucas lacunas, em um total de 53 arquivos originais.</p>
 <p>O nosso rústico importador fez o trabalho de desofuscar todos os 53 arquivos usando a mesma lógica encontrada pelo WinDbg: somar o valor 0x0B para cada byte do arquivo. Dessa forma foram gerados 53 arquivos novos no mesmo diretório, porém com a extensão TXT.</p>
 <p>Partindo do bom senso, abriremos o arquivo maior, deah001.txt, e abriremos o próprio dicionário Houaiss, em busca de um padrão que faça sentido. Como poderemos ver na figura abaixo, o padrão inicial não é nem um pouco complicado.</p>
-<img src="img/conversor-de-houaiss-para-babylon-parte-2-houaiss-analysis.png" caption="Houaiss Analysis"/>
+<img src="img/conversor-de-houaiss-para-babylon-parte-2-houaiss-analysis.png"/>
 <p>As duas primeiras observações do formato do arquivo nos dizem que (1) o primeiro caractere de cada linha indica o conteúdo dessa linha, e que (2) a formatação dos caracteres é feita dentro de um par de chaves {}.</p>
 <p>Dessa forma, podemos começar a construir nosso interpretador de arquivos do Houaiss em seu formato básico.</p>
 <pre>   #include <iostream>
@@ -287,9 +287,9 @@ role="navigation" aria-label="main navigation">
    }</pre>
 <p>Algumas partes ainda estão feias, eu sei. Mas, ei, isso é um código de ráquer, não é mesmo? Além do mais, se isso não é desculpa suficiente, estamos trabalhando em uma versão beta.</p>
 <p>A partir dessas duas funções é possível dissecar o primeiro arquivo do dicionário, e assim, construirmos a primeira versão interessante do Houaiss no Babylon.</p>
-<img src="img/conversor-de-houaiss-para-babylon-parte-2-houaiss-babylon-installing.png" caption="Houaiss Babylon Installing"/>
+<img src="img/conversor-de-houaiss-para-babylon-parte-2-houaiss-babylon-installing.png"/>
 <p>Como é normal a qualquer dicionário do Babylon, podemos instalá-lo simplesmente clicando duas vezes no arquivo (em uma máquina com Babylon previamente instalado).</p>
-<img src="img/conversor-de-houaiss-para-babylon-parte-2-houaiss-babylon.png" caption="Houaiss Babylon"/>
+<img src="img/conversor-de-houaiss-para-babylon-parte-2-houaiss-babylon.png"/>
 <p>O projeto atual está um tanto capenga, mas já desencripta os arquivos do Houaiss e gera o projeto do Babylon Builder sozinho. Em anexo já está um projeto do Babylon Builder. Basta copiar o arquivo Houaiss.txt para a pasta do projeto e gerar o projeto do Babylon.</p>
 
 </section><hr/>
@@ -332,7 +332,7 @@ role="navigation" aria-label="main navigation">
 <pre>   debug</pre>
 </li></ul>
 <p>Os comandos mais úteis são o r (ver ou alterar registradores), o t/p (executar passo-a-passo), o d (exibir memória), o u (desmontar assembly) e o a (montar assembly). Ah, não se esquecendo do ? (ajuda).</p>
-<img src="img/aprendendo-assembly-com-o-depurador-debug-testpng.png" caption="Teste do debug 16 bits"/>
+<img src="img/aprendendo-assembly-com-o-depurador-debug-testpng.png"/>
 <p>Outro ensinamento bem interessante diz respeito à pilha. Aprendemos sempre que a pilha cresce de cima pra baixo, ou seja, de endereços superiores para valores mais baixos. Também vimos que os registradores responsáveis por controlar a memória da pilha são o sp (stack pointer) e o ss (stack segment). Pois bem. Vamos fazer alguns testes para ver isso acontecer.</p>
 <ul><li>r</li></ul>
 <pre>   AX=0000  BX=0000  CX=0000  DX=0000  SP=FFEE  BP=0000  SI=0000  DI=0000
@@ -424,7 +424,7 @@ d 9000:fff9</li></ul>
    0:000> ezu 000b2850 "Tem certeza que deseja salvar esse artigo de merda?"
    0:000> g
    ModLoad: 75f50000 7604d000   C:\WINDOWS\system32\BROWSEUI.dll</pre>
-<img src="img/aprendendo-assembly-com-o-depurador-windbgxnotepad.png" caption="WinDbg x Notepad"/>
+<img src="img/aprendendo-assembly-com-o-depurador-windbgxnotepad.png"/>
 <p>Aposto que você sabe em qual dos três botões eu cliquei =)</p>
 <p>Depurar é um processo que exige dedicação (experiência) tanto ou mais do que o próprio desenvolvimento. Por isso, fazer um esforço para descobrir algum problema em algum software pode ser vantajoso no futuro, pois você terá mais capacidade de entender o que está acontecendo à sua volta.</p>
 <p>Básico a intermediário:</p>

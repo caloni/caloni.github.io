@@ -296,7 +296,7 @@ role="navigation" aria-label="main navigation">
 <p>Além disso, é possível você mesmo integrar o Visual Studio com outra lib de testes. Mas para que gastar tempo? Várias integrações já estão disponíveis no <a href="https://marketplace.visualstudio.com/">Visual Studio Marketplace</a>. Ligue já!</p>
 <p>OK, parei com o merchan. Até porque não ganho nada com isso. Vamos ao código.</p>
 <p>Pelo Wizard do VS podemos criar para um projeto C++ qualquer um projeto de teste. No momento estou vendo os tipos de projeto Native Unit Test e Google Test.</p>
-<img src="img/visual-studio-unit-test-Gk5fDHB.png" caption=""/>
+<img src="img/visual-studio-unit-test-Gk5fDHB.png"/>
 <p>Este é nosso projeto de exemplo:</p>
 <pre>
 #include "CalculatorTabajara.h"
@@ -320,7 +320,7 @@ int main()
 {
 }</pre>
 <p>Para conseguir testar o projeto principal adicione-o como referência.</p>
-<img src="img/visual-studio-unit-test-TbFrxIr.png" caption=""/>
+<img src="img/visual-studio-unit-test-TbFrxIr.png"/>
 <p>Após isso basta incluir algum header que contenha os tipos, funções, classes e métodos que deseja testar e vá criando métodos de teste dentro da classe de exemplo:</p>
 <pre>
 #include "pch.h"
@@ -361,11 +361,11 @@ namespace UnitTest1
 <li>Adicione todo código do projeto original que ele precisa para compilar.</li></ul>
 <p>Por isso eu tirei a tranqueira de precompiled header do projeto de unit test, retirei a referência (sugestão do tutorial da Microsoft) e apenas adicionei o mesmo cpp para ser compilado.</p>
 <p>Agora mais mágica: se você abrir a janela Test Explorer ele irá encontrar seus testes e enumerá-los!</p>
-<img src="img/visual-studio-unit-test-1ZVjQ4D.png" caption=""/>
+<img src="img/visual-studio-unit-test-1ZVjQ4D.png"/>
 <p>Se você já programou um pouco em Windows com C++ já deve saber o truque: como o Unit Test é uma DLL ela simplesmente exporta os símbolos necessários para que o Visual Studio encontre o que precisa. O básico que um plugin dos velhos tempos faz: exportar interfaces com um pouco de reflection.</p>
-<img src="img/visual-studio-unit-test-en6DWQp.png" caption=""/>
+<img src="img/visual-studio-unit-test-en6DWQp.png"/>
 <p>Se você habilitar Undecorate C++ Functions no Dependency Walker verá que ele exporta justamente uma espécie de reflection, na forma de structs:</p>
-<img src="img/visual-studio-unit-test-jiBQxZ4.png" caption=""/>
+<img src="img/visual-studio-unit-test-jiBQxZ4.png"/>
 <p>E se você prestar atenção na ordem de exportação desse símbolos verá que o primeiro se chama GetTestClassInfo. Acabou a magia, não é mesmo?</p>
 <p>Os headers e fontes do CppUnitTest ficam em paths do Visual Studio como VC\Auxiliary\VS\UnitTest, nas pastas include e lib. Nele é possível dar uma olhada no significado das macros e das classes disponibilizadas. Logo abaixo das macros, no arquivo principal, é possível ver como funciona o reflection:</p>
 <pre>
@@ -810,7 +810,7 @@ int main()
 <p class="note-title"><small>2019-05-17  <a href="tag_coding.html">tag_coding</a> </small><a href="2019-05.html">^</a> <button onclick="copy_clipboard('section#section-c-resolve-tudo-clos')">ctrl_c</button></p>
 
 <p>Continuando nossa série, conforme sugerido pelo @colemaker do grupo C/C++/42/Império do Brasil, a próxima ideia a ser implementada em C é o sistema polimórfico de chamadas do Lisp orientado a objetos. Esse sistema permite realizar a seguinte manobra:</p>
-<img src="img/c-resolve-tudo-clos-VcPXDcJ.jpg" caption=""/>
+<img src="img/c-resolve-tudo-clos-VcPXDcJ.jpg"/>
 <p>O aspecto-chave aqui, conforme eu descobri, é implementar a estratégia de prioridades entre as sobrecargas dos métodos de acordo com os tipos passados. Analisando bem por cima devemos sempre priorizar os métodos com os tipos mais específicos e ir realizando underpromotion até chegarmos no menos específico (se houver).</p>
 <h2>Sistema de tipos</h2>
 <p>Para o sistema de tipos em C nada como fazer do zero:</p>

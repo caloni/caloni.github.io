@@ -294,11 +294,11 @@ int main(int argc, char* argv[]) // No princípio havia a pilha, quando Deus dis
 }
  </pre>
 <p>Se olharmos de perto o processamento e a memória consumida por esse processo, veremos que no início existe um boom de ambos, mas após um momento de pico, o processamento praticamente pára, mas a memória se mantém:</p>
-<img src="img/consumo-abusivo-de-memoria-hoxWfdi.png" caption=""/>
+<img src="img/consumo-abusivo-de-memoria-hoxWfdi.png"/>
 <p>Depois de pesquisar <a href="https://twitter.com/#!/caloni/status/138632431765954560">por meus tweets favoritos</a>, fica fácil ter a receita para verificarmos isso usando nosso depurador favorito: &lt;del&gt;Visual Studio&lt;/del&gt; WinDbg!</p>
-<img src="img/consumo-abusivo-de-memoria-ZKVVT0O.png" caption=""/>
+<img src="img/consumo-abusivo-de-memoria-ZKVVT0O.png"/>
 <p>windbg -pn MemoryConsumption.exe</p>
-<img src="img/consumo-abusivo-de-memoria-Bzb2XVY.png" caption=""/>
+<img src="img/consumo-abusivo-de-memoria-Bzb2XVY.png"/>
 <p>Achamos onde está a memória consumida. Agora precisamos de dicas do que pode estar consumindo essa memória. Vamos começar por listar os chunks alocados por tamanho de alocação:</p>
 <pre>   
    0:004> !heap -stat -h 0
@@ -332,7 +332,7 @@ int main(int argc, char* argv[]) // No princípio havia a pilha, quando Deus dis
     00599a38 0221 0221 [00] 00599a50 01037 - (busy)
     0059de58 0(...)</pre>
 <p>A listagem do depurador nos dá o endereço onde o chunk foi alocado no heap e o endereço devolvido para o usuário, onde colocamos nossas tralhas. Através de ambos é possível trackear a pilha da chamada que alocou cada pedaço de memória. Isso, claro, se previamente tivermos habilitado essa informação através do <a href="http://msdn.microsoft.com/en-us/library/windows/hardware/ff549596(v=vs.85">GFlags</a>:</p>
-<img src="img/consumo-abusivo-de-memoria-JeqoBju.png" caption=""/>
+<img src="img/consumo-abusivo-de-memoria-JeqoBju.png"/>
 <pre>   
    0:004> !heap -p -a <span style="color: #ff0000;">00558600</span>
     address 00558600 found in

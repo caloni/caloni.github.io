@@ -157,11 +157,11 @@ role="navigation" aria-label="main navigation">
 <p>O segundo round da segunda fase do Code Jam passou nesse sábado. Disléxico que sou, consegui fazer apenas 8 pontos ¿ como todo mundo ¿ no teste small do problema B, que envolvia apenas dois loops aninhados (a versão large fica para outro post). Na verdade, estou aqui para expressar minha gratidão ao campeonato por ter aprendido mais uma bela lição vendo o código do primeiro colocado do primeiro round, vulgo <a href="https://code.google.com/codejam/contest/2984486/scoreboard?c=2984486#vf=1">Kaizero</a>, um coreano que deu uma solução simples, rápida e prática para um problema de probabilidade tão error-prone que até os juízes do Google deram uma lambuja de alguns testes errados (sem contar que houve apenas a categoria small), e me fez pensar em quantas vezes pensamos em demasiado tentando encontrar a solução perfeita para algo que simplesmente... não precisa.</p>
 <p>Basta um hack e <a href="http://pcottle.github.io/learnGitBranching/?NODEMO<a href="posts.html?q=commit">commit</a>defaultTab=remote<a href="posts.html?q=commit">commit</a>command=levels">commit</a>.</p>
 <h3>É a incerteza, idiota!</h3>
-<img src="img/poker-face-LmkKDXm.jpg" caption="Poker Jam"/>
+<img src="img/poker-face-LmkKDXm.jpg"/>
 <p>O problema reza que existem dois algoritmos para embaralhar uma sequência numérica (de 0 a N): o bom e o ruim. Ambos traçam um loop do iníco ao fim pegando aleatoriamente um elemento da lista e trocando de lugar com o elemento que está sendo varrido no momento.</p>
-<img src="img/poker-face-UTQPIST.jpg" caption="ProperShuffle"/>
+<img src="img/poker-face-UTQPIST.jpg"/>
 <p>A diferença entre o bom e o ruim é que o bom pega aleatoriamente apenas os elementos DEPOIS do elemento que está sendo varrido, enquanto o algoritmo ruim pega qualquer um dos elementos SEMPRE. Isso aparentemente e intuitivamente não parece interferir na aleatoriedade do embaralhamento, mas se levarmos ao extremo de embaralhar repetidas vezes somando a lista resultante percebemos uma tendência gritante do algoritmo ruim em manter o ordenamento inicial, ou pelo menos na média sempre tender para números menores no início e números maiores no fim, como pode ser visto nesse teste que fiz, gerado pelo Excel:</p>
-<img src="img/poker-face-OL0hpLv.jpg" caption="Gráfico dos Algoritmos de Embaralhamento"/>
+<img src="img/poker-face-OL0hpLv.jpg"/>
 <p>O que eu tentei fazer durante meu fim-de-semana retrasado e o feriado foi encontrar um detector de aleatoriedade (aliás, encontrei um bem interessante chamado <a href="http://www.fourmilab.ch/random/">ent</a>), tanto "na mão" quanto pesquisando. O que eu não imaginava foi que o teste que eu tinha feito no início usando uma simples planilha Excel era a solução óbvia (naquelas de é óbvio só depois que você vê). E foi essa a solução adotada por Kaizero.</p>
 <pre>
 /** @author Kaizero
@@ -246,7 +246,7 @@ int main()
 	}
 }</pre>
 <p>O que ele basicamente faz é acumular os resultados de três milhões de embaralhamentos feitos pelo algoritmo ruim e inferir através dos resultados que metade é bom e metade é ruim. O ruim fica do lado desbalanceado da sequência.</p>
-<img src="img/poker-face-oe3heEP.jpg" caption="Tabelona"/>
+<img src="img/poker-face-oe3heEP.jpg"/>
 <p>Tão óbvio, tão simples, tão elegante.</p>
 
 
@@ -380,7 +380,7 @@ int main()
     MinhaClasse mc;
 }</pre>
 <p>Ele compila e roda sem problemas:</p>
-<img src="img/estruturas-vs-classes-fight-APlOm65.jpg" caption="StructVsClass"/>
+<img src="img/estruturas-vs-classes-fight-APlOm65.jpg"/>
 <p>"Estruturalmente" falando, **MinhaEstrutura** e **MinhaClasse** são idênticas, pois são os detalhes de sintaxe que diferem, e diferem pouco. Abrindo o jogo, a única diferença que poderá ser sentida em usar um ou outro é que **structs possuem seus membros públicos por padrão e classes possuem seus membros privados por padrão**. Apenas isso. O resto, nada muda.</p>
 <p>Isso pode ser visto quando adicionamos um construtor para nossos tipos de teste:</p>
 <pre>
@@ -397,7 +397,7 @@ int main()
     MinhaEstrutura me;
     MinhaClasse mc;
 }</pre>
-<img src="img/estruturas-vs-classes-fight-vwpucpm.jpg" caption="StructVsClass-Construtor"/>
+<img src="img/estruturas-vs-classes-fight-vwpucpm.jpg"/>
 <p>Antes não havia problemas para **MinhaClasse** porque o construtor padrão criado para ela é público por default. Porém, explicitando no código um construtor e deixando sua privacidade ligada por padrão temos esse erro que NÃO ocorre em **MinhaEstrutura**.</p>
 <p>Mas, então, posso criar todas minhas classes usando a palavra-chave struct?</p>
 <p>Isso mesmo! Nada lhe obriga tecnicamente a usar class. Porém, assim como nada lhe obriga a usar uma linha para cada comando na linguagem ¿ afinal, todos poderiam estar na mesma linha separados por ponto-e-vírgula ¿ o uso da palavra _struct_ para classes no sentido de "objetos que possuem inteligência, métodos, herança, polimorfismo e outras firulas" não se enquadra nas boas práticas dos programadores C++.</p>
@@ -421,7 +421,7 @@ int main()
     MinhaEstrutura me;
     std::cout << "x: " << me.x << ", y: " << me.y << ", c: " << me.c << std::endl;
 }</pre>
-<img src="img/estruturas-vs-classes-fight-rdpllNf.jpg" caption="StructVsClassStructConstructor"/>
+<img src="img/estruturas-vs-classes-fight-rdpllNf.jpg"/>
 <p>E, por que não, uma sobrecarga do operador de stream para imprimirmos diretamente os valores de **MinhaEstrutura** para a saída com apenas um comando?</p>
 <pre>
 #include <iostream>
@@ -440,7 +440,7 @@ int main()
     MinhaEstrutura me;
     std::cout << me << std::endl;
 }</pre>
-<img src="img/estruturas-vs-classes-fight-np4trf9.jpg" caption="StructVsClassStreams"/>
+<img src="img/estruturas-vs-classes-fight-np4trf9.jpg"/>
 <p>Enfim, não há nenhum limite que se aplica a uma _struct_ além do bom senso. A criação da palavra _class_ não foi por falta do que fazer. Ela diz claramente que estamos definindo um objeto que contém usos mais adequados à orientação a objetos de C++ do que a programação estruturada de C, e vice-versa. É uma forma de tornar o código mais legível, mas nada do outro mundo. Sabemos, no final das contas, que o compilador trata as duas (quase) da mesma maneira.</p>
 <p>Qual será a próxima batalha épica? Você escolhe!</p>
 </section><hr/>

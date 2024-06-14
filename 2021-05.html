@@ -139,7 +139,7 @@ role="navigation" aria-label="main navigation">
 <p>No vídeo original comecei na inocência seguindo o tutorial da Microsoft para configurar o kdnet, mas acabei gastando quase uma hora nesse esforço, e foi em vão. Eu não consegui usar os passos descritos no tutorial para fazer o boot finalmente conectar no kd.exe.</p>
 <p>Pesquisando sobre pessoas que tiveram o mesmo problema encontro um <a href="https://medium.com/@ophirharpaz/kdnet-tutorial-for-noobs-68669778bbd4">post da Ophir Harpaz</a> no Medium dizendo que irá ensinar o porquê de cada comando na configuração desse tipo de debug. O título do post é apenas um chamariz, pois também é um passo-a-passo sem explicação nenhuma dos motivos por trás de cada comando. Porém, os passos são diferentes do da Microsoft, e esses funcionaram. Então vou gravar o vídeo, e de brinde segue o passo-a-passo:</p>
 <p>Com uma VM de Windows 10 criada no Hyper-V, desabilite o Secure Boot pelas configurações da VM:</p>
-<img src="img/como-configurar-debug-de-kernel-pela-rede-hyper-v-disable-secure-boot.png" caption=""/>
+<img src="img/como-configurar-debug-de-kernel-pela-rede-hyper-v-disable-secure-boot.png"/>
 <p>Desligue a VM. Pelo meno do Hyper-V crie um novo adaptador pelo Virtual Switch Manager; esse deve apontar para um adaptador de sua máquina real, para host e target conseguirem se comunicar. Atribua esse novo adaptador à sua VM desligada e volte a ligá-la.</p>
 <p>Já ligada abra um prompt de comando elevado e use os seguintes comandos do bcdedit para configurar um boot de debug. Lembre-se que o IP deve ser o IP da sua máquina host do seu adaptador de rede real (wi-fi ou cabo). Executando um ipconfig você consegue pegar ele.</p>
 <pre>   >bcdedit /copy {current} /d "KDNet port 50035"

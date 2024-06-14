@@ -294,7 +294,7 @@ if( findH != INVALID_HANDLE_VALUE )
    if( findData.dwFileAttributes & FILE_ATTRIBUTE_ENCRYPTED )
    {
 //...</pre>
-<img src="img/classe-objeto-contexto-dilbert.context.gif" caption=""/>
+<img src="img/classe-objeto-contexto-dilbert.context.gif"/>
 <p>No caso de nós, que escrevemos uma "classe", o contexto é recebido "de fora":</p>
 <pre>
 HANDLE MyFindFirstFile(const char* pattern, LPWIN32_FIND_DATA findData)
@@ -383,8 +383,8 @@ int main()
 	obj.MeuMetodo(&obj);
     printf("MinhaPropriedade = %d", obj.MinhaPropriedade);
 }</pre>
-<img src="img/classe-objeto-contexto-metodo-uzfJuTC.png" caption=""/>
-<img src="img/classe-objeto-contexto-metodo-JLJaAsB.png" caption=""/>
+<img src="img/classe-objeto-contexto-metodo-uzfJuTC.png"/>
+<img src="img/classe-objeto-contexto-metodo-JLJaAsB.png"/>
 <p>Parece muito trabalho para algo que é feito "automagicamente" em C++, certo? Certo. Porém, agora sabemos o que acontece por baixo dos panos em C++ e que pode ser feito em C (ainda que "na mão"). Você provavelmente nunca fará esse tipo de código em C para emular C++, mas o objetivo desse código é entender como funciona, por exemplo, a _vtable_ do C++, que permite polimorfismo.</p>
 <p>Mas esse é assunto para <a href="posts.html?q=classe-objeto-contexto-metodo-polimorfismo">outro post</a>.</p>
 
@@ -449,7 +449,7 @@ int main()
     std::cout << "MinhaPropriedade (obj) = " << obj.MinhaPropriedade << std::endl;
     std::cout << "MinhaPropriedade (obj2) = " << obj2.MinhaPropriedade << std::endl;
 }</pre>
-<img src="img/classe-objeto-contexto-metodo-polimorfismo-Ye5mA8L.png" caption=""/>
+<img src="img/classe-objeto-contexto-metodo-polimorfismo-Ye5mA8L.png"/>
 <p>Como você deve imaginar, é possível também fazer isso em C. Basta mudar os endereços das variáveis do tipo ponteiro de função que estão na struct usada como contexto. Para ficar o mais próximo possível do "modo C++" de fazer polimorfirmo, podemos escrever _hardcoded_ a tal _vtable_ para os diferentes tipos de "classe":</p>
 <pre>
 #include <stdio.h>
@@ -487,9 +487,9 @@ int main()
 	printf("MinhaPropriedade (obj) = %d\n", obj.MinhaPropriedade);
 	printf("MinhaPropriedade (obj2) = %d\n", obj2.MinhaPropriedade);
 }</pre>
-<img src="img/classe-objeto-contexto-metodo-polimorfismo-tRAtU9d.png" caption=""/>
+<img src="img/classe-objeto-contexto-metodo-polimorfismo-tRAtU9d.png"/>
 <p>A versão C ainda tem a vantagem de não precisar de uma vtable const (embora seja adequado em situações normais de temperatura e pressão). Os "métodos" poderiam mudar caso algum estado mudasse, alguma exceção fosse disparada, mantendo o mesmo contexto, mas um comportamento (vtable) diferente. Quem utiliza muito essa estratégia é o _kernel_ do Windows, que mexe com estruturas que contém não apenas listas ligadas genéricas, mas funções de _callback_ que não apenas o código da Microsoft precisa chamar, mas os próprios _drivers_ de terceiros que se preocupam com bom comportamento e _guidelines_ que tornam o SO rodando perfeitamente.</p>
-<img src="img/classe-objeto-contexto-metodo-polimorfismo-k20fqVJ.gif" caption=""/>
+<img src="img/classe-objeto-contexto-metodo-polimorfismo-k20fqVJ.gif"/>
 <p>O importante deste artigo é demonstrar como conceitos aparentemente complicados ou escondidos de uma linguagem como C++ podem ser compreendidos completamente utilizando apenas linguagem de alto nível no bom e velho C. Essa estratégia de descer camadas de abstração, como verá, funciona para linguagens de mais alto nível, como C# ou Java, pois ambas são implementadas em linguagens como C++. No fundo, engenharia de software é um universo multi-camadas transitando pela última camada que conhecemos -- a física. Pelo menos a última camada que ainda conhecemos.</p>
 
 
@@ -543,13 +543,13 @@ int main()
 	cout << "x is " << ( Compare(x, y) ? "lesser" : "bigger" ) << " than y\n";
 	cout << "dx is " << ( Compare(dx, dy) ? "lesser" : "bigger" ) << " than dy\n";
 }</pre>
-<img src="img/gabaritos-84Ptrvk.png" caption=""/>
+<img src="img/gabaritos-84Ptrvk.png"/>
 <p>Continuando nosso tema de fazer as mesmas coisas em C, __templates__ não é tão simples, pois não existe de fato na linguagem. Templates são interpretados pelo compilador, que gera um esqueleto de algoritmo que é usado para preencher código de todos os tipos utilizados. Em C isso era feito usando macros. Porém, macros não fazem parte da linguagem C. É apenas uma ferramenta chamada pré-processador que substitui texto antes do programa ser compilado. É através do pré-processador que, por exemplo, os headers são incluídos em um código-fonte. Isso já foi explicado em um <a href="posts.html?q=os-diferentes-erros-na-linguagem-c">artigo</a> bem velhinho, e mais recentemente em uma <a href="posts.html?q=entendendo-a-compilacao">palestra</a>.</p>
 <pre>
 // qual o tipo de x e y? qualquer um que faça comparação
 #define MACRO(x, y) x < y</pre>
 <p>Eu não recomendaria usar macros em C++, assim como não recomendo em C. Porém, em C é a única opção para reciclar algoritmos de maneira estática. Exceto se você usar ponteiros de função, o que adiciona pouco overhead, mas se perde, assim como a técnica de macro, a informação dos tipos. A própria libc contém uma função, <a href="http://www.cplusplus.com/reference/cstdlib/qsort/">__qsort__</a>, que é "genérica" através do uso de ponteiros sem tipo (void*) e ponteiro de função. A função ordena elementos de uma lista, mas para isso depende da função de comparação que é passada por parâmetro. Essa função recebe dois void* que deve comparar. Além disso, o leiaute na memória tem que ser fixo, contínuo, pois é assim que a função consegue mover os elementos. Ou seja, bem limitado.</p>
-<img src="img/gabaritos-3TkGFkN.png" caption=""/>
+<img src="img/gabaritos-3TkGFkN.png"/>
 <p>Dessa forma, não pretendo ensinar a usar "templates" em C, mas a usá-los em C++ com foco em C. Um amigo conhecido de vocês, o <a href="http://driverentry.com.br/">Fernando/DriverEntry</a>, utilizou essa técnica com maestria em alguns códigos kernel-mode que ele desenvolveu, e é uma maneira válida de se aproveitar de uma linguagem mais "alto nível" como C++ em ambientes limitados como o código que trabalha com o S.O.. Como a API do kernel lida com abstrações em C, seus objetos necessariamente não são objetos no sentido C++, mas os famigerados "ponteiros opacos".</p>
 <p>Mais sobre isso em um próximo post.</p>
 
@@ -585,7 +585,7 @@ typedef struct _LIST_ENTRY {
   struct _LIST_ENTRY  *Blink;
 } LIST_ENTRY, *PLIST_ENTRY;</pre>
 <p>A lógica por trás de LIST_ENTRY é que esse membro pode ser inserido em qualquer lugar da estrutura que representará um elemento:</p>
-<img src="img/templates-em-c-no-lugar-de-macros-865mgsu.jpg" caption=""/>
+<img src="img/templates-em-c-no-lugar-de-macros-865mgsu.jpg"/>
 <p>Ele pode estar realmente no __meio__ do elemento, pois isso não importa, desde que você saiba voltar para o começo da estrutura. Isso é útil quando um elemento pode fazer parte de diferentes listas.</p>
 <pre>
 typedef struct _LIST_ENTRY {
@@ -781,9 +781,9 @@ int main()
 <p>Felizmente, as funções do logger também estão em uma DLL estilo plugin do próprio WinDbg, que pode ser chamada facilmente e que -- surpresa! -- internamente ao depurador funciona. Melhor ainda, não é necessário criar um processo para realizar o log, mas pode ser atachado em um processo já em execução, o que facilita bastante seu uso em serviços, por exemplo.</p>
 <p>Vamos testar aqui o log da nossa cobaia de plantão, o amigo Notepad (ou Bloco de Notas), exibindo um texto que demonstra com perfeição uma das minhas características mais bizarras: confundir expressões e frases prontas.</p>
 <p>_Nota: Lembrando que estaremos testando em Windows XP 32 bits com um WinDbg igualmente 32 bits. Inicialmente comecei a testar a versão 64, mas ela também deu xabu. Aparentemente coisas periféricas do Debugging Tools nunca são muito bem testadas._</p>
-<img src="img/log-de-apis-chamadas-direto-do-windbg-5gLF4Qd.png" caption=""/>
+<img src="img/log-de-apis-chamadas-direto-do-windbg-5gLF4Qd.png"/>
 <p>O texto ainda não foi salvo em nenhum arquivo. Iremos salvá-lo, mas antes, vamos executar o WinDbg e ver como o Notepad realiza essa operação.</p>
-<img src="img/log-de-apis-chamadas-direto-do-windbg-55CjXt2.png" caption=""/>
+<img src="img/log-de-apis-chamadas-direto-do-windbg-55CjXt2.png"/>
 <p>A extensão/plugin que me referia é o Logexts.dll. Você pode instalar o log de API em um momento, habilitá-lo em outro, e até desabilitá-lo depois. Ou seja, é um processo ótimo para realizar inspeção pontual de chamadas API. Caso, claro, ele não exploda em um desses momentos.</p>
 <pre>
 (9c4.f04): Break instruction exception - code 80000003 (first chance)
@@ -839,13 +839,13 @@ Logging disabled.
 0:004> .detach
 Detached</pre>
 <p>Depois de gerarmos o que precisamos, podemos desatachar do processo e analisar o resultado: **um arquivo LGV**. Para abrir esse arquivo existe uma outra ferramenta chamada **logviewer**.</p>
-<img src="img/log-de-apis-chamadas-direto-do-windbg-fNq4uUu.png" caption=""/>
+<img src="img/log-de-apis-chamadas-direto-do-windbg-fNq4uUu.png"/>
 <p>Para evitar procurar em dezenas de milhares de chamadas, há uma opção de filtrar com apenas o que queremos (no caso, CreateFile e WriteFile):</p>
-<img src="img/log-de-apis-chamadas-direto-do-windbg-sgCO9Wj.png" caption=""/>
+<img src="img/log-de-apis-chamadas-direto-do-windbg-sgCO9Wj.png"/>
 <p>Depois de filtrado, podemos abrir a linha que nos interessa para ver como o programa utilizou a API (quais parâmetros, o retorno, etc).</p>
-<img src="img/log-de-apis-chamadas-direto-do-windbg-mNDJRhK.png" caption=""/>
+<img src="img/log-de-apis-chamadas-direto-do-windbg-mNDJRhK.png"/>
 <p>Note, por exemplo, que houve uma falha antes na abertura do mesmo arquivo, mas isso porque houve uma tentativa de abrir um arquivo que já existe (abertura com direito de apenas leitura). Essa chamada foi feita pela DLL do diálogo comum de abertura/salvamento de arquivo do Windows (**comdlg32.dll**), e não pelo **notepad.exe**.</p>
-<img src="img/log-de-apis-chamadas-direto-do-windbg-p2bgEl2.png" caption=""/>
+<img src="img/log-de-apis-chamadas-direto-do-windbg-p2bgEl2.png"/>
 <p>Como já havia dito no artigo original sobre o logview, você pode criar seu próprio header com as definições das funções de um módulo e o WinDbg graciosamente irá gerar um log de chamadas, incluindo medidas de performance. Esses dados abertos pelo logviewer podem ser exportados também para modo texto. E temos mais uma maneira de perfcounter chulé para eventualidades.</p>
 
 </section><hr/>
@@ -889,7 +889,7 @@ Detached</pre>
 <h4>A migração</h4>
 <p>A primeira coisa a ser feita é converter o repositório. Depois de convertido, como todas as operações estarão no universo Git, há <a href="http://stackoverflow.com/questions/1425892/how-do-you-merge-two-git-repositories">uma</a> de <a href="http://stackoverflow.com/questions/13040958/merge-two-git-repositories-without-breaking-file-history">entradas</a> no StackOverflow para nos ajudar a reunir os repositórios em um só, meu objetivo, já que o Git é mais leve e mais versátil nesse quesito.</p>
 <p>No Windows, nas últimas versões do Bazaar o comando fast-export não estava mais funcionando. Parado desde 2012, não há previsão de correções. No entanto, para essa operação, a versão 2.4.2 atendeu bem. O comando é um pouco diferente, mas ele é rápido e rodou sem problemas em conjunto com o fast-import do Git.</p>
-<img src="img/exportando-repositorios-antigos-do-bazaar-para-git-9gzHZOz.png" caption=""/>
+<img src="img/exportando-repositorios-antigos-do-bazaar-para-git-9gzHZOz.png"/>
 <pre>
 git init
 bzr fast-export --plain . | git fast-import

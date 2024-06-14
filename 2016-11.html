@@ -671,23 +671,23 @@ int main()
 <h5>Performance Monitor</h5>
 <p>O Perfmon(.msc) está aí no Windows já faz algumas versões (quase todas). Tudo que você precisa para executá-lo é executar o comando __perfmon__ no diálogo de execução (Start, Run) ou encontrar o atalho para perfmon.msc. Na busca do Windows 8/10 também é possível encontrá-lo pelo nome.</p>
 <p>Ao executá-lo a primeira coisa que ele monitora é o processamento da máquina. Podemos eliminar ou esconder esse indicador direto na lista abaixo da ferramenta.</p>
-<img src="img/quantos-handles-TSAZhI0.png" caption=""/>
+<img src="img/quantos-handles-TSAZhI0.png"/>
 <p>Existem incontáveis contadores no Perfmon. Para o que precisamos vamos em Process e escolhemos o contador de Handles:</p>
-<img src="img/quantos-handles-dR2awj1.png" caption=""/>
+<img src="img/quantos-handles-dR2awj1.png"/>
 <p>Depois de um tempo o Perfmon irá exibir o histórico que determina para onde está indo o seu contador:</p>
-<img src="img/quantos-handles-smbb54b.png" caption=""/>
+<img src="img/quantos-handles-smbb54b.png"/>
 <p>Se os valores do seu contador estão fora da faixa do histórico é possível ajustar a escala nas propriedades:</p>
-<img src="img/quantos-handles-OYhOMob.png" caption=""/>
+<img src="img/quantos-handles-OYhOMob.png"/>
 <p>Se a frequência for muito menor do que um handle por segundo (isso acontece, principalmente com serviços que rodam por dias/semanas/meses), é possível mudar também pelas propriedades, mas gerais:</p>
-<img src="img/quantos-handles-O6wBqBo.png" caption=""/>
+<img src="img/quantos-handles-O6wBqBo.png"/>
 <p>A mudança que fizemos captura o dado monitorado de dez em dez segundos e realiza essa operação por 600 segundos (10 minutos), até repetir o gráfico de histórico:</p>
-<img src="img/quantos-handles-iyu6PBR.png" caption=""/>
+<img src="img/quantos-handles-iyu6PBR.png"/>
 <h5>Process Explorer</h5>
 <p>Outra forma de verificar como andam os handles da máquina é usando a já famosa ferramenta da SysInternals. Através das inúmeras colunas que ela fornece existe o contador de handles de cada processo, através do qual é possível verificar quais são os processos com mais handles abertos:</p>
-<img src="img/quantos-handles-RATAymD.png" caption=""/>
-<img src="img/quantos-handles-mR5c2kk.png" caption=""/>
+<img src="img/quantos-handles-RATAymD.png"/>
+<img src="img/quantos-handles-mR5c2kk.png"/>
 <p>Se seu programa for um handle hog, vai conseguir até ver esse leak acontecendo em tempo real (como o nosso programa mal-educado):</p>
-<img src="img/quantos-handles-gR0Qe9D.gif" caption=""/>
+<img src="img/quantos-handles-gR0Qe9D.gif"/>
 <p>E como encontrar o código-fonte responsável por esse leak? Mais detalhes em um próximo post.</p>
 
 </section><hr/>

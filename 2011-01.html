@@ -105,10 +105,10 @@ role="navigation" aria-label="main navigation">
 <p>Quando compilamos, cada CPP vira uma coleção de funções que serão usadas, mais tarde, pelo linker, para juntar a bagunça. Para mais detalhes dessa fascinante história, recomendo o fantástico artigo sobre <a href="http://www.caloni.com.br/os-diferentes-erros-na-linguagem-c">Os diferentes erros na linguagem C</a>, seção **Linkedição**.</p>
 <p>Para as dependências localizadas fora do executável final, por exemplo, as DLLs do sistema, o linker cria uma entrada no formato padrão de executável que adiciona essa dependência extra que será resolvida na hora do programa rodar, quando o loader do sistema operacional terá que fazer um linker on-the-fly, catando todas as DLLs e funções necessárias para colocar o bichinho no ar.</p>
 <p>Dessa forma, quando existirem unresolved externals fora do executável final, o responsável por dar o erro é o loader do sistema:</p>
-<img src="img/dependencia-pedindo-carona-winnt4-process32next-unresolved2.png" caption="winnt4-process32next-unresolved2.png"/>
+<img src="img/dependencia-pedindo-carona-winnt4-process32next-unresolved2.png"/>
 <p>Isso significa que o seu processo não poderá ser executado, pois faltam funções no ambiente que ele depende.</p>
 <p>Um recurso muito útil para ver essas funções é o Dependency Walker, meu amigo de infância:</p>
-<img src="img/dependencia-pedindo-carona-depends-process32-not-found2.png" caption="depends-process32-not-found2.png"/>
+<img src="img/dependencia-pedindo-carona-depends-process32-not-found2.png"/>
 <p>&lt;blockquote&gt;"Mas, Caloni, eu nem uso essa função! Como ela pode ser necessária?"&lt;/blockquote&gt;</p>
 <p>Pois é. As coisas nem sempre acabam sendo como o esperado. Se você possuir uma LIB, por exemplo, e nela existirem duas funções, como abaixo, e você se limitar a usar em seu programa apenas a primeira, todas as dependências da segunda também irão parar no executável final.</p>
 <pre>
@@ -196,7 +196,7 @@ void UsingNewApis()
 		CloseHandle(snapshot);
 	}
 }</pre>
-<img src="img/dependencia-pedindo-carona-depends-process32-not-needed.png" caption="depends-process32-not-needed.png"/>
+<img src="img/dependencia-pedindo-carona-depends-process32-not-needed.png"/>
 <p>Agora a aplicação poderá rodar em paz naquele que é, como diz meu amigo, um sistema operacional de ponta... da outra ponta!</p>
 
 </section><hr/>
@@ -245,7 +245,7 @@ void UsingNewApis()
 
 <p>Brincando com obtenções e conversões de SIDs, tive uma pequena dificuldade de usar a função ConvertStringSidToSid, de Sddl.h. Seu objetivo é receber uma string-SID no formato usado pela ferramenta PsGetSid e retornar uma sequência de bytes de tamanho arbitrário, que é o SID como o sistema o enxerga. Como ela retorna apenas o ponteiro final, do tipo PSID, o que parece fácil pode se tornar tricky se quisermos copiar o SID binário para algum buffer na pilha, já que não sabemos o número de bytes no buffer de origem. Tudo que sabemos é que, após o uso, devemos desalocar essa memória retornada pela API com outra API: LocalFree.</p>
 <p>Ora, mesmo que não venhamos a escrever nessa memória de tamanho obscuro, não é de bom tom ler além da conta. Não há garantias que o que estiver após o SID é seguro. Pode até ser o final de uma página de  memória, por exemplo, e o seu programa capota por causa de um singelo "Memory could not be read". Que coisa sem graça!</p>
-<img src="img/esse-ponteiro-vai-ate-onde-psid-e-o-buraco-negro.png" caption=""/>
+<img src="img/esse-ponteiro-vai-ate-onde-psid-e-o-buraco-negro.png"/>
 <p>Sempre que me vejo com problemas desse tipo procuro informações primeiro  no próprio MSDN, segundo na cabeça e terceiro no Google. Nesse caso em  específico a cabeça deu um jeito, pois imaginei que houvesse alguma  forma de pegar o tamanho da memória alocada através das funções Local (se a API precisa de LocalFree para desalocar sua memória, é óbvio que  ela usou LocalAlloc para alocá-la, mesmo que não tenhamos o código-fonte  para comprovar).</p>
 <p>A partir de LocalHandle posso obter o HANDLE para a memória alocada localmente. Com esse handle a API me dá outra função, LocalSize, de onde posso obter o tamanho da memória previamente alocada através do seu handle. Isso é ótimo, pois em um primeiro momento pensei não haver saída, como nas funções de alocação em C e C++, por exemplo.</p>
 </section><hr/>

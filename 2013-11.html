@@ -143,7 +143,7 @@ int main()
 	std::cout << "d2 == 1386.93: " << std::boolalpha << ( d2 == 1386.93 ) << "\n";
 }</pre>
 <p>Isso ocorre porque sua representação dentro da variável double é diferente de 272.0 do outro double. Depurando vemos mais claramente:</p>
-<img src="img/ponto-flutuante-afundando-TnsgAlZ.png" caption="Ponto Flutuante Afundando"/>
+<img src="img/ponto-flutuante-afundando-TnsgAlZ.png"/>
 <p>Ou seja, quando fazemos a subtração de d2 em d1, nossa precisão raspa um pouquinho e escapa pela beirada:</p>
 <pre>   
    d1 2358.9299999999998
@@ -153,7 +153,7 @@ int main()
    ||||||
    Esse é o valor "desejado".</pre>
 <p>Na comparação com o valor redondo aparece a falha, mas note que isso não ocorre com os outros valores d1 e d2, já que o armazenamento adquire o mesmo formato:</p>
-<img src="img/ponto-flutuante-afundando-mqHh0wA.png" caption="Ponto Flutuante Afundando (2)"/>
+<img src="img/ponto-flutuante-afundando-mqHh0wA.png"/>
 <h5>Corrigindo o incorrigível</h5>
 <p>Há uma forma de arredondamento <a href="http://stackoverflow.com/questions/8316509/difference-dev-cpp-and-microsoft-visual-c-math-h">já disponível no C99</a> (mas não no Visual Studio 2010) que pode ser útil para esses casos. A única coisa que é preciso fazer é arredondar os valores antes do cálculo:</p>
 <pre>

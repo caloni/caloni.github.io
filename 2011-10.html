@@ -239,13 +239,13 @@ role="navigation" aria-label="main navigation">
  * Não corrompe a pilha (ou, se corrompe, não chega a afetá-la a ponto da thread ficar irreconhecível).
  * A thread que contém a janela de crash é a culpada imediata (basta olha a pilha!).</pre>
 <p>Bom, resumindo: basta olhar a pilha! Mas, para isso ser efetivo, precisaremos do PDB do executável que gerou o crash, pois através dele é possível puxar a tal localização da violação de acesso.</p>
-<img src="img/depuracao-de-emergencia-receita-de-bolo-w1uEm0Y.png" caption=""/>
+<img src="img/depuracao-de-emergencia-receita-de-bolo-w1uEm0Y.png"/>
 <p>Se você mantiver executável (DLL também é executável) juntinho com seu PDB, sua vida será mais fácil e florida.</p>
-<img src="img/depuracao-de-emergencia-receita-de-bolo-ls9Hma0.png" caption=""/>
+<img src="img/depuracao-de-emergencia-receita-de-bolo-ls9Hma0.png"/>
 <p>Mesmo que, em alguns momentos trágicos, apareça uma tela indesejada.</p>
-<img src="img/depuracao-de-emergencia-receita-de-bolo-imt8kmB.png" caption=""/>
+<img src="img/depuracao-de-emergencia-receita-de-bolo-imt8kmB.png"/>
 <p>Seu caminho a partir dessa tela pode ser analisar um dump gerado (visto no artigo anterior) ou podemos atachar o WinDbg diretamente no processo (visto aqui e agora):</p>
-<img src="img/depuracao-de-emergencia-receita-de-bolo-CjXbOD1.png" caption=""/>
+<img src="img/depuracao-de-emergencia-receita-de-bolo-CjXbOD1.png"/>
 <pre>   WinDbg: "mas que bagunça é essa na memória desse processo?"</pre>
 <p>O comando mais útil na maioria dos casos é mostrar a pilha em modo verbose (kv e enter). Porém, antes disso, precisamos:</p>
 <pre> 1. Ajeitar o path dos símbolos.
@@ -310,7 +310,7 @@ role="navigation" aria-label="main navigation">
    ChildEBP RetAddr  Args to Child
    0056ffe8 00000000 00000000 00000000 00000000 ntdll_77760000!RtlUserThreadStart (FPO: [0,2,0])</pre>
 <p>Nosso depurador favorito acusa uma pilha que contém a função WerpReportFault (Web Error Report, mas qualquer outra função com Exception no meio seria uma candidata). E, nessa mesma thread, a última linha nossa conhecida está no arquivo crashonserver.cpp:13. Isso nos revela o seguinte:</p>
-<img src="img/depuracao-de-emergencia-receita-de-bolo-hnfH30b.png" caption=""/>
+<img src="img/depuracao-de-emergencia-receita-de-bolo-hnfH30b.png"/>
 <p>E essa situação, caro leitor, é 10% de tudo o que você precisa saber sobre WinDbg para resolver, mas que já resolve 90% dos casos. Belo custo-benefício, não?</p>
 
 </section><hr/>

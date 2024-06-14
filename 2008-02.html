@@ -198,18 +198,18 @@ role="navigation" aria-label="main navigation">
 <p>Uma das primeiras regras que aprendemos para manter a integridade do Windows é utilizá-lo somente com a conta de usuários restritos, o que evitaria, por exemplo, que um programa mal-intencionado instale um serviço ou driver, que teriam acesso às partes íntimas do sistema operacional.</p>
 <p>Essa é uma regra básica, mas não é fácil de cumpri-la. Só quem já tentou fazer isso sabe do que estou falando. Inúmeros programas mal-escritos vão tentar, de uma hora pra outra, acessar áreas do sistema de arquivos e registro que não possuem acesso, pois agora estão rodando em uma conta mais restrita. E não são programas de administração ou manutenção do sistema. Estou falando de programas de escritório e jogos. Aqui vai um singelo exemplo que tive que lidar esse fim-de-semana.</p>
 <p>Primeiramente, quero deixar bem claro que jogamos Monopoly por mais ou menos dois meses sem ter qualquer tipo de problema, em três computadores diferentes. Até que resolvemos usar uma conta mais restrita. Foi o bastante para o programinha inocente começar a chiar.</p>
-<img src="img/process-monitor-e-o-monopolio-malcriado-monopoly-crash.png" caption="Monopoly Crash"/>
+<img src="img/process-monitor-e-o-monopolio-malcriado-monopoly-crash.png"/>
 <p>Mau garoto. Bons tempos em que quando um jogo travava o máximo que tínhamos que fazer era apertar um botão.</p>
 <p>Para encontrar problemas desse tipo, sempre uso o Process Monitor, que tem virado minha ferramenta básica para muitas coisas. Para os que não conhecem, o Process Monitor é uma ferramenta de auditoria de operações no sistema operacional, ou seja, tudo que alguém ler e escrever em arquivos e no registro será logado.</p>
 <p>Sua função é mostrar tudo, absolutamente tudo que o sistema está fazendo em um determinado espaço no tempo. Isso pode ser ruim por um lado, já que será bem difícil encontrar alguma informação útil no meio de tanto lixo que pode ser gerado em um log de poucos momentos. Para ter uma idéia do que eu estou falando, tente abrir o Procmon sem qualquer filtro e deixá-lo rodando por 30 segundos sem fazer nada. No meu sistema isso deu aproximadamente 20 mil linhas de eventos de log. Nada mau para um sistema ocioso.</p>
 <p>É por isso que ele vem "de fábrica" já com uma série de filtros, que evitam lotar o log de eventos com informação sempre gerada pelo sistema, mas quase sempre inútil. Além dos filtros-padrão, podemos inserir nossos próprios filtros. É isso que faremos aqui para pegar o monopólio malcriado (sem trocadilhos).</p>
-<img src="img/process-monitor-e-o-monopolio-malcriado-monopoly-procmon.png" caption="Procmon Filter"/>
+<img src="img/process-monitor-e-o-monopolio-malcriado-monopoly-procmon.png"/>
 <p>Como podemos ver, iremos mostrar em nosso log todos os eventos cujo nome do processo seja monopolyclassic.exe (o nosso amigo faltoso) e iremos excluir do log qualquer evento cujo resultado tenha sido sucesso (se deu certo, provavelmente não é um erro).</p>
 <p>Executamos novamente o jogo, dessa vez com o Process Monitor capturando todos seus movimentos.</p>
-<img src="img/process-monitor-e-o-monopolio-malcriado-monopoly-crash.png" caption="Monopoly Crash"/>
+<img src="img/process-monitor-e-o-monopolio-malcriado-monopoly-crash.png"/>
 <p>Agora, uma pequena ressalva: eu estou cansado de ver isso, mas para quem nunca viu, pode não ser tão óbvio. Como eu disse no início do artigo, programas mal-escritos costumam tentar acessar áreas do sistema que não são acessíveis para usuários comuns. Isso quer dizer que, se o problema que está acontecendo com o jogo tem a ver com essa peculiaridade, a primeira coisa a procurar é por erros de acesso negado.</p>
-<img src="img/process-monitor-e-o-monopolio-malcriado-monopoly-procmon-access-denied1.png" caption="Monopoly Access Denied"/>
-<img src="img/process-monitor-e-o-monopolio-malcriado-monopoly-procmon-access-denied2.png" caption="Monopoly Access Denied 2"/>
+<img src="img/process-monitor-e-o-monopolio-malcriado-monopoly-procmon-access-denied1.png"/>
+<img src="img/process-monitor-e-o-monopolio-malcriado-monopoly-procmon-access-denied2.png"/>
 <p>A primeira busca retorna uma chave no registro referente às propriedades de joystick. Como não estou usando joysticks, podemos ignorar este erro por enquanto e passar adiante.</p>
 <pre>   MonopolyClassic.exe CreateFile	C:\Documents and ...\TikGames\Monopoly NAME COLLISION
    MonopolyClassic.exe CreateFile	C:\Arquivos de programas\GameHouse\Monopoly Classic\Monopoly.log ACCESS DENIED
@@ -234,10 +234,10 @@ role="navigation" aria-label="main navigation">
                                                                     MITY\Caloni:F
    
    C:\Arquivos de programas\GameHouse\Monopoly Classic>start monopolyclassic.exe</pre>
-<img src="img/process-monitor-e-o-monopolio-malcriado-monopoly-screenshot.jpg" caption="Monopoly"/>
+<img src="img/process-monitor-e-o-monopolio-malcriado-monopoly-screenshot.jpg"/>
 <p>Ora essa, estou conseguindo rodar o jogo! Isso quer dizer que nosso único problema, o acesso a esse arquivo, foi resolvido. Sabendo que um arquivo de log provavelmente não será executado por nenhuma conta privilegiada, podemos deixá-lo com acesso irrestrito para todos.</p>
 <p>Para ter certeza que isso resolveu o problema, uma segunda auditoria de execução executada pelo Process Monitor pode nos revelar mais detalhes.</p>
-<img src="img/process-monitor-e-o-monopolio-malcriado-monopoly-procmon-find2.png" caption="Monopoly"/>
+<img src="img/process-monitor-e-o-monopolio-malcriado-monopoly-procmon-find2.png"/>
 <pre>   MonopolyClassic.exe QueryStandardInformationFile C:\Documents ...\Monopoly\save.gcf SUCCESS
    MonopolyClassic.exe ReadFile C:\Documents ...\Monopoly\save.gcf SUCCESS
    MonopolyClassic.exe CloseFile C:\Documents ...\Monopoly\save.gcf SUCCESS
@@ -256,7 +256,7 @@ role="navigation" aria-label="main navigation">
 
 <p>I know what you going to think about this one: "silly trick". That's why I just put it in the title. Anyway, that is something I use everyday, so I thought it might be useful to who cares about productivity.</p>
 <p>Let's say you have to manage a big solution in Visual Studio made of more than 30 projects, and needs to rebuild all them. Suddenly, something goes wrong. The question is: how to discover, in a heartbeat, what project has failed?</p>
-<img src="img/silly-regex-trick-finding-the-project-who-failed-inside-a-vs-big-solution-find-error-regex2.png" caption="Find Error in VS projects using regex"/>
+<img src="img/silly-regex-trick-finding-the-project-who-failed-inside-a-vs-big-solution-find-error-regex2.png"/>
 <p>Note that you need to enable "Regular Expressions" option in the Find Dialog (not shown here).</p>
 <p>What I'm saying inside this regex is "find the first number different from zero followed by a space and the letters err". This lead us to the first project who has at least one error:</p>
 <ul><li>----- Build started: Project: FailedProj, Configuration: Release Win32 ------</li></ul>
@@ -575,7 +575,7 @@ role="navigation" aria-label="main navigation">
 <pre>   error C3861: 'meuheaderFunc': identifier not found</pre>
 <p>Isso em fontes pequenos é facilmente identificável. Em fontes maiores, é preciso ter um pouco mais de cuidado.</p>
 <p>Após o processo de preprocessamento, de todos os arquivos indicados terem sido incluídos, de todas as macros terem sido substituídas, todas as constantes colocadas literalmente no código-fonte, temos  o que é chamado unidade de compilação, que será entregue ao compilador, que, por sua vez, irá começar a análise sintática de fato, descobrindo novos erros que podem ou não (como vimos) ter a ver com a fase anterior. A figura abaixo ilustra esse processo, com algumas trocas conhecidas:</p>
-<img src="img/os-diferentes-erros-na-linguagem-c-preprocessor.gif" caption="Preprocessor"/>
+<img src="img/os-diferentes-erros-na-linguagem-c-preprocessor.gif"/>
 <p>Dica: quando o bicho estiver pegando, e tudo o que você sabe sobre linguagem C não estiver te ajudando a resolver um problema, tente gerar uma unidade de compilação em C e analisar sua saída. Às vezes o que é claro no código pode se tornar obscuro após o preprocessamento. Para fazer isso no VC++ em linha de comando, use o parâmetro /E.</p>
 <p>Se você conseguir passar ileso para a fase de compilação, pode se considerar um mestre do preprocessamento.  Por experiência própria, posso afirmar que a maior parte do tempo gasto corrigindo erros de compilação, por ironia do destino, não terá origem na compilação em si, mas no preprocessamento e linkedição. Isso porque o preprocessamento confunde muito o que vimos no nosso editor preferido, e a linkedição ocorre em uma fase onde não importa mais o que está dentro das funções, mas sim o escopo de nomes, um assunto um pouco mais vago do que a linguagem C.</p>
 <p>Na compilação você irá encontrar geralmente erros bem comportados, como conversão entre tipos, else sem if e esquecimento de pontuação ou parênteses.</p>
@@ -609,7 +609,7 @@ role="navigation" aria-label="main navigation">
 <p>Os dois primeiros itens são uma maldição previsível que deve-se carregar para todo o sempre. Se você não consegue entender o que aconteceu nas duas primeiras fases, dificilmente irá conseguir seguir adiante com essa empreitada. O terceiro item significa que deve-se levar em conta as bibliotecas que estamos usando, headers externos (com dependências externas), conflitos entre nomes, etc.</p>
 <p>Alguns erros mais encontrados aqui são as funções não encontradas por falta da LIB certa ou por LIBs desatualizadas que não se encaixam mais com o projeto, fruto de muitas dores de cabeça de manutenção de código. Essa é a parte em que mais vale a pena saber organizar e definir uma interface clara entre os componentes de um projeto.</p>
 <p>Do ponto de vista técnico, é a fase onde o linker junta todos os arquivos-objeto especificados, encontra as funções, métodos e classes necessárias e monta uma unidade executável, como ilustrado pela figura abaixo.</p>
-<img src="img/os-diferentes-erros-na-linguagem-c-linker.gif" caption="Linker"/>
+<img src="img/os-diferentes-erros-na-linguagem-c-linker.gif"/>
 <p>Dica: uma LIB, ou biblioteca, nada mais é que uma coleção de arquivos-objeto que já foram compilados, ou seja, já passaram pelas duas primeiras fases, mas ainda não foram linkeditados. Muitas vezes é importante manter compatibilidade entre LIBs e os projetos que as usam, de forma que o processo de linkedição ocorra da maneira menos dolorosa possível.</p>
 <p>É óbvio que, por ter passado pelas três fases de transformação de um código-fonte em um programa executável, não quer dizer que este programa está livre de erros. Os famigerados erros de lógica podem se disfarçar até o último momento da compilação e só se mostrarem quando o código estiver rodando (de preferência, no cliente).</p>
 <p>Entre esses erros, os mais comuns costumam se aproveitar de macros, como max, que usa mais de uma vez o parâmetro, que pode ser uma chamada com uma função. A função será chamada duas vezes, mesmo que aparentemente no código a chamada seja feita uma única vez:</p>
@@ -714,16 +714,16 @@ role="navigation" aria-label="main navigation">
 <p>Considero o Houaiss o melhor dicionário da atualidade, uso todo santo dia e tenho todo o respeito por ele. Possuo uma cópia legalizada exatamente por isso. Além, é óbvio, pelo escandaloso cinismo que seria se eu, desenvolvedor de software, pirateasse os que utilizo. Porém, acredito que tudo tenha um limite: respeito os direitos de quem desenvolve o programa se o programa se dá ao respeito de ser pago. Quer dizer, eu realmente uso muito esse dicionário, e ele é útil para mim. Logo, nada mais justo do que adquiri-lo como manda a lei.</p>
 <p>Assim como adquiri o Houaiss, também comprei o Babylon, um programa-dicionário, cuja interface permite buscar o significado das palavras lidas no computador simplesmente clicando nelas. A qualidade de seu dicionário português embutido é medíocre, mas o que ele ganha mesmo é em sua interface fácil para acessar palavras. Exatamente por faltar um dicionário em português de peso no Babylon, e eu ter adquirido outro muito melhor, quis que ambos funcionassem juntos, ou seja, acesso o Babylon e tenho o resultado adicional desse meu dicionário tupiniquim.</p>
 <p>O Babylon possui um mecanismo para criação de dicionários chamado Babylon Builder. É muito simples e fácil de usar (além de ser gratuito). Sabendo que possuo ambas as licenças desses dois programas me sinto mais aliviado em tentar desencriptar a base de dados do primeiro para construir um dicionário para o segundo, e assim realizar meu sonho de consumo: um Babylon com um dicionário de peso!</p>
-<img src="img/conversor-de-houaiss-para-babylon-parte-1-houaiss-license.png" caption="Licença do Houaiss"/>
+<img src="img/conversor-de-houaiss-para-babylon-parte-1-houaiss-license.png"/>
 <p>É necessário que, na hora da instalação, seja escolhida a opção de copiar os arquivos para o disco. Estarei utilizando o path padrão de um Windows em português, que é "C:\Arquivos de Programas\Houaiss".</p>
-<img src="img/conversor-de-houaiss-para-babylon-parte-1-houaiss-install.png" caption="Instalação do Houaiss"/>
+<img src="img/conversor-de-houaiss-para-babylon-parte-1-houaiss-install.png"/>
 <p>A estrutura de diretórios interna da instalação é bem simples:</p>
 <ul><li>Raiz. Arquivos de ajuda, desinstalador, executável principal, etc.</li>
 <li>Quadros. Figuras com conhecimentos gerais, como calendários, signos, línguas mais faladas, etc.</li>
 <li>Dicionario. Provavelmente onde está todo o dicionário, cerca de 120 MB.</li></ul>
 <p>Se analisarmos o conteúdo dos arquivos dentro da pasta Dicionario vamos descobrir que ele se parece com "garbage nonsense", apesar de existir um certo padrão. O padrão revela que pode se tratar de uma criptografia muito simples, talvez até um simples XOR.</p>
 <pre>   for %i in (*.*) do type %i | less</pre>
-<img src="img/conversor-de-houaiss-para-babylon-parte-1-cmd.gif" caption="Saída dos arquivos do dicionário"/>
+<img src="img/conversor-de-houaiss-para-babylon-parte-1-cmd.gif"/>
 <p>Sabendo que o conteúdo do dicionário está em arquivos localizados no disco, e que teoricamente o programa não deve copiar todo o conteúdo para a memória, iremos depurar o processo do dicionário de olho nas chamadas da função ReadFile quando clicarmos em uma definição de palavra.</p>
 <pre>   windbg -pn houaiss2.exe
    0:001> bp kernel32!ReadFile "dd @$csp L6" $$ Dando uma olhada nos parâmetros

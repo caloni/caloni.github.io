@@ -270,7 +270,7 @@ role="navigation" aria-label="main navigation">
    0:000> $$</pre>
 <p>Se notarmos no artigo anterior, veremos que o conteúdo do arquivo lido não é em texto claro, sendo necessário passar por mais algumas instruções assembly para descobrir a função responsável por embaralhar o conteúdo na memória. Contudo, ao rodar esses comandos novamente, eis que a saída do ReadFile já vem toda legível, como se o dicionário não estivesse mais encriptado.</p>
 <p>A leitura foi feita e o texto direto do arquivo veio em claro? O que está acontecendo? Quando abro pelo comando type ele aparece todo obscuro...</p>
-<img src="img/o-misterio-das-pilhas-diferentes-cmd.gif" caption="Saída dos arquivos do dicionário"/>
+<img src="img/o-misterio-das-pilhas-diferentes-cmd.gif"/>
 <p>Sim, alguma coisa não-trivial acaba de acontecer. Testei esse procedimento no laptop e no desktop, sendo que esse problema aconteceu apenas no desktop. Dessa vez a curiosidade falou mais alto que a preguiça, e tive que abrir as duas máquinas e comparar os resultados.</p>
 <p>Depois de um pouco de cabeçadas rastreando o assembly executado, descobri que o ponto onde o breakpoint havia parado não era o retorno da chamada a ReadFile. Isso eu não vou demonstrar aqui pois se trata de raciocínio de passo-a-passo no assembly até descobrir a diferença. É enfadonho e sujeito a erros. Sugiro que tente um dia desses. Para mim, o resultado lógico de tudo isso é a saída que segue:</p>
 <pre>   0012fa70  0040a7a9 00000200 08bbf1d0 00000200
@@ -347,7 +347,7 @@ role="navigation" aria-label="main navigation">
        ntsdexts: image 7.0.6440.1, API 1.0.0, built Thu Sep 27 18:45:23 2007
            [path: C:\Tools\DbgTools\WINXP\ntsdexts.dll]</pre>
 <p>OK. A versão instalada no desktop é bem antiga. Pode ser um indício. Fiz então a atualização e comparei novamente a saída de version. Tudo igual. Decidi então usar aquela lógica cética que é desenvolvida por quem costuma depurar coisas sinistras e esotéricas por anos e anos e não duvida de mais nada, mas também acredita piamente que tudo tem um motivo. Se não está aparente, basta descobri-lo. E foi o que eu fiz. Gerei dois dumps distintos, um no laptop e outro no desktop. Ambos estavam com os ponteiros de instrução apontados exatamente para a entrada da função ReadFile, início de todo esse problema. Copiei o dump do desktop para o laptop e vice-versa.</p>
-<img src="img/o-misterio-das-pilhas-diferentes-windbg-nerd.gif" caption="WinDbg Nerd"/>
+<img src="img/o-misterio-das-pilhas-diferentes-windbg-nerd.gif"/>
 <p>Abri o dump do desktop no laptop: tudo funcionando. Abri o dump do laptop no desktop: mesmo erro. Conclusão óbvia: é algo relacionado com o WinDbg no desktop, uma vez que o estado da pilha que era mostrado corretamente no laptop em ambos os dumps falhava duplamente na máquina desktop.</p>
 <pre>   .sympath
    Symbol search path is: <empty></pre>
@@ -370,22 +370,22 @@ role="navigation" aria-label="main navigation">
 <p>Há muito tempo sou enxadrista não-praticante. Acho que os anos de programação me deixaram mais viciado em codar do que pensar no xeque-mate. No entanto, sempre que posso, dou uma escapulida do Visual Studio e jogo uma partida ou duas na rede, quase sempre, é claro, tomando um piau psicológico.</p>
 <p>A falta de prática e estudos pesa muito para um enxadrista amador, já que facilmente esquecemos das combinações mortíferas que podemos aplicar e levar. É muito difícil ter em mente aquelas três dúzias de aberturas que já são batidas (e suas variantes), ou então as regrinhas de praxe de como detonar nas finais com um cavalo e um bispo.</p>
 <p>Por isso mesmo aprendi em um livro chamado Xadrez sem Mestre, de J. Carvalho, uma técnica universal e independente de decoreba que levei pra vida toda, e tem me trazido algumas partidas no mínimo interessantes. Se trata de analisar o esquema de influências em cima do tabuleiro. Influências, nesse caso, se refere ao poder de fogo das peças amigas e inimigas. O interessante é que deixa-se de lado a análise das próprias peças! Se estuda tão somente o tabuleiro, e apesar de parecer um método difícil, ele melhora sua percepção gradativamente, e é responsável por muitas das partidas simultâneas jogadas às cegas por alguns ilustres GMIs.</p>
-<img src="img/influence-board-influence-board.png" caption="Chess Board"/>
+<img src="img/influence-board-influence-board.png"/>
 <p>&gt; Atenção: esse artigo trata sobre xadrez admitindo que o leitor saiba as regras básicas do jogo, assim como um pouco de estratégia. Se você chegou até aqui e está viajando, sugiro que pare de ler e vá jogar uma partida.</p>
 <p>Vamos supor que a posição no tabuleiro em um dado momento seja a seguinte:</p>
-<img src="img/influence-board-winboard-mate.png" caption="Winboard Mate"/>
+<img src="img/influence-board-winboard-mate.png"/>
 <p>Ora, é um mate inevitável, não é? Agora imagine por um momento que você não tenha percebido isso, e precise de uma ajudinha para saber onde cada peça pode ir ou atacar no próximo lance.</p>
-<img src="img/influence-board-winboard-mate-influence.png" caption="Winboard Mate (com influências)"/>
+<img src="img/influence-board-winboard-mate-influence.png"/>
 <p>Agora ficou muito mais fácil de perceber que a única saída do rei não possui nenhuma proteção, já que tanto o peão quanto o próprio rei não podem fazer muita coisa se a dama atacar a diagonal vulnerável. E ela pode fazer isso.</p>
-<img src="img/influence-board-winboard-mate-final.png" caption="Winboard Mate Final"/>
+<img src="img/influence-board-winboard-mate-final.png"/>
 <p>Essa maneira de mostrar as influências em um tabuleiro de xadrez eu apelidei de Influence Board, e criei um projeto em linha de comando para fazer as devidas considerações a respeito de uma posição determinada. Mas como ninguém hoje em dia gosta de usar o WinDbg pra jogar xadrez, transformei meu projeto em pseudo-plugin para o <a href="http://www.tim-mann.org/xboard.html">WinBoard</a>, um famoso frontend de xadrez que costumo usar em minhas esporádicas partidas.</p>
 <p>Basicamente a única coisa que o futuro usuário das influências deve fazer é baixar o projeto WinBoard; no caso a versão disponível meu repositório do GitHub (update: not anymore) e compilar (suporta cmake). Caso queira uma versão nova do programa terá que fazer o merge entre as duas versões (a versão base usada foi a 2.4.7).</p>
 <pre>   mkdir build && cd build
    cmake -A Win32 ..
    cmake --build .</pre>
 <p>Após compilado, basta rodar o winboard.exe gerado; haverá uma nova opção "Show Influence" do menu General. Voilà! É possível até jogar às cegas com esse brinquedinho (opção Blindfold).</p>
-<img src="img/influence-board-winboard-options3.png" caption="WinBoard Options"/>
-<img src="img/influence-board-winboard-blindfold.png" caption="Winboard Blindfold e Influence"/>
+<img src="img/influence-board-winboard-options3.png"/>
+<img src="img/influence-board-winboard-blindfold.png"/>
 <p>Bom divertimento!</p>
 
 </section><hr/>
@@ -399,7 +399,7 @@ role="navigation" aria-label="main navigation">
 <p>A maior vantagem de se rodar um aplicativo como serviço, interativo ou não, é permitir que ele seja iniciado antes que seja feito um logon na máquina. Um exemplo que acontece comigo é a necessidade de depurar a <a href="posts.html?q=gina-x-credential-provider">GINA</a>. Para isso, preciso que o depurador remoto do Visual Studio seja iniciado antes do logon. A solução mais fácil e rápida é rodar o Msvcmon, a parte servidora da depuração, como um serviço. Hoje eu descobri um atalho bem interessante para isso.</p>
 <p>Um <a href="http://www.alex-ionescu.com/?p=59">artigo do Alex Ionescu</a> falava sobre esse aplicativo linha de comando usado para criar, iniciar e apagar serviços. Mesmo não sendo o foco do artigo, achei muito útil a informação, pois não conhecia esse utilitário. Logo começaram a borbulhar idéias na minha mente:</p>
 <p>&gt; "E se eu usasse esse carinha para iniciar o notepad?"</p>
-<img src="img/como-rodar-qualquer-coisa-como-servico-wordclip.jpg" caption="Wordclip"/>
+<img src="img/como-rodar-qualquer-coisa-como-servico-wordclip.jpg"/>
 <p>Bem, o Bloco de Notas é a vítima padrão de testes. Logo, a linha a seguir provaria que é possível rodá-lo na conta de sistema:</p>
 <pre>   sc create Notepad binpath= "%systemroot%\NOTEPAD.EXE" type= interact type= own</pre>
 <p>Porém, como todo serviço, é esperado que ele se comunique com o Gerenciador de Serviços do Windows. Como o Bloco de Notas mal imagina que agora ele é um motta-fucka service, expira o timeout de inicialização e o SCM (Service Control Manager) mata o processo.</p>
@@ -412,7 +412,7 @@ role="navigation" aria-label="main navigation">
 <pre>   set binpath=%systemroot%\system32\cmd.exe /c c:\Tools\msvcmon.exe -tcpip -anyuser -timeout -1
    sc create Msvcmon binpath= "%binpath%" type= interact type= own</pre>
 <p>Agora, quando iniciarmos o serviço Msvcmon, o processo cmd.exe será criado, que por sua vez irá rodar o msvcmon.exe que queríamos, e ficará esperando inocentemente pela sua "funesta morte" pelo SCM.</p>
-<img src="img/como-rodar-qualquer-coisa-como-servico-msvcmon-service.png" caption="MsvcMon Service"/>
+<img src="img/como-rodar-qualquer-coisa-como-servico-msvcmon-service.png"/>
 
 
 
@@ -430,7 +430,7 @@ role="navigation" aria-label="main navigation">
 <p>Com o passar do tempo e com a evolução dos depuradores modernos, o uso do debug foi diminuindo até a chegada dos 32 bits, quando daí ele parou de vez de ser usado. Com um conjunto limitado de instruções, a versão MS é incapaz de decodificar o assembly de 32 bits, mostrar os registradores estendidos e de depurar em modo protegido.</p>
 <p>O FreeDOS é um projeto de fonte aberto que procura criar uma réplica do sistema MS-DOS, com todos seus aplicativos (e um pouco mais). Entre eles, podemos encontrar o debug refeito e melhorado. A versão com código-fonte possui suporte às instruções "novas" dos processadores 32 e suporta acesso à memória estendida, modo protegido e melhorias na "interface com o usuário" (como repetição de comandos automática, mudança no valor dos registradores em uma linha, etc). Enfim, nada mau. É por isso que comecei a utilizá-lo e é nele que me baseio o tutorial logo abaixo.</p>
 <p>Para conseguirmos essa proeza é necessário reiniciarmos a máquina com algum sistema 16 bits, de preferência que caiba em um disquete. Junto com ele basta uma cópia do debug.com. Após reiniciarmos e aparecer o prompt de comando, podemos chamar o depurador e começar a diversão:</p>
-<img src="img/depuracao-da-mbr-debug.com.png" caption="Debug"/>
+<img src="img/depuracao-da-mbr-debug.com.png"/>
 <p>A MBR fica localizada no primeiro setor do HD ativo (master). A BIOS automaticamente procura esse HD e faz a leitura usando a INT13, função da própria BIOS para leitura de disquetes e derivados.</p>
 <p>Lembre-se que nem sempre existirá um MS-DOS para usarmos a INT21, tradicionalmente reservada para este sistema operacional. Portanto, se acostume com as "limitações" das funções básicas da BIOS.</p>
 <p>O debug.com inicialmente começa a execução em um espaço de memória baixa. Podemos escrever um assembly qualquer nessa memória e começar a executar. Isso é exatamente o que iremos fazer, e a instrução escolhida será a INT13, pois iremos ler o primeiro setor do HD para a memória e começar a executá-lo. Isso é a depuração da MBR.</p>
@@ -455,7 +455,7 @@ role="navigation" aria-label="main navigation">
 <p>Essa é a maneira em que as coisas são. Você certamente poderia usar outro endereço, mas estamos tentando deixar a emulação de um boot o mais próximo possível  de um boot de verdade. E, tradicionalmente, o endereço de execução da MBR é em 0000:7E00. Para recordar disso, basta lembrar que o tamanho de um setor é de 0x200 bytes, e que dessa forma a MBR vai parar bem no final do endereçamento baixo (apenas offset).</p>
 <p>Essa organização é diferente do endereço inicial da BIOS, que é por padrão 0xFFFF0.</p>
 <p>Após definir corretamente os registradores, tudo que temos que fazer é escrever uma chamada à INT13 no endereço atual e executar. O conteúdo inicial do disco será escrito no endereço de memória 0000:7E00. Após isso trocamos o IP atual para esse endereço e começamos a depurar a MBR, como se estivéssemos logo após o boot da máquina.</p>
-<img src="img/depuracao-da-mbr-debug_debug.png" caption="Debug em ação"/>
+<img src="img/depuracao-da-mbr-debug_debug.png"/>
 <p>Além da MBR, muitas vezes é preciso depurar a própria BIOS para descobrir o que está acontecendo. Nesse caso, tudo que precisamos fazer é colocar o ponteiro de próxima instrução para a região de memória 0xFFFF0, que traduzido para segmento/offset fica f000:fff0 (mais explicações sobre isso talvez em um futuro artigo).</p>
 <ul><li>rcs f000</li>
 <li>rip fff0</li>
@@ -486,7 +486,7 @@ role="navigation" aria-label="main navigation">
    MAQUINA-PROGRAMADOR66\caloni (tcp 222.234.235.236:1974) connected at Mon Mar 24 11:47:55 2008
    0:000>.echo E ae, galera? Como que a gente vai consertar essa &%$*&?
    0:000>.echo Putz, sei lá. Acho que vou tomar mais café...</pre>
-<img src="img/windbg-a-distancia-windbg-remote.gif" caption="Windbg Remote"/>
+<img src="img/windbg-a-distancia-windbg-remote.gif"/>
 <p>No ambiente do cliente é muito mais hostil; é salutar e recomendável utilizar um servidor genérico que não imprima coisa alguma na tela "do outro lado". Após iniciar o depurador na máquina que está dando o problema, o programador tem virtualmente uma série de comandos úteis que podem ser executados remotamente, como iniciar novos processos, se anexar a processos já existentes, copiar novas versões de executáveis, etc.</p>
 <p>O nome do processo do lado servidor para modo usuário é dbgsrv.exe. Para o modo kernel é kdsrv.exe. Os parâmetros de execução, felizmente, são os mesmos que os do WinDbg (e CDB, NTSD e KD), o que evita ter que decorar uma nova série de comandos.</p>
 <p>Pode parecer besteira falar isso aqui, mas ao depurar um sistema em modo kernel é necessário, é claro, é óbvio, é lógico, ter uma segunda máquina do lado servidor conectada por cabo serial ou firewire ou USB-Debug na máquina-vítima. Ainda que o Debugging Tools permita uma série de flexibilidades, o depurador em modo kernel vai rodar direto do kernel (duh), ou seja, está limitado pela implementação do sistema operacional. Além de que, para travar o processo do kernel, você tem que parar todo o sistema, e nesse caso não existe pilha TCP/IP.</p>
@@ -497,7 +497,7 @@ role="navigation" aria-label="main navigation">
 <p>Caso não se saiba a porta usada para iniciar o servidor, ou queira-se listar todos os servidores disponíveis em uma determinada máquina, usa-se o comando -QR.</p>
 <pre>   cdb -QR \\maquina-vitima</pre>
 <p>O exemplo acima utilizou uma conexão TCP para montar o ambiente de depuração remota, o que possibilita inclusive correção de problemas via internet. No entanto, nem sempre podemos nos dar ao luxo de abrir portas não-autorizadas, requisito mínimo para estabelecer a conexão com o depurador. Nesse caso, podemos configurar conexões pela porta serial, por pipes nomeados, por SSL. Se for realmente necessário usar a pilha TCP, mas o lado servidor possui um firewall, ainda assim é possível configurar este tipo de conexão com a opção clicon. Dessa forma, quem estabelece a conexão é o servidor, evitando que o cliente fique bloqueado de acessar o ambiente de depuração.</p>
-<img src="img/windbg-a-distancia-windbg-remote2.gif" caption="Windbg Remote"/>
+<img src="img/windbg-a-distancia-windbg-remote2.gif"/>
 <p>É importante notar que o dbgsrv.exe não é um depurador esperto, no sentido que ele não vai carregar os símbolos para você. Isso é importante na hora de definir qual estratégia utilizar, pois nem sempre os símbolos estarão disponíveis na máquina com problemas, e nem sempre estarão com o desenvolvedor.</p>
 <p>Uma organização mais esperta dos ambientes de teste e desenvolvimento tomaria conta de outros problemas como símbolos e fontes com o uso de outras features poderosas do Debugging Tools como servidor de símbolos e servidor de fontes. Porém, a complicação envolvida na configuração desses dois me leva a crer que eles merecem um outro artigo. E é por isso que paramos por aqui.</p>
 </section><hr/>

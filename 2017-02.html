@@ -421,9 +421,9 @@ Date:   Sat Feb 4 10:47:11 2017 -0200
 
 <p>É muito bom (para quem gosta) usar a IDE e viver feliz sem precisar se preocupar em digitar comandos estranhos no prompt. Porém, essa vida acaba quando ocorre o primeiro erro inexplicável, aquele tipo de erro que não importa onde você olhe, não há nada para olhar. Até você apelar para ferramentas de macho.</p>
 <p>Que nem hoje de manhã, quando fui inocentemente baixar uma versão limpa do <a href="posts.html?q=tiodb">tiodb</a> e após baixar todos os pacotes do <a href="posts.html?q=NuGet">NuGet</a>, o gerenciador de pacotes do Visual Studio (inclusive para C++, agora) acusou a falta do boost, sendo que ele havia acabado de baixá-lo:</p>
-<img src="img/pacotes-perdidos-nuget-em-projetos-cpp-no-visual-studio-HUp5S4K.png" caption=""/>
-<img src="img/pacotes-perdidos-nuget-em-projetos-cpp-no-visual-studio-IfVDNN9.png" caption=""/>
-<img src="img/pacotes-perdidos-nuget-em-projetos-cpp-no-visual-studio-Yi8kVgC.png" caption=""/>
+<img src="img/pacotes-perdidos-nuget-em-projetos-cpp-no-visual-studio-HUp5S4K.png"/>
+<img src="img/pacotes-perdidos-nuget-em-projetos-cpp-no-visual-studio-IfVDNN9.png"/>
+<img src="img/pacotes-perdidos-nuget-em-projetos-cpp-no-visual-studio-Yi8kVgC.png"/>
 <p>Os pacotes do projeto ficam todos na raiz do diretório da solução na sub-pasta packages. Observando o que foi baixado lá, verifiquei que a versão do boost estava ok: ele havia baixado a 1.61 como pedido, mas o erro dizia respeito justamente a um desses pacotes.</p>
 <pre>
 C:\Projects\tiodb>dir /b packages
@@ -457,7 +457,7 @@ C:\Projects\tiodb>grep -r -i "boost.*1.61" --include=*proj .
 <p>Note (e é preciso prestar atenção!) que o projeto server/tio/tioserver.vcxproj referencia a pasta packages como se ela existisse dentro do projeto. Porém, como já sabemos, ela existe na raiz da solution, que fica duas pastas "para trás". Isso nos indica que talvez o NuGet ainda não esteja tão redondo e que um possível teste é mudar esses valores na mão e ver o que acontece.</p>
 <pre>
 gvim server\tio\tioserver.vcxproj</pre>
-<img src="img/pacotes-perdidos-nuget-em-projetos-cpp-no-visual-studio-BLUS8XJ.png" caption=""/>
+<img src="img/pacotes-perdidos-nuget-em-projetos-cpp-no-visual-studio-BLUS8XJ.png"/>
 <pre>
 1>------ Build started: Project: tioclientdll, Configuration: Debug x64 ------
 2>------ Build started: Project: tioserver, Configuration: Debug x64 ------
@@ -689,7 +689,7 @@ gvim server\tio\tioserver.vcxproj</pre>
 <p class="note-title"><small>2017-02-19  </small><a href="2017-02.html">^</a> <button onclick="copy_clipboard('section#section-palestra-como-criar-moedas-digitais-em-casa-com-cpp-kick-off')">ctrl_c</button></p>
 
 <p>Esta palestra tem como objetivo ensinar o que são moedas digitais, como o bitcoin, e cada passo necessário o algoritmo e implementação para torná-la real. Será utilizado C++ como a linguagem-base e o foco está mais na implementação do que na matemática ou no algoritmo. Assim como foi criado o bitcoin, o importante a aprender é como unir diferentes tipos de conhecimento e tecnologia em torno de um objetivo único, simples e prático.</p>
-<img src="img/palestra-como-criar-moedas-digitais-em-casa-com-cpp-kick-off-TAunJPB.png" caption=""/>
+<img src="img/palestra-como-criar-moedas-digitais-em-casa-com-cpp-kick-off-TAunJPB.png"/>
 <p>A partir da criação da moeda surge a necessidade de facilitar o seu uso, um problema recorrente em todas as mais de 700 moedas digitais existentes no mercado e no laboratório, incluindo o bitcoin. Após a palestra teremos uma discussão de como levar a tecnologia ao usuário comum.</p>
 <h4>Construindo os princípios básicos</h4>
 <p>Para nossa moeda digital utilizaremos um sistema simples, rápido e prático para subir informações na memória de um nó (server) e repassar essas informações para outros nós, o tiodb. Este projeto mantém contêineres STL na memória da maneira mais enxuta possível e eles são acessíveis através do protocolo mais simples possível utilizando uma gama de linguagens (C, C++, Python, .NET).</p>
@@ -706,7 +706,7 @@ Saving files to C:/Users/Caloni/AppData/Local/Temp
 Listening on port 2605
 Up and running!</pre>
 <p>OK, tio rodando e ativo. Podemos navegar já pelos seus contêineres usando o InteliHubExplorer:</p>
-<img src="img/palestra-como-criar-moedas-digitais-em-casa-com-cpp-kick-off-YJZ7wxC.png" caption=""/>
+<img src="img/palestra-como-criar-moedas-digitais-em-casa-com-cpp-kick-off-YJZ7wxC.png"/>
 <p>Por convenção os contêineres seguem um padrão de nomes que se assemelha a uma hierarquia de diretórios, e os nomes que começam com underline são internos/reservados. O contêiner __meta__/sessions, por exemplo, contém uma lista simples das conexões ativas deste nó.</p>
 <p>A partir do servidor funcionando é possível criar novos contêineres e mantê-los, adicionando, atualizando e removendo itens. A partir dessas modificações outros clientes podem receber notícias dessas modificações e tomar suas próprias decisões.</p>
 <p>Vamos criar e popular um contêiner inicial de transações com  um GUID zerado, e a partir dele vamos adicionando novas "transações". Também iremos permitir o monitoramento dessas transações.</p>
@@ -785,11 +785,11 @@ catch (...)
     break;
 }</pre>
 <p>Após executar esse código passando o argumento "--build" e atualizarmos o IntelihubExplorer poderemos ver o novo contêiner e seu conteúdo:</p>
-<img src="img/palestra-como-criar-moedas-digitais-em-casa-com-cpp-kick-off-3Mhj2lE.png" caption=""/>
+<img src="img/palestra-como-criar-moedas-digitais-em-casa-com-cpp-kick-off-3Mhj2lE.png"/>
 <p>É possível ler o código rodando o mesmo programa sem passar o argumento "--build":</p>
-<img src="img/palestra-como-criar-moedas-digitais-em-casa-com-cpp-kick-off-CxdmZhy.png" caption=""/>
+<img src="img/palestra-como-criar-moedas-digitais-em-casa-com-cpp-kick-off-CxdmZhy.png"/>
 <p>Agora imagine que exista um cliente da tiocoin que está monitorando as transações deste servidor para verificar a partir de qual momento uma transação foi aceita (supondo que este contêiner possui as transações aceitas):</p>
-<img src="img/palestra-como-criar-moedas-digitais-em-casa-com-cpp-kick-off-kLrPawv.png" caption=""/>
+<img src="img/palestra-como-criar-moedas-digitais-em-casa-com-cpp-kick-off-kLrPawv.png"/>
 <p>Voilà! Agora temos um sistema inicial com um contêiner que irá manter os IDs de supostas transações de nossa moeda digital. Está compilando e está rodando, e em cima disso poderemos ir adicionando as funcionalidades.</p>
 <p>Atenção: você poderá encontrar o repositório do tiocoin <a href="https://github.com/bitforgebr/tiocoin">aqui</a>.</p>
 <p>[]: auto container, auto containerEvt, auto key, auto value</p>
@@ -803,14 +803,14 @@ catch (...)
 <p class="note-title"><small>2017-02-20  </small><a href="2017-02.html">^</a> <button onclick="copy_clipboard('section#section-o-velho-problema-do-project-out-of-date-do-visual-studio')">ctrl_c</button></p>
 
 <p>Acho que todo mundo já passou por isso. Você compila todo o projeto bonitinho e no final, ao depurar, ele faz aquela velha pergunta: "o projeto está desatualizado: deseja compilar novamente?". Mas como assim? Eu acabei de compilar, não faz nem cinco segundos. Está quentinho, saiu do forno agora.</p>
-<img src="img/o-velho-problema-do-project-out-of-date-do-visual-studio-x9EyDDe.png" caption=""/>
+<img src="img/o-velho-problema-do-project-out-of-date-do-visual-studio-x9EyDDe.png"/>
 <p>Às vezes o Visual Studio cria umas esquisitices que se perpetuam por todas as versões. Isso tem algum sentido. Funciona mais ou menos assim a lógica do "project out of date": se existir algum arquivo cuja data/hora eu não consigo verificar eu considero que o projeto está desatualizado. Por que? Pode ser que esse arquivo tenha que ser gerado automaticamente. Pode ser que houve erro de acesso. Pode ser várias coisas, mas ainda assim faz sentido.</p>
 <p>Exceto quando o arquivo realmente não existe.</p>
 <p>E isso é bem comum de acontecer em um projeto com algum refactory. Você acabou movendo alguns arquivos compartilhados entre projetos, mas em algum desses projetos o arquivo ainda está sendo apontado para o path errado, onde ele não mais existe. No entanto, por se tratar de um arquivo não-necessário para a compilação (ex: um header) não há erros na compilação. Apenas nessa detecção do Visual Studio.</p>
 <p>O problema é que não existe nenhuma dica do que está errado em condições normais de temperatura e pressão. Para conseguiu olhar mais detalhes temos que ir em __Tools, Options__ e configurar mais saída para o build. Pelo menos como __detailed__:</p>
-<img src="img/o-velho-problema-do-project-out-of-date-do-visual-studio-VxMIlQL.png" caption=""/>
+<img src="img/o-velho-problema-do-project-out-of-date-do-visual-studio-VxMIlQL.png"/>
 <p>A partir daí teremos mais saída na janela de output do build. Logo no começo (talvez pela equipe do VS saber que isso é bem comum) há uma dica de quais arquivos exige o rebuild (você pode fazer isso apenas clicanco em build do projeto que sempre acusa como out of date):</p>
-<img src="img/o-velho-problema-do-project-out-of-date-do-visual-studio-DhX7Kj9.png" caption=""/>
+<img src="img/o-velho-problema-do-project-out-of-date-do-visual-studio-DhX7Kj9.png"/>
 <p>Depois de detectado o arquivo faltante, é só removê-lo ou atualizar o path. Esse erro não deve mais acontecer e agora você só precisa compilar uma vez e sair depurando.</p>
 </section><hr/>
 
@@ -939,7 +939,7 @@ Como aprender a programar? Ache um cliente com um deadline absurdo. Alcance-o. R
 <pre>
 (char*)str.d + str.d->offset,su</pre>
 <p>Mas não foi o caso dessa vez. Tudo funcionou perfeitamente assim que incluí os valores da Wiki logo no começo da sessão __Visualizer__.</p>
-<img src="img/visualizando-qstring-no-visual-studio-3dnGwGK.gif" caption=""/>
+<img src="img/visualizando-qstring-no-visual-studio-3dnGwGK.gif"/>
 
 </section><hr/>
 

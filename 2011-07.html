@@ -272,9 +272,9 @@ int main()
     }
 }</pre>
 <p>Quando chamamos func, ele lança uma exceção que é capturada no main que, por sua vez, formata uma stream e obtém sua string (através do método str) e através dessa string obtém o ponteiro da string em C puro (através do método c_str). Porém, a mensagem resultante na saída-padrão de erro não era o esperado:</p>
-<img src="img/cuidado-com-variaveis-temporarias-Gs3Khz7.png" caption=""/>
+<img src="img/cuidado-com-variaveis-temporarias-Gs3Khz7.png"/>
 <p>Depurando diretamente, vemos que a stream, de fato, contém o que esperávamos. O único elemento errante é justamente o ponteiro obtido através da chamada dupla de métodos.</p>
-<img src="img/cuidado-com-variaveis-temporarias-x3n9FXS.png" caption=""/>
+<img src="img/cuidado-com-variaveis-temporarias-x3n9FXS.png"/>
 <p>O porquê isso ocorre só fica óbvio quando vemos <a href="http://www.cplusplus.com/reference/iostream/stringstream/str/">a ajuda</a> (ou a assinatura) da função str da classe stringstream:</p>
 <p>&gt; Get/set the associated string object The first version returns a copy of the string object currently associated with the string stream buffer.</p>
 <p>Ora, a função str retorna uma **cópia** do objeto string usado internamento pelo buffer de nossa string stream. Duas coisas ocorrem em qualquer cópia de um objeto retornada por uma função:</p>
@@ -290,7 +290,7 @@ int main()
 <p>Agora, o que acontece se, **na cópia temporária**, é feita uma operação para obter seu ponteiro interno usado para armazenar sua string estilo C?</p>
 <p>Obviamente ele fica inválido após o fim da expressão!</p>
 <p>Vamos ver em câmera lenta:</p>
-<img src="img/cuidado-com-variaveis-temporarias-vXQjDjK.png" caption=""/>
+<img src="img/cuidado-com-variaveis-temporarias-vXQjDjK.png"/>
 <p>Nada como assembly fresquinho para refrescar os conceitos de C++ por baixo dos panos.</p>
 <h4>Update</h4>
 <p>Após uma enxurrada de programadores gerenciáveis perguntarem qual seria, então, a solução ideal, segue o snipet mais explicitado:</p>
@@ -315,10 +315,10 @@ int main()
 <p>O programa está rodando no servidor do cliente, que é acessível por sessão remota do Windows, mas de repente ele capota. Existem aí duas possibilidades fora o debug remoto (que, nesse caso, não é possível):</p>
 <pre> 1. Analisar um dump gerado.
  2. Depurar localmente o problema.</pre>
-<img src="img/depuracao-de-emergencia-receita-de-bolo-imt8kmB.png" caption=""/>
+<img src="img/depuracao-de-emergencia-receita-de-bolo-imt8kmB.png"/>
 <h4>Analisar um dump gerado</h4>
 <p>Para a primeira opção, basta abrir o Gerenciador de Tarefas, localizar o processo e gerar o dump através do menu de contexto.</p>
-<img src="img/depuracao-de-emergencia-receita-de-bolo-RWPemAU.png" caption=""/>
+<img src="img/depuracao-de-emergencia-receita-de-bolo-RWPemAU.png"/>
 <p>Com o dump e o Windbg em mãos, basta analisá-lo. Porém, se o seu processo é 32 bits e o servidor é 64 bits (geralmente é), o dump gerado será de 64 bits, EMBORA seja de um process 32. Ou seja, ao abri-lo, o sistema vai mostrar as threads de manipulação do SO para sistemas 32 (todos com o nosso amigo wow64cpu).</p>
 <pre>   Microsoft (R) Windows Debugger Version 6.12.0002.633 AMD64
    Copyright (c) Microsoft Corporation. All rights reserved.
@@ -374,7 +374,7 @@ int main()
 <p>Os fontes, no caso de uma conexão por Terminal Server, podem ser disponibilizados através do mapeamento de drives entre as máquinas. Os símbolos, no entanto, por serem usados extensivamente pelo WinDbg, é recomendável que estejam locais na máquina depurada, pois do contrário você terá que tomar uma quantidade excessiva de cafés para executar meia-dúzia de instruções.</p>
 <p>Supondo que temos tudo isso, só precisamos executar alguns passos básicos para o setup:</p>
 <h5>1. Abrir o WinDbg e escolher File, Open Executable. Escolha o executável e pare por aí.</h5>
-<img src="img/depuracao-de-emergencia-receita-de-bolo-A2p4Q9y.png" caption=""/>
+<img src="img/depuracao-de-emergencia-receita-de-bolo-A2p4Q9y.png"/>
 <h5>2. Na tela de comando do WinDbg (View, Command, ou Alt + 1) execute os comandos abaixo:</h5>
 <pre>   .symfix 
    .sympath+ 

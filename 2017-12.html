@@ -346,7 +346,7 @@ public:
 <p>Então eu me pergunto: qual a função da classe em um código desses?</p>
 <p>Bjarne Stroustrup desde o começo, em seu livro <a href="posts.html?q=The C++ Programming Language">The C++ Programming Language</a>, sugere que C++ não é uma linguagem unicamente orientada a objetos, mas multi-paradigmas. Hoje, em 2017, ela é uma linguagem genérica e até funcional. Na época poderia ser usada como orientada a objetos, mas também como estruturada e imperativa comum. O goto funciona até hoje.</p>
 <p>Então o erro no código acima é supor mecanicamente que como é C++ precisa ter classe.</p>
-<img src="img/se-voce-nao-precisa-de-classe-voce-nao-precisa-de-classe-OoGOCOL.jpg" caption=""/>
+<img src="img/se-voce-nao-precisa-de-classe-voce-nao-precisa-de-classe-OoGOCOL.jpg"/>
 <p>Não. O código não precisa ter uma classe. No entanto, seu código precisa ter classe. Entendeu?</p>
 <p>Ter classe é para poucos. É para programadores que se preocupam com a relação entre funcionalidade, estilo, arquitetura e todos os inúmeros elementos que tornam um código perfeito. Para ser perfeito, um código precisa levar em conta tantos elementos que apenas um programador acordado, obsessivo, fora da matrix, conseguiria observar o que deve ser feito.</p>
 <p>Uma pequena sugestão:</p>
@@ -436,15 +436,15 @@ HRESULT cmd2();
 <p class="note-title"><small>2017-12-26  <a href="tag_coding.html">tag_coding</a> </small><a href="2017-12.html">^</a> <button onclick="copy_clipboard('section#section-cmd-e-o-encoding-fake')">ctrl_c</button></p>
 
 <p>Qualquer um que já tenha mexido no prompt de comandos do Windows sabe que ele permite você escolher qual code page utilizar para enviar e receber comandos. O Windows é todo em UTF-16, mas as saídas podem vir de qualquer programa com qualquer encoding. A missão do cmd.exe é usar o encoding escolhido pelo usuário para exibir os caracteres na tela. Vamos supor que nós criemos uma pasta com acentos no nome (pelo Explorer para não ter erro):</p>
-<img src="img/cmd-e-o-encoding-fake-ZutWZiB.png" caption="QuemQuerPão"/>
+<img src="img/cmd-e-o-encoding-fake-ZutWZiB.png"/>
 <p>Agora através de um cmd.exe podemos observar como esse nome acentuado aparece:</p>
-<img src="img/cmd-e-o-encoding-fake-cAJED7b.png" caption="QuemQuerPãoCmd"/>
+<img src="img/cmd-e-o-encoding-fake-cAJED7b.png"/>
 <p>Note como o "a" acentuado com til aparece perfeitamente. Também note que o codepage utilizado é o 437.</p>
-<img src="img/cmd-e-o-encoding-fake-3Llhikv.png" caption="QuemQuerPãoCmdDetails"/>
+<img src="img/cmd-e-o-encoding-fake-3Llhikv.png"/>
 <p>Até aí tudo bem, certo?</p>
 <p>__Não! Não! Não!__</p>
 <p>O <a href="https://en.wikipedia.org/wiki/Code_page_437#Character_set">codepage 437</a> não possui ã. Nem õ.</p>
-<img src="img/cmd-e-o-encoding-fake-lcVG0ak.png" caption="CodePage437"/>
+<img src="img/cmd-e-o-encoding-fake-lcVG0ak.png"/>
 <p>Isso, meus amigos, é chamado tecnicamente na área de "muito louco".</p>
 <p>Curioso a respeito disso, resolvi observar a saída padrão do cmd.exe, para ver o que diabos vem como resultado. Para isso desenvolvi um simples output redirector tabajara:</p>
 <pre>
@@ -476,21 +476,21 @@ int main(int argc, char* argv[])
     }
 }</pre>
 <p>Simples, bonito e prático. Quando executamos Redirector.exe ele executa um cmd.exe, com a diferença que a saída dele vai parar no arquivo cmd.log, que podemos observar com um <a href="https://www.baremetalsoft.com/baretail/">BareTail</a> da vida.</p>
-<img src="img/cmd-e-o-encoding-fake-92WFz8J.gif" caption="Redirector"/>
+<img src="img/cmd-e-o-encoding-fake-92WFz8J.gif"/>
 <p>__Opa, opa, opa!__</p>
-<img src="img/cmd-e-o-encoding-fake-RJ85xi9.png" caption="QuemQuerPaum"/>
+<img src="img/cmd-e-o-encoding-fake-RJ85xi9.png"/>
 <p>O til sumiu!</p>
 <p>Se formos analisar os bytes que vieram de saída, vamos constatar que o byte referente ao __ã__ foi enviado para a saída padrão como o byte 0x61, ou 97 em decimal. No codepage 437 (e em qualquer derivado da tabela ASCII, na verdade) o byte 97 é representado como "a", simplesmente, sem til.</p>
-<img src="img/cmd-e-o-encoding-fake-6P8n4Dg.png" caption="ASemTil"/>
+<img src="img/cmd-e-o-encoding-fake-6P8n4Dg.png"/>
 <p>Isso quer dizer que ao receber um "ã" o cmd.exe o reinterpreta como "a", mesmo estando sob o encoding 437. Esse é o resultado de um prompt user friendly que quer seu amigo.</p>
 <p>Se analisarmos a memória do cmd.exe veremos que ele armazena as coisas em UTF-16, como qualquer programa Windows nativo unicode.</p>
 <pre>
 @echo off
 dir /b c:\temp\quemquer*
 goto beg</pre>
-<img src="img/cmd-e-o-encoding-fake-3bsyxNU.png" caption="QuemQuerPaoBatch"/>
-<img src="img/cmd-e-o-encoding-fake-4V81xIc.png" caption="QuemQuerPaoDump"/>
-<img src="img/cmd-e-o-encoding-fake-fM6Iovh.png" caption="QuemQuerPaoFind"/>
+<img src="img/cmd-e-o-encoding-fake-3bsyxNU.png"/>
+<img src="img/cmd-e-o-encoding-fake-4V81xIc.png"/>
+<img src="img/cmd-e-o-encoding-fake-fM6Iovh.png"/>
 <p>E com isso constatamos que não necessariamente no Windows, What You See Is What You Get. Ou, em termos mais filosóficos, <a href="http://cinetenisverde.com.br/lucky/">What You See Is Not What I Get</a>.</p>
 
 

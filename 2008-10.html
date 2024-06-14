@@ -121,13 +121,13 @@ role="navigation" aria-label="main navigation">
 
 <p>Eu simplemente não entendo a organização dos cabeçalhos e fontes dos SDKs da Microsoft. Houve uma vez em que o <a href="http://www.1bit.com.br/content.1bit/weblog/sopa_de_letrinhas_ATL">ATL</a> era distribuído junto com o SDK, e dessa forma conseguíamos usar o <a href="http://www.1bit.com.br/content.1bit/weblog/sopa_de_letrinhas_wtl">WTL</a> sem ônus. Porém, um belo dia, isso é retirado do pacote, para tristeza dos que já haviam convertido a biblioteca de janelas para fonte aberto.</p>
 <p>No entanto, num belo dia, qual não foi minha surpresa ao notar umas pastinhas chamadas atl21, atl30 e atl71 dentro da distribuição do WDK (o finado DDK, renomeado sabe-se-lá-por-quê)? Pelo visto, tem alguém arrastando coisa errada pra onde não devia nos instaladores de Seattle. Esses estagiários!</p>
-<img src="img/como-usar-wtl-com-o-atl-do-ddk-OoiV6X7.png" caption=""/>
+<img src="img/como-usar-wtl-com-o-atl-do-ddk-OoiV6X7.png"/>
 <p>O fato é que eles fizeram isso, e agora é possível ter o WTL mais novo compilado com o WDK. E nem é tão difícil assim.</p>
 <p>A primeira coisa a fazer é obter o tal do WDK. Para variar um pouco, agora existe (existia) um processo de registro antes de obter acesso ao _download_, mais ou menos nos termos da Borland para baixar o C++ Builder ou Turbo Pascal ou o Developer Studio.</p>
 <p>&lt;blockquote&gt;Aliás, para os que baixaram esses produtos gratuitos da Borland versão C++ e não funcionou em algumas máquinas, como foi o meu caso, está disponível para baixar uma versão mais nova; dessa vez não vi nenhum problema na compilação e depuração. Ainda.&lt;/blockquote&gt;</p>
 <p>Após instalado, em qualquer lugar da sua escolha, configure no seu Visual Studio o caminho de onde se encontra a pasta atl71 (ou a 30, ou a 21). Aproveite também para colocar a pasta do WTL e o diretório de LIBs:</p>
-<img src="img/como-usar-wtl-com-o-atl-do-ddk-TJyNrlE.png" caption="Configurando o diretório de cabeçalhos no Visual Studio."/>
-<img src="img/como-usar-wtl-com-o-atl-do-ddk-VLryS9L.png" caption="Configurando o diretório de biblioteca no Visual Studio."/>
+<img src="img/como-usar-wtl-com-o-atl-do-ddk-TJyNrlE.png"/>
+<img src="img/como-usar-wtl-com-o-atl-do-ddk-VLryS9L.png"/>
 <p>Isso vai fazer com que pelo menos os exemplos que vêem com o WTL compilem.</p>
 <p>No entanto, você verá o seguinte erro durante a compilação dos recursos:</p>
 <pre>   </pre>
@@ -237,10 +237,10 @@ role="navigation" aria-label="main navigation">
 <p>No teste acima o **myprogram.exe** é somente o **cmd.exe** renomeado. Um teste básico =)</p>
 <h5>Primeiro passo: reproduzir o comportamento analisado e coletar pistas</h5>
 <p>Já fizemos isso logo acima. Se trata apenas de observar o programa funcionando. Ao mesmo tempo em que entendemos seu _modus operandi_ coletamos pistas sobre suas entranhas. No caso do PsExec, que faz coisas além-mar, como redirecionar os _pipes_ de entrada/saída de um programa console, iremos checar a existência de algum serviço novo na máquina-alvo e arquivos novos que foram copiados, além de opcionalmente dar uma olhada no registro. Ferramentas da própria SysInternals como <a href="posts.html?q=Process Explorer">Process Explorer</a> e <a href="posts.html?q=Process Monitor">Process Monitor</a> também são úteis nessa análise inicial.</p>
-<img src="img/como-funciona-o-psexec-lCf4KiT.png" caption="Serviço do PsExec criado na máquina-alvo."/>
+<img src="img/como-funciona-o-psexec-lCf4KiT.png"/>
 <p>Como podemos ver, um serviço com o nome de PsExec foi criado na máquina-alvo. Se procurarmos saber o caminho do arquivo que corresponde a esse serviço, tanto pelo Process Explorer ou o Service Manager, descobriremos que se trata de um arquivo no diretório do windows chamado **psexecsvc.exe**.</p>
-<img src="img/como-funciona-o-psexec-qo6PZWS.png" caption="Instalação do Serviço PsExec na máquina-alvo no registro do Windows."/>
-<img src="img/como-funciona-o-psexec-2sSwUA9.png" caption="Arquivo do serviço do PsExec instalado na máquina-alvo na pasta c:\Windows."/>
+<img src="img/como-funciona-o-psexec-qo6PZWS.png"/>
+<img src="img/como-funciona-o-psexec-2sSwUA9.png"/>
 <p>Se o arquivo existe nessa pasta, então é óbvio que alguém o copiou. Resta saber **como**.</p>
 <h5>Segundo passo: acompanhar o processo lentamente</h5>
 <p>Nessa segunda fase, podemos refazer o comportamento esperado inúmeras vezes, coletando dados e pensando a partir dos dados obtidos. Para esse caso,  como quase todos que analiso, vou usar o nosso amigo <a href="posts.html?q=WinDbg">WinDbg</a>. Para isso, como tenho sempre minhas ferramentas disponíveis no ambiente onde trabalho, basta digitar "windbg" antes do comando anterior e **dar uma olhada em algumas APIs-chave**, como a criação/abertura de arquivos e a criação de serviços. Note que é importante fazer isso em um **escopo limitado** para não perdermos horas de análise. Descobrir coisas como, por exemplo, que as ações do PsExec só começam a ser executadas após a digitação da senha do usuário, pode ajudar, pois daí só começo minha análise a partir desse ponto.</p>
@@ -377,7 +377,7 @@ role="navigation" aria-label="main navigation">
    
    ></pre>
 <p>Também podemos notar que, enquanto estamos parados depurando o processo psexec.exe, temos acesso ao compartilhamento admin$:</p>
-<img src="img/como-funciona-o-psexec-vBGHXoC.png" caption="Compartilhamento admin$ disponível enquanto depuramos o PsExec."/>
+<img src="img/como-funciona-o-psexec-vBGHXoC.png"/>
 <p>A análise desses fatos demonstra como é importante fazer as coisas, pelo menos na fase "iniciante",  bem lentamente, e entender a **mudança de estado** durante o processo. Nem sempre isso é possível, é verdade, ainda mais quando estamos falando de análise de kernel. Mas, quando as condições permitem, vale a pena pensar antes de fazer.</p>
 <p>Voltando à analise: temos direitos remotos nessa máquina. Dessa forma, fica fácil criar um serviço remotamente, que é o que faz o nosso amigo PsExec:</p>
 <pre>   

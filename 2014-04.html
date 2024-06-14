@@ -173,7 +173,7 @@ role="navigation" aria-label="main navigation">
 <p class="note-title"><small>2014-04-08  <a href="tag_coding.html">tag_coding</a> </small><a href="2014-04.html">^</a> <button onclick="copy_clipboard('section#section-lambda-o-retorno')">ctrl_c</button></p>
 
 <p>Na última vez que foi abordado o tema "lambda na ferida" falamos brevemente sobre como C++ agora permite criar funções dentro de funções. Hoje vamos apenas falar que aquela construção bizarra que criamos fica ainda mais bizarra se precisarmos retornar alguma coisa dessa função ou usá-la mais de uma vez.</p>
-<img src="img/lambda-o-retorno-Hrbu1ue.jpg" caption="Lambda: o Retorno"/>
+<img src="img/lambda-o-retorno-Hrbu1ue.jpg"/>
 <p>O padrão do lambda é supor que sua função embutida e enlatada não precisa retornar nada, o que torna a sintaxe mais simples: é um void AlgumaCoisa(argumentos). No entanto, para algoritmos como o find_if isso não funciona, então é necessário retornar algo. E, no caso de find_if, chamá-lo mais de uma vez pode ser feito facilmente criando uma variável lambda:</p>
 <pre>
 #include "Common.h"
@@ -237,7 +237,7 @@ int main()
 
 <p>Não costumo participar de campeonatos de programação por alguns motivos vagos: é perda de tempo (não ganho nada com isso), sou um péssimo programador (ou pasteleiro), dá preguiça (esse é o mais válido) e por aí vai o mimimi. Dessa forma, sempre passei ileso de eventos como o atual <a href="https://code.google.com/codejam/contest/2974486/dashboard">Google Code Jam</a>, que pretende levar a categoria de código ofuscado para um novo patamar.</p>
 <p>No entanto, esse ano apareceram dois motivos que me levaram a gastar cinco minutos de paciência com as historinhas bestas da equipe do Google. Primeiro o Python, que desde 2013 tem renovado em mim a sensação que programar ainda é divertido (e que o pessoal da Microsoft e do padrão C++ tinham tirado de mim há muito tempo com seus compiladores cada vez mais complexos/lentos e as IDEs que demoram o tempo do cafezinho para abrir). Segundo o que move o mundo: a concorrência. Minha digníssima esposa, levada por alguns pontos-extra na faculdade (uma iniciativa até que louvável do professor), resolveu participar da primeira fase (a classificação desta fase também dava pontos).</p>
-<img src="img/geleia-de-codigo-zXzJlL5.jpg" caption="jam2014"/>
+<img src="img/geleia-de-codigo-zXzJlL5.jpg"/>
 <p>O fato é que depois desses cinco minutos eu simplesmente não consegui parar até o minuto final das 23 horas (horário de Brasília) de domingo, quando o tempo-limite esgotou. O aspecto mais divertido do Code Jam é que há liberdade total para a ferramenta que você pretende usar: linguagens de programação, Excel, uma calculadora ou apenas seu cérebro. Você recebe uma "missão" e um arquivo de entrada e precisa cuspir um arquivo de saída de acordo com a missão. Apenas isso. O resto fica por conta da criatividade dos codadores e gambiarreiros de plantão.</p>
 <p>Todos os exercícios levam em consideração um arquivo de entrada que possui em sua primeira linha o número de testes que serão feitos e em seguida um número determinado de linhas e parâmetros, geralmente divididos por espaço. O primeiro problema, por exemplo, apenas considerava a suposição de cartas em pequeno truque de mágica e recebia como entrada a disposição dessas cartas junto com a escolha da fileira que o participante dizia onde estava a carta escolhida.</p>
 <pre>   
@@ -748,16 +748,16 @@ def FieldRenderWrong(row, col, mines):
 <p class="note-title"><small>2014-04-29  <a href="tag_coding.html">tag_coding</a> </small><a href="2014-04.html">^</a> <button onclick="copy_clipboard('section#section-que-geleia-de-mocoto')">ctrl_c</button></p>
 
 <p>A primeira bateria de problemas da segunda fase do Code Jam me mostrou o porquê do seu nome: meu cérebro ficou feito geleia (ha ha ha). Não consegui resolver nenhum problema a tempo, mas não culpo o C++, que passei a usar para essa fase. É burrice aliada a pressão. Duas horas e meia para entender um problema é o tipo de coisa que me deixa pensando mais no tempo do que no problema. Tenho que melhorar isso.</p>
-<img src="img/que-geleia-de-mocoto-iqT5sSy.jpg" caption="cowblet-cover"/>
+<img src="img/que-geleia-de-mocoto-iqT5sSy.jpg"/>
 <p>De qualquer forma, esse final de semana que passou foi dedicado a resolver o primeiro problema e quem sabe escrever um post a respeito. Imagino que todos tenham acesso ao <a href="http://code.google.com/codejam/contest/2984486/dashboard#s=p0">enunciado</a> e aos casos de teste, mas, por via das dúvidas, aqui vai uma descrição adaptada:</p>
 <p>Você é um fazendeiro hi-tech com uma vaca que tem um tablet. Não especifica se esse cowblet é um iPad, mas é uma possibilidade, já que como nenhum plugue parece encaixar nas tomadas de sua fazenda, é muito provável que você seja um Applemaníaco com um monte de gadgets que precisam de conversor vindos direto do eBay.</p>
-<img src="img/que-geleia-de-mocoto-igQqWOa.jpg" caption="cowblet"/>
+<img src="img/que-geleia-de-mocoto-igQqWOa.jpg"/>
 <p>Através do eBay também veio um engenheiro chinês cuja missão é resolver esse gato que o Sr. Fazendeiro fez em sua fazenda. Tudo que ele precisa fazer é girar gigantescos switches (ou disjuntores) que invertem a polaridade binária de cada um dos pino dos conectores das tomadas. Quando um plugue de dispositivo e uma tomada possuem a mesma configuração de bits é possível conectá-los. O objetivo final é que todos os N plugues conectem nas N tomadas depois de virados Y switches, sendo que quanto menos switches melhor (afinal, eles são gigantescos, e o chinês supõe-se que seja pequeno).</p>
-<img src="img/que-geleia-de-mocoto-WGFkBW1.png" caption="ProblemA"/>
+<img src="img/que-geleia-de-mocoto-WGFkBW1.png"/>
 <p>O primeiro pensamento do programador preguiçoso (go, horse, go!) manda que usemos a velha força bruta e testemos todas as combinações possíveis de disjuntores, peguemos o com menor número de bits setados (inicialmente, todos estão em 0) e zás! Porém, o caso de teste tamanho _large_ pressupõe que o limite de pinos das tomadas pode chegar a 40, o que seria responsável por nada mais nada menos que 2^40 combinações diferentes, ou 1.099.511.627.776 para ser exato. Isso dá mais de 1 trilhão! Mesmo que nosso código seja extremamente rápido e demore apenas um milissegundo para cada combinação, serão mais de 34 anos desperdiçados, que poderiam estar melhor investidos minerando bitcoins.</p>
-<img src="img/que-geleia-de-mocoto-8p1mbvh.png" caption="Tomadao"/>
+<img src="img/que-geleia-de-mocoto-8p1mbvh.png"/>
 <p>Dessa forma, temos que traçar uma solução baseada nas combinações entre as tomadas e plugues, que, pelos limites da versão large dos casos de teste, podem ter a quantidade de 150, o que dá 150*150 = 22500 combinações de XOR.</p>
-<img src="img/que-geleia-de-mocoto-m2eUW9a.jpg" caption="WP_000773"/>
+<img src="img/que-geleia-de-mocoto-m2eUW9a.jpg"/>
 <p>Sim, de XOR. O XOR aqui pode ser usado para detectarmos qual a combinação de switches precisamos para que cada tomada encaixa em cada dispositivo. Esse é o nosso conjunto universo de giros de disjuntores. Com esse conjunto em mãos fica fácil saber quais combinações são possíveis de encaixar todos os dispositivos: basta contar!</p>
 <pre>
 #include "CodeJam.h"

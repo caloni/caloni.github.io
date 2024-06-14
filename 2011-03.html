@@ -158,7 +158,7 @@ int main()
 <p>Agora sim, a chamada em func irá ser para D::method.</p>
 <p>Pergunte para o programador semi-experiente em C++ por que as coisas são assim e provavelmente ele irá falar algo sobre vtable, mesmo que não saiba exatamente como ela funciona.</p>
 <p>A vtable é uma tabela que guarda o endereço dos métodos virtuais de uma classe. Se uma classe derivada sobrescrever um ou mais métodos de sua classe base, ela terá uma outra vtable com os endereços dos métodos "corrigidos".</p>
-<img src="img/vtable-vtable11.png" caption=""/>
+<img src="img/vtable-vtable11.png"/>
 <p>Dessa forma, algo um pouco diferente ocorre na chamada c-&gt;method() quando estamos lidando com classes polimórficas: o início de um objeto dessa classe terá um ponteiro para a vtable de sua classe. Quando um método virtual é chamado, em vez do compilador gerar uma chamada estática para o endereço do método da classe cujo tipo estamos usando, ele irá redirecionar essa chamada para uma posição na vtable para onde esse objeto aponta. No caso de um objeto do tipo D, a entrada para method em sua vtable apontará não para C::method, mas para D::method, uma função com a mesma assinatura contida na classe base C e que, portanto, a sobrescreve.</p>
 <p>Façamos um pequeno teste para comprovar o que falamos. Vamos escancarar a chamada feita a partir de uma instância de D e a partir de uma instância de C. Nada que um WinDbg não resolva de braços cruzados:</p>
 <pre>   
@@ -173,7 +173,7 @@ int main()
    
    cl /Zi vtable3.cpp
    windbg vtable3.exe</pre>
-<img src="img/vtable-vtable2.png" caption="vtable2.png"/>
+<img src="img/vtable-vtable2.png"/>
 
 </section><hr/>
 
@@ -427,7 +427,7 @@ int main()
    password:
    Committed revision 3.
    C:\Projetos\caloni>bzr qlog</pre>
-<img src="img/bazaar-com-subversion-bazaar-subversion.png" caption=""/>
+<img src="img/bazaar-com-subversion-bazaar-subversion.png"/>
 
 </section><hr/>
 

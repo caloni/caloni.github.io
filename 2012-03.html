@@ -300,7 +300,7 @@ role="navigation" aria-label="main navigation">
 
 <p>O Visual Studio é uma ótima ferramenta para depurar rapidamente programas sendo desenvolvidos e &lt;del&gt;para editar vários arquivos ao mesmo tempo&lt;/del&gt; para o resto usamos Vim. No entanto, a versão 2010 do ambiente (ainda não testei a 2011 beta) possui um pequeno deslize com sua árvore de dependências que não chega a prejudica o desenvolvedor, mas o deixa com um bug atrás da orelha.</p>
 <p>Vamos supor que você crie seu super-projeto ZeroMQ e no meio dele acabe evoluindo uma nova forma de vida inútil e descartável, que aqui iremos chamar de HeaderInutil e seu fiel companheiro CppInutil:</p>
-<img src="img/header-inutil-opLLPIk.png" caption=""/>
+<img src="img/header-inutil-opLLPIk.png"/>
 <p>OK. Ele não está fazendo nada, mas e daí? Compilo meu projeto normalmente e depuro ele como se nada estivesse acontecendo.</p>
 <ul><li>----- Rebuild All started: Project: ZeroMasQueCoisaProj, Configuration: Debug Win32 ------</li></ul>
 <pre>   Build started 27/03/2012 11:40:32.
@@ -335,7 +335,7 @@ role="navigation" aria-label="main navigation">
 <p>Show.</p>
 <p>Mas o que acontece se eu precisar no momento do refactory (**que deve, sim, existir**) eu decidir remover meus arquivos inúteis?</p>
 <p>Continuo compilando normalmente o projeto, mas na hora de depurar...</p>
-<img src="img/header-inutil-header-inutil2.png" caption=""/>
+<img src="img/header-inutil-header-inutil2.png"/>
 <p>Mas o que ocorre? Eu acabei de compilar o projeto! E se eu compilar novamente e pressionar F5, ele continua apresentando o mesmo problema!</p>
 <p>_OK, não estou admitindo aqui o famigerado Rebuild All. Se você mantém projetos com mais de 200 arquivos, acho que deve **repensar seus conceitos** ao usar Rebuild All para tudo nessa vida._</p>
 <p>Acontece que existe uma árvore de dependências que o Visual Studio mantém para saber se seu projeto foi atualizado com tudo que tem mais de novo no que diz respeito ao **File System**, mas às vezes se esquece de checar o FS com o que está na solution. Por conta disso, o HeaderInutil e o CppInutil continuam dentro da árvore de dependência como zumbis.</p>
@@ -345,9 +345,9 @@ role="navigation" aria-label="main navigation">
    <add name="CPS" value="4" />
    </switches>
    </system.diagnostics></pre>
-<img src="img/header-inutil-header-inutil3.png" caption=""/>
+<img src="img/header-inutil-header-inutil3.png"/>
 <p>Depois de modificar o arquivo, reinicie o Visual Studio e tente novamente apertar F5 no mesmo projeto, **mas com o <a href="http://technet.microsoft.com/en-us/sysinternals/bb896647">DebugView </a>aberto**.</p>
-<img src="img/header-inutil-header-inutil4.png" caption=""/>
+<img src="img/header-inutil-header-inutil4.png"/>
 <p>Como um amigo meu diria: "**AHÁ!!**". Descobrimos o culpado.</p>
 <p>A solução? Nesse caso não tem jeito: dar um clean no projeto e build novamente para que o VS reconstrua a árvore de dependências. Porém, **agora sabemos por que precisamos do Rebuild All**. Não é RebuildAllMania.</p>
 

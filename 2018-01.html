@@ -455,7 +455,7 @@ int main()
     check_console();
 }</pre>
 <p>Para isso funcionar você criar um projeto console no Visual Studo. Essa opção está no Linker, System:</p>
-<img src="img/como-apagar-o-prompt-do-seu-programa-windows-uWYtwqL.png" caption=""/>
+<img src="img/como-apagar-o-prompt-do-seu-programa-windows-uWYtwqL.png"/>
 <p>E voilà!</p>
 </section><hr/>
 
@@ -491,14 +491,14 @@ int main()
 <p>Às vezes, e apenas às vezes, é útil ter um dump do processo que acabou de capotar e ter um singelo backup do pdb (arquivo de símbolos) dos binários envolvidos nessa tragédia. Com alguns cliques pontuais e uma análise simples da stack, da variável e do código envolvido é possível chegar em um veredito sem muitas controversas se foi isso mesmo que gerou o crash. No caso peguei hoje um caso assim.</p>
 <h3>Stack</h3>
 <p>Abrir um dump (dmp) pode ser feito pelo Visual Studio, Windbg ou sua ferramenta de análise favorita. Mais importante que isso é <a href="posts.html?q=depuracao-de-emergencia-receita-de-bolo">carregar seus símbolos adequadamente</a>.</p>
-<img src="img/como-achar-erros-no-printf-via-dump-NhkhrJa.png" caption=""/>
+<img src="img/como-achar-erros-no-printf-via-dump-NhkhrJa.png"/>
 <p>Com o dump e símbolos abertos é possível analisar a stack de chamadas, o que nos revela que há um problema em uma função de Log. Como se trata de uma versão release não há muita informação da pilha, que pode fazer parte de uma stack modificada (otimização de código). Portanto, tudo que vier é lucro. Como variáveis.</p>
 <h3>Variable</h3>
 <p>Demos sorte e é possível ver o que tem na variável de format, a mais importante de uma função de log estilo printf, pois geralmente é ela a responsável pelas dores de cabeça infernais.</p>
-<img src="img/como-achar-erros-no-printf-via-dump-uOkd4VF.png" caption=""/>
+<img src="img/como-achar-erros-no-printf-via-dump-uOkd4VF.png"/>
 <p>Através dessa string é possível buscar no código usando grep, vim ou até o Visual Studio. Com isso reduzimos nosso escopo de busca ao mínimo.</p>
 <h3>Code</h3>
-<img src="img/como-achar-erros-no-printf-via-dump-rAo1T0H.png" caption=""/>
+<img src="img/como-achar-erros-no-printf-via-dump-rAo1T0H.png"/>
 <p>E voilà! Temos uma chamada de log que teoricamente teria que passar uma string C, mas não passa nada. Isso quer dizer que a função de printf irá procurar na pilha pelo endereço de uma string, mas irá encontrar um endereço aleatório. Lendo esse endereço, que tem ótimas chances de ser inválido, ele irá capotar. Para dores de cabeças mais intensas, ele irá capotar aleatoriamente (ou na máquina do chefe, o mais provável).</p>
 <p>E assim terminamos mais uma sessão simples e rápida de debug. Quer dizer, simples e rápida para quem tem 20 anos de experiência nessas coisas. Os estagiários devem ter ficado de cabelos em pé.</p>
 

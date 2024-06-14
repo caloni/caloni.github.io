@@ -104,7 +104,7 @@ role="navigation" aria-label="main navigation">
 <p>Entre as mudanças mais esperadas, e entre as mais inesperadas, encontramos essa pequena lista de novidades que, com certeza, deixarão o desenvolvedor de sistemas da Microsoft muito mais feliz:</p>
 <h5>Localizador automático de módulos</h5>
 <p>Hoje em dia é um trabalho um pouco tedioso encontrar qual dos drivers possuía a memória de endereço 0xB8915423, mas agora, juntando o interpretador de símbolos internos e o sistema de tooltips do Windbg, será possível passar o mouse sobre um endereço qualquer e ele mostrará imediatamente quem possui a memória, como ela foi alocada e qual seu conteúdo.</p>
-<img src="img/novidades-no-windbg-7-fb4hw4x.png" caption="windbg-tooltips.png"/>
+<img src="img/novidades-no-windbg-7-fb4hw4x.png"/>
 <p>Isso só é possível, é claro, com os símbolos corretamente carregados. Algo não muito difícil se você seguir as <a href="http://msdn.microsoft.com/en-us/magazine/cc301459.aspx">recomendações de John Robbins</a>. E é uma mão na roda na hora de dar um feedback instantâneo para o suporte técnico quando der uma tela azul.</p>
 <h5>Edit and Continue</h5>
 <p>Sim! Agora se o <a href="http://www.osronline.com/article.cfm?article=43">ddkbuild</a>  estiver no path do WinDbg e você **editar o código-fonte** do seu driver durante a depuração (na próxima versão a visualização não será apenas read-only) e der um step-into, automaticamente o depurador irá perguntar se deseja recompilar o projeto. Depois de ativar o processo de build, através das conexões serial/firewire/usb-debug, a nova imagem irá parar diretamente na memória kernel da máquina target.</p>
@@ -516,7 +516,7 @@ int main()
    MINHASTRUCT ms;
    func(&ms);
 }</pre>
-<img src="img/typedef-arcaico-gFNalqB.png" caption="Código Antes x Depois no Visual Studio"/>
+<img src="img/typedef-arcaico-gFNalqB.png"/>
 <p>Da mesma forma, o uso de uma estrutura simples de tipos mantém a lista de nomes do seu projeto limpa e clara. Compare o visualizador de classes em projetos Windows com algo mais C++ para ter uma ideia.</p>
 <p>É claro, essa é apenas uma sugestão. Existem vantagens em sua utilização. Existe alguma vantagem no modo antigo? Existe: a Microsoft usa, e talvez mais pessoas usem. Basta a você decidir qual deve ser o melhor caminho.</p>
 <h5>Atualização</h5>
@@ -552,20 +552,20 @@ int main()
 <p>Não colou. Então vou tentar explicar do jeito certo.</p>
 <p>Antigamente, as pessoas mandavam cartas umas para as outras. Carta, para você, caro leitor de quinze anos, era um e-mail implementado em hardware.</p>
 <p>Para mandar um e-mail, usamos o nome da pessoa e o domínio em que seu e-mail é endereçado, ex: nome-da-pessoa@dominio.com.br. Para mandar uma carta usamos duas informações básicas: o nome da rua e o número da casa.</p>
-<img src="img/por-que-long-pointer-endereco-da-carta.png" caption="Endereço de uma carta"/>
+<img src="img/por-que-long-pointer-endereco-da-carta.png"/>
 <p>Consequentemente enviamos dois comandos ao carteiro: meu amigo, vá para a rua tal. Chegando lá, encontre o número 1065.</p>
 <p>Considere que estamos falando do mesmo bairro ou cidade, o que na minha analogia seria um computador e sua memória. Para enviar cartas para outros bairros em outras cidades (outros computadores em outras redes) teríamos que informar também outros dados, como nome da cidade e CEP.</p>
-<img src="img/por-que-long-pointer-getting-right-on-street.png" caption="Encontrando o caminho"/>
+<img src="img/por-que-long-pointer-getting-right-on-street.png"/>
 <p>Nesse exemplo também podemos usar o Juquinha do bairro para entregar a carta e economizarmos 10 centavos.</p>
 <p>Agora, repare que interessante: em uma rua, cabem no máximo N casas. Se você tentar construir mais casas vai acabar invadindo o espaço de outra rua.</p>
 <p>E, já que estamos falando do endereço do destinatário, já podemos relevar que esse endereço constitui um ponteiro em nossa analogia. Se você está usando dois dados para informar o endereço, então estamos falando de um ponteiro longo, long pointer, ou LP!</p>
-<img src="img/por-que-long-pointer-relacao-endereco-carta-segmento-offset.png" caption="Relação Segmento x Offset com Rua x Número"/>
+<img src="img/por-que-long-pointer-relacao-endereco-carta-segmento-offset.png"/>
 <h5>Long Pointers</h5>
 <p>Na terminologia Intel para as plataformas 16 bits, a memória do computador era acessível através de segmentos (ruas) e offsets (números), que eram pedaços da memória onde cabiam no máximo N bytes. Para conseguir mais bytes é necessário alocar memória em outro segmento (outra rua).</p>
 <p>Os ponteiros que conseguiam fazer isso eram chamados de long pointers, pois podiam alcançar uma memória mais "longa". Os ponteiros que apenas endereçavam o offset (número) eram chamados, em detrimento, short pointers, pois podiam apenas apontar para a memória do seu segmento (rua).</p>
 <p>Ora, se seu destinatário está na mesma rua que você, tudo que você tem a dizer ao Juquinha é: "Juquinha, seu moleque, entrega essa carta no número 1065, e vai rápido!". Nesse caso você está usando um short pointer.</p>
 <p>Porém, no exemplo que demos, o destinatário está em outra rua. Se o Juquinha entregar a carta no número 1065, mas na rua errada, estará errando o destinatário. Por isso é que você deve usar um long pointer e falar para o Juquinha do segmento!</p>
-<img src="img/por-que-long-pointer-getting-lost-on-streets.png" caption="Se perdendo nas ruas"/>
+<img src="img/por-que-long-pointer-getting-lost-on-streets.png"/>
 <p>"Juquinha, seu moleque safado, entrega essa carta no Segmento 0xAC89, Offset 0x496E. E vê se anda logo!"</p>
 <p>Essa frase era muito usada nos anos 80, com seus 16 bits e tudo mais.</p>
 <h5>Voltando ao Windows</h5>

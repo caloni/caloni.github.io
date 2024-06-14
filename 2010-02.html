@@ -107,11 +107,11 @@ role="navigation" aria-label="main navigation">
 <p>O problema consistia basicamente em usar a saída do <a href="http://technet.microsoft.com/en-us/sysinternals/bb896652.aspx">RegMon</a> para identificar e restaurar algumas modificações que danificavam a instalação do Internet Explorer. O sistema de reparo do IE não existia no cliente, pois ele estava sem Service Pack (bem-vindo ao mundo real), mas podíamos nos guiar através dele na nossa máquina virtual para saber o que faríamos. O estrago era feito durante o registro e/ou desregistro de um componente COM.</p>
 <p>&lt;blockquote&gt;_Aliás, não, eu não preciso usar o onipresente e onipotente Process Monitor para resolver um detalhezinho no registro. Você talvez precise, já que a Microsoft já tirou o Reg e o File de circulação._&lt;/blockquote&gt;</p>
 <p>Para iniciar, filtramos os resultados do RegMon para apenas capturar escritas no registro, não importando se falharam ou deram resultado.</p>
-<img src="img/restauranto-o-registro-Fz9QRP1.png" caption="Filtro no RegMon"/>
+<img src="img/restauranto-o-registro-Fz9QRP1.png"/>
 <p>A partir disso executamos o registro e desregistro do componente, além da restauração do IE6, responsável por limpar a bagunça. O processo responsável por registrar componentes é o **regsvr32** e o responsável por limpar a bagunça, **rundll32**.</p>
-<img src="img/restauranto-o-registro-Ps7V57G.png" caption="Restauração do IExplore"/>
+<img src="img/restauranto-o-registro-Ps7V57G.png"/>
 <p>Tendo a saída do RegMon exportada para formato texto, abrimos no Excel e filtramos o conteúdo pelo nome do processo. Note que existem duas instâncias de regsvr32 para usar, pois não sabemos em qual delas é danificado o registro.</p>
-<img src="img/restauranto-o-registro-iEB0YQJ.png" caption="Filtro no Excel"/>
+<img src="img/restauranto-o-registro-iEB0YQJ.png"/>
 <p>Para cada um dos filtros copiamos apenas o endereço da chave alterada para dois arquivos texto: regsvr32.txt e ierestore.txt. Usaremos esse primeiro para encontrar ocorrências no segundo, provando que um modifica o que o outro consertou.</p>
 <p>Existe um comando muito simplório em batch Windows que é o aplicativo **find**. Através dele podemos encontrar a ocorrência de uma string em um arquivo. Para transformar todas aquelas linhas do registro do arquivo regsvr32 em comandos find poderíamos elaborar algumas colunas no Excel ou usar o Notepad++ e suas macros, mais rápidas.</p>
 <p>Para quem não conhece macros, saiba que elas são muito úteis. Às vezes até mais úteis que "regexes", pois não é necessário pensar muito na expressão a ser usada. Macros apenas repetem os movimentos do teclado que fazemos enquanto as estamos gravando. Por exemplo, eu tenho o meu monte de linhas de registro assim:</p>
@@ -131,10 +131,10 @@ role="navigation" aria-label="main navigation">
    HKLM\SOFTWARE\Microsoft\Cryptography\RNG\Seed
    HKCR\AppID\{EE62DE09-3A23-46DB-8FA2-266088F329CD}</pre>
 <p>Pronto. Parar macro. Terei que repetir isso dois milhões de vezes até o final do arquivo. Ora, então mando o Notepad++ repetir a minha macro até o final do arquivo e adio minha tendinite para os próximos anos.</p>
-<img src="img/restauranto-o-registro-XOUfV9L.png" caption="Filtro no Notepad++"/>
+<img src="img/restauranto-o-registro-XOUfV9L.png"/>
 <p>Só preciso agora renomear meu arquivo para .bat e executar. Posso redirecionar a saída da tela para um terceiro arquivo, de onde irei formatar minha lista de entradas no registro que foram adulteradas por ambos os programas (o registro do componente COM e a restauração do Internet Explorer).</p>
 <p>Nesse momento podemos ir tomar café. Bem melhor do que ficar horas e horas dando localizar, copiar, colar em todas as entradas do regsvr.</p>
-<img src="img/restauranto-o-registro-jBRCDmf.jpg" caption="Tomando café"/>
+<img src="img/restauranto-o-registro-jBRCDmf.jpg"/>
 <p>Terminada a operação, abrimos o terceiro arquivo, retiramos as entradas insignificantes (por exemplo, o gerador de sementes de números randômicos) e os cabeçalhos do comando, algo bem fácil já que se trata do mesmo arquivo.</p>
 <pre>   </pre>
 --------- IERESTORE.TXT</li></ul>
@@ -206,16 +206,16 @@ role="navigation" aria-label="main navigation">
    qtag                 Edit tags. [qbzr]</pre>
 <p>Os que eu mais uso no dia-a-dia são:</p>
 <h5>qlog e qbrowse</h5>
-<img src="img/bazaar-grafico-kskAIzb.png" caption="Comando qlog do Bazaar"/>
+<img src="img/bazaar-grafico-kskAIzb.png"/>
 <p>Diversão garantida. Por meio destes simples comandos podemos ver o histórico de commits e navegar pela árvore de pastas e arquivos com a anotação do último commit para cada elemento. Só para ter uma ideia de quanto uso isso, transformei-os em opções do Explorer.</p>
-<img src="img/bazaar-grafico-UoeYg7V.png" caption="Bazaar Shell Extension na Mão"/>
+<img src="img/bazaar-grafico-UoeYg7V.png"/>
 <p>Além da utilidade básica, de quebra, o qbrowse pode te levar para um qlog filtrado, e o qlog pode te levar a um diff gráfico, que é o próximo comando que eu iria mostrar.</p>
-<img src="img/bazaar-grafico-ejnlqLn.png" caption="Comando qbrowse do Bazaar"/>
+<img src="img/bazaar-grafico-ejnlqLn.png"/>
 <h5>qdiff</h5>
 <p>Coisa linda de Deus. Existem dois modos de exibição, mas o padrão já é show de bola, mostrando as mudanças em todos os arquivos de um commit de uma só vez ou do arquivo/pasta especificado pelo comando. É lógico que é possível especificar qualquer faixa de commits que você quiser ver.</p>
-<img src="img/bazaar-grafico-PZW0KOr.png" caption="Comando qdiff do Bazaar"/>
+<img src="img/bazaar-grafico-PZW0KOr.png"/>
 <p>Uma desvantagem desse comando é que ele oculta o resto das linhas do fonte e não mostra de jeito nenhum (pelo menos não descobri ainda como fazer isso). Sendo assim, para uma análise mais detalhada das diferenças no código-fonte sempre use um editor externo que consiga comparar arquivos inteiros (eu uso o WinMerge). Você pode colocar esse comando na forma de um diff personalizado, com o uso do qconfig.</p>
-<img src="img/bazaar-grafico-TyYMS4s.png" caption="Comando qconfig do Bazaar"/>
+<img src="img/bazaar-grafico-TyYMS4s.png"/>
 <h5> Bônus</h5>
 <p>Para quem não sabe fazer comandos de contexto no Explorer sem instalar Shell Extensions, deem uma olhada no <a href="https://caloni.com.br/text/bzr.txt">REG exportado</a>.  Bom proveito.</p>
 

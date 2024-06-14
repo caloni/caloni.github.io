@@ -125,7 +125,7 @@ int main()
     std::cout << z // WHAT??
         << "\nestranho..." << std::endl; // WHAT^^2!?!?!?!??!?!
 }</pre>
-<img src="img/ss-tnVztzy.png" caption="ShiftEstranho"/>
+<img src="img/ss-tnVztzy.png"/>
 <p>A resposta é, pra variar, depende. Se você combinar com seu cérebro que o operador de shift que você aprendeu em C para cout não tem a mesma semântica, OK. No fundo eu acredito que os criadores dessa sobrecarga de operador pensaram sinceramente que hoje em dia quase ninguém conhece os operadores de shift binário, então tudo bem reaproveitá-lo de uma maneira mais miguxa.</p>
 <p>Porém, isso depende da maneira com que você usa streams C++. Vai haver momentos de sua vida que você vai se questionar por que tiraram todo o controle, a elegância e simplicidade de um bom printf, quando os <a href="http://www.caloni.com.br/programadores-de-verdade-nao-usam-java">homens eram homens</a> e sabiam configurar jumpers para instalar a nova placa EISA.</p>
 <pre>
@@ -137,7 +137,7 @@ int main()
     printf("int x = 0x%08X;\n", x); // nao eh tao legivel, mas da conta do recado
     std::cout << "int x = 0x" << std::hex << x << ";" << std::endl; // pois eh, parece que melhoramos mesmo com streams...
 }</pre>
-<img src="img/ss-7hFREwa.png" caption="Formatação Difícil do Cout"/>
+<img src="img/ss-7hFREwa.png"/>
 <h3>A coisa mais fácil do jeito mais difícil</h3>
 <p>A questão dos streams fica mais complicada quando precisamos realizar atividades corriqueiras no código, como retornar uma string formatada, ou até mesmo transformar um inteiro em string.</p>
 <pre>
@@ -256,7 +256,7 @@ int main()
 
 <p>Fui convidado pela Fernanda Saraiva do programa de MVPs da Microsoft Brasil a falar sobre alguma história a respeito da evolução do Windows e como isso impactou minha experiência profissional. Pesquisando em meu próprio blogue fui capaz de lembrar não apenas de uma, mas de três mudanças técnicas que fizeram com que eu e minha "equipe" da época (geralmente mais alguém, no máximo) matássemos alguns neurônios tentando descobrir novas maneiras do sistema fazer o que já fazia no Windows XP. Irei compartilhar uma por vez no que tem sido o meu post semanal que eu apelidei carinhosamente de Post da Terça. Já faz mais de um mês que consigo publicar pelo menos na terça algo de novo, e espero manter esse ritmo.</p>
 <p>A primeira mudança técnica entre o Windows XP para o Windows Vista/7/8 que me lembro e que mais fez diferença para o sistema que mantínhamos com certeza foi a retirada da guerreira GINA, ou a **G**raphical **I**dentification a**N**d **A**utentication, a gina.dll da Microsoft que implementava a mundialmente famosa tela de logon do Windows NT/2000/XP:</p>
-<img src="img/eles-querem-que-a-gina-va-embora-tres-posts-sobre-evolucao-windows-CBLO6LF.jpg" caption="Windows XP dá as boas vindas"/>
+<img src="img/eles-querem-que-a-gina-va-embora-tres-posts-sobre-evolucao-windows-CBLO6LF.jpg"/>
 <p>Seja no formato Home Computer (a telinha de boas vindas) ou no tradicional "Pressione Ctrl+Alt+Del" do Windows NT -- quando a máquina está no domínio -- quem gerencia essa tela é o processo de sistema iniciado a partir do WinLogon.exe. O WINLOGON carrega a nossa amiga gina.dll que é quem realiza a autenticação dos usuários.</p>
 <p>Se você, programador de médio nível, quisesse implementar sua própria autenticação de usuários -- como a Novell possuía, diga-se passagem -- era necessário editar um valor no registro entrando a sua GINA personalizada. Lógico que ela deveria ter todas as funções documentadas implementadas e exportadas para que o WINLOGON conseguisse se comunicar, como a famigerada <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/aa380567%28v=vs.85%29.aspx">WlxInitialize</a>, que recebia a lista de ponteiros de funções para os outros eventos a ser tratados.</p>
 <pre>
@@ -296,7 +296,7 @@ My_WlxLoggedOutSAS
 }</pre>
 <p>Com a vinda do Windows Vista, o WINLOGON continuou gerenciando as sessões e autenticações dos usuários, mas para evitar que a GINA monopolizasse novamente os métodos de autenticação, e com a vinda de métodos concorrentes -- como retina e impressão digital -- a Microsoft desevolveu uma nova interface chamada de _Credential Provider_. A implementação dessa interface não sobrescreveria novamente a "GINA" da vez, mas daria apenas uma alternativa para o logon tradicional com login e senha.</p>
 <p>O problema que nossa equipe enfrentou era que toda a autenticação do sistema dependia da manipulação dos eventos da GINA através da nossa GINA. Com ela colocada de escanteio, os logins parariam de funcionar.</p>
-<img src="img/eles-querem-que-a-gina-va-embora-tres-posts-sobre-evolucao-windows-sF23ENL.jpg" caption="gina"/>
+<img src="img/eles-querem-que-a-gina-va-embora-tres-posts-sobre-evolucao-windows-sF23ENL.jpg"/>
 <p>Depois de uma análise rápida foi constatado que não seria mais possível bloquear o login completamente, uma vez que existiam pelo menos duas alternativas de login que vieram com a instalação do Vista, e o fato de instalar mais uma apenas faria com que essa terceira alternativa não funcionasse, mas o usuário não estaria mais obrigado a "passar por nós".</p>
 <p>A solução foi capturar detalhes do login através das fases subsequentes do login, incluindo a subida do shell (UserInit). Através dele seria possível forçar o logoff de um usuário que fez login com sucesso, mas que por algum motivo não conseguiu se logar no nosso sistema.</p>
 <p>Nem sempre o que estava rodando já há anos é a solução mais bonita. Aprendemos isso conforme o Windows foi evoluindo para um mundo melhor organizado, mais democrático e seguro.</p>
@@ -452,7 +452,7 @@ My_WlxLoggedOutSAS
 
 <p>Como <a href="http://www.caloni.com.br/remove_if-ate-remove-so-que-diferente">já vimos algumas vezes</a>, a STL não prima por interfaces intuitivas, preferindo abstrações que criem um leque de ferramentas genéricas para tratamento uniformizado de coleções de dados através de algoritmos. O problema disso é que novos programadores da linguagem terão que aprender uma maneira nova de lidar com problemas baseada na percepção dos criadores do padrão na época em que foi lançado de como seria a evolução da ciência da computação nos próximos anos. Muitos dos conceitos ali abordados realmente se tornaram padrão _de facto_, mas na briga pela expansão da linguagem quem perdeu por muito tempo foi o próprio desenvolvedor, que teve que se contentar com uma lista de algoritmos genéricos parcialmente compilado.</p>
 <p>Dito isto, a abstração dos iteradores é a coisa mais linda do mundo.</p>
-<img src="img/se-iterando-com-os-pseudo-ponteiros-uma-breve-introducao-0Kne7qd.jpg" caption="iteradores-como-ponteiros-a-imagem"/>
+<img src="img/se-iterando-com-os-pseudo-ponteiros-uma-breve-introducao-0Kne7qd.jpg"/>
 <h3>Iteradeiros ou Ponteradores?</h3>
 <p>Os dois únicos conceitos que é preciso se lembrar para sempre quando se trata de iteradores é que ele:</p>
 <pre> * Um iterador se comporta como um ponteiro opaco.
@@ -487,7 +487,7 @@ int main()
     std::cout << *VaiSomandoVaiSomando(&aInts<a href="posts.html?q=0">0</a>, &aInts<a href="posts.html?q=10">10</a>) << std::endl;
     std::cout << *VaiSomandoVaiSomando(vInts.begin(), vInts.end()) << std::endl;
 }</pre></pre>
-<img src="img/se-iterando-com-os-pseudo-ponteiros-uma-breve-introducao-GmNutkz.jpg" caption="iteradores-como-ponteiros"/>
+<img src="img/se-iterando-com-os-pseudo-ponteiros-uma-breve-introducao-GmNutkz.jpg"/>
 <p>Da mesma forma, operações como cópia, movimentação, ordenação, caotização, pode ser feito usando dois ponteiros/iteradores de dois contêiners distintos, desde que algumas regras básicas sejam seguidas, como _um iterador deve sempre apontar para algo válido_ (ou disponibilizar alguma abstração que insira novos elementos em um contêiner menor). Veremos essas regras em um próximo post sobre o tema. Apontarei para ele _aqui_.</p>
 
 </section><hr/>

@@ -424,13 +424,13 @@ role="navigation" aria-label="main navigation">
 <p>Nessas horas o único que pode nos ajudar é o kernel debugger.</p>
 <p>Os depuradores do pacote Debugging Tools (especialmente o ntsd e o cdb) suportam o funcionamento em modo proxy, ou seja, eles apenas redirecionam a saída e os comandos entre as duas pontas da depuração (o depurador e o depurado). Isso é comumente usado em <a href="posts.html?q=windbg-a-distancia">depuração remota</a> e <a href="http://www.driverentry.com.br">depuração de kernel</a>, quando o sistema inteiro está congelado. O objetivo aqui é conseguir os dois: depurar remotamente um processo em um sistema que está travado.</p>
 <p>Para isso podemos nos utilizar do parâmetro -d, que manda o depurador redirecionar toda saída e controle para o depurador de kernel. Para que isso funcione o depurador já deve estar atachado no sistema-alvo. A coisa funciona mais ou menos assim:</p>
-<img src="img/kernel-mode-user-mode-windbg-user-kernel.png" caption="WinDbg User Kernel Debug"/>
+<img src="img/kernel-mode-user-mode-windbg-user-kernel.png"/>
 <p>Com essa configuração temos a vantagem de ter o sistema congelado só pra nós, ao mesmo tempo que conseguimos depurar nosso processo fujão, passo-a-passo.</p>
 <p>A única desvantagem é não ter uma GUI tão poderosa quando o "WinDbg fonte colorido, tooltips, etc". Pra quem não liga pra essas frescuras, é possível depurar processos de maneira produtiva utilizando esse cenário.</p>
 <p>Para ativar qualquer programa que irá rodar nesse modo, basta usar o aplicativo gflags:</p>
 <pre>   gflags /p /enable servico.exe /debug "c:\path\ntsd.exe -d"</pre>
 <p>Para entender o fluxo de navegação pelo mundo kernel-user misturados é preciso dar uma lida bem profunda na ajuda do Debugging Tools para entender como as coisas estão funcionando nessa configuração milagrosa que estamos usando. Procure por "Controlling the User-Mode Debugger from the Kernel Debugger". Também é possível ouvir falar parcamente sobre isso no livro Advanced Windows Debugging na parte "Redirecting a User Mode Debugger Through a Kernel". A vantagem é que vem de brinde uma bela figura para pendurar em um quadro no escritório (embora eu possa jurar que já vi essa figura na ajuda do WinDbg):</p>
-<img src="img/kernel-mode-user-mode-windbg-user-kernel2.png" caption="windbg-user-kernel2.png"/>
+<img src="img/kernel-mode-user-mode-windbg-user-kernel2.png"/>
 <p>Como podemos notar, o controlador de tudo é o kernel debugger. Assim que o depurador de processo entra em ação, ele se comunica com o depurador de kernel que entra no modo user mode prompt, pedindo entrada para ser redirecionada ao depurador de processo. Existem alguns caminhos para sair de um estado e entrar em outro, como o comando .breakin e o .sleep.</p>
 <p>É necessário recomentar: estamos nos comunicando com um depurador e o seu processo depurado em um sistema totalmente travado. Isso quer dizer que o acesso a coisas como código-fonte e símbolos é extremamente limitado, porém não impossível. Apenas mantenha-os localmente na máquina-vítima, pois uma comunicação pela rede não irá funcionar.</p>
 <p>A depuração com a linha atual no código-fonte demarcando onde estamos também não é possível, uma vez que o WinDbg da ponta de cá apenas faz o papel de garoto de recados para o "depurador de verdade" do outro lado (no nosso exemplo, o ntsd). Isso quer dizer que a forma mais "fácil" de ir passo-a-passo é usar o comando p (step) ou t (trace), além de habilitar o uso de fonte em 100%.</p>
@@ -673,7 +673,7 @@ role="navigation" aria-label="main navigation">
 <pre>   set binpath=%systemroot%\system32\cmd.exe /c c:\Tools\msvcmon.exe -tcpip -anyuser -timeout -1
    sc create Msvcmon binpath= "%binpath%" type= interact type= own</pre>
 <p>Now, when we start Msvcmon service, the process cmd.exe will be create, that on the other hand will run the msvcmon.exe target process. Cmd in this case will only wait for its imminent death.</p>
-<img src="img/how-to-run-anything-as-a-service-msvcmon-service.png" caption="MsvcMon Service"/>
+<img src="img/how-to-run-anything-as-a-service-msvcmon-service.png"/>
 
 
 
@@ -691,15 +691,15 @@ role="navigation" aria-label="main navigation">
 <p>A partir daí, para chegar em uma LIB, já é meio caminho andado.</p>
 <p>&gt; "Mas, afinal de contas, pra que eu preciso de uma LIB, mesmo?"</p>
 <p>Boa pergunta. Uma LIB, ou biblioteca, nada mais é do que um punhado de ".obj" colocados todos no mesmo arquivo, geralmente um ".lib". Esses ".obj" são o resultado da compilação de seus respectivos ".c" de origem.</p>
-<img src="img/como-criar-uma-lib-no-visual-studio-salada2.gif" caption="Salada Lib"/>
+<img src="img/como-criar-uma-lib-no-visual-studio-salada2.gif"/>
 <p>Alguns acreditam ser esse negócio de LIB uma pura perda de tempo, pois existem trocentas configurações diferentes (e incompatíveis) e trocentas compilações diferentes para gerenciar. Outros acham que o problema está no tempo de compilação, enquanto outros defendem o uso dos ".obj" de maneira separada. Esse artigo não presume que nem um nem outro seja melhor. Apenas ensina o que você precisa saber para criar sua primeira LIB usando o Visual Studio Express.</p>
 <p>Vamos lá?</p>
 <p>Após abrir o VS, tudo que precisamos fazer é ir em New, Project, e escolher a configuração de "Win32 Project":</p>
-<img src="img/como-criar-uma-lib-no-visual-studio-myfirstlib.png" caption="MyFirstLib"/>
+<img src="img/como-criar-uma-lib-no-visual-studio-myfirstlib.png"/>
 <p>A seguir, escolhemos nas opções do assistente criar uma "Static library", e desmarcamos a opção de "Precompiled header" para evitar má sorte logo no primeiro projeto de LIB (má sorte significa horas procurando erros incríveis que você só irá fazer desaparecer se recompilar tudo com o uso do famigerado "Rebuild All"; espero que isso dê certo para você, para mim não tem funcionado).</p>
-<img src="img/como-criar-uma-lib-no-visual-studio-myfirstlib2.png" caption="MyFirstLib2"/>
+<img src="img/como-criar-uma-lib-no-visual-studio-myfirstlib2.png"/>
 <p>E pronto! Temos um projeto de LIB completo, funcional e... um tanto inútil. Mas, calma lá. Ainda não terminamos.</p>
-<img src="img/como-criar-uma-lib-no-visual-studio-myfirstlib3.png" caption="MyFirstLib3"/>
+<img src="img/como-criar-uma-lib-no-visual-studio-myfirstlib3.png"/>
 <p>Conforme o programador consegue se livrar das maldições das mil dependências, aos poucos ele vai conseguindo novas funções genéricas e encaixáveis para colocar em sua coleção de objs.  Essa com certeza não é uma tarefa fácil, mas ei, quem disse que esse trampo de programador seria fácil?</p>
 <p>Vamos imaginar que você é muito do sem imaginação (típico de pessoas que mantêm blogues) e criou duas funções lindíssimas que somam e multiplicam dois números:</p>
 <pre>
@@ -727,9 +727,9 @@ Creating library...
 Build log was saved at "file://c:\Projects\temp\MyFirstLib\Debug\BuildLog.htm"
 MyFirstLib - 0 error(s), 0 warning(s)</pre>
 <p>Para usar uma LIB temos inúmeras maneiras de fazê-lo. A mais simples que eu conheço é criar um novo projeto no mesmo Solution de sua LIB. Um console, por exemplo:</p>
-<img src="img/como-criar-uma-lib-no-visual-studio-myfirstlib4.png" caption="MyFirstLib4"/>
-<img src="img/como-criar-uma-lib-no-visual-studio-myfirstlib5.png" caption="MyFirstLib5"/>
-<img src="img/como-criar-uma-lib-no-visual-studio-myfirstlib6.png" caption="MyFirstLib6"/>
+<img src="img/como-criar-uma-lib-no-visual-studio-myfirstlib4.png"/>
+<img src="img/como-criar-uma-lib-no-visual-studio-myfirstlib5.png"/>
+<img src="img/como-criar-uma-lib-no-visual-studio-myfirstlib6.png"/>
 <p>Se você seguiu todos os passos direitinho, e eu estou assumindo que você já sabia como criar um projeto console, sua saída da compilação talvez seja mais ou menos essa:</p>
 <pre>
 ------ Build started: Project: MyFirstCmd, Configuration: Debug Win32 ------
@@ -743,8 +743,8 @@ Build log was saved at "file://c:\Projects\temp\MyFirstCmd\Debug\BuildLog.htm"
 MyFirstCmd - 3 error(s), 0 warning(s)</pre>
 <p>Dois erros! Ele não achou os símbolos mult e sum. Mas eles estão logo ali! E agora?</p>
 <p>Nada a temer: tudo que temos que fazer é falar para o Solution que o projeto myfirstcmd depende do projeto myfirstlib:</p>
-<img src="img/como-criar-uma-lib-no-visual-studio-myfirstlib7.png" caption="MyFirstLib7"/>
-<img src="img/como-criar-uma-lib-no-visual-studio-myfirstlib8.png" caption="MyFirstLib8"/>
+<img src="img/como-criar-uma-lib-no-visual-studio-myfirstlib7.png"/>
+<img src="img/como-criar-uma-lib-no-visual-studio-myfirstlib8.png"/>
 <pre>
 ------ Build started: Project: MyFirstCmd, Configuration: Debug Win32 ------
 Linking...
