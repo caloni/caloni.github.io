@@ -89,6 +89,8 @@ role="navigation" aria-label="main navigation">
 <li><small><a href="2024-07.html#fora-da-lei">Fora da Lei</a></small></li>
 <li><small><a href="2024-07.html#asciidoc-for-the-loose?">Asciidoc for the loose?</a></small></li>
 <li><small><a href="2024-07.html#mielina">Mielina</a></small></li>
+
+<li><small><a href="2024-07.html#mock-de-timer-em-moq">Mock de Timer em Moq</a></small></li>
 </ul>
 
 
@@ -310,6 +312,44 @@ O que ele não tem que é necessário para a construção de um livro são metad
 
 <p>Quando nos esforçamos para aprender algo novo uma nova conexão sináptica é criada, uma nova "perninha" em um neurônio. Essa atividade comumente é cansativa, pois além de tentativa e erro, energia, tempo e repetidos esforços para construir um comportamento ou assimilar uma informação são necessários. A criação de apenas uma dessas perninhas já é um esforço significativo, aprender algo novo exige muitas repetições e muitas dessas perninhas se tornam mais fortes se coberturas de lipídios (gordura) forem construídas em volta, o que agiliza e potencializa o tráfego de elétrons. Este fenômeno realmente existe para cobrir os axônios, os canais de comunicação entre neurônios, fortalecido por repetição. Esses canais de gordura são chamados de <a href="https://pt.wikipedia.org/wiki/Bainha_de_mielina">bainha de mielina</a> e acontecem naturalmente quando a pessoa está envolvida repetidamente na mesma tarefa, sem troca de foco, por mais tempo. O cérebro "entende" que o canal sendo criado é mais importante e constrói as estruturas de mielina que irá privilegiar e proteger o novo comportamento e informação em detrimento de outros caminhos.</p>
 
+</section><hr/>
+
+
+<span id="mock-de-timer-em-moq" title="Mock de Timer em Moq"/></span>
+<section id="section-mock-de-timer-em-moq">
+<p class="title"><a href="2024-07.html#mock-de-timer-em-moq">#</a> Mock de Timer em Moq</p>
+<p class="note-title"><small>2024-07-17  <a href="tag_coding.html">tag_coding</a> </small><a href="2024-07.html">^</a> <button onclick="copy_clipboard('section#section-mock-de-timer-em-moq')">ctrl_c</button></p>
+
+<p>Acabou o dia e ainda não consegui terminar este mock dos infernos. Estou tentando criar o primeiro exemplo que usa dois wrappers nunca antes *mockados* (incluindo um timer), mas ficou faltando mockar o `System.Timer`. O teste já funciona, mas ele é obrigado a dar um *sleep* pra esperar o timer terminar.</p>
+<p>O método que precisa ser testado é chamado como trigger deste timer. O teste constroi o objeto e chama um outro método de início que inicia o timer. O teste é quando o timer dispara a chamada do *callback*.</p>
+<pre>
+class A {
+  init() {
+	timer.init(callback);
+  }
+  callback() {
+	// code to be tested
+  }
+}
+Test() {
+A a;
+a.init();
+}</pre>
+<p>Meu objetivo era que na chamada de `timer.init()` ele já rode o callback.</p>
+<p>Mockar o timer foi a primeira ideia que me deram no stack overflow. Podem haver outras ideias. O cara do Stack Overflow falou que o timer do dotnet não dá essa flexibilidade, então teria que criar um adapter.</p>
+<p>Daí eu achei um wrapper já no código e tentei modificá-lo, mas o evento contido no timer original não é acessível nem chamável e é preciso mexer nos paranauê do wrapper ou achar outro caminho.</p>
+<p>Uma ideia que meu amigo Fábio deu seria ser um timer genérico e implementar o comportamento em cima dele, mas isso eu já tenho no codebase. O wrapper pode ser usado para isso (ou uma cópia dele). Eu parei justamente nessa parte, mas escrever o código com o a biblioteca Moq é que é o parto. Seus exemplos são para usos comuns e aparentemente mockar um timer não é um uso comum.</p>
+<p>Esses resultados da internet me fazem pensar que estou indo no caminho errado (se não é comum, tá errado).</p>
+<p>&gt; Fabio: Se ele é um wrapper por que você não faz a classe crua do zero onde fica tudo sequencial e passa ele para a classe final.</p>
+<p>&gt;</p>
+<p>&gt; Caloni: Boa!</p>
+<p>Você, caro urso, me deu uma ideia: simplificar a interface de start do `TimeWrapper` (esse é o nome da classe no basecode) e usar o resultado como uma implementação dummy, mas acho que já pensei num jeito de resolver que é ligeiramente diferente: ao final da tarefa ele chama um `timer.Restart` e daí é só ir acumulando estado.</p>
+<p>Fiz desse jeito, que ficou bem tosco para falar a verdade, mas só de comentar na issue o TL já deu o toque pra funcionar direito. Tem que usar esta construção bizarra:</p>
+<pre>
+_timer.Raise(m => m.Elapsed += null, new EventArgs() as ElapsedEventArgs);</pre>
+<p>Com isso não precisa construir nenhuma classe e disparar o mock do `TimerWrapper` quando quiser.</p>
+<p>A variável `_timer` no caso é um `Mock&lt;TimerWrapper&gt;` e o método `Raise` pode ser usado para disparar eventos. Isso resolve esta saga.</p>
+<p>A próxima seria entender o que é necessário para que o Visual Studio pare de reclamar que `new EventArgs() as ElapsedEventArgs` pode ser null. Bom, ele pode mesmo. Porém, não tem como construir um `ElapsedEventArgs` sozinho no código. Ideias?</p>
 </section><hr/>
 
 <span style="float: left;">
