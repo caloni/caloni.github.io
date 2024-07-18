@@ -82,7 +82,6 @@ role="navigation" aria-label="main navigation">
 <section id="section-basico-do-basico-assembly">
 <p class="title"><a href="2009-01.html#basico-do-basico-assembly">#</a> Básico do básico: assembly</p>
 <p class="note-title"><small>2009-01-26  <a href="tag_coding.html">tag_coding</a> </small><a href="2009-01.html">^</a> <button onclick="copy_clipboard('section#section-basico-do-basico-assembly')">ctrl_c</button></p>
-
 <p>É lógico que não poderia faltar no cinto de utilidades de todo bom programador C conhecimentos **básicos** da linguagem assembly, sua mãe espiritual. São tantos conceitos em comum que, uma vez aprendido seu funcionamento, fica difícil não pensar no código-assembly gerado pelo compilador C. E é nesse ponto que as coisas começam a ficar mais claras.</p>
 <p>Antes de tudo, é importantíssimo lembrar que o foco aqui é apenas a arquitetura **8086**, um dos marcos na invenção de computadores de massa, mas que existem trocentros outros modelos de processadores e computadores funcionando mundo afora. Não deixe sua mente fechar para os outros tipos de modelos.</p>
 <p>A CPU trabalha em conjunto com a memória RAM. Só que o acesso à essa memória, apesar de rápida, não é comparável à velocidade em que as coisas ocorrem dentro da própria CPU. Esse é apenas um dos motivos para a existência de um conjunto bem menor de memória que vive nas entranhas do processador, bem ao lado dele. São os chamados **registradores**.</p>
@@ -91,10 +90,10 @@ role="navigation" aria-label="main navigation">
 <p>No modelo de entrada-e-saída, ultrassimplificado por mim nesse artigo, o processador executa microinstruções muito básicas, que juntas fazem alguma coisa de útil, por exemplo, somar dois números:</p>
 <p>x = y + z;</p>
 <p>A operação acima é realizada através de microinstruções bem sucintas:</p>
-<pre> 1. Leia memória y para registrador 1
- 2. Leia memória z para registrador 2
- 3. Some valor de registrador 1 e 2 e coloque resultado no registrador 1
- 4. Carregue memória x com valor do registrador 1</pre>
+<p>  1. Leia memória y para registrador 1</p>
+<p>  2. Leia memória z para registrador 2</p>
+<p>  3. Some valor de registrador 1 e 2 e coloque resultado no registrador 1</p>
+<p>  4. Carregue memória x com valor do registrador 1</p>
 <img src="img/basico-do-basico-assembly-N90ooMD.gif"/>
 <p>É lógico que o sistema não se baseia apenas em movimentações simples de memória. Existem algumas abstrações que estão incrustadas no funcionamento da arquitetura. Uma das mais importantes é o conceito de **pilha**, vital tanto em arquitetura, quanto assembly, quanto linguagem C e muitas outras linguagens, também.</p>
 <p>Pilha é uma forma de armazenar memória em blocos empilhados um-a-um. Esses blocos são empilhados na ordem a, b, c e desempilhados na ordem c, b, a. Ou seja, quem foi empilhado por último será o primeiro a ser desempilhado. A analogia com uma pilha de pratos é óbvia e simples de imaginar.</p>
@@ -116,25 +115,26 @@ role="navigation" aria-label="main navigation">
 <p>1. carrega valor de x no registrador 1 2. compara registrador 1 com 10 3. pula para 6 se for diferente 4. chama XEhIgualA105. pula para 76. chama XEhDiferenteDe107. próxima instrução</p>
 <p>&lt;blockquote&gt;Uma curiosidade interessante é a flag de comparação. Se o resultado da comparação disser que os dois elementos são iguais, a flag fica igual a zero, o que significa que os comparandos são idênticos. Se você reparar, a mesma semântica é utilizada na conhecida função strcmp, que retorna zero caso duas strings sejam idênticas. Isso faz sentido em ambos os lados, já que o resultado computacional geralmente deixa um rastro de diferença que é usado como retorno. Se esse rastro não existir, quer dizer que o que foi comparado é idêntico.&lt;/blockquote&gt;</p>
 <h5>Opcodes para aprender:</h5>
-<pre> * mov
- * cmp
- * jmp
- * jne, jle, jnz, etc
- * push e pop
- * call e ret</pre>
+<p>  * mov</p>
+<p>  * cmp</p>
+<p>  * jmp</p>
+<p>  * jne, jle, jnz, etc</p>
+<p>  * push e pop</p>
+<p>  * call e ret</p>
 <h5>Pedaços de código que vale a pena estudar:</h5>
-<pre>   push ebp
-   mov epb, esp</pre>
+<p>    push ebp</p>
+<p>    mov epb, esp</p>
 <p>	</p>
-<pre>   push eax
-   mov ecx, dword ptr[variavel]
-   push 10
-   call funcao
-   cmp something
-   jne | jne | jae | ...</pre>
+<p>    push eax</p>
+<p>    mov ecx, dword ptr<a href="posts.html?q=variavel">variavel</a></p>
+<p>    push 10</p>
+<p>    call funcao</p>
+<p>    cmp something</p>
+<p>    jne | jne | jae | ...</p>
 <h5>O que é legal de fazer para treinar assembly</h5>
 <p>Desmonte programas, chamadas API. Veja que funções internas elas chamam para realizar determinada tarefa. Tente mudar o comportamento do programa para provar que suas observações sobre o funcionamento estavam corretas.</p>
 <p>PS.: Ia me esquecendo. Enquanto estava escrevendo este artigo, um <a href="http://dqsoft.blogspot.com/2009/01/simulando-um-computador-14.html">conjunto</a> <a href="http://dqsoft.blogspot.com/2009/01/simulando-um-computador-24.html">bem</a> <a href="http://dqsoft.blogspot.com/2009/01/simulando-um-computador-34.html">mais</a> <a href="http://dqsoft.blogspot.com/2009/01/simulando-um-computador-44.html">detalhado</a> de artigos estava sendo publicado pelo DQ. Recomendo veementemente sua leitura.</p>
+
 
 
 
@@ -146,25 +146,25 @@ role="navigation" aria-label="main navigation">
 <section id="section-as-funcoes-polegar">
 <p class="title"><a href="2009-01.html#as-funcoes-polegar">#</a> As funções-polegar</p>
 <p class="note-title"><small>2009-01-30  <a href="tag_coding.html">tag_coding</a> </small><a href="2009-01.html">^</a> <button onclick="copy_clipboard('section#section-as-funcoes-polegar')">ctrl_c</button></p>
-
 <p>Como já havia dito, não há nada mais prazeroso do que ensinar a alguém os velhos truques da profissão e relembrar o porquê de tantas coisas que guardamos na cabeça sobre programação. Hoje tive a oportunidade de explicar como funcionam as funções-polegar.</p>
 <p>A função-polegar, uma categoria de função muito peculiar em várias APIs, possui um comportamento padrão de retorno de erros. Entre as diversas funções-polegar que conheço e uso, eis algumas que lembro de cor:</p>
 <p>	</p>
-<pre> * read, write (C)
- * connect.aspx), send.aspx) (Sockets)
- * ReadFile.aspx), WriteFile.aspx), CreateProcess (Win32)</pre>
+<p>  * read, write (C)</p>
+<p>  * connect.aspx), send.aspx) (Sockets)</p>
+<p>  * ReadFile.aspx), WriteFile.aspx), CreateProcess (Win32)</p>
 <p>O que todas essas funções têm em comum? Bom, ignorando seu funcionamento interno ou seu objetivo, todas elas possuem um valor de retorno no estilo sim ou não, ou seja, deu certo ou não deu. Nessas funções o código de erro, o motivo da função não ter dado certo, não é retornado diretamente. É o que chamo de esquema do polegar pra cima ou polegar pra baixo. O retorno da função especifica o ângulo giratório do dedão:</p>
 <p>	</p>
-<pre> * ssize_t pread, ssize_t write. Retorno de -1 significa que deu algo errado.
- * int connect, int send. Se retornar SOCKET_ERROR
- * BOOL ReadFile, BOOL WriteFile, BOOL CreateProcess. TRUE sucesso, FALSE erro.</pre>
+<p>  * ssize_t pread, ssize_t write. Retorno de -1 significa que deu algo errado.</p>
+<p>  * int connect, int send. Se retornar SOCKET_ERROR</p>
+<p>  * BOOL ReadFile, BOOL WriteFile, BOOL CreateProcess. TRUE sucesso, FALSE erro.</p>
 <p>Por exemplo, chamamos a função ReadFile para ler um arquivo. Ela retorna FALSE. Isso significa que não deu certo nossa leitura. Por quê? Ora, não sabemos ainda. Apenas sabemos que o polegar está virado para baixo!</p>
 <p>Em funções nessas condições, geralmente existe uma segunda função (ou variável) que retorna o último erro que ocorreu na API, ou seja, o erro que fez com que última função chamada retornasse que algo não deu certo. Nas funções de exemplo, são usados três métodos distintos, pois estamos falando de três APIs distintas:</p>
-<pre> * Variável errno
- * Função WSAGetLastError.aspx)
- * Função GetLastError.aspx)</pre>
+<p>  * Variável errno</p>
+<p>  * Função WSAGetLastError.aspx)</p>
+<p>  * Função GetLastError.aspx)</p>
 <p>São esses métodos que realmente retornam o porquê da função ter dado errado. E é elas que devemos chamar, eu disse devemos chamar, sempre que a função der errado. Até porque, já que o polegar está virado para baixo, temos que fazer alguma coisa para que nosso programa não morra.</p>
 <p>Como bem observado pelo Fernando no comentário abaixo, nem todas as funções-polegar possuem uma função para obter a causa do erro. Vide SysAllocString, ou mesmo malloc. Nesse caso, não há muito o que determinar a não ser que não foi possível alocar o recurso pedido pelo sistema. Paciência.</p>
+
 </section><hr/>
 
 <span style="float: left;">
