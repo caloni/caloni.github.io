@@ -1,11 +1,11 @@
 function copy_clipboard(id) {
-  var buttonCopy = " \\^ ctrl_c";
+  var buttons = " \\[up\\] \\[copy\\]";
   var copyText = document.querySelector(id).textContent.substring(3);
   var afterTitle = copyText.search("\n");
-  var afterHeader = copyText.search(buttonCopy);
+  var afterHeader = copyText.search(buttons);
   var title = copyText.substring(0, afterTitle);
   var header = copyText.substring(afterTitle + 1, afterHeader);
-  var content = copyText.substring(afterHeader + buttonCopy.length + 1);
+  var content = copyText.substring(afterHeader + buttons.length + 1);
 
   content = content.replace(/(?:\r\n|\r|\n)/g, "\n\n");
   title = title.replace(" [link]", "");
