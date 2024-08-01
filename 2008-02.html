@@ -361,16 +361,22 @@ role="navigation" aria-label="main navigation">
 <p>Também devemos lembrar que o caractere de controle '\n' é representado apenas por um byte, apesar de no fonte parecer dois.</p>
 <p>Em um passado bem longínquo, o padrão ANSI C não existia, e outras funções dominavam o ambiente UNIX. Muitas dessas funções foram adaptadas, e outras completamente copiadas para a formação do padrão. No entanto, ainda que o padrão não tenha colocado algumas funções clássicas, elas continuaram sendo usadas e suportadas. Um bom exemplo disso são as funções read e write, que, apesar de não estarem no padrão, estão no <a href="posts.html?q=livro de K&amp;R">livro de K&amp;R</a>, no capítulo sobre fluxos (streams) em UNIX, provando que são bem populares.</p>
 <p>Dentro desse mundo paralelo, existem identificadores de fluxos padrões para a entrada e a saída padrão. Melhor ainda, esses identificadores são inteiros que estão especificados da seguinte maneira (tirado da <a href="http://www.gnu.org/software/libc/manual/html_node/Descriptors-and-Streams.html#index-STDIN_005fFILENO-1235">referência GNU</a> da linguagem C, meu grifo):</p>
-<p>&gt; There are also symbolic constants defined in unistd.h for the file descriptors belonging to the standard streams stdin, stdout, and stderr; see Standard Streams.</p>
-<p>&gt; </p>
-<p>&gt; STDIN_FILENO</p>
-<p>&gt; This macro has value 0, which is the file descriptor for standard input.</p>
+<blockquote>
+There are also symbolic constants defined in unistd.h for the file descriptors belonging to the standard streams stdin, stdout, and stderr; see Standard Streams.
+
+STDIN_FILENO
+This macro has value 0, which is the file descriptor for standard input.
+</blockquote>
 <p>&gt;</p>
-<p>&gt; STDOUT_FILENO</p>
-<p>&gt; This macro has value 1, which is the file descriptor for standard output.</p>
+<blockquote>
+STDOUT_FILENO
+This macro has value 1, which is the file descriptor for standard output.
+</blockquote>
 <p>&gt;</p>
-<p>&gt; STDERR_FILENO</p>
-<p>&gt; This macro has value 2, which is the file descriptor for standard error output.</p>
+<blockquote>
+STDERR_FILENO
+This macro has value 2, which is the file descriptor for standard error output.
+</blockquote>
 <p>Agora podemos voltar ao fonte. Vejamos como é implementada a função read, chamada dentro do laço for. Como todos sabem, se uma função já é definida em sua própria unidade, não haverá uma busca por referências externas, o que quer dizer que a implementação padrão de read não atrapalha a implementação local.</p>
 <pre>
    read(j, i, p)
@@ -721,9 +727,11 @@ role="navigation" aria-label="main navigation">
 <p class="title"><a href="2008-02.html#codigos-de-entrevista-o-ponteiro-nulo">#</a> Códigos de entrevista - o ponteiro nulo</p>
 <p class="note-title"><small>2008-02-25  <a href="tag_coding.html">tag_coding</a> </small><a href="2008-02.html"><sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-codigos-de-entrevista-o-ponteiro-nulo')"><sup>[copy]</sup></a></p>
 <p>Bom, parece que o "mother-fucker" wordpress ferrou com meu artigo sobre o Houaiss. Enquanto eu choro as pitangas aqui vai um outro artigo um pouco mais simples, mas igualmente interessante.</p>
-<p>&gt; "Wanderley, tenho umas sugestões para teu blog.</p>
-<p>&gt; A primeira:</p>
-<p>&gt; Que tal analisar o código abaixo e dizer se compila ou não. Se não compilar, explicar porquê não compila. Se compilar, o que acontecerá e por quê."</p>
+<blockquote>
+"Wanderley, tenho umas sugestões para teu blog.
+A primeira:
+Que tal analisar o código abaixo e dizer se compila ou não. Se não compilar, explicar porquê não compila. Se compilar, o que acontecerá e por quê."
+</blockquote>
 <p>O código é o que veremos abaixo:</p>
 <pre>
    #include &lt;stdio.h&gt;

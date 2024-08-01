@@ -393,7 +393,9 @@ select * from intensityData limit 10;
 select * from intensityData where snp = 'rs123456';
 </pre>
 <p>&gt;</p>
-<p>&gt; Eight minutes and 4+ terabytes of data queried later I had my results. Athena charges you by data searched at the reasonable rate of $5 per TB. So this single query cost $20 and eight minutes. If we ever wanted to run a model over all the data we better be ready to wait roughly 38 years and pay $50 million. Clearly this wasn’t going to work.</p>
+<blockquote>
+Eight minutes and 4+ terabytes of data queried later I had my results. Athena charges you by data searched at the reasonable rate of $5 per TB. So this single query cost $20 and eight minutes. If we ever wanted to run a model over all the data we better be ready to wait roughly 38 years and pay $50 million. Clearly this wasn’t going to work.
+</blockquote>
 <p>&gt;</p>
 <h3>Lessons Learned</h3>
 <ul><li>There's no cheap way to parse 25tb of data at once.</li>
@@ -424,15 +426,23 @@ parallel --block 100M --pipe  \
 <h2>XML Issues</h2>
 <p>Este post foi resultado da minha pesquisa sobre AWK e performance. Ele contém alguns insights que acredito serem úteis para otimizar o código AWK. Nem sempre a linguagem é a ferramenta ideal para trabalhar dados, como o rapaz da dúvida mencionou (ele estava tentando parsear XML), mas mesmo assim as respostas focaram na implementação interna do AWK para entender como tornar o processamento massivo de dados factível, ou pelo menos mais rápido. Isso pode ser útil no dia-a-dia.</p>
 <p>&gt;</p>
-<p>&gt; "The Enlightened Ones say that....</p>
-<p>&gt; </p>
-<p>&gt; You should never use C if you can do it with a script;</p>
+<blockquote>
+"The Enlightened Ones say that....
+
+You should never use C if you can do it with a script;
+</blockquote>
 <p>&gt;</p>
-<p>&gt; You should never use a script if you can do it with awk;</p>
+<blockquote>
+You should never use a script if you can do it with awk;
+</blockquote>
 <p>&gt;</p>
-<p>&gt; Never use awk if you can do it with sed;</p>
+<blockquote>
+Never use awk if you can do it with sed;
+</blockquote>
 <p>&gt;</p>
-<p>&gt; Never use sed if you can do it with grep."</p>
+<blockquote>
+Never use sed if you can do it with grep."
+</blockquote>
 <p>&gt;</p>
 <h3>Test #1</h3>
 <pre>
@@ -504,9 +514,11 @@ time gawk '/:SubNetwork/{a++}END{print a}' bigsample.txt
 <h3>Mawk</h3>
 <p>No meio das minhas pesquisas também encontrei este projeto chamado <a href="https://invisible-island.net/mawk/">mawk</a>, que é uma versão otimizada do AWK. Instalei pelos fontes do projeto na minha máquina e fiz os mesmos testes do post do Stack Overflow com resultados absurdamente mais rápidos. Ou seja, vale uma visita.</p>
 <h3>Final conclusion</h3>
-<p>&gt; </p>
-<p>&gt; Show that if you use your :SubNetwork as field separator, it's the fastest.</p>
-<p>&gt; </p>
+<blockquote>
+
+Show that if you use your :SubNetwork as field separator, it's the fastest.
+
+</blockquote>
 <ul><li>Regex as filter is much faster than run the action.</li>
 <li>Mawk is fast as hell.</li>
 </ul>

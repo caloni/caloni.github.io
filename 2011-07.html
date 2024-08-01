@@ -250,7 +250,9 @@ int main()
 <p>Depurando diretamente, vemos que a stream, de fato, contém o que esperávamos. O único elemento errante é justamente o ponteiro obtido através da chamada dupla de métodos.</p>
 <img src="img/cuidado-com-variaveis-temporarias-x3n9FXS.png"/>
 <p>O porquê isso ocorre só fica óbvio quando vemos <a href="http://www.cplusplus.com/reference/iostream/stringstream/str/">a ajuda</a> (ou a assinatura) da função str da classe stringstream:</p>
-<p>&gt; Get/set the associated string object The first version returns a copy of the string object currently associated with the string stream buffer.</p>
+<blockquote>
+Get/set the associated string object The first version returns a copy of the string object currently associated with the string stream buffer.
+</blockquote>
 <p>Ora, a função str retorna uma **cópia** do objeto string usado internamento pelo buffer de nossa string stream. Duas coisas ocorrem em qualquer cópia de um objeto retornada por uma função:</p>
 <p>  * A cópia do objeto original e seu desacoplamento (óbvio).</p>
 <p>  * A construção de um objeto baseado no original e que, após o fim da expressão onde foi chamado o método, **é destruído**.</p>

@@ -473,7 +473,9 @@ role="navigation" aria-label="main navigation">
 </ul>
 <p>Baseado no número de CPs registrados no sistema, o LogonUI (processo responsável por exibir a tela de boas vindas) irá exibir as respectivas credenciais para cada um dos CPs envolvidos no logon.</p>
 <p>Com <a href="posts.html?q=o exemplo de GINA stub">o exemplo de GINA stub</a> do Ferdinando desenvolvi uma versão um pouco mais perigosa, da época de laboratório da faculdade. Se trata igualmente de uma GINA que se aproveita da implementação da GINA original, porém na hora de autenticar um usuário ela captura os dados do logon (usuário e senha) e grava em uma parte do registro acessível apenas pelo sistema (lembre-se que a GINA, por fazer parte do WinLogon, roda na conta de sistema).</p>
-<p>&gt; É claro que para utilizar essa GINA, você deve possuir direitos de administração, ou conhecer alguma brecha de segurança. Eu optei pela segunda opção, já que não tinha a primeira. Podemos dizer apenas que o artigo sobre falhas de segurança relacionadas a usuários avançados do Russinovich pôde resolver meu problema.</p>
+<blockquote>
+É claro que para utilizar essa GINA, você deve possuir direitos de administração, ou conhecer alguma brecha de segurança. Eu optei pela segunda opção, já que não tinha a primeira. Podemos dizer apenas que o artigo sobre falhas de segurança relacionadas a usuários avançados do Russinovich pôde resolver meu problema.
+</blockquote>
 
 
 </section><hr/>
@@ -578,7 +580,9 @@ role="navigation" aria-label="main navigation">
    junction c:\library\ddk "path where is winddk"
 </pre>
 <p>E é isso aí. A partir de agora tanto as pastas originais quanto os junctions criados para elas respondem como se fossem a mesma coisa, porém com paths diferentes.</p>
-<p>&gt; "Neo, sooner or later, you're going to realize, just as I did, that there's a different between knowing the path... and walking the path..."</p>
+<blockquote>
+"Neo, sooner or later, you're going to realize, just as I did, that there's a different between knowing the path... and walking the path..."
+</blockquote>
 <p>No Windows Vista os junctions também funcionam para arquivos e possuem seu próprio aplicativo nativo, o mklink.exe. Porém, ele chama os links para diretórios de junctions (em português, junções) e os links para arquivos de links mesmo. Você pode notar uma pequena gamb.. adaptação técnica ao mudarem o nome da pasta "Documents and Settings" para "Users" (ou "Usuários", na versão em português). Esse link é extremamente necessário para a compatibilidade daqueles aplicativos feitos às pressas que não se importam em perguntar para o sistema onde está a pasta de documentos do usuário, fixando o path como se ele fosse estar sempre lá.</p>
 
 </section><hr/>
@@ -712,7 +716,9 @@ role="navigation" aria-label="main navigation">
    } 
 </pre>
 <p>Outra observação que poderia ter ajudado na hora de codificar seria dar uma olhada no que os caras escrevem na seção de advertências (remarks) da documentação:</p>
-<p>&gt; To compile an application that uses this function, define the _WIN32_WINNT macro as 0x0500 or later. For more information, see Using the Windows Headers.</p>
+<blockquote>
+To compile an application that uses this function, define the _WIN32_WINNT macro as 0x0500 or later. For more information, see Using the Windows Headers.
+</blockquote>
 <p>Podemos também notar pela definição do COMPUTER_NAME_FORMAT dentro do main que o código estava no meio do caminho de cometer um sacrilégio: declarar funções e estruturas que já estão definidas nos headers da API. Portanto, se você já encontrou algum código parecido com esse, é hora de colocar em prática algumas teorias de refactoring.</p>
 
 </section><hr/>

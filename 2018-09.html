@@ -641,7 +641,9 @@ explicit pull_coroutine( coroutine_fn fn, attributes const&amp; attrs = attribut
 }
 </pre>
 <p>O tamanho total da stack reservada no Windows é de 1 MB, mas a granuralidade padrão é de 64 KB ("que é suficiente para qualquer um" - Gates, Bill). Então é por isso que quando o Boost aloca uma stack com atributos padrões esse é o tamanho que vemos (65536).</p>
-<p>&gt; The default size for the reserved and initially committed stack memory is specified in the executable file header. Thread or fiber creation fails if there is not enough memory to reserve or commit the number of bytes requested. The default stack reservation size used by the linker is 1 MB. To specify a different default stack reservation size for all threads and fibers, use the STACKSIZE statement in the module definition (.def) file. The operating system rounds up the specified size to the nearest multiple of the system's allocation granularity (typically 64 KB). To retrieve the allocation granularity of the current system, use the GetSystemInfo function.</p>
+<blockquote>
+The default size for the reserved and initially committed stack memory is specified in the executable file header. Thread or fiber creation fails if there is not enough memory to reserve or commit the number of bytes requested. The default stack reservation size used by the linker is 1 MB. To specify a different default stack reservation size for all threads and fibers, use the STACKSIZE statement in the module definition (.def) file. The operating system rounds up the specified size to the nearest multiple of the system's allocation granularity (typically 64 KB). To retrieve the allocation granularity of the current system, use the GetSystemInfo function.
+</blockquote>
 <img src="img/coroutine-internals-0dMVf0k.png"/>
 <p>_Detalhe curioso de arquitetura x86 (32 bits): na hora de alocar, o sp (stack pointer) aponta para o final da pilha. Isso porque no x86 a **pilha cresce "para baixo"**._</p>
 <pre>
@@ -926,10 +928,12 @@ WARNING: Stack unwind information not available. Following frames may be wrong.
 <p>Outra palestra que me lembro com muita empolgação é a sobre WebAssenbly. Não torça o nariz antes de entender. O palestrante nos apresenta algo ainda em andamento sobre transpilar código C/C++ para uma máquina virtual criada a partir de JavaScript. A estrutura da palestra é muito boa e o palestrante melhor ainda. Ele chegou a alterar o código durante a palestra para nos demonstrar diversos usos dessa tecnologia. Ainda em testes, mas muito promissora.</p>
 <img src="img/native-floripa-2018-l8iCVUL.png"/>
 <p>Por fim, as conversas entre os palestrantes e os participantes foi muito frutífera. Assim como nosso grupo do Telegram, importa menos o tema do que as pessoas envolvidas. E todos concordam que não há nada melhor no mundo que conversar com pessoas inteligentes e beber chopes do Sul. E lá na Acate há a melhor praça de alimentação que já vi na vida. Comida e bebida (chopes e vinhos por taça) boa e barata. Há massas e carnes de muita qualidade. O Madero do lado, que já não é nada de mais, ficou ainda menor.</p>
-<p>&gt; O chope Putz IPA têm lúpulos cheirosos e corpo leve, pouco alcoólico e bem agradável gelado. Ou seja, nem parece IPA.</p>
-<p>&gt; Coruja Pilsen é uma... pilsen? Bom, tem um salgadinho próximo de uma witbier prestes a ser esquecida.</p>
-<p>&gt; O chope da Strappa Gingerberry é um chá preto fermentado com gengibre e gradação alcoólica ridícula de 0.6%. Ele é ainda frutado (possui morango) e deixa a garganta quentinha. Ótima opção entre bebidas mais fortes. Dá uma pausa etílica e estilosa na balada.</p>
-<p>&gt; Kairós Sol Poente é uma West Coast IPA de respeito. Equilibrada de corpo leve, seu chope é aromático e um pouco salgado com amargor presente sem exageros.</p>
+<blockquote>
+O chope Putz IPA têm lúpulos cheirosos e corpo leve, pouco alcoólico e bem agradável gelado. Ou seja, nem parece IPA.
+Coruja Pilsen é uma... pilsen? Bom, tem um salgadinho próximo de uma witbier prestes a ser esquecida.
+O chope da Strappa Gingerberry é um chá preto fermentado com gengibre e gradação alcoólica ridícula de 0.6%. Ele é ainda frutado (possui morango) e deixa a garganta quentinha. Ótima opção entre bebidas mais fortes. Dá uma pausa etílica e estilosa na balada.
+Kairós Sol Poente é uma West Coast IPA de respeito. Equilibrada de corpo leve, seu chope é aromático e um pouco salgado com amargor presente sem exageros.
+</blockquote>
 <p>Ficamos hospedados em uma casa na Barra da Lagoa pelo AirBnB em alta concentração de temas filosóficos. Fizemos um churrasco imprestável, fomos em restaurantes medíocres da orla, mas a conversa foi sempre interessante. Era como se o grupo de filosofia do Telegram tivesse se mudado temporariamente para lá. Temas como metafísica, política, social justice, auto ajuda e imprint de traumas eram frequentes. A paisagem belíssima, a casa aconchegante e a companhia agradável.</p>
 <img src="img/native-floripa-2018-tQXeDFn.png"/>
 <p>Native Floripa virou já uma tradição. Ano que vem nos vemos de novo.</p>
