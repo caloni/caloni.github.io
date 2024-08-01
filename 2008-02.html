@@ -586,11 +586,9 @@ role="navigation" aria-label="main navigation">
 <p class="note-title"><small>2008-02-15  <a href="tag_coding.html">tag_coding</a> <a href="tag_ccpp.html">tag_ccpp</a> </small><a href="2008-02.html"><sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-os-diferentes-erros-na-linguagem-c')"><sup>[copy]</sup></a></p>
 <p>Uma coisa que me espanta de vez em quando é o total desconhecimento por programadores mais ou menos experientes dos níveis de erros que podem ocorrer em um fonte escrito em C ou C++. Desconheço o motivo, mas desconfio que o fato de outras linguagens não terem essa divisão de processos pode causar alguma nivelação entre as linguagens e fazer pensar que o processo de compilação em C é como em qualquer outra linguagem.</p>
 <p>Porém, para começar, só de falarmos em compilação já estamos pegando apenas um pedaço do todo, que é a geração de um programa executável em C. Tradicionalmente, dividimos esse processo em três passos:</p>
-<pre>
- 1. Preprocessamento
- 2. Compilação
- 3. Linkedição
-</pre>
+<p>  1. Preprocessamento</p>
+<p>  2. Compilação</p>
+<p>  3. Linkedição</p>
 <p>Vamos dar uma olhada mais de perto em cada um deles e descobrir erros típicos de cada processo.</p>
 <p>O preprocessamento é especificado pelos padrões C e C++, mas, tecnicamente, não faz parte da linguagem. Ou seja, antes que qualquer regra de sintaxe seja verificada no código-fonte, o preprocessamento já terá terminado.</p>
 <p>Essa parte do processo lida com substituição de texto e diretivas baseadas em arquivos e símbolos. Por exemplo, a diretiva de preprocessamento mais conhecida</p>
@@ -672,11 +670,9 @@ role="navigation" aria-label="main navigation">
 <p>Dica: nunca subestime o poder de informação do compilador e da sua documentação. Se o erro tem um código (geralmente tem), procure a documentação sobre o código de erro específico, para ter uma idéia de por que esse erro costuma ocorrer, exemplos de código com esse erro e possíveis soluções. Ficar batendo a cabeça não vai ajudar em nada, e com o tempo, você irá ficar sabendo rapidamente o que aconteceu.</p>
 <p>Chegando na linkedição, onde a esperança reside, tudo pode vir por água abaixo. Isso porque você já espera confiante que tudo dê certo, quando, na verdade, um erro bem colocado pode fazer você desistir pra sempre desse negócio de programar em C.</p>
 <p>As características mais desejadas para corrigir erros nessa fase são:</p>
-<pre>
- 1. Total conhecimento da fase do preprocessamento
- 2. Total conhecimento da fase da compilação
- 3. Total conhecimento de níveis de escopo e assinatura de funções
-</pre>
+<p>  1. Total conhecimento da fase do preprocessamento</p>
+<p>  2. Total conhecimento da fase da compilação</p>
+<p>  3. Total conhecimento de níveis de escopo e assinatura de funções</p>
 <p>Os dois primeiros itens são uma maldição previsível que deve-se carregar para todo o sempre. Se você não consegue entender o que aconteceu nas duas primeiras fases, dificilmente irá conseguir seguir adiante com essa empreitada. O terceiro item significa que deve-se levar em conta as bibliotecas que estamos usando, headers externos (com dependências externas), conflitos entre nomes, etc.</p>
 <p>Alguns erros mais encontrados aqui são as funções não encontradas por falta da LIB certa ou por LIBs desatualizadas que não se encaixam mais com o projeto, fruto de muitas dores de cabeça de manutenção de código. Essa é a parte em que mais vale a pena saber organizar e definir uma interface clara entre os componentes de um projeto.</p>
 <p>Do ponto de vista técnico, é a fase onde o linker junta todos os arquivos-objeto especificados, encontra as funções, métodos e classes necessárias e monta uma unidade executável, como ilustrado pela figura abaixo.</p>

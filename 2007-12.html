@@ -303,18 +303,16 @@ role="navigation" aria-label="main navigation">
 <p class="title"><a href="2007-12.html#debug-remoto-no-c-builder">#</a> Debug remoto no C++ Builder</p>
 <p class="note-title"><small>2007-12-13  <a href="tag_coding.html">tag_coding</a> </small><a href="2007-12.html"><sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-debug-remoto-no-c-builder')"><sup>[copy]</sup></a></p>
 <p>Esse é um detalhe que pode passar despercebido da maioria da população Borland, mas o Builder, assim como o Visual Studio, possui sua suíte para depuração remota. E tudo o que você precisa fazer é instalar um pacote no cliente.</p>
-<pre>
- 1. No CD de instalação, existe uma pasta chamada RDEBUG.
- 2. Na máquina cliente, execute o arquivo setup.exe contido nesta pasta. De preferência, não instale como um serviço (a menos que tenha um motivo).
- 3. Crie uma aplicação tosca de teste (ou use uma aplicação tosca existente).
- 4. Lembre-se que as DLLs do Builder não estarão disponíveis na máquina remota. Para não depender delas desabilite as opções "Use dynamic RTL" (aba Link) e "Build with runtime packages" (aba Packages) do seu projeto.
- 5. Copie a aplicação para a máquina remota ou torne-a acessível através de mapeamento.
- 6. Em Run, Parameters, habilite na aba Remote a opção "Debug project on remote machine"
- 7. Em Remote Path especifique o path de sua aplicação visto da máquina remota.
- 8. Em Remote Host especifique o nome ou o IP da máquina remota.
- 9. Execute o aplicativo através do Builder (certifique-se que o cliente do Builder está rodando na máquina remota).
- 10. Bom proveito!
-</pre>
+<p>  1. No CD de instalação, existe uma pasta chamada RDEBUG.</p>
+<p>  2. Na máquina cliente, execute o arquivo setup.exe contido nesta pasta. De preferência, não instale como um serviço (a menos que tenha um motivo).</p>
+<p>  3. Crie uma aplicação tosca de teste (ou use uma aplicação tosca existente).</p>
+<p>  4. Lembre-se que as DLLs do Builder não estarão disponíveis na máquina remota. Para não depender delas desabilite as opções "Use dynamic RTL" (aba Link) e "Build with runtime packages" (aba Packages) do seu projeto.</p>
+<p>  5. Copie a aplicação para a máquina remota ou torne-a acessível através de mapeamento.</p>
+<p>  6. Em Run, Parameters, habilite na aba Remote a opção "Debug project on remote machine"</p>
+<p>  7. Em Remote Path especifique o path de sua aplicação visto da máquina remota.</p>
+<p>  8. Em Remote Host especifique o nome ou o IP da máquina remota.</p>
+<p>  9. Execute o aplicativo através do Builder (certifique-se que o cliente do Builder está rodando na máquina remota).</p>
+<p>  10. Bom proveito!</p>
 <p>Infelizmente essa opção não está disponível nas versões Standard do produto, assim como não está o debugging remoto no Visual Studio Express. Porém, a nova versão do Builder, renomeada para Borland Turbo C++, é gratuita a possui essa feature embutida. O único porém é que a instalação não é automatizada, e os arquivos devem ser copiados "na mão", seguindo um dos tópicos da ajuda. Melhor que nada.</p>
 <p>Para os que utilizam o Visual Studio Express, realmente ainda não achei solução a não ser usar o bom, velho e fiel companheiro WinDbg. Não saia de casa sem ele.</p>
 
@@ -531,13 +529,11 @@ role="navigation" aria-label="main navigation">
 <p>Nos computadores atuais tudo no final acaba sendo representado por zeros e uns, até o sinal de negativo dos números menores que zero. Por isso mesmo, para que consigamos usar números menores que zero, precisamos gastar um bit para indicar que este número é negativo. Existem muitas representações interessantes, dentre as quais a mais popular acabou sendo a de complemento de dois. A regra é simples:</p>
 <p>&gt; Toda representação binária que tiver o bit mais significativo ligado (o bit mais à esquerda) significa um número negativo cujo valor absoluto se obtém invertendo-se o resto dos bits e adicionando um.</p>
 <p>Quando o bit mais à esquerda não está ligado o valor absoluto é ele mesmo; ou seja, é um número positivo, incluindo o zero. Como vamos ver, isso facilita em muito os cálculos para o computador. Para nós, a coisa não fica lá muito difícil. Só precisamos lembrar que, em hexadecimal, todos os valores que tiverem o byte mais significativo igual ou maior que 8 (que é 1000 em binário) é negativo e temos que aplicar o método de complemento de dois para obter seu valor absoluto. Vejamos o valor -8, por exemplo:</p>
-<pre>
- 1. Primeiro temos a representação real (em um byte): 1111 1000.
- 2. O bit mais significativo está ligado: é um número negativo. Descartamos o sinal, fica 111 1000.
- 3. Devemos agora inverter todos os bits: 111 1000 se torna 000 0111.
- 4. Por fim, somamos um: 000 0111 + 1 = 000 1000.
- 5. Como vimos no parágrafo anterior, 000 1000, ou simplesmente 1000, é 8. Na verdade, -8!
-</pre>
+<p>  1. Primeiro temos a representação real (em um byte): 1111 1000.</p>
+<p>  2. O bit mais significativo está ligado: é um número negativo. Descartamos o sinal, fica 111 1000.</p>
+<p>  3. Devemos agora inverter todos os bits: 111 1000 se torna 000 0111.</p>
+<p>  4. Por fim, somamos um: 000 0111 + 1 = 000 1000.</p>
+<p>  5. Como vimos no parágrafo anterior, 000 1000, ou simplesmente 1000, é 8. Na verdade, -8!</p>
 <p>O que significa, na notação complemento de dois, a representação onde estão todos os bits ligados, independente do número de bytes?</p>
 <p>Se alterarmos o código acima para imprimir na saída os números hexadecimais, obteremos a seguinte saída:</p>
 <pre>
@@ -619,7 +615,9 @@ role="navigation" aria-label="main navigation">
      cout &lt;&lt; "first: " &lt;&lt; first 
        &lt;&lt; ", second: " &lt;&lt; second &lt;&lt; endl;
    } 
- 
+</pre>
+<p>  </p>
+<pre>
    Saída:
    first: 13, second: 42
    first: 42, second: 13

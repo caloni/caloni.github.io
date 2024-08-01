@@ -165,13 +165,11 @@ int main(int argc, char* argv[])
 } 
 </pre>
 <p>The needed steps to test the code above are:</p>
-<pre>
- 1. Compile the code
- 2. Run notepad (or another victim)
- 3. Get its PID (Process ID)
- 4. Run the protector process passing the notepad PID as the argument
- 5. Try to attach to the notepad using a debugger (e.g. Visual C++)
-</pre>
+<p>  1. Compile the code</p>
+<p>  2. Run notepad (or another victim)</p>
+<p>  3. Get its PID (Process ID)</p>
+<p>  4. Run the protector process passing the notepad PID as the argument</p>
+<p>  5. Try to attach to the notepad using a debugger (e.g. Visual C++)</p>
 <p>After the attach process, the debug port is occupied, and the communication between the debugger and debuggee is made throug LPC. Bellow we can see a little illustration of how things work:</p>
 <img src="img/antidebugging-using-the-debugport-debug-port2.gif"/>
 <p>Basically the process stay receiving debugging events (through the LPC message queue) until the final event, the process exit. Notice that if someone try to terminate the protector process the debuggee process will be terminated, too.</p>
@@ -266,10 +264,8 @@ BYTE jmpToAntiAttachAbort[] =
 </pre>
 <p>There are a lot of ways to do the same thing. The example above is what is normally called in the crackers community as a shellcode, what is a pretty name for "byte array that is really the assembly code that does interesting things". Shellcode for short =).</p>
 <p>Alternative ways to do this are:</p>
-<pre>
- 1. To declare a naked function in Visual Studio, to create an empty function just after, do some math to calculate the size of the function to be copied into another place (aware of Edit and Continue option).
- 2. To create a structure whose members are masked opcodes. This way, is possible in the constructor to receive the values and use it as a "mobile function".
-</pre>
+<p>  1. To declare a naked function in Visual Studio, to create an empty function just after, do some math to calculate the size of the function to be copied into another place (aware of Edit and Continue option).</p>
+<p>  2. To create a structure whose members are masked opcodes. This way, is possible in the constructor to receive the values and use it as a "mobile function".</p>
 <p>Both have pros and cons. The cons are related with the environment dependency. In the first alternative is necessary to configure the project to disable "Edit and Continue" option, whilst in the second one is necessary to align 1 byte the structure.</p>
 <p>Anyway, given the implementation, the main advantage is to isolate the code in only two functions - AntiAttachAbort and InstallAntiAttach - an API local hook (in the same process) that should never be called in production code. Besides, there are C++ ways to do such thing like "live assembly". But this is matter for other future and exciting articles.</p>
 

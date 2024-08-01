@@ -140,11 +140,9 @@ role="navigation" aria-label="main navigation">
 <p>Apesar de existirem <a href="http://www.caloni.com.br/bazaar-grafico">firulas gráficas</a>, gosto de usar o Bazaar na linha de comando porque faz você pensar direito antes de fazer commits, mas esteja livre para experimentar a maneira que achar melhor.</p>
 <h5>Botando a mão na massa</h5>
 <p>Isso vale para qualquer projeto que você esteja trabalhando. Pela linha de comando, navegue até o diretório do projeto. Digite os comandos abaixo seguidos de enter:</p>
-<pre>
- 1. bzr init
- 2. bzr add
- 3. bzr commit -m "Primeiro commit no controle de fonte"
-</pre>
+<p>  1. bzr init</p>
+<p>  2. bzr add</p>
+<p>  3. bzr commit -m "Primeiro commit no controle de fonte"</p>
 <p>Pronto! Você está oficialmente com seu projeto dentro de um controle de fonte.</p>
 <pre>
    C:\Users\Caloni\Documents\Projetos&gt;cd MeuProjeto
@@ -165,10 +163,10 @@ role="navigation" aria-label="main navigation">
    C:\Users\Caloni\Documents\Projetos\MeuProjeto&gt;
 </pre>
 <p>Os passos seguintes seguem o mesmo padrão, exceto o passo 1, que é substituído pelo seu trabalho:</p>
+<p>  1. trabalho</p>
+<p>  2. bzr add</p>
+<p>  3. bzr commit -m "Comentário sobre modificação que fiz"</p>
 <pre>
- 1. trabalho
- 2. bzr add
- 3. bzr commit -m "Comentário sobre modificação que fiz"
    
    C:\Users\Caloni\Documents\Projetos\MeuProjeto&gt;vim MeuProjeto.cpp
    
@@ -239,39 +237,31 @@ role="navigation" aria-label="main navigation">
 </pre>
 <p>A primeira coisa que se faz nesse caso é pesquisar no Google por pessoas que já tiveram esse problema. A <a href="http://www.google.com/search?q=class+does+not+support+automation">maioria</a> dizia ser necessária registrar novamente as DLLs do navegador/shell, coisa que fizemos à exaustão e não resolveu o problema. Também imaginamos haver relação com a versão da **SDocVw.dll** que estava alocada na lista de assemblies .NET cacheados, o chamado GAC. Ou seja, já estávamos viajando geral.</p>
 <p>No meio dos procedimentos batidos que todos fazem a lista abaixo resume bem:</p>
-<pre>
- * Restaurar instalação do Internet Explorer.
- * Atualizar Internet Explorer.
- * Rodar Windows Update.
- * Registrar novamente DLLs do Shell (ShDocVw.dll, etc).
-</pre>
+<p>  * Restaurar instalação do Internet Explorer.</p>
+<p>  * Atualizar Internet Explorer.</p>
+<p>  * Rodar Windows Update.</p>
+<p>  * Registrar novamente DLLs do Shell (ShDocVw.dll, etc).</p>
 <p>No meio das análises não-tão-batidas que foram feitas estavam os seguintes itens:</p>
-<pre>
- * Log de operações pelo Process Monitor da abertura do browser até o erro.
- * Dump gerado no momento da mensagem de erro.
- * Comparação de registro exportado com máquina sadia.
-</pre>
+<p>  * Log de operações pelo Process Monitor da abertura do browser até o erro.</p>
+<p>  * Dump gerado no momento da mensagem de erro.</p>
+<p>  * Comparação de registro exportado com máquina sadia.</p>
 <p>Nada parecia resolver o impasse, a não ser reinstalar o Windows, coisa que o cliente não queria. Dessa forma, A última tentativa não-enlouquecida de tentar descobrir a causa do problema foi usar uma VM e importar o registro exportado da máquina defeituosa.</p>
 <p>Que não revelou a anomalia.</p>
 <p>Partindo disso, imaginei que o que ocorria era que havia algo faltando no registro danificado, e não algo a mais. Dessa forma, realizei a seguinte operação:</p>
-<pre>
- * Exportei o registro da máquina saudável.
- * Transformei a exportação em exclusão total das chaves.
- * Importei ambos os registros no esquema "apaga tudo cria tudo de novo".
-</pre>
+<p>  * Exportei o registro da máquina saudável.</p>
+<p>  * Transformei a exportação em exclusão total das chaves.</p>
+<p>  * Importei ambos os registros no esquema "apaga tudo cria tudo de novo".</p>
 <img src="img/suporte-tecnico-l7Rc7kY.png"/>
 <p>Problema reproduzido.</p>
 <p>Agora restava saber qual chave exata estava faltando e o que isso impactava no comportamento do browser.</p>
 <p>O registro exportado da VM possuía cerca de 30.000 linhas com chaves e sub-chaves. Se fosse feita a importação por partes, dividindo-se sempre pela metade e testando o acesso à página todas as vezes, teríamos no máximo que fazer uns 15 testes.</p>
 <p>Foi esse o procedimento seguido:</p>
-<pre>
- 1. Criar snapshot com o estado inalterado do registro.
- 2. Apagar metade do registro original exportado (máquina real).
- 3. Arrastar metade do registro original e importá-lo (apaga chaves).
- 4. Importar registro danificado do cliente (já na VM).
- 5. Se deu erro de novo, repassar os passos 2 a 3.
- 6. Se não deu erro, testar os passos 3 e 4 com a outra metade.
-</pre>
+<p>  1. Criar snapshot com o estado inalterado do registro.</p>
+<p>  2. Apagar metade do registro original exportado (máquina real).</p>
+<p>  3. Arrastar metade do registro original e importá-lo (apaga chaves).</p>
+<p>  4. Importar registro danificado do cliente (já na VM).</p>
+<p>  5. Se deu erro de novo, repassar os passos 2 a 3.</p>
+<p>  6. Se não deu erro, testar os passos 3 e 4 com a outra metade.</p>
 <img src="img/suporte-tecnico-hhxZgqZ.png"/>
 <p>Essa série de passos foi reproduzida em menos de uma hora até chegarmos a apenas uma linha no registro:</p>
 <pre>
@@ -513,13 +503,11 @@ int main()
 <p class="title"><a href="2010-11.html#ii-seminario-portabilidade-e-performance">#</a> II Seminário Portabilidade e Performance</p>
 <p class="note-title"><small>2010-11-12  <a href="tag_ccppbr.html">tag_ccppbr</a> </small><a href="2010-11.html"><sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-ii-seminario-portabilidade-e-performance')"><sup>[copy]</sup></a></p>
 <p>Aqui estamos nós de novo. Mais uma vez a Tempo Real Eventos irá organizar esse evento de final de ano. E mais uma vez, junto dos meus amigos, irei palestrar sobre um item indispensável no nécessaire de todo escovador de bits: assembly gerado pelo compilador. Vamos falar brevemente sobre o funcionamento de um código assembly 32 bits e passar para a análise dos compiladores modernos e o que eles fazem para tornar o código ainda mais rápido do que o próprio fonte em C++.</p>
-<pre>
- * Gerando código assembly;
- * Guia ultra-rápido de assembly;
- * Recursividade sem problemas na pilha;
- * STL aumenta performance? (exemplos práticos);
- * Assembly 64 bits.
-</pre>
+<p>  * Gerando código assembly;</p>
+<p>  * Guia ultra-rápido de assembly;</p>
+<p>  * Recursividade sem problemas na pilha;</p>
+<p>  * STL aumenta performance? (exemplos práticos);</p>
+<p>  * Assembly 64 bits.</p>
 <p>Uma outra dúvida pertinente (e discutida nos bares nerds da cidade) é se usar código STL não deixaria mais lento o resultado final, já que ele é cheio das abstrações. Por mais que autoridades competentes no funcionamento da linguagem como Pedro Lamarão e Thiago Adams digam que as otimizações do compiladores modernos na STL/Boost são diversas vezes mais eficientes que o código artesanal de um programador, sempre fica aquela pulga atrás da orelha, pulga esta que podemos matar facilmente analisando o assembly gerado. E essa confiança extra nos dará novas chances de programar coisas legais de verdade, e não ficar ensebando um código que já está na sua velocidade máxima.</p>
 <p>Então é isso aí. Espero que tenhamos uma manhã e uma tarde agradáveis nesse mundo da escovação de bits.</p>
 

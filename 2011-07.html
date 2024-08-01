@@ -252,10 +252,8 @@ int main()
 <p>O porquê isso ocorre só fica óbvio quando vemos <a href="http://www.cplusplus.com/reference/iostream/stringstream/str/">a ajuda</a> (ou a assinatura) da função str da classe stringstream:</p>
 <p>&gt; Get/set the associated string object The first version returns a copy of the string object currently associated with the string stream buffer.</p>
 <p>Ora, a função str retorna uma **cópia** do objeto string usado internamento pelo buffer de nossa string stream. Duas coisas ocorrem em qualquer cópia de um objeto retornada por uma função:</p>
-<pre>
- * A cópia do objeto original e seu desacoplamento (óbvio).
- * A construção de um objeto baseado no original e que, após o fim da expressão onde foi chamado o método, **é destruído**.
-</pre>
+<p>  * A cópia do objeto original e seu desacoplamento (óbvio).</p>
+<p>  * A construção de um objeto baseado no original e que, após o fim da expressão onde foi chamado o método, **é destruído**.</p>
 <p>Uma vez que a chamada a str termina, é entregue uma instância de uma string que contém a string original que está sendo usada pela string stream para a expressão da chamada, que geralmente vem seguida de uma cópia:</p>
 <pre>
    //
@@ -295,10 +293,8 @@ int main()
 <p class="title"><a href="2011-07.html#depuracao-de-emergencia-receita-de-bolo">#</a> Depuração de emergência</p>
 <p class="note-title"><small>2011-07-26  <a href="tag_coding.html">tag_coding</a> </small><a href="2011-07.html"><sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-depuracao-de-emergencia-receita-de-bolo')"><sup>[copy]</sup></a></p>
 <p>O programa está rodando no servidor do cliente, que é acessível por sessão remota do Windows, mas de repente ele capota. Existem aí duas possibilidades fora o debug remoto (que, nesse caso, não é possível):</p>
-<pre>
- 1. Analisar um dump gerado.
- 2. Depurar localmente o problema.
-</pre>
+<p>  1. Analisar um dump gerado.</p>
+<p>  2. Depurar localmente o problema.</p>
 <img src="img/depuracao-de-emergencia-receita-de-bolo-imt8kmB.png"/>
 <h4>Analisar um dump gerado</h4>
 <p>Para a primeira opção, basta abrir o Gerenciador de Tarefas, localizar o processo e gerar o dump através do menu de contexto.</p>
@@ -354,11 +350,9 @@ int main()
 <p>Após esse último passo, siga para o último passo desse tutorial. Ou escolha a segunda opção:</p>
 <h4>Depurar localmente o problema</h4>
 <p>Para depurar localmente, supondo que seja um executável simples, você precisa dos seguintes itens:</p>
-<pre>
- * Pasta do WinDbg copiado (a Debugging Tools instalada pelo SDK, ou sua pastinha particular guardada no PenDrive).
- * Símbolos dos binários envolvidos (em sincronia com os binários que iremos analisar).
- * Fontes da compilação dos binários (a versão exata seria ideal; grave o revno do controle de fonte pra facilitar).
-</pre>
+<p>  * Pasta do WinDbg copiado (a Debugging Tools instalada pelo SDK, ou sua pastinha particular guardada no PenDrive).</p>
+<p>  * Símbolos dos binários envolvidos (em sincronia com os binários que iremos analisar).</p>
+<p>  * Fontes da compilação dos binários (a versão exata seria ideal; grave o revno do controle de fonte pra facilitar).</p>
 <p>Os fontes, no caso de uma conexão por Terminal Server, podem ser disponibilizados através do mapeamento de drives entre as máquinas. Os símbolos, no entanto, por serem usados extensivamente pelo WinDbg, é recomendável que estejam locais na máquina depurada, pois do contrário você terá que tomar uma quantidade excessiva de cafés para executar meia-dúzia de instruções.</p>
 <p>Supondo que temos tudo isso, só precisamos executar alguns passos básicos para o setup:</p>
 <h5>1. Abrir o WinDbg e escolher File, Open Executable. Escolha o executável e pare por aí.</h5>

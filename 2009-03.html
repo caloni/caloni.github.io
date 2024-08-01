@@ -61,25 +61,21 @@ role="navigation" aria-label="main navigation">
 <p>Quase todos os problemas do Universo são resolvidos depois de um belo dia de depuração, código comentado, descomentado, recomentado e umas muitas e boas doses de café. Alguns outros problemas mais cabeludos precisam de uma boa noitada na frente do computador, e mais café. E, finalmente, existem aqueles que nem tomando o estoque inteiro de café a coisa anda.</p>
 <p>Um exemplo: um hook global do Windows que quando ativado em determinados eventos envia mensagens para uma única janela que cataloga informações sobre diversas janelas e processos no sistema. Esse procedimento é uma subfunção do programa principal, que já possui seus próprios problemas e idiossincrasias. Em momentos aparentemente aleatórios algumas funcionalidades não parecem estar de acordo com o que se espera.</p>
 <p>Para esse tipo de situação que envolve 1. o sistema como um todo, 2. processos de terceiros e 3. comportamento obscuro por parte do resto do código, vale a pena seguir um checklist mais rigoroso, colocar seu bonezinho de CSI e partir para desmembrar o funcionamento do código problemático:</p>
-<pre>
- 1. Como o programa deveria funcionar?
- 2. O que exatamente não funciona?
- 3. O que pode ser? O que NÃO pode ser?
- 4. Existe uma maneira de provar?
-</pre>
+<p>  1. Como o programa deveria funcionar?</p>
+<p>  2. O que exatamente não funciona?</p>
+<p>  3. O que pode ser? O que NÃO pode ser?</p>
+<p>  4. Existe uma maneira de provar?</p>
 <p>Cada uma dessas perguntas deve ser respondida com a maior sinceridade e disciplina, custe o que custar.</p>
 <p>Esse deve ser o primeiro e mais importante indício do que pode estar acontecendo. Sem entender o funcionamento do programa, dificilmente conseguiremos passar para os passos seguintes. Na maioria das vezes, sem saber onde a coisa começa e termina, o problema vai ficar rindo da nossa cara até entendermos de fato que aquele if não merece estar naquela linha.</p>
 <p>Para facilitar esse entendimento, nada como elaborar uma pequena explicação para si mesmo no estilo How Stuff Works. Não precisa exagerar e fazer uma tese a respeito e criar vídeos explicativos. Só precisa descrever o fluxo com os detalhes aparentemente importantes para a resolução do problema.</p>
 <p>Continuando nosso exemplo:</p>
-<pre>
- 1. O programa inicia e cria uma _thread _específica.
- 2. Essa _thread _específica cria uma janela que monitora e carrega uma DLL.
- 3. Essa DLL é chamada pela _thread _e instala um _hook _global no sistema.
- 4. O _hook _recebe eventos de todos os processos que possuem janelas.
- 5. Quando eventos específicos são disparados, o processo atual envia uma mensagem para a janela que monitora.
- 6. A janela que monitora monta uma tabela estatística dos eventos.
- 7. De tempos em tempos, essa tabela é escrita em disco em um arquivo encriptado.
-</pre>
+<p>  1. O programa inicia e cria uma _thread _específica.</p>
+<p>  2. Essa _thread _específica cria uma janela que monitora e carrega uma DLL.</p>
+<p>  3. Essa DLL é chamada pela _thread _e instala um _hook _global no sistema.</p>
+<p>  4. O _hook _recebe eventos de todos os processos que possuem janelas.</p>
+<p>  5. Quando eventos específicos são disparados, o processo atual envia uma mensagem para a janela que monitora.</p>
+<p>  6. A janela que monitora monta uma tabela estatística dos eventos.</p>
+<p>  7. De tempos em tempos, essa tabela é escrita em disco em um arquivo encriptado.</p>
 <p>A lista acima é longa o suficiente para podermos elaborar perguntas interessantes e pequena o suficiente para podermos ter em mente o seu funcionamento como um todo, o que é vital para o sucesso das observações durante a depuração.</p>
 <p>Note que a pergunta nos direciona para o sintoma do problema, não o problema em si, que provavelmente ainda não é conhecido. E nunca é demais lembrar que podemos estar lidando com uma série de problemas trabalhando em conjunto para nos deixar acordados por dias a fio.</p>
 <p>Exemplos de respostas possíveis: a tabela estatística perde a lógica em determinado momento, o hook algumas vezes não funciona, aleatoriamente um dos processos "hookados" capota.</p>
@@ -109,20 +105,16 @@ role="navigation" aria-label="main navigation">
 <p>A consequência interessante disso é que, uma vez que a prova de conceito deva ser um miniprojeto das principais partes de um software, desenvolvê-la significa programar todas as partes que realmente importam, ou seja, centrais para o funcionamento.</p>
 <p>Portanto, conclui-se que desenvolver provas de conceito é a coisa mais divertida do Universo.</p>
 <p>Além de serem extremamente divertidas e disputadas entre os programadores, desenvolver provas de conceito gera uma gama de vantagens para o desenvolvimento "sério" do software como um todo, "rodável" e "vendável":</p>
-<pre>
- * Permite testar as ideias por trás do software antes de gastar todo o tempo desenvolvendo-o.
- * Gera conhecimento para os programadores e para que outros produtos sejam desenvolvidos.
- * Torna o desenvolvimento algo ainda mais divertido, pois tira a parte chata a respeito de comentar código, testar código, mensurar código, rever código, etc.
- * Consegue tornar o milagre do cronograma realista mais perto do provável.
-</pre>
+<p>  * Permite testar as ideias por trás do software antes de gastar todo o tempo desenvolvendo-o.</p>
+<p>  * Gera conhecimento para os programadores e para que outros produtos sejam desenvolvidos.</p>
+<p>  * Torna o desenvolvimento algo ainda mais divertido, pois tira a parte chata a respeito de comentar código, testar código, mensurar código, rever código, etc.</p>
+<p>  * Consegue tornar o milagre do cronograma realista mais perto do provável.</p>
 <p>Apenas essas vantagens já praticamente obrigam o profissional do software a pensar em produtos novos em termos de como pode-se testar tudo o que se está dizendo antes de realmente começar a trabalhar pra valer.</p>
 <p>Mas antes que se pense que fazer provas de conceito não requer nenhuma responsabilidade e que o que você quer ser quando crescer é desenvolvedor de prova de conceito, é necessário colocar alguns pingos nos is antes de continuar. Para criar provas de conceito realmente agregadoras para o projeto, deve-se sempre:</p>
-<pre>
- * Dividir o software em seus componentes tecnológicos mais críticos e vitais para o sucesso da solução.
- * Proteger as provas de conceito contra qualquer tipo de preconceito a respeito da tecnologia em questão: pese somente os fatos!
- * Conhecer as limitações do software antes mesmo de provar seu funcionamento (por exemplo, não vai funcionar no Windows NT nem a pau).
- * Garantir que esse conhecimento seja sempre compartilhado entre todos do desenvolvimento, pois trata-se de um projeto vazio que formará talvez as bases de um novo produto; se todos conhecerem as bases primeiro, ficará muito mais fácil todos tomarem conta.
-</pre>
+<p>  * Dividir o software em seus componentes tecnológicos mais críticos e vitais para o sucesso da solução.</p>
+<p>  * Proteger as provas de conceito contra qualquer tipo de preconceito a respeito da tecnologia em questão: pese somente os fatos!</p>
+<p>  * Conhecer as limitações do software antes mesmo de provar seu funcionamento (por exemplo, não vai funcionar no Windows NT nem a pau).</p>
+<p>  * Garantir que esse conhecimento seja sempre compartilhado entre todos do desenvolvimento, pois trata-se de um projeto vazio que formará talvez as bases de um novo produto; se todos conhecerem as bases primeiro, ficará muito mais fácil todos tomarem conta.</p>
 <p>Por último, deve-se pensar sempre em todos os programadores da equipe desenvolvendo provas de conceito. Um doce tão gostoso não pode ser privilégio apenas dos veteranos ou dos acadêmicos chatos, pois torna a vida dos "corregedores" de bugs chata e enfadonha. E error prone.</p>
 <p>Por isso, desde a estagiária até o mocinho bicentenário merecem mexer em código fresco pelo menos uma vez a cada ciclo de desenvolvimento, que terminará com uma versão nova cheia de melhorias que foram testadas em suas respectivas provas de conceito. Provas de conceito que todos tiveram a honra de brincar um pouquinho.</p>
 

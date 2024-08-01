@@ -208,11 +208,9 @@ role="navigation" aria-label="main navigation">
 <p class="title"><a href="2011-10.html#depuracao-de-emergencia-receita-de-bolo">#</a> Depuração de emergência: receita de bolo</p>
 <p class="note-title"><small>2011-10-18  <a href="tag_coding.html">tag_coding</a> </small><a href="2011-10.html"><sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-depuracao-de-emergencia-receita-de-bolo')"><sup>[copy]</sup></a></p>
 <p>Continuando o papo sobre <a href="http://www.caloni.com.br/depuracao-de-emergencia">o que fazer para analisar rapidamente um crash no servidor com o pacote WinDbg</a>, na maioria das vezes a exceção lançada pelo processo está diretamente relacionada com um acesso indevido à memória, o que tem diversas vantagens sobre problemas mais complexos:</p>
-<pre>
- * Possui localização precisa de onde ocorreu a violação (inclusive com nome do arquivo-fonte e linha).
- * Não corrompe a pilha (ou, se corrompe, não chega a afetá-la a ponto da thread ficar irreconhecível).
- * A thread que contém a janela de crash é a culpada imediata (basta olha a pilha!).
-</pre>
+<p>  * Possui localização precisa de onde ocorreu a violação (inclusive com nome do arquivo-fonte e linha).</p>
+<p>  * Não corrompe a pilha (ou, se corrompe, não chega a afetá-la a ponto da thread ficar irreconhecível).</p>
+<p>  * A thread que contém a janela de crash é a culpada imediata (basta olha a pilha!).</p>
 <p>Bom, resumindo: basta olhar a pilha! Mas, para isso ser efetivo, precisaremos do PDB do executável que gerou o crash, pois através dele é possível puxar a tal localização da violação de acesso.</p>
 <img src="img/depuracao-de-emergencia-receita-de-bolo-w1uEm0Y.png"/>
 <p>Se você mantiver executável (DLL também é executável) juntinho com seu PDB, sua vida será mais fácil e florida.</p>
@@ -225,11 +223,9 @@ role="navigation" aria-label="main navigation">
    WinDbg: "mas que bagunça é essa na memória desse processo?"
 </pre>
 <p>O comando mais útil na maioria dos casos é mostrar a pilha em modo verbose (kv e enter). Porém, antes disso, precisamos:</p>
-<pre>
- 1. Ajeitar o path dos símbolos.
- 2. Recarregar o PDB do executável suspeito.
- 3. Mostrar a pilha de todas as threads (até descobrir a culpada).
-</pre>
+<p>  1. Ajeitar o path dos símbolos.</p>
+<p>  2. Recarregar o PDB do executável suspeito.</p>
+<p>  3. Mostrar a pilha de todas as threads (até descobrir a culpada).</p>
 <p>Todos esses comandos podem ser vistos abaixo. São, respectivamente, .symfix, .reload e novamente o kv (mas para todas threads).</p>
 <pre>
    0:001&gt; .symfix

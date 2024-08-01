@@ -294,10 +294,8 @@ CreateWindowEx(0, WC_LINK,
 <img src="img/formatmessage-para-dumies-8nKXyBs.png"/>
 <h5>Source</h5>
 <p>O parâmetro mais polêmico é o que possui vários significados. No caso de lpSource, existem dois significados possíveis:</p>
-<pre>
- 1. **FORMAT_MESSAGE_FROM_HMODULE**. Ele é um HANDLE para um módulo.
- 2. **FORMAT_MESSAGE_FROM_STRING**. Ele é um ponteiro para string.
-</pre>
+<p>  1. **FORMAT_MESSAGE_FROM_HMODULE**. Ele é um HANDLE para um módulo.</p>
+<p>  2. **FORMAT_MESSAGE_FROM_STRING**. Ele é um ponteiro para string.</p>
 <p>Isso explica por que essas duas flags são exclusivas: ou uma ou outra. Mesmo que a flag FORMAT_MESSAGE_FROM_SYSTEM seja usada, a função tentará achar a definição da mensagem no módulo especificado por lpSource primeiro, antes de ir buscar nas tabelas do sistema.</p>
 <h5>O código do erro</h5>
 <p>Chamado de dwMessageId, esse é o argumento onde podemos passar um código de GetLastError ou nossos próprios códigos de erro. Se já tivermos uma string em lpSource, no entanto, não faz sentido existir um código de erro.</p>

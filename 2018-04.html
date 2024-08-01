@@ -354,16 +354,16 @@ role="navigation" aria-label="main navigation">
 </pre>
 <p>Sua estrutura pode ser simples e direta. Digamos uma lista ligada de números vai ter o número que esse elemento armazena e o endereço para o próximo elemento. Em C guardamos o endereço de uma variável usando um ponteiro para o mesmo tipo de elemento (no caso um struct Node).</p>
 <p>O elemento mais importante de sua lista ligada é o primeiro elemento, pois sem ele você não consegue mais voltar ao início. Isso pode ser uma variável especial que não é usada para nada exceto indicar qual o primeiro elemento da sua lista. Essa variável não pode mudar, pois precisamos sempre ter uma referência para o início da lista, a não ser que o primeiro elemento seja removido (veremos adiante). Ele pode ser simplesmente um ponteiro para o "próximo" elemento,que no caso o primeiro elemento.</p>
-<pre>
- struct Node* head = NULL;
-</pre>
+<p>  struct Node* head = NULL;</p>
 <p>Este ponteiro começa em NULL porque a lista está vazia. Mas assim que inserirmos um item ele deixará de ser nulo.</p>
 <pre>
    struct Node* node = 
      (struct Node*) malloc(
        sizeof(struct Node)
      );
- 
+</pre>
+<p>  </p>
+<pre>
    node-&gt;number = 10;
    node-&gt;next = NULL;
    head = node;
@@ -375,7 +375,9 @@ role="navigation" aria-label="main navigation">
      (struct Node*) malloc(
        sizeof(struct Node)
      );
- 
+</pre>
+<p>  </p>
+<pre>
    node-&gt;number = 10;
    node-&gt;next = next;
    head = node;
@@ -383,7 +385,9 @@ role="navigation" aria-label="main navigation">
 <p>Para inserir um novo elemento no final da lista você terá que percorrê-la até achar o próximo elemento cujo membro next é igual a NULL, o que quer dizer que não há mais próximo. Nesse caso é importante saber se a lista está vazia. Se estiver basta atualizar a cabeça da lista e está pronto (como já visto).</p>
 <pre>
    struct Node* lnode = head;
- 
+</pre>
+<p>  </p>
+<pre>
    if( ! lnode )
    {
      head = node;
@@ -406,7 +410,9 @@ role="navigation" aria-label="main navigation">
    {
      struct Node* pnode = NULL;
      struct Node* cnode = head;
- 
+</pre>
+<p>  </p>
+<pre>
      while( cnode )
      {
        if( cnode == element )
@@ -414,7 +420,9 @@ role="navigation" aria-label="main navigation">
        pnode = cnode;
        cnode = cnode-&gt;next;
      }
- 
+</pre>
+<p>  </p>
+<pre>
      if( cnode == element )
      {
        if( pnode )

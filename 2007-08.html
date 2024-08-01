@@ -333,10 +333,8 @@ role="navigation" aria-label="main navigation">
    00411FA3 next_instruction
 </pre>
 <p>A partir do assembly acima podemos concluir no mínimo duas coisas:</p>
-<pre>
-1. a pilha "cresce" para baixo, pois seu valor decrementou de quadro (0012FD3C para 0012FD38 são 4 byte a menos).
-2. o valor de retorno da função chamada é o endereço da próxima instrução após a chamada (call), no caso 00411FA3.
-</pre>
+<p> 1. a pilha "cresce" para baixo, pois seu valor decrementou de quadro (0012FD3C para 0012FD38 são 4 byte a menos).</p>
+<p> 2. o valor de retorno da função chamada é o endereço da próxima instrução após a chamada (call), no caso 00411FA3.</p>
 <p>Ora, da mesma forma que conseguimos acompanhar essa simples execução, o atacante também o fará. Por isso que no meio dessa chamada iremos colocar o lançamento de uma exceção e, no retorno, faremos não do modo convencional apresentado, mas por uma outra técnica que, ao invés de utilizar a instrução ret, seta "manualmente" o valor do registrador ESP (estado da pilha) e "pula" para a próxima instrução de CallFunc.</p>
 <pre>
    Func:
@@ -631,9 +629,9 @@ role="navigation" aria-label="main navigation">
 <p>Esse tipo de problema acontece na maioria das vezes por dois motivos:</p>
 <pre>
    
- 1. o header responsável não foi incluído (não é o caso, como vimos),
- 2. é necessário especificar a versão mínima do sistema operacional.
 </pre>
+<p>  1. o header responsável não foi incluído (não é o caso, como vimos),</p>
+<p>  2. é necessário especificar a versão mínima do sistema operacional.</p>
 <p>De fato, se criarmos coragem e abrirmos o arquivo winbase.h, que é onde a função é definida de fato, e procurarmos pela função GetComputerNameEx encontramos a seguinte condição:</p>
 <pre>
    #if (_WIN32_WINNT &gt;= 0x0500)
@@ -770,13 +768,11 @@ role="navigation" aria-label="main navigation">
 </pre>
 <p>O detalhe interessante desse processo de comunicação depurador/depurado é que um processo só pode ser depurado por apenas UM depurador. Ou seja, enquanto houver um processo depurando outro, os outros processos só ficam na vontade.</p>
 <p>Partindo desse princípio, podemos imaginar uma proteção baseada nessa exclusividade, criando um processo protetor que conecta no processo protegido e o "depura". Fiz um <a href="posts.html?q={{< resource src="antidebug-debugport.cpp" >}}">código de exemplo</a> que faz justamente isso: ele atacha em um processo para depurá-lo (basta passar o PID como parâmetro) e não deixa mais outro depurador ocupar a debug port. Os passos para testá-lo são:</p>
-<pre>
- 1. Compilar o código.
- 2. Executar o notepad (ou qualquer outra vítima).
- 3. Obter seu PID (Process ID).
- 4. Executar o protetor passando o PID como parâmetro.
- 5. Tentar "atachar" no processo através do Visual C++.
-</pre>
+<p>  1. Compilar o código.</p>
+<p>  2. Executar o notepad (ou qualquer outra vítima).</p>
+<p>  3. Obter seu PID (Process ID).</p>
+<p>  4. Executar o protetor passando o PID como parâmetro.</p>
+<p>  5. Tentar "atachar" no processo através do Visual C++.</p>
 <p>Após o processo de attach, a porta de debug é ocupada, e a comunicação entre depurador e depurado é feita através do LPC. Abaixo uma pequena ilustração de como as coisas ocorrem:</p>
 <img src="img/antidebug-ocupando-a-debugport-debugport.gif"/>
 <p>Basicamente o processo fica recebendo eventos de debug (através da fila de mensagens LPC) continuamente até o evento final, o de final de processo. Note que se alguém tentar derrubar o processo que depura o processo depurado cai junto.</p>
