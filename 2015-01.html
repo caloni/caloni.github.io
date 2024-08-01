@@ -397,14 +397,16 @@ int main()
 </pre>
 <p>___Observação importante__: para ignorar todas as estripulias da versão Debug, todos os testes foram compilados em Release._</p>
 <p>Primeiramente, modifico a configuração padrão dos dois projetos para não depender da DLL de runtime do VC. Isso está em __Project, Properties, C/C++, Code Generation, Runtime Library__. Depois executo em uma máquina virtual sem as runtimes do VC8 instaladas:</p>
-<p>    MSVC Mutant - v. beta</p>
-<p>    by Wanderley Caloni (www.caloni.com.br)</p>
-<p>    </p>
-<p>    Programs installed on your system</p>
-<p>    =================================</p>
-<p>    Windows XP Service Pack 2</p>
-<p>    WebFldrs XP</p>
-<p>    VMware Tools</p>
+<pre>
+   MSVC Mutant - v. beta
+   by Wanderley Caloni (www.caloni.com.br)
+   
+   Programs installed on your system
+   =================================
+   Windows XP Service Pack 2
+   WebFldrs XP
+   VMware Tools
+</pre>
 <p>Perfeito. Exatamente o que eu queria: um executável console que não dependesse de DLL nenhuma exceto as que já estão instaladas em um Windows ordinário.</p>
 <p>Agora, vamos imaginar que esse é um daqueles projetos enormes de __5 * 10 ^ 42__ de linhas (obs: dramatização) e que meu aplicativo console está linkado com cerca de __3 * 10 ^ 666__ de LIBs. E uma delas (a library do exemplo) está com a configuração original, ou seja, com a dependência da DLL de runtime. E ela usa a STL. Provavelmente o aplicativo console não irá compilar, mas isso não é problema, pois estamos acostumados a colocar a msvcrt.lib na lista de LIBs ignoradas, pois em muitos outros casos (que não vale a pena discutir aqui) esse workaround é válido. E tudo volta a funcionar. Quer dizer, linkar:</p>
 <p>O sistema no pode executar o programa especificado.</p>
@@ -431,32 +433,36 @@ int main()
    return ret;
 }
 </pre>
-<p>    Linking</p>
-<p>    =======</p>
-<p>    library.lib(library.obj) : warning LNK4049: locally </p>
-<p>     defined symbol __invalid_parameter_noinfo imported</p>
-<p>    </p>
-<p>    Running</p>
-<p>    =======</p>
-<p>    O sistema no pode executar o programa especificado.</p>
-<p>    </p>
-<p>    Depends</p>
-<p>    =======</p>
-<p>    Error: The Side-by-Side configuration information in "blablabla\CONSOLE.EXE" </p>
-<p>     contains errors.</p>
-<p>    Falha na inicialização do aplicativo devido a configuração incorreta.</p>
-<p>    A reinstalação do aplicativo pode resolver o problema (14001).</p>
+<pre>
+   Linking
+   =======
+   library.lib(library.obj) : warning LNK4049: locally 
+    defined symbol __invalid_parameter_noinfo imported
+   
+   Running
+   =======
+   O sistema no pode executar o programa especificado.
+   
+   Depends
+   =======
+   Error: The Side-by-Side configuration information in "blablabla\CONSOLE.EXE" 
+    contains errors.
+   Falha na inicialização do aplicativo devido a configuração incorreta.
+   A reinstalação do aplicativo pode resolver o problema (14001).
+</pre>
 <p>Agora sim, a mutação fez efeito! Temos um aplicativo que não depende da DLL de runtime, mas que no meio das n LIBs que ele utiliza existe uma configurada com a dependência. Ignorando a msvcrt.lib e um warning na compilação encontramos uma mensagem de erro um tanto exdrúxula.</p>
 <p>Até agora, a maneira que eu tenho utilizado para rastrear esse problema é não ignorar a msvcrt e ir tirando as dependências das LIBs pouco a pouco, até que ocorra o erro de símbolo duplicado. Algo assim:</p>
-<p>    MSVCRT.lib(ti_inst.obj) : error LNK2005: "private: __thiscall </p>
-<p>     type_info::type_info(class type_info const &amp;)" (??0type_info@@AAE@ABV0@@Z) </p>
-<p>     already defined in LIBCMT.lib(typinfo.obj)</p>
-<p>    MSVCRT.lib(ti_inst.obj) : error LNK2005: "private: class type_info &amp; __thiscall </p>
-<p>     type_info::operator=(class type_info const &amp;)" (??4type_info@@AAEAAV0@ABV0@@Z) </p>
-<p>     already defined in LIBCMT.lib(typinfo.obj)</p>
-<p>    LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; </p>
-<p>     use /NODEFAULTLIB:library</p>
-<p>    Blablabla\console.exe : fatal error LNK1169: one or more multiply defined symbols found</p>
+<pre>
+   MSVCRT.lib(ti_inst.obj) : error LNK2005: "private: __thiscall 
+    type_info::type_info(class type_info const &amp;)" (??0type_info@@AAE@ABV0@@Z) 
+    already defined in LIBCMT.lib(typinfo.obj)
+   MSVCRT.lib(ti_inst.obj) : error LNK2005: "private: class type_info &amp; __thiscall 
+    type_info::operator=(class type_info const &amp;)" (??4type_info@@AAEAAV0@ABV0@@Z) 
+    already defined in LIBCMT.lib(typinfo.obj)
+   LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; 
+    use /NODEFAULTLIB:library
+   Blablabla\console.exe : fatal error LNK1169: one or more multiply defined symbols found
+</pre>
 <p>Se você tiver realmente __3 * 10 ^ 666__ de LIBs, boa sorte =).</p>
 
 
@@ -688,21 +694,25 @@ int main()
 <p>Programadores C e C++, preparem-se para explodir as cabeças! No princípio... não, não. Antes do princípio, quando C era considerada a terceira letra do alfabeto e o que tínhamos eram linguagens experimentais para todos os lados, dois famigerados srs. dos Laboratórios Bell, K. Thompson e <a href="https://www.bell-labs.com/usr/dmr/www/">D. Ritchie</a>, criaram uma linguagem chamada B. E B era bom.</p>
 <p>O bom de B estava em sua rica expressividade. Sua gramática extremamente simples. Teoricamente a evolução da <a href="https://www.bell-labs.com/usr/dmr/www/bcpl.html">linguagem BCPL</a> criada por Martin Richards, ela era tão simples que o <a href="https://www.bell-labs.com/usr/dmr/www/kbman.html">manual da linguagem B</a> consistia de apenas 30 páginas. Isso é menos do que as 32 palavras reservadas de C. As instruções eram definidas em termos de if's e goto's e as variáveis eram definidas em termos de um padrão de bits de tamanho fixo, geralmente a palavra da plataforma, que utilizada em expressões definiam seu tipo; esse padrão de bits era chamado rvalue.</p>
 <p>Como esse padrão de bits nunca muda de tamanho, todas as rotinas da biblioteca recebiam e retornavam sempre valores do mesmo tamanho na memória. Isso na linguagem C quer dizer que o char da época ocupava o mesmo tamanho que um int. Existia inclusive uma função que retornava o caractere de uma string na posição especificada:</p>
-<p>    // the i-th character </p>
-<p>    // of the string is returned</p>
-<p>    c = char( string, i );</p>
+<pre>
+   // the i-th character 
+   // of the string is returned
+   c = char( string, i );
+</pre>
 <p>Sim! Char era uma função, um conversor de "tipos". No entanto a própria variável que armazenava um char tinha o tamanho de qualquer objeto da linguagem. Esse é o motivo pelo qual, tradicionalmente, as seguintes funções recebem e retornam ints em C:</p>
-<p>    // read a character </p>
-<p>    // from stdin</p>
-<p>    int getchar( void );</p>
-<p>    // writes a character </p>
-<p>    // to stdout</p>
-<p>    int putchar( int c );</p>
-<p>    // sets buffers to a </p>
-<p>    // specified character</p>
-<p>    void *memset( void *dest, </p>
-<p>      int c, </p>
-<p>      size_t count );</p>
+<pre>
+   // read a character 
+   // from stdin
+   int getchar( void );
+   // writes a character 
+   // to stdout
+   int putchar( int c );
+   // sets buffers to a 
+   // specified character
+   void *memset( void *dest, 
+     int c, 
+     size_t count );
+</pre>
 
 
 

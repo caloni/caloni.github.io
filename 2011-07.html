@@ -252,14 +252,18 @@ int main()
 <p>O porquê isso ocorre só fica óbvio quando vemos <a href="http://www.cplusplus.com/reference/iostream/stringstream/str/">a ajuda</a> (ou a assinatura) da função str da classe stringstream:</p>
 <p>&gt; Get/set the associated string object The first version returns a copy of the string object currently associated with the string stream buffer.</p>
 <p>Ora, a função str retorna uma **cópia** do objeto string usado internamento pelo buffer de nossa string stream. Duas coisas ocorrem em qualquer cópia de um objeto retornada por uma função:</p>
-<p>  * A cópia do objeto original e seu desacoplamento (óbvio).</p>
-<p>  * A construção de um objeto baseado no original e que, após o fim da expressão onde foi chamado o método, **é destruído**.</p>
+<pre>
+ * A cópia do objeto original e seu desacoplamento (óbvio).
+ * A construção de um objeto baseado no original e que, após o fim da expressão onde foi chamado o método, **é destruído**.
+</pre>
 <p>Uma vez que a chamada a str termina, é entregue uma instância de uma string que contém a string original que está sendo usada pela string stream para a expressão da chamada, que geralmente vem seguida de uma cópia:</p>
-<p>    //</p>
-<p>    // 1. str retorna uma cópia;</p>
-<p>    // 2. atribuição copia retorno para buf.</p>
-<p>    //</p>
-<p>    string buf = ss.str();</p>
+<pre>
+   //
+   // 1. str retorna uma cópia;
+   // 2. atribuição copia retorno para buf.
+   //
+   string buf = ss.str();
+</pre>
 <p>A variável buf no exemplo acima será, portanto, a terceira string usada aqui até então. Ao final da expressão, a string intermediária retornada por str é automaticamente destruída, por se trata de uma cópia temporária para obedecer a sintaxe de retorno da função.</p>
 <p>Agora, o que acontece se, **na cópia temporária**, é feita uma operação para obter seu ponteiro interno usado para armazenar sua string estilo C?</p>
 <p>Obviamente ele fica inválido após o fim da expressão!</p>
@@ -268,15 +272,19 @@ int main()
 <p>Nada como assembly fresquinho para refrescar os conceitos de C++ por baixo dos panos.</p>
 <h4>Update</h4>
 <p>Após uma enxurrada de programadores gerenciáveis perguntarem qual seria, então, a solução ideal, segue o snipet mais explicitado:</p>
-<p>    // 1. Copie a string retornada para uma variável não-temporária</p>
-<p>    string buf = message.str();</p>
-<p>    </p>
-<p>    // 2. Use essa string dentro de seu escopo válido (até o final do catch, no exemplo do artigo).</p>
-<p>    const char* text = buf.c_str();</p>
+<pre>
+   // 1. Copie a string retornada para uma variável não-temporária
+   string buf = message.str();
+   
+   // 2. Use essa string dentro de seu escopo válido (até o final do catch, no exemplo do artigo).
+   const char* text = buf.c_str();
+</pre>
 <h4>Update 2</h4>
 <p>Outro leitor sugeriu fazer toda a chamada em uma única instrução, economizando em expressividade e ainda evitando a destruição da variável temporária criada ao chamar str.</p>
-<p>    // 1. Matar três coelhos com uma instrução só.</p>
-<p>    LogError(ss.str().c_str());</p>
+<pre>
+   // 1. Matar três coelhos com uma instrução só.
+   LogError(ss.str().c_str());
+</pre>
 <p>Particularmente, gosto de instruções simples que me permitam ver claramente o que está acontecendo de forma simples pelo depurador (até porque sei que o compilador irá otimizar tudo no final em versão Release, ainda mais se estiver quebrado em instruções simples). Porém, toda solução que evita o uso da variável temporária após a execução do método str é válida.</p>
 
 
@@ -287,97 +295,109 @@ int main()
 <p class="title"><a href="2011-07.html#depuracao-de-emergencia-receita-de-bolo">#</a> Depuração de emergência</p>
 <p class="note-title"><small>2011-07-26  <a href="tag_coding.html">tag_coding</a> </small><a href="2011-07.html"><sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-depuracao-de-emergencia-receita-de-bolo')"><sup>[copy]</sup></a></p>
 <p>O programa está rodando no servidor do cliente, que é acessível por sessão remota do Windows, mas de repente ele capota. Existem aí duas possibilidades fora o debug remoto (que, nesse caso, não é possível):</p>
-<p>  1. Analisar um dump gerado.</p>
-<p>  2. Depurar localmente o problema.</p>
+<pre>
+ 1. Analisar um dump gerado.
+ 2. Depurar localmente o problema.
+</pre>
 <img src="img/depuracao-de-emergencia-receita-de-bolo-imt8kmB.png"/>
 <h4>Analisar um dump gerado</h4>
 <p>Para a primeira opção, basta abrir o Gerenciador de Tarefas, localizar o processo e gerar o dump através do menu de contexto.</p>
 <img src="img/depuracao-de-emergencia-receita-de-bolo-RWPemAU.png"/>
 <p>Com o dump e o Windbg em mãos, basta analisá-lo. Porém, se o seu processo é 32 bits e o servidor é 64 bits (geralmente é), o dump gerado será de 64 bits, EMBORA seja de um process 32. Ou seja, ao abri-lo, o sistema vai mostrar as threads de manipulação do SO para sistemas 32 (todos com o nosso amigo wow64cpu).</p>
-<p>    Microsoft (R) Windows Debugger Version 6.12.0002.633 AMD64</p>
-<p>    Copyright (c) Microsoft Corporation. All rights reserved.</p>
-<p>    Loading Dump File <a href="posts.html?q=C:\Tests\CrashOnServer.DMP">C:\Tests\CrashOnServer.DMP</a></p>
-<p>    User Mini Dump File with Full Memory: Only application data is available</p>
-<p>    Executable search path is:</p>
-<p>    Windows 7 Version 7600 MP (2 procs) Free x64</p>
-<p>    Product: WinNt, suite: SingleUserTS</p>
-<p>    Machine Name:</p>
-<p>    Debug session time: Tue Jul 26 09:26:23.000 2011 (UTC - 3:00)</p>
-<p>    System Uptime: 0 days 0:35:47.425</p>
-<p>    Process Uptime: 0 days 0:00:42.000</p>
-<p>    ...........WARNING: MSVCR100D overlaps MSVCP100D</p>
-<p>    </p>
-<p>    *** ERROR: Symbol file could not be found. Defaulted to export symbols for ntdll.dll -</p>
-<p>    *** ERROR: Symbol file could not be found. Defaulted to export symbols for wow64cpu.dll -</p>
-<p>    wow64cpu!TurboDispatchJumpAddressEnd+0x690:</p>
-<p>    00000000`745d2dd9 c3 ret</p>
-<p>    0:000&gt; kv</p>
-<p>    Child-SP RetAddr : Args to Child : Call Site</p>
-<p>    00000000`001ce6c8 00000000`745d282c :  : wow64cpu!TurboDispatchJumpAddressEnd+0x690</p>
-<p>    *** ERROR: Symbol file could not be found. Defaulted to export symbols for wow64.dll -</p>
-<p>    00000000`001ce6d0 00000000`7464d07e :  : wow64cpu!TurboDispatchJumpAddressEnd+0xe3</p>
-<p>    00000000`001ce790 00000000`7464c549 :  : wow64!Wow64SystemServiceEx+0x1ce</p>
-<p>    00000000`001ce7e0 00000000`76deae27 :  : wow64!Wow64LdrpInitialize+0x429</p>
-<p>    00000000`001ced30 00000000`76de72f8 :  : ntdll!LdrGetKnownDllSectionHandle+0x1a7</p>
-<p>    00000000`001cf230 00000000`76dd2ace :  : ntdll!RtlInitCodePageTable+0xe8</p>
-<p>    00000000`001cf2a0 00000000`00000000 : : ntdll!LdrInitializeThunk+0xe</p>
-<p>    Para entrar dentro do Inception, é necessário usar a extensão wow64exts e usar o comando ".effmach x86".</p>
-<p>    0:000&gt; .load wow64exts</p>
-<p>    0:000&gt; .effmach x86</p>
-<p>    Effective machine: x86 compatible (x86)</p>
-<p>    0:000:x86&gt; kv</p>
-<p>    ChildEBP RetAddr Args to Child</p>
-<p>    ..</p>
-<p>    0035ec98 0035ecac 0035ecfc 0035ecac 0035ecfc ntdll_76f80000!KiUserExceptionDispatcher+0xf (FPO: <a href="posts.html?q=2,0,0">2,0,0</a>)</p>
-<p>    *** WARNING: Unable to verify checksum for CrashOnServer.exe</p>
-<p>    WARNING: Frame IP not in any known module. Following frames may be wrong.</p>
-<p>    0035f0bc 01181ca9 0035f198 0035f19c 00000000 0x35ecac</p>
-<p>    0035f190 01181b7d 009d80a0 5fb4d717 00000000 CrashOnServer!Log::LogError+0x29</p>
-<p>    0035fb08 01186f1f 00000001 009d1410 009d1c68 CrashOnServer!main+0x12d</p>
-<p>    0035fb58 01186d4f 0035fb6c 76543677 7efde000 CrashOnServer!__tmainCRTStartup+0x1bf</p>
-<p>    0035fb60 76543677 7efde000 0035fbac 76fb9f02 CrashOnServer!mainCRTStartup+0xf</p>
-<p>    0035fb6c 76fb9f02 7efde000 771dc110 00000000 kernel32!BaseThreadInitThunk+0xe</p>
-<p>    0035fbac 76fb9ed5 01181316 7efde000 00000000 ntdll_76f80000!__RtlUserThreadStart+0x70</p>
-<p>    0035fbc4 00000000 01181316 7efde000 00000000 ntdll_76f80000!_RtlUserThreadStart+0x1b</p>
+<pre>
+   Microsoft (R) Windows Debugger Version 6.12.0002.633 AMD64
+   Copyright (c) Microsoft Corporation. All rights reserved.
+   Loading Dump File [C:\Tests\CrashOnServer.DMP]
+   User Mini Dump File with Full Memory: Only application data is available
+   Executable search path is:
+   Windows 7 Version 7600 MP (2 procs) Free x64
+   Product: WinNt, suite: SingleUserTS
+   Machine Name:
+   Debug session time: Tue Jul 26 09:26:23.000 2011 (UTC - 3:00)
+   System Uptime: 0 days 0:35:47.425
+   Process Uptime: 0 days 0:00:42.000
+   ...........WARNING: MSVCR100D overlaps MSVCP100D
+   
+   *** ERROR: Symbol file could not be found. Defaulted to export symbols for ntdll.dll -
+   *** ERROR: Symbol file could not be found. Defaulted to export symbols for wow64cpu.dll -
+   wow64cpu!TurboDispatchJumpAddressEnd+0x690:
+   00000000`745d2dd9 c3 ret
+   0:000&gt; kv
+   Child-SP RetAddr : Args to Child : Call Site
+   00000000`001ce6c8 00000000`745d282c :  : wow64cpu!TurboDispatchJumpAddressEnd+0x690
+   *** ERROR: Symbol file could not be found. Defaulted to export symbols for wow64.dll -
+   00000000`001ce6d0 00000000`7464d07e :  : wow64cpu!TurboDispatchJumpAddressEnd+0xe3
+   00000000`001ce790 00000000`7464c549 :  : wow64!Wow64SystemServiceEx+0x1ce
+   00000000`001ce7e0 00000000`76deae27 :  : wow64!Wow64LdrpInitialize+0x429
+   00000000`001ced30 00000000`76de72f8 :  : ntdll!LdrGetKnownDllSectionHandle+0x1a7
+   00000000`001cf230 00000000`76dd2ace :  : ntdll!RtlInitCodePageTable+0xe8
+   00000000`001cf2a0 00000000`00000000 : : ntdll!LdrInitializeThunk+0xe
+   Para entrar dentro do Inception, é necessário usar a extensão wow64exts e usar o comando ".effmach x86".
+   0:000&gt; .load wow64exts
+   0:000&gt; .effmach x86
+   Effective machine: x86 compatible (x86)
+   0:000:x86&gt; kv
+   ChildEBP RetAddr Args to Child
+   ..
+   0035ec98 0035ecac 0035ecfc 0035ecac 0035ecfc ntdll_76f80000!KiUserExceptionDispatcher+0xf (FPO: [2,0,0])
+   *** WARNING: Unable to verify checksum for CrashOnServer.exe
+   WARNING: Frame IP not in any known module. Following frames may be wrong.
+   0035f0bc 01181ca9 0035f198 0035f19c 00000000 0x35ecac
+   0035f190 01181b7d 009d80a0 5fb4d717 00000000 CrashOnServer!Log::LogError+0x29
+   0035fb08 01186f1f 00000001 009d1410 009d1c68 CrashOnServer!main+0x12d
+   0035fb58 01186d4f 0035fb6c 76543677 7efde000 CrashOnServer!__tmainCRTStartup+0x1bf
+   0035fb60 76543677 7efde000 0035fbac 76fb9f02 CrashOnServer!mainCRTStartup+0xf
+   0035fb6c 76fb9f02 7efde000 771dc110 00000000 kernel32!BaseThreadInitThunk+0xe
+   0035fbac 76fb9ed5 01181316 7efde000 00000000 ntdll_76f80000!__RtlUserThreadStart+0x70
+   0035fbc4 00000000 01181316 7efde000 00000000 ntdll_76f80000!_RtlUserThreadStart+0x1b
+</pre>
 <p>Após esse último passo, siga para o último passo desse tutorial. Ou escolha a segunda opção:</p>
 <h4>Depurar localmente o problema</h4>
 <p>Para depurar localmente, supondo que seja um executável simples, você precisa dos seguintes itens:</p>
-<p>  * Pasta do WinDbg copiado (a Debugging Tools instalada pelo SDK, ou sua pastinha particular guardada no PenDrive).</p>
-<p>  * Símbolos dos binários envolvidos (em sincronia com os binários que iremos analisar).</p>
-<p>  * Fontes da compilação dos binários (a versão exata seria ideal; grave o revno do controle de fonte pra facilitar).</p>
+<pre>
+ * Pasta do WinDbg copiado (a Debugging Tools instalada pelo SDK, ou sua pastinha particular guardada no PenDrive).
+ * Símbolos dos binários envolvidos (em sincronia com os binários que iremos analisar).
+ * Fontes da compilação dos binários (a versão exata seria ideal; grave o revno do controle de fonte pra facilitar).
+</pre>
 <p>Os fontes, no caso de uma conexão por Terminal Server, podem ser disponibilizados através do mapeamento de drives entre as máquinas. Os símbolos, no entanto, por serem usados extensivamente pelo WinDbg, é recomendável que estejam locais na máquina depurada, pois do contrário você terá que tomar uma quantidade excessiva de cafés para executar meia-dúzia de instruções.</p>
 <p>Supondo que temos tudo isso, só precisamos executar alguns passos básicos para o setup:</p>
 <h5>1. Abrir o WinDbg e escolher File, Open Executable. Escolha o executável e pare por aí.</h5>
 <img src="img/depuracao-de-emergencia-receita-de-bolo-A2p4Q9y.png"/>
 <h5>2. Na tela de comando do WinDbg (View, Command, ou Alt + 1) execute os comandos abaixo:</h5>
-<p>    .symfix </p>
-<p>    .sympath+ </p>
-<p>    .reload</p>
-<p>    .srcpath </p>
-<p>    .reload /f CrashOnServer.exe</p>
+<pre>
+   .symfix 
+   .sympath+ 
+   .reload
+   .srcpath 
+   .reload /f CrashOnServer.exe
+</pre>
 <h5>3. Ao executar lm, o módulo cujo símbolo foi carregado deve conter o nome do pdb logo à frente.</h5>
-<p>    0:000&gt; .symfix c:\tools\symbols</p>
-<p>    0:000&gt; .sympath+ C:\Projetos\Caloni\Posts\Debug</p>
-<p>    Symbol search path is: srv*;C:\Projetos\Caloni\Posts\Debug</p>
-<p>    Expanded Symbol search path is: SRV*c:\tools\symbols*http://msdl.microsoft.com/download/symbols;c:\projetos\caloni\posts\debug</p>
-<p>    0:000&gt; .reload</p>
-<p>    Reloading current modules</p>
-<p>    ......</p>
-<p>    0:000&gt; .srcpath C:\Projetos\Caloni\Posts</p>
-<p>    Source search path is: C:\Projetos\Caloni\Posts</p>
-<p>    0:000&gt; .reload /f CrashOnServer.exe</p>
-<p>    *** WARNING: Unable to verify checksum for CrashOnServer.exe</p>
-<p>    0:000&gt; lm</p>
-<p>    start end module name</p>
-<p>    00000000`01170000 00000000`01193000 CrashOnServer C (private pdb symbols) C:\Projetos\Caloni\Posts\Debug\CrashOnServer.pdb</p>
-<p>    00000000`745d0000 00000000`745d8000 wow64cpu (deferred)</p>
-<p>    00000000`745e0000 00000000`7463c000 wow64win (deferred)</p>
-<p>    00000000`74640000 00000000`7467f000 wow64 (deferred)</p>
-<p>    00000000`76da0000 00000000`76f4c000 ntdll (pdb symbols) c:\tools\symbols\ntdll.pdb\\ntdll.pdb</p>
-<p>    00000000`76f80000 00000000`77100000 ntdll32 (deferred)</p>
+<pre>
+   0:000&gt; .symfix c:\tools\symbols
+   0:000&gt; .sympath+ C:\Projetos\Caloni\Posts\Debug
+   Symbol search path is: srv*;C:\Projetos\Caloni\Posts\Debug
+   Expanded Symbol search path is: SRV*c:\tools\symbols*http://msdl.microsoft.com/download/symbols;c:\projetos\caloni\posts\debug
+   0:000&gt; .reload
+   Reloading current modules
+   ......
+   0:000&gt; .srcpath C:\Projetos\Caloni\Posts
+   Source search path is: C:\Projetos\Caloni\Posts
+   0:000&gt; .reload /f CrashOnServer.exe
+   *** WARNING: Unable to verify checksum for CrashOnServer.exe
+   0:000&gt; lm
+   start end module name
+   00000000`01170000 00000000`01193000 CrashOnServer C (private pdb symbols) C:\Projetos\Caloni\Posts\Debug\CrashOnServer.pdb
+   00000000`745d0000 00000000`745d8000 wow64cpu (deferred)
+   00000000`745e0000 00000000`7463c000 wow64win (deferred)
+   00000000`74640000 00000000`7467f000 wow64 (deferred)
+   00000000`76da0000 00000000`76f4c000 ntdll (pdb symbols) c:\tools\symbols\ntdll.pdb\\ntdll.pdb
+   00000000`76f80000 00000000`77100000 ntdll32 (deferred)
+</pre>
 <h5>4. Feito isso, está tudo OK. Podemos colocar breakpoints, monitorar variáveis, verificar stacks, etc.</h5>
 <p>Por último, execute o seguinte comando na tela de comandos do WinDbg:</p>
-<p>    .hh</p>
+<pre>
+   .hh
+</pre>
 <p>E boa sorte =)</p>
 
 </section><hr/>

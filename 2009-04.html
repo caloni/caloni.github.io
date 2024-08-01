@@ -62,124 +62,140 @@ role="navigation" aria-label="main navigation">
 <p>Um ambiente complexo como um sistema operacional executando dezenas (às vezes centenas) de programas é repleto de pequenos detalhes que podem fazer o iniciante logo desanimar quando tentar depurar um programa com mais de uma thread. De fato, eu já percebi que muitos não vão saber nem como começar a pensar sobre o problema.</p>
 <p>Uma forma de visualizar o cenário multithread começa na fila das threads. Elas estão indo em direção ao guichê das CPUs onde vão conseguir tempo de processamento para rodar seu código. Depois que elas esgotam seu tempo elas se dirigem para o final da fila esperando por mais tempo para executar mais código.</p>
 <p>Para simplificar este cenário vamos imaginar duas threads iniciando com o mesmo código. Esse código incrementa um contador global até ele chegar a dez, quando a função retorna e as threads terminam.</p>
-<p>    int count = 0;</p>
-<p>    increment() {</p>
-<p>      while( count &lt; 10 ) {</p>
-<p>        count++;</p>
-<p>        print(tid, count);</p>
-<p>      }</p>
-<p>    }</p>
-<p>    main() {</p>
-<p>      thread t1(increment);</p>
-<p>      thread t2(increment);</p>
-<p>    }</p>
+<pre>
+   int count = 0;
+   increment() {
+     while( count &lt; 10 ) {
+       count++;
+       print(tid, count);
+     }
+   }
+   main() {
+     thread t1(increment);
+     thread t2(increment);
+   }
+</pre>
 <p>O tid no pseudo-código acima é sinônimo para Thread ID, o identificador único de uma thread, que costuma ser um número. Para simplificar vamos dar ao id os apelidos de t1 e t2. Esta é uma possível saída do código acima, dependendo de quantos processadores e cores possui a máquina:</p>
-<p>    t1 1</p>
-<p>    t1 2</p>
-<p>    t1 3</p>
-<p>    t1 4</p>
-<p>    t1 5</p>
-<p>    t1 6</p>
-<p>    t1 7</p>
-<p>    t1 8</p>
-<p>    t1 9</p>
-<p>    t1 10</p>
+<pre>
+   t1 1
+   t1 2
+   t1 3
+   t1 4
+   t1 5
+   t1 6
+   t1 7
+   t1 8
+   t1 9
+   t1 10
+</pre>
 <p>Pelo jeito a primeira thread não deu chance para a outra executar. Isso acontece por causa do pequeno espaço de tempo que é necessário para realizar a tarefa de incrementar uma variável. É tão pequena a tarefa que nem foi suficiente para a primeira thread ficar sem tempo e a CPU mandar ela para o fim da fila. Por isso a segunda thread nunca chegou a incrementar o contador.</p>
 <p>Quando uma thread quer realizar algum processamento, ela precisa entrar na fila das threads ativas, que aguardam pela CPU que irá atendê-las. Nessa fila ela pega uma senha e aguarda a sua vez. Só que cada vez que uma thread é atendida ela ganha um tempo limitado de atendimento, que na arquitetura do sistema operacional é chamado de quantum ou time slice. Se o quantum de uma thread estoura, ou a thread não tem mais nada pra fazer, ela sai do guichê de atendimento e volta a ficar inativa, ou volta para o final da fila, aguardando por mais processamento.</p>
 <p>Uma thread pode opcionalmente ir para o final da fila por conta própria. Para isso, basta que ela chame uma função do sistema operacional pedindo para dormir. Por isso geralmente essa função é chamada de sleep na API do sistema operacional. Nessa função costuma haver um parâmetro de quanto tempo a thread deseja dormir. Se for maior que zero ela vai para a fila de threads dormindo até passar esse tempo, para depois se dirigir à fila de threads ativas, aguardar para ser processada. Se o tempo passado for exatamente zero ela vai direto para essa última fila, mas ficará sem executar do mesmo jeito, pois esta é a fila de quem está aguardando pela sua próxima fatia de tempo de processamento.</p>
 <p>Se chamarmos a função para dormir no código da thread antes de voltar a incrementar o contador é possível que a segunda thread tenha chance de executar.</p>
-<p>    increment() {</p>
-<p>      while( count &lt; 10 ) {</p>
-<p>        count++;</p>
-<p>        print(tid, count);</p>
-<p>        sleep();</p>
-<p>      }</p>
-<p>    }</p>
+<pre>
+   increment() {
+     while( count &lt; 10 ) {
+       count++;
+       print(tid, count);
+       sleep();
+     }
+   }
+</pre>
 <p>Agora cada thread, depois de incrementar uma vez o contador, volta para o final da fila. Dessa forma vemos uma thread de cada vez incrementando o mesmo contador.</p>
-<p>    t1 1</p>
-<p>    t2 2</p>
-<p>    t1 2</p>
-<p>    t2 3</p>
-<p>    t1 4</p>
-<p>    t2 4</p>
-<p>    t2 6</p>
-<p>    t2 7</p>
-<p>    t1 5</p>
-<p>    t1 8</p>
-<p>    t2 8</p>
-<p>    t2 9</p>
-<p>    t2 10</p>
+<pre>
+   t1 1
+   t2 2
+   t1 2
+   t2 3
+   t1 4
+   t2 4
+   t2 6
+   t2 7
+   t1 5
+   t1 8
+   t2 8
+   t2 9
+   t2 10
+</pre>
 <p>Peraí, o mesmo contador? Isso pode gerar problemas. Se duas threads tentarem incrementar o mesmo contador ao mesmo tempo, quem garante que elas não irão incrementar o mesmo valor? Bom, se você é bom observador já deve ter reparado que na execução acima ocorreu exatamente isso, com mais de uma thread incrementando o contador com o mesmo valor.</p>
 <p>Para forçar isso acontecer mais rápido e de maneira mais gritante podemos fazer a thread ir para o final da fila antes de incrementarmos e após pegarmos o valor atual do contador. Note que nesses testes a saída muda completamente dependendo de quantos processadores sua máquina tem. O resultado às vezes pode ser bem bizarro do que o visto nesse artigo. <a href="posts.html?q=^1">^1</a></p>
-<p>    increment() {</p>
-<p>      while( count &lt; 10 ) {</p>
-<p>        int c = count;</p>
-<p>        sleep();</p>
-<p>        c++;</p>
-<p>        print(tid, c);</p>
-<p>        count = c;</p>
-<p>      }</p>
-<p>    }</p>
+<pre>
+   increment() {
+     while( count &lt; 10 ) {
+       int c = count;
+       sleep();
+       c++;
+       print(tid, c);
+       count = c;
+     }
+   }
+</pre>
 <p>O código acima pode gerar a seguinte saída:</p>
-<p>    t1 1</p>
-<p>    t2 1</p>
-<p>    t1 2</p>
-<p>    t2 2</p>
-<p>    t1 3</p>
-<p>    t2 3</p>
-<p>    t1 4</p>
-<p>    t2 4</p>
-<p>    t1 5</p>
-<p>    t2 5</p>
-<p>    t2 6</p>
-<p>    t1 6</p>
-<p>    t2 7</p>
-<p>    t1 7</p>
-<p>    t1 8</p>
-<p>    t2 8</p>
-<p>    t2 9</p>
-<p>    t1 9</p>
-<p>    t2 10</p>
-<p>    t1 10</p>
+<pre>
+   t1 1
+   t2 1
+   t1 2
+   t2 2
+   t1 3
+   t2 3
+   t1 4
+   t2 4
+   t1 5
+   t2 5
+   t2 6
+   t1 6
+   t2 7
+   t1 7
+   t1 8
+   t2 8
+   t2 9
+   t1 9
+   t2 10
+   t1 10
+</pre>
 <p>Explicando mais uma vez com mais detalhes: quando uma thread guarda o valor do contador na variável local e volta para o final da fila, ela deixa de armazenar o contador atualizado para apenas **depois** que todas as outras threads passarem na sua frente. Só que as outras threads também pegam o mesmo valor do contador, pois ele ainda não foi alterado. Quando chega a hora da segunda passada no guichê das CPUs, todas as threads incrementaram o mesmo valor do contador. Se houvesse apenas um processador em uma máquina o fluxo de execução do ponto de vista do processamento único para duas threads ficaria mais ou menos o seguinte (zzz é quando uma thread dorme):</p>
-<p>    t1 c = count (0)</p>
-<p>    t1 zzz</p>
-<p>    t2 c = count (0)</p>
-<p>    t2 zzz</p>
-<p>    t1 c++ (1)</p>
-<p>    t2 c++ (1)</p>
-<p>    t1 print c (1)</p>
-<p>    t2 print c (1)</p>
-<p>    t1 count = c (1)</p>
-<p>    t2 count = c (1)</p>
-<p>    t1 c = count (1)</p>
-<p>    t1 zzz</p>
-<p>    t2 c = count (1)</p>
-<p>    t2 zzz</p>
-<p>    ...</p>
+<pre>
+   t1 c = count (0)
+   t1 zzz
+   t2 c = count (0)
+   t2 zzz
+   t1 c++ (1)
+   t2 c++ (1)
+   t1 print c (1)
+   t2 print c (1)
+   t1 count = c (1)
+   t2 count = c (1)
+   t1 c = count (1)
+   t1 zzz
+   t2 c = count (1)
+   t2 zzz
+   ...
+</pre>
 <p>O exemplo acima forçou essa situação, mas é preciso lembrar que isso pode acontecer mesmo sem a thread dormir. É possível que o tempo da thread se esgote e ela pare de ser atendida justo na hora que iria salvar a variável c no contador global. Dessa forma, ela vai para o final da fila à força e, quando voltar a ser atendida, uma outra thread já terá lido o valor anterior para ela própria incrementar.</p>
 <p>O que gostaríamos que acontecesse para corrigir o problema é forçar a segunda thread a esperar antes que a primeira termine todo o processo de incrementar e salvar no contador global, o que resolveria o nosso problema (o wait no exemplo abaixo é uma thread aguardando e não fazendo nada):</p>
-<p>    t1 c = count (0)</p>
-<p>    t1 zzz</p>
-<p>    t2 wait</p>
-<p>    t1 c++ (1)</p>
-<p>    t2 wait</p>
-<p>    t1 print c (1)</p>
-<p>    t2 wait</p>
-<p>    t1 count = c (1)</p>
-<p>    t2 wait</p>
-<p>    t1 ready</p>
-<p>    t2 c = count (1)</p>
-<p>    t1 wait</p>
-<p>    t2 c++ (2)</p>
-<p>    t1 wait</p>
-<p>    t2 print c (2)</p>
-<p>    t1 wait</p>
-<p>    t2 count = c (2)</p>
-<p>    t2 ready</p>
-<p>    t1 c = count (2)</p>
-<p>    t2 wait</p>
-<p>    ...</p>
+<pre>
+   t1 c = count (0)
+   t1 zzz
+   t2 wait
+   t1 c++ (1)
+   t2 wait
+   t1 print c (1)
+   t2 wait
+   t1 count = c (1)
+   t2 wait
+   t1 ready
+   t2 c = count (1)
+   t1 wait
+   t2 c++ (2)
+   t1 wait
+   t2 print c (2)
+   t1 wait
+   t2 count = c (2)
+   t2 ready
+   t1 c = count (2)
+   t2 wait
+   ...
+</pre>
 <p>Esse wait do fluxo, ou seja, deixar a próxima thread aguardando a que chegou primeiro incrementar, pode ser obtido se utilizarmos um mecanismo de acesso exclusivo fornecido pelo sistema operacional. Uma outra história para contar, que chamarei de "A sala da fila das threads".</p>
 
 
@@ -222,83 +238,85 @@ role="navigation" aria-label="main navigation">
 <p>Resumidamente, um critical section é um recurso que apenas uma thread por vez pode obter. Para que outra thread tenha acesso ao mesmo critical section, a primeira thread que o obteve deve soltá-lo. Enquanto ela não solta, as outras threads ficam paradas, esperando pela chave, na sala trancada.</p>
 <p>Do ponto de vista do programador o critical secton é apenas uma estrutura que é usada na chamada de quatro funções básicas: para inicializar o recurso, para entrar na seção crítica, para sair da seção crítica e para liberar o recurso, quando aquele critical section não será usado mais.</p>
 <p>Falando assim, parece simples. Bom, na verdade é simples, mesmo. Tudo que você precisa para corrigir o programa do artigo anterior é criar um critical section e fazer com que as threads obtenham-no antes de mexer com o contador compartilhado.</p>
-<p>    #include &lt;windows.h&gt;</p>
-<p>    #include &lt;stdio.h&gt;</p>
-<p>    </p>
-<p>    #define MAX_COUNTER 10</p>
-<p>    </p>
-<p>    int g_counter = 0;</p>
-<p>    CRITICAL_SECTION g_cs;</p>
-<p>    </p>
-<p>    DWORD WINAPI Increment()</p>
-<p>    {</p>
-<p>      DWORD tid </p>
-<p>        = GetCurrentThreadId();</p>
-<p>    </p>
-<p>      while( g_counter &lt; MAX_COUNTER )</p>
-<p>      {</p>
-<p>        // esse é o começo de nossa </p>
-<p>        // seção crítica</p>
-<p>        // só uma thread entra</p>
-<p>        // por vez por aqui</p>
-<p>        EnterCriticalSection(&amp;g_cs);</p>
-<p>    </p>
-<p>        int temp = g_counter;</p>
-<p>        temp = temp + 1;</p>
-<p>        Sleep(0); // indo para </p>
-<p>                  // o final da fila</p>
-<p>        g_counter = temp;</p>
-<p>    </p>
-<p>        // esse é o fim de nossa </p>
-<p>        // seção crítica</p>
-<p>        // a partir dessa chamada </p>
-<p>        // outra thread pode </p>
-<p>        // entrar pelo começo</p>
-<p>        LeaveCriticalSection(&amp;g_cs);</p>
-<p>    </p>
-<p>        printf("Counter: %d"</p>
-<p>          "\t\tThread: %d\n", </p>
-<p>          temp, </p>
-<p>          tid);</p>
-<p>      }</p>
-<p>    </p>
-<p>      return 0;</p>
-<p>    }</p>
-<p>    </p>
-<p>    int main()</p>
-<p>    {</p>
-<p>      HANDLE threads<a href="posts.html?q=3">3</a>;</p>
-<p>      DWORD tids<a href="posts.html?q=3">3</a>;</p>
-<p>    </p>
-<p>      // precisamos inicializar </p>
-<p>      // nosso recurso de </p>
-<p>      // seção crítica</p>
-<p>      InitializeCriticalSection(&amp;g_cs);</p>
-<p>    </p>
-<p>      for( int i = 0; i &lt; 3; ++i )</p>
-<p>      {</p>
-<p>        threads<a href="posts.html?q=i">i</a> </p>
-<p>          = CreateThread(NULL, </p>
-<p>          0, </p>
-<p>          IncrementGlobalCounter, </p>
-<p>          0, </p>
-<p>          0, </p>
-<p>          &amp;tids<a href="posts.html?q=i">i</a>);</p>
-<p>        printf("Thread %i: %d\n", </p>
-<p>          i, </p>
-<p>          tids<a href="posts.html?q=i">i</a>);</p>
-<p>      }</p>
-<p>    </p>
-<p>      // aguarda as threads</p>
-<p>      WaitForMultipleObjects(3, </p>
-<p>        threads, </p>
-<p>        TRUE, </p>
-<p>        INFINITE);</p>
-<p>    </p>
-<p>      // agora precisamos liberar o </p>
-<p>      // recurso de seção crítica</p>
-<p>      DeleteCriticalSection(&amp;g_cs);</p>
-<p>    }</p>
+<pre>
+   #include &lt;windows.h&gt;
+   #include &lt;stdio.h&gt;
+   
+   #define MAX_COUNTER 10
+   
+   int g_counter = 0;
+   CRITICAL_SECTION g_cs;
+   
+   DWORD WINAPI Increment()
+   {
+     DWORD tid 
+       = GetCurrentThreadId();
+   
+     while( g_counter &lt; MAX_COUNTER )
+     {
+       // esse é o começo de nossa 
+       // seção crítica
+       // só uma thread entra
+       // por vez por aqui
+       EnterCriticalSection(&amp;g_cs);
+   
+       int temp = g_counter;
+       temp = temp + 1;
+       Sleep(0); // indo para 
+                 // o final da fila
+       g_counter = temp;
+   
+       // esse é o fim de nossa 
+       // seção crítica
+       // a partir dessa chamada 
+       // outra thread pode 
+       // entrar pelo começo
+       LeaveCriticalSection(&amp;g_cs);
+   
+       printf("Counter: %d"
+         "\t\tThread: %d\n", 
+         temp, 
+         tid);
+     }
+   
+     return 0;
+   }
+   
+   int main()
+   {
+     HANDLE threads[3];
+     DWORD tids[3];
+   
+     // precisamos inicializar 
+     // nosso recurso de 
+     // seção crítica
+     InitializeCriticalSection(&amp;g_cs);
+   
+     for( int i = 0; i &lt; 3; ++i )
+     {
+       threads[i] 
+         = CreateThread(NULL, 
+         0, 
+         IncrementGlobalCounter, 
+         0, 
+         0, 
+         &amp;tids[i]);
+       printf("Thread %i: %d\n", 
+         i, 
+         tids[i]);
+     }
+   
+     // aguarda as threads
+     WaitForMultipleObjects(3, 
+       threads, 
+       TRUE, 
+       INFINITE);
+   
+     // agora precisamos liberar o 
+     // recurso de seção crítica
+     DeleteCriticalSection(&amp;g_cs);
+   }
+</pre>
 <p>Para finalizar, algo para pensar: se uma thread só consegue um critical section depois que outra thread soltá-lo, o que acontece se essa outra thread estiver esperando por outro critical section que uma thread que aguarda estiver segurando?</p>
 <p>Acabamos de ilustrar um procedimento muito simples para cagar completamente no código e gerar um travamento que pode demorar de horas a semanas para ser detectado e resolvido. É o conhecido deadlock. Se você não entendeu ainda, imagine que, para voltar à sala das threads, a primeira thread que saiu precisa de duas chaves; só que ela só pegou a primeira, e a segunda está dentro da sala. Para pegar a segunda chave, ela precisa entrar na sala, só que a sala está trancada pelas duas chaves!</p>
 <p>Deadlocks são sempre indesejáveis, e é por isso que existem diversas técnicas para tentar evitá-los. A mais conhecida é sempre obter os critical sections na mesma ordem. Dessa forma a obtenção de recursos é hierarquizada, o que impede que dois CSs estejam no mesmo nível de obtenção, evitando que duas threads distintas os obtenham.</p>

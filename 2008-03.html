@@ -79,35 +79,41 @@ role="navigation" aria-label="main navigation">
 <li>Redimensionamento no tamanho do contêiner</li>
 </ul>
 <p>Por exemplo, o tradicional código do exemplo abaixo contém o tradicional erro de iterador inválido:</p>
-<p>    for( container::iterator it = obj.begin(); it != obj.end(); ++it )</p>
-<p>    {</p>
-<p>      if( it-&gt;member == 0 ) // condição para apagar elemento</p>
-<p>      {</p>
-<p>        obj.erase(it);  // a partir daqui it é inválido,</p>
-<p>                        // e não adianta incrementá-lo</p>
-<p>      }</p>
-<p>    }</p>
+<pre>
+   for( container::iterator it = obj.begin(); it != obj.end(); ++it )
+   {
+     if( it-&gt;member == 0 ) // condição para apagar elemento
+     {
+       obj.erase(it);  // a partir daqui it é inválido,
+                       // e não adianta incrementá-lo
+     }
+   }
+</pre>
 <p>Para operações como essa, o retorno geralmente nos dá uma dica de para onde vamos na varredura do contêiner. No caso do método erase, o retorno é o próximo iterador válido, ou o final (retornado pelo método end). Um código mais esperto gera um erro mais sutil:</p>
-<p>    for( container::iterator it = obj.begin(); it != obj.end(); ++it )</p>
-<p>    {</p>
-<p>      if( it-&gt;member == 0 ) // condição para apagar elemento</p>
-<p>      {</p>
-<p>        it = obj.erase(it); // ótimo, atualizou it. só</p>
-<p>                            // que se ele for o final,</p>
-<p>                            // será incrementado</p>
-<p>      }</p>
-<p>    }</p>
+<pre>
+   for( container::iterator it = obj.begin(); it != obj.end(); ++it )
+   {
+     if( it-&gt;member == 0 ) // condição para apagar elemento
+     {
+       it = obj.erase(it); // ótimo, atualizou it. só
+                           // que se ele for o final,
+                           // será incrementado
+     }
+   }
+</pre>
 <p>Algo de errado irá acontecer apenas se o elemento removido for o último localizado no contêiner.</p>
 <p>Esse é um erro comum para os acostumados com outros tipos de iteração (ex: ponteiros) e que não estudaram os princípios básicos da STL, entre eles o da reutilização de algoritmos. Se fosse usado este princípio, nada disso teria acontecido:</p>
-<p>    struct remove_if_zero</p>
-<p>    {</p>
-<p>      bool operator() (ObjElement&amp; element)</p>
-<p>      {</p>
-<p>        return element-&gt;member == 0;</p>
-<p>      }</p>
-<p>    };</p>
-<p>    </p>
-<p>    obj.remove_if( remove_if_zero() ); // pronto!</p>
+<pre>
+   struct remove_if_zero
+   {
+     bool operator() (ObjElement&amp; element)
+     {
+       return element-&gt;member == 0;
+     }
+   };
+   
+   obj.remove_if( remove_if_zero() ); // pronto!
+</pre>
 <p>Quando precisamos fazer algo nos elementos de um contêiner STL, é quase certo que existirá um algoritmo genérico para essa tarefa, seja no próprio contêiner ou na forma de função (`&lt;algorithm&gt;`). Nunca se esqueça disso na hora de desenvolver seus próprios algoritmos e não precisará reinventar a roda todos os dias.</p>
 
 </section><hr/>
@@ -144,55 +150,67 @@ role="navigation" aria-label="main navigation">
 </ul>
 <p>Essas ferramentas são nativas do ambiente Linux, mas podem ser instaladas no Windows através do Cygwin, do Mingw ou nativamente através das ferramentas GnuWin32.</p>
 <p>O que eu queria era processar a saída de um programa de forma que eu tivesse a lista de todas as extensões dos arquivos. Por exemplo, para a seguinte entrada:</p>
-<p>    c:\path\arquivo1.cpp</p>
-<p>    c:\path\arquivo2.h</p>
-<p>    c:\arquivo3.hpp</p>
-<p>    c:\path\path2\arquivo4.cpp</p>
+<pre>
+   c:\path\arquivo1.cpp
+   c:\path\arquivo2.h
+   c:\arquivo3.hpp
+   c:\path\path2\arquivo4.cpp
+</pre>
 <p>Eu gostaria de uma saída no seguinte formato:</p>
-<p>    .cpp</p>
-<p>    .h</p>
-<p>    .hpp</p>
+<pre>
+   .cpp
+   .h
+   .hpp
+</pre>
 <p>Basicamente é isso.</p>
 <p>Para filtrar o path do arquivo, e ao mesmo tempo retirar seu nome, podemos usar o seguinte comando (fora outras trilhões de variantes):</p>
-<p>    programa | sed -e "s/^.*\\//" -e "s/.*\.\(.*\)/\1/"</p>
+<pre>
+   programa | sed -e "s/^.*\\//" -e "s/.*\.\(.*\)/\1/"
+</pre>
 <p>Após esse processamento, a saída é um monte de extensões vindas de um monte de arquivos:</p>
-<p>    cpp</p>
-<p>    h</p>
-<p>    cpp</p>
-<p>    h</p>
-<p>    c</p>
-<p>    h</p>
-<p>    cpp</p>
-<p>    h</p>
-<p>    mak</p>
-<p>    vcproj</p>
-<p>    h</p>
-<p>    cpp</p>
-<p>    h</p>
-<p>    cpp</p>
-<p>    h</p>
-<p>    cpp</p>
-<p>    h</p>
-<p>    cpp</p>
-<p>    h</p>
-<p>    c</p>
-<p>    h</p>
-<p>    txt</p>
-<p>    c</p>
-<p>    cpp</p>
-<p>    h</p>
-<p>    mak</p>
-<p>    vcproj</p>
-<p>    cpp</p>
-<p>    h</p>
-<p>    ...</p>
+<pre>
+   cpp
+   h
+   cpp
+   h
+   c
+   h
+   cpp
+   h
+   mak
+   vcproj
+   h
+   cpp
+   h
+   cpp
+   h
+   cpp
+   h
+   cpp
+   h
+   c
+   h
+   txt
+   c
+   cpp
+   h
+   mak
+   vcproj
+   cpp
+   h
+   ...
+</pre>
 <p>Como podemos ver e é óbvio de imaginar, muitas extensões irão se repetir. Para eliminar as repetições e ordenar a saída da saída corretamente, usamos o comando sort:</p>
-<p>    programa | sed -e "s/^.*\\//" -e "s/.*\.\(.*\)/\1/" | sort -u</p>
+<pre>
+   programa | sed -e "s/^.*\\//" -e "s/.*\.\(.*\)/\1/" | sort -u
+</pre>
 <p>	</p>
 <p>Os caracteres .*[]^$\ dão problemas se usados sem escape no sed, pois fazem parte dos comandos para procurar expressões regulares. Use-os com o caractere de escape `\`.</p>
 <p>Para concatenar comandos no sed, use sempre -e "comando". A ordem de execução dos comandos é a ordem em que eles são inseridos na linha de comando, ou seja, podemos confiar que no segundo comando o primeiro já terá sido executado e assim por diante.</p>
 <p>Para fazer o escape das barras do caminho de um arquivo temos que usar o conjunto `\/` (obs.: caminhos em formato Unix). Para evitar esse uso enfadonho podemos substituir o caractere de divisão do comando s colocando-o na frente:</p>
-<p>    s/path\/muito\/muito\/muito\/longo.cpp/outropath\/muito\/muito\/longo.cpp/s#/path/muito/muito/muito/longo.cpp#/outropath/muito/muito/longo.cpp#</p>
+<pre>
+   s/path\/muito\/muito\/muito\/longo.cpp/outropath\/muito\/muito\/longo.cpp/s#/path/muito/muito/muito/longo.cpp#/outropath/muito/muito/longo.cpp#
+</pre>
 <p>Para agrupar expressõe, use sempre `\(` e `\)`. É o contrário do uso dos caracteres especiais. Coisas de Unix.</p>
 
 </section><hr/>
@@ -208,127 +226,137 @@ role="navigation" aria-label="main navigation">
 <p>Vamos acompanhar alguns momentos de tortura alheia?</p>
 <p>Tudo aconteceu quando inesperadamente perdi metade do <a href="posts.html?q=conversor-de-houaiss-para-babylon-parte-1">artigo</a> que estava escrevendo para explicar o processo de engenharia reversa no dicionário Houaiss. Tive que refazer todos os meus testes que havia feito no laptop. Como a preguiça é a mãe de todas as descobertas, não estava com ele ligado no momento do "reteste" e por isso acabei usando a máquina desktop, mesmo.</p>
 <p>A análise inicial consistia simplesmente em verificar as entradas e saídas da função ReadFile, na esperança de entender a formatação interna do dicionário. Repetindo a seqüência:</p>
-<p>    windbg -pn houaiss2.exe</p>
-<p>    0:001&gt; bp kernel32!ReadFile "dd @$csp L6" $$ Dando uma olhada nos parâmetros</p>
-<p>    g</p>
-<p>    </p>
-<p>    0012fa70  0040a7a9 00000200 08bbf1d0 00000200</p>
-<p>    0012fa80  0012fa88 00000000</p>
-<p>    eax=0012fa88 ebx=00000200 ecx=00000200 edx=08bbf1d0 esi=08bbf1d0 edi=00000200</p>
-<p>    eip=7c80180e esp=0012fa70 ebp=0012facc iopl=0         nv up ei pl zr na pe nc</p>
-<p>    cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246</p>
-<p>    kernel32!ReadFile:</p>
-<p>    7c80180e 6a20            push    20h</p>
-<p>    $$ O buffer de saída é 08bbf1d0 </p>
-<p>    $$ O número de bytes lidos é 200</p>
-<p>    0:000&gt; db 08bbf1d0 L80</p>
-<p>    08bbf1d0  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................</p>
-<p>    08bbf1e0  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................</p>
-<p>    08bbf1f0  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................</p>
-<p>    08bbf200  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................</p>
-<p>    08bbf210  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................</p>
-<p>    08bbf220  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................</p>
-<p>    08bbf230  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................</p>
-<p>    08bbf240  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................</p>
-<p>    0:000&gt; bp /1 @$ra "db 08bbf1d0 L80"</p>
-<p>    0:000&gt; g</p>
-<p>    08bbf1d0  2a 70 72 6f 67 72 61 6d-61 2d 66 6f 6e 74 65 0d  *programa-fonte.</p>
-<p>    08bbf1e0  0a 43 73 2e 6d 2e 0d 0a-64 7b 5c 69 20 73 58 58  .Cs.m...d{\i sXX</p>
-<p>    08bbf1f0  7d 0d 0a 54 69 6e 66 0d-0a 3a 70 72 6f 67 72 61  }..Tinf..:progra</p>
-<p>    08bbf200  6d 61 20 64 65 20 63 6f-6d 70 75 74 61 64 6f 72  ma de computador</p>
-<p>    08bbf210  20 65 6d 20 73 75 61 20-66 6f 72 6d 61 20 6f 72   em sua forma or</p>
-<p>    08bbf220  69 67 69 6e 61 6c 2c 20-61 6e 6f 74 61 64 6f 20  iginal, anotado</p>
-<p>    08bbf230  70 65 6c 6f 20 70 72 6f-67 72 61 6d 61 64 6f 72  pelo programador</p>
-<p>    08bbf240  20 65 6d 20 75 6d 61 20-6c 69 6e 67 75 61 67 65   em uma linguage</p>
-<p>    0:000&gt; $$</p>
-<p>    0:000&gt; $$ Tudo legível? Mas já? Ai, meu Deus, alguém chama uma benzedeira!</p>
-<p>    0:000&gt; $$</p>
+<pre>
+   windbg -pn houaiss2.exe
+   0:001&gt; bp kernel32!ReadFile "dd @$csp L6" $$ Dando uma olhada nos parâmetros
+   g
+   
+   0012fa70  0040a7a9 00000200 08bbf1d0 00000200
+   0012fa80  0012fa88 00000000
+   eax=0012fa88 ebx=00000200 ecx=00000200 edx=08bbf1d0 esi=08bbf1d0 edi=00000200
+   eip=7c80180e esp=0012fa70 ebp=0012facc iopl=0         nv up ei pl zr na pe nc
+   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
+   kernel32!ReadFile:
+   7c80180e 6a20            push    20h
+   $$ O buffer de saída é 08bbf1d0 
+   $$ O número de bytes lidos é 200
+   0:000&gt; db 08bbf1d0 L80
+   08bbf1d0  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................
+   08bbf1e0  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................
+   08bbf1f0  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................
+   08bbf200  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................
+   08bbf210  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................
+   08bbf220  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................
+   08bbf230  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................
+   08bbf240  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................
+   0:000&gt; bp /1 @$ra "db 08bbf1d0 L80"
+   0:000&gt; g
+   08bbf1d0  2a 70 72 6f 67 72 61 6d-61 2d 66 6f 6e 74 65 0d  *programa-fonte.
+   08bbf1e0  0a 43 73 2e 6d 2e 0d 0a-64 7b 5c 69 20 73 58 58  .Cs.m...d{\i sXX
+   08bbf1f0  7d 0d 0a 54 69 6e 66 0d-0a 3a 70 72 6f 67 72 61  }..Tinf..:progra
+   08bbf200  6d 61 20 64 65 20 63 6f-6d 70 75 74 61 64 6f 72  ma de computador
+   08bbf210  20 65 6d 20 73 75 61 20-66 6f 72 6d 61 20 6f 72   em sua forma or
+   08bbf220  69 67 69 6e 61 6c 2c 20-61 6e 6f 74 61 64 6f 20  iginal, anotado
+   08bbf230  70 65 6c 6f 20 70 72 6f-67 72 61 6d 61 64 6f 72  pelo programador
+   08bbf240  20 65 6d 20 75 6d 61 20-6c 69 6e 67 75 61 67 65   em uma linguage
+   0:000&gt; $$
+   0:000&gt; $$ Tudo legível? Mas já? Ai, meu Deus, alguém chama uma benzedeira!
+   0:000&gt; $$
+</pre>
 <p>Se notarmos no artigo anterior, veremos que o conteúdo do arquivo lido não é em texto claro, sendo necessário passar por mais algumas instruções assembly para descobrir a função responsável por embaralhar o conteúdo na memória. Contudo, ao rodar esses comandos novamente, eis que a saída do ReadFile já vem toda legível, como se o dicionário não estivesse mais encriptado.</p>
 <p>A leitura foi feita e o texto direto do arquivo veio em claro? O que está acontecendo? Quando abro pelo comando type ele aparece todo obscuro...</p>
 <img src="img/o-misterio-das-pilhas-diferentes-cmd.gif"/>
 <p>Sim, alguma coisa não-trivial acaba de acontecer. Testei esse procedimento no laptop e no desktop, sendo que esse problema aconteceu apenas no desktop. Dessa vez a curiosidade falou mais alto que a preguiça, e tive que abrir as duas máquinas e comparar os resultados.</p>
 <p>Depois de um pouco de cabeçadas rastreando o assembly executado, descobri que o ponto onde o breakpoint havia parado não era o retorno da chamada a ReadFile. Isso eu não vou demonstrar aqui pois se trata de raciocínio de passo-a-passo no assembly até descobrir a diferença. É enfadonho e sujeito a erros. Sugiro que tente um dia desses. Para mim, o resultado lógico de tudo isso é a saída que segue:</p>
-<p>    0012fa70  0040a7a9 00000200 08bbf1d0 00000200</p>
-<p>    0012fa80  0012fa88 00000000</p>
-<p>    eax=0012fa88 ebx=00000200 ecx=00000200 edx=08bbf1d0 esi=08bbf1d0 edi=00000200</p>
-<p>    eip=7c80180e esp=0012fa70 ebp=0012facc iopl=0         nv up ei pl zr na pe nc</p>
-<p>    cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246</p>
-<p>    kernel32!ReadFile:</p>
-<p>    7c80180e 6a20            push    20h</p>
-<p>    0:000&gt; ? poi(esp)</p>
-<p>    Evaluate expression: 4237225 = 0040a7a9</p>
-<p>    0:000&gt; ? @$ra</p>
-<p>    Evaluate expression: 4959640 = 004bad98</p>
-<p>    0:000&gt; ? poi(@$csp)</p>
-<p>    Evaluate expression: 4237225 = 0040a7a9 </p>
+<pre>
+   0012fa70  0040a7a9 00000200 08bbf1d0 00000200
+   0012fa80  0012fa88 00000000
+   eax=0012fa88 ebx=00000200 ecx=00000200 edx=08bbf1d0 esi=08bbf1d0 edi=00000200
+   eip=7c80180e esp=0012fa70 ebp=0012facc iopl=0         nv up ei pl zr na pe nc
+   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
+   kernel32!ReadFile:
+   7c80180e 6a20            push    20h
+   0:000&gt; ? poi(esp)
+   Evaluate expression: 4237225 = 0040a7a9
+   0:000&gt; ? @$ra
+   Evaluate expression: 4959640 = 004bad98
+   0:000&gt; ? poi(@$csp)
+   Evaluate expression: 4237225 = 0040a7a9 
+</pre>
 <p>Como podemos ver pelos comandos acima, o pseudo-registrador $ra não está mostrando o valor corretamente!</p>
 <p>A primeira coisa que se faz numa hora dessas é comparar as versões dos componentes do depurador de ambos os ambientes. Para isso usamos o comando version.</p>
-<p>    0:000&gt; version $$ desktop</p>
-<p>    Windows XP Version 2600 (Service Pack 2) UP Free x86 compatible</p>
-<p>    Product: WinNt, suite: SingleUserTS</p>
-<p>    kernel32.dll version:</p>
-<p>    Debug session time: Tue Feb 26 19:51:58.295 2008 (GMT-3)</p>
-<p>    System Uptime: 0 days 1:14:07.857</p>
-<p>    Process Uptime: 0 days 0:31:52.840</p>
-<p>      Kernel time: 0 days 0:00:01.482</p>
-<p>      User time: 0 days 0:00:02.723</p>
-<p>    Live user mode: &lt;Local&gt;</p>
-<p>    command line: '"C:\Tools\DbgTools\windbg.exe" -pn houaiss2.exe'  Debugger Process 0xEC4</p>
-<p>    dbgeng:  image 6.6.0007.5, built Sat Jul 08 17:12:40 2006</p>
-<p>            <a href="posts.html?q=path: C:\Tools\DbgTools\dbgeng.dll">path: C:\Tools\DbgTools\dbgeng.dll</a></p>
-<p>    dbghelp: image 6.6.0007.5, built Sat Jul 08 17:11:32 2006</p>
-<p>            <a href="posts.html?q=path: C:\Tools\DbgTools\dbghelp.dll">path: C:\Tools\DbgTools\dbghelp.dll</a></p>
-<p>            DIA version: 60516</p>
-<p>    Extension DLL search Path:</p>
-<p>        C:\Tools\DbgTools\winext;C:\Tools\DbgTools\winext\arcade;(...)</p>
-<p>    Extension DLL chain:</p>
-<p>        dbghelp: image 6.6.0007.5, API 6.0.6, built Sat Jul 08 17:11:32 2006</p>
-<p>            <a href="posts.html?q=path: C:\Tools\DbgTools\dbghelp.dll">path: C:\Tools\DbgTools\dbghelp.dll</a></p>
-<p>        ext: image 6.6.0007.5, API 1.0.0, built Sat Jul 08 17:10:52 2006</p>
-<p>            <a href="posts.html?q=path: C:\Tools\DbgTools\winext\ext.dll">path: C:\Tools\DbgTools\winext\ext.dll</a></p>
-<p>        exts: image 6.6.0007.5, API 1.0.0, built Sat Jul 08 17:10:48 2006</p>
-<p>            <a href="posts.html?q=path: C:\Tools\DbgTools\WINXP\exts.dll">path: C:\Tools\DbgTools\WINXP\exts.dll</a></p>
-<p>        uext: image 6.6.0007.5, API 1.0.0, built Sat Jul 08 17:11:02 2006</p>
-<p>            <a href="posts.html?q=path: C:\Tools\DbgTools\winext\uext.dll">path: C:\Tools\DbgTools\winext\uext.dll</a></p>
-<p>        ntsdexts: image 6.0.5457.0, API 1.0.0, built Sat Jul 08 17:29:38 2006</p>
-<p>            <a href="posts.html?q=path: C:\Tools\DbgTools\WINXP\ntsdexts.dll">path: C:\Tools\DbgTools\WINXP\ntsdexts.dll</a></p>
-<p>    0:000&gt; version $$ laptop</p>
-<p>    Windows XP Version 2600 (Service Pack 2) UP Free x86 compatible</p>
-<p>    Product: WinNt, suite: SingleUserTS Personal</p>
-<p>    kernel32.dll version:</p>
-<p>    Debug session time: Tue Feb 26 20:54:39.718 2008 (GMT-3)</p>
-<p>    System Uptime: 9 days 10:26:39.289</p>
-<p>    Process Uptime: 0 days 0:00:56.359</p>
-<p>      Kernel time: 0 days 0:00:00.406</p>
-<p>      User time: 0 days 0:00:01.078</p>
-<p>    Live user mode: &lt;Local&gt;</p>
-<p>    command line: '"C:\Tools\DbgTools\windbg.exe" -pn houaiss2.exe'  Debugger Process 0x864</p>
-<p>    dbgeng:  image 6.8.0004.0, built Thu Sep 27 18:28:09 2007</p>
-<p>            <a href="posts.html?q=path: C:\Tools\DbgTools\dbgeng.dll">path: C:\Tools\DbgTools\dbgeng.dll</a></p>
-<p>    dbghelp: image 6.8.0004.0, built Thu Sep 27 18:27:05 2007</p>
-<p>            <a href="posts.html?q=path: C:\Tools\DbgTools\dbghelp.dll">path: C:\Tools\DbgTools\dbghelp.dll</a></p>
-<p>            DIA version: 20119</p>
-<p>    Extension DLL search Path:</p>
-<p>        C:\Tools\DbgTools\WINXP;C:\Tools\DbgTools\winext;C:\(...)</p>
-<p>    Extension DLL chain:</p>
-<p>        dbghelp: image 6.8.0004.0, API 7.0.6, built Thu Sep 27 18:27:05 2007</p>
-<p>            <a href="posts.html?q=path: C:\Tools\DbgTools\dbghelp.dll">path: C:\Tools\DbgTools\dbghelp.dll</a></p>
-<p>        ext: image 6.8.0004.0, API 1.0.0, built Thu Sep 27 18:26:59 2007</p>
-<p>            <a href="posts.html?q=path: C:\Tools\DbgTools\winext\ext.dll">path: C:\Tools\DbgTools\winext\ext.dll</a></p>
-<p>        exts: image 6.8.0004.0, API 1.0.0, built Thu Sep 27 18:26:28 2007</p>
-<p>            <a href="posts.html?q=path: C:\Tools\DbgTools\WINXP\exts.dll">path: C:\Tools\DbgTools\WINXP\exts.dll</a></p>
-<p>        uext: image 6.8.0004.0, API 1.0.0, built Thu Sep 27 18:26:45 2007</p>
-<p>            <a href="posts.html?q=path: C:\Tools\DbgTools\winext\uext.dll">path: C:\Tools\DbgTools\winext\uext.dll</a></p>
-<p>        ntsdexts: image 7.0.6440.1, API 1.0.0, built Thu Sep 27 18:45:23 2007</p>
-<p>            <a href="posts.html?q=path: C:\Tools\DbgTools\WINXP\ntsdexts.dll">path: C:\Tools\DbgTools\WINXP\ntsdexts.dll</a></p>
+<pre>
+   0:000&gt; version $$ desktop
+   Windows XP Version 2600 (Service Pack 2) UP Free x86 compatible
+   Product: WinNt, suite: SingleUserTS
+   kernel32.dll version:
+   Debug session time: Tue Feb 26 19:51:58.295 2008 (GMT-3)
+   System Uptime: 0 days 1:14:07.857
+   Process Uptime: 0 days 0:31:52.840
+     Kernel time: 0 days 0:00:01.482
+     User time: 0 days 0:00:02.723
+   Live user mode: &lt;Local&gt;
+   command line: '"C:\Tools\DbgTools\windbg.exe" -pn houaiss2.exe'  Debugger Process 0xEC4
+   dbgeng:  image 6.6.0007.5, built Sat Jul 08 17:12:40 2006
+           [path: C:\Tools\DbgTools\dbgeng.dll]
+   dbghelp: image 6.6.0007.5, built Sat Jul 08 17:11:32 2006
+           [path: C:\Tools\DbgTools\dbghelp.dll]
+           DIA version: 60516
+   Extension DLL search Path:
+       C:\Tools\DbgTools\winext;C:\Tools\DbgTools\winext\arcade;(...)
+   Extension DLL chain:
+       dbghelp: image 6.6.0007.5, API 6.0.6, built Sat Jul 08 17:11:32 2006
+           [path: C:\Tools\DbgTools\dbghelp.dll]
+       ext: image 6.6.0007.5, API 1.0.0, built Sat Jul 08 17:10:52 2006
+           [path: C:\Tools\DbgTools\winext\ext.dll]
+       exts: image 6.6.0007.5, API 1.0.0, built Sat Jul 08 17:10:48 2006
+           [path: C:\Tools\DbgTools\WINXP\exts.dll]
+       uext: image 6.6.0007.5, API 1.0.0, built Sat Jul 08 17:11:02 2006
+           [path: C:\Tools\DbgTools\winext\uext.dll]
+       ntsdexts: image 6.0.5457.0, API 1.0.0, built Sat Jul 08 17:29:38 2006
+           [path: C:\Tools\DbgTools\WINXP\ntsdexts.dll]
+   0:000&gt; version $$ laptop
+   Windows XP Version 2600 (Service Pack 2) UP Free x86 compatible
+   Product: WinNt, suite: SingleUserTS Personal
+   kernel32.dll version:
+   Debug session time: Tue Feb 26 20:54:39.718 2008 (GMT-3)
+   System Uptime: 9 days 10:26:39.289
+   Process Uptime: 0 days 0:00:56.359
+     Kernel time: 0 days 0:00:00.406
+     User time: 0 days 0:00:01.078
+   Live user mode: &lt;Local&gt;
+   command line: '"C:\Tools\DbgTools\windbg.exe" -pn houaiss2.exe'  Debugger Process 0x864
+   dbgeng:  image 6.8.0004.0, built Thu Sep 27 18:28:09 2007
+           [path: C:\Tools\DbgTools\dbgeng.dll]
+   dbghelp: image 6.8.0004.0, built Thu Sep 27 18:27:05 2007
+           [path: C:\Tools\DbgTools\dbghelp.dll]
+           DIA version: 20119
+   Extension DLL search Path:
+       C:\Tools\DbgTools\WINXP;C:\Tools\DbgTools\winext;C:\(...)
+   Extension DLL chain:
+       dbghelp: image 6.8.0004.0, API 7.0.6, built Thu Sep 27 18:27:05 2007
+           [path: C:\Tools\DbgTools\dbghelp.dll]
+       ext: image 6.8.0004.0, API 1.0.0, built Thu Sep 27 18:26:59 2007
+           [path: C:\Tools\DbgTools\winext\ext.dll]
+       exts: image 6.8.0004.0, API 1.0.0, built Thu Sep 27 18:26:28 2007
+           [path: C:\Tools\DbgTools\WINXP\exts.dll]
+       uext: image 6.8.0004.0, API 1.0.0, built Thu Sep 27 18:26:45 2007
+           [path: C:\Tools\DbgTools\winext\uext.dll]
+       ntsdexts: image 7.0.6440.1, API 1.0.0, built Thu Sep 27 18:45:23 2007
+           [path: C:\Tools\DbgTools\WINXP\ntsdexts.dll]
+</pre>
 <p>OK. A versão instalada no desktop é bem antiga. Pode ser um indício. Fiz então a atualização e comparei novamente a saída de version. Tudo igual. Decidi então usar aquela lógica cética que é desenvolvida por quem costuma depurar coisas sinistras e esotéricas por anos e anos e não duvida de mais nada, mas também acredita piamente que tudo tem um motivo. Se não está aparente, basta descobri-lo. E foi o que eu fiz. Gerei dois dumps distintos, um no laptop e outro no desktop. Ambos estavam com os ponteiros de instrução apontados exatamente para a entrada da função ReadFile, início de todo esse problema. Copiei o dump do desktop para o laptop e vice-versa.</p>
 <img src="img/o-misterio-das-pilhas-diferentes-windbg-nerd.gif"/>
 <p>Abri o dump do desktop no laptop: tudo funcionando. Abri o dump do laptop no desktop: mesmo erro. Conclusão óbvia: é algo relacionado com o WinDbg no desktop, uma vez que o estado da pilha que era mostrado corretamente no laptop em ambos os dumps falhava duplamente na máquina desktop.</p>
-<p>    .sympath</p>
-<p>    Symbol search path is: &lt;empty&gt;</p>
+<pre>
+   .sympath
+   Symbol search path is: &lt;empty&gt;
+</pre>
 <p>Isso com certeza não cheira bem. Ainda mais porque do outro lado do hemisfério, meu laptop estava configurado com toda a rigidez que um laptop de WinDbgeiro deve ter:</p>
-<p>    0:000&gt; .sympath</p>
-<p>    Symbol search path is: SRV*C:\Symbols*http://msdl.microsoft.com/download/symbols</p>
+<pre>
+   0:000&gt; .sympath
+   Symbol search path is: SRV*C:\Symbols*http://msdl.microsoft.com/download/symbols
+</pre>
 <p>E aí estava uma diferença plausível. Consertados os diretórios de símbolos, tudo voltou ao normal.</p>
 <p>Procure primeiro verificar as coisas mais simples. Depois você tenta consertar o universo. Mas, primeiro, antes de tudo, veja se o cabo de rede está conectado. Ou no nosso cado de debugueiro:</p>
 <p>&gt; Configure Seus Símbolos Corretamente</p>
@@ -355,9 +383,11 @@ role="navigation" aria-label="main navigation">
 <img src="img/influence-board-winboard-mate-final.png"/>
 <p>Essa maneira de mostrar as influências em um tabuleiro de xadrez eu apelidei de Influence Board, e criei um projeto em linha de comando para fazer as devidas considerações a respeito de uma posição determinada. Mas como ninguém hoje em dia gosta de usar o WinDbg pra jogar xadrez, transformei meu projeto em pseudo-plugin para o <a href="http://www.tim-mann.org/xboard.html">WinBoard</a>, um famoso frontend de xadrez que costumo usar em minhas esporádicas partidas.</p>
 <p>Basicamente a única coisa que o futuro usuário das influências deve fazer é baixar o projeto WinBoard; no caso a versão disponível meu repositório do GitHub (update: not anymore) e compilar (suporta cmake). Caso queira uma versão nova do programa terá que fazer o merge entre as duas versões (a versão base usada foi a 2.4.7).</p>
-<p>    mkdir build &amp;&amp; cd build</p>
-<p>    cmake -A Win32 ..</p>
-<p>    cmake --build .</p>
+<pre>
+   mkdir build &amp;&amp; cd build
+   cmake -A Win32 ..
+   cmake --build .
+</pre>
 <p>Após compilado, basta rodar o winboard.exe gerado; haverá uma nova opção "Show Influence" do menu General. Voilà! É possível até jogar às cegas com esse brinquedinho (opção Blindfold).</p>
 <img src="img/influence-board-winboard-options3.png"/>
 <img src="img/influence-board-winboard-blindfold.png"/>
@@ -376,16 +406,22 @@ role="navigation" aria-label="main navigation">
 <p>&gt; "E se eu usasse esse carinha para iniciar o notepad?"</p>
 <img src="img/como-rodar-qualquer-coisa-como-servico-wordclip.jpg"/>
 <p>Bem, o Bloco de Notas é a vítima padrão de testes. Logo, a linha a seguir provaria que é possível rodá-lo na conta de sistema:</p>
-<p>    sc create Notepad binpath= "%systemroot%\NOTEPAD.EXE" type= interact type= own</p>
+<pre>
+   sc create Notepad binpath= "%systemroot%\NOTEPAD.EXE" type= interact type= own
+</pre>
 <p>Porém, como todo serviço, é esperado que ele se comunique com o Gerenciador de Serviços do Windows. Como o Bloco de Notas mal imagina que agora ele é um motta-fucka service, expira o timeout de inicialização e o SCM (Service Control Manager) mata o processo.</p>
-<p>    &gt;net start notepad</p>
-<p>    The service is not responding to the control function.</p>
-<p>    </p>
-<p>    More help is available by typing NET HELPMSG 2186.</p>
+<pre>
+   &gt;net start notepad
+   The service is not responding to the control function.
+   
+   More help is available by typing NET HELPMSG 2186.
+</pre>
 <p>Como diria meu amigo <a href="http://codebehind.wordpress.com/">Thiago</a>, "não bom".</p>
 <p>Porém porém, o SCM não mata os processos filhos do processo-serviço. Bug? Feature? Gambi? Seja o que for, pode ser usado para iniciar o nosso querido msvcmon:</p>
-<p>    set binpath=%systemroot%\system32\cmd.exe /c c:\Tools\msvcmon.exe -tcpip -anyuser -timeout -1</p>
-<p>    sc create Msvcmon binpath= "%binpath%" type= interact type= own</p>
+<pre>
+   set binpath=%systemroot%\system32\cmd.exe /c c:\Tools\msvcmon.exe -tcpip -anyuser -timeout -1
+   sc create Msvcmon binpath= "%binpath%" type= interact type= own
+</pre>
 <p>Agora, quando iniciarmos o serviço Msvcmon, o processo cmd.exe será criado, que por sua vez irá rodar o msvcmon.exe que queríamos, e ficará esperando inocentemente pela sua "funesta morte" pelo SCM.</p>
 <img src="img/como-rodar-qualquer-coisa-como-servico-msvcmon-service.png"/>
 
@@ -411,22 +447,26 @@ role="navigation" aria-label="main navigation">
 <p>O debug.com inicialmente começa a execução em um espaço de memória baixa. Podemos escrever um assembly qualquer nessa memória e começar a executar. Isso é exatamente o que iremos fazer, e a instrução escolhida será a INT13, pois iremos ler o primeiro setor do HD para a memória e começar a executá-lo. Isso é a depuração da MBR.</p>
 <p>Para fazer isso, algumas informações são necessárias, e tudo está disponível no sítio muito simpático e agradável de <a href="http://www.ctyme.com/rbrown.htm">Ralf Brown</a>, o cara que enumerou todas as interrupções conhecidas, além de diversas outras coisas.</p>
 <p>Como queremos ler um setor do disco, a função da interrupção que devemos chamar é a AH=02:</p>
-<p>    DISK - READ SECTOR(S) INTO MEMORY</p>
-<p>    </p>
-<p>    AH = 02h</p>
-<p>    AL = number of sectors to read (must be nonzero)</p>
-<p>    CH = low eight bits of cylinder number</p>
-<p>    CL = sector number 1-63 (bits 0-5)</p>
-<p>    high two bits of cylinder (bits 6-7, hard disk only)</p>
-<p>    DH = head number</p>
-<p>    DL = drive number (bit 7 set for hard disk)</p>
-<p>    ES:BX -&gt; data buffer</p>
+<pre>
+   DISK - READ SECTOR(S) INTO MEMORY
+   
+   AH = 02h
+   AL = number of sectors to read (must be nonzero)
+   CH = low eight bits of cylinder number
+   CL = sector number 1-63 (bits 0-5)
+   high two bits of cylinder (bits 6-7, hard disk only)
+   DH = head number
+   DL = drive number (bit 7 set for hard disk)
+   ES:BX -&gt; data buffer
+</pre>
 <p>Muito bem. Tudo que temos a fazer é preencher os registradores com os valores corretos:</p>
-<p>    rax 0201 ; função e número de setores (1)</p>
-<p>    rcx 0001 ; número do cilindro e do setor (cilindro = 0, setor = 1)</p>
-<p>    rdx 0080 ; número da cabeça (0) e do drive (HD = 0, o bit 7 deve estar levantado)</p>
-<p>    res 0000 ; segmento em que é executada a MBR</p>
-<p>    rbx 7e00 ; offset em que é executada a MBR</p>
+<pre>
+   rax 0201 ; função e número de setores (1)
+   rcx 0001 ; número do cilindro e do setor (cilindro = 0, setor = 1)
+   rdx 0080 ; número da cabeça (0) e do drive (HD = 0, o bit 7 deve estar levantado)
+   res 0000 ; segmento em que é executada a MBR
+   rbx 7e00 ; offset em que é executada a MBR
+</pre>
 <p>Essa é a maneira em que as coisas são. Você certamente poderia usar outro endereço, mas estamos tentando deixar a emulação de um boot o mais próximo possível  de um boot de verdade. E, tradicionalmente, o endereço de execução da MBR é em 0000:7E00. Para recordar disso, basta lembrar que o tamanho de um setor é de 0x200 bytes, e que dessa forma a MBR vai parar bem no final do endereçamento baixo (apenas offset).</p>
 <p>Essa organização é diferente do endereço inicial da BIOS, que é por padrão 0xFFFF0.</p>
 <p>Após definir corretamente os registradores, tudo que temos que fazer é escrever uma chamada à INT13 no endereço atual e executar. O conteúdo inicial do disco será escrito no endereço de memória 0000:7E00. Após isso trocamos o IP atual para esse endereço e começamos a depurar a MBR, como se estivéssemos logo após o boot da máquina.</p>
@@ -452,26 +492,36 @@ role="navigation" aria-label="main navigation">
 <p>O servidor de depuração nada mais é do que um processo que deixa alguma porta aberta  na máquina de testes para que o desenvolvedor consiga facilmente depurar problemas que ocorreram durantes os testes de produção. Ele pode ser facilmente configurado através da instalação do pacote Debugging Tools for Windows.</p>
 <p>Existem alguns cenários muito comuns de depuração remota que serão abordados aqui. O resto dos cenários se baseia nos exemplos abaixo, e pode ser montado com uma simples releitura dos tópicos de ajuda do WinDbg sobre o assunto (procure por dbgsrv.exe).</p>
 <p>No caso de VM ou máquina de teste do lado do desenvolvedor podemos supor que a máquina tem total acesso e controle do desenvolvedor. Tudo o que temos que fazer é iniciar um WinDbg na máquina-vítima e outro WinDbg na máquina-programador. O WinDbg da máquina-vítima deve ser iniciado no modo-servidor, enquanto o da máquina-programador no modo-cliente.</p>
-<p>    windbg -server tcp:port=6666</p>
-<p>    windbg -remote tcp:server=maquina-vitima,port=6666</p>
+<pre>
+   windbg -server tcp:port=6666
+   windbg -remote tcp:server=maquina-vitima,port=6666
+</pre>
 <p>A vantagem dessa técnica é que tanto o WinDbg da máquina-vítima quanto o da máquina-programador podem emitir comandos, e todos vêem os resultados. Uma possível desvantagem é que os símbolos devem estar disponíveis a partir da máquina-vítima.</p>
 <p>Se for necessário, é possível convidar mais gente pra festa, pois o WinDbg permite se transformar em uma instância servidora pelo comando .server, que possui a mesma sintaxe da linha de comando. Para a comunicação entre todos esses depuradores ambulantes um comando muito útil é o .echo.</p>
-<p>    windbg -server tcp:port=6667 -remote tcp:server=maquina-vitima,port=6666</p>
-<p>    windbg -remote tcp:server=maquina-vitima,port=6666</p>
-<p>    0:000&gt;.server tcp:port=6667</p>
-<p>    MAQUINA-PROGRAMADOR66\caloni (tcp 222.234.235.236:1974) connected at Mon Mar 24 11:47:55 2008</p>
-<p>    0:000&gt;.echo E ae, galera? Como que a gente vai consertar essa &amp;%$*&amp;?</p>
-<p>    0:000&gt;.echo Putz, sei lá. Acho que vou tomar mais café...</p>
+<pre>
+   windbg -server tcp:port=6667 -remote tcp:server=maquina-vitima,port=6666
+   windbg -remote tcp:server=maquina-vitima,port=6666
+   0:000&gt;.server tcp:port=6667
+   MAQUINA-PROGRAMADOR66\caloni (tcp 222.234.235.236:1974) connected at Mon Mar 24 11:47:55 2008
+   0:000&gt;.echo E ae, galera? Como que a gente vai consertar essa &amp;%$*&amp;?
+   0:000&gt;.echo Putz, sei lá. Acho que vou tomar mais café...
+</pre>
 <img src="img/windbg-a-distancia-windbg-remote.gif"/>
 <p>No ambiente do cliente é muito mais hostil; é salutar e recomendável utilizar um servidor genérico que não imprima coisa alguma na tela "do outro lado". Após iniciar o depurador na máquina que está dando o problema, o programador tem virtualmente uma série de comandos úteis que podem ser executados remotamente, como iniciar novos processos, se anexar a processos já existentes, copiar novas versões de executáveis, etc.</p>
 <p>O nome do processo do lado servidor para modo usuário é dbgsrv.exe. Para o modo kernel é kdsrv.exe. Os parâmetros de execução, felizmente, são os mesmos que os do WinDbg (e CDB, NTSD e KD), o que evita ter que decorar uma nova série de comandos.</p>
 <p>Pode parecer besteira falar isso aqui, mas ao depurar um sistema em modo kernel é necessário, é claro, é óbvio, é lógico, ter uma segunda máquina do lado servidor conectada por cabo serial ou firewire ou USB-Debug na máquina-vítima. Ainda que o Debugging Tools permita uma série de flexibilidades, o depurador em modo kernel vai rodar direto do kernel (duh), ou seja, está limitado pela implementação do sistema operacional. Além de que, para travar o processo do kernel, você tem que parar todo o sistema, e nesse caso não existe pilha TCP/IP.</p>
 <p>Para iniciar o servidor de depuração e deixar as portas abertas para o depurador temos apenas que iniciar o processo dbgsrv.exe:</p>
-<p>    dbgsrv -t tcp:port=6666</p>
+<pre>
+   dbgsrv -t tcp:port=6666
+</pre>
 <p>Para iniciar o processo depurador, a sintaxe é quase a mesma, só que no lugar de remote especificamos premote:</p>
-<p>    windbg -premote tcp:server=maquina-vitima,port=6666</p>
+<pre>
+   windbg -premote tcp:server=maquina-vitima,port=6666
+</pre>
 <p>Caso não se saiba a porta usada para iniciar o servidor, ou queira-se listar todos os servidores disponíveis em uma determinada máquina, usa-se o comando -QR.</p>
-<p>    cdb -QR \\maquina-vitima</p>
+<pre>
+   cdb -QR \\maquina-vitima
+</pre>
 <p>O exemplo acima utilizou uma conexão TCP para montar o ambiente de depuração remota, o que possibilita inclusive correção de problemas via internet. No entanto, nem sempre podemos nos dar ao luxo de abrir portas não-autorizadas, requisito mínimo para estabelecer a conexão com o depurador. Nesse caso, podemos configurar conexões pela porta serial, por pipes nomeados, por SSL. Se for realmente necessário usar a pilha TCP, mas o lado servidor possui um firewall, ainda assim é possível configurar este tipo de conexão com a opção clicon. Dessa forma, quem estabelece a conexão é o servidor, evitando que o cliente fique bloqueado de acessar o ambiente de depuração.</p>
 <img src="img/windbg-a-distancia-windbg-remote2.gif"/>
 <p>É importante notar que o dbgsrv.exe não é um depurador esperto, no sentido que ele não vai carregar os símbolos para você. Isso é importante na hora de definir qual estratégia utilizar, pois nem sempre os símbolos estarão disponíveis na máquina com problemas, e nem sempre estarão com o desenvolvedor.</p>
@@ -496,7 +546,9 @@ role="navigation" aria-label="main navigation">
 <p>No entanto, esse pequeno grande aplicativo sobreviveu todos esses anos, atingiu a maioridade, e hoje permite a nós, programadores de mouse, fazer nossos backups com um simples arquivo de batch e um pouco de imaginação.</p>
 <p>Aos mocinho e mocinhas presentes: os arquivos de batch, de extensão .bat ou .cmd, são, assim como o MS-DOS, coisas de veteranos do velho oeste. São arquivos de script que contém um conjunto de comandos que pode-se digitar manualmente na tela preta. Seu objetivo principal é otimizar e facilitar a digitação de tarefas complexas e torná-las mais simples, fáceis de executar e de lembrar.</p>
 <p>O uso do programa pode ser aprendido dando-se uma olhada em sua ajuda (xcopy /?)</p>
-<p>    xcopy origem <a href="posts.html?q=destino">destino</a> <a href="posts.html?q=opções">opções</a></p>
+<pre>
+   xcopy origem [destino] [opções]
+</pre>
 <p>Algumas opções bem úteis para efetuar cópias de segurança de arquivos modificados:</p>
 <ul><li>/M copia somente arquivos com atributo de arquivamento; após a cópia, desmarca atributo. Ao escrever novamente em um arquivo copiado com esse método, o arquivo volta a ter o atributo de arquivamento, e irá ser copiado novamente se especificada essa opção. Se nunca mais for mexido, não será mais copiado.</li>
 <li>/D copia arquivos mais novos na origem. Não costumo usar pelos problemas que podem ocorrer em sistemas com horas diferentes, mas, dependendo da ocasião, pode ser útil. Também é possível especificar uma data de início da comparação.</li>
@@ -509,22 +561,26 @@ role="navigation" aria-label="main navigation">
 </ul>
 <p>Para a cópia do patrimônio mais valioso de um programador, os fontes, podemos usar um conjunto bem bolado das 0pções acima, além de generalizar um script para ser usado em outras situações. Inicialmente vamos definir que queremos um backup que altere o atributo de arquivamento, sobrescreva cópias antigas e que possa ser copiado pela rede sem maiores problemas. Além disso, não iremos copiar as pastas Debug e Release existentes geradas pela saída de algum compilador (ex: saída do Visual Studio), nem arquivos temporários muito grandes (ex: arquivos de navegação de símbolos).</p>
 <p>O resultado é o que vemos abaixo:</p>
-<p>    xcopy &lt;pasta-origem&gt; &lt;pasta-destino&gt; /M /E /C /Y /Z /EXCLUDE:sources.flt</p>
+<pre>
+   xcopy &lt;pasta-origem&gt; &lt;pasta-destino&gt; /M /E /C /Y /Z /EXCLUDE:sources.flt
+</pre>
 <p>O conteúdo de sources.flt (extensão escolhida arbitrariamente) pode ser o seguinte:</p>
-<p>    .obj</p>
-<p>    .res</p>
-<p>    .pch</p>
-<p>    .pdb</p>
-<p>    .tlb</p>
-<p>    .idb</p>
-<p>    .ilk</p>
-<p>    .opt</p>
-<p>    .ncb</p>
-<p>    .sbr</p>
-<p>    .sup</p>
-<p>    .bsc</p>
-<p>    \Debug\</p>
-<p>    \Release\</p>
+<pre>
+   .obj
+   .res
+   .pch
+   .pdb
+   .tlb
+   .idb
+   .ilk
+   .opt
+   .ncb
+   .sbr
+   .sup
+   .bsc
+   \Debug\
+   \Release\
+</pre>
 <p>Só isso já basta para um backup simples, pequeno e fácil de executar. Só precisamos copiar a chamada ao xcopy em um arquivo de extensão .bat ou .cmd e executarmos sempre que acharmos interessante termos um backup quentinho em folha. Por exemplo, podemos manter os fontes do projeto atual em um pen drive e, ao acessarmos uma máquina confiável, rodar um backup que copia os arquvos-fonte para um ambiente mais seguro e estável.</p>
 <p>Note que esse procedimento não anula a necessidade de termos um <a href="posts.html?q=guia-basico-de-controle-de-codigo-source-safe">sistema de versionamento e controle de fontes</a>. O backup é para aquelas projetos que demoram um tempinho para efetuar commit, projetos temporários ou então sistemas de controle de fonte distribuído, em que podemos ter inúmeras pastas com diversos branchs locais.</p>
 

@@ -97,14 +97,16 @@ role="navigation" aria-label="main navigation">
 <p>O VirtualBox parece ser o concorrente mais próximo atualmente da VMWare. Descobrimos ele essa semana e resolvemos fazer alguns testes. O resultado foi bem animador.</p>
 <p>Desenvolvido pela Sun Microsystems, as características do VirtualBox impressionam pelo cuidado que houve em torná-lo muito parecido com sua concorrente paga. Apenas para começar, ela suporta dispositivos USB, possui múltiplos snapshots e já suporta o modo do VMWare Fusion - chamado de "seamless mode" - que estará integrado na versão 7 da VMWare.</p>
 <p>No entanto, entre as coisas que testamos (instalado em um Windows Vista SP1 como host), o que não funcionou já não agradou tanto. A lista de prós e contras ainda confirma a liderança da VMWare, pelo menos em qualidade:</p>
-<p>    Funcionalidade          VMWare             VirtualBox</p>
-<p>    Snapshots               Sim                Sim. Mesma velocidade.</p>
-<p>    USB                     Sim                Sim. Não funcionou.</p>
-<p>    Seamless Mode           Não                Sim.</p>
-<p>    Clipboard               Sim                Sim. Não funcionou.</p>
-<p>    Shared Folders          Sim                Sim. Erros de acesso.</p>
-<p>    Ferramentas Guest       Sim                Sim.</p>
-<p>    Pause Momentâneo        Não                Sim.</p>
+<pre>
+   Funcionalidade          VMWare             VirtualBox
+   Snapshots               Sim                Sim. Mesma velocidade.
+   USB                     Sim                Sim. Não funcionou.
+   Seamless Mode           Não                Sim.
+   Clipboard               Sim                Sim. Não funcionou.
+   Shared Folders          Sim                Sim. Erros de acesso.
+   Ferramentas Guest       Sim                Sim.
+   Pause Momentâneo        Não                Sim.
+</pre>
 <p>Além da tabela de testes acima, é necessário notar que por mas três vezes a VM simplesmente parou de responder, sendo necessário reiniciar o programa Host.</p>
 <p>Em suma, o VirtualBox tem tudo para arrasar em futuras versões. Se, é claro, conseguir competir em qualidade com a VMWare que, no momento, é a líder em soluções de virtualização. Talvez por isso sua solução não seja tão barata.</p>
 
@@ -118,12 +120,14 @@ role="navigation" aria-label="main navigation">
 <p>É muito difícil construir um modelo de pastas que sirva para a maioria dos projetos que tivermos que colocar na fôrma. Ainda mais se esses projetos tiverem que futuramente fazer parte da mesma ramificação. Foi pensando em várias coisas que chegamos a uma versão beta que pode ajudar aqueles que ficam pensando durantes dias antes mesmo de colocar as mãos no código.</p>
 <p>Antes de começar a pensar em como as pastas estarão alinhadas, é importante saber como funcionará o controle de código do seu projeto. Como eu disse sobre o Bazaar, a estrutura inicial permitirá a junção de dois projetos distintos se estes compartilharem do mesmo commit no começo de suas vidas.</p>
 <p>Portanto, trate de iniciar a estruturação em um projeto-modelo que já contenha pelo menos um commit: o das pastas vazias já estruturadas.</p>
-<p>    bzr init _Template</p>
-<p>    cd _Template</p>
-<p>    bzr mkdir Docs</p>
-<p>    bzr mkdir Interface</p>
-<p>    bzr ...</p>
-<p>    bzr ci -m "Projeto-modelo. Herde desse projeto sua estrutura inicial"</p>
+<pre>
+   bzr init _Template
+   cd _Template
+   bzr mkdir Docs
+   bzr mkdir Interface
+   bzr ...
+   bzr ci -m "Projeto-modelo. Herde desse projeto sua estrutura inicial"
+</pre>
 <p>Estruturação proposta:</p>
 <ul><li>Build. Essa pasta contém tudo que é necessário para compilar e testar o projeto como um todo. Idealmente a execução da batch build.bat deve executar todo o processo. Após a compilação, é de competência dos componentes na subpasta Tests fazer os testes básicos do projeto para se certificar de que tudo está funcionando como deveria.</li>
 <li>Common. Aqui devem ser colocados aqueles includes que servem para vários pontos do projeto. Está exemplificado pelo arquivo de versão (Version.h), pois todos os arquivos devem referenciar uma única versão do produto. Podem existir Outras definições básicas, como nome do produto, dos arquivos, etc. É aqui que são gravadas as interfaces que permitem dependência circular entre os componentes (e.g. Interface de componentes COM).</li>
@@ -218,36 +222,46 @@ void MessageError(DWORD err, PCSTR msg, ...)
 <p>Essa é uma situação comum e controlada, que chega a ser quase um padrão de projeto: funções novas demais. A saída? Não chamar a função quando o sistema não for novo o suficiente. Isso pode ser resolvido facilmente com uma chamada a GetVersion.</p>
 <p>Porém, um outro problema decorrente dessa situação é que a função chamada estaticamente cria um link de importação da DLL para o executável. Ou seja, uma dependência estática. Dependências estáticas necessitam ser resolvidas antes que o programa execute, e o carregador (loader) de programas do sistema é responsável por essa verificação.</p>
 <p>Para verificar a existência de todas as DLLs e funções necessárias para nosso programa podemos utilizar o mundialmente conhecido Dependency Walker:</p>
-<p>    depends meu_executavel.exe</p>
+<pre>
+   depends meu_executavel.exe
+</pre>
 <img src="img/o-caso-da-funcao-de-delay-load-desaparecida-depends_meu_executavel.png"/>
 <p>Se a função ou DLL não existe no sistema, o seguinte erro costuma ocorrer (isso depende da versão do Sistema Operacional):</p>
 <img src="img/o-caso-da-funcao-de-delay-load-desaparecida-loader_erro.png"/>
 <p>Mas nem tudo está perdido!</p>
 <p>Existe uma LIB no Visual Studio que serve para substituir a dependência estática de uma DLL pela verificação dinâmica da existência de suas funções quando, e se, for executada a função no programa.</p>
 <p>Essa LIB contém algumas funções-chave que o Visual Studio utiliza ser for usado o seguinte parâmetro de compilação:</p>
-<p>    /delayload:iphlpapi.dll</p>
+<pre>
+   /delayload:iphlpapi.dll
+</pre>
 <p>A função principal se chama "__delayLoadHelper@8", ou seja, é uma função com convenção de chamada WINAPI (stdcall) que recebe dois parâmetros.</p>
 <p>Isso costuma sempre funcionar, sendo que tive uma grande surpresa com os seguintes erros de compilação na versão do programa que deve ser executada em Windows 95:</p>
 <ul><li>-------------------Configuration: Project - Win32 Win95 Release--------------------</li>
-</ul>
-<p>    Linking...</p>
-<p>    iphlpapi.lib(iphlpapi.dll) : error LNK2001: unresolved external symbol ___delayLoadHelper@8</p>
-<p>    release/meu_executavel.exe : fatal error LNK1120: 1 unresolved externals</p>
-<p>    Error executing link.exe.</p>
-<p>    </p>
-<p>    meu_executavel.exe - 3 error(s), 0 warning(s)</p>
+<pre>
+&lt;/ul&gt;
+   Linking...
+   iphlpapi.lib(iphlpapi.dll) : error LNK2001: unresolved external symbol ___delayLoadHelper@8
+   release/meu_executavel.exe : fatal error LNK1120: 1 unresolved externals
+   Error executing link.exe.
+   
+   meu_executavel.exe - 3 error(s), 0 warning(s)
+</pre>
 <p>Isso, é claro, depois de ter checado e rechecado a existência da LIB de Delay Load na lista de LIBs a serem lincadas:</p>
 <img src="img/o-caso-da-funcao-de-delay-load-desaparecida-delayimp.png"/>
 <p>Acontece que eu conheço algumas ferramentas que podem sempre me ajudar em situações de compilação e linque: Process Monitor e dumpbin. O Process Monitor pode ser usado para obter exatamente a localização da LIB que estamos tentando verificar:</p>
 <img src="img/o-caso-da-funcao-de-delay-load-desaparecida-delayimpprocmon.png"/>
 <p>Após localizar o local, podemos listar seus símbolos, mais precisamente a função "delayLoadHelper":</p>
-<p>    C:\DDK\3790\lib\w2k\i386&gt;dumpbin /symbols delayimp.lib | grep delayLoadHelper</p>
-<p>    108 00000000 SECT3C notype ()    External     | ___delayLoadHelper2@8</p>
+<pre>
+   C:\DDK\3790\lib\w2k\i386&gt;dumpbin /symbols delayimp.lib | grep delayLoadHelper
+   108 00000000 SECT3C notype ()    External     | ___delayLoadHelper2@8
+</pre>
 <p>A análise mostra que a função possui um "2" no final de seu nome, causando o erro de linque.</p>
 <p>Essa função, pelo visto, tem mudado de nome desde o Visual C++ 6, o que fez com que LIBs mais novas não funcionassem com essa versão do Visual Studio.</p>
 <p>Para sanar o problema, existem duas coisas que podem ser feitas:</p>
-<p>  1. Usar a delayimp.lib antiga. Isso não exige nenhuma mudança no código.</p>
-<p>  2. Criar uma função delayLoadHelper como wrapper. Isso exige a escrita de código. O código-fonte dessa função está disponível no diretório Include do Visual Studio, e pode ser adaptada para versões antigas.</p>
+<pre>
+ 1. Usar a delayimp.lib antiga. Isso não exige nenhuma mudança no código.
+ 2. Criar uma função delayLoadHelper como wrapper. Isso exige a escrita de código. O código-fonte dessa função está disponível no diretório Include do Visual Studio, e pode ser adaptada para versões antigas.
+</pre>
 <p>Nessa sessão de depuração você aprendeu como usar o Process Monitor para rastrear arquivos usados na compilação e como listar símbolos de LIBs que são usadas para lincar o programa.</p>
 
 </section><hr/>
@@ -265,7 +279,9 @@ void MessageError(DWORD err, PCSTR msg, ...)
 <p>O erro mais comum é usar uma LIB onde não está a função que estamos usando, ou usar uma versão diferente da mesma LIB que não contém a função, ou contém, mas com assinatura (parâmetros da função) diferentes. Isso pode ser verificado no código-fonte da LIB, se disponível, ou então pelo uso do dumpbin, como já vimos anteriormente.</p>
 <p>Dica extra: às vezes você pensa que está usando uma LIB em um determinado caminho, mas o linker achou a LIB primeiro em outro lugar. Para se certificar que está verificando a mesma LIB que o linker achou, use o Process Monitor.</p>
 <p>Às vezes, porém, não estamos usando a função diretamente e não conhecemos quem a usaria. Para isso que hoje em dia os compiladores mais espertos nos dizem em que parte do código foi referenciado a tal função:</p>
-<p>    test.obj : error LNK2019: unresolved external symbol func referenced in function main</p>
+<pre>
+   test.obj : error LNK2019: unresolved external symbol func referenced in function main
+</pre>
 <p>É sábio primeiro inspecionar a função que referencia, para depois entender porque ela não foi encontrada. Mesmo parecendo diferente, essa operação faz parte do primeiro passo, que é identificar a origem.</p>
 <h5>Segundo passo: você digitou direito?</h5>
 <p>Parece estúpido, mas às vezes é esse o caso. Essa é a segunda coisa a fazer porque não é tão comum quanto a primeira, visto que hoje em dia é rotina colocarmos as funções em um header e incluirmos esse cabeçalho em nosso código-fonte (em C++, praticamente obrigatório). Se houvesse discrepância entre o nome da função chamada e o nome da função existente, provavelmente teríamos um erro de compilação ("função não encontrada") antes do erro de linking.</p>
@@ -304,18 +320,24 @@ int main()
 <p>No entanto, está errado.</p>
 <p>É fato que a maioria das funções que retornam handles retornam NULL para indicar o erro na tentativa de obter o recurso. Ao comparar o retorno com NULL, o programador geralmente faz uma chamada a GetLastError para saber o que aconteceu. No entanto, uma das funções mais usadas, a CreateFile, não retorna NULL, mas INVALID_HANDLE_VALUE.</p>
 <p>Sendo assim, o código acima deveria ser:</p>
-<p>    if( hFile != INVALID_HANDLE_VALUE )</p>
+<pre>
+   if( hFile != INVALID_HANDLE_VALUE )
+</pre>
 <p>GetVersion também é uma função que muitos erraram. Erraram tanto que eles fizeram uma nova versão menos complicada. Como está escrito no MSDN: "The GetVersionEx function was developed because many existing applications err when examining the packed DWORD value returned by GetVersion, transposing the major and minor version numbers."</p>
 <p>O motivo de tantos erro pode ter sido o fato que o valor retornado é uma estrutura de bits dentro de um DWORD, coisa que nem todos programadores C sabem lidar muito bem, e o fato de ser uma função muito utilizada por todos (pegar a versão do sistema operacional).</p>
 <p>Eis a tabela de campos do retorno de GetVersion:</p>
-<p>    Platform                                High-order bit   Next 7 bits     Low-order byte</p>
+<pre>
+   Platform                                High-order bit   Next 7 bits     Low-order byte
+</pre>
 <ul><li>------------------------------------   --------------   ------------    --------------</li>
-</ul>
-<p>    Windows NT 3.51                         0                Build number    3</p>
-<p>    Windows NT 4.0                          0                Build number    4</p>
-<p>    Windows 2000 or Windows XP              0                Build number    5</p>
-<p>    Windows 95, Windows 98, or Windows Me   1                Reserved        4</p>
-<p>    Win32s with Windows 3.1                 1                Build number    3</p>
+<pre>
+&lt;/ul&gt;
+   Windows NT 3.51                         0                Build number    3
+   Windows NT 4.0                          0                Build number    4
+   Windows 2000 or Windows XP              0                Build number    5
+   Windows 95, Windows 98, or Windows Me   1                Reserved        4
+   Win32s with Windows 3.1                 1                Build number    3
+</pre>
 <p>Mesmo que não seja tão difícil, pode ser ambíguo. Por exemplo, como saber se o Windows é 95, 98 ou ME?</p>
 <p>O código abaixo, muito usado por todos que suportam ainda o Windows mais velhinhos, verifica se estamos rodando em plataforma NT ou 9x.</p>
 <pre>
@@ -334,13 +356,17 @@ int main()
 </pre>
 <img src="img/aprenda-a-usar-sua-api-jurassicpark.png"/>
 <p>Nem sempre o handle que obtemos é fechado com CloseHandle. As funções abaixo retornam handles que devem ser desalocados com as funções à direita:</p>
-<p>    Função que obtém recurso         Função que libera recurso</p>
+<pre>
+   Função que obtém recurso         Função que libera recurso
+</pre>
 <ul><li>-----------------------         -------------------------</li>
-</ul>
-<p>    LoadLibrary                      FreeLibrary</p>
-<p>    RegOpenKey                       RegCloseKey</p>
-<p>    GetDC                            ReleaseDC</p>
-<p>    BeginPaint                       EndPaint</p>
+<pre>
+&lt;/ul&gt;
+   LoadLibrary                      FreeLibrary
+   RegOpenKey                       RegCloseKey
+   GetDC                            ReleaseDC
+   BeginPaint                       EndPaint
+</pre>
 <p>Sempre tem mais exemplos. Algumas dicas úteis para o dia-a-dia de um programador Win32 API são:</p>
 <ul><li>Leia a documentação</li>
 <li>Se atente aos valores de retorno em caso de sucesso e erro</li>
@@ -614,31 +640,37 @@ int Start()
 <h5>Registers, stack frame and call/ret</h5>
 <p>Registers are reserved variables in the processor that can be used by the assembly code. Stack frame is the function calling hierarchy, the "who called who" in a given execution state. Call and ret are assembly instructions to call and return from a function, respectively. Both change the stack frame.</p>
 <p>Imagine you have a function, CallFunc, and another function, Func, and one calls the other. In order to analyse just the function call, and just that, let's consider Func doesn't receive any argument and doesn't return any value. The C code, would be like bellow:</p>
-<p>    void Func()</p>
-<p>    {</p>
-<p>       return;</p>
-<p>    }</p>
-<p>    void CallFunc()</p>
-<p>    {</p>
-<p>       Func();</p>
-<p>    }</p>
+<pre>
+   void Func()
+   {
+      return;
+   }
+   void CallFunc()
+   {
+      Func();
+   }
+</pre>
 <p>Simple, huh? Being simple, the generated assembly will be simple as well. In CallFunc it should have the function call, and inside Func the return from the call. The rest of the code is related with Debug version stuff.</p>
-<p>    Func:</p>
-<p>    00411F73 prev_instruction ; ESP = 0012FD38 (four bytes stacked up)</p>
-<p>    00411F74 ret ; *ESP = 00411FA3 (return address)</p>
-<p>    </p>
-<p>    CallFunc:</p>
-<p>    00411F9C prev_instruction</p>
-<p>    00411F9E call Func (411424h) ; ESP = 0012FD3C</p>
-<p>    00411FA3 next_instruction</p>
+<pre>
+   Func:
+   00411F73 prev_instruction ; ESP = 0012FD38 (four bytes stacked up)
+   00411F74 ret ; *ESP = 00411FA3 (return address)
+   
+   CallFunc:
+   00411F9C prev_instruction
+   00411F9E call Func (411424h) ; ESP = 0012FD3C
+   00411FA3 next_instruction
+</pre>
 <p>From the assembly above we can conclude two things: 1. The stack grows down, since its value decremented four bytes (0012FD3C minus 0012FD38 equal four) and 2. The return value from the calling is the address of the very next instruction after the call instruction, in the case 00411FA3.</p>
 <p>Well, in the same way we can follow this simple execution, the attacker will do as well. That's why in the middle of this call we will throw an exception and, in the return, we will not do the return in the conventional way, but using another technique that, instead using the ret instruction, sets manually the esp value (stack state) and jumps to the next instruction in CallFunc.</p>
-<p>    Func:</p>
-<p>    00411F60 throw_exception</p>
-<p>    00411F61 ...</p>
-<p>    00411F73 catch_exception</p>
-<p>    00411F74 mov ESP, 0012FD3C ; ESP = 0012FD3C, just like CallFunc</p>
-<p>    00411F75 jmp 00411FA3 ; jumps to CallFunc::next_instruction</p>
+<pre>
+   Func:
+   00411F60 throw_exception
+   00411F61 ...
+   00411F73 catch_exception
+   00411F74 mov ESP, 0012FD3C ; ESP = 0012FD3C, just like CallFunc
+   00411F75 jmp 00411FA3 ; jumps to CallFunc::next_instruction
+</pre>
 <h5>Back to the Middle Earth</h5>
 <p>All this assembly stuff doesn't need to be written in assembly level. It was just a way I found to illustrate the differences between the stack return and the jump return. As it was said, to the luck and well being for all, this same technique can be implemented using ANSI C functions:</p>
 <pre>

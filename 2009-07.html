@@ -91,12 +91,14 @@ int main()
 }
 </pre>
 <p>Imediatamente o compilador iria acusar os seguintes erros:</p>
-<p>    overload.c</p>
-<p>    </p>
-<p>    overload.c(2) : warning C4028: formal parameter 1 different from declaration</p>
-<p>    overload.c(2) : warning C4028: formal parameter 2 different from declaration</p>
-<p>    overload.c(2) : error C2371: 'soma' : redefinition; different basic types</p>
-<p>            overload.c(1) : see declaration of 'soma'</p>
+<pre>
+   overload.c
+   
+   overload.c(2) : warning C4028: formal parameter 1 different from declaration
+   overload.c(2) : warning C4028: formal parameter 2 different from declaration
+   overload.c(2) : error C2371: 'soma' : redefinition; different basic types
+           overload.c(1) : see declaration of 'soma'
+</pre>
 <p>Isso acontece porque em C **os identificadores são únicos por escopo**. Esse é o motivo por que o seguinte código também está errado:</p>
 <pre>
 int main()
@@ -106,9 +108,11 @@ int main()
     return 0;
 }
 </pre>
-<p>    overload.c</p>
-<p>    overload.c(5) : error C2374: 'x' : redefinition; multiple initialization</p>
-<p>            overload.c(4) : see declaration of 'x'</p>
+<pre>
+   overload.c
+   overload.c(5) : error C2374: 'x' : redefinition; multiple initialization
+           overload.c(4) : see declaration of 'x'
+</pre>
 <p>De volta aos anos 90, isso também está errado em C++. Até por uma questão de lógica: como o compilador pode saber a qual variável estamos nos referindo se usarmos o mesmo nome para duas delas?</p>
 <p>Só que existe um truquezinho para impedir essa ambiguidade quando falamos de funções: os parâmetros que ela recebe.</p>
 <pre>
@@ -121,26 +125,29 @@ int main()
     return 0;
 }
 </pre>
-<p>    C:\Tests&gt;cl /c overload.cpp</p>
-<p>    Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 13.10.6030 for 80x86</p>
-<p>    Copyright (C) Microsoft Corporation 1984-2002. All rights reserved.</p>
-<p>    </p>
-<p>    overload.cpp</p>
-<p>    </p>
-<p>    C:\Tests&gt;</p>
+<pre>
+   C:\Tests&gt;cl /c overload.cpp
+   Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 13.10.6030 for 80x86
+   Copyright (C) Microsoft Corporation 1984-2002. All rights reserved.
+   
+   overload.cpp
+   
+   C:\Tests&gt;
+</pre>
 <p>Isso permitiu que em C++ fosse criada a sobrecarga estática, que é exatamente isso: chamar a função não apenas de acordo com seu nome, mas também de acordo com sua assinatura, ou seja, o número e o tipo dos parâmetros recebidos. Chamamos de sobrecarga estática porque isso é feito apenas pelo compilador, não pesando em nada durante a execução do programa.</p>
 <p>Entre seus usos mais comuns estão os seguintes:</p>
-<p>  * Ter funções com o mesmo nome mas que tratam de diferentes parâmetros;</p>
-<p>    * soma(int, int);</p>
-<p>    * soma(double, double);</p>
-<p>    * Obs.: Isso ignora, é claro, as facilidades dos templates.</p>
-<p>  * Versões novas da mesma função que recebem parâmetros adicionais;</p>
-<p>    * export_data(void* buffer, int size);</p>
-<p>    * export_data(void* buffer, int size, unsigned long options);</p>
-<p>  * Mesmo nome de método para setar e obter o valor de uma propriedade;</p>
-<p>    * Class::Property(int x); // setter</p>
-<p>    * int x Class::Property() const; // getter</p>
-<p>  * Bom, o que mais sua imaginação mandar =)</p>
+<pre>
+ * Ter funções com o mesmo nome mas que tratam de diferentes parâmetros;
+   * soma(int, int);
+   * soma(double, double);
+   * Obs.: Isso ignora, é claro, as facilidades dos templates.
+ * Versões novas da mesma função que recebem parâmetros adicionais;
+   * export_data(void* buffer, int size);
+   * export_data(void* buffer, int size, unsigned long options);
+ * Mesmo nome de método para setar e obter o valor de uma propriedade;
+   * Class::Property(int x); // setter
+   * int x Class::Property() const; // getter
+ * Bom, o que mais sua imaginação mandar =)
 
 </section><hr/>
 
@@ -160,13 +167,15 @@ int main()
 }
 </pre>
 <p>Immediately the compiler would blame you about the following errors:</p>
-<p>    </p>
-<p>    overload.c</p>
-<p>    </p>
-<p>    overload.c(2) : warning C4028: formal parameter 1 different from declaration</p>
-<p>    overload.c(2) : warning C4028: formal parameter 2 different from declaration</p>
-<p>    overload.c(2) : error C2371: 'sum' : redefinition; different basic types</p>
-<p>            overload.c(1) : see declaration of 'sum'</p>
+<pre>
+   
+   overload.c
+   
+   overload.c(2) : warning C4028: formal parameter 1 different from declaration
+   overload.c(2) : warning C4028: formal parameter 2 different from declaration
+   overload.c(2) : error C2371: 'sum' : redefinition; different basic types
+           overload.c(1) : see declaration of 'sum'
+</pre>
 <p>This happens because in C **the identifiers are unique into the scope.** This is the reason why the following code is wrong also:</p>
 <pre>
 int main()
@@ -176,9 +185,11 @@ int main()
     return 0;
 }
 </pre>
-<p>    overload.c</p>
-<p>    overload.c(5) : error C2374: 'x' : redefinition; multiple initialization</p>
-<p>            overload.c(4) : see declaration of 'x'</p>
+<pre>
+   overload.c
+   overload.c(5) : error C2374: 'x' : redefinition; multiple initialization
+           overload.c(4) : see declaration of 'x'
+</pre>
 <p>Back to the 90's, this is also wrong in C++. Even for a logic issue: how the compiler can pick a variable if we're using the same name for both of them?</p>
 <p>Even though, there's a little trick to stop the ambiguity when we talk about functions: the parameters that they receives.</p>
 <pre>
@@ -191,26 +202,29 @@ int main()
     return 0;
 }
 </pre>
-<p>    C:Tests&gt;cl /c overload.cpp</p>
-<p>    Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 13.10.6030 for 80x86</p>
-<p>    Copyright (C) Microsoft Corporation 1984-2002. All rights reserved.</p>
-<p>    </p>
-<p>    overload.cpp</p>
-<p>    </p>
-<p>    C:Tests&gt;</p>
+<pre>
+   C:Tests&gt;cl /c overload.cpp
+   Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 13.10.6030 for 80x86
+   Copyright (C) Microsoft Corporation 1984-2002. All rights reserved.
+   
+   overload.cpp
+   
+   C:Tests&gt;
+</pre>
 <p>This allowed in C++ the creation of static overload, that is exactly this: to call a function not just by its name, but also to match its signature, the number and the type of the received parameters. We call static because this is done just by the compiler, not creating any overhead during the execution.</p>
 <p>Among the most common uses some are as it follows:</p>
-<p>  * Functions with the same name treating different parameters;</p>
-<p>    * sum(int, int);</p>
-<p>    * sum(double, double);</p>
-<p>    * Obs.: This ignores, of course, the templates usefulness.</p>
-<p>  * New version of the same fuction with addictional parameters;</p>
-<p>    * export_data(void* buffer, int size);</p>
-<p>    * export_data(void* buffer, int size, unsigned long options);</p>
-<p>  * Same method name to set and get the value of a class property;</p>
-<p>    * Class::Property(int x); // setter</p>
-<p>    * int x Class::Property() const; // getter</p>
-<p>  * Well, whatever your imagination and needs demand =)</p>
+<pre>
+ * Functions with the same name treating different parameters;
+   * sum(int, int);
+   * sum(double, double);
+   * Obs.: This ignores, of course, the templates usefulness.
+ * New version of the same fuction with addictional parameters;
+   * export_data(void* buffer, int size);
+   * export_data(void* buffer, int size, unsigned long options);
+ * Same method name to set and get the value of a class property;
+   * Class::Property(int x); // setter
+   * int x Class::Property() const; // getter
+ * Well, whatever your imagination and needs demand =)
 
 </section><hr/>
 

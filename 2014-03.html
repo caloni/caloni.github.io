@@ -330,69 +330,77 @@ role="navigation" aria-label="main navigation">
 <p>O que esse nome quer dizer basicamente é que agora é possível criar função dentro de função. Não só isso, mas passar funções inteiras, com protótipo, corpo e retorno, como parâmetro de função.</p>
 <p>Isso significa que finalmente os algoritmo da STL vão ser úteis e não um "pain in the ass".</p>
 <p>Por exemplo, antes, tínhamos que fazer o seguinte malabarismo para mexer com arrays/vetores/listas:</p>
-<p>    void NewYearMail(Person&amp; p)</p>
-<p>    {</p>
-<p>      p.age += 1;</p>
-<p>      SendMail(p);</p>
-<p>    }</p>
-<p>    int main()</p>
-<p>    {</p>
-<p>      vector&lt;Person&gt; people;</p>
-<p>      GetAnniversaries(people);</p>
-<p>      for_each(people.begin(),</p>
-<p>        people.end(),</p>
-<p>        NewYearMail);</p>
-<p>    }</p>
+<pre>
+   void NewYearMail(Person&amp; p)
+   {
+     p.age += 1;
+     SendMail(p);
+   }
+   int main()
+   {
+     vector&lt;Person&gt; people;
+     GetAnniversaries(people);
+     for_each(people.begin(),
+       people.end(),
+       NewYearMail);
+   }
+</pre>
 <p>Imagine que para cada interação devíamos criar uma função que manipulasse os elementos do vetor.</p>
 <p>Uma alternativa que costumava utilizar era a de roubar na brincadeira e criar um tipo dentro da função (permitido) e dentro desse tipo criar uma função (permitido):</p>
-<p>    int main()</p>
-<p>    {</p>
-<p>      struct NewYearMail</p>
-<p>      {</p>
-<p>        void operator()(Person&amp; p)</p>
-<p>        {</p>
-<p>          p.age += 1;</p>
-<p>          SendMail(p);</p>
-<p>        }</p>
-<p>      };</p>
-<p>    vector&lt;Person&gt; people;</p>
-<p>    GetAnniversaries(people);</p>
-<p>    for_each(people.begin(),</p>
-<p>      people.end(),</p>
-<p>      NewYearMail);</p>
-<p>    }</p>
+<pre>
+   int main()
+   {
+     struct NewYearMail
+     {
+       void operator()(Person&amp; p)
+       {
+         p.age += 1;
+         SendMail(p);
+       }
+     };
+   vector&lt;Person&gt; people;
+   GetAnniversaries(people);
+   for_each(people.begin(),
+     people.end(),
+     NewYearMail);
+   }
+</pre>
 <p>Apesar disso gerar "internal compiler error" em muitos builds com o Visual Studio 2003 (e o rápido, mas anos noventa, Visual Studio 6) na maioria das vezes o código compilava e rodava sem problemas. No entanto, deixava um rastro sutil de gambi no ar, um resquício de inveja de Pascal permitir função dentro de função e C não.</p>
 <p>Agora isso não é mais necessário. Desde o Visual Studio 2010 (que eu uso) a Microsoft tem trabalhado essas novidades do padrão no compilador, e aos poucos podemos nos sentir mais confortáveis em usar essas modernices sem medo:</p>
-<p>    int main()</p>
-<p>    {</p>
-<p>      vector&lt;Person&gt; people;</p>
-<p>      GetAnniversaries(people);</p>
-<p>    </p>
-<p>      for_each(people.begin(), </p>
-<p>        people.end(), </p>
-<p>        <a href="posts.html?q=&amp;">&amp;</a></p>
-<p>        {</p>
-<p>          p.age += 1;</p>
-<p>          SendMail(p);</p>
-<p>        }</p>
-<p>      );</p>
-<p>    }</p>
+<pre>
+   int main()
+   {
+     vector&lt;Person&gt; people;
+     GetAnniversaries(people);
+   
+     for_each(people.begin(), 
+       people.end(), 
+       [&amp;]
+       {
+         p.age += 1;
+         SendMail(p);
+       }
+     );
+   }
+</pre>
 <p>"Caraca, mas o que é esse código alienígena?", diria alguém como eu alguns anos atrás (talvez até meses). Bom, nada vem de graça em C++ e dessa vez houve algumas mudanças meio drásticas na sintaxe para acomodar o uso dessa lambida inline.</p>
-<p>    int main()</p>
-<p>    {</p>
-<p>      int numbers[] = { </p>
-<p>        1, 2, 3, 4, 5, </p>
-<p>        6, 7, 8, 9, 10 };</p>
-<p>    </p>
-<p>      for_each(&amp;numbers<a href="posts.html?q=0">0</a>,</p>
-<p>        &amp;numbers<a href="posts.html?q=10">10</a>,</p>
-<p>        <a href="posts.html?q=&amp;">&amp;</a> // capture scope</p>
-<p>        (int n) // arguments</p>
-<p>        {</p>
-<p>          cout &lt;&lt; n &lt;&lt; ' ';</p>
-<p>        }</p>
-<p>      );</p>
-<p>    }</p>
+<pre>
+   int main()
+   {
+     int numbers[] = { 
+       1, 2, 3, 4, 5, 
+       6, 7, 8, 9, 10 };
+   
+     for_each(&amp;numbers[0],
+       &amp;numbers[10],
+       [&amp;] // capture scope
+       (int n) // arguments
+       {
+         cout &lt;&lt; n &lt;&lt; ' ';
+       }
+     );
+   }
+</pre>
 <p>E não é só isso. Tem muito mais esquisitices de onde veio essa.</p>
 
 

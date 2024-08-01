@@ -555,49 +555,55 @@ role="navigation" aria-label="main navigation">
 <p class="note-title"><small>2016-11-29  <a href="tag_coding.html">tag_coding</a> <a href="tag_ccpp.html">tag_ccpp</a> </small><a href="2016-11.html"><sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-a-linguagem-de-programacao-cpp-o-inicio')"><sup>[copy]</sup></a></p>
 <p>O livro-base sobre a linguagem C++ e como programar nela tem o nome pouco criativo "The C++ Programming Language", e é de Bjarne Stroustrup, o criador da linguagem. Ele começou a desenhá-la em 1979, quando ainda a chamava de "C com Classes". Havia um problema a ser resolvido na época em que Stroustrup estava fazendo sua tese de doutorado. Havia linguagens muito boas em abstração como Simula, como o novo conceito de Orientação a Objetos, que carecia do mais importante na época: velocidade (só na época?). Já linguagens mais antigas como BCPL eram bem rápidas, mas eram tão simples que pareciam mais um Assembly glorificado. Havia, portanto, a necessidade de preencher a área de computação com alguma coisa bem no meio.</p>
 <p>Stroustrup não fez tudo do zero, nem fez tudo de uma vez. A primeira necessidade era apenas criar uma abstração já existente na linguagem C, mas que ainda não havia sido integrada à sintaxe: o contexto de uma estrutura, que se assemelha a uma proto-classe, ou para alguns já é até uma classe, pois possui membros e métodos:</p>
-<p>    class Cpp</p>
-<p>    {</p>
-<p>      int x;</p>
-<p>      int GetX();</p>
-<p>    };</p>
-<p>    int Cpp::GetX()</p>
-<p>    {</p>
-<p>      return x;</p>
-<p>    }</p>
-<p>    void Func(Cpp cpp)</p>
-<p>    {</p>
-<p>      int y = 33 + cpp.GetX();</p>
-<p>    }</p>
-<p>    int main()</p>
-<p>    {</p>
-<p>        Cpp cpp;</p>
-<p>        cpp.x = 42;</p>
-<p>        Func(cpp);</p>
-<p>    }</p>
+<pre>
+   class Cpp
+   {
+     int x;
+     int GetX();
+   };
+   int Cpp::GetX()
+   {
+     return x;
+   }
+   void Func(Cpp cpp)
+   {
+     int y = 33 + cpp.GetX();
+   }
+   int main()
+   {
+       Cpp cpp;
+       cpp.x = 42;
+       Func(cpp);
+   }
+</pre>
 <p>A grande sacada é que no meio de toda essa sintaxe de chamada de método havia a passagem de um parâmetro escondido, o this, que se referia a uma instância específica da classe: um objeto.</p>
-<p>    int Cpp::GetX()</p>
-<p>    {</p>
-<p>      return this-&gt;x;</p>
-<p>    }</p>
+<pre>
+   int Cpp::GetX()
+   {
+     return this-&gt;x;
+   }
+</pre>
 <p>Isso equivaleria a uma struct em C com funções que recebessem um this adaptado:</p>
-<p>    struct C</p>
-<p>    {</p>
-<p>      int x;</p>
-<p>    };</p>
-<p>    int C_GetX(C* pThis)</p>
-<p>    {</p>
-<p>      return pThis-&gt;x;</p>
-<p>    }</p>
-<p>    void Func(C c)</p>
-<p>    {</p>
-<p>      int y = 33 + C_GetX(&amp;c);</p>
-<p>    }</p>
-<p>    int main()</p>
-<p>    {</p>
-<p>      struct C c;</p>
-<p>      c.x = 42;</p>
-<p>      Func(c);</p>
-<p>    }</p>
+<pre>
+   struct C
+   {
+     int x;
+   };
+   int C_GetX(C* pThis)
+   {
+     return pThis-&gt;x;
+   }
+   void Func(C c)
+   {
+     int y = 33 + C_GetX(&amp;c);
+   }
+   int main()
+   {
+     struct C c;
+     c.x = 42;
+     Func(c);
+   }
+</pre>
 <p>Esse tipo de abstração nem é tão complicada assim. O ojetivo eram vários: conseguir proteger os membros de acesso indevido, abstrair o comportamento de um objeto. Com o tempo Stroustrup foi realmente criando algo de novo e muito mais difícil de se manter em C. Algo para um próximo post =)</p>
 
 </section><hr/>

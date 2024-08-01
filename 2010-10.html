@@ -135,10 +135,14 @@ role="navigation" aria-label="main navigation">
 <p>Que vergonha passar tanto tempo sem postar nada. Parece que não fiz nada que valesse a pena comentar por aqui.</p>
 <p>Na verdade, não fiz tanto, mesmo. Muitas mensagens do Outlook, gráficos UML e reuniões de alinhamento depois, sobrou um tempinho pra programar. Aprendi algumas coisas que tinha o desejo de saber há tanto tempo... Agora eu sei, quem diria, criar linques suspensos nas janelas Win32! Que novidade, não? Pois é, isso exige, <a href="http://msdn.microsoft.com/en-us/library/bb760706%28v=VS.85%29.aspx">de acordo com o SDK</a>, algumas artimanhas pra fazer funcionar. Para quem está de Visual Studio 2008/2010 na mão basta seguir os passos seguintes.</p>
 <p>Definir que estamos programando para XP ou superior:</p>
-<p>    #define _WIN32_WINNT 0x0600</p>
+<pre>
+   #define _WIN32_WINNT 0x0600
+</pre>
 <p>Inserir suporte a linques na biblioteca de controles comuns:</p>
-<p>    INITCOMMONCONTROLSEX icc = { sizeof(icc), ICC_LINK_CLASS }; </p>
-<p>    InitCommonControlsEx(&amp;icc);</p>
+<pre>
+   INITCOMMONCONTROLSEX icc = { sizeof(icc), ICC_LINK_CLASS }; 
+   InitCommonControlsEx(&amp;icc);
+</pre>
 <p>Usar o CreateWindow com a classe certa, fazer markup html dentro do título e cuidar das mensagens de click e enter no controle:</p>
 <pre>
 CreateWindowEx(0, WC_LINK, 
@@ -164,14 +168,16 @@ CreateWindowEx(0, WC_LINK,
 <p> Outra coisa que aprendi foi como enviar mensagens ao usuário para impedir que este reinicie a máquina em momentos importantes:</p>
 <img src="img/tres-em-um-0OKkJKy.png"/>
 <p>A partir do Vista temos uma nova API para fazer isso. E é muito simples:</p>
-<p>    BOOL WINAPI ShutdownBlockReasonCreate( </p>
-<p>      __in  HWND hWnd, </p>
-<p>      __in  LPCWSTR pwszReason </p>
-<p>    );   </p>
-<p>    </p>
-<p>    BOOL WINAPI ShutdownBlockReasonDestroy( </p>
-<p>      __in  HWND hWnd </p>
-<p>    );</p>
+<pre>
+   BOOL WINAPI ShutdownBlockReasonCreate( 
+     __in  HWND hWnd, 
+     __in  LPCWSTR pwszReason 
+   );   
+   
+   BOOL WINAPI ShutdownBlockReasonDestroy( 
+     __in  HWND hWnd 
+   );
+</pre>
 <p>Quando ao receber a famigerada WM_QUERYENDSESSION, basta retornar FALSE. O Windows faz o resto.</p>
 <p>PS: E com uma ajudinha do Windows Internals ainda fiquei sabendo que dá pra <a href="http://msdn.microsoft.com/en-us/library/ms686227%28VS.85%29.aspx">se colocar na frente da fila</a> para receber essa mensagem.</p>
 
@@ -270,24 +276,28 @@ CreateWindowEx(0, WC_LINK,
 <p>Para que seja criada a mensagem final, uma definição de mensagem é requirida como entrada, que pode vir do próprio chamador ou da já mencionada tabela de erros de algum módulo qualquer. No caso de querermos a descrição de um erro de sistema (em winerror.h, retornado por GetLastError ou similares) a definição da mensagem já está embutida no sistema, bastando para nós passarmos o código.</p>
 <p>É importante lembrar que, como estamos falando de uma descrição de erro, ou seja, de um texto, este pode vir em diversos idiomas, sendo que é nossa obrigação também definir para qual idioma desejamos traduzir nosso código de erro, sendo também nossa obrigação, no caso de mensagens específicas do nosso programa, fornecer o modelo da mensagem nos idiomas que formos suportar.</p>
 <p>O resto da função funciona mais ou menos como o sprintf, cuspindo a mensagem-modelo em uma saída formatada de acordo com os parâmetros de entrada.</p>
-<p>    </p>
-<p>    DWORD WINAPI FormatMessage(</p>
-<p>       __in      DWORD dwFlags,</p>
-<p>       __in_opt  LPCVOID lpSource,</p>
-<p>       __in      DWORD dwMessageId,</p>
-<p>       __in      DWORD dwLanguageId,</p>
-<p>       __out     LPTSTR lpBuffer,</p>
-<p>       __in      DWORD nSize,</p>
-<p>       __in_opt  va_list *Arguments</p>
-<p>    );</p>
+<pre>
+   
+   DWORD WINAPI FormatMessage(
+      __in      DWORD dwFlags,
+      __in_opt  LPCVOID lpSource,
+      __in      DWORD dwMessageId,
+      __in      DWORD dwLanguageId,
+      __out     LPTSTR lpBuffer,
+      __in      DWORD nSize,
+      __in_opt  va_list *Arguments
+   );
+</pre>
 <h5>Flags</h5>
 <p>As flags do parâmetro dwFlags mudam radicalmente o funcionamento da rotina, o que me lembra de outra figura bizarra: o <a href="http://www.cplusplus.com/reference/clibrary/cstdlib/realloc/">realloc da biblioteca padrão</a>.</p>
 <p>No caso do FormatMessage, a variável dwFlags se divide em dois para especificar dois grupos de opções distintos. A parte maior contém as opções armazenadas tradicionalmente como um mapa de bits, enquanto o byte menos significativo define como será tratada a saída final, com respeito às novas linhas e qual será a largura máxima de uma linha na saída.</p>
 <img src="img/formatmessage-para-dumies-8nKXyBs.png"/>
 <h5>Source</h5>
 <p>O parâmetro mais polêmico é o que possui vários significados. No caso de lpSource, existem dois significados possíveis:</p>
-<p>  1. **FORMAT_MESSAGE_FROM_HMODULE**. Ele é um HANDLE para um módulo.</p>
-<p>  2. **FORMAT_MESSAGE_FROM_STRING**. Ele é um ponteiro para string.</p>
+<pre>
+ 1. **FORMAT_MESSAGE_FROM_HMODULE**. Ele é um HANDLE para um módulo.
+ 2. **FORMAT_MESSAGE_FROM_STRING**. Ele é um ponteiro para string.
+</pre>
 <p>Isso explica por que essas duas flags são exclusivas: ou uma ou outra. Mesmo que a flag FORMAT_MESSAGE_FROM_SYSTEM seja usada, a função tentará achar a definição da mensagem no módulo especificado por lpSource primeiro, antes de ir buscar nas tabelas do sistema.</p>
 <h5>O código do erro</h5>
 <p>Chamado de dwMessageId, esse é o argumento onde podemos passar um código de GetLastError ou nossos próprios códigos de erro. Se já tivermos uma string em lpSource, no entanto, não faz sentido existir um código de erro.</p>

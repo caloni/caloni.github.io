@@ -241,17 +241,19 @@ role="navigation" aria-label="main navigation">
 <p><a href="https://www.multipath-tcp.org/">MPTCP</a> (MultiPath TCP) é uma boa ideia para tornar a conexão de rede mais robusta, mas apenas funciona em TCP, e em um ambiente multiplataforma não há soluções em kernel mode exceto o ECMP desenvolvido no último Linux, cujos <a href="http://codecave.cc/multipath-routing-in-linux-part-1.html">artigos de Jakub Sitnicki</a> explicam os detalhes. E foi através da minha busca por uma implementação de MPUDP que encontrei essa ferramenta feita por <a href="https://github.com/greensea">greensea</a>, um usuário do GitHub.</p>
 <h3>Concepção</h3>
 <p>Existem dois servidores: Server A e Server B. A conexão de rede entre Server A e Server B é instável (com uma razão alta de perda de pacotes). Dessa forma, nós gostaríamos de estabilizar um túnel multipath entre Server A e Server B, esperando que a conexão entre ambos se torne mais confiável, diminuindo a razão entre perda e envio de pacotes. Com o broadcast dos pacotes por vários caminhos o resultado a longo prazo é uma comunicação cuja performance é prioridade.</p>
-<p>    Server A</p>
-<p>     |- mpclient</p>
-<p>        |- bridge 1</p>
-<p>           |- mpserver</p>
-<p>              |- Server B</p>
-<p>        |- bridge 2</p>
-<p>           |- mpserver</p>
-<p>              |- Server B</p>
-<p>        |- bridge 3</p>
-<p>           |- mpserver</p>
-<p>              |- Server B</p>
+<pre>
+   Server A
+    |- mpclient
+       |- bridge 1
+          |- mpserver
+             |- Server B
+       |- bridge 2
+          |- mpserver
+             |- Server B
+       |- bridge 3
+          |- mpserver
+             |- Server B
+</pre>
 <p>Mpclient é a parte cliente do mptunnel que roda no Server A. Você deve dizer a ele a informação dos servidores bridge. Uma vez que é iniciado, o mpclient abre uma porta local UDP para escutar e redirecionar qualquer pacote de e para os servidores bridge.</p>
 <p>Mpserver é a parte servidora do mptunnel que roda em qualquer lugar que acessa o Server B. Você deve dizer a ele a informação desse Server. Uma vez que é iniciado, o mpserver irá redirecionar qualquer pacote para o Server B.</p>
 <p>Os servidores bridge são simples, eles apenas redirecionam os pacotes do mpclient para mpserver, ou pacotes do mpserver para mpclient. Você pode usar as ferramentas nc ou socat para entregar um servidor bridge.</p>
@@ -261,28 +263,32 @@ role="navigation" aria-label="main navigation">
 <p>Para Windows o primeiro passo é baixar e instalar o cygwin com os seguintes pacotes adicionais ao padrão: gcc-core, socat, git, make, libev, libev-devel, libintl-devel. Em seguida deve-se baixar o repositório do mtunnel e de dentro de um terminal Cygwin executar o build.</p>
 <h3>Exemplo usando udpserver e udpclient</h3>
 <p>Dentro do repositório deste post há como exemplo de um modelo cliente e servidor em UDP, udpclient.c e udpserver.c. Eles se comunicam de um lado para outro enviando mensagens de hello com um número na frente que é incrementado pelo servidor.</p>
-<p>    udpclient      udpserver</p>
-<p>    |                      |</p>
-<p>    |--- 1 hello cli -----&gt;|</p>
-<p>    |                      |</p>
-<p>    |&lt;-- 2 hello srv ------|</p>
-<p>    |                      |</p>
-<p>    |--- 2 hello cli -----&gt;|</p>
-<p>    |                      |</p>
-<p>    |&lt;-- 3 hello srv ------|</p>
-<p>    |                      |</p>
-<p>    |--- 3 hello cli -----&gt;|</p>
-<p>    |                      |</p>
-<p>    |&lt;-- 4 hello srv ------|</p>
-<p>    |                      |</p>
-<p>    |......................|</p>
-<p>    |                      |</p>
+<pre>
+   udpclient      udpserver
+   |                      |
+   |--- 1 hello cli -----&gt;|
+   |                      |
+   |&lt;-- 2 hello srv ------|
+   |                      |
+   |--- 2 hello cli -----&gt;|
+   |                      |
+   |&lt;-- 3 hello srv ------|
+   |                      |
+   |--- 3 hello cli -----&gt;|
+   |                      |
+   |&lt;-- 4 hello srv ------|
+   |                      |
+   |......................|
+   |                      |
+</pre>
 <p>Agora eu quero conectar em meu udpserver, mas a conexão é instável e a razão de perda de pacotes é alta, gerando um throughput muito pequeno. Para aumentar o throughput, ou seja, diminuir a perda de pacote, eu posso rodar um MPUDP para o servidor e estabilizar uma "conexão" UDP através da redundância das bridges.</p>
 <p>O udpserver está em listen na porta 6666 UDP e eu executo o mpserver no servidor da seguinte forma: "mpserver 2000 localhost 6666". Localmente executo o mpclient da seguinte forma: "mpclient 4000 client.mpclient.conf". Abaixo está o conteúdo do arquivo client.mpclient.conf:</p>
-<p>    # mptunnel</p>
-<p>    localhost 4001</p>
-<p>    localhost 4002</p>
-<p>    localhost 4003</p>
+<pre>
+   # mptunnel
+   localhost 4001
+   localhost 4002
+   localhost 4003
+</pre>
 <p>Em cada "servidor bridge" (no exemplo está tudo local, mas não precisaria) use socat para redirecionar os pacotes: "socat udp-listen:4001 udp4:localhost:2000", "socat udp-listen:4002 udp4:localhost:2000", "socat udp-listen:4003 udp4:localhost:2000".</p>
 <p>Os servidores bridge irão ficar em listen nas portas 4001, 4002 e 4003 e redirecionar qualquer pacote recebido para localhost:2000, e vice-versa. Agora eu faço o cliente conectar em localhost:4000 que o mpclient está em listen ele irá estabiizar uma conexão sobre o MultiPath UDP tunnel.</p>
 <p>Dois scripts estão disponíveis para iniciar e parar a arquitetura de exemplo acima chamados respectivamente sample.start.sh e sample.stop.sh.</p>

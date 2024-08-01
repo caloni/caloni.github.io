@@ -137,59 +137,67 @@ role="navigation" aria-label="main navigation">
 <p>"@caloni poderia pensar em fazer um artigo sobre os modificadores de tipo em c? os mais complexo, acho eu: volatile, enum, union, extern, etc"</p>
 <p>Uma coisa de cada vez: existem **modificadores** (ou qualificadores) de tipo e **especificadores** de tipo. _Volatile_ e _extern_ se encaixam na primeira categoria, _enum_ e _union_ na segunda. Veremos um pouco desses dois lados da linguagem em doses paliativas.</p>
 <h5>Padrão C (ISO/IEC 9899:1990)</h5>
-<p>    6.5.2.2 enum-specifier</p>
-<p>     enum</p>
-<p>    </p>
-<p>    6.5.3 type-qualifier</p>
-<p>     const</p>
-<p>     volatile</p>
-<p>    </p>
-<p>    6.5.2.1 struct-or-union</p>
-<p>     struct</p>
-<p>     union</p>
-<p>    </p>
-<p>    6.5.1 storage-class-specifier</p>
-<p>     typedef</p>
-<p>     extern</p>
-<p>     static</p>
-<p>     auto</p>
-<p>     register</p>
+<pre>
+   6.5.2.2 enum-specifier
+    enum
+   
+   6.5.3 type-qualifier
+    const
+    volatile
+   
+   6.5.2.1 struct-or-union
+    struct
+    union
+   
+   6.5.1 storage-class-specifier
+    typedef
+    extern
+    static
+    auto
+    register
+</pre>
 <h5>Padrão C++ (ISO/IEC 14882:1998)</h5>
-<p>    type-specifier</p>
-<p>     enum-specifier</p>
-<p>    </p>
-<p>    enum-specifier</p>
-<p>     enum</p>
-<p>    </p>
-<p>    cv-qualifier</p>
-<p>     const</p>
-<p>     volatile</p>
-<p>    </p>
-<p>    class-key</p>
-<p>     class</p>
-<p>     struct</p>
-<p>     union</p>
-<p>    </p>
-<p>    storage-class-specifier</p>
-<p>     auto</p>
-<p>     register</p>
-<p>     static</p>
-<p>     extern</p>
-<p>     mutable</p>
-<p>    </p>
-<p>    decl-specifier</p>
-<p>     storage-class-specifier</p>
-<p>     typedef</p>
+<pre>
+   type-specifier
+    enum-specifier
+   
+   enum-specifier
+    enum
+   
+   cv-qualifier
+    const
+    volatile
+   
+   class-key
+    class
+    struct
+    union
+   
+   storage-class-specifier
+    auto
+    register
+    static
+    extern
+    mutable
+   
+   decl-specifier
+    storage-class-specifier
+    typedef
+</pre>
 <h5>Modificadores de tipo</h5>
 <p>Um modificador de tipo é opcional na definição de um tipo e deve estar sempre relacionado com a declaração de alguma variável. Ele determina, em termos gerais, qual será a função dessa variável. Ela pode ser modificada? Onde ela se encontra no programa? Como ela será modificada?</p>
 <p>Como exemplo rápido, temos abaixo uma variável que é atualizada pelo clock do processador e uma variável que não pode ser alterada após sua primeira atribuição:</p>
-<p>    volatile int* clockSecs = &lt;algum-endereço-do-sistema&gt;;</p>
-<p>    const float pi = 3.14;</p>
+<pre>
+   volatile int* clockSecs = &lt;algum-endereço-do-sistema&gt;;
+   const float pi = 3.14;
+</pre>
 <p>Fica meio óbvio que a primeira variável possui seu valor volátil, ou seja, muda conforme o tempo passa, e não depende do próprio código (pode mudar sem sua permissão). A segunda variável também tem um uso explícito, uma vez que o valor de pi nunca será alterado (não nesse Universo).</p>
 <h5>Especificadores de tipo</h5>
 <p>Os especificadores de tipo possuem cada um sua peculiaridade. Os mais peculiares, que veremos nos próximos artigos, serão as enumerações e as construções bizarras de structs e unions.</p>
-<p>    enum Contador { um = 1, dois, tres, };</p>
-<p>    union Atoms { struct { int part1; int part2; } parts; int64 total; };</p>
+<pre>
+   enum Contador { um = 1, dois, tres, };
+   union Atoms { struct { int part1; int part2; } parts; int64 total; };
+</pre>
 <p>Aqui não é um compêndio teórico sobre a linguagem. Vamos falar particularmente da programação Windows, mas esteja livre para dar seus pitacos com respeito a outros sistemas operacionais e suas implementações igualmente exdrúxulas =)</p>
 
 </section><hr/>
@@ -209,16 +217,18 @@ role="navigation" aria-label="main navigation">
 <p class="title"><a href="2010-05.html#enum">#</a> Enum</p>
 <p class="note-title"><small>2010-05-31  <a href="tag_coding.html">tag_coding</a> </small><a href="2010-05.html"><sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-enum')"><sup>[copy]</sup></a></p>
 <p>Padrão C (ISO/IEC 9899:1990)</p>
-<p>    </p>
-<p>    6.5.2.2 enum-specifier</p>
-<p>     enum</p>
-<p>    Padrão C++ (ISO/IEC 14882:1998)</p>
-<p>    </p>
-<p>    type-specifier</p>
-<p>     enum-specifier</p>
-<p>    </p>
-<p>    enum-specifier</p>
-<p>     enum</p>
+<pre>
+   
+   6.5.2.2 enum-specifier
+    enum
+   Padrão C++ (ISO/IEC 14882:1998)
+   
+   type-specifier
+    enum-specifier
+   
+   enum-specifier
+    enum
+</pre>
 <p>Uma enumeração faz duas coisas: define um novo tipo, parecido com um inteiro, e cria uma **lista de constantes com nomes significativos**. A definição técnica do tipo de um enum é mais complicada, mas basicamente ele é um novo int.</p>
 <p>Como funciona: definimos uma lista com cada elemento tendo um valor inteiro, geralmente único. Todos os nomes usados na lista passam a fazer parte do espaço de nomes atual e funcionam como constantes com o seu valor definido no início.</p>
 <pre>

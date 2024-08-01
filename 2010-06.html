@@ -85,26 +85,32 @@ role="navigation" aria-label="main navigation">
 <p class="title"><a href="2010-06.html#const-e-volatile">#</a> Const e Volatile</p>
 <p class="note-title"><small>2010-06-04  <a href="tag_coding.html">tag_coding</a> </small><a href="2010-06.html"><sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-const-e-volatile')"><sup>[copy]</sup></a></p>
 <p>Padrão C (ISO/IEC 9899:1990)</p>
-<p>    </p>
-<p>    6.5.3 type-qualifier</p>
-<p>     const</p>
-<p>     volatile</p>
-<p>    Padrão C++ (ISO/IEC 14882:1998)</p>
-<p>    </p>
-<p>    cv-qualifier</p>
-<p>     const</p>
-<p>     volatile</p>
+<pre>
+   
+   6.5.3 type-qualifier
+    const
+    volatile
+   Padrão C++ (ISO/IEC 14882:1998)
+   
+   cv-qualifier
+    const
+    volatile
+</pre>
 <h5>Qualificadores de tipo</h5>
 <p>Chamamos de qualificador de tipo as palavrinhas mágicas **const** e **volatile**. Na prática elas definem como uma determinada variável será usada e se comportará durante a vida do programa.</p>
 <h5>Const</h5>
 <p>Uma variável const não pode ser alterada pelo programa durante sua execução, apenas durante sua inicialização:</p>
-<p>    const float pi = 3.14; // até onde sabemos, pi não irá mudar neste Universo</p>
+<pre>
+   const float pi = 3.14; // até onde sabemos, pi não irá mudar neste Universo
+</pre>
 <p>No exemplo acima, o valor de pi não pode mais ser alterado. Só que repare que ele foi, em determinado momento, alterado com um valor constante: na sua inicialização. Isso quer dizer que:</p>
-<p>  * pi é uma variável no programa representada por um local na memória **endereçável **pelo programa</p>
-<p>  * pi não é um define do pré-processador que irá virar uma constante literal (3.14, por exemplo)</p>
-<p>    // eu posso endereçar uma constante,</p>
-<p>    // desde que qualifique corretamente meu ponteiro</p>
-<p>    const float* ppi = &amp; pi;</p>
+<pre>
+ * pi é uma variável no programa representada por um local na memória **endereçável **pelo programa
+ * pi não é um define do pré-processador que irá virar uma constante literal (3.14, por exemplo)
+   // eu posso endereçar uma constante,
+   // desde que qualifique corretamente meu ponteiro
+   const float* ppi = &amp; pi;
+</pre>
 <img src="img/const-e-volatile-V6eR9ln.png"/>
 <p>Teoricamente a região da memória que contiver uma variável const pode ser qualificada pelo sistema operacional como somente-leitura, mas isso não é uma obrigação. É obrigação do compilador avisar sobre tentativas de alteração da variável no meio do programa, mas nem sempre é possível enxergar que a memória não é alterável. Dessa forma, resultados imprevisíveis podem ocorrer.</p>
 <img src="img/const-e-volatile-d51bAIH.png"/>
@@ -140,9 +146,11 @@ int func2(int y)
 <p>Variáveis volatile geralmente interagem de alguma forma com o sistema em que rodam, e são representadas por ponteiros para memória retornada por esse sistema ou documentada como sendo de uso específico.</p>
 <h5>Const e Volatile</h5>
 <p>É possível que exista uma variável que não pode ser modificada pelo seu programa, mas é modificada pelo sistema, de forma que ela é uma mutante!</p>
-<p>    </p>
-<p>    /// endereça o relógio do sistema, atualizado a cada 1/100 milissegundos</p>
-<p>    const volatile int* g_systemClock = (const volatile int*) 0x7689B9D4;</p>
+<pre>
+   
+   /// endereça o relógio do sistema, atualizado a cada 1/100 milissegundos
+   const volatile int* g_systemClock = (const volatile int*) 0x7689B9D4;
+</pre>
 <img src="img/const-e-volatile-4zUSxmJ.jpg"/>
 <p>A definição de *g_systemClock é de uma memória que não pode ser alterada; só que ela é, pelo sistema. Então a variável também é volatile. No entanto, independente de ser const ou volatile, o tipo nunca será **alterado**, apenas **qualificado**. São duas coisas diferentes na linguagem.</p>
 

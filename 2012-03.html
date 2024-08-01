@@ -276,36 +276,38 @@ role="navigation" aria-label="main navigation">
 <img src="img/header-inutil-opLLPIk.png"/>
 <p>OK. Ele não está fazendo nada, mas e daí? Compilo meu projeto normalmente e depuro ele como se nada estivesse acontecendo.</p>
 <ul><li>----- Rebuild All started: Project: ZeroMasQueCoisaProj, Configuration: Debug Win32 ------</li>
-</ul>
-<p>    Build started 27/03/2012 11:40:32.</p>
-<p>    _PrepareForClean:</p>
-<p>    Deleting file "Debug\ZeroMasQueCoisaProj.lastbuildstate".</p>
-<p>    InitializeBuildStatus:</p>
-<p>    Creating "Debug\ZeroMasQueCoisaProj.unsuccessfulbuild" because "AlwaysCreate" was specified.</p>
-<p>    ClCompile:</p>
-<p>    stdafx.cpp</p>
-<p>    ZeroMasQueCoisaProj.cpp</p>
-<p>    CppInutil.cpp</p>
-<p>    Generating Code...</p>
-<p>    Manifest:</p>
-<p>    Deleting file "Debug\ZeroMasQueCoisaProj.exe.embed.manifest".</p>
-<p>    LinkEmbedManifest:</p>
-<p>    ZeroMasQueCoisaProj.vcxproj -&gt; c:\...\Debug\ZeroMasQueCoisaProj.exe</p>
-<p>    FinalizeBuildStatus:</p>
-<p>    Deleting file "Debug\ZeroMasQueCoisaProj.unsuccessfulbuild".</p>
-<p>    Touching "Debug\ZeroMasQueCoisaProj.lastbuildstate".</p>
-<p>    </p>
-<p>    Build succeeded.</p>
-<p>    </p>
-<p>    Time Elapsed 00:00:00.73</p>
-<p>    ========== Rebuild All: 1 succeeded, 0 failed, 0 skipped ==========</p>
-<p>    </p>
-<p>    'ZeroMasQueCoisaProj.exe': Loaded 'C:\...\Debug\ZeroMasQueCoisaProj.exe', Symbols loaded.</p>
-<p>    'ZeroMasQueCoisaProj.exe': Loaded 'C:\Windows\SysWOW64\ntdll.dll', Cannot find or open the PDB file</p>
-<p>    'ZeroMasQueCoisaProj.exe': Loaded 'C:\Windows\SysWOW64\kernel32.dll', Cannot find or open the PDB file</p>
-<p>    'ZeroMasQueCoisaProj.exe': Loaded 'C:\Windows\SysWOW64\KernelBase.dll', Cannot find or open the PDB file</p>
-<p>    'ZeroMasQueCoisaProj.exe': Loaded 'C:\Windows\SysWOW64\msvcr100d.dll', Symbols loaded.</p>
-<p>    The program '<a href="posts.html?q=5212">5212</a> ZeroMasQueCoisaProj.exe: Native' has exited with code 0 (0x0).</p>
+<pre>
+&lt;/ul&gt;
+   Build started 27/03/2012 11:40:32.
+   _PrepareForClean:
+   Deleting file "Debug\ZeroMasQueCoisaProj.lastbuildstate".
+   InitializeBuildStatus:
+   Creating "Debug\ZeroMasQueCoisaProj.unsuccessfulbuild" because "AlwaysCreate" was specified.
+   ClCompile:
+   stdafx.cpp
+   ZeroMasQueCoisaProj.cpp
+   CppInutil.cpp
+   Generating Code...
+   Manifest:
+   Deleting file "Debug\ZeroMasQueCoisaProj.exe.embed.manifest".
+   LinkEmbedManifest:
+   ZeroMasQueCoisaProj.vcxproj -&gt; c:\...\Debug\ZeroMasQueCoisaProj.exe
+   FinalizeBuildStatus:
+   Deleting file "Debug\ZeroMasQueCoisaProj.unsuccessfulbuild".
+   Touching "Debug\ZeroMasQueCoisaProj.lastbuildstate".
+   
+   Build succeeded.
+   
+   Time Elapsed 00:00:00.73
+   ========== Rebuild All: 1 succeeded, 0 failed, 0 skipped ==========
+   
+   'ZeroMasQueCoisaProj.exe': Loaded 'C:\...\Debug\ZeroMasQueCoisaProj.exe', Symbols loaded.
+   'ZeroMasQueCoisaProj.exe': Loaded 'C:\Windows\SysWOW64\ntdll.dll', Cannot find or open the PDB file
+   'ZeroMasQueCoisaProj.exe': Loaded 'C:\Windows\SysWOW64\kernel32.dll', Cannot find or open the PDB file
+   'ZeroMasQueCoisaProj.exe': Loaded 'C:\Windows\SysWOW64\KernelBase.dll', Cannot find or open the PDB file
+   'ZeroMasQueCoisaProj.exe': Loaded 'C:\Windows\SysWOW64\msvcr100d.dll', Symbols loaded.
+   The program '[5212] ZeroMasQueCoisaProj.exe: Native' has exited with code 0 (0x0).
+</pre>
 <p>Show.</p>
 <p>Mas o que acontece se eu precisar no momento do refactory (**que deve, sim, existir**) eu decidir remover meus arquivos inúteis?</p>
 <p>Continuo compilando normalmente o projeto, mas na hora de depurar...</p>
@@ -314,11 +316,13 @@ role="navigation" aria-label="main navigation">
 <p>_OK, não estou admitindo aqui o famigerado Rebuild All. Se você mantém projetos com mais de 200 arquivos, acho que deve **repensar seus conceitos** ao usar Rebuild All para tudo nessa vida._</p>
 <p>Acontece que existe uma árvore de dependências que o Visual Studio mantém para saber se seu projeto foi atualizado com tudo que tem mais de novo no que diz respeito ao **File System**, mas às vezes se esquece de checar o FS com o que está na solution. Por conta disso, o HeaderInutil e o CppInutil continuam dentro da árvore de dependência como zumbis.</p>
 <p>O que pode ser feito nesse caso (além do que os personagens de The Walking Dead costumam fazer) é configurar o arquivo devenv.exe.config (presente em **%programfiles(x86)%\Microsoft Visual Studio 10.0\Common7\IDE**) e adicionar as seguintes linhas após a seção **configSections. (**Esses passos <a href="http://blogs.msdn.com/b/vsproject/archive/2009/07/21/enable-c-project-system-logging.aspx">estão descritos no blogue da equipe do VC</a>.)</p>
-<p>    &lt;system.diagnostics&gt;</p>
-<p>    &lt;switches&gt;</p>
-<p>    &lt;add name="CPS" value="4" /&gt;</p>
-<p>    &lt;/switches&gt;</p>
-<p>    &lt;/system.diagnostics&gt;</p>
+<pre>
+   &lt;system.diagnostics&gt;
+   &lt;switches&gt;
+   &lt;add name="CPS" value="4" /&gt;
+   &lt;/switches&gt;
+   &lt;/system.diagnostics&gt;
+</pre>
 <img src="img/header-inutil-header-inutil3.png"/>
 <p>Depois de modificar o arquivo, reinicie o Visual Studio e tente novamente apertar F5 no mesmo projeto, **mas com o <a href="http://technet.microsoft.com/en-us/sysinternals/bb896647">DebugView </a>aberto**.</p>
 <img src="img/header-inutil-header-inutil4.png"/>

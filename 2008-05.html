@@ -77,32 +77,40 @@ role="navigation" aria-label="main navigation">
 <p>Para isso é que serve um depurador de verdade, mesmo.</p>
 <p>No modo real, onde vivem sistemas como o MS-DOS e programas como o Turbo C, a memória é acessada através do par de coordenadas conhecido como segmento e offset. Entre outros motivos, isso acontece porque em um determinado momento da história o 8086 possuía 16 bits em seus registradores, mas conseguia endereçar até 640 quilobytes, o que resulta em 640 vezes 1024, ou seja, 655366 bytes, um número dez vezes maior do que 65536 mil, ou 2 elevado a 16, o maior número representado por 16 bits.</p>
 <p>Dessa forma, foi necessário o uso de mais 4 bits para fazer a coisa funcionar, pois como podemos notar logo abaixo, a representação do último byte de 640 KB exige isso:</p>
-<p>    10   16   16   16   16   dec</p>
-<p>    A    0    0    0    0    hex</p>
-<p>    1010 0000 0000 0000 0000 bin</p>
-<p>    </p>
+<pre>
+   10   16   16   16   16   dec
+   A    0    0    0    0    hex
+   1010 0000 0000 0000 0000 bin
+   
+</pre>
 <p>Para conseguir esses 4 bits adicionais foram usados dois registradores em conjunto, o segmento e o offset. Funciona assim: o segmento é multiplicado por 16 (ou deslocado 4 bits à esquerda) e logo depois é somado com o offset, resultando no endereçamento desejado:</p>
-<p>    segment:    0x 9022</p>
-<p>    offset:     0x  1514</p>
-<p>                0x 9022</p>
-<p>                0x  1514 (+)</p>
-<p>    real addr:  0x 91734</p>
-<p>    </p>
+<pre>
+   segment:    0x 9022
+   offset:     0x  1514
+               0x 9022
+               0x  1514 (+)
+   real addr:  0x 91734
+   
+</pre>
 <p>Ou seja, para acessar o byte de número 595764, ou 0x91734 podemos usar o segmento 0x9022 com o offset 0x1514. A soma desses dois com o segmento deslocado irá resultado no endereço flag, ou seja, aquele que obtemos se contarmos a memória do zero até o final da RAM. Importante lembrar que na época a RAM não costumava ser de valores como 2GB ou até 4GB, mas em KB mesmo. Isso explica a limitação do 8086 em endereçar até 640 KB.</p>
 <p>Se nós repararmos bem, veremos que esse método implica em conseguirmos acessar o mesmo byte com um conjunto de segmentos e offsets diferentes, já que a soma pode ser resultado de operandos diversos. Esse é o chamado efeito de overlapping da memória segmentada, onde os programadores em assembly daquela época tinham que tomar alguns cuidados básicos para não atravessar a memória dos outros. No nosso exemplo acima, por exemplo, seria bem mais fácil chamar nosso bytezinho de segmento 0x9000, offset 0x1734.</p>
-<p>    0x  9000</p>
-<p>    0x   1734 (+)</p>
-<p>    0x  91734</p>
+<pre>
+   0x  9000
+   0x   1734 (+)
+   0x  91734
+</pre>
 <p>É verdade! Então, o WinDbg possui alguns comandos extendidos e formas de representar essa memória real, atualmente limitada não mais em 640 KB, mas até onde seus pentes de RAM agüentarem. Os mais comuns são os que imitam os nossos conhecidos dumps de memória: db, dc, dd... Temos daí as extensões !db, !dc, !dd... (note a exclamação do início).</p>
-<p>    windbg -kl</p>
-<p>    lkd&gt; !db 91734</p>
-<p>    #   91734 00 (...) .....</p>
-<p>    #   91744 00 (...) .....</p>
-<p>    #   91754 00 (...) .....</p>
-<p>    #   91764 00 (...) .....</p>
-<p>    #   91774 00 (...) .....</p>
-<p>    #   91784 00 (...) .....</p>
-<p>    #   91794 00 (...) .....</p>
+<pre>
+   windbg -kl
+   lkd&gt; !db 91734
+   #   91734 00 (...) .....
+   #   91744 00 (...) .....
+   #   91754 00 (...) .....
+   #   91764 00 (...) .....
+   #   91774 00 (...) .....
+   #   91784 00 (...) .....
+   #   91794 00 (...) .....
+</pre>
 <p>Simples, assim. O sinal de # no início do dump de memória denota memória real.</p>
 <p>Infelizmente, o WinDbg não nos permite ler certas regiões da memória por conta do cacheamento feito pelo processador. Para permitir a leitura em todas as condições, existem  três flags que podem ser utilizados:</p>
 <ul><li>c lê da memória cacheada</li>
@@ -111,12 +119,16 @@ role="navigation" aria-label="main navigation">
 </ul>
 <p>Nesse caso é possível, embora fique por sua conta e risco, ler qualquer memória não-cacheada usando-se a flag uc.</p>
 <p>É possível fazer mais brincadeiras usando os comandos comuns do WinDbg e uma notação diferente da memória. No entanto, é preciso tomar alguns cuidados quando mexer com isso. É recomendado o uso de uma máquina-vítima para esses testes, e não depuração local como estou fazendo.</p>
-<p>       descrição    example</p>
+<pre>
+      descrição    example
+</pre>
 <ul><li>----------- ----------</li>
-</ul>
-<p>    %  32, 64 bits  %6400000</p>
-<p>    &amp;  real 8086    &amp;9000:1734</p>
-<p>    #  real 8086    #4C</p>
+<pre>
+&lt;/ul&gt;
+   %  32, 64 bits  %6400000
+   &amp;  real 8086    &amp;9000:1734
+   #  real 8086    #4C
+</pre>
 <p>É isso aí. Não espero que você use muitas vezes essa forma de acessar memória. Só que eu usei e... nunca se sabe =)</p>
 
 
@@ -156,125 +168,141 @@ role="navigation" aria-label="main navigation">
 <p class="title"><a href="2008-05.html#como-tratar-um-merge-no-bazaar">#</a> Como tratar um merge no Bazaar</p>
 <p class="note-title"><small>2008-05-09  <a href="tag_coding.html">tag_coding</a> </small><a href="2008-05.html"><sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-como-tratar-um-merge-no-bazaar')"><sup>[copy]</sup></a></p>
 <p>Hoje fizemos um merge de duas versões que entraram em conflito em nosso projeto-piloto usando bzr. Isso geralmente ocorre quando alguma coisa mudou no mesmo arquivo em lugares muito próximos um do outro. Veremos um exemplo de código para ter uma idéia de quão fácil é o processo:</p>
-<p>    #include &lt;stdio.h&gt;</p>
-<p>    </p>
-<p>    void InitFunction()</p>
-<p>    {</p>
-<p>      printf("InitFunction");</p>
-<p>    }</p>
-<p>    </p>
-<p>    void DoAnotherJob()</p>
-<p>    {</p>
-<p>      char buf<a href="posts.html?q=100">100</a> = "";</p>
-<p>      fgets(buf, sizeof(buf), stdin);</p>
-<p>      printf("New line: %s", buf);</p>
-<p>    }</p>
-<p>    </p>
-<p>    void TerminateFunction()</p>
-<p>    {</p>
-<p>      printf("TerminateFunction");</p>
-<p>    }</p>
-<p>    </p>
-<p>    int main()</p>
-<p>    {</p>
-<p>      InitFunction();</p>
-<p>    </p>
-<p>      while( ! feof(stdin) )</p>
-<p>      {</p>
-<p>        DoAnotherJob();</p>
-<p>      }</p>
-<p>    </p>
-<p>      TerminateFunction();</p>
-<p>    }</p>
+<pre>
+   #include &lt;stdio.h&gt;
+   
+   void InitFunction()
+   {
+     printf("InitFunction");
+   }
+   
+   void DoAnotherJob()
+   {
+     char buf[100] = "";
+     fgets(buf, sizeof(buf), stdin);
+     printf("New line: %s", buf);
+   }
+   
+   void TerminateFunction()
+   {
+     printf("TerminateFunction");
+   }
+   
+   int main()
+   {
+     InitFunction();
+   
+     while( ! feof(stdin) )
+     {
+       DoAnotherJob();
+     }
+   
+     TerminateFunction();
+   }
+</pre>
 <p>A execução do programa contém uma saída parecida com as linhas abaixo:</p>
-<p>    C:\Tests\bzrpilot&gt;bzppilot.exe</p>
-<p>    InitFunctionuma linha</p>
-<p>    New line: uma linha</p>
-<p>    duas linhas</p>
-<p>    New line: duas linhas</p>
-<p>    tres linhas</p>
-<p>    New line: tres linhas</p>
-<p>    ^Z</p>
-<p>    New line: TerminateFunction</p>
-<p>    C:\Tests\bzrpilot&gt;</p>
+<pre>
+   C:\Tests\bzrpilot&gt;bzppilot.exe
+   InitFunctionuma linha
+   New line: uma linha
+   duas linhas
+   New line: duas linhas
+   tres linhas
+   New line: tres linhas
+   ^Z
+   New line: TerminateFunction
+   C:\Tests\bzrpilot&gt;
+</pre>
 <p>Parece que está faltando algumas quebras de linha. Além de que sabemos que nossos arquivos de entrada poderão conter até 200 caracteres por linha, o que pode gerar um desastre em nosso buffer de 100 bytes. Buffer overflow!</p>
 <p>Para corrigir ambos os problemas foram criados dois branches, seguindo as melhores práticas de uso de um controle de fonte distribuído:</p>
-<p>    C:\Tests&gt;bzr branch bzrpilot bzrpilot-linebreak</p>
-<p>    Branched 1 revision(s).</p>
-<p>    </p>
-<p>    C:\Tests&gt;bzr branch bzrpilot bzrpilot-bufferoverflow</p>
-<p>    Branched 1 revision(s).</p>
+<pre>
+   C:\Tests&gt;bzr branch bzrpilot bzrpilot-linebreak
+   Branched 1 revision(s).
+   
+   C:\Tests&gt;bzr branch bzrpilot bzrpilot-bufferoverflow
+   Branched 1 revision(s).
+</pre>
 <p>Feitas as correções devidas, o branch linebreak fica com a seguinte cara:</p>
-<p>    void InitFunction()</p>
-<p>    {</p>
-<p>      printf("InitFunction\n");</p>
-<p>    }</p>
-<p>    void DoAnotherJob()</p>
-<p>    {</p>
-<p>      char buf<a href="posts.html?q=100">100</a> = "";</p>
-<p>      fgets(buf, sizeof(buf), stdin);</p>
-<p>      printf("New line: %s\n", buf);</p>
-<p>    }</p>
-<p>    void TerminateFunction()</p>
-<p>    {</p>
-<p>      printf("TerminateFunction\n");</p>
-<p>    }</p>
+<pre>
+   void InitFunction()
+   {
+     printf("InitFunction\n");
+   }
+   void DoAnotherJob()
+   {
+     char buf[100] = "";
+     fgets(buf, sizeof(buf), stdin);
+     printf("New line: %s\n", buf);
+   }
+   void TerminateFunction()
+   {
+     printf("TerminateFunction\n");
+   }
+</pre>
 <p>Em vermelho podemos notar as linhas alteradas. Uma mudança diferente foi feita para o bug do buffer overflow, em seu branch correspondente:</p>
-<p>    void DoAnotherJob()</p>
-<p>    {</p>
-<p>      char buf<a href="posts.html?q=200">200</a> = "";</p>
-<p>      fgets(buf, sizeof(buf), stdin);</p>
-<p>      printf("New line: %s", buf);</p>
-<p>    }</p>
+<pre>
+   void DoAnotherJob()
+   {
+     char buf[200] = "";
+     fgets(buf, sizeof(buf), stdin);
+     printf("New line: %s", buf);
+   }
+</pre>
 <p>Agora só temos que juntar ambas as mudanças no branch principal.</p>
 <p>&gt; "Mas espere aí! Não é uma boa termos números mágicos no código!"</p>
 <p>Com toda razão, pensa o programador que está corrigindo o bug da quebra de linha, olhando sorrateiramente a função do meio, intocada, DoAnotherJob.</p>
 <p>Então ele resolve fazer um pequeno fix "de brinde", desconhecendo que mais alguém andou alterando essas linhas:</p>
-<p>    #define ENOUGH_BYTES 100</p>
-<p>    void InitFunction()</p>
-<p>    {</p>
-<p>      printf("InitFunction\n");</p>
-<p>    }</p>
-<p>    void DoAnotherJob()</p>
-<p>    {</p>
-<p>      char buf<a href="posts.html?q=ENOUGH_BYTES">ENOUGH_BYTES</a> = "";</p>
-<p>      fgets(buf, sizeof(buf), stdin);</p>
-<p>      printf("New line: %s\n", buf);</p>
-<p>    }</p>
+<pre>
+   #define ENOUGH_BYTES 100
+   void InitFunction()
+   {
+     printf("InitFunction\n");
+   }
+   void DoAnotherJob()
+   {
+     char buf[ENOUGH_BYTES] = "";
+     fgets(buf, sizeof(buf), stdin);
+     printf("New line: %s\n", buf);
+   }
+</pre>
 <p>Pronto. Um fonte politicamente correto! E que vai causar um conflito ao juntar essa galera. Vamos ver na seqüência:</p>
-<p>    C:\Tests&gt;bzr log bzrpilot-linebreak --short</p>
-<p>      3 Wanderley Caloni  2008-05-08</p>
-<p>        A little fix</p>
-<p>  </p>
-<p>      2 Wanderley Caloni  2008-05-08</p>
-<p>        Corrected line breaks</p>
-<p>  </p>
-<p>      1 Wanderley Caloni  2008-05-08</p>
-<p>        Our first version</p>
-<p>    </p>
-<p>    C:\Tests&gt;bzr log bzrpilot-bufferoverflow --short</p>
-<p>      2 Wanderley Caloni  2008-05-08</p>
-<p>        Corrigido buffer overflow</p>
-<p>  </p>
-<p>      1 Wanderley Caloni  2008-05-08</p>
-<p>        Our first version</p>
-<p>    C:\Tests&gt;bzr log bzrpilot --short</p>
-<p>      1 Wanderley Caloni  2008-05-08</p>
-<p>        Our first version</p>
-<p>    C:\Tests&gt;cd bzrpilot</p>
-<p>    </p>
-<p>    C:\Tests\bzrpilot&gt;bzr pull ..\bzrpilot-linebreak</p>
-<p>     M  bzppilot.cpp</p>
-<p>    All changes applied successfully.</p>
-<p>    Now on revision 3.</p>
-<p>    </p>
-<p>    C:\Tests\bzrpilot&gt;bzr pull ..\bzrpilot-bufferoverflow</p>
-<p>    bzr: ERROR: These branches have diverged. Use the merge command to reconcile them.</p>
+<pre>
+   C:\Tests&gt;bzr log bzrpilot-linebreak --short
+     3 Wanderley Caloni  2008-05-08
+       A little fix
+ 
+     2 Wanderley Caloni  2008-05-08
+       Corrected line breaks
+ 
+     1 Wanderley Caloni  2008-05-08
+       Our first version
+   
+   C:\Tests&gt;bzr log bzrpilot-bufferoverflow --short
+     2 Wanderley Caloni  2008-05-08
+       Corrigido buffer overflow
+ 
+     1 Wanderley Caloni  2008-05-08
+       Our first version
+   C:\Tests&gt;bzr log bzrpilot --short
+     1 Wanderley Caloni  2008-05-08
+       Our first version
+   C:\Tests&gt;cd bzrpilot
+   
+   C:\Tests\bzrpilot&gt;bzr pull ..\bzrpilot-linebreak
+    M  bzppilot.cpp
+   All changes applied successfully.
+   Now on revision 3.
+   
+   C:\Tests\bzrpilot&gt;bzr pull ..\bzrpilot-bufferoverflow
+   bzr: ERROR: These branches have diverged. Use the merge command to reconcile them.
+</pre>
 <p>Ops. Algo deu errado no segundo pull. O Bazaar nos diz que os ranches estão diferentes, e que termos que usar o comando merge no lugar.</p>
-<p>    C:\Tests\bzrpilot&gt;bzr merge ..\bzrpilot-bufferoverflow</p>
-<p>     M  bzppilot.cpp</p>
-<p>    Text conflict in bzppilot.cpp</p>
-<p>    1 conflicts encountered.</p>
+<pre>
+   C:\Tests\bzrpilot&gt;bzr merge ..\bzrpilot-bufferoverflow
+    M  bzppilot.cpp
+   Text conflict in bzppilot.cpp
+   1 conflicts encountered.
+</pre>
 <p>Usamos merge no lugar do pull e ganhamos agora um conflito no arquivo bzppilot.cpp, nosso único arquivo. Vamos ver a bagunça que fizemos?</p>
 <p>A última coisa que um controle de fonte quer fazer é confundir ou chatear o usuário. Por isso mesmo, a maioria dos conflitos que o Bazaar encontrar nos fontes serão resolvidos usando o algoritmo "se só um mexeu, então coloca a mudança". A tabela do <a href="http://doc.bazaar-vcs.org/bzr.dev/en/user-guide/#merging-changes">guia do usuário</a> ilustra esse algoritmo em possibilidades:</p>
 <p>| ancestor | first_branch | second_branch | result  | comment          |</p>
@@ -294,99 +322,117 @@ role="navigation" aria-label="main navigation">
 <p>Podemos fazer o merge da maneira que quisermos. Se vamos usar nossa versão de qualquer jeito é só sobrescrever o arquivo.cpp pelo arquivo.cpp.THIS. Se vamos fazer troca-troca de alterações, abrimos os arquivos .THIS e .OTHER e igualamos suas diferenças, copiando-as para arquivo.cpp.</p>
 <p>Recomendo primeiramente olhar o que o Bazaar já fez. Se houver dúvidas sobre a integridade das mudanças, comparar diretamente os arquivos THIS e OTHER.</p>
 <p>Vamos dar uma olhada na versão criada pelo Bazaar:</p>
-<p>    #include &lt;stdio.h&gt;</p>
-<p>    </p>
-<p>    #define ENOUGH_BYTES 100</p>
-<p>    </p>
-<p>    void InitFunction()</p>
-<p>    {</p>
-<p>      printf("InitFunction\n");</p>
-<p>    }</p>
-<p>    void DoAnotherJob()</p>
-<p>    {</p>
-<p>    &lt;&lt;&lt;&lt;&lt;&lt;&lt; TREE</p>
-<p>      char buf<a href="posts.html?q=ENOUGH_BYTES">ENOUGH_BYTES</a> = "";</p>
-<p>    =======</p>
-<p>      char buf<a href="posts.html?q=200">200</a> = "";</p>
-<p>    &gt;&gt;&gt;&gt;&gt;&gt;&gt; MERGE-SOURCE</p>
-<p>      fgets(buf, sizeof(buf), stdin);</p>
-<p>      printf("New line: %s\n", buf);</p>
-<p>    }</p>
-<p>    void TerminateFunction()</p>
-<p>    {</p>
-<p>      printf("TerminateFunction\n");</p>
-<p>    }</p>
-<p>    int main()</p>
-<p>    {</p>
-<p>      InitFunction();</p>
-<p>      while( ! feof(stdin) )</p>
-<p>      {</p>
-<p>        DoAnotherJob();</p>
-<p>      }</p>
-<p>      TerminateFunction();</p>
-<p>    }</p>
+<pre>
+   #include &lt;stdio.h&gt;
+   
+   #define ENOUGH_BYTES 100
+   
+   void InitFunction()
+   {
+     printf("InitFunction\n");
+   }
+   void DoAnotherJob()
+   {
+   &lt;&lt;&lt;&lt;&lt;&lt;&lt; TREE
+     char buf[ENOUGH_BYTES] = "";
+   =======
+     char buf[200] = "";
+   &gt;&gt;&gt;&gt;&gt;&gt;&gt; MERGE-SOURCE
+     fgets(buf, sizeof(buf), stdin);
+     printf("New line: %s\n", buf);
+   }
+   void TerminateFunction()
+   {
+     printf("TerminateFunction\n");
+   }
+   int main()
+   {
+     InitFunction();
+     while( ! feof(stdin) )
+     {
+       DoAnotherJob();
+     }
+     TerminateFunction();
+   }
+</pre>
 <p>Ora, vemos que ele já fez boa parte do trabalho para nós: as quebras de linha já foram colocadas e o novo define já está lá. Tudo que temos que fazer é trocar o define por 200 e tirar os marcadores, que é a junção das duas mudanças feitas no mesmo local, e que só um ser humano (AFAIK) consegue juntar:</p>
-<p>    #define ENOUGH_BYTES 200</p>
-<p>    void InitFunction()</p>
-<p>    {</p>
-<p>      printf("InitFunction\n");</p>
-<p>    }</p>
-<p>    void DoAnotherJob()</p>
-<p>    {</p>
-<p>      char buf<a href="posts.html?q=ENOUGH_BYTES">ENOUGH_BYTES</a> = "";</p>
-<p>      fgets(buf, sizeof(buf), stdin);</p>
-<p>      printf("New line: %s\n", buf);</p>
-<p>    }</p>
+<pre>
+   #define ENOUGH_BYTES 200
+   void InitFunction()
+   {
+     printf("InitFunction\n");
+   }
+   void DoAnotherJob()
+   {
+     char buf[ENOUGH_BYTES] = "";
+     fgets(buf, sizeof(buf), stdin);
+     printf("New line: %s\n", buf);
+   }
+</pre>
 <p>Resolvido o problema, simplesmente esquecemos das versões .BASE, .THIS e .OTHER e falamos pro Bazaar que está tudo certo.</p>
-<p>    C:\Tests\bzrpilot&gt;bzr resolve bzppilot.cpp</p>
+<pre>
+   C:\Tests\bzrpilot&gt;bzr resolve bzppilot.cpp
+</pre>
 <p>O controle de fonte apaga automaticamente os arquivos THIS, BASE e OTHER, mantendo o original como a mudança aceita.</p>
 <p>Após as correções dos conflitos, temos que fazer um commit que irá ser o filho dos dois branches que estamos juntando.</p>
-<p>    C:\Tests\bzrpilot&gt;bzr commit -m "Tudo certo"</p>
-<p>    Committing to: C:/Tests/bzrpilot/</p>
-<p>    modified bzppilot.cpp</p>
-<p>    Committed revision 4.</p>
-<p>    </p>
-<p>    C:\Tests\bzrpilot&gt;bzr log</p>
+<pre>
+   C:\Tests\bzrpilot&gt;bzr commit -m "Tudo certo"
+   Committing to: C:/Tests/bzrpilot/
+   modified bzppilot.cpp
+   Committed revision 4.
+   
+   C:\Tests\bzrpilot&gt;bzr log
+</pre>
 <ul><li>-----------------------------------------------------------</li>
-</ul>
-<p>    revno: 4</p>
-<p>    committer: Wanderley Caloni &lt;wanderley@caloni.com.br&gt;</p>
-<p>    branch nick: bzrpilot</p>
-<p>    timestamp: Thu 2008-05-08 22:09:35 -0300</p>
-<p>    message:</p>
-<p>      Tudo certo</p>
+<pre>
+&lt;/ul&gt;
+   revno: 4
+   committer: Wanderley Caloni &lt;wanderley@caloni.com.br&gt;
+   branch nick: bzrpilot
+   timestamp: Thu 2008-05-08 22:09:35 -0300
+   message:
+     Tudo certo
+</pre>
 <ul><li>-----------------------------------------------------------</li>
-</ul>
-<p>    revno: 1.1.1</p>
-<p>    committer: Wanderley Caloni &lt;wanderley@caloni.com.br&gt;</p>
-<p>    branch nick: bzrpilot-bufferoverflow</p>
-<p>    timestamp: Thu 2008-05-08 21:47:33 -0300</p>
-<p>    message:</p>
-<p>      Corrigido buffer overflow</p>
+<pre>
+&lt;/ul&gt;
+   revno: 1.1.1
+   committer: Wanderley Caloni &lt;wanderley@caloni.com.br&gt;
+   branch nick: bzrpilot-bufferoverflow
+   timestamp: Thu 2008-05-08 21:47:33 -0300
+   message:
+     Corrigido buffer overflow
+</pre>
 <ul><li>-----------------------------------------------------------</li>
-</ul>
-<p>    revno: 3</p>
-<p>    committer: Wanderley Caloni &lt;wanderley@caloni.com.br&gt;</p>
-<p>    branch nick: bzrpilot-linebreak</p>
-<p>    timestamp: Thu 2008-05-08 21:49:30 -0300</p>
-<p>    message:</p>
-<p>      A little fix</p>
+<pre>
+&lt;/ul&gt;
+   revno: 3
+   committer: Wanderley Caloni &lt;wanderley@caloni.com.br&gt;
+   branch nick: bzrpilot-linebreak
+   timestamp: Thu 2008-05-08 21:49:30 -0300
+   message:
+     A little fix
+</pre>
 <ul><li>-----------------------------------------------------------</li>
-</ul>
-<p>    revno: 2</p>
-<p>    committer: Wanderley Caloni &lt;wanderley@caloni.com.br&gt;</p>
-<p>    branch nick: bzrpilot-linebreak</p>
-<p>    timestamp: Thu 2008-05-08 21:44:23 -0300</p>
-<p>    message:</p>
-<p>      Corrected line breaks</p>
+<pre>
+&lt;/ul&gt;
+   revno: 2
+   committer: Wanderley Caloni &lt;wanderley@caloni.com.br&gt;
+   branch nick: bzrpilot-linebreak
+   timestamp: Thu 2008-05-08 21:44:23 -0300
+   message:
+     Corrected line breaks
+</pre>
 <ul><li>-----------------------------------------------------------</li>
-</ul>
-<p>    revno: 1</p>
-<p>    committer: Wanderley Caloni &lt;wanderley@caloni.com.br&gt;</p>
-<p>    branch nick: bzrpilot</p>
-<p>    timestamp: Thu 2008-05-08 21:33:53 -0300</p>
-<p>    message:</p>
-<p>      Our first version</p>
+<pre>
+&lt;/ul&gt;
+   revno: 1
+   committer: Wanderley Caloni &lt;wanderley@caloni.com.br&gt;
+   branch nick: bzrpilot
+   timestamp: Thu 2008-05-08 21:33:53 -0300
+   message:
+     Our first version
+</pre>
 <p>A versão do branch alternativo é 1.1.1, indicando que ele saiu da revisão número 1, é o primeiro alternativo e foi o único commit. Se houvessem mais modificações neste branch, elas seriam 1.1.2, 1.1.3 e assim por diante. Se mais alguém quisesse juntar alguma modificação da revisão 1 ela seria 1.2.1, 1.3.1, 1.4.1 e assim por diante.</p>
 <p>Um erro comum que pode acontecer é supor que o arquivo original está do jeito que deixamos e já usar o comando resolve diretamente. É preciso tomar cuidado, pois se algum conflito é detectado quer dizer que o Bazaar deixou para você alguns marcadores no fonte original, o que quer dizer que ele simplesmente não vai compilar enquanto você não resolver seus problemas.</p>
 <p>Enfim, tudo que temos que lembrar durante um merge do Bazaar é ver os conflitos ainda não resolvidos direto no fonte e alterá-los de acordo com o problema. O resto é codificar.</p>
@@ -409,21 +455,25 @@ role="navigation" aria-label="main navigation">
 <p>Com essa configuração temos a vantagem de ter o sistema congelado só pra nós, ao mesmo tempo que conseguimos depurar nosso processo fujão, passo-a-passo.</p>
 <p>A única desvantagem é não ter uma GUI tão poderosa quando o "WinDbg fonte colorido, tooltips, etc". Pra quem não liga pra essas frescuras, é possível depurar processos de maneira produtiva utilizando esse cenário.</p>
 <p>Para ativar qualquer programa que irá rodar nesse modo, basta usar o aplicativo gflags:</p>
-<p>    gflags /p /enable servico.exe /debug "c:\path\ntsd.exe -d"</p>
+<pre>
+   gflags /p /enable servico.exe /debug "c:\path\ntsd.exe -d"
+</pre>
 <p>Para entender o fluxo de navegação pelo mundo kernel-user misturados é preciso dar uma lida bem profunda na ajuda do Debugging Tools para entender como as coisas estão funcionando nessa configuração milagrosa que estamos usando. Procure por "Controlling the User-Mode Debugger from the Kernel Debugger". Também é possível ouvir falar parcamente sobre isso no livro Advanced Windows Debugging na parte "Redirecting a User Mode Debugger Through a Kernel". A vantagem é que vem de brinde uma bela figura para pendurar em um quadro no escritório (embora eu possa jurar que já vi essa figura na ajuda do WinDbg):</p>
 <img src="img/kernel-mode-user-mode-windbg-user-kernel2.png"/>
 <p>Como podemos notar, o controlador de tudo é o kernel debugger. Assim que o depurador de processo entra em ação, ele se comunica com o depurador de kernel que entra no modo user mode prompt, pedindo entrada para ser redirecionada ao depurador de processo. Existem alguns caminhos para sair de um estado e entrar em outro, como o comando .breakin e o .sleep.</p>
 <p>É necessário recomentar: estamos nos comunicando com um depurador e o seu processo depurado em um sistema totalmente travado. Isso quer dizer que o acesso a coisas como código-fonte e símbolos é extremamente limitado, porém não impossível. Apenas mantenha-os localmente na máquina-vítima, pois uma comunicação pela rede não irá funcionar.</p>
 <p>A depuração com a linha atual no código-fonte demarcando onde estamos também não é possível, uma vez que o WinDbg da ponta de cá apenas faz o papel de garoto de recados para o "depurador de verdade" do outro lado (no nosso exemplo, o ntsd). Isso quer dizer que a forma mais "fácil" de ir passo-a-passo é usar o comando p (step) ou t (trace), além de habilitar o uso de fonte em 100%.</p>
-<p>    input&gt; .srcpath c:\maquina-vitima\src</p>
-<p>    input&gt; l+* $$ habilita uso de código-fonte no ntsd</p>
-<p>    ...</p>
-<p>    0:000&gt; p</p>
-<p>    &gt;  15: int main() $$ número da linha seguido do fonte</p>
-<p>    &gt;  16: {</p>
-<p>    0:000&gt; bp myFunction</p>
-<p>    0:000&gt; g</p>
-<p>    0:000&gt;</p>
+<pre>
+   input&gt; .srcpath c:\maquina-vitima\src
+   input&gt; l+* $$ habilita uso de código-fonte no ntsd
+   ...
+   0:000&gt; p
+   &gt;  15: int main() $$ número da linha seguido do fonte
+   &gt;  16: {
+   0:000&gt; bp myFunction
+   0:000&gt; g
+   0:000&gt;
+</pre>
 <p>Um tipo de problema que só pode ser depurado dessa maneira enfatiza a importância do uso de unit tests, além de um controle de qualidade mais aguçado antes de liberar uma versão para o cliente.</p>
 
 
@@ -439,122 +489,137 @@ role="navigation" aria-label="main navigation">
 <p>Por exemplo, é um hábito conhecido o uso de construções do-while quando existe a necessidade de definir uma macro que possui mais de um comando em vez de usar a igualmente conhecida { construção de múltiplos comandos entre chaves }.</p>
 <p>O que talvez não seja tão conhecido é o porquê das coisas serem assim.</p>
 <p>Vamos imaginar uma macro de logue que é habilitada em compilações debug, mas é mantida em silêncio em compilações release:</p>
-<p>    #ifdef NDEBUG</p>
-<p>    #define MYTRACE(message) /*nada*/</p>
-<p>    #else</p>
-<p>    #define MYTRACE(message)  \</p>
-<p>    	{ \</p>
-<p>    		char buffer<a href="posts.html?q=500">500</a>; \</p>
-<p>    		sprintf(buffer, \</p>
-<p>    			"DBG: %s(%d) %s\n", \</p>
-<p>    			__FILE__, \</p>
-<p>    			__LINE__, \</p>
-<p>    			message); \</p>
-<p>    		output(buffer); \</p>
-<p>    	}</p>
-<p>    #endif /* NDEBUG */ </p>
+<pre>
+   #ifdef NDEBUG
+   #define MYTRACE(message) /*nada*/
+   #else
+   #define MYTRACE(message)  \
+   	{ \
+   		char buffer[500]; \
+   		sprintf(buffer, \
+   			"DBG: %s(%d) %s\n", \
+   			__FILE__, \
+   			__LINE__, \
+   			message); \
+   		output(buffer); \
+   	}
+   #endif /* NDEBUG */ 
+</pre>
 <p>Nada de mais, e parece até funcionar. Porém, como veremos nas próximas linhas, esse é realmente um exemplo de código "buguento", já que uma chamada dentro de uma construção if-else simplesmente não funciona.</p>
-<p>    if( exploded() )</p>
-<p>    	MYTRACE("Oh, my God");</p>
-<p>    else</p>
-<p>    	MYTRACE("That's right"); </p>
-<p>    </p>
-<p>    error C2181: illegal else without matching if</p>
+<pre>
+   if( exploded() )
+   	MYTRACE("Oh, my God");
+   else
+   	MYTRACE("That's right"); 
+   
+   error C2181: illegal else without matching if
+</pre>
 <p>Por que isso? Para responder a essa questão nós precisamos olhar um pouco mais de perto no resultado do preprocessador da linguagem, que apenas troca nossa macro pelo pedaço de código que ela representa:</p>
-<p>    if( exploded() )</p>
-<p>    {</p>
-<p>      char buffer<a href="posts.html?q=500">500</a>;</p>
-<p>      sprintf(buffer,</p>
-<p>          "DBG: %s(%d) %s\n",</p>
-<p>          __FILE__,</p>
-<p>          __LINE__,</p>
-<p>          "Oh, my God");</p>
-<p>      output(buffer);</p>
-<p>    };</p>
-<p>    else</p>
-<p>    {</p>
-<p>      char buffer<a href="posts.html?q=500">500</a>;</p>
-<p>      sprintf(buffer,</p>
-<p>          "DBG: %s(%d) %s\n",</p>
-<p>          __FILE__,</p>
-<p>          __LINE__,</p>
-<p>          "That's right");</p>
-<p>      output(buffer);</p>
-<p>    };</p>
+<pre>
+   if( exploded() )
+   {
+     char buffer[500];
+     sprintf(buffer,
+         "DBG: %s(%d) %s\n",
+         __FILE__,
+         __LINE__,
+         "Oh, my God");
+     output(buffer);
+   };
+   else
+   {
+     char buffer[500];
+     sprintf(buffer,
+         "DBG: %s(%d) %s\n",
+         __FILE__,
+         __LINE__,
+         "That's right");
+     output(buffer);
+   };
+</pre>
 <p>Dessa forma, podemos ver o porquê. Quando chamamos a macro, geralmente usamos a sintaxe de chamada de função, colocando um sinal de ponto-e-vírgula logo após a chamada. Essa é a maneira correta de se chamar uma função, mas no caso de uma macro, dessa macro, é um desastre, porque ela cria dois comandos em vez de um só (um ponto-e-vírgula vazio, apesar de não fazer nada, é um comando válido). Então, isso é o que o compilador faz:</p>
-<p>    if( instruction )</p>
-<p>    {</p>
-<p>      /* um monte de comandos */</p>
-<p>    </p>
-<p>    } /* aqui eu esperaria um else ou uma instrução nova */</p>
-<p>    </p>
-<p>    ; /* uma instrução nova! ok, sem else desa vez */</p>
-<p>    </p>
-<p>    else /* espere ae! o que esse else está fazendo aqui sem um if?!?! */</p>
-<p>    {</p>
-<p>      /* mais comandos */</p>
-<p>    }</p>
+<pre>
+   if( instruction )
+   {
+     /* um monte de comandos */
+   
+   } /* aqui eu esperaria um else ou uma instrução nova */
+   
+   ; /* uma instrução nova! ok, sem else desa vez */
+   
+   else /* espere ae! o que esse else está fazendo aqui sem um if?!?! */
+   {
+     /* mais comandos */
+   }
+</pre>
 <p>Pense sobre o comando vazio como se ele fosse um comando real, o que é a maneira mais fácil de entender o erro de compilação que recebemos ao compilar o código abaixo:</p>
-<p>    if( error() )</p>
-<p>    {</p>
-<p>      printf("error");</p>
-<p>    }</p>
-<p>    printf("here we go");</p>
-<p>    else /* llegal else without matching if! */</p>
-<p>    {</p>
-<p>      printf("okay");</p>
-<p>    }</p>
+<pre>
+   if( error() )
+   {
+     printf("error");
+   }
+   printf("here we go");
+   else /* llegal else without matching if! */
+   {
+     printf("okay");
+   }
+</pre>
 <p>Por essa razão, a maneira tradicional de escapar desse erro comum é usar uma construção válida que peça de fato um ponto-e-vírgula no final. Felizmente nós, programadores C/C++, temos essa construção, e ela é... muito bem, o do-while!</p>
-<p>    do</p>
-<p>    {</p>
-<p>      /* múltiplos comandos aqui */</p>
-<p>    }</p>
-<p>    while( expression )</p>
-<p>      ; /* eu espero um ponto-e-vírgula aqui,</p>
-<p>           para finalizar minha </p>
-<p>           instrução do-while */</p>
+<pre>
+   do
+   {
+     /* múltiplos comandos aqui */
+   }
+   while( expression )
+     ; /* eu espero um ponto-e-vírgula aqui,
+          para finalizar minha 
+          instrução do-while */
+</pre>
 <p>Assim nós podemos reescrever nossa macro de logue da maneira certa (e todas as 549.797 macros já escritas em nossa vida de programador). E, apesar de ser uma construção um tanto bizarra, ela funciona melhor do que nossa tentativa inicial:</p>
-<p>    #ifdef NDEBUG</p>
-<p>    #define MYTRACE(message) /*nada*/</p>
-<p>    #else</p>
-<p>    #define MYTRACE(message)  \</p>
-<p>    do  \</p>
-<p>    { \</p>
-<p>      char buffer<a href="posts.html?q=500">500</a>; \</p>
-<p>      sprintf(buffer, \</p>
-<p>        "DBG: %s(%d) %s\n", \</p>
-<p>        __FILE__, \</p>
-<p>        __LINE__, \</p>
-<p>        message); \</p>
-<p>      output(buffer); \</p>
-<p>    } \</p>
-<p>    while( 0 )</p>
-<p>    #endif /* NDEBUG */ </p>
+<pre>
+   #ifdef NDEBUG
+   #define MYTRACE(message) /*nada*/
+   #else
+   #define MYTRACE(message)  \
+   do  \
+   { \
+     char buffer[500]; \
+     sprintf(buffer, \
+       "DBG: %s(%d) %s\n", \
+       __FILE__, \
+       __LINE__, \
+       message); \
+     output(buffer); \
+   } \
+   while( 0 )
+   #endif /* NDEBUG */ 
+</pre>
 <p>Ao usar um do-while (com uma expressão que retorna falso dentro do teste, de maneira que o código seja executado apenas uma vez) a construção if-else consegue funcionar perfeitamente:</p>
-<p>    if( exploded() )</p>
-<p>      do</p>
-<p>      {</p>
-<p>        char buffer<a href="posts.html?q=500">500</a>;</p>
-<p>        sprintf(buffer,</p>
-<p>            "MYTRACE: %s(%d) %s\n",</p>
-<p>            __FILE__,</p>
-<p>            __LINE__,</p>
-<p>            "Oh, my God");</p>
-<p>        OutputDebugString(buffer);</p>
-<p>      }</p>
-<p>      while( 0 );</p>
-<p>    else</p>
-<p>      do</p>
-<p>      {</p>
-<p>        char buffer<a href="posts.html?q=500">500</a>;</p>
-<p>        sprintf(buffer,</p>
-<p>            "MYTRACE: %s(%d) %s\n",</p>
-<p>            __FILE__,</p>
-<p>            __LINE__,</p>
-<p>            "That's right");</p>
-<p>        OutputDebugString(buffer);</p>
-<p>      }</p>
-<p>      while( 0 );</p>
+<pre>
+   if( exploded() )
+     do
+     {
+       char buffer[500];
+       sprintf(buffer,
+           "MYTRACE: %s(%d) %s\n",
+           __FILE__,
+           __LINE__,
+           "Oh, my God");
+       OutputDebugString(buffer);
+     }
+     while( 0 );
+   else
+     do
+     {
+       char buffer[500];
+       sprintf(buffer,
+           "MYTRACE: %s(%d) %s\n",
+           __FILE__,
+           __LINE__,
+           "That's right");
+       OutputDebugString(buffer);
+     }
+     while( 0 );
 
 </section><hr/>
 
@@ -568,16 +633,20 @@ role="navigation" aria-label="main navigation">
 <p>Até algum tempo atrás a web não era muito convidativa para usuários de atalhos. Então surgiu o Google e as suas aplicações que suportavam essa característica, o que me deu uma razão a mais para passar a usar seu cliente de e-mail e leitor de notícias sem pressionar constantemente a tecla Tab. No entanto, ainda faltava a mesma funcionalidade para seu buscador. Felizmente, isso não é mais verdade.</p>
 <p>Ainda em teste, eu comecei a usar os novos atalhos de teclado na busca do Google disponíveis no saite Google Experimental Search. Até agora existem atalhos para próximo resultado (J), resultado anterior (K), abertura da busca (O ou Enter) e colocação do cursor na caixa de busca (/). Eles funcionam exatamente como o Gmail e o Google Reader. Eu fiquei tão empolgado com a idéia que mudei o complemento de busca do Google de dentro do meu Firefox. E agora vou contar como isso pode ser feito facilmente (nota: minhas dicas servem para usuário de Windows apenas).</p>
 <p>Provavelmente seu complemento de busca estará em uma das duas pastas abaixo:</p>
-<p>    %programfiles%\Mozilla Firefox\searchplugins</p>
-<p>    %appdata%\Mozilla\Firefox\Profiles\*.default\searchplugins</p>
+<pre>
+   %programfiles%\Mozilla Firefox\searchplugins
+   %appdata%\Mozilla\Firefox\Profiles\*.default\searchplugins
+</pre>
 <p>O arquivo do complemento tem o nome google.xml e você pode editá-lo usando o Bloco de Notas ou qualquer outro editor de texto simples (sem formatação). Abaixo está o ponto onde você deve inserir a nova linha que irá ativar os atalhos dentro da página de buscas do Google.</p>
-<p>    &lt;Url type="text/html" method="GET" template="http://www.google.com/search"&gt;</p>
-<p>    &lt;Param name="q" value="{searchTerms}"/&gt;</p>
-<p>    &lt;...&gt;</p>
-<p>    &lt;Param name="esrch" value="BetaShortcuts"/&gt; &lt;!-- Google Shortcuts Here --&gt;</p>
-<p>    &lt;!-- Dynamic parameters --&gt;</p>
-<p>    &lt;...&gt;</p>
-<p>    &lt;/Url&gt;</p>
+<pre>
+   &lt;Url type="text/html" method="GET" template="http://www.google.com/search"&gt;
+   &lt;Param name="q" value="{searchTerms}"/&gt;
+   &lt;...&gt;
+   &lt;Param name="esrch" value="BetaShortcuts"/&gt; &lt;!-- Google Shortcuts Here --&gt;
+   &lt;!-- Dynamic parameters --&gt;
+   &lt;...&gt;
+   &lt;/Url&gt;
+</pre>
 <p>É isso aí. Agora você pode ter o melhor dos dois mundos: o melhor buscador da internete com atalhos. Existirá maneira de se tornar ainda mais produtivo?</p>
 
 </section><hr/>
@@ -645,15 +714,21 @@ role="navigation" aria-label="main navigation">
 <p>An <a href="http://www.alex-ionescu.com/?p=59">Alex Ionescu article</a> talks about this command line application used to create, initiate and remove services. Even not being the article focus, I found the information pretty useful, since I didn't know such app. Soon some ideas starting to born in my mind:</p>
 <p>&gt; "What if I used this guy to run notepad?"</p>
 <p>Well, the Notepad is the default test victim. Soon, the following line would prove possible to run it in the system account:</p>
-<p>    sc create Notepad binpath= "%systemroot%\NOTEPAD.EXE" type= interact type= own</p>
+<pre>
+   sc create Notepad binpath= "%systemroot%\NOTEPAD.EXE" type= interact type= own
+</pre>
 <p>However, as every service, it is supposed to communicate with the Windows Service Manager. Since Notepad even "knows" it is now a superpowerful service, the service initialization time is expired and SCM kills the process.</p>
-<p>    &gt;net start notepad</p>
-<p>    The service is not responding to the control function.</p>
-<p>    More help is available by typing NET HELPMSG 2186.</p>
+<pre>
+   &gt;net start notepad
+   The service is not responding to the control function.
+   More help is available by typing NET HELPMSG 2186.
+</pre>
 <p>As would say my friend <a href="http://codebehind.wordpress.com">Thiago</a>, "not good".</p>
 <p>"Yet however", SCM doesn't kill the child processes from the service-process. Bug? Feature? Workaround? Whatever it is, it can be used to initiate our beloved msvcmon:</p>
-<p>    set binpath=%systemroot%\system32\cmd.exe /c c:\Tools\msvcmon.exe -tcpip -anyuser -timeout -1</p>
-<p>    sc create Msvcmon binpath= "%binpath%" type= interact type= own</p>
+<pre>
+   set binpath=%systemroot%\system32\cmd.exe /c c:\Tools\msvcmon.exe -tcpip -anyuser -timeout -1
+   sc create Msvcmon binpath= "%binpath%" type= interact type= own
+</pre>
 <p>Now, when we start Msvcmon service, the process cmd.exe will be create, that on the other hand will run the msvcmon.exe target process. Cmd in this case will only wait for its imminent death.</p>
 <img src="img/how-to-run-anything-as-a-service-msvcmon-service.png"/>
 

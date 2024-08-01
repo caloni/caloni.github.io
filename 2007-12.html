@@ -73,47 +73,55 @@ role="navigation" aria-label="main navigation">
 <p class="title"><a href="2007-12.html#conceitos-basicos-na-programacao-com-c-builder">#</a> Conceitos básicos na programação com C++ Builder</p>
 <p class="note-title"><small>2007-12-03  <a href="tag_coding.html">tag_coding</a> </small><a href="2007-12.html"><sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-conceitos-basicos-na-programacao-com-c-builder')"><sup>[copy]</sup></a></p>
 <p>No projeto que é criado quando iniciamos a IDE três arquivos-fonte são gerados: Project1.cpp, Unit1.cpp e Unit1.h. Desses três, vamos analisar o primeiro:</p>
-<p>    #include &lt;vcl.h&gt;</p>
-<p>    </p>
-<p>    WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)</p>
-<p>    {</p>
-<p>    	try</p>
-<p>    	{</p>
-<p>    		Application-&gt;Initialize();</p>
-<p>    		Application-&gt;CreateForm(__classid(TForm1), &amp;Form1);</p>
-<p>    		Application-&gt;Run();</p>
-<p>    	}</p>
-<p>    	//...</p>
-<p>    </p>
-<p>    	return 0;</p>
-<p>    } </p>
+<pre>
+   #include &lt;vcl.h&gt;
+   
+   WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
+   {
+   	try
+   	{
+   		Application-&gt;Initialize();
+   		Application-&gt;CreateForm(__classid(TForm1), &amp;Form1);
+   		Application-&gt;Run();
+   	}
+   	//...
+   
+   	return 0;
+   } 
+</pre>
 <p>Sim, existe um WinMain e ele não está escondido! Nele você pode fazer o que quiser. A IDE apenas auxilia você a gerenciar seus forms. Note que também existe a inclusão de um cabeçalho chamado vcl.h (obrigatório), o que nos leva diretamente para a base de toda a programação Delphi/Builder.</p>
 <p>A VCL é o framework usado tanto no Builder quanto no Delphi para a programação RAD nesses ambientes. Considere como a MFC geração C++ da Borland (antes era o OWL). Todos os controles que você vê na paleta da IDE - Button, Label, CheckBox, Timer - são criados e gerenciados através da VCL. Com os mesmos nomes acrescidos do prefixo T (TButton, TCheckBox...) você tem as classes que representam em código o que você vê no ambiente RAD. Através da VCL pode-se criar novos componentes estendidos dos originais, e eles serão gerenciados pela IDE, que aliás é feita usando VCL.</p>
 <p>Voltando ao código: o Application é um objeto visível em todo os módulos do processo e representa a aplicação em execução. Através dele você cria e destrói forms e inicia a execução da VCL. Ah, sim, é bom lembrar que todos os objetos VCL devem ser criados no heap (usando o operador new ou algum método de um objeto VCL já criado, como o CreateForm do Application). Essa e mais algumas restrições foram impostas na criação de classes VCL para que seu comportamento fosse similar/compatível com tecnologias como COM e CORBA (além das vantagens do polimorfismo e gerenciamento automático de objetos).</p>
 <p>Olhando para o outro fonte, Unit1.h, podemos ver a definição da classe que representa o form principal:</p>
-<p>    class TForm1 : public TForm</p>
-<p>    {</p>
-<p>    __published: // IDE-managed Components</p>
-<p>    private: // User declarations</p>
-<p>    public:  // User declarations</p>
-<p>    	__fastcall TForm1(TComponent* Owner);</p>
-<p>    };</p>
-<p>    </p>
-<p>    extern PACKAGE TForm1 *Form1; </p>
+<pre>
+   class TForm1 : public TForm
+   {
+   __published: // IDE-managed Components
+   private: // User declarations
+   public:  // User declarations
+   	__fastcall TForm1(TComponent* Owner);
+   };
+   
+   extern PACKAGE TForm1 *Form1; 
+</pre>
 <p>A classe deriva de TForm, que é uma classe da VCL que representa uma janela padrão do Windows. Como se nota, um objeto da classe é criado automaticamente, exatamente o utilizado no WinMain para a criação da janela principal.</p>
 <p>Na classe existe um escopo estendido chamado published. Nele são colocados os membros da classe que podem ser gerenciados pela IDE. Considere como um public dinâmico. Coloque um TButton no form e note que um novo membro é criado na classe, dentro do escopo gerenciado pela IDE:</p>
-<p>    __published: // IDE-managed Components</p>
-<p>    TButton *Button1;</p>
+<pre>
+   __published: // IDE-managed Components
+   TButton *Button1;
+</pre>
 <p>Esses membros são iniciados automaticamente pela VCL. Contudo, você ainda pode criar objetos em tempo de execução e entregar o gerenciamento de seu tempo de vida para a VCL (o que significa chamar new e nunca um delete). Para essa proeza, todos os construtores de componentes devem receber um ponteiro para o seu Owner, que será o responsável por destruir o objeto. Veja como é ridículo criar um controle novo e definir algumas propriedades:</p>
-<p>    void __fastcall TForm1::Button1Click(TObject *Sender)</p>
-<p>    {</p>
-<p>    	TButton* btn2 = new TButton(this); // this é o meu form</p>
-<p>    </p>
-<p>    	btn2-&gt;Parent = this; // será o owner e o parent do novo botão</p>
-<p>    	btn2-&gt;SetBounds(10, 10, 150, 25); // definindo as fronteiras dentro do form</p>
-<p>    	btn2-&gt;Caption = "Prazer! Sou dinâmico!";</p>
-<p>    	btn2-&gt;Visible = true;</p>
-<p>    } </p>
+<pre>
+   void __fastcall TForm1::Button1Click(TObject *Sender)
+   {
+   	TButton* btn2 = new TButton(this); // this é o meu form
+   
+   	btn2-&gt;Parent = this; // será o owner e o parent do novo botão
+   	btn2-&gt;SetBounds(10, 10, 150, 25); // definindo as fronteiras dentro do form
+   	btn2-&gt;Caption = "Prazer! Sou dinâmico!";
+   	btn2-&gt;Visible = true;
+   } 
+</pre>
 <p>O Parent é o component que abriga a representação visual do objeto dentro de si. Parent e Owner são dois conceitos distintos. Pra frente veremos como as janelas são gerenciadas pela VCL e pela IDE.</p>
 <p>É claro! O Borlando C++ Builder é coisa do passado, assim como Delphi e VB como os conhecemos. A versão nova do C++ Buider chama-se Turbo C++ (até semana passada, pelo menos). Nele as coisas são iguais mas diferentes. Ou seja, os conceitos aqui apresentados ainda valem. Só estão com uma cara diferente.</p>
 
@@ -132,24 +140,28 @@ role="navigation" aria-label="main navigation">
 </ul>
 <p>Bom, sabemos já como colocar esses caras no form principal. Apenas espalhe-os de maneira que eles não fiquem uns em cima dos outros (essa técnica de espalhamento chama-se design).</p>
 <p>Agora no evento default do Button1 (duplo-clique nele) colocaremos o seguinte código:</p>
-<p>    void __fastcall TForm1::Button1Click(TObject *Sender)</p>
-<p>    {</p>
-<p>    	if( !Edit1-&gt;Text.IsEmpty() )</p>
-<p>    	{</p>
-<p>    		ListBox1-&gt;AddItem(Edit1-&gt;Text, 0);</p>
-<p>    		Edit1-&gt;Text = "";</p>
-<p>    	}</p>
-<p>    } </p>
+<pre>
+   void __fastcall TForm1::Button1Click(TObject *Sender)
+   {
+   	if( !Edit1-&gt;Text.IsEmpty() )
+   	{
+   		ListBox1-&gt;AddItem(Edit1-&gt;Text, 0);
+   		Edit1-&gt;Text = "";
+   	}
+   } 
+</pre>
 <p>Percebeu? Não? Então rode e note o que acontece quando você aperta o botão.</p>
 <p>Agora iremos fazer algo mais interessante ainda com o segundo botão. Coloque no evento default o seguinte código:</p>
-<p>    void __fastcall TForm1::Button1Click(TObject *Sender)</p>
-<p>    {</p>
-<p>    	if( !Edit1-&gt;Text.IsEmpty() )</p>
-<p>    	{</p>
-<p>    		ListBox1-&gt;AddItem(Edit1-&gt;Text, 0);</p>
-<p>    		Edit1-&gt;Text = "";</p>
-<p>    	}</p>
-<p>    } </p>
+<pre>
+   void __fastcall TForm1::Button1Click(TObject *Sender)
+   {
+   	if( !Edit1-&gt;Text.IsEmpty() )
+   	{
+   		ListBox1-&gt;AddItem(Edit1-&gt;Text, 0);
+   		Edit1-&gt;Text = "";
+   	}
+   } 
+</pre>
 <p>Mais simples, impossível. E com um pouco de imaginação, o mais besta dos aplicativos pode se tornar uma utilidade do dia a dia. Até sua mãe vai adorar.</p>
 <img src="img/interacao-entre-controles-no-c-builder-listadecompras.gif"/>
 
@@ -162,103 +174,123 @@ role="navigation" aria-label="main navigation">
 <p class="note-title"><small>2007-12-11  <a href="tag_coding.html">tag_coding</a> </small><a href="2007-12.html"><sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-gerenciamento-de-janelas-em-c-builder')"><sup>[copy]</sup></a></p>
 <p>As janelas criadas no C++ Builder são equivalentes às janelas criadas pela API, com o detalhe que a VCL gerencia tudo automaticamente. Isso não quer dizer que não podemos tomar controle de tudo. Quer dizer que não precisamos.</p>
 <p>Abra o Builder. Um projeto padrão é criado. Agora no menu File, vá em New, Form. Isso adicionará um novo formulário ao projeto padrão. Pronto! Temos dois formulários. Agora se formos dar uma passeada no WinMain, vemos que o código para iniciar a VCL se alterou conforme a música:</p>
-<p>    try</p>
-<p>    {</p>
-<p>    	Application-&gt;Initialize();</p>
-<p>    	Application-&gt;CreateForm(__classid(TForm1), &amp;Form1);</p>
-<p>    	Application-&gt;CreateForm(__classid(TForm2), &amp;Form2);</p>
-<p>    	Application-&gt;Run();</p>
-<p>    }</p>
+<pre>
+   try
+   {
+   	Application-&gt;Initialize();
+   	Application-&gt;CreateForm(__classid(TForm1), &amp;Form1);
+   	Application-&gt;CreateForm(__classid(TForm2), &amp;Form2);
+   	Application-&gt;Run();
+   }
+</pre>
 <p>Porém, se rodarmos a aplicação nesse momento, podemos notar que o programa exibe apenas a janela correspondente ao primeiro formulário. De fato, ao chamar o método Application-&gt;Run(), apenas o primeiro form criado é exibido. Isso não significa, é claro, que o segundo form não tenha sido criado. Para demonstrar como ele está lá, coloque o seguinte evento no clique de um botão do Form1:</p>
-<p>    #include "Unit2.h" // extern PACKAGE TForm2 *Form2;</p>
-<p>    </p>
-<p>    void __fastcall TForm1::Button1Click(TObject *Sender)</p>
-<p>    {</p>
-<p>    	Form2-&gt;Show();</p>
-<p>    } </p>
+<pre>
+   #include "Unit2.h" // extern PACKAGE TForm2 *Form2;
+   
+   void __fastcall TForm1::Button1Click(TObject *Sender)
+   {
+   	Form2-&gt;Show();
+   } 
+</pre>
 <p>Agora ao clicar do botão a janela correspondente ao formulário número 2 também aparece. Podemos fechá-la e abri-la quantas vezes quisermos que o aplicativo continua rodando. Apenas ao fechar a janela no. 1 o aplicativo realmente encerra. Esse comportamento segue o mesmo padrão da função main() na forma clássica das linguagens C/C++:</p>
-<p>    ShowMessage(</p>
-<p>      "O MainForm de Application"</p>
-<p>      " é o primeiro TForm criado."</p>
-<p>      " É o princípio e o fim,"</p>
-<p>      " o Alfa e o Ômega."</p>
-<p>      " Nele tudo começa"</p>
-<p>      " e tudo termina"</p>
-<p>    );</p>
+<pre>
+   ShowMessage(
+     "O MainForm de Application"
+     " é o primeiro TForm criado."
+     " É o princípio e o fim,"
+     " o Alfa e o Ômega."
+     " Nele tudo começa"
+     " e tudo termina"
+   );
+</pre>
 <p>Podemos, também como em C/C++ padrão, finalizar explicitamente a aplicação chamando o método Application-&gt;Terminate. O MainForm em tempo de execução é uma propriedade de somente leitura de Application. Em tempo de design, ele pode ser alterado pela ordem de criação dos formulários no código ou pela IDE em Project, Options, Forms. Lá você também escolhe quais forms serão criados automaticamente.</p>
 <p>Esse funcionamento e automação na criação de janelas da VCL foi feita para facilitar a vida do programador. Contudo, nunca estamos presos a somente isso. As maneiras das coisas funcionarem apenas refletem o uso mais comum no ambiente e não tem como função limitar a criatividade do desenvolvedor.</p>
 <p>Para exemplificar, vamos inverter as coisas. Coloque um botão no segundo formulário que finalize o programa de maneira explítica:</p>
-<p>    void __fastcall TForm2::Button1Click(TObject *Sender)</p>
-<p>    {</p>
-<p>    	Application-&gt;Terminate();</p>
-<p>    } </p>
+<pre>
+   void __fastcall TForm2::Button1Click(TObject *Sender)
+   {
+   	Application-&gt;Terminate();
+   } 
+</pre>
 <p>Agora, no evento de OnClose (acho que você conhece o Object Inspector, não? Bom, se não conhece, talvez isso mereça um <a href="posts.html?q=introducao-ao-c-builderturbo-c">artigo à parte</a>) do TForm1 insira o seguinte código:</p>
-<p>    void __fastcall TForm1::FormClose(TObject *Sender, TCloseAction &amp;Action)</p>
-<p>    {</p>
-<p>    	Action = caNone;</p>
-<p>    } </p>
+<pre>
+   void __fastcall TForm1::FormClose(TObject *Sender, TCloseAction &amp;Action)
+   {
+   	Action = caNone;
+   } 
+</pre>
 <p>Pronto! Agora você decide onde termina e onde acaba sua aplicação.</p>
 <img src="img/gerenciamento-de-janelas-em-c-builder-cppbuilder-forms.png"/>
 <p>Se dermos uma olhada bem de perto no que acontece por dentro de um aplicativo que usa a VCL descobriremos que o método Run de Application nada mais é que o loop de mensagens que <a href="posts.html?q=historia-do-windows-parte-30">já conhecemos</a>.</p>
 <p>Para analisarmos melhor o que ocorre nos internals da coisa, criei um projeto simplista que possui dois forms, ambos com quatro botões: 1) mostrar o outro form, 2) esconder a si mesmo, 3) fechar a si mesmo e 4) terminar aplicação. Os dois formulários são tão parecidos que desconfio que sejam gêmeos.</p>
 <p>Além disso, iremos precisar do nosso velho e fiel amigo WinDbg, o que o trás de volta à cena do crime depois de alguns artigos de jejum. Para saber mais sobre o WinDbg e dar suas "WinDbgzadas", <a href="http://www.caloni.com.br/posts/?q=windbg">faça uma busca</a> no blogue.</p>
 <p>A primeira coisa que um loop de mensagens deveria fazer seria chamar a função GetMessage, que obtém a primeira mensagem em espera na fila de mensagens da thread chamadora. Portanto, vamos dar uma olhada nas chamadas dessa função:</p>
-<p>    windbg Project1.exe</p>
-<p>    0:001&gt; g</p>
-<p>    ModLoad: addr module1.dll</p>
-<p>    ModLoad: addr module2.DLL</p>
-<p>    ModLoad: addr module3.dll</p>
-<p>    ...</p>
-<p>    Ctrl+Break</p>
-<p>    0:001&gt; bm /a user32!GetMessage?</p>
-<p>    1: 7e4191c6 @!"USER32!GetMessageW"</p>
-<p>    2: 7e42e002 @!"USER32!GetMessageA"</p>
-<p>    0:001&gt; g</p>
+<pre>
+   windbg Project1.exe
+   0:001&gt; g
+   ModLoad: addr module1.dll
+   ModLoad: addr module2.DLL
+   ModLoad: addr module3.dll
+   ...
+   Ctrl+Break
+   0:001&gt; bm /a user32!GetMessage?
+   1: 7e4191c6 @!"USER32!GetMessageW"
+   2: 7e42e002 @!"USER32!GetMessageA"
+   0:001&gt; g
+</pre>
 <p>E o resultado é... nada! Mesmo mexendo com a janela e apertando seus botões não há uma única ocorrência do GetMessage. Bruxaria? Programação oculta?</p>
 <p>Nem tanto. Uma alternativa ao GetMessage, que captura a primeira mensagem da fila de mensagens e a retira, é o PeekMessage, que captura a primeira mensagem da fila, mas mantém a mensagem na fila. Por algum motivo, os programadores da Borland fizeram seu loop de mensagens usando PeekMessage.</p>
-<p>    0:001&gt; bc*</p>
-<p>    0:001&gt; bm /a user32!PeekMessage?</p>
-<p>      1: 7e41929b @!"USER32!PeekMessageW"</p>
-<p>      2: 7e41c96c @!"USER32!PeekMessageA"</p>
-<p>    0:001&gt; g</p>
-<p>    Breakpoint 2 hit</p>
-<p>    eax=00b1c6b0 ebx=00000000 ecx=0012ff44 edx=0012fef8 esi=00b1c6b0 edi=0012fef8</p>
-<p>    eip=7e41c96c esp=0012fec8 ebp=0012ff44 iopl=0         nv up ei pl zr na pe nc</p>
-<p>    cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246</p>
-<p>    USER32!PeekMessageA:</p>
-<p>    7e41c96c 8bff            mov     edi,edi</p>
+<pre>
+   0:001&gt; bc*
+   0:001&gt; bm /a user32!PeekMessage?
+     1: 7e41929b @!"USER32!PeekMessageW"
+     2: 7e41c96c @!"USER32!PeekMessageA"
+   0:001&gt; g
+   Breakpoint 2 hit
+   eax=00b1c6b0 ebx=00000000 ecx=0012ff44 edx=0012fef8 esi=00b1c6b0 edi=0012fef8
+   eip=7e41c96c esp=0012fec8 ebp=0012ff44 iopl=0         nv up ei pl zr na pe nc
+   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
+   USER32!PeekMessageA:
+   7e41c96c 8bff            mov     edi,edi
+</pre>
 <p>Agora, sim!</p>
 <p>Analisando os parâmetros da função PeekMessage podemos obter algumas informações interessantes sobre uma mensagem, como seu código e a janela destino:</p>
-<p>    0:000&gt; dd @$csp L2</p>
-<p>    0019fe9c  4005aa1c 0019fec8</p>
-<p>    0:000&gt; dd poi(@$csp+4) L6</p>
-<p>    0019fec8  00160708 00000113 00000001 00000000</p>
-<p>    0019fed8  0869c6e1 00000244</p>
+<pre>
+   0:000&gt; dd @$csp L2
+   0019fe9c  4005aa1c 0019fec8
+   0:000&gt; dd poi(@$csp+4) L6
+   0019fec8  00160708 00000113 00000001 00000000
+   0019fed8  0869c6e1 00000244
+</pre>
 <p>Podemos bater essas informações com as do aplicativo Spy++, que captura janelas e suas mensagens:</p>
-<p>    0:000&gt; bd *</p>
-<p>    0:000&gt; g</p>
+<pre>
+   0:000&gt; bd *
+   0:000&gt; g
+</pre>
 <p>Normalmente esses dois rodando juntos podem causar alguns conflitos internos. Por isso, quando for usar o Spy++, procure desabilitar seus breakpoints. Após mexer no Spy++, feche-o antes de continuar depurando.</p>
 <img src="img/gerenciamento-de-janelas-em-c-builder-spyxx-window-search.png"/>
 <img src="img/gerenciamento-de-janelas-em-c-builder-spyxx-window-search-result.png"/>
 <p>Como podemos ver, nesse caso a janela encontrada foi justamente a que não aparece: TApplication! Sim, a classe principal da VCL é representada em runtime por uma janela escondida, que controla algumas mensagens específicas da aplicação.</p>
 <p>Tem tudo a ver! Mais do que simplesmente programar interfaces, esses conhecimentos permitem fazer a análise de qualquer aplicativo que possua um loop de mensagens. O importante descoberto aqui é que o C++ Builder, assim como o .NET, o Java e o "próximo framework gerenciado", não pode escapar da fatal realidade de que, para exibir janelas, o aplicativo deverá dançar a música da API Win32.</p>
-<p>    0:001&gt; bc*</p>
-<p>    0:001&gt; bp user32!PeekMessageA ".echo PeekMessage; g"</p>
-<p>    0:001&gt; bp user32!DispatchMessageA ".echo DispatchMessage; g"</p>
-<p>    0:001&gt; g</p>
-<p>    PeekMessage</p>
-<p>    DispatchMessage</p>
-<p>    PeekMessage</p>
-<p>    DispatchMessage</p>
-<p>    PeekMessage</p>
-<p>    ...</p>
-<p>    DispatchMessage</p>
-<p>    PeekMessage</p>
-<p>    eax=77c3f88a ebx=00000000 ecx=77c3e9f9 edx=77c61a70 esi=7c90e88e edi=00000000</p>
-<p>    eip=7c90eb94 esp=0012fe64 ebp=0012ff60 iopl=0         nv up ei pl zr na pe nc</p>
-<p>    cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246</p>
-<p>    ntdll!KiFastSystemCallRet:</p>
-<p>    7c90eb94 c3              ret</p>
+<pre>
+   0:001&gt; bc*
+   0:001&gt; bp user32!PeekMessageA ".echo PeekMessage; g"
+   0:001&gt; bp user32!DispatchMessageA ".echo DispatchMessage; g"
+   0:001&gt; g
+   PeekMessage
+   DispatchMessage
+   PeekMessage
+   DispatchMessage
+   PeekMessage
+   ...
+   DispatchMessage
+   PeekMessage
+   eax=77c3f88a ebx=00000000 ecx=77c3e9f9 edx=77c61a70 esi=7c90e88e edi=00000000
+   eip=7c90eb94 esp=0012fe64 ebp=0012ff60 iopl=0         nv up ei pl zr na pe nc
+   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
+   ntdll!KiFastSystemCallRet:
+   7c90eb94 c3              ret
+</pre>
 
 
 
@@ -271,16 +303,18 @@ role="navigation" aria-label="main navigation">
 <p class="title"><a href="2007-12.html#debug-remoto-no-c-builder">#</a> Debug remoto no C++ Builder</p>
 <p class="note-title"><small>2007-12-13  <a href="tag_coding.html">tag_coding</a> </small><a href="2007-12.html"><sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-debug-remoto-no-c-builder')"><sup>[copy]</sup></a></p>
 <p>Esse é um detalhe que pode passar despercebido da maioria da população Borland, mas o Builder, assim como o Visual Studio, possui sua suíte para depuração remota. E tudo o que você precisa fazer é instalar um pacote no cliente.</p>
-<p>  1. No CD de instalação, existe uma pasta chamada RDEBUG.</p>
-<p>  2. Na máquina cliente, execute o arquivo setup.exe contido nesta pasta. De preferência, não instale como um serviço (a menos que tenha um motivo).</p>
-<p>  3. Crie uma aplicação tosca de teste (ou use uma aplicação tosca existente).</p>
-<p>  4. Lembre-se que as DLLs do Builder não estarão disponíveis na máquina remota. Para não depender delas desabilite as opções "Use dynamic RTL" (aba Link) e "Build with runtime packages" (aba Packages) do seu projeto.</p>
-<p>  5. Copie a aplicação para a máquina remota ou torne-a acessível através de mapeamento.</p>
-<p>  6. Em Run, Parameters, habilite na aba Remote a opção "Debug project on remote machine"</p>
-<p>  7. Em Remote Path especifique o path de sua aplicação visto da máquina remota.</p>
-<p>  8. Em Remote Host especifique o nome ou o IP da máquina remota.</p>
-<p>  9. Execute o aplicativo através do Builder (certifique-se que o cliente do Builder está rodando na máquina remota).</p>
-<p>  10. Bom proveito!</p>
+<pre>
+ 1. No CD de instalação, existe uma pasta chamada RDEBUG.
+ 2. Na máquina cliente, execute o arquivo setup.exe contido nesta pasta. De preferência, não instale como um serviço (a menos que tenha um motivo).
+ 3. Crie uma aplicação tosca de teste (ou use uma aplicação tosca existente).
+ 4. Lembre-se que as DLLs do Builder não estarão disponíveis na máquina remota. Para não depender delas desabilite as opções "Use dynamic RTL" (aba Link) e "Build with runtime packages" (aba Packages) do seu projeto.
+ 5. Copie a aplicação para a máquina remota ou torne-a acessível através de mapeamento.
+ 6. Em Run, Parameters, habilite na aba Remote a opção "Debug project on remote machine"
+ 7. Em Remote Path especifique o path de sua aplicação visto da máquina remota.
+ 8. Em Remote Host especifique o nome ou o IP da máquina remota.
+ 9. Execute o aplicativo através do Builder (certifique-se que o cliente do Builder está rodando na máquina remota).
+ 10. Bom proveito!
+</pre>
 <p>Infelizmente essa opção não está disponível nas versões Standard do produto, assim como não está o debugging remoto no Visual Studio Express. Porém, a nova versão do Builder, renomeada para Borland Turbo C++, é gratuita a possui essa feature embutida. O único porém é que a instalação não é automatizada, e os arquivos devem ser copiados "na mão", seguindo um dos tópicos da ajuda. Melhor que nada.</p>
 <p>Para os que utilizam o Visual Studio Express, realmente ainda não achei solução a não ser usar o bom, velho e fiel companheiro WinDbg. Não saia de casa sem ele.</p>
 
@@ -293,8 +327,10 @@ role="navigation" aria-label="main navigation">
 <p class="note-title"><small>2007-12-17  <a href="tag_coding.html">tag_coding</a> </small><a href="2007-12.html"><sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-sizeof-de-novo')"><sup>[copy]</sup></a></p>
 <p>Algumas coisas em C parecem tão simples na programação do dia-a-dia que em alguns momentos podem existir situações confusas e misteriosas. O uso obscuro do operador sizeof, por exemplo, pode dar margem a interpretações erradas a respeito do que está acontecendo por debaixo dos panos. Apesar do padrão ter sido elaborado para tentar tornar a linguagem uma coisa intuitiva e de fácil dedução, isso não acontece todas as vezes.</p>
 <p>Vamos tomar, por exemplo, o seguinte minicódigo:</p>
-<p>    size_t len = sizeof("A simple string");</p>
-<p>    memcpy(buf, "A simple string", len);</p>
+<pre>
+   size_t len = sizeof("A simple string");
+   memcpy(buf, "A simple string", len);
+</pre>
 <p>A pergunta ingênua: quantos bytes são copiados para buf?</p>
 <p>A resposta ingênua: er... o tamanho de "A simple string"?</p>
 <p>Agora vamos supor que você é um pouco mais esperto e começa a pensar: "mas, peraí, estou passando na realidade um ponteiro para sizeof, o que quer dizer que, se meus cálculos estiverem corretos, e estivermos em uma plataforma de 32 bits, sizeof deve retornar 4, o que quer dizer que acabei de achar um bug escabroso, uhuu!".</p>
@@ -319,14 +355,18 @@ role="navigation" aria-label="main navigation">
 <p>&gt; A string literal is a sequence of characters (as defined in 2.13.2) surrounded by double quotes, optionally beginning with the letter L, as in "..." or L"...". (...) An ordinary string literal has type "array of n const char" and static storage duration (...).</p>
 <p>Esses textos do padrão demonstram que o operador sizeof irá retornar o número de bytes baseado no tipo do operando, e que o tipo de uma string literal é de array de caracteres com o tamanho justo para caber a string.</p>
 <p>Bem, todos sabemos o resultado das linhas abaixo:</p>
-<p>    char charArray<a href="posts.html?q=100">100</a>;</p>
-<p>    size_t len = sizeof(charArray);</p>
+<pre>
+   char charArray[100];
+   size_t len = sizeof(charArray);
+</pre>
 <p>Nesse caso é simples de observar que o operador sizeof irá retornar 100, que é o número em bytes para abrigar o tipo do operando, que é de "array de 100 caracteres". Podemos, então, imaginar que a nossa idiomática expressão do início é no fundo um resumo das linhas que se seguem.</p>
-<p>    ...</p>
-<p>    static char aSimpleString[] = "A simple string";</p>
-<p>    ...</p>
-<p>    size_t len = sizeof(aSimpleString);</p>
-<p>    memcpy(buf, aSimpleString, len);</p>
+<pre>
+   ...
+   static char aSimpleString[] = "A simple string";
+   ...
+   size_t len = sizeof(aSimpleString);
+   memcpy(buf, aSimpleString, len);
+</pre>
 <p>Ou seja, o tipo de nossa string é na verdade de array estático de caracteres, como se uma variável tivesse sido definida anteriormente com o conteúdo da string, que deve estar em algum lugar da memória do programa. Visto dessa forma fica bem mais simples de entender o que acontece na versão resumida.</p>
 <p>O mais encorajador desse problema do sizeof é que a resposta ingênua estava certa, ou seja, pelo menos dessa vez, o padrão conseguiu através de suas regras seguir a intuição do programador.</p>
 
@@ -340,62 +380,66 @@ role="navigation" aria-label="main navigation">
 <p>O sistema de drag and drop do C++ Builder é muito fácil de usar, integrado que está com o sistema de classes e objetos do framework. Tanto para o objeto de drag quanto para o objeto de drop tudo que temos que fazer é definirmos a propriedade DragMode para dmAutomatic como mostra a figura. Isso fará com que toda a troca de mensagens seja manipulada automaticamente pela VCL.</p>
 <img src="img/drag-and-drop-no-c-builder-trocatroca.gif"/>
 <p>A parte (ridídula) do código fica por conta da manipulação do evento de drop. Para aceitar um objeto, devemos tratar o evento OnDragOver. Basta isso para que a variável Accept tenha seu valor default definido para true. Podemos, entretanto, escolher se iremos ou não tratar um possível drop de um objeto. Verificando seu tipo, por exemplo:</p>
-<p>    void __fastcall TMain::FormDragOver(TObject *Sender, TObject *Source,</p>
-<p>          int X, int Y, TDragState State, bool &amp;Accept)</p>
-<p>    {</p>
-<p>    	Accept = true;</p>
-<p>    }</p>
-<p>    </p>
-<p>    void __fastcall TMain::ListBoxDragOver(TObject *Sender, TObject *Source,</p>
-<p>          int X, int Y, TDragState State, bool &amp;Accept)</p>
-<p>    {</p>
-<p>    	Accept = dynamic_cast&lt;TWinControl*&gt;( Source ) ? true : false;</p>
-<p>    } </p>
+<pre>
+   void __fastcall TMain::FormDragOver(TObject *Sender, TObject *Source,
+         int X, int Y, TDragState State, bool &amp;Accept)
+   {
+   	Accept = true;
+   }
+   
+   void __fastcall TMain::ListBoxDragOver(TObject *Sender, TObject *Source,
+         int X, int Y, TDragState State, bool &amp;Accept)
+   {
+   	Accept = dynamic_cast&lt;TWinControl*&gt;( Source ) ? true : false;
+   } 
+</pre>
 <p>A parte mais interessante do código fica por conta da hora que o objeto é "jogado", no evento OnDragDrop. Nela recebemos o ponteiro para o Sender (como sempre), que é o target object, e um Source. Geralmente para manipular o source object é necessário antes realizar um cast para um tipo mais conhecido.</p>
-<p>    void __fastcall TMain::ListBoxDragDrop(TObject *Sender, TObject *Source, </p>
-<p>    	int X, int Y)</p>
-<p>    {</p>
-<p>    	if( TListBox* listBox = dynamic_cast&lt;TListBox*&gt;(Sender) )</p>
-<p>    	{</p>
-<p>    		TWinControl* winCtrl = static_cast&lt;TWinControl*&gt;(Source);</p>
-<p>    </p>
-<p>    		if( listBox != winCtrl )</p>
-<p>    		{</p>
-<p>    			listBox-&gt;Items-&gt;Add(winCtrl-&gt;Name);</p>
-<p>    			winCtrl-&gt;Visible = false;</p>
-<p>    		}</p>
-<p>    	}</p>
-<p>    }</p>
-<p>    void __fastcall TMain::FormDragDrop(TObject *Sender, TObject *Source,</p>
-<p>    	int X, int Y)</p>
-<p>    {</p>
-<p>    	if( TForm* form = dynamic_cast&lt;TForm*&gt;(Sender) )</p>
-<p>    	{</p>
-<p>    		TControl* ctrl = 0;</p>
-<p>    </p>
-<p>    		if( TListBox* listBox = dynamic_cast&lt;TListBox*&gt;( Source ) )</p>
-<p>    		{</p>
-<p>    			for( int i = 0; i &lt; listBox-&gt;Count; ++i )</p>
-<p>    			{</p>
-<p>    				if( listBox-&gt;Selected<a href="posts.html?q=i">i</a> )</p>
-<p>    				{</p>
-<p>    					ctrl = this-&gt;FindChildControl(listBox-&gt;Items-&gt;Strings<a href="posts.html?q=i">i</a>);</p>
-<p>    					listBox-&gt;Items-&gt;Delete(i);</p>
-<p>    					break;</p>
-<p>    				}</p>
-<p>    			}</p>
-<p>    		}</p>
-<p>    		else</p>
-<p>    			ctrl = dynamic_cast&lt;TControl*&gt;(Source);</p>
-<p>    </p>
-<p>    		if( ctrl )</p>
-<p>    		{</p>
-<p>    			ctrl-&gt;Top = Y;</p>
-<p>    			ctrl-&gt;Left = X;</p>
-<p>    			ctrl-&gt;Visible = true;</p>
-<p>    		}</p>
-<p>    	}</p>
-<p>    } </p>
+<pre>
+   void __fastcall TMain::ListBoxDragDrop(TObject *Sender, TObject *Source, 
+   	int X, int Y)
+   {
+   	if( TListBox* listBox = dynamic_cast&lt;TListBox*&gt;(Sender) )
+   	{
+   		TWinControl* winCtrl = static_cast&lt;TWinControl*&gt;(Source);
+   
+   		if( listBox != winCtrl )
+   		{
+   			listBox-&gt;Items-&gt;Add(winCtrl-&gt;Name);
+   			winCtrl-&gt;Visible = false;
+   		}
+   	}
+   }
+   void __fastcall TMain::FormDragDrop(TObject *Sender, TObject *Source,
+   	int X, int Y)
+   {
+   	if( TForm* form = dynamic_cast&lt;TForm*&gt;(Sender) )
+   	{
+   		TControl* ctrl = 0;
+   
+   		if( TListBox* listBox = dynamic_cast&lt;TListBox*&gt;( Source ) )
+   		{
+   			for( int i = 0; i &lt; listBox-&gt;Count; ++i )
+   			{
+   				if( listBox-&gt;Selected[i] )
+   				{
+   					ctrl = this-&gt;FindChildControl(listBox-&gt;Items-&gt;Strings[i]);
+   					listBox-&gt;Items-&gt;Delete(i);
+   					break;
+   				}
+   			}
+   		}
+   		else
+   			ctrl = dynamic_cast&lt;TControl*&gt;(Source);
+   
+   		if( ctrl )
+   		{
+   			ctrl-&gt;Top = Y;
+   			ctrl-&gt;Left = X;
+   			ctrl-&gt;Visible = true;
+   		}
+   	}
+   } 
+</pre>
 <p>E mais uma vez voilà! Pouquíssimas linhas de código e um movimentador e empilhador de controles. Dois detalhes merecem ser destacados:</p>
 <ul><li>O uso de dynamic_cast em cima dos ponteiros da VCL é uma maneira saudável de checar a integridade dos tipos recebidos - particularmente do Sender. O uso do primeiro parâmetro dos tratadores de eventos também torna o código menos preso à componentes específicos do formulário;</li>
 <li>O método FindChildControl é deveras útil quando não temos certeza da existência de um controle. Geralmente é uma boa idéia confiar no sistema de gerenciamento de componentes da VCL. Não é à toa que existe um framework por baixo do ambiente RAD.</li>
@@ -426,24 +470,28 @@ role="navigation" aria-label="main navigation">
 <li>TDataSource: a origem dos dados que serão usados para popular seja lá o que quisermos popular.</li>
 </ul>
 <p>Abaixo segue a configuração de cada um deles, ou seja, as propriedades que você deve mudar para que tudo funcione.</p>
-<p>    object Database1: TDatabase</p>
-<p>      AliasName = 'MegaSena'</p>
-<p>      Connected = True</p>
-<p>      DatabaseName = 'MegaSena'</p>
-<p>      LoginPrompt = False</p>
-<p>    end</p>
-<p>    object Table1: TTable</p>
-<p>      Active = True</p>
-<p>      DatabaseName = 'MegaSena'</p>
-<p>      TableName = 'Resultados'</p>
-<p>    end</p>
-<p>    object DataSource1: TDataSource</p>
-<p>      DataSet = Table1</p>
-<p>    end</p>
+<pre>
+   object Database1: TDatabase
+     AliasName = 'MegaSena'
+     Connected = True
+     DatabaseName = 'MegaSena'
+     LoginPrompt = False
+   end
+   object Table1: TTable
+     Active = True
+     DatabaseName = 'MegaSena'
+     TableName = 'Resultados'
+   end
+   object DataSource1: TDataSource
+     DataSet = Table1
+   end
+</pre>
 <p>Após todos esses componentes não-visuais terem sido inseridos no form, nada como colocar alguma coisa que o usuário veja: um TDBGrid.</p>
-<p>    object DBGrid1: TDBGrid</p>
-<p>      DataSource = DataSource1</p>
-<p>    end</p>
+<pre>
+   object DBGrid1: TDBGrid
+     DataSource = DataSource1
+   end
+</pre>
 <p>Com isso, nossa janela já exibe o conteúdo da tabela em tempo de design:</p>
 <img src="img/banco-de-dados-no-c-builder-cppb-dbgrid.png"/>
 <p>E é isso! Se chegamos até aqui, já sabemos o arroz com feijão de usar banco de dados com o C++ Builder. Mais para a frente podemos nos aventurar em tópicos um pouco mais avançados, como fazer buscas, navegar item a item e essas coisas que as pessoas costumam fazer com um MDB.</p>
@@ -462,34 +510,40 @@ role="navigation" aria-label="main navigation">
 <p class="note-title"><small>2007-12-25  <a href="tag_coding.html">tag_coding</a> </small><a href="2007-12.html"><sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-o-que-acontece-quando-o-contador-estoura')"><sup>[copy]</sup></a></p>
 <p>Dois conceitos de programação relacionados a limites computacionais são bem conhecidos do programador: o famigerado overflow e o não-tão-famoso underflow (embora seja fácil imaginar que ele é o oposto do primeiro). O primeiro ocorre quando somamos a uma variável inteira não-nula um valor cujo resultado não consegue ser representado pelo tamanho de memória usado para armazenar esse tipo inteiro (que pode ser um caractere, um inteiro curto, inteiro longo e por aí vai). O underflow, por outro lado (outro lado mesmo), é o resultado de uma subtração que não pode ser representado pelo número de bits do seu tipo inteiro.</p>
 <p>Nada melhor que um código para ilustrar melhor esses dois ilustres acontecimentos:</p>
-<p>    #include &lt;limits.h&gt;</p>
-<p>    #include &lt;iostream&gt;</p>
-<p>    </p>
-<p>    int main()</p>
-<p>    {</p>
-<p>    	int x = INT_MAX;</p>
-<p>    </p>
-<p>    	std::cout &lt;&lt; x &lt;&lt; std::endl;</p>
-<p>    	x = x + 1;</p>
-<p>    	std::cout &lt;&lt; x &lt;&lt; std::endl;</p>
-<p>    } </p>
-<p>    Saída:</p>
-<p>     2147483647</p>
+<pre>
+   #include &lt;limits.h&gt;
+   #include &lt;iostream&gt;
+   
+   int main()
+   {
+   	int x = INT_MAX;
+   
+   	std::cout &lt;&lt; x &lt;&lt; std::endl;
+   	x = x + 1;
+   	std::cout &lt;&lt; x &lt;&lt; std::endl;
+   } 
+   Saída:
+    2147483647
+</pre>
 <ul><li>2147483648</li>
 </ul>
 <p>O indicador de que algo está errado é simples: como diabos foi um número positivo virar negativo, já que eu somei ao invés de subtrair? No entanto, computacionalmente parece extremamente correto: o próximo número após o maior valor positivo possível é o menor número negativo possível.</p>
 <p>Nos computadores atuais tudo no final acaba sendo representado por zeros e uns, até o sinal de negativo dos números menores que zero. Por isso mesmo, para que consigamos usar números menores que zero, precisamos gastar um bit para indicar que este número é negativo. Existem muitas representações interessantes, dentre as quais a mais popular acabou sendo a de complemento de dois. A regra é simples:</p>
 <p>&gt; Toda representação binária que tiver o bit mais significativo ligado (o bit mais à esquerda) significa um número negativo cujo valor absoluto se obtém invertendo-se o resto dos bits e adicionando um.</p>
 <p>Quando o bit mais à esquerda não está ligado o valor absoluto é ele mesmo; ou seja, é um número positivo, incluindo o zero. Como vamos ver, isso facilita em muito os cálculos para o computador. Para nós, a coisa não fica lá muito difícil. Só precisamos lembrar que, em hexadecimal, todos os valores que tiverem o byte mais significativo igual ou maior que 8 (que é 1000 em binário) é negativo e temos que aplicar o método de complemento de dois para obter seu valor absoluto. Vejamos o valor -8, por exemplo:</p>
-<p>  1. Primeiro temos a representação real (em um byte): 1111 1000.</p>
-<p>  2. O bit mais significativo está ligado: é um número negativo. Descartamos o sinal, fica 111 1000.</p>
-<p>  3. Devemos agora inverter todos os bits: 111 1000 se torna 000 0111.</p>
-<p>  4. Por fim, somamos um: 000 0111 + 1 = 000 1000.</p>
-<p>  5. Como vimos no parágrafo anterior, 000 1000, ou simplesmente 1000, é 8. Na verdade, -8!</p>
+<pre>
+ 1. Primeiro temos a representação real (em um byte): 1111 1000.
+ 2. O bit mais significativo está ligado: é um número negativo. Descartamos o sinal, fica 111 1000.
+ 3. Devemos agora inverter todos os bits: 111 1000 se torna 000 0111.
+ 4. Por fim, somamos um: 000 0111 + 1 = 000 1000.
+ 5. Como vimos no parágrafo anterior, 000 1000, ou simplesmente 1000, é 8. Na verdade, -8!
+</pre>
 <p>O que significa, na notação complemento de dois, a representação onde estão todos os bits ligados, independente do número de bytes?</p>
 <p>Se alterarmos o código acima para imprimir na saída os números hexadecimais, obteremos a seguinte saída:</p>
-<p>    7fffffff</p>
-<p>    80000000</p>
+<pre>
+   7fffffff
+   80000000
+</pre>
 <p>E o mais legal é que agora sabemos que o primeiro número é o maior valor positivo possível nesse tamanho de int, pois possui todos os bits ligados exceto o bit de sinal. Já o segundo número, o primeiro incrementado de 1, possui todos os bits desligados exceto o bit de sinal: é o menor número negativo possível!</p>
 <p>Consegue imaginar como os cálculos são feitos pelo computador? Curioso? Então dê uma olhada na Wikipedia sobre <a href="http://en.wikipedia.org/wiki/Twos_complement">complemento de dois</a>.</p>
 
@@ -510,21 +564,29 @@ role="navigation" aria-label="main navigation">
 <p>&gt; C++: International Standard ISO/IEC 14882 First Edition 1998-09-01</p>
 <p>&gt; </p>
 <p>Isso traduzido em miúdos quer dizer que com duas expressões formando a construção E1 <a href="posts.html?q= E2 "> E2 </a>, sendo uma delas do tipo ponteiro para um tipo e a outra do tipo integral, o resultado é equivalente a *( (E1) + (E2) ). Como no código abaixo:</p>
-<p>    #include &lt;iostream&gt;</p>
-<p>    </p>
-<p>    int main()</p>
-<p>    {</p>
-<p>    	char ditado[] = "Diga-me com que programas e eu te direi quem és.";</p>
-<p>    	int indice = 8;</p>
-<p>    </p>
-<p>    	std::cout &lt;&lt; "E a linguagem é: " &lt;&lt; ditado<a href="posts.html?q=indice">indice</a> &lt;&lt; std::endl;</p>
-<p>    } </p>
+<pre>
+   #include &lt;iostream&gt;
+   
+   int main()
+   {
+   	char ditado[] = "Diga-me com que programas e eu te direi quem és.";
+   	int indice = 8;
+   
+   	std::cout &lt;&lt; "E a linguagem é: " &lt;&lt; ditado[indice] &lt;&lt; std::endl;
+   } 
+</pre>
 <p>A teoria comprovada na prática: temos duas expressões no formato E1 <a href="posts.html?q= E2 "> E2 </a> sendo uma do tipo ponteiro para char e a outra do tipo int, exatamente como a regra define. O detalhe obscuro que permaneceu durante a evolução dessas duas linguagens é que a regra de acesso a elementos não define a ordem das expressões. Assim sendo, me aproveito dessa flexibilidade e inverto os elementos do subscrito:</p>
-<p>    std::cout &lt;&lt; "E a linguagem é: " &lt;&lt; indice<a href="posts.html?q=ditado">ditado</a> &lt;&lt; std::endl;</p>
+<pre>
+   std::cout &lt;&lt; "E a linguagem é: " &lt;&lt; indice[ditado] &lt;&lt; std::endl;
+</pre>
 <p>Isso também compila e tem o mesmo resultado, pois também é equivalente a *( (E1) + (E2) ). No final dá na mesma. E do jeito que está a inversão nem dá tanto susto assim, pois estamos lidando com duas variáveis. A coisa começa a ficar mais <a href="http://www.ioccc.org">IOCCC</a> se colocarmos em vez de uma delas uma constante:</p>
-<p>    std::cout &lt;&lt; "E a linguagem é: " &lt;&lt; 8<a href="posts.html?q=ditado">ditado</a> &lt;&lt; std::endl;</p>
+<pre>
+   std::cout &lt;&lt; "E a linguagem é: " &lt;&lt; 8[ditado] &lt;&lt; std::endl;
+</pre>
 <p>Isso ainda é válido, certo? Os tipos das expressões estão de acordo com a regra. Fica simples de visualizar se sempre pensarmos no "equivalente universal" *( (E1) + (E2) ). Até coisas bizarras como essa acabam ficando simples:</p>
-<p>    std::cout &lt;&lt; 5<a href="posts.html?q="Isso Compila?"">"Isso Compila?"</a> &lt;&lt; std::endl;</p>
+<pre>
+   std::cout &lt;&lt; 5["Isso Compila?"] &lt;&lt; std::endl;
+</pre>
 <p>Nota do autor: esse tipo de "recurso obscuro" dificilmente passará por uma revisão de código, e com razão, dado que não é um método útil e muito menos conhecido. Sábio é saber evitar. Não acredito, porém, que o conhecimento de certos detalhes da linguagem em que se programa sejam completamente inúteis. Conhecimento nunca é demais, pois quanto mais se conhece maior é o número de ferramentas conceituais que se dispõe para resolver um certo problema. Em muitas vezes o "conhecimento inútil" de hoje se torna um guia sábio quando se precisa de bons conceitos sobre a coisa toda. No entanto, que não venha um <a href="http://www.google.com.br/search?q=boi+corneta+site%3Asualingua.com.br">boi-corneta</a> me dizer que esse código fere as boas práticas de programação. Tenho dito.</p>
 
 
@@ -538,149 +600,167 @@ role="navigation" aria-label="main navigation">
 <p class="note-title"><small>2007-12-31  <a href="tag_coding.html">tag_coding</a> </small><a href="2007-12.html"><sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-gambi-do-dia-swap-com-apenas-duas-variaveis')"><sup>[copy]</sup></a></p>
 <p>Este artigo é uma reedição de meu blogue antigo, guardado para ser republicado durante minhas miniférias. Esteja à vontade para sugerir outros temas obscuros sobre a linguagem C ou C++ de sua preferência. Boa leitura!</p>
 <p>Essa interessantíssima questão veio do meu amigo Kabloc: como trocar o valor entre duas variáveis do tipo int sem utilizar uma variável intermediária? O algoritmo ordinário para um swap entre tipos inteiros é:</p>
-<p>    void normalSwap(int &amp;first, int&amp; second)</p>
-<p>    {</p>
-<p>      int third = first;</p>
-<p>      first = second;</p>
-<p>      second = third;</p>
-<p>    }</p>
-<p>    </p>
-<p>    int main()</p>
-<p>    {</p>
-<p>      int first = 13;</p>
-<p>      int second = 42;</p>
-<p>    </p>
-<p>      cout &lt;&lt; "first: " &lt;&lt; first </p>
-<p>        &lt;&lt; ", second: " &lt;&lt; second &lt;&lt; endl;</p>
-<p>      normalSwap(first, second);</p>
-<p>      cout &lt;&lt; "first: " &lt;&lt; first </p>
-<p>        &lt;&lt; ", second: " &lt;&lt; second &lt;&lt; endl;</p>
-<p>    } </p>
-<p>  </p>
-<p>    Saída:</p>
-<p>    first: 13, second: 42</p>
-<p>    first: 42, second: 13</p>
+<pre>
+   void normalSwap(int &amp;first, int&amp; second)
+   {
+     int third = first;
+     first = second;
+     second = third;
+   }
+   
+   int main()
+   {
+     int first = 13;
+     int second = 42;
+   
+     cout &lt;&lt; "first: " &lt;&lt; first 
+       &lt;&lt; ", second: " &lt;&lt; second &lt;&lt; endl;
+     normalSwap(first, second);
+     cout &lt;&lt; "first: " &lt;&lt; first 
+       &lt;&lt; ", second: " &lt;&lt; second &lt;&lt; endl;
+   } 
+ 
+   Saída:
+   first: 13, second: 42
+   first: 42, second: 13
+</pre>
 <p>Uma das soluções que eu conheço é utilizar o operador de ou exclusivo, o conhecido XOR. Esse operador binário tem a não pouco bizarra habilidade de armazenar dois padrões de bits dentro de um mesmo espaço de armazenamento. Se você tiver um dos dois padrões, conseguirá o segundo. Relembremos sua tabela verdade:</p>
-<p>    void xorTable()</p>
-<p>    {</p>
-<p>      cout </p>
-<p>        &lt;&lt; "-----------\n"</p>
-<p>        &lt;&lt; " XOR Table\n"</p>
-<p>        &lt;&lt; "-----------\n"</p>
-<p>        &lt;&lt; "0 XOR 0 = " &lt;&lt; ( 0 ^ 0 ) &lt;&lt; '\n'</p>
-<p>        &lt;&lt; "1 XOR 0 = " &lt;&lt; ( 1 ^ 0 ) &lt;&lt; '\n'</p>
-<p>        &lt;&lt; "0 XOR 1 = " &lt;&lt; ( 0 ^ 1 ) &lt;&lt; '\n'</p>
-<p>        &lt;&lt; "1 XOR 1 = " &lt;&lt; ( 1 ^ 1 ) &lt;&lt; '\n'</p>
-<p>      ;</p>
-<p>    } </p>
-<p>    </p>
+<pre>
+   void xorTable()
+   {
+     cout 
+       &lt;&lt; "-----------\n"
+       &lt;&lt; " XOR Table\n"
+       &lt;&lt; "-----------\n"
+       &lt;&lt; "0 XOR 0 = " &lt;&lt; ( 0 ^ 0 ) &lt;&lt; '\n'
+       &lt;&lt; "1 XOR 0 = " &lt;&lt; ( 1 ^ 0 ) &lt;&lt; '\n'
+       &lt;&lt; "0 XOR 1 = " &lt;&lt; ( 0 ^ 1 ) &lt;&lt; '\n'
+       &lt;&lt; "1 XOR 1 = " &lt;&lt; ( 1 ^ 1 ) &lt;&lt; '\n'
+     ;
+   } 
+   
+</pre>
 <ul><li>----------</li>
-</ul>
-<p>     XOR Table</p>
+<pre>
+&lt;/ul&gt;
+    XOR Table
+</pre>
 <ul><li>----------</li>
-</ul>
-<p>    0 XOR 0 = 0</p>
-<p>    1 XOR 0 = 1</p>
-<p>    0 XOR 1 = 1</p>
-<p>    1 XOR 1 = 0</p>
+<pre>
+&lt;/ul&gt;
+   0 XOR 0 = 0
+   1 XOR 0 = 1
+   0 XOR 1 = 1
+   1 XOR 1 = 0
+</pre>
 <p>Ou seja, imagine que temos o valor 1 e o valor 0. Armazenando os dois juntos com XOR obtemos 1, já que:</p>
-<p>    1 (primeiro padrão) XOR 0 (segundo padrão) = 1 (padrões juntos)</p>
+<pre>
+   1 (primeiro padrão) XOR 0 (segundo padrão) = 1 (padrões juntos)
+</pre>
 <p>Mais tarde, se quisermos obter o primeiro padrão, usamos o segundo:</p>
-<p>    1 (padrões juntos) XOR 0 (segundo padrão) = 1 (primeiro padrão)</p>
+<pre>
+   1 (padrões juntos) XOR 0 (segundo padrão) = 1 (primeiro padrão)
+</pre>
 <p>Para obter o segundo padrão é só utilizar o primeiro obtido:</p>
-<p>    1 (padrões juntos) XOR 1 (primeiro padrão) = 0 (segundo padrão)</p>
+<pre>
+   1 (padrões juntos) XOR 1 (primeiro padrão) = 0 (segundo padrão)
+</pre>
 <p>Calcule a mesma operação com as quatro combinações possíveis e verá que podemos sempre reaver os dados partindo de um dos padrões. Como o cálculo independe do número de bits, já que operadores bit a bit operam um bit de cada vez, podemos usar a mesma técnica para juntar dois inteiros, duas strings, dois "qualquer coisa armazenada numa seqüência de zeros e uns":</p>
-<p>    template&lt;</p>
-<p>      typename T1, </p>
-<p>      typename T2, </p>
-<p>      typename T3</p>
-<p>    &gt;</p>
-<p>    void universalXor(</p>
-<p>      const T1&amp; first, </p>
-<p>      const T2&amp; second, </p>
-<p>      T3&amp; result</p>
-<p>    )</p>
-<p>    {</p>
-<p>      typedef unsigned char byte;</p>
-<p>    </p>
-<p>      const byte* pFirst = </p>
-<p>        reinterpret_cast&lt;const byte*&gt;</p>
-<p>        (&amp;first);</p>
-<p>      const byte* pSecond = </p>
-<p>        reinterpret_cast&lt;const byte*&gt;</p>
-<p>        (&amp;second);</p>
-<p>    </p>
-<p>      byte* pResult = </p>
-<p>        reinterpret_cast&lt;byte*&gt;</p>
-<p>        (&amp;result);</p>
-<p>    </p>
-<p>      for( size_t i = 0; </p>
-<p>        i &lt; sizeof(first) </p>
-<p>          &amp;&amp; i &lt; sizeof(second);</p>
-<p>        ++i )</p>
-<p>      {</p>
-<p>        pResult<a href="posts.html?q=i">i</a> = pFirst<a href="posts.html?q=i">i</a> ^ pSecond<a href="posts.html?q=i">i</a>;</p>
-<p>      }</p>
-<p>    }</p>
-<p>    </p>
-<p>    int main()</p>
-<p>    {</p>
-<p>      int x = 13, y = 42;</p>
-<p>    </p>
-<p>      cout &lt;&lt; "x: " &lt;&lt; x </p>
-<p>        &lt;&lt; ", y: " &lt;&lt; y &lt;&lt; '\n';</p>
-<p>      universalXor(x, y, x);</p>
-<p>      universalXor(x, y, y);</p>
-<p>      universalXor(x, y, x);</p>
-<p>      cout &lt;&lt; "x: " &lt;&lt; x </p>
-<p>        &lt;&lt; ", y: " &lt;&lt; y &lt;&lt; "\n\n";</p>
-<p>    </p>
-<p>      char str1<a href="posts.html?q=50">50</a> = "teste de xor";</p>
-<p>      char str2<a href="posts.html?q=50">50</a> = "aceita strings!";</p>
-<p>    </p>
-<p>      cout &lt;&lt; "str1: " &lt;&lt; str1 </p>
-<p>        &lt;&lt; ", str2: " &lt;&lt; str2 &lt;&lt; '\n';</p>
-<p>      universalXor(str1, str2, str1);</p>
-<p>      universalXor(str1, str2, str2);</p>
-<p>      universalXor(str1, str2, str1);</p>
-<p>      cout &lt;&lt; "str1: " &lt;&lt; str1 </p>
-<p>        &lt;&lt; ", str2: " &lt;&lt; str2 &lt;&lt; '\n';</p>
-<p>    </p>
-<p>      return 0;</p>
-<p>    } </p>
-<p>    Saída:</p>
-<p>    x: 13, y: 42</p>
-<p>    x: 42, y: 13</p>
-<p>    </p>
-<p>    str1: teste de xor, str2: aceita strings!</p>
-<p>    str1: aceita strings!, str2: teste de xor</p>
+<pre>
+   template&lt;
+     typename T1, 
+     typename T2, 
+     typename T3
+   &gt;
+   void universalXor(
+     const T1&amp; first, 
+     const T2&amp; second, 
+     T3&amp; result
+   )
+   {
+     typedef unsigned char byte;
+   
+     const byte* pFirst = 
+       reinterpret_cast&lt;const byte*&gt;
+       (&amp;first);
+     const byte* pSecond = 
+       reinterpret_cast&lt;const byte*&gt;
+       (&amp;second);
+   
+     byte* pResult = 
+       reinterpret_cast&lt;byte*&gt;
+       (&amp;result);
+   
+     for( size_t i = 0; 
+       i &lt; sizeof(first) 
+         &amp;&amp; i &lt; sizeof(second);
+       ++i )
+     {
+       pResult[i] = pFirst[i] ^ pSecond[i];
+     }
+   }
+   
+   int main()
+   {
+     int x = 13, y = 42;
+   
+     cout &lt;&lt; "x: " &lt;&lt; x 
+       &lt;&lt; ", y: " &lt;&lt; y &lt;&lt; '\n';
+     universalXor(x, y, x);
+     universalXor(x, y, y);
+     universalXor(x, y, x);
+     cout &lt;&lt; "x: " &lt;&lt; x 
+       &lt;&lt; ", y: " &lt;&lt; y &lt;&lt; "\n\n";
+   
+     char str1[50] = "teste de xor";
+     char str2[50] = "aceita strings!";
+   
+     cout &lt;&lt; "str1: " &lt;&lt; str1 
+       &lt;&lt; ", str2: " &lt;&lt; str2 &lt;&lt; '\n';
+     universalXor(str1, str2, str1);
+     universalXor(str1, str2, str2);
+     universalXor(str1, str2, str1);
+     cout &lt;&lt; "str1: " &lt;&lt; str1 
+       &lt;&lt; ", str2: " &lt;&lt; str2 &lt;&lt; '\n';
+   
+     return 0;
+   } 
+   Saída:
+   x: 13, y: 42
+   x: 42, y: 13
+   
+   str1: teste de xor, str2: aceita strings!
+   str1: aceita strings!, str2: teste de xor
+</pre>
 <p>Essa técnica é uma das mais básicas -- se não for a mais -- de criptografia simétrica. O primeiro padrão faz o papel de texto aberto, o segundo banca a senha e o terceiro será o texto encriptado. Para "desencriptar" o texto é necessária a senha (e se você souber qual o texto original, saberá a senha).</p>
 <p>Mas, voltando ao nosso problema original, podemos trocar duas variáveis inteiras usando a técnica do XOR. Em claro:</p>
-<p>    #include &lt;iostream&gt;</p>
-<p>    using namespace std;</p>
-<p>    </p>
-<p>    void anormalSwap(int &amp;first, </p>
-<p>      int&amp; second)</p>
-<p>    {</p>
-<p>      first = first ^ second;</p>
-<p>      second = first ^ second;</p>
-<p>      first = first ^ second;</p>
-<p>    }</p>
-<p>    </p>
-<p>    int main()</p>
-<p>    {</p>
-<p>      int first = 13;</p>
-<p>      int second = 42;</p>
-<p>    </p>
-<p>      cout &lt;&lt; "first: " &lt;&lt; first </p>
-<p>        &lt;&lt; ", second: " &lt;&lt; second &lt;&lt; endl;</p>
-<p>      anormalSwap(first, second);</p>
-<p>      cout &lt;&lt; "first: " &lt;&lt; first </p>
-<p>        &lt;&lt; ", second: " &lt;&lt; second &lt;&lt; endl;</p>
-<p>    } </p>
-<p>    Saída:</p>
-<p>    first: 13, second: 42</p>
-<p>    first: 42, second: 13</p>
+<pre>
+   #include &lt;iostream&gt;
+   using namespace std;
+   
+   void anormalSwap(int &amp;first, 
+     int&amp; second)
+   {
+     first = first ^ second;
+     second = first ^ second;
+     first = first ^ second;
+   }
+   
+   int main()
+   {
+     int first = 13;
+     int second = 42;
+   
+     cout &lt;&lt; "first: " &lt;&lt; first 
+       &lt;&lt; ", second: " &lt;&lt; second &lt;&lt; endl;
+     anormalSwap(first, second);
+     cout &lt;&lt; "first: " &lt;&lt; first 
+       &lt;&lt; ", second: " &lt;&lt; second &lt;&lt; endl;
+   } 
+   Saída:
+   first: 13, second: 42
+   first: 42, second: 13
+</pre>
 <p>Bom, preciso dizer que isso é uma gambi das grossas? Preciso dizer que não uso isso no meu dia a dia, até porque swap é uma função já consagrada da STL chamada std::swap? Não? Então sem Postscript dessa vez. E sem <a href="http://www.google.com.br/search?q=boi+corneta+site%3Asualingua.com.br">bois-cornetas</a> =).</p>
 
 

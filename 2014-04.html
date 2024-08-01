@@ -214,17 +214,19 @@ int main()
 <img src="img/geleia-de-codigo-zXzJlL5.jpg"/>
 <p>O fato é que depois desses cinco minutos eu simplesmente não consegui parar até o minuto final das 23 horas (horário de Brasília) de domingo, quando o tempo-limite esgotou. O aspecto mais divertido do Code Jam é que há liberdade total para a ferramenta que você pretende usar: linguagens de programação, Excel, uma calculadora ou apenas seu cérebro. Você recebe uma "missão" e um arquivo de entrada e precisa cuspir um arquivo de saída de acordo com a missão. Apenas isso. O resto fica por conta da criatividade dos codadores e gambiarreiros de plantão.</p>
 <p>Todos os exercícios levam em consideração um arquivo de entrada que possui em sua primeira linha o número de testes que serão feitos e em seguida um número determinado de linhas e parâmetros, geralmente divididos por espaço. O primeiro problema, por exemplo, apenas considerava a suposição de cartas em pequeno truque de mágica e recebia como entrada a disposição dessas cartas junto com a escolha da fileira que o participante dizia onde estava a carta escolhida.</p>
-<p>    </p>
-<p>    2</p>
-<p>    1 2 3 4</p>
-<p>    5 6 7 8</p>
-<p>    9 10 11 12</p>
-<p>    13 14 15 16</p>
-<p>    3</p>
-<p>    1 2 5 4</p>
-<p>    3 11 6 15</p>
-<p>    9 10 7 12</p>
-<p>    13 14 8 16</p>
+<pre>
+   
+   2
+   1 2 3 4
+   5 6 7 8
+   9 10 11 12
+   13 14 15 16
+   3
+   1 2 5 4
+   3 11 6 15
+   9 10 7 12
+   13 14 8 16
+</pre>
 <pre>
 import sys
 f = open(sys.argv[1])
@@ -615,68 +617,72 @@ def FieldRenderWrong(row, col, mines):
 <p>Pronto, posso programar em paz. O jogo 2048 é uma lástima para todos os trabalhadores intelectuais que dependem de suas mentes para produzir algo que preste. Ele gerou mais posts no Hacker News do que a moda dos bitcoins (talvez não) e mais projetos no GitHub do que a busca para a cura do câncer (talvez não). Obviamente que este post vai gerar mais um <a href="https://gist.github.com/Caloni/ef21412075c5600c9700d967702419be">gist Python</a> para minha coleção.</p>
 <p>Não sou fã de jogos, e dos poucos que participei logo parei (exceções honrosas: Portal e Portal 2, esses malditos). Posso dizer o mesmo de 2048, a versão de uma espécie de jogo já conhecido feita pelo italiano Gabriele Cirulli em um fds para descobrir se seria capaz de fazê-lo. Ele o fez e de brinde também fez o índice de produtividade mundial desabar.</p>
 <p>Houve pelo menos dois projetos de I.A. para resolver o problema, que consiste em dobrar números múltiplos de 2 em um quadrado 4 x 4 até que se consiga o quadrado com o valor 2048 (e além). O artigo de Nicola Pezzotti, <a href="https://gsurma.medium.com/2048-solving-2048-with-monte-carlo-tree-search-ai-2dbe76894bab">An Artificial Intelligence for the 2048 game</a>, explica o mais efetivo deles, de autoria de Robert Xiao (eu acho). O programa desenvolvido por Xiao otimiza o tabuleiro do jogo guardando-o em um inteiro de 64 bits, deixando 4 bits para cada casa, mais que o suficiente para que seja armazenada a potência de 2 localizada no quadrado (o limite fica sendo de 2  16, ou 65536). Ao rodar a versão executável console ele imprime cada posição do tabuleiro em um formato "fácil" de ser lido.</p>
-<p>    Move #69, current score=584</p>
-<p>     1356</p>
-<p>     0051</p>
-<p>     0012</p>
-<p>     0000</p>
+<pre>
+   Move #69, current score=584
+    1356
+    0051
+    0012
+    0000
+</pre>
 <p>Como pode-se perceber, cada número diferente de zero contém a potência de dois que ocupa a casa (1 é igual a 2, 5 é igual a 2 elevado a 5, que é igual a 32, e assim por diante). Para alinhar corretamente o tabuleiro os números estão impressos em hexadecimal, ou seja, os valores válidos vão de 0 a f (15).</p>
-<p>    from PIL import Image</p>
-<p>    from PIL import ImageFont</p>
-<p>    from PIL import ImageDraw</p>
-<p>    from itertools import islice</p>
-<p>    </p>
-<p>    TilePositions = [</p>
-<p>            <a href="posts.html?q=32, 216">32, 216</a>, <a href="posts.html?q=153, 216">153, 216</a>, <a href="posts.html?q=274, 216">274, 216</a>, <a href="posts.html?q=395, 216">395, 216</a>,</p>
-<p>            <a href="posts.html?q=32, 339">32, 339</a>, <a href="posts.html?q=153, 339">153, 339</a>, <a href="posts.html?q=274, 339">274, 339</a>, <a href="posts.html?q=395, 339">395, 339</a>,</p>
-<p>            <a href="posts.html?q=32, 461">32, 461</a>, <a href="posts.html?q=153, 461">153, 461</a>, <a href="posts.html?q=274, 461">274, 461</a>, <a href="posts.html?q=395, 461">395, 461</a>,</p>
-<p>            <a href="posts.html?q=32, 584">32, 584</a>, <a href="posts.html?q=153, 584">153, 584</a>, <a href="posts.html?q=274, 584">274, 584</a>, <a href="posts.html?q=395, 584">395, 584</a></p>
-<p>    	]</p>
-<p>    TileSize = 106</p>
-<p>    </p>
-<p>    def LoadTemplate():</p>
-<p>    	img = Image.open('2048.png')</p>
-<p>    	draw= ImageDraw.Draw(img)</p>
-<p>    	return img, draw</p>
-<p>    </p>
-<p>    def DrawBoard(board):</p>
-<p>    	img, draw = LoadTemplate()</p>
-<p>    	bigFont = ImageFont.truetype('DejaVuSans-Bold.ttf', 48)</p>
-<p>    	smallFont = ImageFont.truetype('DejaVuSans-Bold.ttf', 24)</p>
-<p>    	dbgFont = ImageFont.truetype('DejaVuSans-Bold.ttf', 8)</p>
-<p>    	for r in range(len(board)):</p>
-<p>    		for c in range(len(board<a href="posts.html?q=r">r</a>)):</p>
-<p>    			number = 2 ** board<a href="posts.html?q=r">r</a><a href="posts.html?q=c">c</a></p>
-<p>    			if number &gt; 1:</p>
-<p>    				tileX, tileY = TilePositions<a href="posts.html?q=r*4 +c">r*4 +c</a><a href="posts.html?q=0">0</a>, TilePositions<a href="posts.html?q=r*4 +c">r*4 +c</a><a href="posts.html?q=1">1</a></p>
-<p>    				font = smallFont if number &gt; 64 else bigFont</p>
-<p>    				text = str(number)</p>
-<p>    				textW, textH = draw.textsize(text, font=font)</p>
-<p>    				x, y = tileX + (TileSize - textW) / 2, tileY + (TileSize - textH) /2</p>
-<p>    				dbgText = str(tileX) + ' + (' + str(TileSize) + ' - ' + str(textW) + ') / 2'</p>
-<p>                                    draw.text((x, y), text, (0,0,0), font=font)</p>
-<p>    	return img</p>
-<p>    </p>
-<p>    def ReadNextBoard(f):</p>
-<p>    	lines = <a href="posts.html?q=lines for lines in islice(f, 4)">lines for lines in islice(f, 4)</a></p>
-<p>    	if (len(lines)) == 4:</p>
-<p>    		board = [</p>
-<p>    			<a href="posts.html?q= int(lines[0"> int(lines[0</a><a href="posts.html?q=0">0</a>, 16), int(lines<a href="posts.html?q=0">0</a><a href="posts.html?q=1">1</a>, 16), int(lines<a href="posts.html?q=0">0</a><a href="posts.html?q=2">2</a>, 16), int(lines<a href="posts.html?q=0">0</a><a href="posts.html?q=3">3</a>, 16) ],</p>
-<p>    			<a href="posts.html?q= int(lines[1"> int(lines[1</a><a href="posts.html?q=0">0</a>, 16), int(lines<a href="posts.html?q=1">1</a><a href="posts.html?q=1">1</a>, 16), int(lines<a href="posts.html?q=1">1</a><a href="posts.html?q=2">2</a>, 16), int(lines<a href="posts.html?q=1">1</a><a href="posts.html?q=3">3</a>, 16) ],</p>
-<p>    			<a href="posts.html?q= int(lines[2"> int(lines[2</a><a href="posts.html?q=0">0</a>, 16), int(lines<a href="posts.html?q=2">2</a><a href="posts.html?q=1">1</a>, 16), int(lines<a href="posts.html?q=2">2</a><a href="posts.html?q=2">2</a>, 16), int(lines<a href="posts.html?q=2">2</a><a href="posts.html?q=3">3</a>, 16) ],</p>
-<p>    			<a href="posts.html?q= int(lines[3"> int(lines[3</a><a href="posts.html?q=0">0</a>, 16), int(lines<a href="posts.html?q=3">3</a><a href="posts.html?q=1">1</a>, 16), int(lines<a href="posts.html?q=3">3</a><a href="posts.html?q=2">2</a>, 16), int(lines<a href="posts.html?q=3">3</a><a href="posts.html?q=3">3</a>, 16) ]</p>
-<p>    			]</p>
-<p>    		return board</p>
-<p>    	return None</p>
-<p>    </p>
-<p>    def ProcessGame(filePath):</p>
-<p>        f = open(filePath)</p>
-<p>        board = ReadNextBoard(f)</p>
-<p>        boardNumber = 1</p>
-<p>        while board:</p>
-<p>                DrawBoard(board).save('2048-' + str(boardNumber) + '.png')</p>
-<p>                board = ReadNextBoard(f)</p>
-<p>                boardNumber = boardNumber + 1</p>
+<pre>
+   from PIL import Image
+   from PIL import ImageFont
+   from PIL import ImageDraw
+   from itertools import islice
+   
+   TilePositions = [
+           [32, 216], [153, 216], [274, 216], [395, 216],
+           [32, 339], [153, 339], [274, 339], [395, 339],
+           [32, 461], [153, 461], [274, 461], [395, 461],
+           [32, 584], [153, 584], [274, 584], [395, 584]
+   	]
+   TileSize = 106
+   
+   def LoadTemplate():
+   	img = Image.open('2048.png')
+   	draw= ImageDraw.Draw(img)
+   	return img, draw
+   
+   def DrawBoard(board):
+   	img, draw = LoadTemplate()
+   	bigFont = ImageFont.truetype('DejaVuSans-Bold.ttf', 48)
+   	smallFont = ImageFont.truetype('DejaVuSans-Bold.ttf', 24)
+   	dbgFont = ImageFont.truetype('DejaVuSans-Bold.ttf', 8)
+   	for r in range(len(board)):
+   		for c in range(len(board[r])):
+   			number = 2 ** board[r][c]
+   			if number &gt; 1:
+   				tileX, tileY = TilePositions[r*4 +c][0], TilePositions[r*4 +c][1]
+   				font = smallFont if number &gt; 64 else bigFont
+   				text = str(number)
+   				textW, textH = draw.textsize(text, font=font)
+   				x, y = tileX + (TileSize - textW) / 2, tileY + (TileSize - textH) /2
+   				dbgText = str(tileX) + ' + (' + str(TileSize) + ' - ' + str(textW) + ') / 2'
+                                   draw.text((x, y), text, (0,0,0), font=font)
+   	return img
+   
+   def ReadNextBoard(f):
+   	lines = [lines for lines in islice(f, 4)]
+   	if (len(lines)) == 4:
+   		board = [
+   			[ int(lines[0][0], 16), int(lines[0][1], 16), int(lines[0][2], 16), int(lines[0][3], 16) ],
+   			[ int(lines[1][0], 16), int(lines[1][1], 16), int(lines[1][2], 16), int(lines[1][3], 16) ],
+   			[ int(lines[2][0], 16), int(lines[2][1], 16), int(lines[2][2], 16), int(lines[2][3], 16) ],
+   			[ int(lines[3][0], 16), int(lines[3][1], 16), int(lines[3][2], 16), int(lines[3][3], 16) ]
+   			]
+   		return board
+   	return None
+   
+   def ProcessGame(filePath):
+       f = open(filePath)
+       board = ReadNextBoard(f)
+       boardNumber = 1
+       while board:
+               DrawBoard(board).save('2048-' + str(boardNumber) + '.png')
+               board = ReadNextBoard(f)
+               boardNumber = boardNumber + 1
+</pre>
 <p>A estratégia do programa de IA é ordenar as casas em um lado e, assim que acumular valores o suficiente, consolidar tudo na última casa. Nem sempre isso é possível, pois uma virada de jogo pode deixar a casa com o maior valor no meio de um dos lados. Nesse caso, é interessante ver como a I.A. se sai, já que com apenas uma execução ela foi até 8192 e mais um 4096. Dá-lhe, computador!</p>
 
 

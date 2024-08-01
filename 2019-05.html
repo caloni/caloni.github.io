@@ -397,10 +397,12 @@ namespace Microsoft{ namespace VisualStudio {namespace CppUnitTestFramework
 <p>Tantas linguagens hoje em dia tentando implementar a abstração de corrotinas e inserindo mais camadas de abstração (fibras e cereais)... há duas implementações já no Boost, ambas dependendo de uma biblioteca de contexto de stack que é dependente de arquitetura (programada em Assembly).</p>
 <p>E aqui está a linguagem C com sua elegância, minimalismo e a filosofia "just works", por mais ou menos 50 anos.</p>
 <p>Estava pesquisando sobre bibliotecas de corrotinas em C e encontrei a <a href="http://dotat.at/cgi/~fanf/dotat/~fanf/dotat/git/picoro.git">Picoro</a>, de Tony Finch. O repositório pode ser baixado em git://git.chiark.greenend.org.uk/~fanf/picoro.git. Três coisas me encantaram nela: </p>
-<p> 1. portabilidade (fácil de testar em qualquer arquitetura).</p>
-<p> 1. simplificade (um header e um .c com menos de 200 linhas, e a maioria são comentários).</p>
-<p> 1. manutenção (o último commit é de 2010, ou seja, ninguém mais mexeu nela por nove anos).</p>
-<p> </p>
+<pre>
+1. portabilidade (fácil de testar em qualquer arquitetura).
+1. simplificade (um header e um .c com menos de 200 linhas, e a maioria são comentários).
+1. manutenção (o último commit é de 2010, ou seja, ninguém mais mexeu nela por nove anos).
+
+</pre>
 <p>Ela é uma biblioteca feita para resolver o problema mais básico de toda corrotina: troca de contexto. Isso é feito de maneira descentralizada, embora ela inicie com uma corrotina principal: a primeira que constrói uma corrotina. A partir dessa é possível criar outras e dar resume em qualquer uma delas que não tenha terminado.</p>
 <p>A linguagem C já implementa troca de contexto através das funções padrão `setjmp` e `longjmp`. Há um tipo dependente de arquitetura, `jmp_buf`, que é usado para guardar o contexto. O salto é feito no estilo da função `fork` do Unix, ou seja, não há inclusão de mais nenhuma sintaxe diferente do usual: é um if que retorna 0 (contexto principal) ou não-0 (estamos em outro contexto).</p>
 <p>O picoro organiza tudo isso em torno de uma lista ligada. Aliás, de duas listas ligadas: `running` e `idle`, onde o head de cada uma delas é usado para verificar se há corrotinas paradas ou em execução. Há algumas regras básicas para que tudo funcione. Por exemplo, uma corrotina que já foi executada até o final ou que está bloqueada pela chamada de `resume` não pode ser posta para rodar.</p>
@@ -1232,153 +1234,169 @@ int main()
 <p class="note-title"><small>2019-05-28  <a href="tag_coding.html">tag_coding</a> </small><a href="2019-05.html"><sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-goto')"><sup>[copy]</sup></a></p>
 <p>Para quem decide usar a linguagem C para resolver tudo, a gota da água é o goto. Ele é flexível, cabe em (quase) qualquer ponto do código e tem 1001 utilidades. O goto é o bombril da engenharia de software.</p>
 <p>O uso mais simples dessa importante construção da linguagem é pular de um ponto para outro do código em que esses pontos não estão diretamente relacionados, como geralmente ocorre, como sair de um laço, não entrar em um if ou selecionar um case do switch (lembrando que no caso do case do switch ele é no fundo um goto disfarçado).</p>
-<p>    if( argc != 5 )</p>
-<p>        goto usage;</p>
-<p>    /*</p>
-<p>    do something </p>
-<p>    do something else</p>
-<p>    more to do</p>
-<p>    and more</p>
-<p>    and more</p>
-<p>    and more</p>
-<p>    and more</p>
-<p>    too much lines</p>
-<p>    ...</p>
-<p>    finished</p>
-<p>    */</p>
-<p>    return 0;</p>
-<p>    usage:</p>
-<p>    printf("How to use: ...");</p>
-<p>    return 1;</p>
+<pre>
+   if( argc != 5 )
+       goto usage;
+   /*
+   do something 
+   do something else
+   more to do
+   and more
+   and more
+   and more
+   and more
+   too much lines
+   ...
+   finished
+   */
+   return 0;
+   usage:
+   printf("How to use: ...");
+   return 1;
+</pre>
 <p>Claro que esse uso é trivial demais para valer a pena uma troca de fluxo tão desestruturada. Há formas mais úteis de desviar o fluxo padrão. No exemplo acima bastaria colocar todo o código que se segue dentro do grupo pertencente ao if e o goto seria desnecessário.</p>
 <p>Mas, por exemplo, imagine que precisamos nos desfazer de recursos na ordem inversa ao qual vão sendo adquiridos. Pode-se aninhar indefinidamente ifs ou usar um bloco de código de unwinding que vai fechando os recursos na ordem inversa e inicia sua chamada dependendo de onde ocorreu o erro. Código é melhor para ilustrar:</p>
-<p>    FILE *f1, *f2, *f3, *f4, *f5;</p>
-<p>    </p>
-<p>    if( ! (f1 = fopen()) )</p>
-<p>      goto end;</p>
-<p>    if( ! (f2 = fopen()) )</p>
-<p>      goto end_f1;</p>
-<p>    if( ! (f3 = fopen()) )</p>
-<p>      goto end_f2;</p>
-<p>    if( ! (f4 = fopen()) )</p>
-<p>      goto end_f3;</p>
-<p>    if( ! (f5 = fopen()) )</p>
-<p>      goto end_f4;</p>
-<p>    </p>
-<p>    /*</p>
-<p>    code</p>
-<p>    ...</p>
-<p>    code</p>
-<p>    */</p>
-<p>    </p>
-<p>    printf("closing f5\n");</p>
-<p>    fclose(f5);</p>
-<p>    end_f4: </p>
-<p>      fclose(f4);</p>
-<p>    end_f3: </p>
-<p>      fclose(f3);</p>
-<p>    end_f2: </p>
-<p>      fclose(f2);</p>
-<p>    end_f1: </p>
-<p>      fclose(f1);</p>
-<p>    end: ;</p>
+<pre>
+   FILE *f1, *f2, *f3, *f4, *f5;
+   
+   if( ! (f1 = fopen()) )
+     goto end;
+   if( ! (f2 = fopen()) )
+     goto end_f1;
+   if( ! (f3 = fopen()) )
+     goto end_f2;
+   if( ! (f4 = fopen()) )
+     goto end_f3;
+   if( ! (f5 = fopen()) )
+     goto end_f4;
+   
+   /*
+   code
+   ...
+   code
+   */
+   
+   printf("closing f5\n");
+   fclose(f5);
+   end_f4: 
+     fclose(f4);
+   end_f3: 
+     fclose(f3);
+   end_f2: 
+     fclose(f2);
+   end_f1: 
+     fclose(f1);
+   end: ;
+</pre>
 <p>Esse ponto-e-virgula final se deve ao fato que os labels do goto rotulam um comando; logo, se ha um label, deve haver um comando logo depois (mesmo que seja nulo, no caso de ponto-e-virgula). Esse estilo de liberação de recursos é muito usado em códigos de kernel e software mais básico, pois simplifica a visualização e aumenta a flexibilidade. Compare com a versão estruturada:</p>
-<p>    if( f1 = fopen() )</p>
-<p>    {</p>
-<p>      if( f2 = fopen() )</p>
-<p>      {</p>
-<p>        if( f3 = fopen() )</p>
-<p>        {</p>
-<p>          if( f4 = fopen() )</p>
-<p>          {</p>
-<p>            if( f5 = fopen() )</p>
-<p>            {</p>
-<p>              /*</p>
-<p>                 code</p>
-<p>                 ...</p>
-<p>                 code</p>
-<p>               */</p>
-<p>              fclose(f5);</p>
-<p>            }</p>
-<p>            fclose(f4);</p>
-<p>          }</p>
-<p>          fclose(f3);</p>
-<p>        }</p>
-<p>        fclose(f2);</p>
-<p>      }</p>
-<p>      fclose(f1);</p>
-<p>    }</p>
+<pre>
+   if( f1 = fopen() )
+   {
+     if( f2 = fopen() )
+     {
+       if( f3 = fopen() )
+       {
+         if( f4 = fopen() )
+         {
+           if( f5 = fopen() )
+           {
+             /*
+                code
+                ...
+                code
+              */
+             fclose(f5);
+           }
+           fclose(f4);
+         }
+         fclose(f3);
+       }
+       fclose(f2);
+     }
+     fclose(f1);
+   }
+</pre>
 <p>Aliás, esse uso do goto é a maneira de aplicar RAII em C (Resource acquisition is initialization). Implícito em linguagens como C++ e seus destrutores de objetos, em C é você que precisa fazer a faxina. E se a bagunça foi feita da direita pra esquerda a faxina deve ser feita da esquerda pra direita.</p>
 <p>Esse uso super-aninhado do código me lembra do exemplo clássico de sair de muitos loops aninhados. Apenas por didática, vamos citá-lo:</p>
-<p>    for( ; ; )</p>
-<p>    {</p>
-<p>      for( ; ; )</p>
-<p>      {</p>
-<p>        for( ; ; )</p>
-<p>        {</p>
-<p>          if( condition )</p>
-<p>            goto outer_world;</p>
-<p>        }</p>
-<p>      }</p>
-<p>    }</p>
-<p>    </p>
-<p>    outer_world: ;</p>
+<pre>
+   for( ; ; )
+   {
+     for( ; ; )
+     {
+       for( ; ; )
+       {
+         if( condition )
+           goto outer_world;
+       }
+     }
+   }
+   
+   outer_world: ;
+</pre>
 <p>Comentei no começo do texto que os cases do switch são labels de goto disfarçados. E são mesmo. Um dos algoritmos mais famosos de transformação de loop chamado Duff's device junta um do-while com switch e realiza uma cópia de buffer com um número de bytes variável:</p>
-<p>    send(to, from, count)</p>
-<p>    register short *to, *from;</p>
-<p>    register count;</p>
-<p>    {</p>
-<p>      register n = (count + 7) / 8;</p>
-<p>      switch (count % 8) {</p>
-<p>      case 0: do { *to = *from++;</p>
-<p>      case 7: *to = *from++;</p>
-<p>      case 6: *to = *from++;</p>
-<p>      case 5: *to = *from++;</p>
-<p>      case 4: *to = *from++;</p>
-<p>      case 3: *to = *from++;</p>
-<p>      case 2: *to = *from++;</p>
-<p>      case 1: *to = *from++;</p>
-<p>        } while (--n &gt; 0);</p>
-<p>      }</p>
-<p>    }</p>
+<pre>
+   send(to, from, count)
+   register short *to, *from;
+   register count;
+   {
+     register n = (count + 7) / 8;
+     switch (count % 8) {
+     case 0: do { *to = *from++;
+     case 7: *to = *from++;
+     case 6: *to = *from++;
+     case 5: *to = *from++;
+     case 4: *to = *from++;
+     case 3: *to = *from++;
+     case 2: *to = *from++;
+     case 1: *to = *from++;
+       } while (--n &gt; 0);
+     }
+   }
+</pre>
 <p>O que está acontecendo no código acima: é possível inserir qualquer tipo de mudança de fluxo dentro do switch. Duff aproveitou essa particularidade da linguagem para produzir jumps que poderiam ser feitos em assembly. Dependendo do resto da divisão por oito o salto é realizado para um case diferente, que executará parte do laço até o while comparador final. A vantagem desse tipo de abordagem é que evita-se sair da programação estruturada, e muito menos precisa-se apelar para o assembly.</p>
 <p>Esse código também seria possível de ser feito com o goto clássico, mas note que nesse caso ele fica mais verboso, pois é necessário fazer um if diferente para cada condição.</p>
-<p>    register n = (count + 7) / 8;</p>
-<p>    if (count % 8 == 0 ) </p>
-<p>      goto case_0;</p>
-<p>    if (count % 8 == 7 ) </p>
-<p>      goto case_7;</p>
-<p>    if (count % 8 == 6 ) </p>
-<p>      goto case_6;</p>
-<p>    if (count % 8 == 5 ) </p>
-<p>      goto case_5;</p>
-<p>    if (count % 8 == 4 ) </p>
-<p>      goto case_4;</p>
-<p>    if (count % 8 == 3 ) </p>
-<p>      goto case_3;</p>
-<p>    if (count % 8 == 2 ) </p>
-<p>      goto case_2;</p>
-<p>    if (count % 8 == 1 ) </p>
-<p>      goto case_1;</p>
-<p>    case_0: do { *to++ = *from++;</p>
-<p>    case_7: *to++ = *from++;</p>
-<p>    case_6: *to++ = *from++;</p>
-<p>    case_5: *to++ = *from++;</p>
-<p>    case_4: *to++ = *from++;</p>
-<p>    case_3: *to++ = *from++;</p>
-<p>    case_2: *to++ = *from++;</p>
-<p>    case_1: *to++ = *from++;</p>
-<p>    } while (--n &gt; 0);</p>
+<pre>
+   register n = (count + 7) / 8;
+   if (count % 8 == 0 ) 
+     goto case_0;
+   if (count % 8 == 7 ) 
+     goto case_7;
+   if (count % 8 == 6 ) 
+     goto case_6;
+   if (count % 8 == 5 ) 
+     goto case_5;
+   if (count % 8 == 4 ) 
+     goto case_4;
+   if (count % 8 == 3 ) 
+     goto case_3;
+   if (count % 8 == 2 ) 
+     goto case_2;
+   if (count % 8 == 1 ) 
+     goto case_1;
+   case_0: do { *to++ = *from++;
+   case_7: *to++ = *from++;
+   case_6: *to++ = *from++;
+   case_5: *to++ = *from++;
+   case_4: *to++ = *from++;
+   case_3: *to++ = *from++;
+   case_2: *to++ = *from++;
+   case_1: *to++ = *from++;
+   } while (--n &gt; 0);
+</pre>
 <p>Caso você tenha estranhada a definição inicial da função, ela é como se definia os argumentos em linguagem C antes do padrão ANSI, com os nomes e logo em seguida a declaração das variáveis como se fossem locais (porque de fato elas são, embora sua inicialização seja feita antes da chamada). Como este código data dos anos 80 e como o padrão só foi finalizado em 89, percebe-se que ainda se usava o formato antigo no código.</p>
 <p>Passemos para o próximo uso: código infinito. Esse é um uso clássico, e diferente do uso degenerado de laços em que a condição é sempre verdadeira (while(true), for(;;)) usando o goto fica bem-documentado que o objetivo é ficar eternamente nesse loop. Um laço infinito que eu me lembro é quando dá tela azul no Windows. O código-fonte do kernel era algo mais ou menos assim:</p>
-<p>    gerarDump();</p>
-<p>    mudarParaVga();</p>
-<p>    </p>
-<p>    while( true )</p>
-<p>      ; /* that's all, folks */</p>
+<pre>
+   gerarDump();
+   mudarParaVga();
+   
+   while( true )
+     ; /* that's all, folks */
+</pre>
 <p>Os programadores usaram o apelo clássico do while. Sem motivo, pois goto é usado direto como RAII (já explicado acima). A maneira procedural de fazer seria assim:</p>
-<p>    infinite:</p>
-<p>    goto infinite;</p>
+<pre>
+   infinite:
+   goto infinite;
+</pre>
 <p>Isso lembra outra utilidade do goto que você pode anotar no seu caderninho: ele pode voltar o fluxo, de baixo para cima. Esse último exemplo é um dos programas C mais lindos do universo. Sua única instrução é o comando rotulado por infinite e referencia ele mesmo. É quase o salto incondicional do assembly, materializado na linguagem mais elegante jamais criada em nossa realidade.</p>
 
 </section><hr/>

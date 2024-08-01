@@ -138,35 +138,37 @@ role="navigation" aria-label="main navigation">
 <li>Defina um breakpoint em alguma DLL de user mode.</li>
 </ul>
 <p>Como meus leitores são muito espertos foi partir para o momento após rodarmos um notepad.exe:</p>
-<p>    </p>
-<p>    kd&gt; !process 0 0 notepad.exe</p>
-<p>    PROCESS 81681be0  SessionId: 0  Cid: 0598    Peb: 7ffd7000  ParentCid: 0200</p>
-<p>        DirBase: 08740260  ObjectTable: e18ee8d8  HandleCount:  29.</p>
-<p>        Image: notepad.exe</p>
-<p>    </p>
-<p>    kd&gt; .process /i 81681be0</p>
-<p>    You need to continue execution (press 'g' &lt;enter&gt;) for the context</p>
-<p>    to be switched. When the debugger breaks in again, you will be in</p>
-<p>    the new process context.</p>
-<p>    kd&gt; g</p>
-<p>    Break instruction exception - code 80000003 (first chance)</p>
-<p>    nt!RtlpBreakWithStatusInstruction:</p>
-<p>    80527bdc cc              int     3</p>
-<p>    kd&gt; .reload /user</p>
-<p>    Loading User Symbols</p>
-<p>    .......................</p>
-<p>    kd&gt; bp user32!MessageBoxExW</p>
-<p>    kd&gt; g</p>
-<p>    Breakpoint 0 hit</p>
-<p>    USER32!MessageBoxExW:</p>
-<p>    001b:7e3a0838 8bff            mov     edi,edi</p>
-<p>    kd&gt; du poi(esp+8)</p>
-<p>    0007cfb8  "naoexistetralala.txt.Arquivo não"</p>
-<p>    0007cff8  " encontrado..Verifique se o nome"</p>
-<p>    0007d038  " do arquivo correto foi especifi"</p>
-<p>    0007d078  "cado."</p>
-<p>    kd&gt; ezu poi(esp+8) "Esse arquivo não existe! Mas é muito mané, não é mesmo?"</p>
-<p>    kd&gt; g</p>
+<pre>
+   
+   kd&gt; !process 0 0 notepad.exe
+   PROCESS 81681be0  SessionId: 0  Cid: 0598    Peb: 7ffd7000  ParentCid: 0200
+       DirBase: 08740260  ObjectTable: e18ee8d8  HandleCount:  29.
+       Image: notepad.exe
+   
+   kd&gt; .process /i 81681be0
+   You need to continue execution (press 'g' &lt;enter&gt;) for the context
+   to be switched. When the debugger breaks in again, you will be in
+   the new process context.
+   kd&gt; g
+   Break instruction exception - code 80000003 (first chance)
+   nt!RtlpBreakWithStatusInstruction:
+   80527bdc cc              int     3
+   kd&gt; .reload /user
+   Loading User Symbols
+   .......................
+   kd&gt; bp user32!MessageBoxExW
+   kd&gt; g
+   Breakpoint 0 hit
+   USER32!MessageBoxExW:
+   001b:7e3a0838 8bff            mov     edi,edi
+   kd&gt; du poi(esp+8)
+   0007cfb8  "naoexistetralala.txt.Arquivo não"
+   0007cff8  " encontrado..Verifique se o nome"
+   0007d038  " do arquivo correto foi especifi"
+   0007d078  "cado."
+   kd&gt; ezu poi(esp+8) "Esse arquivo não existe! Mas é muito mané, não é mesmo?"
+   kd&gt; g
+</pre>
 <p>O screenshot diz tudo:</p>
 <img src="img/breakpoints-promiscuos-debug-notepad-kernel.png"/>
 <p>Agora a parte mais divertida: experimente com outro notepad, ou com o explorer =)</p>
@@ -182,10 +184,12 @@ role="navigation" aria-label="main navigation">
 <p>Mas nem por isso deixei de terminar uma primeira versão do aplicativo que irei usar como base na minha palestra do nosso próximo encontro C++: Crash Dump Analysis. Se alguém tiver dicas de quais os problemas mais difíceis do Universo para analisar em um dump de memória, comente a respeito e veremos o que dá pra fazer.</p>
 <img src="img/setimo-encontro-de-programadores-c-wNd2Z1m.png"/>
 <p>Enquanto isso, continuo descobrindo maravilhas do WinDbg. Essa semana fiquei brincando de colocar breakpoint em user-mode, mas depurando o kernel, como fizeram os rapazes do Ntdebugging. A conclusão é que ele vale para todos os aplicativos abertos. Tente com o MessageBox!</p>
-<p>    </p>
-<p>    !process 0 0 notepad.exe</p>
-<p>    .reload /user</p>
-<p>    bp user32!MessageBoxW</p>
+<pre>
+   
+   !process 0 0 notepad.exe
+   .reload /user
+   bp user32!MessageBoxW
+</pre>
 <p>Mas devaneio. Talvez outra boa qualidade de um bom programador.</p>
 
 

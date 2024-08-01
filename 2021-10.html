@@ -388,13 +388,16 @@ role="navigation" aria-label="main navigation">
 <p class="title"><a href="2021-10.html#ownership-ssh">#</a> Como resolver ownership do SSH</p>
 <p class="note-title"><small>2021-10-19  <a href="tag_coding.html">tag_coding</a> <a href="tag_debugging.html">tag_debugging</a> </small><a href="2021-10.html"><sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-ownership-ssh')"><sup>[copy]</sup></a></p>
 <p>Primeiro tente logar com o usuário enquanto roda o comando abaixo no server para ver mensagens de log:</p>
-<p>    # see logs from ssh server</p>
-<p>    journalctl -f -t sshd</p>
+<pre>
+   # see logs from ssh server
+   journalctl -f -t sshd
+</pre>
 <p>Se for problema de ownership então resolva dessa forma:</p>
-<p>    # fix ownership for ssh server users</p>
-<p>    chmod go-w ~</p>
-<p>    chmod 700 .ssh</p>
-<p>    chmod 600 .ssh/authorized_keys</p>
+<pre>
+   # fix ownership for ssh server users
+   chmod go-w ~
+   chmod 700 .ssh
+   chmod 600 .ssh/authorized_keys
 
 </section><hr/>
 

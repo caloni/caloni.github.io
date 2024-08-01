@@ -491,40 +491,44 @@ role="navigation" aria-label="main navigation">
 <p>A versatilidade do vcpkg, gerenciador de pacotes multiplataforma da Microsoft, é permitir modificar tudo no projeto, desde código-fonte, pacotes instaláveis e a própria origem do repositório. Através do controle de fonte um vcpkg pode ser alimentado por diversas fontes, e por cada pacote existir em uma pasta separada permite a coexistência de várias versões e origens. Além disso, a forma de compilar os projetos e o código-base pode ser alterado exatamente da forma com que o projeto precisa.</p>
 <p>Sabendo de tudo isso, a única coisa que você precisa em um projeto isolado é um script de bootstrap que baixe um repositório vcpkg customizado para o projeto, compile, instale os pacotes necessários e integre com o Visual Studio antes de iniciar a compilação do próprio projeto. Dessa forma é possível montar o ambiente de maneira automática e sanitizada para qualquer membro da equipe ou máquina de build.</p>
 <p>Vejamos como seria um bootstrap.bat:</p>
-<p>    @echo off</p>
-<p>    </p>
-<p>    if not exist vcpkg (</p>
-<p>      git clone https://vcpkg.git</p>
-<p>    ) else (</p>
-<p>      echo vcpkg detected</p>
-<p>    )</p>
-<p>    </p>
-<p>    if not exist vcpkg\vcpkg.exe (</p>
-<p>      pushd vcpkg</p>
-<p>      call bootstrap-vcpkg.bat</p>
-<p>      popd</p>
-<p>    ) else (</p>
-<p>      echo vcpkg detected</p>
-<p>    )</p>
-<p>    </p>
-<p>    if exist vcpkg\vcpkg.exe (</p>
-<p>      pushd vcpkg</p>
-<p>      vcpkg update</p>
-<p>      vcpkg install pkg1</p>
-<p>      vcpkg install pkg2</p>
-<p>      vcpkg install pkgN</p>
-<p>      vcpkg integrate install</p>
-<p>      popd</p>
-<p>    )</p>
+<pre>
+   @echo off
+   
+   if not exist vcpkg (
+     git clone https://vcpkg.git
+   ) else (
+     echo vcpkg detected
+   )
+   
+   if not exist vcpkg\vcpkg.exe (
+     pushd vcpkg
+     call bootstrap-vcpkg.bat
+     popd
+   ) else (
+     echo vcpkg detected
+   )
+   
+   if exist vcpkg\vcpkg.exe (
+     pushd vcpkg
+     vcpkg update
+     vcpkg install pkg1
+     vcpkg install pkg2
+     vcpkg install pkgN
+     vcpkg integrate install
+     popd
+   )
+</pre>
 <p>Com esse script na pasta raiz do seu projeto ele irá criar uma subpasta chamada vcpkg e após realizar as operações descritas acima integrar ao Visual Studio. Dessa forma quando for compilar o projeto os includes e libs já estarão disponíveis para que ele funcione, mesmo diretamente de uma máquina limpa.</p>
 <p>Esse script pode ser integrado à lib principal do projeto ou o projeto da solution que primeiro deve compilar (porque todos dependem dele). Para isso existe o Pre-Build Event nas configurações de um projeto do Visual Studio. Os comandos que estiverem lá serão executados sempre antes da compilação.</p>
-<p>    &lt;PreBuildEvent&gt;</p>
-<p>      &lt;Command&gt;</p>
-<p>        pushd $(SolutionDir)</p>
-<p>        call bootstrap.bat</p>
-<p>        popd</p>
-<p>      &lt;/Command&gt;</p>
-<p>    &lt;/PreBuildEvent&gt;</p>
+<pre>
+   &lt;PreBuildEvent&gt;
+     &lt;Command&gt;
+       pushd $(SolutionDir)
+       call bootstrap.bat
+       popd
+     &lt;/Command&gt;
+   &lt;/PreBuildEvent&gt;
+</pre>
 <p>O único passo não-descrito neste artigo é baixar o projeto e iniciar o build, tarefas triviais de integração.</p>
 
 </section><hr/>

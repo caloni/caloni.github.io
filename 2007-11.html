@@ -98,65 +98,71 @@ role="navigation" aria-label="main navigation">
 <li>Para chamarmos um ponteiro de método precisamos sempre de um objeto da classe para a qual ele aponta.</li>
 </ul>
 <p>Visto isso, passemos a um <a href="posts.html?q=member_pointer.cpp">exemplo simples</a>, um chamador de métodos aleatórios, que ilustra o princípio básico de utilização:</p>
-<p>    #include &lt;iostream&gt;</p>
-<p>    #include &lt;time.h&gt;</p>
-<p>    </p>
-<p>    class Rand;</p>
-<p>    </p>
-<p>    typedef void (Rand::*FP)();</p>
-<p>    </p>
-<p>    class Rand</p>
-<p>    {</p>
-<p>      public:</p>
-<p>        Rand()</p>
-<p>        {</p>
-<p>          srand(time(NULL));</p>
-<p>        }</p>
-<p>    </p>
-<p>        FP GiveMeFunc()</p>
-<p>        {</p>
-<p>          return m_funcs<a href="posts.html?q=rand() % 3">rand() % 3</a>;</p>
-<p>        }</p>
-<p>    </p>
-<p>      private:</p>
-<p>        void FuncOne()   { std::cout &lt;&lt; "One!\n"; }</p>
-<p>        void FuncTwo()   { std::cout &lt;&lt; "Two!\n"; }</p>
-<p>        void FuncThree() { std::cout &lt;&lt; "Three!\n"; }</p>
-<p>    </p>
-<p>        static FP m_funcs<a href="posts.html?q=3">3</a>;</p>
-<p>    };</p>
-<p>    </p>
-<p>    FP Rand::m_funcs<a href="posts.html?q=3">3</a> = { &amp;FuncOne, &amp;FuncTwo, &amp;FuncThree };</p>
-<p>    </p>
-<p>    void passThrough(FP fp)</p>
-<p>    {</p>
-<p>      Rand r;</p>
-<p>      ( r.*fp )(); // &lt;&lt;-- this</p>
-<p>    }</p>
-<p>    </p>
-<p>    /** No princípio Deus disse:</p>
-<p>      'int main!'</p>
-<p>     */</p>
-<p>    int main()</p>
-<p>    {</p>
-<p>      Rand r;</p>
-<p>      FP fp;</p>
-<p>    </p>
-<p>      fp = r.GiveMeFunc();</p>
-<p>      passThrough(fp);</p>
-<p>    }</p>
+<pre>
+   #include &lt;iostream&gt;
+   #include &lt;time.h&gt;
+   
+   class Rand;
+   
+   typedef void (Rand::*FP)();
+   
+   class Rand
+   {
+     public:
+       Rand()
+       {
+         srand(time(NULL));
+       }
+   
+       FP GiveMeFunc()
+       {
+         return m_funcs[rand() % 3];
+       }
+   
+     private:
+       void FuncOne()   { std::cout &lt;&lt; "One!\n"; }
+       void FuncTwo()   { std::cout &lt;&lt; "Two!\n"; }
+       void FuncThree() { std::cout &lt;&lt; "Three!\n"; }
+   
+       static FP m_funcs[3];
+   };
+   
+   FP Rand::m_funcs[3] = { &amp;FuncOne, &amp;FuncTwo, &amp;FuncThree };
+   
+   void passThrough(FP fp)
+   {
+     Rand r;
+     ( r.*fp )(); // &lt;&lt;-- this
+   }
+   
+   /** No princípio Deus disse:
+     'int main!'
+    */
+   int main()
+   {
+     Rand r;
+     FP fp;
+   
+     fp = r.GiveMeFunc();
+     passThrough(fp);
+   }
+</pre>
 <p>Como podemos ver, para o typedef de ponteiros de método é necessário especificar o escopo da classe. Com isso o compilador já sabe que só poderá aceitar endereços de métodos pertencentes à mesma classe com o mesmo protótipo. Na hora de atribuir, usamos o operador de endereço e o nome do método (com escopo, se estivermos fora da classe). É importante notar que, diferente de ponteiros de função, o operador de endereço é obrigatório. Do contrário:</p>
-<p>    </p>
-<p>    error C4867: 'Rand::FuncOne': function call </p>
-<p>    missing argument list; use '&amp;Rand::FuncOne' </p>
-<p>    to create a pointer to member</p>
+<pre>
+   
+   error C4867: 'Rand::FuncOne': function call 
+   missing argument list; use '&amp;Rand::FuncOne' 
+   to create a pointer to member
+</pre>
 <p>E, por fim, a chamada. Como é a chamada de um método, é quase intuitiva a necessidade de um objeto para chamá-la. Do contrário não teríamos um this para alterar o objeto em qualquer método não-estático, certo? Daí a necessidade do padrão C++ especificar dois operadores especialistas para esse fim, construídos a partir da combinação de operadores já existentes em C:</p>
-<p>    Rand r;</p>
-<p>    Rand* pr = &amp;r;</p>
-<p>    // <a href="posts.html?q=obj">obj</a> .* <a href="posts.html?q=method ptr">method ptr</a></p>
-<p>    ( r.*pMethod )();</p>
-<p>    // <a href="posts.html?q=obj ptr">obj ptr</a> -&gt;* <a href="posts.html?q=method ptr">method ptr</a> </p>
-<p>    ( pr-&gt;*pMethod )();</p>
+<pre>
+   Rand r;
+   Rand* pr = &amp;r;
+   // [obj] .* [method ptr]
+   ( r.*pMethod )();
+   // [obj ptr] -&gt;* [method ptr] 
+   ( pr-&gt;*pMethod )();
+</pre>
 <p>Esses operadores obrigam o programador a sempre ter um objeto e um ponteiro. Daí não tem como errar. Infelizmente, devido à ordem de precedência, temos que colocar os parênteses em torno da expressão para chamar o método. Pelo menos fica equivalente ao que precisávamos fazer antes da padronização da linguagem C.</p>
 
 
@@ -170,114 +176,124 @@ role="navigation" aria-label="main navigation">
 <p>Depois de publicado o artigo anterior sobre ponteiros de métodos surgiu uma dúvida muito pertinente do autor do blogue <a href="http://codebehind.wordpress.com">CodeBehind</a>, um escovador de bits disfarçado de programador .NET: qual objeto que vale na hora de chamar um método pelo ponteiro?</p>
 <p>Isso me estimulou a desdobrar um pouco mais os mistérios por trás dos ponteiro de métodos e de membros, e descobrir os detalhes mais ocultos desse lado esotérico da linguagem.</p>
 <p>Para entender por inteiro o que acontece quando uma chamada ou acesso utilizando ponteiros dependentes de escopo, algumas pequenas mudanças foram feitas na nossa pequena classe Rand.</p>
-<p>    #include &lt;iostream&gt;</p>
-<p>    #include &lt;time.h&gt;</p>
-<p>    </p>
-<p>    class Rand;</p>
-<p>    typedef void (Rand::*FP)();</p>
-<p>    typedef int Rand::*MP;</p>
-<p>    </p>
-<p>    class Rand</p>
-<p>    {</p>
-<p>    public:</p>
-<p>      Rand()</p>
-<p>      {</p>
-<p>        m_num = rand() % 100;</p>
-<p>      }</p>
-<p>    </p>
-<p>      int m_num;</p>
-<p>    </p>
-<p>      void Print()</p>
-<p>      {</p>
-<p>        std::cout &lt;&lt; "this: " </p>
-<p>          &lt;&lt; std::hex &lt;&lt; this </p>
-<p>          &lt;&lt; ", member: " </p>
-<p>          &lt;&lt; std::dec &lt;&lt; m_num</p>
-<p>          &lt;&lt; std::endl;</p>
-<p>      }</p>
-<p>    };</p>
-<p>    </p>
-<p>    /** No princípio Deus disse: </p>
-<p>        'int main!'</p>
-<p>    */</p>
-<p>    int main()</p>
-<p>    {</p>
-<p>      srand(time(NULL));</p>
-<p>    </p>
-<p>      Rand r1, r2, r3;</p>
-<p>      FP fp = &amp;Rand::Print;</p>
-<p>      MP mp = &amp;Rand::m_num;</p>
-<p>    </p>
-<p>      (r1.*fp)();</p>
-<p>      (r2.*fp)();</p>
-<p>      (r3.*fp)();</p>
-<p>    </p>
-<p>      std::cout &lt;&lt; std::endl;</p>
-<p>      </p>
-<p>      std::cout &lt;&lt; "this: " </p>
-<p>        &lt;&lt; std::hex &lt;&lt; &amp;r1 </p>
-<p>        &lt;&lt; ", member: " </p>
-<p>        &lt;&lt; std::dec &lt;&lt; r1.*mp </p>
-<p>        &lt;&lt; std::endl;</p>
-<p>    </p>
-<p>      std::cout &lt;&lt; "this: " </p>
-<p>        &lt;&lt; std::hex &lt;&lt; &amp;r2 </p>
-<p>        &lt;&lt; ", member: " </p>
-<p>        &lt;&lt; std::dec &lt;&lt; r2.*mp </p>
-<p>        &lt;&lt; std::endl;</p>
-<p>    </p>
-<p>      std::cout &lt;&lt; "this: " </p>
-<p>        &lt;&lt; std::hex &lt;&lt; &amp;r3 </p>
-<p>        &lt;&lt; ", member: " </p>
-<p>        &lt;&lt; std::dec &lt;&lt; r3.*mp </p>
-<p>        &lt;&lt; std::endl;</p>
-<p>    } </p>
+<pre>
+   #include &lt;iostream&gt;
+   #include &lt;time.h&gt;
+   
+   class Rand;
+   typedef void (Rand::*FP)();
+   typedef int Rand::*MP;
+   
+   class Rand
+   {
+   public:
+     Rand()
+     {
+       m_num = rand() % 100;
+     }
+   
+     int m_num;
+   
+     void Print()
+     {
+       std::cout &lt;&lt; "this: " 
+         &lt;&lt; std::hex &lt;&lt; this 
+         &lt;&lt; ", member: " 
+         &lt;&lt; std::dec &lt;&lt; m_num
+         &lt;&lt; std::endl;
+     }
+   };
+   
+   /** No princípio Deus disse: 
+       'int main!'
+   */
+   int main()
+   {
+     srand(time(NULL));
+   
+     Rand r1, r2, r3;
+     FP fp = &amp;Rand::Print;
+     MP mp = &amp;Rand::m_num;
+   
+     (r1.*fp)();
+     (r2.*fp)();
+     (r3.*fp)();
+   
+     std::cout &lt;&lt; std::endl;
+     
+     std::cout &lt;&lt; "this: " 
+       &lt;&lt; std::hex &lt;&lt; &amp;r1 
+       &lt;&lt; ", member: " 
+       &lt;&lt; std::dec &lt;&lt; r1.*mp 
+       &lt;&lt; std::endl;
+   
+     std::cout &lt;&lt; "this: " 
+       &lt;&lt; std::hex &lt;&lt; &amp;r2 
+       &lt;&lt; ", member: " 
+       &lt;&lt; std::dec &lt;&lt; r2.*mp 
+       &lt;&lt; std::endl;
+   
+     std::cout &lt;&lt; "this: " 
+       &lt;&lt; std::hex &lt;&lt; &amp;r3 
+       &lt;&lt; ", member: " 
+       &lt;&lt; std::dec &lt;&lt; r3.*mp 
+       &lt;&lt; std::endl;
+   } 
+</pre>
 <p>O novo código chama através do mesmo ponteiro o mesmo método (duh), mas através de três objetos diferentes. Se observarmos a saída veremos que cada instância da classe guardou um inteiro aleatório diferente para si:</p>
-<p>    this: 0012FF6C, member: 97</p>
-<p>    this: 0012FF5C, member: 5</p>
-<p>    this: 0012FF60, member: 44</p>
-<p>    </p>
-<p>    this: 0012FF6C, member: 97</p>
-<p>    this: 0012FF5C, member: 5</p>
-<p>    this: 0012FF60, member: 44</p>
+<pre>
+   this: 0012FF6C, member: 97
+   this: 0012FF5C, member: 5
+   this: 0012FF60, member: 44
+   
+   this: 0012FF6C, member: 97
+   this: 0012FF5C, member: 5
+   this: 0012FF60, member: 44
+</pre>
 <p>Cada compilador e plataforma tem a liberdade de implementar o padrão C++ da maneira que quiser, mas o conceito no final acaba ficando quase a mesma coisa. No caso de ponteiros de métodos, o ponteiro guarda realmente o endereço da função que pertence à classe. Porém, como todo método não-estático em C++, para chamá-lo é necessário possuir um this, ou seja, o ponteiro para a instância:</p>
 <img src="img/ponteiro-de-metodo-qual-this-e-usado-fuzzycall.gif"/>
 <p>Em assembly teremos algo assim:</p>
-<p>    ; FP fp = &amp;Rand::Print;</p>
-<p>    lea rax,<a href="posts.html?q=Rand::Print">Rand::Print</a>  </p>
-<p>    mov qword ptr <a href="posts.html?q=fp">fp</a>,rax</p>
-<p>    ; (r1.*fp)();</p>
-<p>    lea rcx,<a href="posts.html?q=r1">r1</a>  </p>
-<p>    call qword ptr <a href="posts.html?q=fp">fp</a>  </p>
-<p>    ; (r2.*fp)();</p>
-<p>    lea rcx,<a href="posts.html?q=r2">r2</a>  </p>
-<p>    call qword ptr <a href="posts.html?q=fp">fp</a>  </p>
-<p>    ; (r3.*fp)();</p>
-<p>    lea rcx,<a href="posts.html?q=r3">r3</a>  </p>
-<p>    call qword ptr <a href="posts.html?q=fp">fp</a>  </p>
+<pre>
+   ; FP fp = &amp;Rand::Print;
+   lea rax,[Rand::Print]  
+   mov qword ptr [fp],rax
+   ; (r1.*fp)();
+   lea rcx,[r1]  
+   call qword ptr [fp]  
+   ; (r2.*fp)();
+   lea rcx,[r2]  
+   call qword ptr [fp]  
+   ; (r3.*fp)();
+   lea rcx,[r3]  
+   call qword ptr [fp]  
+</pre>
 <p>Além do ponteiro de métodos, também é possível no C++ apontar para membros de um dado objeto como foi feito no exemplo acima. Para tanto, como vimos no código, basta declarar um tipo de ponteiro de membro de acordo com o tipo desejado com o escopo da classe: typedef int Rand::*MP. Nesse caso, a técnica de usar o próprio enderenço não funciona, já que cada objeto possui um membro próprio em um lugar de memória próprio. Porém, assim como os ponteiros de métodos, os ponteiros de membros exigem um objeto para serem acessados, o que já nos dá a dica de onde o objeto começa. Sabendo onde ele começa, fica fácil saber onde fica o membro através do seu offset, ou seja, a distância dele a partir do início da memória do objeto. O código abaixo simplifica a obtenção de um objeto dentro da classe usando ponteiro para membros:</p>
-<p>    MP mp = &amp;Rand::m_num;</p>
-<p>    int i1 = r1.*mp;</p>
-<p>    int i2 = r2.*mp;</p>
-<p>    int i3 = r3.*mp;</p>
+<pre>
+   MP mp = &amp;Rand::m_num;
+   int i1 = r1.*mp;
+   int i2 = r2.*mp;
+   int i3 = r3.*mp;
+</pre>
 <p>Note no assembly gerado que para isso funcionar o código precisa do offset armazenado em algum lugar. E, nada mais óbvio, o "ponteiro" de um membro de uma classe nada mais é que o offset deste membro dentro desta classe.</p>
-<p>    ; MP mp = &amp;Rand::m_num;</p>
-<p>    mov dword ptr <a href="posts.html?q=mp">mp</a>,0</p>
-<p>    </p>
-<p>    ; int i1 = r1.*mp;</p>
-<p>    movsxd rax,dword ptr <a href="posts.html?q=mp">mp</a> </p>
-<p>    mov eax,dword ptr r1<a href="posts.html?q=rax">rax</a> </p>
-<p>    mov dword ptr <a href="posts.html?q=i1">i1</a>,eax </p>
-<p>    </p>
-<p>    ; int i2 = r2.*mp;</p>
-<p>    movsxd rax,dword ptr <a href="posts.html?q=mp">mp</a> </p>
-<p>    mov eax,dword ptr r2<a href="posts.html?q=rax">rax</a> </p>
-<p>    mov dword ptr <a href="posts.html?q=i2">i2</a>,eax </p>
-<p>    </p>
-<p>    ; int i3 = r3.*mp;</p>
-<p>    movsxd rax,dword ptr <a href="posts.html?q=mp">mp</a> </p>
-<p>    mov eax,dword ptr r3<a href="posts.html?q=rax">rax</a> </p>
-<p>    mov dword ptr <a href="posts.html?q=i3">i3</a>,eax</p>
+<pre>
+   ; MP mp = &amp;Rand::m_num;
+   mov dword ptr [mp],0
+   
+   ; int i1 = r1.*mp;
+   movsxd rax,dword ptr [mp] 
+   mov eax,dword ptr r1[rax] 
+   mov dword ptr [i1],eax 
+   
+   ; int i2 = r2.*mp;
+   movsxd rax,dword ptr [mp] 
+   mov eax,dword ptr r2[rax] 
+   mov dword ptr [i2],eax 
+   
+   ; int i3 = r3.*mp;
+   movsxd rax,dword ptr [mp] 
+   mov eax,dword ptr r3[rax] 
+   mov dword ptr [i3],eax
+</pre>
 <p>Como podemos ver, não é nenhuma magia negra a responsável por fazer os ponteiros de métodos e de membros funcionarem em C++. Porém, eles não são ponteiros ordinário que costumamos misturar a torto e a direito. Essa distinção na linguagem é importante para manter o código "minimamente sadio".</p>
 
 
@@ -291,36 +307,44 @@ role="navigation" aria-label="main navigation">
 <p>Nada como um comando prático para aprender rapidamente uma técnica. Nesse caso, tive que usar o seguinte comando para localizar o momento em que um executável instala um hook global: bp user32!SetWindowsHookExA "j poi(esp+4*4) 'g' ; '.echo *** GLOBAL HOOK ***; g'".</p>
 <p>Vamos analisar cada um desses subcomandos um a um.</p>
 <p>No WinDbg é possível definir um ou mais comandos que são executados quando um breakpoint é acionado. Esses comandos ficam entre aspas duplas e podem conter as mesmas coisas que digitamos na linha de comando. Alguns comandos, porém, são mais úteis que outros nesse contexto. Por exemplo, o comando ".echo". Podemos digitar .echo na linha de comando do WinDbg. O que acontece?</p>
-<p>    </p>
-<p>    0:000&gt; .echo O que acontece?</p>
-<p>    O que acontece?</p>
+<pre>
+   
+   0:000&gt; .echo O que acontece?
+   O que acontece?
+</pre>
 <p>Exatamente o que o comando se dispõe a fazer: imprimir seus argumentos na tela. E qual a vantagem nisso? Nenhuma, se estamos na linha de comando, mas muita se estivermos colocando um breakpoint onde queremos contar o número de vezes que passamos por lá, o comando tem serventia:</p>
-<p>    </p>
-<p>    0:000&gt; bp $exentry ".echo Passou pelo main; g"</p>
-<p>    0:000&gt; g</p>
-<p>    ModLoad: 5cb70000 5cb96000 ShimEng.dll</p>
-<p>    ModLoad: 774e0000 7761d000 ole32.dll</p>
-<p>    ...</p>
-<p>    ModLoad: 5ad70000 5ada8000 UxTheme.dll</p>
-<p>    Passou pelo main</p>
-<p>    ModLoad: 74720000 7476b000 MSCTF.dll</p>
-<p>    ...</p>
+<pre>
+   
+   0:000&gt; bp $exentry ".echo Passou pelo main; g"
+   0:000&gt; g
+   ModLoad: 5cb70000 5cb96000 ShimEng.dll
+   ModLoad: 774e0000 7761d000 ole32.dll
+   ...
+   ModLoad: 5ad70000 5ada8000 UxTheme.dll
+   Passou pelo main
+   ModLoad: 74720000 7476b000 MSCTF.dll
+   ...
+</pre>
 <p>Se essa mensagem fosse exibida mais de uma vez, poderíamos supor que é possível existir algum tipo de infecção na execução do aplicativo, como quando o código inicial carrega o original e volta a executar o mesmo ponto.</p>
 <img src="img/detectando-hooks-globais-no-windbg-codigo-malicioso.gif"/>
 <p>O objetivo aqui é "preparar o terreno" (ficar residente) antes que o código original seja executado. Com um simples breakpoint e um simples .echo conseguimos visualizar esse tipo de ataque. Outra possibilidade é que se trata daqueles executáveis "empacotados" por meio de algum encriptador de códigos como UPX, que desempacota o código e reexecuta o ponto de entrada do executável. Claro que esse é apenas um uso que podemos fazer desses comandos.</p>
 <p>Aprendi o comando j antes do .if, por isso acabo usando mais o primeiro, mas ambos possuem similaridades. O formato desse comando é exatamente como um "if-else":</p>
-<p>    </p>
-<p>    j Expression Command1 ; Command2</p>
-<p>    j Expression 'Command1' ; 'Command2'</p>
+<pre>
+   
+   j Expression Command1 ; Command2
+   j Expression 'Command1' ; 'Command2'
+</pre>
 <p>Se Expression for verdadeiro, Command1 será executado; do contrário, Command2 será. Se você não precisa do else basta usar um comando vazio ' '. A escolha é sua em usar aspas simples ou nada. Se usar aspas simples, é possível colocar mais de um comando, que foi o que eu fiz no else: '.echo *** GLOBAL HOOK ***; g'".</p>
 <p>Tudo depende do uso que você fizer desde comando. Algumas peculiaridades existem com relação ao uso de aspas duplas, simples, sem aspas, com ponto-e-vírgula, etc, mas são coisas que, como diz meu amigo <a href="http://www.codebehind.wordpress.com">Thiago</a>, "só se aprende na dor".</p>
 <p>Lembram-se de nossa peregrinação pela pilha de chamadas quando fizemos um <a href="posts.html?q=brincando-com-o-windbg">hook na função MessageBox</a> pelo WinDbg? Aqui é a mesma coisa, pois estou analisando um parâmetro passado na pilha (esp): o ID da thread para onde vai o hook.</p>
-<p>    </p>
-<p>    HHOOK SetWindowsHookEx(</p>
-<p>    	int idHook,</p>
-<p>    	HOOKPROC lpfn,</p>
-<p>    	HINSTANCE hMod,</p>
-<p>    	DWORD dwThreadId);</p>
+<pre>
+   
+   HHOOK SetWindowsHookEx(
+   	int idHook,
+   	HOOKPROC lpfn,
+   	HINSTANCE hMod,
+   	DWORD dwThreadId);
+</pre>
 <p>Relembrando nosso passeio pela pilha, ao entrar em uma função stdcall, os primeiros 4 bytes são o endereço de retorno, os próximos o primeiro parâmetro e assim por diante. O que quer dizer que poi ( esp + (4 * 4) ). É o apontado do quarto parâmetro (4*4) que está sendo verificado. Concluindo, se o parâmetro dwThreadId for igual a zero, estamos diante de um hook global, e é o momento em que meu .echo vai exibir na tela "*** GLOBAL HOOK ***". Do contrário, a execução vai continuar silenciosamente.</p>
 
 
@@ -403,25 +427,31 @@ role="navigation" aria-label="main navigation">
 <p class="note-title"><small>2007-11-21  <a href="tag_coding.html">tag_coding</a> </small><a href="2007-11.html"><sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-usando-a-libc-nativa-do-windows')"><sup>[copy]</sup></a></p>
 <p>Por padrão, todo projeto no Visual Studio depende da libc. Isso quer dizer que, mesmo que você não use nem um mísero printf em todos os projetos criados, está atrelado a essa dependência. Em tempos onde fazer um "Hello World" pode custar 56 KB em Release - Visual Studio 2005, configuração padrão sem "buffer security check" - vale a pena economizar alguns KBytes que não se vão usar. Principalmente se essa possibilidade existe desde o cavernoso Windows 95.</p>
 <p>Crie um novo projeto console Win32 vazio (File, New, Project, blá blá blá) e coloque um código de Hello, World nele. Configure para ele usar uma runtime estática e veja o tamanho do executável gerado.  Aqui após configurar um projeto ordinário que compila um executável console ordinário que não depende de runtimes novas (exceto a kernel32.dll) meu arquivo está com 96 KB.</p>
-<p>    #include &lt;stdio.h&gt;</p>
-<p>    </p>
-<p>    int main()</p>
-<p>    {</p>
-<p>      puts("oi, mundo!\n");</p>
-<p>    } </p>
+<pre>
+   #include &lt;stdio.h&gt;
+   
+   int main()
+   {
+     puts("oi, mundo!\n");
+   } 
+</pre>
 <p>Desde o Windows 95, existe uma DLL na pasta de sistema chamada msvcrt.dll com a maioria das funções da libc disponíveis para link dinâmico. Só que, com o uso padrão do Visual C++, é usada sempre a biblioteca que vem junto com o ambiente, com suas trocentas funções (e consequentes bytes enche-linguiça). Porém, é possível utilizar diretamente a msvcrt.dll distribuída no diretório do sistema se criarmos uma LIB de importação para ela.</p>
 <p>Tudo que você precisa fazer é gerar um msvcrt.def com as funções exportadas por essa dll usando o comando dumpbin.exe /exports msvcrt.dll e gerar uma lib de importação com o comando lib.exe passando no parâmetro /DEF o arquivo gerado. Abaixo um exemplo de como deve estar esse arquivo antes do comando lib /def:msvcrt.def:</p>
-<p>    LIBRARY msvcrt</p>
-<p>    EXPORTS</p>
-<p>    _CrtCheckMemory</p>
-<p>    _CrtDbgBreak</p>
-<p>    ...</p>
-<p>    wprintf_s</p>
-<p>    wscanf</p>
-<p>    wscanf_s</p>
-<p>    </p>
+<pre>
+   LIBRARY msvcrt
+   EXPORTS
+   _CrtCheckMemory
+   _CrtDbgBreak
+   ...
+   wprintf_s
+   wscanf
+   wscanf_s
+   
+</pre>
 <p>Depois desse último passo geramos a LIB que precisávamos e agora só falta integrar com o projeto. Copie o msvcrt.lib para o diretório do projeto e configure no projeto esse arquivo na lista de LIBs a serem incluídas (Properties, Linker, Input, Additional Dependencies). Lembre-se de ignorar todas as LIBs padrão (Linker, Input, Ignore All Default Libraries). Para evitar unresolved external em frescuras de segurança ignore as firulas de checagem (C/C++, Code Generation, Buffer Security Check, e Basic Runtime Checks em Debug). Antes de mais nada deixe explícito o nome da função de entrada de seu programa para main, pois do contrário ele irá usar um bootstrap que inicia a libc (Linker, Advanced, Entry Point), compile e linke. E voilà!</p>
-<p>    </p>
+<pre>
+   
+</pre>
 <p>E agora o tamanho final de nosso executável passou para espantosos 3 KB! Isso a princípio parece ótimo e dá vontade de usar em todos os projetos, mas existe um porém ainda não resolvido: as limitações da falta de um runtime. Essa é uma solução bem bobinha que não tem nada a ver com uma solução profissional 100% garantida e com suporte técnico 24 horas. Algumas coisas não vão funcionar, como inicialização de variáveis estáticas, exceções, redirecionamento de entrada/saída, etc. Contudo, para projetos simples e pequenos, isso não deverá ser um problema. No entanto, eu não garanto qualquer coisa que advier de compilações inspiradas neste artigo.</p>
 
 </section><hr/>
@@ -439,39 +469,45 @@ role="navigation" aria-label="main navigation">
 <p>Por um motivo desconhecido a terceira opção me pareceu mais interessante =).</p>
 <p>A seqüência mais simples para carregar uma DLL através do WinDbg na época que escrevi este post era chamar kernel32!LoadLibrary através de um código digitado na hora, o que podemos chamar de live assembly (algo como "assembly ao vivo"). Porém, essa simples seqüência que contém um pouco mais que uma dúzia de passos hoje teria que ser feito em assembly 64 bits e é um pouco mais complicado. Para quem ainda quer se divertir dessa forma por esse caminho irei deixar as instruções para 32 bits.</p>
 <p>Devemos parar a execução, voltar para um ponto seguro do código com o comando gu (que volta para a função chamadora e evita perda de estado dos registradores) e armazenar o local seguro em um registrador temporário (o WinDbg tem 20 deles, $t0 até $t19).</p>
-<p>    </p>
-<p>    gu</p>
-<p>    r$t0 = @$ip</p>
+<pre>
+   
+   gu
+   r$t0 = @$ip
+</pre>
 <p>Note que usamos dois pseudo-registradores ($t0, o primeiro registrador temporário do WinDbg, e $ip, o registrador que aponta para a próxima instrução que será executada), mas só um deles possue o prefixo '@'. Esse prefixo diz ao WinDbg que o que segue é um registrador. Como o comando r já é usado com registradores, é desnecessário usá-lo para $t0. Se usarmos sintaxe C++ esse prefixo é obrigatório, enquanto na sintaxe MASM não. Porém, se não usarmos esse prefixo em registradores não-comuns (como é o caso para $ip) o WinDbg primeiro tentará interpretar o texto como um número hexadecimal. Ao falhar, tentará interpretar como um símbolo. Ao falhar novamente, ele finalmente irá tratá-lo como um registrador. A diferença na velocidade faz valer a pena digitar um caractere a mais. Faça a prova!</p>
 <p>Parada a execução em um local seguro e armazenado o IP, em seguida podemos alocar memória para entrar o código em assembly da chamada, além do seu parâmetro, no caso o path da DLL a ser carregada. Para a alocação usamos o comando .dvalloc, para a escrita de uma string o comando eza (ANSI) ou ezu (UNICODE). Em seguida usamos o comando a para escrever o código assembly da chamada à função kernel32!LoadLibrary e uma interrupção 3 (breakpoint) para termos uma maneira conveniente de parada.</p>
-<p>    </p>
-<p>    .dvalloc 0x1000</p>
-<p>    Allocated 1000 bytes starting at 000001d9`abd20000</p>
-<p>    </p>
-<p>    eza 000001d9`abd20000 "c:\\tools\\tioclient.dll"</p>
-<p>    </p>
-<p>    0:000&gt; a 000001d9`abd20000+0x100</p>
-<p>    000001d9`abd20100 call KERNEL32!LoadLibraryA</p>
-<p>    000001d9`abd20105 int 3</p>
-<p>    000001d9`abd20106</p>
+<pre>
+   
+   .dvalloc 0x1000
+   Allocated 1000 bytes starting at 000001d9`abd20000
+   
+   eza 000001d9`abd20000 "c:\\tools\\tioclient.dll"
+   
+   0:000&gt; a 000001d9`abd20000+0x100
+   000001d9`abd20100 call KERNEL32!LoadLibraryA
+   000001d9`abd20105 int 3
+   000001d9`abd20106
+</pre>
 <p>Note que estamos usando a versão ANSI do LoadLibrary, aquela que termina com A. Sendo assim, escrevemos uma string ANSI como parâmetro usando o comando eza.</p>
 <p>O último passo seria chamar a função previamente "editada". Para isso basta mudarmos o endereço da próxima instrução para o começo de nosso código, definir os parâmetros nos registradores (no caso apenas um, a string em rcx) e mandar executar, pois ele irá parar automaticamente no breakpoint que definimos "na mão", o int 3 digitado. Após a execução devemos voltar o ponteiro usando nosso backup no registrador $t0.</p>
-<p>    0:000&gt; r$ip = 0x00280000+0x100</p>
-<p>    0:000&gt; g</p>
-<p>    ModLoad: 10000000 10045000   c:\\tools\\tioclient.dll</p>
-<p>    (398.d90): Break instruction exception - code 80000003 (first chance)</p>
-<p>    eax=10000000 ebx=7ffdd000 ecx=7c801bf6 edx=000a0608 esi=001a1f48 edi=001a1eb4</p>
-<p>    eip=0028010a esp=0007fb24 ebp=0007fc94 iopl=0         nv up ei pl zr na pe nc</p>
-<p>    cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246</p>
-<p>    0028010a cc int     3</p>
-<p>    0:000&gt; r$ip = $t0</p>
-<p>    *** WARNING: Unable to verify checksum for C:tempMinhaDllInvasora.dll</p>
-<p>    0:000&gt; g</p>
-<p>    ModLoad: 5cb70000 5cb96000   C:\WINDOWS\system32\ShimEng.dll</p>
-<p>    ModLoad: 6f880000 6fa4a000   C:WINDOWS\AppPatch\AcGenral.DLL</p>
-<p>    ModLoad: 76b40000 76b6d000   C:WINDOWS\system32\WINMM.dll</p>
-<p>    ModLoad: 774e0000 7761d000   C:WINDOWS\system32\ole32.dll</p>
-<p>    ...</p>
+<pre>
+   0:000&gt; r$ip = 0x00280000+0x100
+   0:000&gt; g
+   ModLoad: 10000000 10045000   c:\\tools\\tioclient.dll
+   (398.d90): Break instruction exception - code 80000003 (first chance)
+   eax=10000000 ebx=7ffdd000 ecx=7c801bf6 edx=000a0608 esi=001a1f48 edi=001a1eb4
+   eip=0028010a esp=0007fb24 ebp=0007fc94 iopl=0         nv up ei pl zr na pe nc
+   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
+   0028010a cc int     3
+   0:000&gt; r$ip = $t0
+   *** WARNING: Unable to verify checksum for C:tempMinhaDllInvasora.dll
+   0:000&gt; g
+   ModLoad: 5cb70000 5cb96000   C:\WINDOWS\system32\ShimEng.dll
+   ModLoad: 6f880000 6fa4a000   C:WINDOWS\AppPatch\AcGenral.DLL
+   ModLoad: 76b40000 76b6d000   C:WINDOWS\system32\WINMM.dll
+   ModLoad: 774e0000 7761d000   C:WINDOWS\system32\ole32.dll
+   ...
+</pre>
 <p>Como pudemos ver pela saída, a DLL foi carregada e agora temos a possibilidade de chamar qualquer código que lá esteja. Como fazer isso? Provavelmente usando o mesmo método aqui aplicado. Live-assembly é o que manda 8).</p>
 
 
@@ -492,152 +528,184 @@ role="navigation" aria-label="main navigation">
 <li>$$&gt;a&lt;nome-do-arquivo - igual ao anterior, e ainda permite passar argumentos.</li>
 </ul>
 <p>A ajuda do WinDbg descreve as diferenças dos comandos acima de forma adversa, afirmando que os comandos '&lt;'  não condensam as linhas e os '&gt;&lt;' o fazem, quando na realidade é o contrário. Não se deixe enganar por esse detalhe. No caso do script desse artigo, utilizaremos a última forma, pois precisamos de um argumento para funcionar: o nome da DLL. Caso você não digite esse argumento, a ajuda do script será impressa:</p>
-<p>    How to use:</p>
-<p>    $$&gt;a&lt;path\LoadLibrary.txt mydll.dll</p>
-<p>    $$&gt;a&lt;path\LoadLibrary.txt c:\\path\\mydll.dll</p>
-<p>    $$&gt;a&lt;path\LoadLibrary.txt "c:\\path with space\\mydll.dll"</p>
+<pre>
+   How to use:
+   $$&gt;a&lt;path\LoadLibrary.txt mydll.dll
+   $$&gt;a&lt;path\LoadLibrary.txt c:\\path\\mydll.dll
+   $$&gt;a&lt;path\LoadLibrary.txt "c:\\path with space\\mydll.dll"
+</pre>
 <p>Não há qualquer dificuldade. Tudo que você tem que fazer é baixar o <a href="posts.html?q=loadlibrary.txt">script que carrega DLLs</a> e salvá-lo em um lugar de sua preferência. Depois é só digitar o comando que carrega scripts, o path de nosso script e o nome da DLL a ser carregada em uma das três formas exibidas. Eu costumo criar uma pasta chamada "scripts" dentro do diretório de instalação do Debugging Tools, o que quer dizer que posso simplesmente chamar todos meus scripts (ou seja, 1) dessa maneira:</p>
-<p>    </p>
-<p>    $$&gt;a&lt;scripts\LoadLibrary.txt mydll.dll</p>
+<pre>
+   
+   $$&gt;a&lt;scripts\LoadLibrary.txt mydll.dll
+</pre>
 <p>Abaixo um pequeno teste que fiz carregando a DLL do Direct Draw (ddraw.dll) na nossa vítima de plantão:</p>
-<p>    windbg notepad.exe</p>
-<p>    Microsoft (R) Windows Debugger Version 6.8.0004.0 X86</p>
-<p>    Copyright (c) Microsoft Corporation. All rights reserved.</p>
-<p>    CommandLine: notepad.exe</p>
-<p>    Symbol search path is: SRV*C:\Symbols*http://msdl.microsoft.com/downloads/symbols</p>
-<p>    Executable search path is:</p>
-<p>    ModLoad: 01000000 01014000   notepad.exe</p>
-<p>    ModLoad: 7c900000 7c9b0000   ntdll.dll</p>
-<p>    ModLoad: 7c800000 7c8f5000   C:\WINDOWS\system32\kernel32.dll</p>
-<p>    ...</p>
-<p>    ModLoad: 73000000 73026000   C:\WINDOWS\system32\WINSPOOL.DRV</p>
-<p>    (8e8.214): Break instruction exception - code 80000003 (first chance)</p>
-<p>    eax=001a1eb4 ebx=7ffdf000 ecx=00000000 edx=00000001 esi=001a1f48 edi=001a1eb4</p>
-<p>    eip=7c901230 esp=0007fb20 ebp=0007fc94 iopl=0         nv up ei pl nz na po nc</p>
-<p>    cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000202</p>
-<p>    ntdll!DbgBreakPoint:</p>
-<p>    7c901230 cc              int     3</p>
-<p>    0:000&gt; $$&gt;addraw.dll</p>
-<p>    ModLoad: 73bc0000 73bc6000   C:\WINDOWS\system32\DCIMAN32.dll</p>
-<p>    ModLoad: 76390000 763ad000   C:\WINDOWS\system32\IMM32.DLL</p>
-<p>    ModLoad: 629c0000 629c9000   C:\WINDOWS\system32\LPK.DLL</p>
-<p>    ModLoad: 74d90000 74dfb000   C:\WINDOWS\system32\USP10.dll</p>
-<p>    Freed 0 bytes starting at 00280000</p>
-<p>    eax=001a1eb4 ebx=7ffdf000 ecx=00000000 edx=00000001 esi=001a1f48 edi=001a1eb4</p>
-<p>    eip=7c901230 esp=0007fb20 ebp=0007fc94 iopl=0         nv up ei pl nz na po nc</p>
-<p>    cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000202</p>
-<p>    ntdll!DbgBreakPoint:</p>
-<p>    7c901230 cc              int     3</p>
+<pre>
+   windbg notepad.exe
+   Microsoft (R) Windows Debugger Version 6.8.0004.0 X86
+   Copyright (c) Microsoft Corporation. All rights reserved.
+   CommandLine: notepad.exe
+   Symbol search path is: SRV*C:\Symbols*http://msdl.microsoft.com/downloads/symbols
+   Executable search path is:
+   ModLoad: 01000000 01014000   notepad.exe
+   ModLoad: 7c900000 7c9b0000   ntdll.dll
+   ModLoad: 7c800000 7c8f5000   C:\WINDOWS\system32\kernel32.dll
+   ...
+   ModLoad: 73000000 73026000   C:\WINDOWS\system32\WINSPOOL.DRV
+   (8e8.214): Break instruction exception - code 80000003 (first chance)
+   eax=001a1eb4 ebx=7ffdf000 ecx=00000000 edx=00000001 esi=001a1f48 edi=001a1eb4
+   eip=7c901230 esp=0007fb20 ebp=0007fc94 iopl=0         nv up ei pl nz na po nc
+   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000202
+   ntdll!DbgBreakPoint:
+   7c901230 cc              int     3
+   0:000&gt; $$&gt;addraw.dll
+   ModLoad: 73bc0000 73bc6000   C:\WINDOWS\system32\DCIMAN32.dll
+   ModLoad: 76390000 763ad000   C:\WINDOWS\system32\IMM32.DLL
+   ModLoad: 629c0000 629c9000   C:\WINDOWS\system32\LPK.DLL
+   ModLoad: 74d90000 74dfb000   C:\WINDOWS\system32\USP10.dll
+   Freed 0 bytes starting at 00280000
+   eax=001a1eb4 ebx=7ffdf000 ecx=00000000 edx=00000001 esi=001a1f48 edi=001a1eb4
+   eip=7c901230 esp=0007fb20 ebp=0007fc94 iopl=0         nv up ei pl nz na po nc
+   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000202
+   ntdll!DbgBreakPoint:
+   7c901230 cc              int     3
+</pre>
 <p>Simples e indolor. Vamos agora dar uma olhada no script completo e dissecar as linhas pausadamente. Dessa forma entenderemos como a função inteira funciona e como usar os comandos isoladamente para criar novos scripts.</p>
-<p>    $$</p>
-<p>    $$ @brief Loads a module inside the debuggee process.</p>
-<p>    $$ @author Wanderley Caloni &lt;wanderley@caloni.com.br&gt;</p>
-<p>    $$ @date 2007-11</p>
-<p>    $$</p>
-<p>    .if( ${/d:$arg1} )</p>
-<p>    {</p>
-<p>        r $t2 = @$ip</p>
-<p>        .foreach /pS 5 ( addr { .dvalloc 0x1000 } ) { r$t0 = addr }</p>
-<p>        r $t1 = @$t0 + 0x100</p>
-<p>        eza @$t0 "${$arg1}"</p>
-<p>        .echo Trying to load the following module:</p>
-<p>        da @$t0</p>
-<p>        $$ push $ip</p>
-<p>        eb @$t1 0x68</p>
-<p>        ed @$t1 + 0x01 @$t2</p>
-<p>        $$ pushfd</p>
-<p>        eb @$t1 + 0x05 0x9c</p>
-<p>        $$ pushad</p>
-<p>        eb @$t1 + 0x06 0x60</p>
-<p>        $$ push $t0</p>
-<p>        eb @$t1 + 0x07 0x68</p>
-<p>        ed @$t1 + 0x08 @$t0</p>
-<p>        $$ call LoadLibrary</p>
-<p>        eb @$t1 + 0x0c 0xe8</p>
-<p>        ed @$t1 + 0x0d ( kernel32!LoadLibraryA - @$t1 - 0x11 )</p>
-<p>        $$ popad</p>
-<p>        eb @$t1 + 0x11 0x61</p>
-<p>        $$ popfd</p>
-<p>        eb @$t1 + 0x12 0x9d</p>
-<p>        $$ ret</p>
-<p>        eb @$t1 + 0x13 0xc3</p>
-<p>        r $ip = @$t1</p>
-<p>        bp /1 @$t2 ".dvfree @$t0 0"</p>
-<p>        g</p>
-<p>    }</p>
-<p>    .else</p>
-<p>    {</p>
-<p>       .echo How to use:</p>
-<p>       .echo $$&gt;a&lt;path\LoadLibrary.txt mydll.dll</p>
-<p>       .echo $$&gt;a&lt;path\LoadLibrary.txt c:\\path\\mydll.dll</p>
-<p>       .echo $$&gt;a&lt;path\LoadLibrary.txt "c:\\path with space\\mydll.dll"</p>
-<p>    }</p>
+<pre>
+   $$
+   $$ @brief Loads a module inside the debuggee process.
+   $$ @author Wanderley Caloni &lt;wanderley@caloni.com.br&gt;
+   $$ @date 2007-11
+   $$
+   .if( ${/d:$arg1} )
+   {
+       r $t2 = @$ip
+       .foreach /pS 5 ( addr { .dvalloc 0x1000 } ) { r$t0 = addr }
+       r $t1 = @$t0 + 0x100
+       eza @$t0 "${$arg1}"
+       .echo Trying to load the following module:
+       da @$t0
+       $$ push $ip
+       eb @$t1 0x68
+       ed @$t1 + 0x01 @$t2
+       $$ pushfd
+       eb @$t1 + 0x05 0x9c
+       $$ pushad
+       eb @$t1 + 0x06 0x60
+       $$ push $t0
+       eb @$t1 + 0x07 0x68
+       ed @$t1 + 0x08 @$t0
+       $$ call LoadLibrary
+       eb @$t1 + 0x0c 0xe8
+       ed @$t1 + 0x0d ( kernel32!LoadLibraryA - @$t1 - 0x11 )
+       $$ popad
+       eb @$t1 + 0x11 0x61
+       $$ popfd
+       eb @$t1 + 0x12 0x9d
+       $$ ret
+       eb @$t1 + 0x13 0xc3
+       r $ip = @$t1
+       bp /1 @$t2 ".dvfree @$t0 0"
+       g
+   }
+   .else
+   {
+      .echo How to use:
+      .echo $$&gt;a&lt;path\LoadLibrary.txt mydll.dll
+      .echo $$&gt;a&lt;path\LoadLibrary.txt c:\\path\\mydll.dll
+      .echo $$&gt;a&lt;path\LoadLibrary.txt "c:\\path with space\\mydll.dll"
+   }
+</pre>
 <p>Como podemos ver, ele é um pouco grandinho. Por isso mesmo que ele é um script, já que não precisamos, sempre que formos usar este comando, ficar olhando para o fonte. Por falar em olhar, uma primeira olhada revela a seguinte estrutura:</p>
-<p>    </p>
-<p>    .if( ${/d:$arg1} )</p>
-<p>    {</p>
-<p>       ...</p>
-<p>    }</p>
-<p>    .else</p>
-<p>    {</p>
-<p>       ...</p>
-<p>    }</p>
+<pre>
+   
+   .if( ${/d:$arg1} )
+   {
+      ...
+   }
+   .else
+   {
+      ...
+   }
+</pre>
 <p>Qualquer semelhança com as instruções em C não é mera coincidência. Essa estrutura de fato verifica se o resultado dentro do .if é verdadeiro. No caso o script verifica se o primeiro parâmetro foi passado, já que os argumentos são acessíveis através dos alias (apelidos) $arg1 - $argn. Essa maneira de usar os argumentos passados no WinDbg ainda não foi documentada, mas encontrei essa dica em <a href="https://docs.microsoft.com/en-us/archive/blogs/debuggingtoolbox/windbg-script-get-portable-executable-headers">um artigo do Roberto Farah</a>, um grande escritor de scripts para o WinDbg.</p>
 <p>Da mesma forma, o que não deve ser nenhuma surpresa, o WinDbg suporta comentários. Todas as linhas que contêm '$$' isoladamente são comentários, e seu conteúdo da direita é ignorado, salvo se for encontrado um ponto-e-vírgula. A primeira coisa que fazemos para carregar a DLL é salvar o estado do registrador IP, que indica onde está a próxima instrução:</p>
-<p>    </p>
-<p>        r $t2 = @$ip</p>
+<pre>
+   
+       r $t2 = @$ip
+</pre>
 <p>Feito isso, usamos um comando não tão comum, mas que pode ser muito útil nos casos em que precisamos capturar algum dado da saída de um comando do WinDbg e usá-lo em outro comando. A estrutura do .foreach deixa o usuário especificar dois grupos de comandos: o primeiro grupo irá gerar uma saída que pode ser aproveitada no segundo grupo.</p>
-<p>    </p>
-<p>    .foreach /pS 5 $$pula; ( addr $$alias; { .dvalloc 0x1000 $$saída; } ) { r$t0 = addr }</p>
+<pre>
+   
+   .foreach /pS 5 $$pula; ( addr $$alias; { .dvalloc 0x1000 $$saída; } ) { r$t0 = addr }
+</pre>
 <p>A opção "/pS 5" diz ao comando para pular 5 posições antes de capturar o token que será usado no próximo comando. Os tokens são divididos por espaço. Sendo a saída de ".dvalloc 0x1000" o "Allocated 1000 bytes starting at 00280000". Pulando 5 posições iremos capturar o endereço onde a memória foi alocada. E é isso mesmo que queremos!</p>
-<p>    1         2    3     4        5  6</p>
-<p>    Allocated 1000 bytes starting at 00280000</p>
+<pre>
+   1         2    3     4        5  6
+   Allocated 1000 bytes starting at 00280000
+</pre>
 <p>O sinônimo do endereço (alias) se torna "addr", apelido que usamos ao executar o segundo comando, que armazena o endereço no registrador temporário $t0:</p>
-<p>    </p>
-<p>    r$t0 = addr</p>
+<pre>
+   
+   r$t0 = addr
+</pre>
 <p>Após alocada a memória, gravamos o parâmetro de LoadLibrary, o path da DLL a ser carregada, em seu início.</p>
-<p>    </p>
-<p>    eza @$t0 "${$arg1}"</p>
+<pre>
+   
+   eza @$t0 "${$arg1}"
+</pre>
 <p>O código assembly que irá chamar fica um ponto à frente, mas na mesma memória alocada.</p>
-<p>    </p>
-<p>    r $t1 = @$t0 + 0x100</p>
+<pre>
+   
+   r $t1 = @$t0 + 0x100
+</pre>
 <p>Conforme as técnicas vão cada vez ficando mais "não-usuais", mais difícil fica achar um nome para a coisa. Essa técnica de escrever o assembly de um código através de escritas em hexadecimal dentro de um script do WinDbg eu chamei de "script assembly". Se tiver um nome melhor, não se acanhe em usá-lo. E me deixe saber =).</p>
-<p>    $$ push $ip</p>
-<p>    eb @$t1 0x68</p>
-<p>    ed @$t1 + 0x01 @$t2</p>
-<p>    $$ pushfd</p>
-<p>    eb @$t1 + 0x05 0x9c</p>
-<p>    $$ pushad</p>
-<p>    eb @$t1 + 0x06 0x60</p>
-<p>    $$ push $t0</p>
-<p>    eb @$t1 + 0x07 0x68</p>
-<p>    ed @$t1 + 0x08 @$t0</p>
-<p>    $$ call LoadLibrary</p>
-<p>    eb @$t1 + 0x0c 0xe8</p>
-<p>    ed @$t1 + 0x0d ( kernel32!LoadLibraryA - @$t1 - 0x11 )</p>
-<p>    $$ popad</p>
-<p>    eb @$t1 + 0x11 0x61</p>
-<p>    $$ popfd</p>
-<p>    eb @$t1 + 0x12 0x9d</p>
-<p>    $$ ret</p>
-<p>    eb @$t1 + 0x13 0xc3</p>
+<pre>
+   $$ push $ip
+   eb @$t1 0x68
+   ed @$t1 + 0x01 @$t2
+   $$ pushfd
+   eb @$t1 + 0x05 0x9c
+   $$ pushad
+   eb @$t1 + 0x06 0x60
+   $$ push $t0
+   eb @$t1 + 0x07 0x68
+   ed @$t1 + 0x08 @$t0
+   $$ call LoadLibrary
+   eb @$t1 + 0x0c 0xe8
+   ed @$t1 + 0x0d ( kernel32!LoadLibraryA - @$t1 - 0x11 )
+   $$ popad
+   eb @$t1 + 0x11 0x61
+   $$ popfd
+   eb @$t1 + 0x12 0x9d
+   $$ ret
+   eb @$t1 + 0x13 0xc3
+</pre>
 <p>Cada comentário de uma instrução em assembly é seguido pela escrita dessa instrução usando o comando e. Se trata de um código bem trivial, fora alguns detalhes que merecem mais atenção.</p>
 <p>Os comandos acima servem para salvar e restaurar o estado dos registradores e das flags de execução. Isso permite que possamos executar o código virtualmente em qualquer posição que pararmos no código depurado, já que retornamos tudo como estava ao final da execução do LoadLibrary. É claro que isso não garante que o código estará 100% estável em todas as condições, mas já ajuda um bocado.</p>
 <p>Uma chamada através do opcode call (código em hexa 0xe80c) é bem comum e se trata de uma chamada relativa, baseada no estado do Instruction Pointer atual mais o valor especificado. Por isso mesmo que fazemos o cálculo usando o endereço de onde será escrita a próxima instrução, que é o valor que teremos em IP quando este call for executado:</p>
-<p>    ( kernel32!LoadLibraryA - @$t1 - 0x11 )</p>
+<pre>
+   ( kernel32!LoadLibraryA - @$t1 - 0x11 )
+</pre>
 <p>Quando o código estiver completamente escrito na memória alocada, um disassembly dele retornará algo parecido com o código abaixo:</p>
-<p>    push offset ntdll!DbgBreakPoint (7c901230) ; empilhamos o IP atual (endereço de retorno)</p>
-<p>    pushfd ; salva estado das flags atual</p>
-<p>    pushad ; salva estado dos registradores atual</p>
-<p>    push 8F0000h ; empilha endereço do path da dll a ser carregada</p>
-<p>    call kernel32!LoadLibraryA (7c801d77) ; chamamos LoadLibraryA</p>
-<p>    popad ; restaura estado dos registradores</p>
-<p>    popfd ; restaura estado das flags</p>
-<p>    ret ; retorna para o ponto onde o depurador parou (no caso, 7c901230)</p>
+<pre>
+   push offset ntdll!DbgBreakPoint (7c901230) ; empilhamos o IP atual (endereço de retorno)
+   pushfd ; salva estado das flags atual
+   pushad ; salva estado dos registradores atual
+   push 8F0000h ; empilha endereço do path da dll a ser carregada
+   call kernel32!LoadLibraryA (7c801d77) ; chamamos LoadLibraryA
+   popad ; restaura estado dos registradores
+   popfd ; restaura estado das flags
+   ret ; retorna para o ponto onde o depurador parou (no caso, 7c901230)
+</pre>
 <p>Você pode ver com seus próprio olhos se editar o script comentando o último comando (g), executando o script e executando o disassembly do IP.</p>
-<p>    u @$ip</p>
+<pre>
+   u @$ip
+</pre>
 <p>Somos um script bem comportado (na medida do possível) e por isso colocamos um breakpoint temporário no final para, quando retornarmos para o código atual, desalocarmos a memória usada para a escrita e execução das instruções.</p>
-<p>    bp /1 @$t2 ".dvfree @$t0 0"</p>
+<pre>
+   bp /1 @$t2 ".dvfree @$t0 0"
+</pre>
 <p>Eu não me responsabilizo por qualquer (mau) uso do script aqui disponibilizado, assim como as eventuais perdas de código-fonte, trilhas de HD e placas de memória RAM pela sua execução. Assim sendo, bom divertimento.</p>
 <p>O criador do <a href="http://www.driverentry.com.br">DriverEntry</a> me questionou se não seria mais fácil, em vez de escrever todos os opcodes em hexa, usar o comando a, que permite entrar o código assembly diretamente a partir de um endereço especificado. Essa realmente é uma ótima idéia, e de fato eu tentei isso no começo de meus testes. Porém, infelizmente para scripts isso não funciona bem. A partir do comando a o prompt fica esperando uma entrada do usuário, não lendo o assembly que estaria no próprio script. Pior ainda, a escrita do assembly não permite usar os registradores temporários, como $t0 ou $t1, o que nos força a escrever um código dependende de valores constantes. Por esses motivos, tive que apelar para o comando e, que é a forma mais confusa de escrever e entender assembly. Nesse tipo de edição é vital comentar bem cada linha que se escreve.</p>
 
@@ -655,60 +723,66 @@ role="navigation" aria-label="main navigation">
 <p>Uma das partes mais fáceis e divertidas de se mexer no C++ Builder é a que lida com gráficos. A abstração da VCL toma conta da alocação e liberação dos objetos gráficos da GDI e nos fornece uma interface para desenhar linhas e figuras geométricas, mexer com bitmaps, usar fontes etc. Concomitantemente, temos acesso ao handles "crus" da Win32 API para que possamos chamar alguma função esotérica necessária para o seu programa, o que nos garante flexibilidade suficiente.</p>
 <p>Vamos fazer da área da janela principal uma tela onde possamos desenhar. Para isso, só precisamos fazer duas coisas em nosso programa: saber quando o mouse está com algum botão pressionado e desenhar quando ele estiver sendo "arrastado".</p>
 <p>Saber o estado dos botões é trivial, podemos capturar isso nos eventos OnMouseDown e OnMouseUp e guardar em alguma variável.</p>
-<p>    //...</p>
-<p>    private:</p>
-<p>    	bool mouseDown; // essa variável guarda o estado do mouse...</p>
-<p>    //...</p>
-<p>    </p>
-<p>    __fastcall TForm1::TForm1(TComponent* Owner)</p>
-<p>    	: TForm(Owner)</p>
-<p>    {</p>
-<p>    	mouseDown = false; // ... e é importante iniciá-la</p>
-<p>    }</p>
-<p>    </p>
-<p>    void __fastcall TForm1::FormMouseUp(TObject *Sender, TMouseButton Button,</p>
-<p>    	TShiftState Shift, int X, int Y)</p>
-<p>    {</p>
-<p>    	mouseDown = false;</p>
-<p>    }</p>
-<p>    </p>
-<p>    void __fastcall TForm1::FormMouseDown(TObject *Sender, TMouseButton Button,</p>
-<p>    	TShiftState Shift, int X, int Y)</p>
-<p>    {</p>
-<p>    	Canvas-&gt;PenPos = TPoint(X, Y); // mais tarde veremos o porquê disso</p>
-<p>    	mouseDown = true;</p>
-<p>    } </p>
+<pre>
+   //...
+   private:
+   	bool mouseDown; // essa variável guarda o estado do mouse...
+   //...
+   
+   __fastcall TForm1::TForm1(TComponent* Owner)
+   	: TForm(Owner)
+   {
+   	mouseDown = false; // ... e é importante iniciá-la
+   }
+   
+   void __fastcall TForm1::FormMouseUp(TObject *Sender, TMouseButton Button,
+   	TShiftState Shift, int X, int Y)
+   {
+   	mouseDown = false;
+   }
+   
+   void __fastcall TForm1::FormMouseDown(TObject *Sender, TMouseButton Button,
+   	TShiftState Shift, int X, int Y)
+   {
+   	Canvas-&gt;PenPos = TPoint(X, Y); // mais tarde veremos o porquê disso
+   	mouseDown = true;
+   } 
+</pre>
 <p>Saber quando o mouse está sendo arrastado também é um passo trivial, uma vez que temos esse evento (OnMove) para tratar no controle da janela.</p>
 <img src="img/desenhando-em-c-builder-builder-onmousemove.png"/>
 <p>Para desenhar, todo formulário e mais alguns controles gráficos possuem um objeto chamado Canvas, do tipo TCanvas (duh). Essa classe representa uma superfície de desenho que você pode acessar a partir de seus métodos. Isso é a abstração do conhecido device context da GDI, tornando a programação mais fácil. O desenho de uma linha, por exemplo, é feito literalmente em uma linha de código.</p>
-<p>    void __fastcall TForm1::FormMouseMove(TObject *Sender, TShiftState Shift,</p>
-<p>    	int X, int Y)</p>
-<p>    {</p>
-<p>    	if( mouseDown )</p>
-<p>    	{</p>
-<p>    		Canvas-&gt;LineTo(X, Y);</p>
-<p>    	}</p>
-<p>    } </p>
+<pre>
+   void __fastcall TForm1::FormMouseMove(TObject *Sender, TShiftState Shift,
+   	int X, int Y)
+   {
+   	if( mouseDown )
+   	{
+   		Canvas-&gt;LineTo(X, Y);
+   	}
+   } 
+</pre>
 <p>O método LineTo() desenha uma linha do ponto onde está atualmente a caneta de desenho até a coordenada especificada. Esse é o motivo pelo qual no evento OnMouseDown alteramos a propriedade PenPos do Canvas para o ponto onde o usuário pressiona o botão do mouse.</p>
 <p>Voila! Temos o nosso Personal PaintBrush, com toda a tosquisse que menos de 10 linhas de código podem fazer. OK, ele não é perfeito, admito, mas pode ser melhorado. Temos o código-fonte =).</p>
 <p>Um dos problemas nele reflete o comportamento de gráficos em janelas no Windows. Seja o que for que tenhamos desenhado sobre uma janela, seu conteúdo é perdido ao ser sobrescrito por outra janela. Isso porque a memória de vídeo da área de trabalho é compartilhada entre todas as janelas do sistema (isso muda com o advento do "Avalon"). Precisamos, então, sempre repintar o que é feito durante a execução do programa.</p>
 <p>Se precisamos repintar, logo precisamos saber tudo o que o usuário fez até então. Uma das técnicas mais baratas no quesito memória para salvar o estado gráfico de uma janela é guardar um histórico das operações realizadas sobre sua superfície e executá-las novamente ao repintar a janela. A GDI é rápida o bastante para que o custo de processamento não seja sentido na maioria dos casos. Para o nosso _Paint_, apenas um array de coordenadas origem-destino já dá conta do recado:</p>
-<p>    //...</p>
-<p>    private:</p>
-<p>    	bool mouseDown; // essa variavel guarda o estado do mouse</p>
-<p>    	std::vector&lt;TRect&gt; mouseHistory; // um TRect guarda duas posicoes XY</p>
-<p>    //...</p>
-<p>    </p>
-<p>    // ...</p>
-<p>    {</p>
-<p>    	if( mouseDown )</p>
-<p>    	{</p>
-<p>    		// guardando a pincelada para reproduzi-la depois</p>
-<p>    		mouseHistory.push_back( TRect(Canvas-&gt;PenPos, TPoint(X, Y)) );</p>
-<p>    		Canvas-&gt;LineTo(X, Y);</p>
-<p>    	}</p>
-<p>    }</p>
-<p>    //... </p>
+<pre>
+   //...
+   private:
+   	bool mouseDown; // essa variavel guarda o estado do mouse
+   	std::vector&lt;TRect&gt; mouseHistory; // um TRect guarda duas posicoes XY
+   //...
+   
+   // ...
+   {
+   	if( mouseDown )
+   	{
+   		// guardando a pincelada para reproduzi-la depois
+   		mouseHistory.push_back( TRect(Canvas-&gt;PenPos, TPoint(X, Y)) );
+   		Canvas-&gt;LineTo(X, Y);
+   	}
+   }
+   //... 
+</pre>
 <img src="img/desenhando-em-c-builder-amobuilder.gif"/>
 
 </section><hr/>

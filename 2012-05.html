@@ -274,93 +274,105 @@ int main(int argc, char* argv[]) // No princípio havia a pilha, quando Deus dis
 <p>windbg -pn MemoryConsumption.exe</p>
 <img src="img/consumo-abusivo-de-memoria-Bzb2XVY.png"/>
 <p>Achamos onde está a memória consumida. Agora precisamos de dicas do que pode estar consumindo essa memória. Vamos começar por listar os chunks alocados por tamanho de alocação:</p>
-<p>    </p>
-<p>    0:004&gt; !heap -stat -h 0</p>
-<p>    Allocations statistics for</p>
-<p>     heap @ 00670000</p>
-<p>    group-by: TOTSIZE max-display: 20</p>
-<p>    </p>
-<p>     size #blocks total ( %) (percent of total busy bytes)</p>
-<p>     1037 25e5 - 2667433 (33.04)</p>
-<p>     1025 25e6 - 263da3e (32.90)</p>
-<p>     1024 25e4 - 2639410 (32.89)</p>
-<p>    ...</p>
+<pre>
+   
+   0:004&gt; !heap -stat -h 0
+   Allocations statistics for
+    heap @ 00670000
+   group-by: TOTSIZE max-display: 20
+   
+    size #blocks total ( %) (percent of total busy bytes)
+    1037 25e5 - 2667433 (33.04)
+    1025 25e6 - 263da3e (32.90)
+    1024 25e4 - 2639410 (32.89)
+   ...
+</pre>
 <p>O Top 3 é de tamanhos conhecidos pelo código, de 1024 a 1024 + QUEUES_SIZE - 1. O de tamanho 1037, por exemplo, possui 0x25e5 blocos alocados. Vamos listar cada um deles:</p>
-<p>    </p>
-<p>    0:004&gt; !heap -flt s 1037</p>
-<p>     _HEAP @ 420000</p>
-<p>     _HEAP @ 670000</p>
-<p>     HEAP_ENTRY Size Prev Flags UserPtr UserSize - state</p>
-<p>    &lt;span style="color: #ff0000;"&gt; 00558600 0221 0000 <a href="posts.html?q=00">00</a> 00558618 01037 - (busy)&lt;/span&gt;         &lt;--- vamos usar esse primeiro mais tarde</p>
-<p>     0055fd38 0221 0221 <a href="posts.html?q=00">00</a> 0055fd50 01037 - (busy)</p>
-<p>     00561f48 0221 0221 <a href="posts.html?q=00">00</a> 00561f60 01037 - (busy)</p>
-<p>     00565260 0221 0221 <a href="posts.html?q=00">00</a> 00565278 01037 - (busy)</p>
-<p>     0056c998 0221 0221 <a href="posts.html?q=00">00</a> 0056c9b0 01037 - (busy)</p>
-<p>     0056daa0 0221 0221 <a href="posts.html?q=00">00</a> 0056dab8 01037 - (busy)</p>
-<p>     0056eba8 0221 0221 <a href="posts.html?q=00">00</a> 0056ebc0 01037 - (busy)</p>
-<p>     00570db8 0221 0221 <a href="posts.html?q=00">00</a> 00570dd0 01037 - (busy)</p>
-<p>     00572fc8 0221 0221 <a href="posts.html?q=00">00</a> 00572fe0 01037 - (busy)</p>
-<p>     005740d0 0221 0221 <a href="posts.html?q=00">00</a> 005740e8 01037 - (busy)</p>
-<p>     0058abc8 0221 0221 <a href="posts.html?q=00">00</a> 0058abe0 01037 - (busy)</p>
-<p>     00595618 0221 0221 <a href="posts.html?q=00">00</a> 00595630 01037 - (busy)</p>
-<p>     00599a38 0221 0221 <a href="posts.html?q=00">00</a> 00599a50 01037 - (busy)</p>
-<p>     0059de58 0(...)</p>
+<pre>
+   
+   0:004&gt; !heap -flt s 1037
+    _HEAP @ 420000
+    _HEAP @ 670000
+    HEAP_ENTRY Size Prev Flags UserPtr UserSize - state
+   &lt;span style="color: #ff0000;"&gt; 00558600 0221 0000 [00] 00558618 01037 - (busy)&lt;/span&gt;         &lt;--- vamos usar esse primeiro mais tarde
+    0055fd38 0221 0221 [00] 0055fd50 01037 - (busy)
+    00561f48 0221 0221 [00] 00561f60 01037 - (busy)
+    00565260 0221 0221 [00] 00565278 01037 - (busy)
+    0056c998 0221 0221 [00] 0056c9b0 01037 - (busy)
+    0056daa0 0221 0221 [00] 0056dab8 01037 - (busy)
+    0056eba8 0221 0221 [00] 0056ebc0 01037 - (busy)
+    00570db8 0221 0221 [00] 00570dd0 01037 - (busy)
+    00572fc8 0221 0221 [00] 00572fe0 01037 - (busy)
+    005740d0 0221 0221 [00] 005740e8 01037 - (busy)
+    0058abc8 0221 0221 [00] 0058abe0 01037 - (busy)
+    00595618 0221 0221 [00] 00595630 01037 - (busy)
+    00599a38 0221 0221 [00] 00599a50 01037 - (busy)
+    0059de58 0(...)
+</pre>
 <p>A listagem do depurador nos dá o endereço onde o chunk foi alocado no heap e o endereço devolvido para o usuário, onde colocamos nossas tralhas. Através de ambos é possível trackear a pilha da chamada que alocou cada pedaço de memória. Isso, claro, se previamente tivermos habilitado essa informação através do <a href="http://msdn.microsoft.com/en-us/library/windows/hardware/ff549596(v=vs.85">GFlags</a>:</p>
 <img src="img/consumo-abusivo-de-memoria-JeqoBju.png"/>
-<p>    </p>
-<p>    0:004&gt; !heap -p -a &lt;span style="color: #ff0000;"&gt;00558600&lt;/span&gt;</p>
-<p>     address 00558600 found in</p>
-<p>     _HEAP @ 670000</p>
-<p>     HEAP_ENTRY Size Prev Flags UserPtr UserSize - state</p>
-<p>     &lt;span style="color: #ff0000;"&gt;00558600 0221 0000 <a href="posts.html?q=00">00</a> 00558618 01037 - (busy)&lt;/span&gt;</p>
-<p>     Trace: b7a24</p>
-<p>     7722dfa2 ntdll!RtlAllocateHeap+0x00000274</p>
-<p>     5b628343 MSVCR100D!_heap_alloc_base+0x00000053</p>
-<p>     5b63697c MSVCR100D!_nh_malloc_dbg+0x000002dc</p>
-<p>     5b63671f MSVCR100D!_nh_malloc_dbg+0x0000007f</p>
-<p>     5b6366cc MSVCR100D!_nh_malloc_dbg+0x0000002c</p>
-<p>     5b639c5b MSVCR100D!malloc+0x0000001b</p>
-<p>     5b627db1 MSVCR100D!operator new+0x00000011</p>
-<p>     e84dee MemoryConsumption!operator new[]+0x0000000e</p>
-<p>    &lt;span style="color: #ff0000;"&gt; e818be MemoryConsumption!InsertItems+0x0000004e&lt;/span&gt;</p>
-<p>     7679339a kernel32!BaseThreadInitThunk+0x0000000e</p>
-<p>     771e9ef2 ntdll!__RtlUserThreadStart+0x00000070</p>
-<p>     771e9ec5 ntdll!_RtlUserThreadStart+0x0000001b</p>
+<pre>
+   
+   0:004&gt; !heap -p -a &lt;span style="color: #ff0000;"&gt;00558600&lt;/span&gt;
+    address 00558600 found in
+    _HEAP @ 670000
+    HEAP_ENTRY Size Prev Flags UserPtr UserSize - state
+    &lt;span style="color: #ff0000;"&gt;00558600 0221 0000 [00] 00558618 01037 - (busy)&lt;/span&gt;
+    Trace: b7a24
+    7722dfa2 ntdll!RtlAllocateHeap+0x00000274
+    5b628343 MSVCR100D!_heap_alloc_base+0x00000053
+    5b63697c MSVCR100D!_nh_malloc_dbg+0x000002dc
+    5b63671f MSVCR100D!_nh_malloc_dbg+0x0000007f
+    5b6366cc MSVCR100D!_nh_malloc_dbg+0x0000002c
+    5b639c5b MSVCR100D!malloc+0x0000001b
+    5b627db1 MSVCR100D!operator new+0x00000011
+    e84dee MemoryConsumption!operator new[]+0x0000000e
+   &lt;span style="color: #ff0000;"&gt; e818be MemoryConsumption!InsertItems+0x0000004e&lt;/span&gt;
+    7679339a kernel32!BaseThreadInitThunk+0x0000000e
+    771e9ef2 ntdll!__RtlUserThreadStart+0x00000070
+    771e9ec5 ntdll!_RtlUserThreadStart+0x0000001b
+</pre>
 <p>Dessa forma temos onde cada memória foi alocada, o que nos dará uma informação valiosa, dependendo qual o tipo de problema estamos tentando resolver.</p>
-<p>    </p>
-<p>    0:004&gt; u &lt;span style="color: #ff0000;"&gt;e818be&lt;/span&gt;</p>
-<p>    MemoryConsumption!InsertItems+0x4e <a href="posts.html?q=c:\...\memoryconsumption.cpp @ 18">c:\...\memoryconsumption.cpp @ 18</a>:</p>
-<p>    00e818be 83c404 add esp,4</p>
-<p>    00e818c1 898514ffffff mov dword ptr <a href="posts.html?q=ebp-0ECh">ebp-0ECh</a>,eax</p>
-<p>    00e818c7 8b9514ffffff mov edx,dword ptr <a href="posts.html?q=ebp-0ECh">ebp-0ECh</a></p>
-<p>    00e818cd 8955e0 mov dword ptr <a href="posts.html?q=ebp-20h">ebp-20h</a>,edx</p>
-<p>    00e818d0 8b45f8 mov eax,dword ptr <a href="posts.html?q=ebp-8">ebp-8</a></p>
-<p>    00e818d3 8b08 mov ecx,dword ptr <a href="posts.html?q=eax">eax</a></p>
-<p>    00e818d5 51 push ecx</p>
-<p>    00e818d6 8b45ec mov eax,dword ptr <a href="posts.html?q=ebp-14h">ebp-14h</a></p>
+<pre>
+   
+   0:004&gt; u &lt;span style="color: #ff0000;"&gt;e818be&lt;/span&gt;
+   MemoryConsumption!InsertItems+0x4e [c:\...\memoryconsumption.cpp @ 18]:
+   00e818be 83c404 add esp,4
+   00e818c1 898514ffffff mov dword ptr [ebp-0ECh],eax
+   00e818c7 8b9514ffffff mov edx,dword ptr [ebp-0ECh]
+   00e818cd 8955e0 mov dword ptr [ebp-20h],edx
+   00e818d0 8b45f8 mov eax,dword ptr [ebp-8]
+   00e818d3 8b08 mov ecx,dword ptr [eax]
+   00e818d5 51 push ecx
+   00e818d6 8b45ec mov eax,dword ptr [ebp-14h]
+</pre>
 <p>Outra informação relevante é o que está gravado na memória, que pode nos dar insights de que tipo de objeto estamos lidando:</p>
-<p>    </p>
-<p>    0:004&gt; db &lt;span style="color: #ff0000;"&gt;00558618&lt;/span&gt;</p>
-<p>    00558618 c0 b7 8c 0b 98 03 55 00-00 00 00 00 00 00 00 00 ......U.........</p>
-<p>    00558628 13 10 00 00 01 00 00 00-15 94 00 00 fd fd fd fd ................</p>
-<p>    00558638 51 51 51 51 51 51 51 51-51 51 51 51 51 51 51 51 QQQQQQQQQQQQQQQQ</p>
-<p>    00558648 51 51 51 51 51 51 51 51-51 51 51 51 51 51 51 51 QQQQQQQQQQQQQQQQ</p>
-<p>    00558658 51 51 51 51 51 51 51 51-51 51 51 51 51 51 51 51 QQQQQQQQQQQQQQQQ</p>
-<p>    00558668 51 51 51 51 51 51 51 51-51 51 51 51 51 51 51 51 QQQQQQQQQQQQQQQQ</p>
-<p>    00558678 51 51 51 51 51 51 51 51-51 51 51 51 51 51 51 51 QQQQQQQQQQQQQQQQ</p>
-<p>    00558688 51 51 51 51 51 51 51 51-51 51 51 51 51 51 51 51 QQQQQQQQQQQQQQQQ</p>
+<pre>
+   
+   0:004&gt; db &lt;span style="color: #ff0000;"&gt;00558618&lt;/span&gt;
+   00558618 c0 b7 8c 0b 98 03 55 00-00 00 00 00 00 00 00 00 ......U.........
+   00558628 13 10 00 00 01 00 00 00-15 94 00 00 fd fd fd fd ................
+   00558638 51 51 51 51 51 51 51 51-51 51 51 51 51 51 51 51 QQQQQQQQQQQQQQQQ
+   00558648 51 51 51 51 51 51 51 51-51 51 51 51 51 51 51 51 QQQQQQQQQQQQQQQQ
+   00558658 51 51 51 51 51 51 51 51-51 51 51 51 51 51 51 51 QQQQQQQQQQQQQQQQ
+   00558668 51 51 51 51 51 51 51 51-51 51 51 51 51 51 51 51 QQQQQQQQQQQQQQQQ
+   00558678 51 51 51 51 51 51 51 51-51 51 51 51 51 51 51 51 QQQQQQQQQQQQQQQQ
+   00558688 51 51 51 51 51 51 51 51-51 51 51 51 51 51 51 51 QQQQQQQQQQQQQQQQ
+</pre>
 <p>Não é o caso, mas vamos supor que fosse um objeto/tipo conhecido. Poderíamos simplesmente "importar" o tipo diretamente do PDB que estamos para modelar a memória que encontramos em volta. Mais detalhes <a href="http://www.caloni.com.br/importando-tipos-de-outros-projetos">em outro artigo</a>.</p>
 <h5>Funções/classes usadas nesse artigo</h5>
-<p>    </p>
-<p>  * <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms682453(v=vs.85">CreateThread</a>. Cria uma nova linha de execução.</p>
-<p>    </p>
-<p>  * <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms687025(v=vs.85">WaitForMultipleObjects</a>. Pode aguardar diferentes linhas de execução terminarem.</p>
-<p>    </p>
-<p>  * <a href="posts.html?q=std::list">std::list</a>. Lista na STL para inserir/remover objetos na frente e atrás (ui).</p>
-<p>    </p>
-<p>  * <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms683472(v=vs.85">Initialize</a>, <a href="posts.html?q=Enter">Enter</a> e <a href="posts.html?q=LeaveCriticalSection">LeaveCriticalSection</a>. Uma maneira simples de criar blocos de entrada atômica (apenas uma thread entra por vez).</p>
-<p>    </p>
-<p>  * <a href="http://www.cplusplus.com/reference/clibrary/cstring/memset/">memset</a>. Se você não sabe usar memset, provavelmente não entendeu nada desse artigo.</p>
+<pre>
+   
+ * [CreateThread]. Cria uma nova linha de execução.
+   
+ * [WaitForMultipleObjects]. Pode aguardar diferentes linhas de execução terminarem.
+   
+ * [std::list]. Lista na STL para inserir/remover objetos na frente e atrás (ui).
+   
+ * [Initialize], [Enter] e [LeaveCriticalSection]. Uma maneira simples de criar blocos de entrada atômica (apenas uma thread entra por vez).
+   
+ * [memset]. Se você não sabe usar memset, provavelmente não entendeu nada desse artigo.
+</pre>
 
 
 
@@ -381,45 +393,53 @@ int main(int argc, char* argv[]) // No princípio havia a pilha, quando Deus dis
 <p class="note-title"><small>2012-05-20  <a href="tag_coding.html">tag_coding</a> <a href="tag_ccpp.html">tag_ccpp</a> </small><a href="2012-05.html"><sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-sobrecarga-de-funcao-as-avessas')"><sup>[copy]</sup></a></p>
 <p>&gt; Nota do autor: navegando pelo Archive.org, que possibilita viajar no tempo e encontrar coisas enterradas que seria melhor deixar por lá, consegui encontrar um post que se perdeu na dobra espaço-temporal entre o old-fashioned Caloni.com.br (com direito à velha joaninha psicodélica, desenho do meu amigo que uso até hoje no blogue) e um finado outro domínio meu, o CThings. No final, consegui <a href="posts.html?q=feitico-do-tempo">matar a marmota</a>, chegar a <a href="posts.html?q=de-volta-para-o-futuro">80 milhas por hora</a> e voltar para o presente. Enjoy!</p>
 <p>Alguém já se perguntou se é possível usar sobrecarga de função quando a diferença não está nos parâmetros recebidos, mas no tipo de retorno? Melhor dizendo, imagine que eu tenha o seguinte código:</p>
-<p>    void CreateNewGUID(wstring&amp;);</p>
-<p>    void CreateNewGUID(GUID&amp;);</p>
-<p>    GUID guid;</p>
-<p>    wstring guidS;</p>
-<p>    CreateNewGUID(guidS);</p>
-<p>    CreateNewGUID(guid);</p>
+<pre>
+   void CreateNewGUID(wstring&amp;);
+   void CreateNewGUID(GUID&amp;);
+   GUID guid;
+   wstring guidS;
+   CreateNewGUID(guidS);
+   CreateNewGUID(guid);
+</pre>
 <p>É um uso sensato de sobrecarga. Mas vamos supor que eu queira uma sintaxe mais intuitiva, com o retorno sendo atribuído à variável:</p>
-<p>    wstring CreateNewGUID();</p>
-<p>    GUID CreateNewGUID();</p>
-<p>    GUID guid;</p>
-<p>    wstring guidS;</p>
-<p>    guid = CreateNewGUID();</p>
-<p>    guidS = CreateNewGUID();</p>
+<pre>
+   wstring CreateNewGUID();
+   GUID CreateNewGUID();
+   GUID guid;
+   wstring guidS;
+   guid = CreateNewGUID();
+   guidS = CreateNewGUID();
+</pre>
 <p>Voltando às teorias de C++ veremos que o código acima NÃO funciona. Ou, pelo menos, não deveria. Só pelo fato das duas funções serem definidas o compilador já reclama com um "error C2556: 'GUID CreateNewGUID(void)': overloaded function differs only by return type from 'std::wstring CreateNewGUID(void)'". E obviamente ele está correto. O tipo de retorno não é uma propriedade da função que exclua a ambiguidade em sua chamada. Apenas a assinatura pode fazer isso (que são os tipos dos parâmetros recebidos pela função).</p>
 <p>Como não podemos utilizar funções ordinárias o jeito é criar nosso próprio tipo de função que dê conta do recado usando a sobrecarga do operador de conversão de tipos. O operador de conversão suporta sobrecarga porque é na conversão que o compilador decide qual função chamar.</p>
-<p>    struct CreateNewGUID</p>
-<p>    {</p>
-<p>      operator wstring ();</p>
-<p>      operator GUID ();</p>
-<p>    }; </p>
-<p>    guid = CreateNewGUID();</p>
-<p>    guidS = CreateNewGUID();</p>
+<pre>
+   struct CreateNewGUID
+   {
+     operator wstring ();
+     operator GUID ();
+   }; 
+   guid = CreateNewGUID();
+   guidS = CreateNewGUID();
+</pre>
 <p>Agora com o novo tipo CreateNewGUID é possível chamá-lo como uma função, o que na prática cria uma nova instância da struct. Ao atribuir o retorno dessa instância a uma variável do tipo wstring ou GUID os operadores de conversão serão requisitados, cada um dependendo do tipo da variável a qual será atribuído o retorno.</p>
 <p>Uma vez que criamos um novo tipo, e considerando que este tipo é, portanto, diferente dos tipos wstring e GUID já existentes, devemos simplesmente converter nosso novo tipo para cada um dos tipos de retorno desejados:</p>
-<p>    struct CreateNewGUID</p>
-<p>    {</p>
-<p>      operator wstring ()</p>
-<p>      {</p>
-<p>        wstring ret;</p>
-<p>        // cria guid</p>
-<p>        return ret;</p>
-<p>      }</p>
-<p>      operator GUID ()</p>
-<p>      {</p>
-<p>        GUID ret;</p>
-<p>        // cria guid</p>
-<p>        return ret;</p>
-<p>      }</p>
-<p>    };</p>
+<pre>
+   struct CreateNewGUID
+   {
+     operator wstring ()
+     {
+       wstring ret;
+       // cria guid
+       return ret;
+     }
+     operator GUID ()
+     {
+       GUID ret;
+       // cria guid
+       return ret;
+     }
+   };
+</pre>
 <p>E isso conclui a solução meio esquizofrênica de nossa sobrecarga às avessas. E voltando à pergunta original, penso que, com criatividade e C++, nada é impossível. =)</p>
 
 
