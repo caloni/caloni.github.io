@@ -392,12 +392,7 @@ sentido.} 51... a3 52. Rh8 Rg8 53. Rh2 Ra8 54. Rh8 Rg8 55. Rh2 Ra8 1/2-1/2
 select * from intensityData limit 10;
 select * from intensityData where snp = 'rs123456';
 </pre>
-<p>&gt;</p>
-<blockquote>
-Eight minutes and 4+ terabytes of data queried later I had my results. Athena charges you by data searched at the reasonable rate of $5 per TB. So this single query cost $20 and eight minutes. If we ever wanted to run a model over all the data we better be ready to wait roughly 38 years and pay $50 million. Clearly this wasn’t going to work.
-</blockquote>
-<p>&gt;</p>
-<h3>Lessons Learned</h3>
+<blockquote></blockquote><blockquote>Eight minutes and 4+ terabytes of data queried later I had my results. Athena charges you by data searched at the reasonable rate of $5 per TB. So this single query cost $20 and eight minutes. If we ever wanted to run a model over all the data we better be ready to wait roughly 38 years and pay $50 million. Clearly this wasn’t going to work.</blockquote><blockquote></blockquote><h3>Lessons Learned</h3>
 <ul><li>There's no cheap way to parse 25tb of data at once.</li>
 <li>Sorting is hard, especially when data is distributed.</li>
 <li>Never, ever, try and make 2.5 million partitions. (cost: $1k+ USD)</li>
@@ -425,26 +420,7 @@ parallel --block 100M --pipe  \
 <p class="note-title"><small>2022-06-25  <a href="tag_coding.html">tag_coding</a> </small><a href="2022-06.html"><sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-awk-performance')"><sup>[copy]</sup></a></p>
 <h2>XML Issues</h2>
 <p>Este post foi resultado da minha pesquisa sobre AWK e performance. Ele contém alguns insights que acredito serem úteis para otimizar o código AWK. Nem sempre a linguagem é a ferramenta ideal para trabalhar dados, como o rapaz da dúvida mencionou (ele estava tentando parsear XML), mas mesmo assim as respostas focaram na implementação interna do AWK para entender como tornar o processamento massivo de dados factível, ou pelo menos mais rápido. Isso pode ser útil no dia-a-dia.</p>
-<p>&gt;</p>
-<blockquote>
-"The Enlightened Ones say that....
-
-You should never use C if you can do it with a script;
-</blockquote>
-<p>&gt;</p>
-<blockquote>
-You should never use a script if you can do it with awk;
-</blockquote>
-<p>&gt;</p>
-<blockquote>
-Never use awk if you can do it with sed;
-</blockquote>
-<p>&gt;</p>
-<blockquote>
-Never use sed if you can do it with grep."
-</blockquote>
-<p>&gt;</p>
-<h3>Test #1</h3>
+<blockquote></blockquote><blockquote>"The Enlightened Ones say that....</blockquote><blockquote></blockquote><blockquote>You should never use C if you can do it with a script;</blockquote><blockquote></blockquote><blockquote>You should never use a script if you can do it with awk;</blockquote><blockquote></blockquote><blockquote>Never use awk if you can do it with sed;</blockquote><blockquote></blockquote><blockquote>Never use sed if you can do it with grep."</blockquote><blockquote></blockquote><h3>Test #1</h3>
 <pre>
 yes 'SomeSampleText SomeOtherText 33 1970 YetAnotherText 777 abc 1 AndSomeMore' | head -1000000 &gt; bigsample.txt
 time gawk 'BEGIN {a = 0;} {if ($5 == "YetAnotherText") a ++;} END {print "a: " a;}' bigsample.txt
@@ -514,12 +490,7 @@ time gawk '/:SubNetwork/{a++}END{print a}' bigsample.txt
 <h3>Mawk</h3>
 <p>No meio das minhas pesquisas também encontrei este projeto chamado <a href="https://invisible-island.net/mawk/">mawk</a>, que é uma versão otimizada do AWK. Instalei pelos fontes do projeto na minha máquina e fiz os mesmos testes do post do Stack Overflow com resultados absurdamente mais rápidos. Ou seja, vale uma visita.</p>
 <h3>Final conclusion</h3>
-<blockquote>
-
-Show that if you use your :SubNetwork as field separator, it's the fastest.
-
-</blockquote>
-<ul><li>Regex as filter is much faster than run the action.</li>
+<blockquote></blockquote><blockquote>Show that if you use your :SubNetwork as field separator, it's the fastest.</blockquote><blockquote></blockquote><ul><li>Regex as filter is much faster than run the action.</li>
 <li>Mawk is fast as hell.</li>
 </ul>
 
@@ -559,8 +530,8 @@ Show that if you use your :SubNetwork as field separator, it's the fastest.
 </section><hr/>
 
 <span style="float: left;">
- <a href="2022-05.html">[prev]</a>
- <a href="2022-07.html">[next]</a>
+ <a href="2022-05.html">[2022-05]</a>
+ <a href="2022-07.html">[2022-07]</a>
 </span>
 </div>
 </div>

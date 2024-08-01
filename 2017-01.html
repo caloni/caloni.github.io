@@ -415,10 +415,7 @@ if (!ReadFile(hFile,
 <p>Erros ao chamar a API do Win32 são comuns exatamente porque esta é uma lib arcaica, pouco intuitiva com diferentes tipos de exceções. No caso de uma operação assíncrona com overlapped, se você ler as tantas páginas da <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa365467(v=vs.85">função ReadFile</a>, por exemplo, vai acabar encontrando um adendo escondido no meio da documentação:</p>
 <img src="img/readfile-assincrono-pode-ser-sincrono-quando-voce-menos-espera-sJDJHii.png"/>
 <p>Este <a href="https://support.microsoft.com/en-us/kb/156932">adendo</a> possui a informação que ninguém ainda sabia porque... porque a Microsoft é uma p\*\*\*, oras =)</p>
-<blockquote>
-If, on the other hand, an operation is completed immediately, then &amp;NumberOfBytesRead passed into ReadFile is valid for the number of bytes read. In this case, ignore the OVERLAPPED structure passed into ReadFile; __do not use it with GetOverlappedResult or WaitForSingleObject.__
-</blockquote>
-<p>Ou seja, em caso da função ReadFile (ou WriteFile) retornar TRUE em uma operação assíncrona/overlapped, isso quer dizer que a operação foi concluída com sucesso de forma síncrona, não sendo necessário aguardar o I/O ser concluído. Na verdade, é um pouco mais específico: o WaitForSingleObject __não deve ser chamado__. No nosso caso, ao chamá-lo, criávamos uma espera eterna, já que o I/O não seria mais sinalizado (porque deveria? a operação já foi concluída!).</p>
+<blockquote>If, on the other hand, an operation is completed immediately, then &NumberOfBytesRead passed into ReadFile is valid for the number of bytes read. In this case, ignore the OVERLAPPED structure passed into ReadFile; __do not use it with GetOverlappedResult or WaitForSingleObject.__</blockquote><p>Ou seja, em caso da função ReadFile (ou WriteFile) retornar TRUE em uma operação assíncrona/overlapped, isso quer dizer que a operação foi concluída com sucesso de forma síncrona, não sendo necessário aguardar o I/O ser concluído. Na verdade, é um pouco mais específico: o WaitForSingleObject __não deve ser chamado__. No nosso caso, ao chamá-lo, criávamos uma espera eterna, já que o I/O não seria mais sinalizado (porque deveria? a operação já foi concluída!).</p>
 <p>Uma colinha da M$ de como deve ser feito o tratamento:</p>
 <pre>
    if (!ReadFile(hFile,
@@ -768,8 +765,8 @@ int socket_receive(SOCKET socket, void* buffer, int len, const unsigned* timeout
 </section><hr/>
 
 <span style="float: left;">
- <a href="2016-12.html">[prev]</a>
- <a href="2017-02.html">[next]</a>
+ <a href="2016-12.html">[2016-12]</a>
+ <a href="2017-02.html">[2017-02]</a>
 </span>
 </div>
 </div>
