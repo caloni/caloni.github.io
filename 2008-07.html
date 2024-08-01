@@ -236,9 +236,8 @@ void MessageError(DWORD err, PCSTR msg, ...)
 </pre>
 <p>A função principal se chama "__delayLoadHelper@8", ou seja, é uma função com convenção de chamada WINAPI (stdcall) que recebe dois parâmetros.</p>
 <p>Isso costuma sempre funcionar, sendo que tive uma grande surpresa com os seguintes erros de compilação na versão do programa que deve ser executada em Windows 95:</p>
-<ul><li>-------------------Configuration: Project - Win32 Win95 Release--------------------</li>
 <pre>
-&lt;/ul&gt;
+   --------------------Configuration: Project - Win32 Win95 Release--------------------
    Linking...
    iphlpapi.lib(iphlpapi.dll) : error LNK2001: unresolved external symbol ___delayLoadHelper@8
    release/meu_executavel.exe : fatal error LNK1120: 1 unresolved externals
@@ -326,10 +325,7 @@ int main()
 <p>Eis a tabela de campos do retorno de GetVersion:</p>
 <pre>
    Platform                                High-order bit   Next 7 bits     Low-order byte
-</pre>
-<ul><li>------------------------------------   --------------   ------------    --------------</li>
-<pre>
-&lt;/ul&gt;
+   -------------------------------------   --------------   ------------    --------------
    Windows NT 3.51                         0                Build number    3
    Windows NT 4.0                          0                Build number    4
    Windows 2000 or Windows XP              0                Build number    5
@@ -356,10 +352,7 @@ int main()
 <p>Nem sempre o handle que obtemos é fechado com CloseHandle. As funções abaixo retornam handles que devem ser desalocados com as funções à direita:</p>
 <pre>
    Função que obtém recurso         Função que libera recurso
-</pre>
-<ul><li>-----------------------         -------------------------</li>
-<pre>
-&lt;/ul&gt;
+   ------------------------         -------------------------
    LoadLibrary                      FreeLibrary
    RegOpenKey                       RegCloseKey
    GetDC                            ReleaseDC

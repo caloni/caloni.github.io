@@ -480,10 +480,11 @@ Atenção: esse artigo trata sobre xadrez admitindo que o leitor saiba as regras
 <p>Após definir corretamente os registradores, tudo que temos que fazer é escrever uma chamada à INT13 no endereço atual e executar. O conteúdo inicial do disco será escrito no endereço de memória 0000:7E00. Após isso trocamos o IP atual para esse endereço e começamos a depurar a MBR, como se estivéssemos logo após o boot da máquina.</p>
 <img src="img/depuracao-da-mbr-debug_debug.png"/>
 <p>Além da MBR, muitas vezes é preciso depurar a própria BIOS para descobrir o que está acontecendo. Nesse caso, tudo que precisamos fazer é colocar o ponteiro de próxima instrução para a região de memória 0xFFFF0, que traduzido para segmento/offset fica f000:fff0 (mais explicações sobre isso talvez em um futuro artigo).</p>
-<ul><li>rcs f000</li>
-<li>rip fff0</li>
-<li>t</li>
-</ul>
+<pre>
+   -rcs f000
+   -rip fff0
+   -t
+</pre>
 
 
 

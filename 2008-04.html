@@ -319,41 +319,27 @@ role="navigation" aria-label="main navigation">
 <p>Para quem está começando, recomendo usar um depurador simples, 16 bits e que existe em todo e qualquer Windows: o debug. Já usado para depurar a MBR <a href="posts.html?q=depuracao-da-mbr">aqui no bloque</a>, poderá agora ser usado para ensinar alguns princípios da plataforma de uma maneira indolor. Basta iniciá-lo na linha de comando:</p>
 <pre>
    debug
+   -
 </pre>
-<ul><li></li>
-</ul>
 <p>Os comandos mais úteis são o r (ver ou alterar registradores), o t/p (executar passo-a-passo), o d (exibir memória), o u (desmontar assembly) e o a (montar assembly). Ah, não se esquecendo do ? (ajuda).</p>
 <img src="img/aprendendo-assembly-com-o-depurador-debug-testpng.png"/>
 <p>Outro ensinamento bem interessante diz respeito à pilha. Aprendemos sempre que a pilha cresce de cima pra baixo, ou seja, de endereços superiores para valores mais baixos. Também vimos que os registradores responsáveis por controlar a memória da pilha são o sp (stack pointer) e o ss (stack segment). Pois bem. Vamos fazer alguns testes para ver isso acontecer.</p>
-<ul><li>r</li>
 <pre>
-&lt;/ul&gt;
+   -r
    AX=0000  BX=0000  CX=0000  DX=0000  SP=FFEE  BP=0000  SI=0000  DI=0000
    DS=0CF9  ES=0CF9  SS=0CF9  CS=0CF9  IP=0100   NV UP EI PL NZ NA PO NC
    0CF9:0100 69            DB      69
-</pre>
-<ul><li>r ss</li>
-<pre>
-&lt;/ul&gt;
+   -r ss
    SS 0CF9
    :9000
-</pre>
-<ul><li>r sp</li>
-<pre>
-&lt;/ul&gt;
+   -r sp
    SP FFEE
    :ffff
-</pre>
-<ul><li>r</li>
-<pre>
-&lt;/ul&gt;
+   -r
    AX=0000  BX=0000  CX=0000  DX=0000  SP=FFFF  BP=0000  SI=0000  DI=0000
    DS=0CF9  ES=0CF9  SS=9000  CS=0CF9  IP=0100   NV UP EI PL NZ NA PO NC
    0CF9:0100 69            DB      69
-</pre>
-<ul><li>a</li>
-<pre>
-&lt;/ul&gt;
+   -a
    0CF9:0100 mov ax, 1234
    0CF9:0103 push ax
    0CF9:0104 inc ax
@@ -361,10 +347,7 @@ role="navigation" aria-label="main navigation">
    0CF9:0106 inc ax
    0CF9:0107 push ax
    0CF9:0108
-</pre>
-<ul><li>u</li>
-<pre>
-&lt;/ul&gt;
+   -u
    0CF9:0100 B83412        MOV     AX,1234
    0CF9:0103 50            PUSH    AX
    0CF9:0104 40            INC     AX
@@ -376,54 +359,35 @@ role="navigation" aria-label="main navigation">
    AX=1234  BX=0000  CX=0000  DX=0000  SP=FFFF  BP=0000  SI=0000  DI=0000
    DS=0CF9  ES=0CF9  SS=9000  CS=0CF9  IP=0103   NV UP EI PL NZ NA PO NC
    0CF9:0103 50            PUSH    AX
-</pre>
-<ul><li>t</li>
-<pre>
-&lt;/ul&gt;
+   -t
    
    AX=1234  BX=0000  CX=0000  DX=0000  SP=FFFD  BP=0000  SI=0000  DI=0000
    DS=0CF9  ES=0CF9  SS=9000  CS=0CF9  IP=0104   NV UP EI PL NZ NA PO NC
    0CF9:0104 40            INC     AX
-</pre>
-<ul><li>t</li>
-<pre>
-&lt;/ul&gt;
+   -t
    
    AX=1235  BX=0000  CX=0000  DX=0000  SP=FFFD  BP=0000  SI=0000  DI=0000
    DS=0CF9  ES=0CF9  SS=9000  CS=0CF9  IP=0105   NV UP EI PL NZ NA PE NC
    0CF9:0105 50            PUSH    AX
-</pre>
-<ul><li>t</li>
-<pre>
-&lt;/ul&gt;
+   -t
    
    AX=1235  BX=0000  CX=0000  DX=0000  SP=FFFB  BP=0000  SI=0000  DI=0000
    DS=0CF9  ES=0CF9  SS=9000  CS=0CF9  IP=0106   NV UP EI PL NZ NA PE NC
    0CF9:0106 40            INC     AX
-</pre>
-<ul><li>t</li>
-<pre>
-&lt;/ul&gt;
+   -t
    
    AX=1236  BX=0000  CX=0000  DX=0000  SP=FFFB  BP=0000  SI=0000  DI=0000
    DS=0CF9  ES=0CF9  SS=9000  CS=0CF9  IP=0107   NV UP EI PL NZ NA PE NC
    0CF9:0107 50            PUSH    AX
-</pre>
-<ul><li>t</li>
-<pre>
-&lt;/ul&gt;
+   -t
    
    AX=1236  BX=0000  CX=0000  DX=0000  SP=FFF9  BP=0000  SI=0000  DI=0000
    DS=0CF9  ES=0CF9  SS=9000  CS=0CF9  IP=0108   NV UP EI PL NZ NA PE NC
    0CF9:0108 6C            DB      6C
-</pre>
-<ul><li>d 9000:fff9</li>
-<pre>
-&lt;/ul&gt;
+   -d 9000:fff9
    9000:FFF0                             36 12 35 12 34 12 00            6.5.4..
+   -
 </pre>
-<ul><li></li>
-</ul>
 <p>Como vemos, ao empilhar coisas na pilha, o valor do registrador sp diminui. E ao fazermos um dump do valor de sp conseguimos ver os valores empilhados anteriormente. Isso é muito útil na hora de depurarmos chamadas de funções. Por exemplo, no velho teste do Windbg x Bloco de notas:</p>
 <pre>
    windbg notepad
@@ -755,10 +719,7 @@ Por que você não instala direto dos fontes?
    #cd bzr-1.3.1
    #cat INSTALL
    Installation
-</pre>
-<ul><li>-----------</li>
-<pre>
-&lt;/ul&gt;
+   ------------
    When upgrading using setup.py, it is recommended that you first delete the
    bzrlib directory from the install target.
    To install bzr as a user, run

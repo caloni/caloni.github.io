@@ -126,10 +126,7 @@ role="navigation" aria-label="main navigation">
    Probably caused by : MyDriver.sys ( MyDriver!KeBugCheckTest+2b )
    
    Followup: MachineOwner
-</pre>
-<ul><li>--------</li>
-<pre>
-&lt;/ul&gt;
+   ---------
    
    0: kd&gt; !analyze -v
    *******************************************************************************
@@ -161,10 +158,7 @@ role="navigation" aria-label="main navigation">
    Arg4: 00000000
    
    Debugging Details:
-</pre>
-<ul><li>-----------------</li>
-<pre>
-&lt;/ul&gt;
+   ------------------
    BUGCHECK_STR:  0x7f_d
    
    DEFAULT_BUCKET_ID:  DRIVER_FAULT
@@ -205,19 +199,15 @@ role="navigation" aria-label="main navigation">
    DEBUG_FLR_IMAGE_TIMESTAMP:  4baa49d3
    
    &lt;font color="#0000ff"&gt;BugCheck Fix Tip:
-</pre>
-<ul><li>----------------</li>
-<pre>
-&lt;/ul&gt;
+   -----------------
    Try to remove the spin lock aquisition in MyDriver!KeBugCheckTest+2a. By doing this,
    the kernel IRQL priority system will not be in starvation mode.
    
    Tip Code: C:\Tests\MyDriver\dispatch-funcs.cpp+345&lt;/font&gt;
    
    Followup: MachineOwner
+   ---------
 </pre>
-<ul><li>--------</li>
-</ul>
 <p>Existem um pouco de polêmica em torno dessa funcionalidade. Alguns dizem que ela vai mais atrapalhar do que ajudar os programadores de kernel com a vinda de <a href="http://groups.google.com/group/ccppbrasil/msg/f1f6d52aa167c1ab?dmode=source">analistas de sistemas Júnior programando filtros de file system</a> sem a menor discrepância entre o que é um IRP assíncrono e uma ISR. Outros dizem que existirá uma versão paga do WinDbg com essa funcionalidade, nos mesmos moldes do Visual Studio 2010, que virá com a depuração reversa no Enterprise. Essas especulações só o tempo dirá se são verdade ou não. Se eu tiver que pagar mais caro por essas features, o lobby na empresa onde eu trabalho está garantido.</p>
 
 

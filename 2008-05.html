@@ -121,10 +121,7 @@ role="navigation" aria-label="main navigation">
 <p>É possível fazer mais brincadeiras usando os comandos comuns do WinDbg e uma notação diferente da memória. No entanto, é preciso tomar alguns cuidados quando mexer com isso. É recomendado o uso de uma máquina-vítima para esses testes, e não depuração local como estou fazendo.</p>
 <pre>
       descrição    example
-</pre>
-<ul><li>----------- ----------</li>
-<pre>
-&lt;/ul&gt;
+      ------------ ----------
    %  32, 64 bits  %6400000
    &amp;  real 8086    &amp;9000:1734
    #  real 8086    #4C
@@ -313,12 +310,14 @@ role="navigation" aria-label="main navigation">
 </pre>
 <p>Usamos merge no lugar do pull e ganhamos agora um conflito no arquivo bzppilot.cpp, nosso único arquivo. Vamos ver a bagunça que fizemos?</p>
 <p>A última coisa que um controle de fonte quer fazer é confundir ou chatear o usuário. Por isso mesmo, a maioria dos conflitos que o Bazaar encontrar nos fontes serão resolvidos usando o algoritmo "se só um mexeu, então coloca a mudança". A tabela do <a href="http://doc.bazaar-vcs.org/bzr.dev/en/user-guide/#merging-changes">guia do usuário</a> ilustra esse algoritmo em possibilidades:</p>
-<p>| ancestor | first_branch | second_branch | result  | comment          |</p>
-<p>| -------- | ------------ | ------------- | ------- | ---------------- |</p>
-<p>|     x    |    x         |   x           |    x    | não muda         |</p>
-<p>|     x    |    x         |   y           |    y    | usuário 2 ganhou |</p>
-<p>|     x    |    y         |   x           |    y    | usuário 1 ganhou |</p>
-<p>|     x    |    y         |   z           |    ?    | conflito!!!      |</p>
+<pre>
+   | ancestor | first_branch | second_branch | result  | comment          |
+   | -------- | ------------ | ------------- | ------- | ---------------- |
+   |     x    |    x         |   x           |    x    | não muda         |
+   |     x    |    x         |   y           |    y    | usuário 2 ganhou |
+   |     x    |    y         |   x           |    y    | usuário 1 ganhou |
+   |     x    |    y         |   z           |    ?    | conflito!!!      |
+</pre>
 <p>O ancestral é a última modificação em comum dos dois branches que estamos fazendo merge. Do ancestral pra frente cada um seguiu seu caminho, podendo existir quantas modificações quisermos.</p>
 <p>Como podemos ver, o conflito só ocorre se ambos os usuário mexerem na mesma parte do código ao mesmo tempo. Eu disse na mesma parte do código, e não apenas no mesmo arquivo. Isso porque se a mudança for feita no mesmo arquivo, porém em locais diferentes, o conflito é resolvido automaticamente.</p>
 <p>Em todos os conflitos de texto desse tipo, o Bazaar cria três arquivos de suporte e modifica o arquivo em conflito. Isso para cada conflito.</p>
@@ -390,50 +389,35 @@ role="navigation" aria-label="main navigation">
    Committed revision 4.
    
    C:\Tests\bzrpilot&gt;bzr log
-</pre>
-<ul><li>-----------------------------------------------------------</li>
-<pre>
-&lt;/ul&gt;
+   ------------------------------------------------------------
    revno: 4
    committer: Wanderley Caloni &lt;wanderley@caloni.com.br&gt;
    branch nick: bzrpilot
    timestamp: Thu 2008-05-08 22:09:35 -0300
    message:
      Tudo certo
-</pre>
-<ul><li>-----------------------------------------------------------</li>
-<pre>
-&lt;/ul&gt;
+   ------------------------------------------------------------
    revno: 1.1.1
    committer: Wanderley Caloni &lt;wanderley@caloni.com.br&gt;
    branch nick: bzrpilot-bufferoverflow
    timestamp: Thu 2008-05-08 21:47:33 -0300
    message:
      Corrigido buffer overflow
-</pre>
-<ul><li>-----------------------------------------------------------</li>
-<pre>
-&lt;/ul&gt;
+   ------------------------------------------------------------
    revno: 3
    committer: Wanderley Caloni &lt;wanderley@caloni.com.br&gt;
    branch nick: bzrpilot-linebreak
    timestamp: Thu 2008-05-08 21:49:30 -0300
    message:
      A little fix
-</pre>
-<ul><li>-----------------------------------------------------------</li>
-<pre>
-&lt;/ul&gt;
+   ------------------------------------------------------------
    revno: 2
    committer: Wanderley Caloni &lt;wanderley@caloni.com.br&gt;
    branch nick: bzrpilot-linebreak
    timestamp: Thu 2008-05-08 21:44:23 -0300
    message:
      Corrected line breaks
-</pre>
-<ul><li>-----------------------------------------------------------</li>
-<pre>
-&lt;/ul&gt;
+   ------------------------------------------------------------
    revno: 1
    committer: Wanderley Caloni &lt;wanderley@caloni.com.br&gt;
    branch nick: bzrpilot

@@ -124,20 +124,18 @@ role="navigation" aria-label="main navigation">
 <p>Para ter acesso aos meus projetos iniciais é simples: basta usar o mesmo comando que é usado para obter um novo branch de um projeto do Bazaar:</p>
 <ul><li><a href="posts.html?q=mousetool">MouseTool</a> - Simulador de clique de mouse</li>
 <pre>
-&lt;/ul&gt;
    bzr branch https://code.launchpad.net/mtool
 </pre>
-<ul><li><a href="posts.html?q=influence-board">Influence Board</a> - Complemento ao Winboard que mostra a influência das peças</li>
+<li><a href="posts.html?q=influence-board">Influence Board</a> - Complemento ao Winboard que mostra a influência das peças</li>
 <pre>
-&lt;/ul&gt;
    bzr branch https://code.launchpad.net/infboard
 </pre>
-<ul><li><a href="posts.html?q=conversor-de-houaiss-para-babylon-parte-2">Conversor Houaiss Babylon</a> - Converte de um dicionário para o outro</li>
+<li><a href="posts.html?q=conversor-de-houaiss-para-babylon-parte-2">Conversor Houaiss Babylon</a> - Converte de um dicionário para o outro</li>
 <pre>
-&lt;/ul&gt;
    bzr branch https://code.launchpad.net/houaiss2babylon
 </pre>
 <blockquote>
+&lt;/ul&gt;
 Atualização: Aviso de plantão. Não irei mais atualizar os projetos acima no LaunchPad, pois estou considerando reorganizar os fontes para algo mais simplificado. Aguardem por novidades no próprio blogue.
 </blockquote>
 <p>Como o Bazaar foi feito integrado com o Launchpad, também é possível usar um comando bem mais fácil:</p>
@@ -370,10 +368,7 @@ Atualização: Aviso de plantão. Não irei mais atualizar os projetos acima no 
    Committed revision 2.
    
    C:\Tests\client\project1&gt;bzr log -l 1 ..\..\server\project1
-</pre>
-<ul><li>-----------------------------------------------------------</li>
-<pre>
-&lt;/ul&gt;
+   ------------------------------------------------------------
    revno: 2
    committer: Wanderley Caloni &lt;wanderley@caloni.com.br&gt;
    branch nick: project1
@@ -541,40 +536,28 @@ Atualização: Aviso de plantão. Não irei mais atualizar os projetos acima no 
    added win2
    Committed revision 4.
    C:\Tests\linux&gt;bzr log
-</pre>
-<ul><li>-----------------------------------------------------------</li>
-<pre>
-&lt;/ul&gt;
+   ------------------------------------------------------------
    revno: 4
    committer: Wanderley Caloni &lt;wanderley@caloni.com.br&gt;
    branch nick: windows
    timestamp: Mon 2008-06-16 07:17:10 -0300
    message:
      Windows 2
-</pre>
-<ul><li>-----------------------------------------------------------</li>
-<pre>
-&lt;/ul&gt;
+   ------------------------------------------------------------
    revno: 3
    committer: Wanderley Caloni &lt;wanderley@caloni.com.br&gt;
    branch nick: windows
    timestamp: Mon 2008-06-16 07:16:52 -0300
    message:
      Windows 1
-</pre>
-<ul><li>-----------------------------------------------------------</li>
-<pre>
-&lt;/ul&gt;
+   ------------------------------------------------------------
    revno: 2
    committer: Wanderley Caloni &lt;wanderley@caloni.com.br&gt;
    branch nick: linux
    timestamp: Mon 2008-06-16 07:16:24 -0300
    message:
      Linux 2
-</pre>
-<ul><li>-----------------------------------------------------------</li>
-<pre>
-&lt;/ul&gt;
+   ------------------------------------------------------------
    revno: 1
    committer: Wanderley Caloni &lt;wanderley@caloni.com.br&gt;
    branch nick: linux
@@ -760,31 +743,20 @@ BOOL WINAPI DllMain(HINSTANCE inst, DWORD reason, PVOID reserv)
 <pre>
    c:\src\project1
      |
-</pre>
-<ul><li>- project1  (branch principal)</li>
-<pre>
-&lt;/ul&gt;
+     -- project1  (branch principal)
      |
-</pre>
-<ul><li>- bug-da-tela-azul (branch secundário e temporário)</li>
-<pre>
-&lt;/ul&gt;
+     -- bug-da-tela-azul (branch secundário e temporário)
      |
+     -- nova-tela-de-login (branch secundário e temporário)
 </pre>
-<ul><li>- nova-tela-de-login (branch secundário e temporário)</li>
-</ul>
 <p>No servidor de fontes geralmente teremos apenas o branch principal, apesar de que o desenvolvimento em paralelo seja permitido:</p>
 <pre>
    c:\src\project1
      |
-</pre>
-<ul><li>- project1  (branch principal)</li>
-<pre>
-&lt;/ul&gt;
+     -- project1  (branch principal)
      |
+     -- 2.4.1 (branch secundário em desenvolvimento paralelo)
 </pre>
-<ul><li>- 2.4.1 (branch secundário em desenvolvimento paralelo)</li>
-</ul>
 <h5>Segundo passo: projeto-modelo</h5>
 <p>Foi criado um projeto modelo para que todos os projetos herdassem seu histórico. Para que isso? Bom, na eventualidade de partes de um projeto irem parar em outro (isso quase nunca acontece), isso pode ser feito sem perder todo o histórico do início do projeto.</p>
 <p>Resumindo: todos os projetos novos são branches do projeto-modelo.</p>
@@ -809,21 +781,14 @@ BOOL WINAPI DllMain(HINSTANCE inst, DWORD reason, PVOID reserv)
      |  |
      |  -- _template
      |
-</pre>
-<ul><li>- novo-projeto</li>
-<pre>
-&lt;/ul&gt;
+     -- novo-projeto
      |  |
      |  -- novo-projeto
      |
-</pre>
-<ul><li>- mais-um-projeto</li>
-<pre>
-&lt;/ul&gt;
+     -- mais-um-projeto
         |
+        -- mais-um-projeto
 </pre>
-<ul><li>- mais-um-projeto</li>
-</ul>
 <h5>Terceiro passo: elegendo um servidor</h5>
 <p>O controle distribuído de fontes não significa que não existe um servidor. Existe. O detalhe é que todos os desenvolvedores guardam todo o histórico do projeto com eles, igualzinho o servidor, que é apenas mais uma máquina com mais um branch.</p>
 <p>O repositório do servidor pode ser criado com a opção que não cria o diretório de trabalho, que é onde os programadores mexem no código-fonte. Sendo um servidor, o código-fonte não é necessário, só a base de dados:</p>

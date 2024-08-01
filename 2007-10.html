@@ -239,7 +239,7 @@ Um outro item importantíssimo que foi movido da versão 3.51 para a 4.0 é a GD
 <p class="title"><a href="2007-10.html#guia-basico-para-programadores-de-primeiro-int-main">#</a> Guia básico para programadores de primeiro int main</p>
 <p class="note-title"><small>2007-10-16  <a href="tag_coding.html">tag_coding</a> </small><a href="2007-10.html"><sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-guia-basico-para-programadores-de-primeiro-int-main')"><sup>[copy]</sup></a></p>
 <blockquote>
-Vou aproveitar que meu amigo DQ publicou um artigo muito bom sobre &lt;a href="http://dqsoft.blogspot.com/2007/10/desenvolvendo-softwares-agradveis-de.html"&gt;como fazer programas fáceis de manter&lt;/a&gt; (merece ser lido!) e vou republicar um artigo do blogue antigo sobre o básico do básico para quem deseja entender como os programas funcionam. Não é nada sofisticado, apenas alguns conceitos comuns que, se você deseja ser programador, deveria procurar saber.
+Vou aproveitar que meu amigo DQ publicou um artigo muito bom sobre [como fazer programas fáceis de manter] (merece ser lido!) e vou republicar um artigo do blogue antigo sobre o básico do básico para quem deseja entender como os programas funcionam. Não é nada sofisticado, apenas alguns conceitos comuns que, se você deseja ser programador, deveria procurar saber.
 </blockquote>
 <h3>Código, dados e processador</h3>
 <p>A primeira coisa a saber é o que é um programa. Podemos imaginá-lo como um arquivo que vai ser interpretado pelo computador. Essa interpretação chamamos de execução. Quando um programa está sendo executado também é comum dizermos que ele está rodando. Teoricamente ele pode rodar eternamente, mas o que acontece em casos normais é que ele tem um fim previsto, seja quando o usuário fechar a janela principal (evento externo) ou quando ele terminar o que tinha que fazer (lógica interna).</p>
@@ -247,15 +247,15 @@ Vou aproveitar que meu amigo DQ publicou um artigo muito bom sobre &lt;a href="h
 <p>Vamos analisar essas abstrações em exemplos da vida real:</p>
 <pre>
    
+   | Exemplo          | Dados de entrada            | Processamento                 | Dados de saída                    |
+   | ---------------- | --------------------------  | ----------------------------  | --------------------------------- |
+   | Bloco de Notas   | Digitação do usuário        | Leitura do teclado            | Texto exibido na tela             |
+   | Chat Online      | Envio de mensagem           | Conexão com a internet        | Seu amigo recebe a mensagem       |
+   | Editor de imagem | Movimento do mouse          | Interpretação de movimento    | Retângulo desenhado               |
+   | Browser          | Clique do mouse em uma URL  | Conexão com o site            | Exibição da nova página           |
+   | Jogo de Tiro     | Clique no botão de tiro     | Cálculo do projétil           | Inimigo acertado                  |
+   | Compilador       | Código do programador       | Interpretação das instruções  | Código de máquina (seu programa!) |
 </pre>
-<p>| Exemplo          | Dados de entrada            | Processamento                 | Dados de saída                    |</p>
-<p>| ---------------- | --------------------------  | ----------------------------  | --------------------------------- |</p>
-<p>| Bloco de Notas   | Digitação do usuário        | Leitura do teclado            | Texto exibido na tela             |</p>
-<p>| Chat Online      | Envio de mensagem           | Conexão com a internet        | Seu amigo recebe a mensagem       |</p>
-<p>| Editor de imagem | Movimento do mouse          | Interpretação de movimento    | Retângulo desenhado               |</p>
-<p>| Browser          | Clique do mouse em uma URL  | Conexão com o site            | Exibição da nova página           |</p>
-<p>| Jogo de Tiro     | Clique no botão de tiro     | Cálculo do projétil           | Inimigo acertado                  |</p>
-<p>| Compilador       | Código do programador       | Interpretação das instruções  | Código de máquina (seu programa!) |</p>
 <p>Como podemos ver, podemos abstrair esse lance de "dados de entrada + processamento = dados de saída" com qualquer tipo de programa que usarmos. Basta relacionar o que fazemos (digitar algo, arrastar o mouse, apertar um botão, etc) para obtermos a saída desejada (texto/gráfico na tela, no arquivo, na impressora, etc). O programa é o elemento que fica no meio fazendo essa "mágica".</p>
 <h3>Dados do programa</h3>
 <p>Existem informações intermediárias que precisamos guardar em um programa em execução para que no final consigamos apresentar a saída desejada ao usuário. Essas informações intermediárias também são dados, só que o usuário não os enxerga. A elas chamamos de variáveis. Entenda uma variável como "um lugar na memória onde o programa armazena alguma informação durante o processamento".</p>
