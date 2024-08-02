@@ -58,10 +58,13 @@ role="navigation" aria-label="main navigation">
 
 <span id="o-boot-no-windows-kernel" title="O boot no Windows: Kernel"/></span>
 <section id="section-o-boot-no-windows-kernel">
-<p class="title"><a href="2009-12.html#o-boot-no-windows-kernel">#</a> <b>O boot no Windows: Kernel</b></p>
-<p class="note-title"><small>2009-12-04  <a href="tag_coding.html">tag_coding</a> </small><a href="2009-12.html"><sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-o-boot-no-windows-kernel')"><sup>[copy]</sup></a></p>
+<p class="title"><a href="2009-12.html#o-boot-no-windows-kernel">#</a> O boot no Windows: Kernel</p>
+<span class="title-heading">Wanderley Caloni, 2009-12-04  <a href="tag_coding.html">tag_coding</a> <a href="2009-12.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-o-boot-no-windows-kernel')"><sup>[copy]</sup></a></span>
+
 <p>Finalmente chegamos em um ponto onde podemos usar o WinDbg.</p>
+
 <p>Podemos espetar o depurador e fazê-lo parar assim que conectado. Se estiver rodando antes do próprio sistema operacional, teremos um sistema sem processos e sem threads, pois ele irá parar assim que o executivo puder enviar o sinal de início pela porta serial, após carregar na memória os módulos básicos.</p>
+
 <pre>
    
    windbg -k com:pipe,port=\\.\pipe\com_1 &lt;strong&gt;&lt;font color="#000000"&gt;-b&lt;/font&gt;&lt;/strong&gt;
@@ -185,9 +188,13 @@ role="navigation" aria-label="main navigation">
    00000000 00000000 00000000 00000000 00000000 nt!KiSystemStartup+0x2bf
 </pre>
 <p>Todos os módulos carregados antes dessa fase são os drivers que tiveram seu Start definido em zero no registro. Todos os programadores que desenvolvem esses drivers gostariam de um dia poder usar o WinDbg. Mas não podem. Quem inicia a comunicação serial com o depurador é o kernel, que só recebe o controle do ntldr depois que os drivers básicos foram carregados.</p>
+
 <p>Brincadeira. É claro que esses programadores usam o WinDbg, usam <a href="http://www.driverentry.com.br/blog/2007/07/bug-em-meu-driver-de-boot-j-posso.html">até demais</a>. Mas só a partir desse ponto. Se algum problema evitar que o sistema chegue nessa fase, o desenvolvedor terá que usar métodos alternativos de depuração, como <a href="http://br.answers.yahoo.com/question/index?qid=20090203065437AAYWuPo">teste de mesa</a> (risos incontroláveis).</p>
+
 <p>De qualquer forma, estamos aí. Agora podemos depurar a criação de qualquer thread, qualquer processo, o carregamento de qualquer módulo, e a chamada a qualquer função do kernel.</p>
+
 <p>Para depurar a criação de qualquer thread: coloque um breakpoint na função **PsCreateSystemThread**.</p>
+
 <pre>
    
    kd&gt; bp PsCreateSystemThread
@@ -208,6 +215,7 @@ role="navigation" aria-label="main navigation">
    00000000 00000000 nt!KiSystemStartup+0x2bf
 </pre>
 <p>Para depurar a criação de qualquer processo: coloque um breakpoint na função **PspCreateProcess**, logo no começo. Será possível capturar a criação do processo System, o processo onde roda a primeira thread do kernel, que inicializa o resto dos componentes.</p>
+
 <pre>
    
    kd&gt; bp PspCreateProcess
@@ -228,6 +236,7 @@ role="navigation" aria-label="main navigation">
    00000000 00000000 nt!KiSystemStartup+0x2bf
 </pre>
 <p>E não é lindo ver que, após a chamada ao Process Manager o processo REALMENTE foi criado e está na lista de processos?</p>
+
 <pre>
    
    kd&gt; !process 0 0
@@ -243,8 +252,11 @@ role="navigation" aria-label="main navigation">
    &lt;strong&gt;    Image: System Process&lt;/strong&gt;
 </pre>
 <p>É nesse momento que percebemos que um processo, uma thread, um qualquer-coisa dentro do kernel não é nada mais nada menos que **um item em uma lista**. Quase tudo no kernel será um item numa lista com um monte de ponteiros referenciando outras estruturas. É isso que mantém a lógica e a coerência no sistema inteiro. Tudo isso é basicamente software, construído como castelos no ar.</p>
+
 <p>O próximo processo a ser criado, logo após carregar todos os drivers, é o nosso amigo SMSS, o Gerenciador de Sessão, o primeiro pedacinho do iceberg que desponta no oceano. É ele que irá iniciar toda a "parte user-mode do kernel".</p>
+
 <p>&lt;blockquote&gt;_Nota: Apesar de parecer contraditório, algumas partes do kernel são de fato implementadas em user mode. Os motivos podem variar, mas geralmente são maior segurança (código que não precisa rodar em um ring privilegiado) e desempenho (código que não precisa de muita prioridade)._&lt;/blockquote&gt;</p>
+
 <pre>
    
    Breakpoint 0 hit
@@ -276,12 +288,16 @@ role="navigation" aria-label="main navigation">
    &lt;strong&gt;    Image: smss.exe&lt;/strong&gt;
 </pre>
 <p>Como podemos ver, isso é muito divertido e muito extenso. Poderíamos ir para qualquer lado da evolução do boot. Talvez em artigos futuros daremos uma olhada no processo de logon de um usuário, o que nos obrigaria a ter uma leve noção de como o Windows autentica e autoriza as pessoas. ou talvez daremos uma passadinha no sistema de escalonamento de threads do kernel, um assunto pra lá de complicado e esotérico.</p>
+
 <p>&lt;blockquote&gt;_Nota: Eu pessoalmente recomendo acompanhar o processo de boot descrito por Russinovich e depurar passo-a-passo um boot de verdade. Serão horas e mais horas de puro conhecimento empírico catalogado em seu cérebro-depurador._&lt;/blockquote&gt;</p>
+
 <p>Então até lá. Com licença que eu preciso ver a criação do System mais uma vez.</p>
+
 <pre>
    
    .reboot
 </pre>
+
 
 
 
@@ -290,22 +306,36 @@ role="navigation" aria-label="main navigation">
 
 <span id="aprendendo-um-terceiro-idioma" title="Aprendendo um terceiro idioma"/></span>
 <section id="section-aprendendo-um-terceiro-idioma">
-<p class="title"><a href="2009-12.html#aprendendo-um-terceiro-idioma">#</a> <b>Aprendendo um terceiro idioma</b></p>
-<p class="note-title"><small>2009-12-11  </small><a href="2009-12.html"><sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-aprendendo-um-terceiro-idioma')"><sup>[copy]</sup></a></p>
+<p class="title"><a href="2009-12.html#aprendendo-um-terceiro-idioma">#</a> Aprendendo um terceiro idioma</p>
+<span class="title-heading">Wanderley Caloni, 2009-12-11  <a href="2009-12.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-aprendendo-um-terceiro-idioma')"><sup>[copy]</sup></a></span>
+
 <p>Inspirado pelo texto de Chad Fowler que explica como o aprendizado de um segundo idioma mudou sua vida (sua língua-mãe é o inglês americano), resolvi descrever brevemente o que foi o momento da minha vida que decidi que iria tentar aprender Russo. Lógico, sem todo o folclore e a experiência de vida do autor do original.</p>
+
 <p>Primeiro, meus motivos primários:</p>
+
 <ul><li>Estava escutando Tatu;</li>
+
 <li>Costumava conversar pelo ICQ com uma amiga de Moscou (em inglês, apesar dela falar mais três ou quatro idiomas; e ela só tinha 19 anos!);</li>
+
 <li>Estava querendo aproveitar parte do meu cérebro que fica inerte a maior parte do tempo porque meu emprego basicamente só mexe com coisas (quase) lógicas, como programação;</li>
+
 <li>Achava uma língua bem bonita e exótica;</li>
+
 <li>Gosto de jogar xadrez (o que isso tem a ver?).</li>
+
 </ul>
 <p>Bom, no início comecei aprendendo o alfabeto. Alguns podem dizer que não há nenhum segredo no cirílico, e de fato não há. Porém, uma coisa é saber interpretar mais ou menos aquelas letrinhas derivadas do grego; outra completamente diferente é saber escrever em letra de base e em letra de mão todos os 33 caracteres, e ainda saber de cor o leiaute do teclado russo. Isso leva um pouco de tempo, e é bem divertido!</p>
+
 <p>A partir daí passei cerca de seis meses apenas treinando a escrita e leitura do cirílico, aprendendo a diferença de som dependendo do contexto, um caderno a tiracolo no meio do ônibus, do trem e do metrô escrevendo infinitas linhas incompreensível provavelmente por 99% das pessoas que cruzavam meu caminho e olhavam curiosas.</p>
+
 <p>Depois, o idioma em si. Nessa fase resolvi apelar para um curso disponível no mosteiro S. Bento ministrado por uma russa autência, de S. Petersburgo. Ela não falava muito bem português, o que para mim era um "plus".</p>
+
 <p>Passei mais seis meses de curso com ela e com alguns textos que ia baixando da internet. Depois do curso comprei um curso em áudio e texto que fui acompanhando morosamente pelo resto dos dois anos que passei me aventurando pelo idioma.</p>
+
 <p>No meio do caminho um amigo meu achou o podcast Spoonful of Russian, o que foi uma diversão só, especialmente pelo conhecimento cultural e musical do povo russo. Minha amiga também me enviou alguns CDs de bandas russas famosas, e fiquei especialmente encantando com Ivan Kupala, que até hoje escuto. Se trata de uma banda que pegou músicas do folclore russo e adaptou para os tempos atuais, mas cantado ainda por velhinhas e velhinhos que aparentemente parecem ter saído de uma aldeia dos Montes Urais.</p>
+
 <p>O cinema e a BBC russa também representaram um instrumento de aprimoramento do listening do dia-a-dia. Uma coisa é escutar um russo falando devagar durante uma aula de declinação do futuro por aspecto. Outra coisa é ver alguém usando isso enquanto atravessa a rua conversando com um amigo no meio do barulho da cidade grande, ou uma mulher que mais parece uma metralhadora disparando 500 notícias de uma vez no podcast de um jornal da internet.</p>
+
 <p>Infelizmente, essa fase esmaeceu. Agora estou muito interessado em finanças e isso fez com que o russo ficasse cada vez mais para trás. Se me pedir hoje para falar algo em russo vou conseguir apenas balbuciar as mais "comunzinhas", pois esqueci todo o resto. Foi perda de tempo? Claro que não! Foi uma experiência que mostra que podemos aprender qualquer coisa a qualquer hora, independente do quão estranho ou bizarro isso seja.</p>
 
 </section><hr/>
@@ -313,18 +343,29 @@ role="navigation" aria-label="main navigation">
 
 <span id="devaneio-nerd-rapido-sobre-aniversarios" title="Devaneio nerd rápido sobre aniversários"/></span>
 <section id="section-devaneio-nerd-rapido-sobre-aniversarios">
-<p class="title"><a href="2009-12.html#devaneio-nerd-rapido-sobre-aniversarios">#</a> <b>Devaneio nerd rápido sobre aniversários</b></p>
-<p class="note-title"><small>2009-12-14  </small><a href="2009-12.html"><sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-devaneio-nerd-rapido-sobre-aniversarios')"><sup>[copy]</sup></a></p>
+<p class="title"><a href="2009-12.html#devaneio-nerd-rapido-sobre-aniversarios">#</a> Devaneio nerd rápido sobre aniversários</p>
+<span class="title-heading">Wanderley Caloni, 2009-12-14  <a href="2009-12.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-devaneio-nerd-rapido-sobre-aniversarios')"><sup>[copy]</sup></a></span>
+
 <p>Hoje não é aniversário do blogue. É meu. Há exatos (sic) trinta anos nascia eu, essa pessoa que vos fala. Legal, não?</p>
+
 <p>Beeeem legal. Tão legal quanto saber que o núcleo de um átomo representa 99,9% de sua masssa ou que uma borboleta bate duzentas mil vezes a asa por hora (só chutando, eu não sei realmente).</p>
+
 <p>Ou saber, talvez, que o homem deciciu contar sua idade terrena através do número de vezes que esse planetinha gira em órbita de sua estrela. É o tipo de curiosidade mais que suficiente para comentar em sua quinquagésima festa de aniversário durante a rodinha do tédio (aquela em que você não tem  nada pra comentar porque já é a quinquagésima festinha do ano e as pessoas já estão cansadas de se verem).</p>
+
 <p>Dr. House: Ah, my birthday. Normally I'd put on a festive hat and celebrate the fact that the Earth has circled the Sun one more time; I really didn't think it was going to make it this year, but darn it if it wasn't the little planet that could all over again. (1.06 The Socratic Method)</p>
+
 <p>Do ponto de vista estatístico (sempre ela!), então, nem se fala. Na região onde eu moro vivem dez milhões de pessoas. Em uma conta de padaria, trinta mil fazem aniversário junto comigo. Na mesma hora, talvez umas mil. Bom, mas existem sessentas minutos em uma hora! Dessa forma, eu tenho a chance de ter nascido no mesmo minuto junto de cerca de vinte rebentos. Ah, e os segundos!?!? É verdade. Sou obrigado a torcer o nariz para o "fato" que tenho mais de 50% de chance de ser a única pessoa na região de São Paulo a ter nascido no mesmo segundo. Que especial! Bom, no mundo inteiro, é óbvio que não tenho nem um milissegundo pra mim, o que torna a data tão insignificativa quanto um alerta do orkut sobre a mesma.</p>
+
 <p>	</p>
+
 <p>  * Se aplicarmos a mesma lógica matemática à morte e aos nascimentos chegaremos à inevitável (e óbvia) equação que a vida de um indivíduo para a nossa espécie hoje em dia vale menos que sua aposentadoria. Até porque, dessa imensa maioria de pessoas que nascem e morrem, a maioria é pobre e não tem condições de contribuir com uma boa parcela de gastos para o bem de nossa economia. A maioria é burra também, e pode contribuir menos ainda pelo valor agregado de nossa riqueza.</p>
+
 <p>	</p>
+
 <p>  * Me foi contado que aniversários são eventos para celebrar a vida, principalmente do aniversariante. Ótimo! Isso quer dizer que a vida de cada um vale menos de 0,3% do ano inteiro, já que reservamos apenas um dia em 360 para confirmar que ainda estamos respirando.</p>
+
 <p>Bom, esse artigo já devanou demais. E como meu objetivo nem foi chegar a uma conclusão, termino por aqui. Ah, para dar mais corda pra pensar: feliz natal!</p>
+
 <p>PS: Mensagens de feliz aniversário serão devidamente descartadas. Ah, e feliz ano-novo pra você, também.</p>
 
 </section><hr/>
@@ -332,10 +373,13 @@ role="navigation" aria-label="main navigation">
 
 <span id="devaneio-nerd-rapido-sobre-profecias" title="Devaneio nerd rápido sobre profecias"/></span>
 <section id="section-devaneio-nerd-rapido-sobre-profecias">
-<p class="title"><a href="2009-12.html#devaneio-nerd-rapido-sobre-profecias">#</a> <b>Devaneio nerd rápido sobre profecias</b></p>
-<p class="note-title"><small>2009-12-30  </small><a href="2009-12.html"><sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-devaneio-nerd-rapido-sobre-profecias')"><sup>[copy]</sup></a></p>
+<p class="title"><a href="2009-12.html#devaneio-nerd-rapido-sobre-profecias">#</a> Devaneio nerd rápido sobre profecias</p>
+<span class="title-heading">Wanderley Caloni, 2009-12-30  <a href="2009-12.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-devaneio-nerd-rapido-sobre-profecias')"><sup>[copy]</sup></a></span>
+
 <p>Para quem já analisou os dados de uma tela azul sabe que, quando o Windows acha um culpado (vulgo driver) a data de sua compilação é exibida em um formato conhecido como **DateStamp** ou **TimeStamp**. Nesse formato o que temos é um número hexadecimal que segue o <a href="http://en.wikipedia.org/wiki/Unix_timestamp">formato de tempo do Unix</a>, que no caso é o número de segundos desde o dia primeiro de Janeiro de 1970. Isso, por curiosidade, nos dá uma margem de 140 anos antes dos número se repetirem se usarmos 32 bits nessa contagem.</p>
+
 <p>O comando .formats do WinDbg nos consegue trazer desse número a hora exata em que determinado componente foi compilado. Se, por exemplo, um driver faltoso apresentou um DateStamp igual a 49EE9758, podemos concluir que ele foi compilado no dia 22 de abril de 2009, uma linda quarta-feira.</p>
+
 <pre>
    
    0:000&gt; &lt;font color="#0000ff"&gt;.formats 49EE9758&lt;/font&gt;
@@ -350,7 +394,9 @@ role="navigation" aria-label="main navigation">
      Double:  6.12826e-315
 </pre>
 <p>Quando fazemos algo muitas vezes seguidas temos o hábito inconsciente de observar certas idiossincrasias dos dados que sempre vem e vão. No caso dos Date Stamps, sempre me veio o fato deles iniciarem com 4 e estarem prestes a "virar o contador" para 5.</p>
+
 <p>Isso aos poucos - entre uma tela azul e outra - me deixou curioso a respeito de quando seria o dia fatídico em que teríamos o DateStamp 50000000, um número cabalístico em nosso sistema decimal. E, imaginem só:</p>
+
 <pre>
    
    0:000&gt; &lt;font color="#0000ff"&gt;.formats 50000000&lt;/font&gt;
@@ -365,7 +411,11 @@ role="navigation" aria-label="main navigation">
      Double:  6.63124e-315
 </pre>
 <p>Pois é, meus amigos. O DateStamp para a virada do contador Unix se fará numa manhã de sexta. Para ser preciso, uma <a href="http://pt.wikipedia.org/wiki/Sexta_Feira_13">sexta-feira 13</a>.</p>
+
 <p>Curioso, não? Mais curioso que isso, só sabendo que o ano que isso vai ocorrer é o igualmente fatídico <a href="http://www.youtube.com/watch?v=Hz86TsGx3fc">2012</a>. Felizmente antes de dezembro.</p>
+
+
+
 
 
 
