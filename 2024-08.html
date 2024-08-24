@@ -72,6 +72,8 @@ role="navigation" aria-label="main navigation">
 <li><small><a href="2024-08.html#o-diario-de-bridget-jones-">O Diário de Bridget Jones </a></small></li>
 
 <li><small><a href="2024-08.html#tentei-dividir-um-post-em-dois-mas...">Tentei dividir um post em dois, mas...</a></small></li>
+
+<li><small><a href="2024-08.html#dividindo-o-assembly-para-conquistar">Dividindo o assembly para conquistar</a></small></li>
 </ul>
 
 
@@ -450,6 +452,28 @@ role="navigation" aria-label="main navigation">
 <p>É necessário renomear as variáveis do script txt2blog.awk para que fique mais simples de entender onde cada variável é usada. Como na prática todas são globais a ideia é usar os prefixos f_ (função), a_ (argumento), l_ (local) e g_ (global) para conseguir diferenciar. Não sei se existe alguma convenção de nomes para variáveis em scripts awk (se houver, usar).</p>
 
 <p>Apenas após as variáveis renomeadas será possível reescrever o script para permitir a correção deste e outros bugs.</p>
+
+</section><hr/>
+
+
+<span id="dividindo-o-assembly-para-conquistar" title="Dividindo o assembly para conquistar"/></span>
+<section id="section-dividindo-o-assembly-para-conquistar">
+<p class="title"><a href="2024-08.html#dividindo-o-assembly-para-conquistar">#</a> Dividindo o assembly para conquistar</p>
+<span class="title-heading">Wanderley Caloni, 2024-08-23  <a href="tag_coding.html">tag_coding</a> <a href="2024-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-dividindo-o-assembly-para-conquistar')"><sup>[copy]</sup></a></span>
+
+<blockquote>"Cada problema que eu resolvo se torna uma regra que serve mais tarde para resolver outros problemas."</blockquote>
+<blockquote>Rene Descartes</blockquote>
+<p>Hoje usei uma técnica que é bem intuitiva durante o debugging, mas que pode servir para outros cenários de engenharia reversa. </p>
+
+<p>Cansado de tentar entender onde estava a chamada de uma função que fazia um certo app ser ativado por um link peguei o executável responsável para depurar seu assembly.</p>
+
+<p>O programa tem o funcionamento bem simples: ele recebe um argumento  de alguma forma ativa uma instância do aplicativo principal em execução para abrir o link passado como parâmetro.</p>
+
+<p>Para encontrar a chamada da Windows API que faz a coisa acontecer eu poderia passar horas depurando passo a passo até entender a lógica por trás do assembly. No entanto, e aí que está o pulo do gato, eu posso também executar dezenas de vezes e ir “cercando” o ponto onde o app faz a ativação.</p>
+
+<p>Para isso basta ir depurando cada execução até ocorrer a ativação. Quando descobrir que após uma chamada o app é ativado basta salvar este ponto e executar novamente o mesmo comando com este novo ponto em breakpoint. Repita até chegar em uma função API ou alguma thread ou algum comando para uma worker thread (algo muito comum hoje em Windows Apps).</p>
+
+<p>Dependendo da forma com que é implementado isso pode levar de alguns minutos a talvez uma hora ou duas. Mas com certeza será mais rápido que ir todo o código passo a passo.</p>
 
 </section><hr/>
 
