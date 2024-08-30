@@ -144,18 +144,14 @@ role="navigation" aria-label="main navigation">
 
 <p>Estava eu com meu Visual Studio compilando um arquivo C e de repente:</p>
 
-
 <pre>
 unresolved external symbol sprintf
 </pre>
-
 <p>Uai. Depois de 30 segundos descubro que isso não ecxiste mais e que preciso adicionar esta lib para linkar:</p>
-
 
 <pre>
 legacy_stdio_definitions.lib
 </pre>
-
 <p>E tudo se resolveu =/</p>
 
 </section><hr/>
@@ -176,7 +172,6 @@ legacy_stdio_definitions.lib
 
 <p>Meu amigo está mexendo com allocator e fez o seguinte teste, o que pode dar a ideia errada para o iniciante, porque testei aqui e deu tudo certo:</p>
 
-
 <pre>
 #include &lt;iostream&gt;
 struct A {
@@ -190,9 +185,7 @@ int main()
     p[1].x = 10;
 }
 </pre>
-
 <p>Porém, ele não havia revelado que a “struct” que ele usou não era dessas sem complexidade alguma, mas a std::string, que depende da construção porque possui membros que controlam o estado do objeto. E aí sim apenas alocar o espaço na memória não é suficiente. É preciso construir o objeto chamando o construtor.</p>
-
 
 <pre>
 #include &lt;iostream&gt;
@@ -209,9 +202,7 @@ int main()
     p[1].y = "y"; // crash
 }
 </pre>
-
 <p>Ao depurar a chamada ao `operator =` que chama por sua vez o método `std::string::assign` é possível ver que o objeto está com os membros `size` e `capacity` com lixo. O que faz sentido, já que o construtor dessa string nunca foi chamado.</p>
-
 
 <pre>
 -		this	0x00000216888f5858 &lt;Error reading characters of string.&gt;	std::string *
@@ -220,9 +211,7 @@ int main()
 +		[allocator]	allocator	std::_Compressed_pair&lt;std::allocator&lt;char&gt;,std::_String_val&lt;std::_Simple_types&lt;char&gt;&gt;,1&gt;
 		[0]	&lt;Unable to read memory&gt;	char
 </pre>
-
 <p>Para corrigir isso podemos usar o que C++ chama de placement new: uma construção de objeto em memória previamente disponível.</p>
-
 
 <pre>
 A* p = alloc.allocate(2);

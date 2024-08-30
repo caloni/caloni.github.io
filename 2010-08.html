@@ -295,7 +295,6 @@ role="navigation" aria-label="main navigation">
 </pre>
 <p>Note como a função compara algo com zero. Caso não seja zero ela continua. Caso contrário ela vai para um ponto que chama uma função interna e move um código de erro para um ponteiro recebido como parâmetro, o que é muito normal, se lembrarmos que as funções COM de um programa em C devem retornar o código da chamada no retorno (S_OK) e o código de erro em um lResult da vida.</p>
 
-
 <pre>
 STDMETHODIMP CService::Open(&lt;params&gt;, PLONG *pctReturn)
 {
@@ -307,9 +306,7 @@ STDMETHODIMP CService::Open(&lt;params&gt;, PLONG *pctReturn)
 	//...
 }
 </pre>
-
 <p>O código retornado é 2Fh, e agora temos uma boa pista para encontrar a localização no fonte. A primeira coisa é encontrar o define responsável por esse erro, o que exige um pouco de familiaridade com o sistema, pois não se trata aqui de um código Windows.</p>
-
 
 <pre>
 #define OSRL_ERR	44	/* Data file serial number overflow */
@@ -320,9 +317,7 @@ STDMETHODIMP CService::Open(&lt;params&gt;, PLONG *pctReturn)
 #define	FSAV_ERR	49	/* Could not save file */
 #define LNOD_ERR	50	/* Could not lock node */
 </pre>
-
 <p>Ótimo. 2F, para os leigos (leigos? o que vocês estão fazendo aqui?), é 47 em decimal, exatamente nosso código listado acima. Com esse define podemos agora procurar no código-fonte e analisar todas as funções que retornam esse código em seu início. Para nossa sorte, existe apenas uma.</p>
-
 
 <pre>
 STDMETHODIMP CService::Open(BYTE *fileName, COUNT keyNo, COUNT *pctReturn)
@@ -346,7 +341,6 @@ STDMETHODIMP CService::Open(BYTE *fileName, COUNT keyNo, COUNT *pctReturn)
 	//...
 }
 </pre>
-
 <p>Para confirmar que não estamos sonhando, podemos dar uma olhada no parâmetro passado para a função Log antes do código retornar. A memória deverá conter uma string idêntica a do código-fonte.</p>
 
 <pre>
@@ -793,7 +787,6 @@ STDMETHODIMP CService::Open(BYTE *fileName, COUNT keyNo, COUNT *pctReturn)
 
 <p>A mágica é tão bela que resolvi gravar um vídeo do que ocorreu quando compilei e testei o programa abaixo. Note que o tamanho do arquivo de dump ficou em torno dos 10 KB, ridículos nessa era de barateamento de espaço.</p>
 
-
 <pre>
 /** @file OnCrash
 @brief Exemplo de como capturar exceções no seu programa.
@@ -838,7 +831,6 @@ int main()
 }
  
 </pre>
-
 <img src="img/gerando-dumps-automatizados-finddump.png"/>
 
 <p>Espero com isso aliviar a carga pesada de A.V.s que sempre aparece quando menos se espera. Cuidar de toneladas de código legado exige algumas pitadas de automatização nos lugares certos. Como já dizia meu primeiro chefe: se a mente não pensa...</p>

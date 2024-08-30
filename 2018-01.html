@@ -534,7 +534,6 @@ role="navigation" aria-label="main navigation">
 
 <p>Geralmente se cria um projeto console/prompt quando há a necessidade de interfacear com o usuário com o uso da tela preta, saída padrão, etc. E no caso do Windows também há a possibilidade de criar um programa Win32 onde não há prompt, pois a função do programa ou é ser invisível ou criar, sabe como é, janelas. Mas nenhum dos dois possibilita ambos ao mesmo tempo. Este snippet permite que você faça isso.</p>
 
-
 <pre>
 void check_console() 
 {
@@ -550,7 +549,6 @@ int main()
     check_console();
 }
 </pre>
-
 <p>Para isso funcionar você criar um projeto console no Visual Studo. Essa opção está no Linker, System:</p>
 
 <img src="img/como-apagar-o-prompt-do-seu-programa-windows-uWYtwqL.png"/>
@@ -679,7 +677,6 @@ int main()
 
 <p>Os clássicos argv/argc são úteis quando os parâmetros de um programa são conhecidos e geralmente obrigatórios (até a ordem pode ser obrigatória). Isso funciona muito bem para C. Porém, há a possibilidade de STLzar esses argumentos de forma simples, usando a lógica \*nix de fazer as coisas e transformando tudo em um map de string para string. E tudo isso cabe em uma função pequena que você pode copiar e levar com você em seu cinto de utilidades:</p>
 
-
 <pre>
 /** Interpreta argumentos da linha de comando.
 @author Wanderley Caloni &lt;caloni@intelitrader.com.br&gt;
@@ -705,9 +702,7 @@ inline void ParseCommandLine(int argc, char* argv[], Args&amp; args)
 	}
 }
 </pre>
-
 <p>Com a função ParseCommandLine disponível assim que você adicionar este header (eu chamo de args.h) basta no início do seu main chamá-lo passando o argv e o argc recebidos:</p>
-
 
 <pre>
 int main(int argc, char* argv[])
@@ -716,16 +711,12 @@ int main(int argc, char* argv[])
 	ParseCommandLine(argc, argv, args);
     // ...
 </pre>
-
 <p>O resultado é que a variável args irá conter um mapa entre parâmetros e valores. Se seu programa for chamado com, por exemplo, a seguinte linha de comando:</p>
-
 
 <pre>
 &gt;program.exe --name Agatha --surname Christie --enable-log
 </pre>
-
 <p>A variável args irá conter três elementos: "--name", "--surname" e "--enable-log". Nos dois primeiros ele irá entregar os valores respectivos "Agatha" e "Christie" se indexado (args<a href="posts.html?q="--name"">"--name"</a>, por exemplo). No terceiro elemento o valor é uma string vazia. Apenas a existência dele é o flag. Costumo usar isso para conseguir depurar por parâmetro:</p>
-
 
 <pre>
 if( args.find("--debug") != args.end() )
@@ -734,7 +725,6 @@ if( args.find("--debug") != args.end() )
         Sleep(1000);
 }
 </pre>
-
 <p>De maneira geral argv/argc já estão divididos quando o programa começa. O que o ParseCommandLine faz é apenas entregar os parâmetros formatados da maneira usual para tratarmos rapidamente as opções passadas dinamicamente para o programa.</p>
 
 </section><hr/>

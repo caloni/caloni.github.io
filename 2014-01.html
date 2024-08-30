@@ -269,16 +269,13 @@ role="navigation" aria-label="main navigation">
 
 <p>Imagine uma função que usa remove_if para remover todas as idades de potenciais lolitas:</p>
 
-
 <pre>
 void RemoveIfLolita(vector&lt;int&gt;&amp; ages)
 {
 	remove_if(ages.begin(), ages.end(), [&amp;] { return age &lt; 18; } );
 }
 </pre>
-
 <p>Ou até sua contraparte usando um array C:</p>
-
 
 <pre>
 void RemoveIfLolita(int* ages, int size)
@@ -286,9 +283,7 @@ void RemoveIfLolita(int* ages, int size)
 	remove_if(ages, ages + size, [&amp;] { return age &lt; 18; } );
 }
 </pre>
-
 <p>Um uso trivial pode não cuspir um resultado trivial, ou seja, os elementos não serão removidos como se espera:</p>
-
 
 <pre>
 #include &lt;algorithm&gt;
@@ -327,7 +322,6 @@ int main()
 	for_each(newAges, newAges + newAgesSz, [&amp;] (int age) { cout &lt;&lt; age &lt;&lt; endl; } );
 }
 </pre>
-
 <img src="img/remove_if-ate-remove-so-que-diferente-AzliFSS.png"/>
 
 <p>Isso ocorre porque o comportamento do remove_if é copiar todos os elementos que retornem false (não remova) e pular elementos que retornem true (remova). No entanto, o tamanho do contêiner, e consequentemente seu ponteiro end(), permanecem o mesmo.</p>
@@ -335,7 +329,6 @@ int main()
 <img src="img/remove_if-ate-remove-so-que-diferente-JHucsWz.png"/>
 
 <p>De acordo com <a href="http://www.cplusplus.com/reference/algorithm/remove_if/">o saite cplusplus.com</a>, o algoritmo STL é previsível, simples, e por isso mesmo sujeito a otimizações do compilador:</p>
-
 
 <pre>
 template &lt;class ForwardIterator, class UnaryPredicate&gt;
@@ -353,9 +346,7 @@ ForwardIterator remove_if (ForwardIterator first, ForwardIterator last,
 	return result;
 }
 </pre>
-
 <p>Para obtermos qual seria o "novo end()", precisamos obter esse valor do retorno de remove_if. Com base nisso, podemos alterar o tamanho do contêiner ajustado:</p>
-
 
 <pre>
 #include &lt;algorithm&gt;
@@ -396,7 +387,6 @@ int main()
 	for_each(newAges, newAges + newAgesSz, [&amp;] (int age) { cout &lt;&lt; age &lt;&lt; endl; } );
 }
 </pre>
-
 <img src="img/remove_if-ate-remove-so-que-diferente-Q7f2N1G.png"/>
 
 <p>Esse C++... intuitivo como nunca!</p>

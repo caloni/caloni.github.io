@@ -93,7 +93,6 @@ role="navigation" aria-label="main navigation">
 
 <p>Os pedidos que eu faço são anotações de trechos do texto. Essas anotações qualquer leitor de ebooks lhe permite jogar para um arquivo texto. Que é o que eu faço. Isso é automático no caso do Kindle, acredito que seja para a maioria dos leitores. Esse arquivo fica no leitor, esperando meu próximo round de escritas. Quando chega esse momento eu copio este arquivo localmente, salvo em um arquivo do meu próprio repositório de textos. Vou dar um exemplo atual:</p>
 
-
 <pre>
 Blogue do Caloni (Wanderley Caloni)
 - Highlight Loc. 66342  | Added on Saturday, 3 December 22 00:26:00 GMT-03:00
@@ -109,9 +108,7 @@ Blogue do Caloni (Wanderley Caloni)
 - Highlight Loc. 66357  | Added on Saturday, 3 December 22 00:29:03 GMT-03:00
 eles, quase da mesma forma, as atividades que para eles 
 </pre>
-
 <p>Esse não é um formato muito bom para trabalhar, então eu jogo para um arquivo de rascunhos e deixo apenas as linhas que eu anotei de fato.</p>
-
 
 <pre>
 minhas anotações de leitura. [^1] 
@@ -119,16 +116,12 @@ loquaz, densa,
 cada detalhe dessa questão é explorada em mais detalhes. 
 eles, quase da mesma forma, as atividades que para eles 
 </pre>
-
 <p>Então eu edito essas linhas para fazer parte de uma busca coletiva através da função matchadd do Vim.</p>
-
 
 <pre>
 %s/\(.*\) $/call matchadd("search", "\1")/
 </pre>
-
 <p>Com isso cada linha conterá um comando válido do Vim para adicionar o trecho sublinhado como parte de um grupo de busca.</p>
-
 
 <pre>
 call matchadd("search", "minhas anotações de leitura. [^1]")
@@ -136,7 +129,6 @@ call matchadd("search", "loquaz, densa,")
 call matchadd("search", "cada detalhe dessa questão é explorada em mais detalhes.")
 call matchadd("search", "eles, quase da mesma forma, as atividades que para eles")
 </pre>
-
 <p>Dessa forma eu salvo as modificações e rodo o arquivo como um arquivo de comandos do Vim com `:so %`. O editor irá então realçar todos os itens deste grupo de busca em qualquer arquivo que eu abra. E agora é a hora de abrir os rascunhos ou textos que andei revisando.</p>
 
 <p>Aí chega o momento do bom senso. Eu não escrevo anotações na hora da revisão: eu apenos sublinho. Considero o suficiente. Com base nos trechos que sublinhei eu devo melhorar o parágrafo, a frase ou corrigir a ortografia de alguma palavra. Pode ser qualquer coisa. Muitas vezes eu sublinho um parágrafo inteiro porque ele está problemático. Quando eu fico repetindo palavras no meio da frase eu sublinho o início do uso de uma palavra e o final com a mesma palavra. Enfim, para um bom entendedor um sublinhado basta.</p>

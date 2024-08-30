@@ -79,23 +79,18 @@ role="navigation" aria-label="main navigation">
 
 <p>Então resolvi dar uma olhada no arquivo EPUB original. Descompactei e abri o arquivo de introdução do livro, um XHTML dentro da subpasta OEBPS, onde geralmente fica o conteúdo (alguns, como eu em meu blogue, usam a subpasta EPUB, também válida). O arquivo é um XHTML, mas dentro parece HTML, começando assim:</p>
 
-
 <pre>
 &lt;html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"&gt;
 &lt;head&gt;
 </pre>
-
 <p>No meu blogue cada arquivo XHTML gerado para conversão EPUB utiliza no início uma chave XML:</p>
-
 
 <pre>
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 </pre>
-
 <p>Como eu sei que esses caracteres especiais funcionam no meu Kindle quando leio a conversão de EPUB para MOBI, apenas fiz o necessário: adicionei esta linha no começo de cada XHTML do EPUB original. O resto foi compactar novamente o arquivo EPUB e rodar o kindlegen.exe para este arquivo.</p>
 
 <p>Não é tão simples compactar um EPUB válido. É necessário zipar sem compactação o arquivo mimetype antes de colocar o resto. Em Windows não há um caminho fácil. Como eu gastei algum tempo no conversor do meu blogue, segue abaixo o código em Python para quem precisar:</p>
-
 
 <pre>
 import os
@@ -115,7 +110,6 @@ with zipfile.ZipFile('caloni.epub', 'a', compression=zipfile.ZIP_DEFLATED, compr
   zipdir('EPUB', zipf)
   zipdir('META-INF', zipf)
 </pre>
-
 <p>Após isso apenas um `kindlegen.exe ebook.epub` e tenho um MOBI com caracteres bizarros da língua inglesa funcionando. Para os curiosos de qual livro é este, apenas cito que ele estranhamente não é vendido na Amazon do Brazil. Ou seja, é daqueles ebooks que é mais fácil baixar do que comprar (o que invalida o preço da compra, que, afinal de contas, é para isso que gastamos nosso dinheiro, não?).</p>
 
 </section><hr/>
@@ -256,7 +250,6 @@ with zipfile.ZipFile('caloni.epub', 'a', compression=zipfile.ZIP_DEFLATED, compr
 
 <img src="img/you-lost-give-up-board.gif"/>
 
-
 <pre>
 1. d4 Nf6 2. Nc3 g6 3. Bf4 Bg7 4. e3 O-O 5. Bc4 e6 6. Nf3 d5 7. Bb3 Nc6 8. Qd2
 Bd7 9. O-O-O a5 10. a3 a4 11. Bxa4 Na5 12. Bxd7 Qxd7 13. h3 Nc4 14. Qe1 Qc6 15.
@@ -285,7 +278,7 @@ Ke1 74. Rg1+ Kf2 75. Rg8 Qh7# 0-1
 <p class="title"><a href="2024-02.html#o-mundo-depois-de-nos">#</a> O Mundo Depois de Nós</p>
 <span class="title-heading">Wanderley Caloni, 2024-02-27  <a href="tag_movies.html">tag_movies</a> <a href="2024-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-o-mundo-depois-de-nos')"><sup>[copy]</sup></a></span>
 
-<p>Este é o segundo filme do criador de [Mr. Robot], onde o primeiro foi um romance fofinho e confuso em torno de possibilidades. Dessa vez ele se volta para um EUA que acaba de se tornar apocalíptico e coloca em um AirBnB uma família de brancos e de negros para cozinhar e comentar farpas de americanos modernos da classe média alta. Neste caldeirão que se passa próximo da querida Nova Iorque do idealizador eventos estranhos se juntam à narrativa igualmente estranha, que tenta atordoar o espectador com sons e música de suspense, além de ângulos que dão enjôo ou que chamam a atenção para si mesmos. A edição tenta relacionar momentos tensos em uníssono sem perceber que está pagando mico por tentar parecer muito esperto ou desvendar o mundo com obviedades ditas pelos personagens. Quando eu adorei a série Mr. Robot apesar dela apresentar teorias da conspiração envolvendo poderosos capitalistas foi porque tudo se passava na cabeça de um esquizofrênico juvenil. Quando a mesma “análise” do mundo moderno assume ser algo adulto faz perder o charme. Me faz ter vergonha do seu criador.</p>
+<p>Este é o segundo filme do criador de <a href="posts.html?q=Mr. Robot">Mr. Robot</a>, onde o primeiro foi um romance fofinho e confuso em torno de possibilidades. Dessa vez ele se volta para um EUA que acaba de se tornar apocalíptico e coloca em um AirBnB uma família de brancos e de negros para cozinhar e comentar farpas de americanos modernos da classe média alta. Neste caldeirão que se passa próximo da querida Nova Iorque do idealizador eventos estranhos se juntam à narrativa igualmente estranha, que tenta atordoar o espectador com sons e música de suspense, além de ângulos que dão enjôo ou que chamam a atenção para si mesmos. A edição tenta relacionar momentos tensos em uníssono sem perceber que está pagando mico por tentar parecer muito esperto ou desvendar o mundo com obviedades ditas pelos personagens. Quando eu adorei a série Mr. Robot apesar dela apresentar teorias da conspiração envolvendo poderosos capitalistas foi porque tudo se passava na cabeça de um esquizofrênico juvenil. Quando a mesma “análise” do mundo moderno assume ser algo adulto faz perder o charme. Me faz ter vergonha do seu criador.</p>
 
 </section><hr/>
 

@@ -90,16 +90,13 @@ role="navigation" aria-label="main navigation">
 
 <p>Considere este código:</p>
 
-
 <pre>
 struct Adapter1 { static const int Size = 10; };
 struct Adapter2 { static const int NoSize = 10; };
 template&lt;typename Adapter&gt; struct Size { int size() { return Adapter::Size; } };
 int main() { }
 </pre>
-
 <p>Vai quebrar em que linha? Resposta: nenhuma. Isso porque não há uma instanciação de nenhum template Size e o compilador não tem código algum para validar. Tudo que ele sabe é que, uma vez instanciado Size seu tipo Adapter precisa ter um membro chamado Size compatível com um inteiro para que o método size() seja um código válido.</p>
-
 
 <pre>
 int main()
@@ -110,7 +107,6 @@ int main()
     int sz2 = a2.size(); // error C2039: 'Size': is not a member of 'Adapter2'
 }
 </pre>
-
 <p>Agora, sim. O código existe; não é mais apenas um "gabarito", termo que foi a tradução de template na primeira edição de A Linguagem de Programação C++ (agora até que faz sentido esse termo). E enquanto Size&lt;Adapter1&gt; gera um código 100% correto Size&lt;Adapter2&gt; não, pois seu único membro não se chama Size.</p>
 
 </section><hr/>
@@ -328,7 +324,7 @@ int main()
 </ul>
 
 
-<p>[artigo do The Guardian] https://www.theguardian.com/environment/2020/jun/19/why-you-should-go-animal-free-arguments-in-favour-of-meat-eating-debunked-plant-based</p>
+<p><a href="posts.html?q=artigo do The Guardian">artigo do The Guardian</a> https://www.theguardian.com/environment/2020/jun/19/why-you-should-go-animal-free-arguments-in-favour-of-meat-eating-debunked-plant-based</p>
 
 </section><hr/>
 
@@ -521,7 +517,6 @@ int main()
 
 <p>O que ele não tem que é necessário para a construção de um livro são metadados, notas de rodapé e referências cruzadas para índices remissivos. A boa notícia é que isso nem é tão difícil assim de integrar graças à flexibilidade do uso de links:</p>
 
-
 <pre>
 # Asciidoc the worst?
 [date]:# "2024-07-15"
@@ -534,7 +529,6 @@ O que ele não tem que é necessário para a construção de um livro são metad
 [referências]:#
 [2]:# "A referência acima serve apenas para documentar o desejo de uma entrada em um índice remissivo com outras menções à mesma palavra."
 </pre>
-
 <p>As vantagens do Markdown como lingua franca ultrapassam em muito a teórica robustez de um padrão como Asciidoc que está muito longe de ser suportado amplamente. E há um motivo para isso: ele abrange muitas formas de estruturar texto e dá muito trabalho para textos curtos. MD acaba sendo um equilíbrio sensato entre o que é usado no dia-a-dia da comunicação textual da internet e alguma forma de escalar formatação e estrutura em textos maiores e complexos.</p>
 
 
@@ -562,7 +556,6 @@ O que ele não tem que é necessário para a construção de um livro são metad
 
 <p>O método que precisa ser testado é chamado como trigger deste timer. O teste constroi o objeto e chama um outro método de início que inicia o timer. O teste é quando o timer dispara a chamada do *callback*.</p>
 
-
 <pre>
 class A {
   init() {
@@ -577,7 +570,6 @@ A a;
 a.init();
 }
 </pre>
-
 <p>Meu objetivo era que na chamada de `timer.init()` ele já rode o callback.</p>
 
 <p>Mockar o timer foi a primeira ideia que me deram no stack overflow. Podem haver outras ideias. O cara do Stack Overflow falou que o timer do dotnet não dá essa flexibilidade, então teria que criar um adapter.</p>
@@ -595,11 +587,9 @@ a.init();
 
 <p>Fiz desse jeito, que ficou bem tosco para falar a verdade, mas só de comentar na issue o TL já deu o toque pra funcionar direito. Tem que usar esta construção bizarra:</p>
 
-
 <pre>
 _timer.Raise(m =&gt; m.Elapsed += null, new EventArgs() as ElapsedEventArgs);
 </pre>
-
 <p>Com isso não precisa construir nenhuma classe e disparar o mock do `TimerWrapper` quando quiser.</p>
 
 <p>A variável `_timer` no caso é um `Mock&lt;TimerWrapper&gt;` e o método `Raise` pode ser usado para disparar eventos. Isso resolve esta saga.</p>

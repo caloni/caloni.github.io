@@ -139,7 +139,6 @@ role="navigation" aria-label="main navigation">
 
 <p>Em C++ não temos (ainda) a possibilidade de listarmos, por exemplo, a lista de métodos de um determinado tipo, a fim de chamá-lo pelo nome em tempo de execução. Algo assim:</p>
 
-
 <pre>
 class MyClass
 {
@@ -155,13 +154,11 @@ int main()
                 m();
 }
 </pre>
-
 <p>OK, foi apenas um exemplo tosco de como seria um reflection em C++.</p>
 
 <p>Porém, existem algumas maneiras de contornar esse problema. A solução, é claro, depende de qual problema você está tentando resolver.</p>
 
 <p>Vamos supor, por exemplo, que você queira cadastrar funções para serem chamadas de maneira uniforme pelo prompt de comando. Vamos chamar nossa classe tratadora de CommandPrompt.</p>
-
 
 <pre>
 typedef void (Method*)(vector&lt;string&gt;&amp; args);
@@ -172,9 +169,7 @@ public:
         void Interact(ostream&amp; os, istream&amp; is); // começa interação com usuário
 };
 </pre>
-
 <p>Internamente, para armazenar as funções de acordo com o nome dado, basta criarmos um mapeamento entre esses dois tipos e fazemos a amarração necessária para o método principal de parseamento:</p>
-
 
 <pre>
 typedef map&lt;string, Method&gt; MethodList; // uma variável desse tipo armazena todas as funções
@@ -194,7 +189,6 @@ void CommandPrompt::Interact(ostream&amp; os, istream&amp; is)
         }
 }
 </pre>
-
 <p>Essa solução não é exatamente um reflection, mas apenas parte do que o verdadeiro reflection possibilita. Existem outras funcionalidades, como traits, que a STL já consegue se virar razoavelmente bem, por exemplo.</p>
 
 </section><hr/>
@@ -255,7 +249,6 @@ void CommandPrompt::Interact(ostream&amp; os, istream&amp; is)
 
 <p>Por exemplo, imagine o seguinte código que abre todos os arquivos da pasta de sistema:</p>
 
-
 <pre>
 #define _CRT_SECURE_NO_WARNINGS
 #include &lt;Windows.h&gt;
@@ -294,7 +287,6 @@ int main()
 	}
 }
 </pre>
-
 <p>Queremos colocar um breakpoint no momento em que o arquivo shell32.dll estiver sendo aberto. Para isso, devemos nos atentar para os parâmetros passados para a função CreateFile.</p>
 
 <pre>

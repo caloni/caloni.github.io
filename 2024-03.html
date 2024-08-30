@@ -621,7 +621,6 @@ role="navigation" aria-label="main navigation">
 
 <p>Imagine que você tem um arquivo nesse formato:</p>
 
-
 <pre>
 "PID","Operation","Path","Result"
 "1332","Process Start","","SUCCESS"
@@ -632,14 +631,11 @@ role="navigation" aria-label="main navigation">
 "14456","Load Image","C:\Windows\System32\ntdll.dll","SUCCESS"
 ...
 </pre>
-
 <p>Elimine o header do início e rode o seguinte programa awk para seu arquivo:</p>
-
 
 <pre>
 gawk 'BEGIN { FS=","; PID=1 } { if( !($1 in PIDS) ) PIDS[$1]=PID++ ; $1 = PIDS[$1] ; print $0 }' Logfile.CSV &gt; Logfile_PSEUDOPIDS.CSV
 </pre>
-
 <p>O programa acima troca o separador de campos por vírgula e inicia uma variável PID como 1. Depois a cada passada de linha ele popula um mapa de PIDs reais por pseudo-PIDs e troca o campo do PID real pelo valor do pseudo-PID. Ao final você terá um arquivo com pseudo-PIDs 1, 2, 3, etc, em vez dos PIDs reais. Com isso é possível comparar mais de uma execução com os "mesmos" PIDs, ou ao menos PIDs que vão mudando de maneira ordenada.</p>
 
 </section><hr/>

@@ -212,11 +212,9 @@ role="navigation" aria-label="main navigation">
 
 <p>Com tudo isso que descobri resolvi colocar um breakpoint no evento de load desta DLL.</p>
 
-
 <pre>
 sxe ld:UserDeviceRegistration.dll
 </pre>
-
 <p>Repito o procedimento de registro de máquina e o breakpoint é ativado. Estou pronto para agora colocar um breakpoint na `DllGetActivationFactory`. Porém, tenho um insight neste momento. Eu me lembro que posso usar o Process Explorer para buscar no sistema inteiro quem é que está usando a mesma DLL que estou de olho. Afinal de contas, se ela é a interface para se comunicar com a implementação, faz sentido que dentro dela exista a implementação.</p>
 
 <p>E com isso eu encontro a `RuntimeBroker.exe`, processo iniciado quase ao mesmo tempo que o BrokerPlugin. Coincidência? Acho que não.</p>
@@ -225,19 +223,15 @@ sxe ld:UserDeviceRegistration.dll
 
 <p>Na minha primeira tentativa o breakpoint não disparou. Busco, então, por nomes de funções semelhantes:</p>
 
-
 <pre>
 x UserDeviceRegistration!Windows::Internal::UserDeviceRegistration::CUserDeviceRegManagerStatic::*
 </pre>
-
 <p>Já que estou interessado no macro coloco breakpoint em todos os métodos da classe. Faço isso também do lado do BrokerPlugin e seus métodos dentro de `UserDeviceRegistration::IUserDeviceRegManagerStatics`. Posso acompanhar o fluxo sem parar usando um parâmetro bem esperto nos breakpoints do WinDbg: um comando qualquer. Nesse caso uso imprimir o nome da função chamada e o comando `g`, que segue a execução sem parar. Por exemplos (RuntimeBroker e BrokerPlugin, respectivamente):</p>
-
 
 <pre>
 bp UserDeviceRegistration!Windows::Internal::UserDeviceRegistration::CUserDeviceRegManagerStatic::DelegatedWorkplaceJoinWithRequestId ".echotime; .echo UserDeviceRegistration!Windows::Internal::UserDeviceRegistration::CUserDeviceRegManagerStatic::DelegatedWorkplaceJoinWithRequestId; g"
 bp AAD_Core!Windows::Internal::UserDeviceRegistration::IUserDeviceRegManagerStatics::GetJoinInfo ".echotime; .echo AAD_Core!Windows::Internal::UserDeviceRegistration::IUserDeviceRegManagerStatics::GetJoinInfo; g"
 </pre>
-
 <p>Com isso eu descobri qual o processo e qual a classe envolvida neste processo de registro de máquina. Graças também aos símbolos disponibilizados pela Microsoft fica muito mais fácil entender o fluxo. Pretendo usar esta técnica mais vezes no futuro.</p>
 
 
@@ -387,7 +381,6 @@ bp AAD_Core!Windows::Internal::UserDeviceRegistration::IUserDeviceRegManagerStat
 
 <p>Bom, para quem sabe assembly básico, não há nada prático que fazer uma sessão simples de debugging chamando as funções da API. Inspirado na primeira sessão do livro <a href="posts.html?q=reversing">reversing</a>, fiz as chamadas básicas para obter o tamanho da string, o raw buffer, etc, e fui adentrando no disassembly de cada uma, obtendo as linhas-chave para montar a struct que representa uma HSTRING. Abaixo o código-fonte:</p>
 
-
 <pre>
 #include &lt;winstring.h&gt;
 #include &lt;string&gt;
@@ -421,9 +414,7 @@ int main()
     return hr;
 }
 </pre>
-
 <p>Com isso fui fazendo as calls e encontrando os offsets pelas instruções referentes ao rcx, primeiro parâmetro passado em x64:</p>
-
 
 <pre>
 UINT32 hstrLen = WindowsGetStringLen(hstr);
@@ -442,9 +433,7 @@ hr = WindowsCreateStringReference(...
 layout:
 0x0000009C0230F848  00000001
 </pre>
-
 <p>E eis o resultado que cheguei:</p>
-
 
 <pre>
 struct HSTRING {
@@ -455,7 +444,6 @@ struct HSTRING {
   UINT32 RefCounter;  // +0x18
 };
 </pre>
-
 <p>Para mais detalhes do uso dessa string dê uma olhada no ótimo <a href="https://devblogs.microsoft.com/oldnewthing/20160615-00/?p=93675">artigo de Raymond Chen</a>.</p>
 
 

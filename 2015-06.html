@@ -176,7 +176,6 @@ role="navigation" aria-label="main navigation">
 
 <p>Esse <a href="http://www.drdobbs.com/cpp/a-lightweight-logger-for-c/240147505">artigo do Dr. Dobbs</a> explica de uma maneira bem completa como fazer uma lib de log leve e configurável. O que eu peguei desse exemplo foi a forma mais C++ de formatar as linhas, deixando para trás o estilão printf que depois de variadic templates já está datado.</p>
 
-
 <pre>
 #include &lt;iostream&gt;
 #include &lt;sstream&gt;
@@ -198,7 +197,6 @@ void Log(Rest...parm)
 	Log(os, parm...);
 }
 </pre>
-
 <p>Por que eu acho a minha versão mais legal (não valendo falar que foi porque eu fiz):</p>
 
 <ul><li>É mais simples ainda, tem poucas linhas e pode ser copiada sem peso na consciência. Pode até estar em um header que o overhead é mínimo.</li>
@@ -216,7 +214,6 @@ void Log(Rest...parm)
 
 <p>Abaixo uma receitinha básica para configurar seu aplicativo:</p>
 
-
 <pre>
 nssm.exe install MyService C:\Path\MyService.exe &lt;args&gt;
 nssm set MyService AppStdout C:\Path\Logs\MyService.log
@@ -225,7 +222,6 @@ nssm set MyService AppRotateFiles 1
 nssm set MyService AppRotateOnline 1
 nssm set MyService AppRotateBytes 10485760
 </pre>
-
 <p>_(para quem está se perguntando, 10485760 bytes são 10 MB.)_</p>
 
 <p>Com essa forma de fazer serviços, há uma dupla vantagem:</p>
@@ -244,7 +240,6 @@ nssm set MyService AppRotateBytes 10485760
 
 <p>Acho que cada um deve escrever no seu header o que achar melhor para depurar seus programas. No entanto, acho válido compartilhar quais são as informações que tem sido úteis para mim:</p>
 
-
 <pre>
 inline void LogHeader(std::ostringstream&amp; os)
 {
@@ -259,7 +254,6 @@ inline void LogHeader(std::ostringstream&amp; os)
 	os &lt;&lt; buffer;
 }
 </pre>
-
 
 
 

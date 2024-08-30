@@ -368,7 +368,6 @@ role="navigation" aria-label="main navigation">
 
 <h4>Leitor: Olhe essa bizarrice em C:</h4>
 
-
 <pre>
 void func()
 {
@@ -379,7 +378,6 @@ int main()
    return 0;
 }
 </pre>
-
 <h4>Leitor: Embora isso seja permitido, caso você coloque "void func(void)" já não funciona mais. Por quê?</h4>
 
 <p>Resposta do Autor: Por que C é zoado :P</p>
@@ -388,14 +386,12 @@ int main()
 
 <p>Isso me lembra também que havia a declaração "arcaica" da linguagem (já era arcaica antes mesmo do padrão de 1998 sair):</p>
 
-
 <pre>
 void func()
 char* sbrubles; /* isso é um argumento de entrada */
 {
 }
 </pre>
-
 <h4>Leitor: OK, entendi. Mas voltando para meu primeiro exemplo: supostamente usar um va_args pra ler "alguma coisa" certamente leria os parâmetros, certo? E este parâmetro, só fica inutilizado ou chega a dar algum problema mais sério?</h4>
 
 <p>Sim, sua suposição a respeito do __va_args__ faz todo sentido. E não, os parâmetros não são inutilizados justamente porque a função chamada pode fazer o que quiser que no retorno o chamador limpa a pilha (e o chamador sabe como ele empilhou os parâmetros-extra).</p>
@@ -409,7 +405,6 @@ char* sbrubles; /* isso é um argumento de entrada */
 <p>Agora que sabemos disso, o comportamento do __va_list__ nem deve parecer tão mágico assim. Na verdade, apenas saber que a pilha é onde estão todas as variáveis locais e os endereços de retorno das funções é o suficiente para explorar essa área de memória.</p>
 
 <p>Porém, o uso canônico na linguagem C e a forma mais educada de navegar nos parâmetros extras é usando o header stdarg.h. Isso porque C é uma linguagem independente de plataforma, e _a priori_ não temos a mínima ideia de como os dados estão estruturados no computador. Essa visão das variáveis locais e etc é apenas algo que sabemos sobre a arquitetura PC (8086) porque já brincamos demais de _assembly_ e seus registradores.</p>
-
 
 <pre>
 int soma(int argc, ...);
@@ -432,9 +427,7 @@ int soma(int argc, ...)
 	return ret;
 }
 </pre>
-
 <p>Uma versão de quem já manja dos internals da arquitetura onde está programando e não se importa com portabilidade poderia simplesmente caminhar pela pilha a partir do endereço de argc.</p>
-
 
 <pre>
 int soma(int argc, ...)
@@ -449,7 +442,6 @@ int soma(int argc, ...)
 	return ret;
 }
 </pre>
-
 <p>Repetindo: isso não é bonito, apesar de simpático. No entanto, se o objetivo é explorar a arquitetura, fique à vontade para navegar pela pilha a partir do endereço das variáveis locais.</p>
 
 </section><hr/>

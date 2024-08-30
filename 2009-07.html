@@ -90,7 +90,6 @@ role="navigation" aria-label="main navigation">
 
 <p>Para explicar polimorfismo, nada como ver as coisas como elas eram. Se você fosse um programador C de vinte anos atrás e criasse as seguintes funções:</p>
 
-
 <pre>
 int soma(int x, int y);
 double soma(double x, double y);
@@ -101,7 +100,6 @@ int main()
     return 0;
 }
 </pre>
-
 <p>Imediatamente o compilador iria acusar os seguintes erros:</p>
 
 <pre>
@@ -114,7 +112,6 @@ int main()
 </pre>
 <p>Isso acontece porque em C **os identificadores são únicos por escopo**. Esse é o motivo por que o seguinte código também está errado:</p>
 
-
 <pre>
 int main()
 {
@@ -122,9 +119,6 @@ int main()
     int x = 1;
     return 0;
 }
-</pre>
-
-<pre>
    overload.c
    overload.c(5) : error C2374: 'x' : redefinition; multiple initialization
            overload.c(4) : see declaration of 'x'
@@ -132,7 +126,6 @@ int main()
 <p>De volta aos anos 90, isso também está errado em C++. Até por uma questão de lógica: como o compilador pode saber a qual variável estamos nos referindo se usarmos o mesmo nome para duas delas?</p>
 
 <p>Só que existe um truquezinho para impedir essa ambiguidade quando falamos de funções: os parâmetros que ela recebe.</p>
-
 
 <pre>
 int soma(int x, int y);
@@ -143,9 +136,6 @@ int main()
     double zd = soma(2.5, 3.4); // dois tipos double: só pode ser soma(double, double)
     return 0;
 }
-</pre>
-
-<pre>
    C:\Tests&gt;cl /c overload.cpp
    Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 13.10.6030 for 80x86
    Copyright (C) Microsoft Corporation 1984-2002. All rights reserved.
@@ -188,7 +178,6 @@ int main()
 
 <p>To explain the polymorphism nothing is better than see how stuff used to be. If you were a twenty old C programmer in the past and created the following functions:</p>
 
-
 <pre>
 int soma(int x, int y);
 double soma(double x, double y);
@@ -199,7 +188,6 @@ int main()
     return 0;
 }
 </pre>
-
 <p>Immediately the compiler would blame you about the following errors:</p>
 
 <pre>
@@ -213,7 +201,6 @@ int main()
 </pre>
 <p>This happens because in C **the identifiers are unique into the scope.** This is the reason why the following code is wrong also:</p>
 
-
 <pre>
 int main()
 {
@@ -221,9 +208,6 @@ int main()
     int x = 1;
     return 0;
 }
-</pre>
-
-<pre>
    overload.c
    overload.c(5) : error C2374: 'x' : redefinition; multiple initialization
            overload.c(4) : see declaration of 'x'
@@ -231,7 +215,6 @@ int main()
 <p>Back to the 90's, this is also wrong in C++. Even for a logic issue: how the compiler can pick a variable if we're using the same name for both of them?</p>
 
 <p>Even though, there's a little trick to stop the ambiguity when we talk about functions: the parameters that they receives.</p>
-
 
 <pre>
 int soma(int x, int y);
@@ -242,9 +225,6 @@ int main()
     double zd = soma(2.5, 3.4); // dois tipos double: só pode ser soma(double, double)
     return 0;
 }
-</pre>
-
-<pre>
    C:Tests&gt;cl /c overload.cpp
    Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 13.10.6030 for 80x86
    Copyright (C) Microsoft Corporation 1984-2002. All rights reserved.

@@ -340,7 +340,6 @@ role="navigation" aria-label="main navigation">
 
 <p>Em C não é necessário declarar os parâmetros que uma função recebe. Isso é implícito. A linguagem C foi criada para ser um amontoado de assembly descrito com um pouco de syntax sugar e juntado pelo linker através de uma tabela de nomes. O que importa são os nomes. Vamos exemplificar:</p>
 
-
 <pre>
 int main()
 {
@@ -352,11 +351,9 @@ func(int a, int b)
   return a + b;
 }
 </pre>
-
 <p>Viu? Você nem precisa conhecer o nome na hora de chamar a função no main. Duvida? Veja o vídeo desse post. Se você colocar cada função em um arquivo separado mesmo assim o compilador compila e o linker acha tudo e tudo funciona.</p>
 
 <p>Isso pode gerar alguns problemas em tempo de execução, já que o linker, assim como o compilador, confia cegamente no programador. Isso acontece porque antigamente os programadores eram bons.</p>
-
 
 <pre>
 int main()
@@ -369,9 +366,7 @@ func(int a, int b)
   return a + b;
 }
 </pre>
-
 <p>Para que programadores que não são bons conseguissem programar em código nativo algumas facilidades surgiram na linguagem C++, como a declaração de função sendo levada a sério. No padrão C isso também foi levado em conta. Se você possui uma declaração de função o compilador irá checar os argumentos.</p>
-
 
 <pre>
 func(int a, int b);
@@ -386,18 +381,14 @@ func(int a, int b)
 }
 error C2198: 'func': too few arguments for call
 </pre>
-
 <p>Em C++ com o mesmo código:</p>
-
 
 <pre>
 error C4430: missing type specifier - int assumed
 error C2660: 'func': function does not take 1 arguments
 error C4430: missing type specifier
 </pre>
-
 <p>Aí vem a questão de como declarar uma função em C++ que não recebe nada. Isso é uma boa prática, mas não obrigatório.</p>
-
 
 <pre>
 int func();
@@ -411,21 +402,16 @@ int func()
   return 23;
 }
 </pre>
-
 <p>O código acima compila normalmente. E roda. Mas se você por algum motivo está com projeto que tem C arcaico misturado com C++ e precisa definir melhor como as funções se comportam faz assim:</p>
-
 
 <pre>
 int func(void);
 </pre>
-
 <p>Isso vai funcionar em C e em C++. Em C, se você usar essa declaração e mesmo assim passar argumentos ele irá dar um warning:</p>
-
 
 <pre>
 warning C4087: 'func': declared with 'void' parameter list
 </pre>
-
 <p>Mas vai deixar rodar. Em C++ não tem jeito. Em C++ ele assume que você não é um bom programador.</p>
 
 </section><hr/>

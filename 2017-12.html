@@ -385,7 +385,6 @@ role="navigation" aria-label="main navigation">
 
 <p>Nos últimos dias me deparei com o seguinte (pseudo-)código:</p>
 
-
 <pre>
 int main(int argc, const char **argv)
 {
@@ -405,9 +404,7 @@ int main(int argc, const char **argv)
     }
 }
 </pre>
-
 <p>Dentro de MyClass a seguinte estrutura:</p>
-
 
 <pre>
 class MyClass
@@ -420,7 +417,6 @@ public:
     // você pegou a ideia
 };
 </pre>
-
 <p>Então eu me pergunto: qual a função da classe em um código desses?</p>
 
 <p>Bjarne Stroustrup desde o começo, em seu livro <a href="posts.html?q=The C++ Programming Language">The C++ Programming Language</a>, sugere que C++ não é uma linguagem unicamente orientada a objetos, mas multi-paradigmas. Hoje, em 2017, ela é uma linguagem genérica e até funcional. Na época poderia ser usada como orientada a objetos, mas também como estruturada e imperativa comum. O goto funciona até hoje.</p>
@@ -434,7 +430,6 @@ public:
 <p>Ter classe é para poucos. É para programadores que se preocupam com a relação entre funcionalidade, estilo, arquitetura e todos os inúmeros elementos que tornam um código perfeito. Para ser perfeito, um código precisa levar em conta tantos elementos que apenas um programador acordado, obsessivo, fora da matrix, conseguiria observar o que deve ser feito.</p>
 
 <p>Uma pequena sugestão:</p>
-
 
 <pre>
 #include &lt;map&gt;
@@ -451,7 +446,6 @@ HRESULT cmd1();
 HRESULT cmd2();
 // você pegou a ideia
 </pre>
-
 <p>É a melhor solução? Não. Só uma ideia para tornar o código simples de entender, enxuto para manter, com apenas o modelito básico. Tem até um map para evitar encher de ifs. Mas não precisaria se você tem meia-dúzia de funções.</p>
 
 <p>E note que eu disse funções, não classe. E é possível ter classe sem classes.</p>
@@ -558,7 +552,6 @@ HRESULT cmd2();
 
 <p>Curioso a respeito disso, resolvi observar a saída padrão do cmd.exe, para ver o que diabos vem como resultado. Para isso desenvolvi um simples output redirector tabajara:</p>
 
-
 <pre>
 #include &lt;Windows.h&gt;
 int main(int argc, char* argv[])
@@ -588,7 +581,6 @@ int main(int argc, char* argv[])
     }
 }
 </pre>
-
 <p>Simples, bonito e prático. Quando executamos Redirector.exe ele executa um cmd.exe, com a diferença que a saída dele vai parar no arquivo cmd.log, que podemos observar com um <a href="https://www.baremetalsoft.com/baretail/">BareTail</a> da vida.</p>
 
 <img src="img/cmd-e-o-encoding-fake-92WFz8J.gif"/>
@@ -607,13 +599,11 @@ int main(int argc, char* argv[])
 
 <p>Se analisarmos a memória do cmd.exe veremos que ele armazena as coisas em UTF-16, como qualquer programa Windows nativo unicode.</p>
 
-
 <pre>
 @echo off
 dir /b c:\temp\quemquer*
 goto beg
 </pre>
-
 <img src="img/cmd-e-o-encoding-fake-3bsyxNU.png"/>
 
 <img src="img/cmd-e-o-encoding-fake-4V81xIc.png"/>

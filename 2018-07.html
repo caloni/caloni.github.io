@@ -438,7 +438,6 @@ role="navigation" aria-label="main navigation">
 
 <p>Para entender como as coisas dão errado primeiro vamos instalar os requisitos de um pacote fictício em um ambiente virtualizado do Python (para evitar mexer na instalação padrão):</p>
 
-
 <pre>
 D:\&gt;cd deploy
 D:\deploy&gt;virtualenv python27
@@ -446,9 +445,7 @@ New python executable in D:\deploy\python27\Scripts\python.exe
 Installing setuptools, pip, wheel...done.
 D:\deploy&gt;
 </pre>
-
 <p>Depois instalamos os requisitos de nosso pacote fictício:</p>
-
 
 <pre>
 D:\deploy&gt;python27\Scripts\activate.bat
@@ -467,9 +464,7 @@ Installing collected packages: cx-Freeze, six, protobuf, pyodbc
 Successfully installed cx-Freeze-5.1.1 protobuf-3.6.0 pyodbc-4.0.23 six-1.11.0
 (python27) d:\src\MyFictionalPackage&gt;
 </pre>
-
 <p>Agora vem a hora do erro. O protobuf que foi instalado possui um pequeno bug que impede que o build_exe obtenha essa dependência corretamente na hora de gerar o executável:</p>
-
 
 <pre>
 (python27) d:\src\MyFictionalPackage&gt;python setup.py build_exe
@@ -498,9 +493,7 @@ Traceback (most recent call last):
 ImportError: No module named 'google.protobuf'
 (python27) d:\src\MyFictionalPackage&gt;
 </pre>
-
 <p>Para fazer funcionar há um pequeno patch: criar um arquivo \_\_init\_\_.py dentro da pasta google onde está instalado o pacote do protobuf:</p>
-
 
 <pre>
 (python27) d:\src\MyFictionalPackage&gt;dir d:\deploy\python27\Lib\site-packages\google
@@ -527,9 +520,7 @@ ImportError: No module named 'google.protobuf'
                3 Dir(s)  102.341.001.216 bytes free
 (python27) d:\src\MyFictionalPackage&gt;
 </pre>
-
 <p>Após essa pequena operação já será possível gerar o executável com sucesso:</p>
-
 
 <pre>
 (python27) d:\src\MyFictionalPackage&gt;python setup.py build_exe
@@ -595,18 +586,14 @@ copying c:\programs\python27\DLLs\select.pyd -&gt; build\exe.win32-2.7\lib\selec
 copying c:\programs\python27\DLLs\unicodedata.pyd -&gt; build\exe.win32-2.7\lib\unicodedata.pyd
 (python27) d:\src\MyFictionalPackage&gt;
 </pre>
-
 <p>Agora ao listarmos os executáveis gerados encontraremos nosso amigo fictício:</p>
-
 
 <pre>
 (python27) d:\src\MyFictionalPackage&gt;dir /s /b *.exe
 d:\src\MyFictionalPackage\build\exe.win32-2.7\MyFictionalPackage.exe
 (python27) d:\src\MyFictionalPackage&gt;
 </pre>
-
 <p>**Nota**: conteúdo do arquivo setup.py:</p>
-
 
 <pre>
 import sys
@@ -797,58 +784,46 @@ setup(name = "teste_cx_Freeze",
 
 <p>Este batch baixa todo o conteúdo do site da Stanford em um único diretório. O processo pode demorar mais ou menos, dependendo da sua banda, mas aqui em casa (50MB) demorou cerca de meia-hora pra mais.</p>
 
-
 <pre>
 wget --recursive --domains plato.stanford.edu --page-requisites --no-parent --convert-links --restrict-file-names=windows --no-directories --html-extension https://plato.stanford.edu/contents.html 
 </pre>
-
 <h3>calibre_clean_files.bat (limpa início e fim das entradas)</h3>
 
 <p>Este batch chama dois outros batch, call calibre_remove_head.bat e call calibre_remove_bottom.bat, que limpam das entradas os cabeçalhos e finais em comum que são repetitivos e desnecessários para gerar um ebook, como links úteis de navegação. Como as entradas do site já possuem marcadores, isso facilitou o trabalho.</p>
 
 <h4>calibre_remove_head.bat</h4>
 
-
 <pre>
 for %%i in (index.html.*.html) do sed -n -i "/BEGIN ARTICLE HTML/,$p" %%i
 </pre>
-
 <h4>calibre_remove_bottom.bat</h4>
-
 
 <pre>
 for %%i in (index.html.*.html) do sed -i "/END ARTICLE HTML/,$d" %%i
 </pre>
-
 <h3>calibre_entries.bat (gera índice com as entradas)</h3>
 
 <p>Esta batch gera os índices das entradas baseado em seus títulos, e os nomes dos arquivos serão usados para links no TOC do Calibre.</p>
-
 
 <pre>
 if exist calibre_entries.txt del calibre_entries.txt
 for %%i in (index.html.*.html) do calibre_title.bat %%i &gt;&gt; calibre_entries.txt
 sed -i -e "s/&lt;em&gt;//" -e "s/&lt;\/em&gt;//" calibre_entries.txt
 </pre>
-
 <h3>calibre_entries_clean.bat (limpa formatação das entradas)</h3>
 
 <p>Algumas entradas possuem o marcador **em**, que deve ser retirado antes de ordenar os títulos.</p>
 
-
 <pre>
 sed -i -e "s/&lt;em&gt;//" -e "s/&lt;\/em&gt;//" calibre_entries.txt
 </pre>
-
 <h3>calibre_entries_sort.bat (ordena entradas por título)</h3>
 
 <p>Se não ordenarmos por título o único índice de nosso livro será inútil.</p>
 
-
 <pre>
 sort calibre_entries.txt &gt; calibre_entries_sorted.txt
 </pre>
-
 <h3>Apagar duplicatas</h3>
 
 <p>Ao final do processo com o wget percebi que algumas entradas foram baixadas mais de uma vez. Várias delas. Por isso eliminei as duplicatas usando um programa Windows chamado <a href="https://www.bigbangenterprises.de/en/doublekiller/">doublekiller.exe</a>, mas basta você usar qualquer ferramenta que encontra os .html da mesma pasta que possuem o mesmo hash e eliminar as duplicadas. Isso deve ser feito nesse passo antes de:</p>
@@ -857,20 +832,16 @@ sort calibre_entries.txt &gt; calibre_entries_sorted.txt
 
 <p>Essa parte do processo precisa converter as entradas no formato Título Link para entradas HTML com a tag **a**, no formato que o Calibre espera:</p>
 
-
 <pre>
 sed -e "s/\(^.*\) \(index.*$\)/        &lt;a href=\"\2\"&gt;\1&lt;\/a&gt;&lt;br\/&gt;/" calibre_entries_sorted.txt &gt; calibre_template_entries.html
 </pre>
-
 <h3>calibre_merge_templates.bat (junta início, meio e fim do template do Calibre)</h3>
 
 <p>Por fim, antes de usar o Calibre é necessário juntar os arquivos de template em um arquivo final de TOC, o calibre.html. Ao final desse processo passaremos ao Calibre em si.</p>
 
-
 <pre>
 copy /Y calibre_template_begin.html+calibre_template_entries.html+calibre_template_end.html calibre.html
 </pre>
-
 <h3>Usar Calibre para abrir calibre.html</h3>
 
 <p>Para realizar este passo basta arrastar ou abrir o arquivo html central que foi criado, e a partir dele iniciar a conversão. Note que após arrastar já será criado um zip com todos os HTMLs relacionados.</p>

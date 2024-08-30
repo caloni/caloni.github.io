@@ -194,7 +194,6 @@ role="navigation" aria-label="main navigation">
 
 <p>Com isso existirá um main lá dentro, definido em algum lugar. E tudo o que você precisa fazer é ir criando seus testes em outro arquivo fonte gerado para isso. O corpo e o formato dos unit cases é bem simples. Note que tudo que você fez para já sair testando seu projeto foi copiar um projeto já existente e inserir um módulo de outro projeto. Tudo compilando junto e já podemos fazer os primeiros testes do programa original (desde, claro, que ele seja testável, algo primordial):</p>
 
-
 <pre>
 // Precisamos definir uma suíte de testes.
 testSuite(DayToDayTests)
@@ -213,9 +212,7 @@ testCase(GeraDuasLinhas, DayToDayTests)
     assertTrue(lineOk);
 }
 </pre>
-
 <p>E assim por diante. O resultado é que quando você roda o executável de teste, ele execute toda a bateria e já te entregue todos os casos que você deseja testar, sem frescura:</p>
-
 
 <pre>
 ......
@@ -224,7 +221,6 @@ Total 6 test cases
 0 sec.
 Press any key to continue . . .
 </pre>
-
 <p>E voilà! Sistema de teste unitário pronto e rodando. Agora cada nova situação de erro ou que você precise validar, basta escrever um novo teste. Se esse projeto ir se tornando algo muito maior, a transição para testes unitários mais parrudos é apenas um regex. No momento, foque em codificar e testar muito bem o que está fazendo.</p>
 
 
@@ -548,16 +544,13 @@ Press any key to continue . . .
 
 <p>A não ser que você coloque o path das ferramentas direto nos comandos (algo que não recomendo pois as coisas no Vim começam a ficar estranhas com paths com espaços, algo abundante no Windows) é preferível que você escolha qual devenv e qual msbuild deseja utilizar e definir isso na variável de sistema path. No meu exemplo estou usando o msbuild para qualquer Visual Studio acima do 2010 (como o 2015), pois já está padronizado, e como tenho projetos no VS2003 para manter, escolhi deixar o devenv.com com ele.</p>
 
-
 <pre>
 set path=%path%;C:\Program Files (x86)\MSBuild\14.0\Bin
 set path=%path%;c:\Program Files (x86)\Microsoft Visual Studio .NET 2003\Common7\IDE
 </pre>
-
 <p>Note que essa configuração, para ficar persistente, precisa ser definida através do Painel de Controle ou Propriedades do Sistema. Google for it.</p>
 
 <p>Depois de configurado, qualquer projeto deve ser compilável em 2003 pela linha de comando (através do devenv.com):</p>
-
 
 <pre>
 C:\Projects\samples\FixCMake&gt;devenv.com FixCMake.sln /build Debug
@@ -573,9 +566,7 @@ FixCMake - 0 error(s), 0 warning(s)
     Build: 1 succeeded, 0 failed, 0 skipped
 C:\Projects\samples\FixCMake&gt;
 </pre>
-
 <p>Da mesma forma, projetos 2010+ devem usar o msbuild:</p>
-
 
 <pre>
 C:\Projects\samples\ConsoleApplication5&gt;msbuild
@@ -621,12 +612,9 @@ Build succeeded.
 Time Elapsed 00:00:02.31
 C:\Projects\samples\ConsoleApplication5&gt;
 </pre>
-
 <h3>O que o Vim tem a ver com tudo isso?</h3>
 
 <p>Pois é. Tirando essa facilidade, as coisas no Vim para msbuild rodam particularmente bem. Basta alterarmos o makeprg da seguinte maneira:</p>
-
-
 
 <p>As opções específicas são para gerar o path completo, as barras invertidas são por causa dessa mania do Vim de dar pau quando tem espaço em tudo.</p>
 
@@ -636,8 +624,6 @@ C:\Projects\samples\ConsoleApplication5&gt;
 
 <p>Para o Visual Studio 2003 (ou qualquer um usando o devenv.com) é necessário mudar esse comando:</p>
 
-
-
 <p>Sim, temos que escolher uma configuração (o msbuild já escolhe por você). E note que ele usa o arquivo atual (%) para compilar. Isso quer dizer que isso irá exigir do usuário de Vim abrir o sln ou o vcproj e executar o :make a partir daí. De qualquer forma, ele funciona também:</p>
 
 <img src="img/usando-gvim-com-projetos-do-visual-studio-PEr73NL.png"/>
@@ -646,11 +632,9 @@ C:\Projects\samples\ConsoleApplication5&gt;
 
 <p>Note que em nenhum dos casos erros conseguirão ser capturados para irmos direto no ponto do código-fonte onde ele está. Para isso funcionar, em nosso último passo, é necessário configurar o errorformat para que ele tenha um padrão que funcione com ambas as ferramentas. Depois de testar um pouco, cheguei nesse formato:</p>
 
-
 <pre>
 set errorformat=%f(%l)%m
 </pre>
-
 <p>Ele pega também os warnings, mas fazer o quê. Você não quer conviver com warnings em seu código pelo resto da vida, né? =)</p>
 
 <p>VS2010:</p>
@@ -671,12 +655,10 @@ set errorformat=%f(%l)%m
 
 <p>Como deu pra perceber, para conseguir usar o msbuild e o devenv ao mesmo tempo você seria obrigado a trocar o makeprg sempre que precisasse. Para facilitar seu uso, nada como fazer um mapeamento de atalhos:</p>
 
-
 <pre>
 map &lt;F7&gt; :set makeprg=devenv\ %\ /build\ Debug&lt;CR&gt;
 map &lt;S-F7&gt; :set makeprg=msbuild\ /nologo\ /v:q\ /property:GenerateFullPaths=true&lt;CR&gt;
 </pre>
-
 <p>Para alguém curioso para ver minhas configurações do Vim (quem quiser compartilhar também, fique à vontade), <a href="https://github.com/Caloni/vim">segue</a>.</p>
 
 

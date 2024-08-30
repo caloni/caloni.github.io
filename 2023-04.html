@@ -213,7 +213,6 @@ role="navigation" aria-label="main navigation">
 
 <img src="img/nao-capture-este-cachorro-board.png"/>
 
-
 <pre>
 1. Nf3 d5 2. g3 Nc6 3. Bg2 Nf6 4. d4 e6 5. b3 Bd6 6. Bb2 O-O 7. Nbd2 b5 8. O-O
 a6 9. Re1 Bb7 10. Rc1 Nb4 11. a3 Nc6 12. Ba1 Bxa3 13. Rb1 Re8 14. c3 Bd6 15. b4
@@ -299,7 +298,6 @@ seguinte as negras perdem a dama.} 37. Rf1 Qxf1+ 38. Kxf1) 34. Qh8+ Kf7 35. Qg7#
 
 <h2>FastCall</h2>
 
-
 <pre>
 /*
 "Fastcall registers are used to pass parameters to functions. Fastcall is the
@@ -323,9 +321,7 @@ pop         rdi
 ret
 */
 </pre>
-
 <h2>Tail Call Elimination</h2>
-
 
 <pre>
 /*
@@ -346,9 +342,7 @@ lea         ecx,[rdx-1]
 jmp         TailCall3
 */
 </pre>
-
 <h2>Frame Pointer Omission</h2>
-
 
 <pre>
 /*
@@ -370,9 +364,7 @@ int TestFramePointerOmission() {
 00007FF7D6E215E8  ret
 */
 </pre>
-
 <h2>RSP Is The Same</h2>
-
 
 <pre>
 /*
@@ -445,9 +437,7 @@ pop         rdi
 ret
 */
 </pre>
-
 <h2>Homing Space</h2>
-
 
 <pre>
 /*
@@ -478,9 +468,7 @@ lea         ecx,[rdx-1]
 call        HomingSpaceNonLeaf
 */
 </pre>
-
 <h2>Child-SP</h2>
-
 
 <pre>
 /*
@@ -532,9 +520,7 @@ add         eax,dword ptr [rsp+18h] # reference child-sp
 mov         rcx,qword ptr [p5]
 mov         dword ptr [rcx],eax
 </pre>
-
 <h2>Parameter Retrieval</h2>
-
 
 <pre>
 /*
@@ -612,7 +598,6 @@ pop         r15
 ret
 */
 </pre>
-
 <h2>Recortes do artigo original</h2>
 
 <blockquote>On X64, the first 4 parameters are always passed in registers and the rest of the parameters are passed via the stack. This is one of main causes of grief during debugging since register values tend to change as functions execute and it becomes difficult to determine the original parameter values that were passed to a function, half-way into its execution. Other than this one issue with retrieving parameters, x64 debugging is not that different from x86 debugging.</blockquote>
@@ -732,7 +717,6 @@ ret
 </ul>
 <p>Ficou confuso? Vai ficar mais simples ao ver a implementação em C++:</p>
 
-
 <pre>
 bool RotationMutually(string s1, string s2)
 {
@@ -767,7 +751,6 @@ bool RotationMutually(string s1, string s2)
 
 <p>Isso é feito da seguinte forma em C++:</p>
 
-
 <pre>
 vector&lt;int&gt; BubbleSort(vector&lt;int&gt; array)
 {
@@ -784,13 +767,11 @@ vector&lt;int&gt; BubbleSort(vector&lt;int&gt; array)
     return array;
 }
 </pre>
-
 <p>Se você leu o código deve ter percebido que existe um pequeno truque na hora de estipular o final do loop mais interno: ele diminui do tamanho do array menos o que já foi percorrido do elemento do loop externo. Em outras palavras, quanto mais avançarmos para a frente com o índice do loop externo menos avançamos para o final do array.</p>
 
 <p>Isso é feito porque sabemos que já foram feitas i comparações antes, o que quer dizer que os elementos na posição size-i já foram devidamente movidos para dentro do intervalo que será comparado na passada deste próximo loop interno.</p>
 
 <p>Para sentir o passo a passo dessas iterações, observe como os elementos de uma lista completamente desordenada se comporta e até onde vão as comparações do loop interno e, o mais importante, por que ele não precisa ir mais além.</p>
-
 
 <pre>
 i = 0
@@ -814,7 +795,6 @@ i = 4
 j j
 1 2 3 4 5 6
 </pre>
-
 <p>Parece um algoritmo rápido, mas isso acontece porque está escondido cada uma das comparações e trocas do loop interno. Por exemplo, no primeiro bloco acima foram feitas cinco comparações e cinco trocas (N-1).</p>
 
 <p>A complexidade deste algoritmo é de O(n^2) comparações e O(n^2) trocas.</p>
@@ -839,7 +819,6 @@ j j
 <p>A parte não intuitiva ou mais complexa é que para inserir um elemento que deveria estar na segunda posição, mas está na quinta, é necessário ir realizando a troca entre o quinto e quarto elementos, depois entre o terceiro e o quarto, até chegar na segunda posição. Isso se tratando de um array. Esse algoritmo pode funcionar mais rápido se utilizada uma lista ligada (menos trocas).</p>
 
 <p>Em código C++ ficaria assim:</p>
-
 
 <pre>
 vector&lt;int&gt; InsertionSort(vector&lt;int&gt; array)
@@ -894,7 +873,6 @@ vector&lt;int&gt; InsertionSort(vector&lt;int&gt; array)
 
 <li>continue até que o antigo final da lista se torne o novo head, apontando para o último anterior.</li>
 
-
 <pre>
 H -&gt; 1 -&gt; 2 -&gt; 3 -&gt; 4 -&gt; 5 -&gt; 0
 1 -&gt; 0
@@ -904,10 +882,8 @@ H -&gt; 1 -&gt; 2 -&gt; 3 -&gt; 4 -&gt; 5 -&gt; 0
 5 -&gt; 4 -&gt; 3 -&gt; 2 -&gt; 1 -&gt; 0
 H -&gt; 5 -&gt; 4 -&gt; 3 -&gt; 2 -&gt; 1 -&gt; 0
 </pre>
-
 </ul>
 <p>Os passos numerados estão de acordo com o código C++ abaixo:</p>
-
 
 <pre>
 shared_ptr&lt;LinkedList&gt; LinkedListReverse(shared_ptr&lt;LinkedList&gt; head)
@@ -955,7 +931,6 @@ shared_ptr&lt;LinkedList&gt; LinkedListReverse(shared_ptr&lt;LinkedList&gt; head
 </ul>
 <p>Simples, não? Em C++:</p>
 
-
 <pre>
 string ReverseString(string s)
 // string passada por parâmetro
@@ -996,7 +971,6 @@ string ReverseString(string s)
 </ul>
 <p>Em C++ um código que faz isso seria como o abaixo:</p>
 
-
 <pre>
 void MatchingCharacters(string s)
 {
@@ -1007,7 +981,6 @@ void MatchingCharacters(string s)
     }
 }
 </pre>
-
 
 
 </section><hr/>
@@ -1039,7 +1012,6 @@ void MatchingCharacters(string s)
 <p>Através dessa mesma lógica você poderia encontrar posições arbitrárias no meio da lista, como o terceiro elemento onde seu valor começa com a letra 'p', etc.</p>
 
 <p>Abaixo um código em C++ para não ficar tão abstrato:</p>
-
 
 <pre>
 shared_ptr&lt;LinkedList&gt; LinkedListTraverseToTheMiddle(shared_ptr&lt;LinkedList&gt;&amp; head)
@@ -1089,7 +1061,6 @@ shared_ptr&lt;LinkedList&gt; LinkedListTraverseToTheMiddle(shared_ptr&lt;LinkedL
 <p>Sempre que precisar resolver problemas com segundos ou terceiros elementos você deve manter uma segunda ou terceira variável. A primeira variável mantém o maior elemento e a segunda variável o segundo maior elemento. Sempre que você encontrar algum elemento maior que esses dois você deve atualizá-los de acordo. Depois de varrer toda a lista a segunda variável irá conter o segundo maior número.</p>
 
 <p>Em C++:</p>
-
 
 <pre>
 int SecondLargest(vector&lt;int&gt; array)
@@ -1301,7 +1272,6 @@ int SecondLargest(vector&lt;int&gt; array)
 
 <p>Existe uma solução para a inversão de um número que não é bonita, mas prática: transforme em string e inverta essa string.</p>
 
-
 <pre>
 int ReverseNumberStringVersion(int number)
 {
@@ -1318,7 +1288,6 @@ int ReverseNumberStringVersion(int number)
     return stoi(s);
 }
 </pre>
-
 <p>Contudo, a maneira bonita de se fazer isso é mantendo o domínio do problema na matemática. E dessa forma:</p>
 
 <ul><li>Pegue o dígito mais à direita do número;</li>
@@ -1328,7 +1297,6 @@ int ReverseNumberStringVersion(int number)
 <li>Multiplique o resultado por 10;</li>
 
 <li>Divida o número por 10.</li>
-
 
 <pre>
 int ReverseNumberNumberVersion(int number)
@@ -1365,7 +1333,6 @@ int ReverseNumberNumberVersion(int number)
 
 <p>O código em C++:</p>
 
-
 <pre>
 bool PrimeNumber(int number)
 {
@@ -1400,7 +1367,6 @@ bool PrimeNumber(int number)
 
 </ul>
 <p>Um codigozinho que imprime os cinco primeiros números para deixar mais claro:</p>
-
 
 <pre>
 void Fibonacci()
@@ -1500,7 +1466,6 @@ void Fibonacci()
 
 <p>This solution has a complexity of O(n).</p>
 
-
 <pre>
 int countingValleys(int steps, string path) {
     int valleys = 0;
@@ -1518,13 +1483,11 @@ int countingValleys(int steps, string path) {
     return valleys;
 }
 </pre>
-
 <h2>Cloud Jump</h2>
 
 <p>To solve the <a href="https://www.hackerrank.com/challenges/jumping-on-the-clouds">cloud jump problem</a> create a loop and advance current position until finished. Try the double jump at first and ordinary jump else by incrementing position by 1 or 2 and incrementing jump counter. If in the end position just increment and get out of the loop. Return the jump counter.</p>
 
 <p>This solution has a complexity of O(n).</p>
-
 
 <pre>
 int jumpingOnClouds(vector&lt;int&gt; c) {
@@ -1546,7 +1509,6 @@ int jumpingOnClouds(vector&lt;int&gt; c) {
     return jumps;
 }
 </pre>
-
 <h2>Repeated Strings</h2>
 
 <p>To solve the <a href="https://www.hackerrank.com/challenges/repeated-string">repeated string problem</a> we count the 'a' occurrences for the full unique string and divide n by the size of the unique string size, getting the number of times we need to multiply the full occurrences.</p>
@@ -1557,7 +1519,6 @@ int jumpingOnClouds(vector&lt;int&gt; c) {
 
 <p>This algorithm has a complexity of O(n) because we got to count every char.</p>
 
-
 <pre>
 long repeatedString(string s, long n) {
     long fullOccur = (long) count(s.begin(), s.end(), 'a');
@@ -1567,13 +1528,11 @@ long repeatedString(string s, long n) {
     return fullOccur * fullMult + partialOccur;
 }
 </pre>
-
 <h2>Sales by Match</h2>
 
 <p>To solve the <a href="https://www.hackerrank.com/challenges/sock-merchant">sales by match</a> problem we traverse all the array of socks and keep inserting and deleting a set of colors. If the current color is not found in the set we insert it. If the current color is found we increase a pair counter and remove the color from the set. The next time the same color appears it will be inserted again waiting for its pair.</p>
 
 <p>The complexity of this solution is O(N), since we have to traverse all array of socks.</p>
-
 
 <pre>
 int sockMerchant(int n, vector&lt;int&gt; ar)
@@ -1595,7 +1554,6 @@ int sockMerchant(int n, vector&lt;int&gt; ar)
     return ret;
 }
 </pre>
-
 
 
 
@@ -1641,15 +1599,12 @@ int sockMerchant(int n, vector&lt;int&gt; ar)
 
 <p>Vamos observar a implementação de uma árvore de segmentos. A primeira coisa é alocar o espaço necessário em um vetor. Digamos que nossa árvore irá conter os intervalos de 1 a 1000 (inclusive).</p>
 
-
 <pre>
 vector&lt;int&gt; tree[4*1000];
 </pre>
-
 <p>Nossa árvore está pronta. =)</p>
 
 <p>Vamos atualizar algum valor nela. Por exemplo, definir o valor 42 para o node 666:</p>
-
 
 <pre>
 void update(int node, int left, int right, int pos, int value, vector&lt;int&gt;&amp; tree) {
@@ -1671,7 +1626,6 @@ int main() {
     update(1, 1, 999, 666, 42, tree);
 }
 </pre>
-
 <p>Algumas informações relevantes sobre esses parâmetros:</p>
 
 <ul><li>node é a localização do ramo atual;</li>
@@ -1693,7 +1647,6 @@ int main() {
 
 <p>Vamos definir mais alguns valores em outras posições para em seguida implementar a soma:</p>
 
-
 <pre>
 int main() {
     vector&lt;int&gt; tree(4 * 1000);
@@ -1703,7 +1656,6 @@ int main() {
     update(1, 1, 999, 999, 55, tree);
 }
 </pre>
-
 <p>Com isso a soma dos seguintes intervalos deve contar os seguintes totais:</p>
 
 <ul><li>o intervalo <a href="posts.html?q=666,666">666,666</a> deve conter o valor 42, da única folha selecionada;</li>
@@ -1718,7 +1670,6 @@ int main() {
 
 </ul>
 <p>Vamos implementar a função de soma e descobrir.</p>
-
 
 <pre>
 int sum(int node, int left, int right, int posLeft, int posRight, const vector&lt;int&gt;&amp; tree) {
@@ -1748,7 +1699,6 @@ int main() {
     }
 }
 </pre>
-
 <p>Mais uma vez, existem muitos parâmetros porque a função é recursiva e precisa se localizar, e o princípio é o mesmo da função update, de usar as variáveis como um mapas para navegar por uma array.</p>
 
 <ul><li>node é a localização do ramo atual;</li>
@@ -1834,7 +1784,6 @@ int main() {
 
 <p>A implementação não ficou exatamente assim, pois arrays não possuem índices negativos em C++. Para implementar eu já iniciei meu contador de início na metade do array, permitindo índices positivos e negativos na faixa de 100 elementos para cada lado.</p>
 
-
 <pre>
 struct HashTable {
     typedef vector&lt;vector&lt;int&gt;&gt; BufferType;
@@ -1865,16 +1814,12 @@ vector&lt;int&gt;* FindItem(HashTable&amp; hashTable, int key) {
     return nullptr;
 }
 </pre>
-
 <p>Uma parte importante no código acima é entender que a hash function apenas pega o resto da divisão do tamanho da tabela. Porém, o método de subscrito da tabela considera onde ela começa, o `currentPosition`, que pode ser em qualquer lugar, dependendo das movimentações do usuário.</p>
-
 
 <pre>
 int actualPosition = (currentPosition + position) % tableSize;
 </pre>
-
 <p>O código que realiza as operações de fato apenas busca ou modifica valores:</p>
-
 
 <pre>
 vector&lt;int&gt; TestCase(vector&lt;string&gt; operations, vector&lt;vector&lt;int&gt;&gt; operands) {
@@ -1906,9 +1851,7 @@ vector&lt;int&gt; TestCase(vector&lt;string&gt; operations, vector&lt;vector&lt;
     return results;
 }
 </pre>
-
 <p>Um teste simples de rotacionamento de índices na hash table:</p>
-
 
 <pre>
 void TestCase005() {
@@ -1929,7 +1872,6 @@ void TestCase005() {
     assert(results[0] == 5);
 }
 </pre>
-
 <p>E dessa forma é possível gastar apenas O(N) para atualizar chaves ou valores dentro de uma hash table, sem movimentação de memória alguma.</p>
 
 </section><hr/>
@@ -2131,7 +2073,6 @@ void TestCase005() {
 
 <p>The issue about this problem is that summing up intervals costs too much processing to large intervals. In order to do that, segment trees help, since its nodes contain the sum of all its nodes bellow. This way, to get the sum of determined intervals all we need to do is to get the bigger intervals and sum it up.</p>
 
-
 <pre>
 // Segment tree to array manipulation implementation
 long query(int node, int left, int right, int pos, const vector&lt;long&gt;&amp; tree) {
@@ -2179,13 +2120,11 @@ long arrayManipulation(int n, vector&lt;vector&lt;int&gt;&gt; queries) {
     return max_val;
 }
 </pre>
-
 <h2>Left Rotation</h2>
 
 <p>To solve the <a href="https://www.hackerrank.com/challenges/ctci-array-left-rotation">left rotation problem</a> in C++ is somewhat easy, since there is already an algorithm in STL to do that: `std::rotate`. Anyway, I didn't know that before my first implementation, that was to create a new vector and copy the old vector to the new one obeying the new positions.</p>
 
 <p>However, the last version of the solution of this issue was using the `std::rotate` function, that is a simple, elegant algorithm:</p>
-
 
 <pre>
 template &lt;class ForwardIterator&gt;
@@ -2201,13 +2140,11 @@ template &lt;class ForwardIterator&gt;
   }
 }
 </pre>
-
 <p>The logic is to swap from left to right, leveraging the end part of the vector to making the swaps. The rightmost point is called next and begins in the middle point. The leftmost point is the first point. When the next point reaches the end it go back to the middle point again, because the last element was moved already and the middle now contains the original first elements that was swaped. If, however, the leftmost point reaches the middle point before the next point reaches the end, the middle point changes to the next point, what means the point where first and middle meet is changing to the next point, making the first to chase the middle point until all rightmost elements be exchanged with it, using the next as a moving buffer. The same logic is repeated until first and next point meet.</p>
 
 <img src="img/hacker-rank-arrays-std_rotate.jpg"/>
 
 <p>So the solution changed from this:</p>
-
 
 <pre>
 // Solution
@@ -2222,9 +2159,7 @@ vector&lt;int&gt; rotLeft(vector&lt;int&gt; a, int d) {
   return ra;
 }
 </pre>
-
 <p>To this:</p>
-
 
 <pre>
 // Solution
@@ -2233,7 +2168,6 @@ vector&lt;int&gt; rotLeft(vector&lt;int&gt; a, int d) {
   return a;
 }
 </pre>
-
 
 
 

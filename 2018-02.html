@@ -215,7 +215,6 @@ role="navigation" aria-label="main navigation">
 <blockquote>"C++ Primer says. Each local static variable is initialized before the first time execution passes through the object's definition. Local statics are not destroyed when a function ends; they are destroyed when program terminates." - Someone that google it for but did not get it</blockquote>
 <p>Mas no caso de variáveis static declaradas dentro de uma função isso não acontece, e ela pode ser inicializada a qualquer momento. Basta alguém chamar a função onde ela foi definida.</p>
 
-
 <pre>
 #include &lt;iostream&gt;
 int func2()
@@ -234,10 +233,6 @@ int main()
     std::cout &lt;&lt; "Func returns " &lt;&lt; func() &lt;&lt; std::endl;
     std::cout &lt;&lt; "Exiting...\n";
 }
-</pre>
-
-
-<pre>
 c:\Projects\caloni\projects&gt;cl /EHsc static_local_sample.cpp
 Microsoft (R) C/C++ Optimizing Compiler Version 19.12.25827 for x86
 Copyright (C) Microsoft Corporation.  All rights reserved.
@@ -247,10 +242,6 @@ Copyright (C) Microsoft Corporation.  All rights reserved.
 /out:static_local_sample.exe
 static_local_sample.obj
 c:\Projects\caloni\projects&gt;
-</pre>
-
-
-<pre>
 c:\Projects\caloni\projects&gt;static_local_sample.exe
 Passing by...
 Func2 called
@@ -258,9 +249,7 @@ Func returns 42
 Exiting...
 c:\Projects\caloni\projects&gt;
 </pre>
-
 <p>Note que mesmo trocando static int para static const int a mesma coisa acontece. Apenas conseguimos forçar a inicialização antes do main quando há alguma variável global (static ou não) que chame a função.</p>
-
 
 <pre>
 #include &lt;iostream&gt;
@@ -281,10 +270,6 @@ int main()
     std::cout &lt;&lt; "Func returns " &lt;&lt; func() &lt;&lt; std::endl;
     std::cout &lt;&lt; "Exiting...\n";
 }
-</pre>
-
-
-<pre>
 c:\Projects\caloni\projects&gt;cl /EHsc static_local_sample.cpp
 Microsoft (R) C/C++ Optimizing Compiler Version 19.12.25827 for x86
 Copyright (C) Microsoft Corporation.  All rights reserved.
@@ -300,11 +285,9 @@ Func returns 42
 Exiting...
 c:\Projects\caloni\projects&gt;
 </pre>
-
 <p>O problema disso é que é possível que duas threads chamem func() "ao mesmo tempo", gerando uma dupla inicialização caso a implementação da libc não seja thread-safe. E a menos que o padrão especifique que essa inicialização deva ser thread safe, melhor fazer as coisas direito.</p>
 
 <p>Mas, a título de curiosidade, é bom saber que o Visual Studio 2017 essa parte da libc já possui um mecanismo de proteção, como o sugestivo nome _tls_index já indica:</p>
-
 
 <pre>
 c:\Projects\caloni\projects&gt;cl /EHsc /Zi static_local_sample.cpp
@@ -317,10 +300,6 @@ Copyright (C) Microsoft Corporation.  All rights reserved.
 /debug
 static_local_sample.obj
 c:\Projects\caloni\projects&gt;windbg static_local_sample.exe
-</pre>
-
-
-<pre>
 static_local_sample!func [c:\projects\caloni\projects\static_local_sample.cpp @ 10]:
    10 000fe410 55              push    ebp
    10 000fe411 8bec            mov     ebp,esp

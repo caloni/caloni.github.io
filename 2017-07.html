@@ -513,24 +513,19 @@ role="navigation" aria-label="main navigation">
 
 <p>No caso o comando maroto é o seguinte:</p>
 
-
 <pre>
 msvsmon.exe /timeout 999999 /anyuser /silent /noauth
 </pre>
-
 <p>E para transformar em um serviço podemos usar o <a href="https://nssm.cc/">NSSM</a>, já visto em outros artigos.</p>
-
 
 <pre>
 nssm.exe install Msvsmon msvsmon.exe /timeout 999999 /anyuser /silent /noauth
 </pre>
-
 <p>Isso cria um serviço de start automático que irá iniciar o debugger na ponta server quietinho, sem janelas, só escutando e esperando o Visual Studio atachar.</p>
 
 <h2>Nosso serviço e DLL</h2>
 
 <p>Para este exemplo vamos usar um programa console que será convertido, assim como o msvsmon, em serviço, e uma DLL que ele carrega, chamando dois métodos; um de start, outro de stop. Nosso objetivo aqui é começar a depurar a DLL logo em seu início, na chamada do start.</p>
-
 
 <pre>
 #include &lt;iostream&gt;
@@ -553,9 +548,7 @@ int main()
     else std::cout &lt;&lt; "DLL not found\n";
 }
 </pre>
-
 <p>As funções de start e stop não fazem nada, apenas imprimem um passou-por-aqui:</p>
-
 
 <pre>
 #include "DLL.h"
@@ -569,29 +562,23 @@ void DLL_Stop()
     std::cout &lt;&lt; "DLL stopped\n";
 }
 </pre>
-
 <p>Depois de copiar Service.exe e DLL.dll para a máquina-alvo (e não se esquecer de instalar as <a href="https://www.google.com.br/search?q=visual+c%2B%2B+redistributable+2017<a href="posts.html?q=dependências">dependências</a>oq=visual+c%2B%2B+redistributable">dependências</a>) instalar da mesma forma com que foi instalado o msvsmon:</p>
-
 
 <pre>
 nssm.exe install Service service.exe
 </pre>
-
 <img src="img/forma-mais-simples-de-depurar-processos-antes-do-logon-lgPCGyW.png"/>
 
 <p>Agora ache o IP da máquina-alvo e vá em Debug, Attach to Process (Ctrl+Alt+P) no Visual Studio, modo remoto e digite o IP.</p>
 
-
 <pre>
 cmd /k ipconfig | find "192"
 </pre>
-
 <img src="img/forma-mais-simples-de-depurar-processos-antes-do-logon-GpNPhiC.png"/>
 
 <p>Lembre-se de iniciar o serviço.</p>
 
 <p>Após esse teste podemos modificar a DLL para aguardar por um depurador:</p>
-
 
 <pre>
 #include &lt;windows.h&gt;
@@ -602,7 +589,6 @@ void DLL_Start()
     std::cout &lt;&lt; "DLL started\n";
 }
 </pre>
-
 <p>Depois que houver o attach você irá continuar a execução. Portanto, coloque um breakpoint logo depois.</p>
 
 <img src="img/forma-mais-simples-de-depurar-processos-antes-do-logon-hja6Y2Y.png"/>
@@ -648,7 +634,6 @@ void DLL_Start()
 
 <p>Meu primeiro passo foi realmente limpar a pasta de imagens, eliminando as que não estavam sendo usadas. A pasta de imagens ficou se acumulando por anos, e muitas imagens foram sendo carregadas através dos Wordpress da vida e plugins que deram resize nas imagens, gerando várias cópias no processo. Tudo inútil e dispendioso.</p>
 
-
 <pre>
 dir /b imagens\*.* &gt; images.bat
 rem transformar cada linha de images.bat em:
@@ -663,9 +648,7 @@ v/^[0-9]/j
 v/0$/d
 rem pronto; agora é só rodar o result.log como bat
 </pre>
-
 <p>O principal problema de subir tudo para o imgur é que os nomes dos arquivos irão mudar e perder a referências usadas no texto. Para conseguir renomear os arquivos dentro dos artigos é necessário conectar no serviço do imgur e através dele obter o nome original do arquivo, disponível na propriedade __name__:</p>
-
 
 <pre>
 import auth
@@ -678,14 +661,11 @@ for img in imgs:
     origname = imgur.link[imgur.link.find(img):].replace(img, imgur.name)
     print origname, '=&gt;', img
 </pre>
-
 <p>Executando este script será possível gerar um log no formato nome-original-do-arquivo para id-da-imagem-usado-pelo-imgur. O ID deles também é usado para link direto da imagem, de onde virá o comando sed que vai substituir nos artigos os nomes originais pelo link do imgur:</p>
-
 
 <pre>
 sed -i "s/&lt;nome-original-do-arquivo&gt;/http\/\/:\/&lt;link-da-imagem-no-imgur&gt;/&lt;id-do-imgur&gt;.&lt;extensao&gt;/" *.md
 </pre>
-
 <p>Lembrar de apagar o all.md. Ele só foi usado para gerar a saída mais simples do grep.</p>
 
 

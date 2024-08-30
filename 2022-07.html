@@ -174,30 +174,24 @@ role="navigation" aria-label="main navigation">
 
 <p>Aproveita esse pedaço abaixo de `CMakeLists.txt` como colinha e cria na pasta do seu projeto.</p>
 
-
 <pre>
 cmake_minimum_required(VERSION 3.16)
 project (meu_projeto)
 add_executable(meu_projeto
 </pre>
-
 <p>Lista os arquivos de extensão `.cpp` e joga a listagem no final do `CMakeLists.txt`. Por fim adiciona o fecha-parênteses que está faltando.</p>
-
 
 <pre>
 dir /b *.cpp &gt;&gt; CMakeLists.txt
 echo ) &gt;&gt; CMakeLists.txt
 </pre>
-
 <p>Pronto. Se seu projeto não tem dependências externas é só compilar.</p>
-
 
 <pre>
 mkdir build &amp;&amp; cd build
 cmake ..
 cmake --build .
 </pre>
-
 <p>Os erros mais comuns a partir daí são erros de inclusão e linkedição. Para os erros de inclusão use comandos no `CMakeLists.txt` como `target_include_directories`. Para os erros de linkedição use os comandos `target_link_libraries` para incluir as libs e `target_link_directories` para dizer que em pasta estão. Você deve encontrar essas informações no projeto original do Visual Studio.</p>
 
 <p>Em geral é melhor seguir esse passo-a-passo de como gerar um projeto limpo em vez de tentar converter. Se houver algum truque na solução Visual Studio ela deverá ser portada de maneira mais documentada e pronta para portabilidade. Com o CMake você não terá mais que se preocupar com qual versão do Visual Studio irá trabalhar, e quando migrar basta instalar ou apontar a versão correta (direto no comando cmake).</p>

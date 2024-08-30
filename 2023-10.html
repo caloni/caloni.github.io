@@ -162,13 +162,10 @@ role="navigation" aria-label="main navigation">
 
 <p>Uma vez que você encontre onde está a `vtable` -- por exemplo, como o primeiro parâmetro da chamada em um método, vide <a href="posts.html?q=x64-deep-dive">convenção de chamadas do x64</a> -- liste no WinDbg os endereços contidos neste endereço (o parâmetro `L` é a quantidade de bytes para mostrar):</p>
 
-
 <pre>
 dp &lt;address&gt; L50
 </pre>
-
 <p>Depois disso use o disassembly para cada um desses endereços, o que deve mostrar o início da função de cada um. Com sorte haverá símbolos que decodificaram o nome de cada método:</p>
-
 
 <pre>
 u 00007ff8`50532ca0 
@@ -188,7 +185,6 @@ Windows_Security_Authentication_Web_Core!Windows::Security::Authentication::Web:
 00007ff8`5058cbc4 4889442448      mov     qword ptr [rsp+48h],rax
 ...
 </pre>
-
 
 
 </section><hr/>
@@ -272,7 +268,6 @@ Windows_Security_Authentication_Web_Core!Windows::Security::Authentication::Web:
 
 <p>Quando analisando o comportamento de programas Windows que usam winrt é sempre útil dar uma olhada nas classes sendo ativadas. Uma função-chave para isso é a <a href="https://learn.microsoft.com/en-us/windows/win32/api/roapi/nf-roapi-rogetactivationfactory">RoGetActivationFactory</a>:</p>
 
-
 <pre>
 // Gets the activation factory for the specified runtime class.
 Copy
@@ -282,16 +277,12 @@ HRESULT RoGetActivationFactory(
   [out] void    **factory
 );
 </pre>
-
 <p>Sabendo como <a href="posts.html?q=hstring">obter a string raw de uma HSTRING</a> basta colocar um breakpoint no WinDbg que imprima esta string e siga vazando:</p>
-
 
 <pre>
 bp combase!_RoGetActivationFactory "du poi(@rcx+0x10) ; g"
 </pre>
-
 <p>Estou olhando em meu trabalho o comportamento do Teams quando me autentico com um email corporativo. Essa é a saída do breakpoint:</p>
-
 
 <pre>
 0:044&gt; g
@@ -319,9 +310,7 @@ bp combase!_RoGetActivationFactory "du poi(@rcx+0x10) ; g"
 00007ffe`7abc9c30  "Windows.Foundation.PropertyValue"
 00007ffe`7abc9c70  ""
 </pre>
-
 <p>Há muitas saídas repetidas, claro, além de quebra de linha. Nada que conhecimentos básicos de Vim não resolvam para montar esta lista:</p>
-
 
 <pre>
 Web.Core.WebAuthenticationCoreManager
@@ -337,7 +326,6 @@ Windows.Security.Authentication.
 Windows.Security.Authentication.Web.Core.WebAuthenticationCoreManager
 Windows.Storage.Streams.DataReader
 </pre>
-
 <p>Note que há classes internas e classes documentadas. Ou seja, há diversão dos dois lados.</p>
 
 
@@ -641,7 +629,6 @@ Windows.Storage.Streams.DataReader
 <p>Conhecia essa abertura? Nem eu.</p>
 
 <img src="img/caro-kann-defense-hillbilly-attack-board.gif"/>
-
 
 <pre>
 1. e4 c6 2. Bc4 e6 3. Nf3 d5 4. exd5 cxd5 5. Bb5+ Nc6 6. Ne5 Ne7 7. Qf3 Nf5 8.

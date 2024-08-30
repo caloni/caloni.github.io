@@ -126,7 +126,6 @@ role="navigation" aria-label="main navigation">
 
 <p>A Microsoft fez isso no Windows 7 inserindo a API RegLoadAppKey. De acordo com o <a href="posts.html?q=Windows Internals">Windows Internals</a>:</p>
 
-
 <pre>
 The application can then mount the hive privately using the RegLoadAppKey
 function (specifying the REG_PROCESS_APPKEY flag prevents other
@@ -141,18 +140,14 @@ chapter.)
 format and calls the NtLoadKeyEx native API with the proper
 set of parameters.
 </pre>
-
 <p>Com essa informação podemos colocar um breakpoint na NtLoadKeyEx e saber onde fica o arquivo de registro de uma aplicação.</p>
-
 
 <pre>
 0:000&gt; bp ntdll!NtLoadKeyEx
 ...
 breakpoint hit!
 </pre>
-
 <p>Vendo algumas definições em <a href="https://processhacker.sourceforge.io/doc/ntregapi_8h.html#aa4c6abc699a9c60acbfdc0fd4a229215">docs</a> na net:</p>
-
 
 <pre>
 NTSYSCALLAPI NTSTATUS NTAPI NtLoadKeyEx(POBJECT_ATTRIBUTES TargetKey,
@@ -187,7 +182,6 @@ typedef struct _UNICODE_STRING {
 000001f6`f7a24b20  "1.3570.0_neutral_neutral_cw5n1h2"
 000001f6`f7a24b60  "txyewy\ActivationStore.dat"
 </pre>
-
 <p>ergo:</p>
 
 <p>"C:\ProgramData\Microsoft\Windows\AppRepository\Packages\</p>

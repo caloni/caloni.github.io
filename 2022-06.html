@@ -424,7 +424,6 @@ role="navigation" aria-label="main navigation">
 
 <img src="img/partida-ganha-mas-como-board.png"/>
 
-
 <pre>
 1. e4 c6 2. Nf3 d5 3. exd5 cxd5 4. d4 Nc6 5. Bb5 Bd7 6. Nc3 a6 7. Ba4 Nf6 8. Bg5
 e6 9. O-O b5 10. Bb3 Na5 11. Re1 Nxb3 12. axb3 Be7 13. Bxf6 Bxf6 14. Nxd5 O-O
@@ -451,7 +450,6 @@ não entendi por que isso seria uma vantagem para mim).} 55. b4 Kg8 56. b5 Kf8
 <span class="title-heading">Wanderley Caloni, 2022-06-19  <a href="tag_chess.html">tag_chess</a> <a href="2022-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-quando-dois-peoes-ganham-de-um-quando-ha-torres-no-tabuleiro')"><sup>[copy]</sup></a></span>
 
 <img src="img/quando-dois-peoes-ganham-de-um-quando-ha-torres-no-tabuleiro-board.png"/>
-
 
 <pre>
 1. Nf3 d5 2. e4 dxe4 3. Ng5 Nf6 4. d3 exd3 5. Bxd3 Nc6 {Essa é uma boa defesa
@@ -507,12 +505,10 @@ sentido.} 51... a3 52. Rh8 Rg8 53. Rh2 Ra8 54. Rh8 Rg8 55. Rh2 Ra8 1/2-1/2
 
 <p>Pesquisando sobre otimização de AWK eu encontro este post em que uma pessoa tenta tornar a análise de sequências de DNA na nuvem algo financeiramente e computacionalmente viável. Ela começa tentando o óbvio, usando SQL nas próprias estruturas de CSV hospedadas na S3, passa por tentativas de particionar os blocos, por entender como paralelizar a operação e termina em uma solução que usa AWK junto de GNU Parallel, redirecionando a saída para que a linguagem R processe.</p>
 
-
 <pre>
 select * from intensityData limit 10;
 select * from intensityData where snp = 'rs123456';
 </pre>
-
 <blockquote></blockquote>
 <blockquote>Eight minutes and 4+ terabytes of data queried later I had my results. Athena charges you by data searched at the reasonable rate of $5 per TB. So this single query cost $20 and eight minutes. If we ever wanted to run a model over all the data we better be ready to wait roughly 38 years and pay $50 million. Clearly this wasn’t going to work.</blockquote>
 <blockquote></blockquote>
@@ -532,7 +528,6 @@ select * from intensityData where snp = 'rs123456';
 
 <li>Associative arrays in AWK are super powerful.</li>
 
-
 <pre>
 yp1234,577,1,3
 yp5678,577,3,5
@@ -542,7 +537,6 @@ awk -F, '{ print &gt; $2 ".csv" }' file.csv
 parallel --block 100M --pipe  \
         "awk -F '\t' '{print \$1\",...\"$30\"&gt;\"chunked/{#}_chr\"\$15\".csv\"}'"
 </pre>
-
 </ul>
 
 
@@ -570,7 +564,6 @@ parallel --block 100M --pipe  \
 <blockquote></blockquote>
 <h2>Test #1</h2>
 
-
 <pre>
 yes 'SomeSampleText SomeOtherText 33 1970 YetAnotherText 777 abc 1 AndSomeMore' | head -1000000 &gt; bigsample.txt
 time gawk 'BEGIN {a = 0;} {if ($5 == "YetAnotherText") a ++;} END {print "a: " a;}' bigsample.txt
@@ -580,9 +573,7 @@ time gawk 'BEGIN {a = 0;} {if (NF == 9) a ++;} END {print "a: " a;}' bigsample.t
 time gawk 'BEGIN {a = 0;} {if ($1 == "SomeSampleText") a ++;} END {print "a: " a;}' bigsample.txt
 time gawk 'BEGIN {a = 0;} {if ($9 == "AndSomeMore") a ++;} END {print "a: " a;}' bigsample.txt
 </pre>
-
 <h2>Test #2</h2>
-
 
 <pre>
 yes "&lt;SomeSampleText:SomeOtherText=33&gt;1970&lt;YetAnotherText:777=abc&gt;1&lt;AndSomeMore&gt;" | head -1000000 &gt; bigsample.txt
@@ -593,16 +584,12 @@ time gawk 'BEGIN {FS = "&lt;|:|=";} {if (NF == 8) a ++;} END {print "a: " a;}' b
 time gawk 'BEGIN {FS = "&lt;|:|=";} {if ($2 == "SomeSampleText") a ++;} END {print "a: " a;}' bigsample.txt
 time gawk 'BEGIN {FS = "&lt;|:|=";} {if ($8 == "AndSomeMore&gt;") a ++;} END {print "a: " a;}' bigsample.txt
 </pre>
-
 <h2>Test #2.1</h2>
-
 
 <pre>
 time grep -c YetAnotherText bigsample.txt
 </pre>
-
 <h2>Test #3</h2>
-
 
 <pre>
 yes 'a b c d' | head -1000000 &gt; bigsample.txt
@@ -611,7 +598,6 @@ time gawk '{if($4=="Hahaha")print("a")}' bigsample.txt
 time gawk '{if($1=="Hahaha")print("a")}' bigsample.txt
 time gawk '/Hahaha/{if($4=="Hahaha")print("a")}' bigsample.txt
 </pre>
-
 <h2>Preliminary conclusions</h2>
 
 <ul><li>It seems that parsing and splitting into fields is faster when there is one simple delimiter, instead of several delimiters.</li>
@@ -624,7 +610,6 @@ time gawk '/Hahaha/{if($4=="Hahaha")print("a")}' bigsample.txt
 
 </ul>
 <h2>Final test</h2>
-
 
 <pre>
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
@@ -645,10 +630,6 @@ time gawk '/Hahaha/{if($4=="Hahaha")print("a")}' bigsample.txt
         &lt;/xn:SubNetwork&gt;
     &lt;/configData&gt;
 &lt;/ConfigDataFile&gt;
-</pre>
-
-
-<pre>
 xml sample 300k times bigger
 time gawk 'BEGIN{FS="[&lt;:=]"}NF&gt;=4{a++}END{print a+0}' bigsample.txt
 time gawk 'BEGIN{FS="&lt;|:|="}NF&gt;=4{a++}END{print a+0}' bigsample.txt
@@ -656,7 +637,6 @@ time gawk 'BEGIN{FS="&lt;|:|="}NF&gt;=4&amp;&amp;/:SubNetwork/{a++}END{print a+0
 time gawk 'BEGIN{FS=":SubNetwork"}NF&gt;=2{a++}END{print a+0}' bigsample.txt
 time gawk '/:SubNetwork/{a++}END{print a}' bigsample.txt
 </pre>
-
 <h2>Mawk</h2>
 
 <p>No meio das minhas pesquisas também encontrei este projeto chamado <a href="https://invisible-island.net/mawk/">mawk</a>, que é uma versão otimizada do AWK. Instalei pelos fontes do projeto na minha máquina e fiz os mesmos testes do post do Stack Overflow com resultados absurdamente mais rápidos. Ou seja, vale uma visita.</p>

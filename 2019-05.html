@@ -339,7 +339,6 @@ role="navigation" aria-label="main navigation">
 
 <p>Este é nosso projeto de exemplo:</p>
 
-
 <pre>
 #include "CalculatorTabajara.h"
 int soma(int x, int y)
@@ -362,13 +361,11 @@ int main()
 {
 }
 </pre>
-
 <p>Para conseguir testar o projeto principal adicione-o como referência.</p>
 
 <img src="img/visual-studio-unit-test-TbFrxIr.png"/>
 
 <p>Após isso basta incluir algum header que contenha os tipos, funções, classes e métodos que deseja testar e vá criando métodos de teste dentro da classe de exemplo:</p>
-
 
 <pre>
 #include "pch.h"
@@ -404,7 +401,6 @@ namespace UnitTest1
 	};
 }
 </pre>
-
 <p>Agora abrindo o jogo para você, amigo programador C++ que gosta de saber tudo que ocorre debaixo dos panos:</p>
 
 <ul><li>Um projeto Unit Test é apenas uma DLL com uns códigos de template.</li>
@@ -432,7 +428,6 @@ namespace UnitTest1
 
 <p>Os headers e fontes do CppUnitTest ficam em paths do Visual Studio como VC\Auxiliary\VS\UnitTest, nas pastas include e lib. Nele é possível dar uma olhada no significado das macros e das classes disponibilizadas. Logo abaixo das macros, no arquivo principal, é possível ver como funciona o reflection:</p>
 
-
 <pre>
 namespace Microsoft{ namespace VisualStudio {namespace CppUnitTestFramework
 {
@@ -458,7 +453,6 @@ namespace Microsoft{ namespace VisualStudio {namespace CppUnitTestFramework
 		const wchar_t *attributeName;
         //...
 </pre>
-
 <p>É uma lib pequena e elegante que permite uma interação não apenas com a IDE, como poderia ser automatizada por um script, uma vez que sabe-se o funcionamento interno e algumas interfaces.</p>
 
 
@@ -516,7 +510,6 @@ namespace Microsoft{ namespace VisualStudio {namespace CppUnitTestFramework
 
 <p>Vamos começar com um exemplo simples: apenas um corrotina que recebe um inteiro e incrementa três vezes. A cada vez que ele incrementa ele devolve o controle de execução via yield. O `main` cria três dessas corrotinas e dá resume em cada uma delas três vezes, finalizando a execução de todas. Ao final, o counter final é de 9.</p>
 
-
 <pre>
 #include "..\picoro\picoro.h"
 #include &lt;stdio.h&gt;
@@ -548,7 +541,6 @@ int main()
 	return 0;
 }
 </pre>
-
 <p>É importante observar que o uso de troca de contexto pode facilmente consumir a pilha, pois ela está sendo compartilhada com muitas funções em paralelo. Para reservar espaço a `coroutine_start` aloca um array de 16 KB (fixo). Esses detalhes de implementação podem ser alterados, pois a biblioteca é tão mínima e simples de entender que construir qualquer coisa em cima dela é trivial.</p>
 
 
@@ -859,7 +851,6 @@ int main()
 
 <p>A Orientação a Objetos se divide em algumas features. Algumas não vale a pena falar aqui, como tratar tudo como objeto. C já faz isso através de structs. Você pode montar uma struct que possua métodos, inclusive, através de ponteiros para função. E esses métodos já são sobrecarregáveis e virtuais.</p>
 
-
 <pre>
 struct MyClass
 {
@@ -881,9 +872,7 @@ int main()
     obj.method(10);
 }
 </pre>
-
 <p>A sobrecarga se torna algo trivial, bem documentada através dos nomes das funções que você está chamando. Tudo fica às claras, nada implícito, nada disse que me disse. Se eu chamo um método NewMyClass2 é óbvio que estou construindo uma segunda versão baseada na primeira, e posso inclusive comparar para ver se os métodos são originais ou sobrescritos com `obj.method == &amp;method`, por exemplo. Além disso, é possível realizar composições de tipos onde alguns métodos são sobrescritos enquanto outros são compostos por chamadas duplas, triplas. Não há qualquer limitação ao polimorfismo exceto o que você define.</p>
-
 
 <pre>
 struct MyClass
@@ -915,9 +904,7 @@ int main()
     obj.method(10);
 }
 </pre>
-
 <p>Os métodos são "estáticos" por default (não há contexto), o que aliás facilita programação funcional, mas você pode buscar contexto onde te interessa, passando como parâmetro toda a "classe", seja por valor ou referência, ou passando até uma versão parcial dela. Há inúmeras maneiras de construir um objeto em C, pois ele não está restrito às regras de sintaxe da definição da linguagem, uma vez que é você que define. Além disso, como você deve ter percebido, para declarar tipos de structs é necessário o uso dessa palavra-chave, mas a linguagem C já possui um sistema de typedef para trocar convenientemente qualquer definição de tipo como um nome único.</p>
-
 
 <pre>
 #include &lt;stdio.h&gt;
@@ -953,15 +940,9 @@ int main()
     int k = calc.mult(&amp;calc, z, y);
     printf("%d + %d = %d, %d * %d = %d\n", x, y, z, z, y, k);
 }
-</pre>
-
-
-<pre>
 10 + 32 = 42, 42 * 32 = 1344
 </pre>
-
 <p>Note que podemos ao redefinir a função de soma a de multiplicação também é alterada, mesmo não alterando seu funcionamento (mas alterando uma função que ela usa).</p>
-
 
 <pre>
 #include &lt;stdio.h&gt;
@@ -1012,13 +993,8 @@ int main()
     int k = calc.mult(&amp;calc, z, y);
     printf("%d + %d = %d, %d * %d = %d\n", x, y, z, z, y, k);
 }
-</pre>
-
-
-<pre>
 10 + 32 = 1032, 1032 * 32 = 2147483647
 </pre>
-
 <p>Este é apenas um exemplo besta de polimorfismo, além de um exemplo trivial de como OO em C é infinitamente mais rico e mais complexo. Está nas mãos do programador definir até onde vai a solução proposta. E é bom saber que não existe bala de prata.</p>
 
 
@@ -1040,7 +1016,6 @@ int main()
 
 <p>Para o sistema de tipos em C nada como fazer do zero:</p>
 
-
 <pre>
 /* defclass(foo, cclass_instance); */
 typedef struct foo_instance { cclass_instance type; } foo_instance;
@@ -1049,13 +1024,11 @@ static foo_instance foo = { "foo" };
 typedef struct bar_instance { cclass_instance type; } bar_instance; 
 static bar_instance bar = { "bar" };
 </pre>
-
 <h2>Estruturas de dados</h2>
 
 <p>~~As estruturas estão usando STL. O quê? Mas não era C? Sim, você tem toda razão. Porém, estou usando uma lib mais conhecida. Há milhares de libs containers em C para você escolher para trocar a implementação. Lembre-se que o mais importante não é ser purista, mas atingir os objetivos. Como eventualmente veremos nessa série de artigos, o próprio C++ e toda a sua biblioteca pode ser implementada em C. Este é apenas um atalho para fins didáticos e de produtividade (como eu já falei, produtividade não é o foco aqui, mas enxergar por debaixo dos panos).~~</p>
 
 <p>Inicialmente feito em STL pela produtividade, a solução atual no GitHub é feita inteiramente em C usando a <a href="https://developer.gnome.org/glib/">glib</a> (lib comum em Linux com estrutura de dados, etc). O legal dessa biblioteca é que ela tem 20 anos (desde 1998) e já foi muito usada e testada, além de possuir estruturas e algoritmos simples que fazem parte do pacote básico de qualquer programador, como arrays, strings, hash tables.</p>
-
 
 <pre>
 #include "cclos.h"
@@ -1273,13 +1246,11 @@ void call(const char* name, int argc, ...)
 	method_free(method, TRUE);
 }
 </pre>
-
 <p>O código é bem simples. Mapas e listas com strings e ponteiros para organizar as estruturas por detrás do sistema de tipos que estamos implementando e seus métodos sobrecarregados. Cada método possui um nome, um endereço de ponteiro e o número dos seus argumentos. Todos os argumentos são do tipo polimórfico, seguindo o que provavelmente existe por detrás da própria implementação do Lisp.</p>
 
 <h2>Main</h2>
 
 <p>O código que utiliza a clos.c é bem direto e enxuto. Como no Lisp.</p>
-
 
 <pre>
 #include "cclos.h"
@@ -1321,7 +1292,6 @@ int main()
 	test_dispatch();
 }
 </pre>
-
 <p>Futuros posts sobre C Resolve Tudo poderão utilizar a glib ou qualquer outra. Uma outra vantagem da linguagem C é que sua biblioteca padrão é muito enxuta, sendo fácil de ter disponível em seu ambiente um compilador C com a clib, e em cima dela você pode utilizar qualquer biblioteca de sua escolha para estruturas e algoritmos mais complexos. Ou fazer a sua própria.</p>
 
 

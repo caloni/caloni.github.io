@@ -297,7 +297,6 @@ role="navigation" aria-label="main navigation">
 
 <p>A primeira coisa a ser feita é preparar um tema para formatar seu html. Eu já tenho um <a href="https://github.com/Caloni/blog/tree/master/themes/book">linkado no meu blogue</a> e que precisa apenas formatar o index.html, pois todo o conteúdo e índices estarão lá. Segue um exemplo atual que uso. Ele possui índice alfabético, inclusão de um arquivo-diário que mantenho, listagem das categorias (com índices para cada uma delas) e listagem cronológica (e link para pular direto para o conteúdo).</p>
 
-
 <pre>
 &lt;!DOCTYPE html&gt;
   &lt;head&gt;
@@ -386,9 +385,7 @@ role="navigation" aria-label="main navigation">
   &lt;/body&gt;
 &lt;/html&gt;
 </pre>
-
 <p>Como eu uso Kindle eu construo a partir desse html um arquivo .mobi, mas creio ser simples de construir qualquer outro formato através desse html final. No caso do Kindle preciso de alguns arquivos para usar o <a href="https://www.amazon.com/gp/feature.html?ie=UTF8<a href="posts.html?q=kindlegen">kindlegen</a>docId=1000765211">kindlegen</a> (a ferramenta da Amazon) que mantenho na pasta `static` do hugo, como o `.ncx` e o `.opf` (além da capa, `cover.jpg`). Uso uma batch muito pequena para fazer todos os passos e copiar o `.mobi` resultante para meu Kindle (conectado por um cabo USB e com um drive montado em K:).</p>
-
 
 <pre>
 rem @echo off
@@ -400,7 +397,6 @@ kindlegen.exe book.opf -o caloni.mobi
 if exist k:\ copy /y caloni.mobi k:\documents
 popd
 </pre>
-
 <p>Importante lembrar que a codificação do hugo (utf8) deve bater com a codificação esperada pelo gerador de ebook. Que me lembre não há muito mais segredos. Basta escrever e de vez em quando rodar o script novamente =)</p>
 
 

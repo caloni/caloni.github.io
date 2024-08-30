@@ -86,7 +86,6 @@ role="navigation" aria-label="main navigation">
 </ul>
 <p>In the case of connecting into a existent process, the API DebugActiveProcess is called. Since this call, if successful, the caller program is free now to call the API DebugActiveProcess, looking for debugging events. The main loop for a debugger is, so, pretty simple:</p>
 
-
 <pre>
 void DebugLoop()
 {
@@ -112,9 +111,7 @@ void DebugLoop()
 	}
 } 
 </pre>
-
 <p>The interesting detail about this communication process is that a program can be debugged actively only for ONE debugger. In other words, while there's a process A debugging process B, no one besides A can debug and break B.Using this principle, we can imagine a debugging protection based on this exclusivity, creating a protector process that connects to the protected process and "debugs" it:</p>
-
 
 <pre>
 /** @brief Antidebug protection based on DebugPort aquisition.
@@ -177,7 +174,6 @@ int main(int argc, char* argv[])
 	return (int) ret;
 } 
 </pre>
-
 <p>The needed steps to test the code above are:</p>
 
 <p>  1. Compile the code</p>
@@ -219,7 +215,6 @@ int main(int argc, char* argv[])
 <p>The purpose of this protection is to detect if some debugger tries to attach into our running process. The attach to process operation is pretty common in all known debugger, as WinDbg and Visual Studio. Different from the DebugPort protection, this solution avoids the attach action from the debuggee program. In this case the protection can make choices about what to do on the event of attach (terminate the process, send an e-mail, etc).</p>
 
 <p>The code I've found does nothing more than to make use of the attach process function that's always called: the ntdll!DbgUiRemoteBreakin. Being always called, we can just to put our code there, what is relatively easy to do:</p>
-
 
 <pre>
 #include &lt;windows.h&gt;
@@ -271,7 +266,6 @@ int main()
 	cin.get();
 } 
 </pre>
-
 <p>To compile the code above, just call the compiler and linker normally. Obs.: We need the user32.lib in order to call MessageBox API:</p>
 
 <pre>
@@ -292,7 +286,6 @@ int main()
 
 <p>Yes, I know. Sometimes we have to use "brute force codding" and make obscure codes, like this:</p>
 
-
 <pre>
 // opcodes to run a jump to the function AntiAttachAbort
 BYTE jmpToAntiAttachAbort[] =
@@ -301,7 +294,6 @@ BYTE jmpToAntiAttachAbort[] =
 // we change 0xCCCCCCCC using a more useful address
 *reinterpret_cast&lt;PVOID*&gt;(&amp;jmpToAntiAttachAbort[1]) = AntiAttachAbort; 
 </pre>
-
 <p>There are a lot of ways to do the same thing. The example above is what is normally called in the crackers community as a shellcode, what is a pretty name for "byte array that is really the assembly code that does interesting things". Shellcode for short =).</p>
 
 <p>Alternative ways to do this are:</p>
@@ -702,7 +694,6 @@ BYTE jmpToAntiAttachAbort[] =
 
 <p>O artigo anterior mostrava como detectar o leak de um processo gerado pela retenção e não-liberação de handles para o Windows Explorer. O problema fora causado por um serviço malcriado. No entanto, a título de demonstração, criei um pequeno programinha sem-vergonha para fazer as coisas parecerem difíceis. No entanto o programa é bem fácil:</p>
 
-
 <pre>
 #include &lt;windows.h&gt;
 #include &lt;stdio.h&gt;
@@ -715,7 +706,6 @@ int main()
 	}
 }
 </pre>
-
 <p>Para usá-lo, basta abrir um Gerenciador de Tarefas com opção de exibir o PID dos processos.</p>
 
 <p>A partir daí, é só criar e matar várias instâncias do explorer.exe. Antes de matar um, digite o PID do novo processo no ProcessLeaker.</p>

@@ -254,7 +254,6 @@ role="navigation" aria-label="main navigation">
 
 <p>Abaixo segue a função criada para exibir essas mensagens:</p>
 
-
 <pre>
 void MessageError(DWORD err, PCSTR msg, ...)
 {
@@ -269,7 +268,6 @@ void MessageError(DWORD err, PCSTR msg, ...)
 	MessageBox(NULL, msgBuffer, STR_PROJECT_NAME, MB_OK | MB_ICONERROR);
 }
 </pre>
-
 <p>Se você notou, a função acima pode receber um número de argumentos variáveis para formatar a string da mensagem principal do erro, além de exibir seu código. Essa mágica pode ser feita usando-se o cabeçalho padrão "stdarg.h". Através dele temos acesso ao tipo va_list, que representa uma lista de argumentos variáveis.</p>
 
 <p>Pela convenção de chamada da linguagem C (e C++), quem desmonta a pilha é o chamador. Sendo assim, a função chamada não precisa conhecer o número de argumentos com que foi chamado.</p>
@@ -406,7 +404,6 @@ void MessageError(DWORD err, PCSTR msg, ...)
 
 <p>Vejamos alguns exemplos. O código abaixo parece bem razoável:</p>
 
-
 <pre>
 #include &lt;windows.h&gt;
 int main()
@@ -425,7 +422,6 @@ int main()
 	}
 }
 </pre>
-
 <p>No entanto, está errado.</p>
 
 <p>É fato que a maioria das funções que retornam handles retornam NULL para indicar o erro na tentativa de obter o recurso. Ao comparar o retorno com NULL, o programador geralmente faz uma chamada a GetLastError para saber o que aconteceu. No entanto, uma das funções mais usadas, a CreateFile, não retorna NULL, mas INVALID_HANDLE_VALUE.</p>
@@ -454,7 +450,6 @@ int main()
 
 <p>O código abaixo, muito usado por todos que suportam ainda o Windows mais velhinhos, verifica se estamos rodando em plataforma NT ou 9x.</p>
 
-
 <pre>
 #include &lt;windows.h&gt;
 #include &lt;stdio.h&gt;
@@ -469,7 +464,6 @@ int main()
 	return isPlatformNT ? 1 : 0;
 }
 </pre>
-
 <img src="img/aprenda-a-usar-sua-api-jurassicpark.png"/>
 
 <p>Nem sempre o handle que obtemos é fechado com CloseHandle. As funções abaixo retornam handles que devem ser desalocados com as funções à direita:</p>
@@ -523,7 +517,6 @@ int main()
 
 <p>The main idea in this protection is to take care these exceptions during the application execution. Doing this, we can make use of this fact and, in the handling code, run the protected code. The solution here looks like a script interpreter. It consists basically of two threads: The first one read an instructions sequence and tells the second thread to run it step to step. In order to do this the second thread uses a small functions set with well defined code blocks. Here's the example in pseudocode:</p>
 
-
 <pre>
 // the well-defined functions are functional blocks of code and have
 // the same signature, allowing the creation of a pointer array to them
@@ -560,9 +553,7 @@ int Start()
 	return 0;
 } 
 </pre>
-
 <p>The protection isn't there yet. But it will as intrinsic part of the execution thread. All we need to do is to add a exception handling and to throw lots of int 3. The thrown exceptions are caught by a second function that runs the instruction before to returning:</p>
-
 
 <pre>
 // filter exceptions that were thrown by the thread below
@@ -593,7 +584,6 @@ void ExecutionThread()
 	}
 } 
 </pre>
-
 <p>The execution thread algorithm is the same. Just the point where each instruction is executed depends to the exception throw system. Note that this exception has to be thrown in order to the next instruction run. This is fundamental, since this way nobody can just rip of the int 3 code to avoid the exception. If one does that, so no instruction will be executed at all.</p>
 
 <p>In practice, if one tries to debug such a program one will have to deal with tons of exceptions until find out what's happening. Of course, as in every software protection, is's not definitive; it has as a purpose to make hard the reverse engineering understanding. That's not going to stop those who are <a href="http://www.codebreakers-journal.com">really good</a> doing that stuff.</p>
@@ -603,7 +593,6 @@ void ExecutionThread()
 <p>The price paid for this protection stays on the source code visibility and understanding, compromised by the use of this technique. The programming is state machine based, and the functions are limited to some kind of behavior standard. So much smaller the code blocks inside the minifunctions, so much hard the code understanding will be.</p>
 
 <p>The example bellow receives input through a command prompt and maps the first word typed to the function that must be called. The rest of the typed line is passed as arguments to the functions. The interpreter thread reads the user input and writes into a global string variable, at the same time the executor thread waits the string to be completed to starts the action. It was used the variable pool to let the code simpler, but the ideal would be some kind of synchronise, just like events, by example.</p>
-
 
 <pre>
 /** @brief Sample demonstrating how to implemente antidebug in a code exception based.
@@ -732,7 +721,6 @@ int main()
    return (int) ret;
 } 
 </pre>
-
 <p>The strength in this protection is to confound the attacker easily in the first steps (days, months...). Its weakness is the simplicity for the solution, since the attacker eventually realize what is going on. It is so easy that I will let it as an exercise for my readers.</p>
 
 <p>In the next part we will se an alternative to make the code clearer and easy to use in the every day by a security software developer.</p>
@@ -750,7 +738,6 @@ int main()
 <p>In the first article we saw how it's possible to spoof the debugger through exceptions and let the attacker lose some considerable time trying to unbind the program from the fake breakpoints. However, we saw also that this is a difficult solution to keep in the source code, besides its main weakness to be easily bypassed if discovered. Now it's time to put things easier to support and at the same time to guarantee tough times even if the attacker discover what is going on.</p>
 
 <p>The upgrade showed here still uses the exception throwing intrinsically, but now it doesn't depends on the code division in minifunctions and minicalls. Instead, we just need to get code traces and put them inside a miraculous macro that will do everything we want. This, of course, after some "hammer work" that will be explained here.</p>
-
 
 <pre>
 // Go back to place pre-defined by the restoration point.
@@ -781,7 +768,6 @@ int Start()
 	return 0;
 } 
 </pre>
-
 <p>The solution above is explained in pseudocode to make things clearer. Notice that exist some kind of invisible return, not stack based. To handle it, however, we can use the good for all C ANSI standard, using the setjmp (step one) and longjmp (step 3). To understand the implementation for theses functions running on the 8086 platform we need to get the basic vision of the function calls in a stack based environment (the C and Pascal way).</p>
 
 <h4>Registers, stack frame and call/ret</h4>
@@ -828,7 +814,6 @@ int Start()
 
 <p>All this assembly stuff doesn't need to be written in assembly level. It was just a way I found to illustrate the differences between the stack return and the jump return. As it was said, to the luck and well being for all, this same technique can be implemented using ANSI C functions:</p>
 
-
 <pre>
 jmp_buf env; // Contains the next instruction (stack state).
 void Func()
@@ -845,9 +830,7 @@ void CallFunc()
 	int x = 10; // 4. Next instruction.
 } 
 </pre>
-
 <p>That was the new trick for the trowing of exceptions. The final code is clearer, now:</p>
-
 
 <pre>
 /** The only purpose of this function is to generate an exception.
@@ -887,9 +870,7 @@ int main()
 	return (int) ret;
 } 
 </pre>
-
 <p>At first sight, it seems a waste the if being directly in the code (remember we gonna use the same conditional structure in several parts in the code). To turn things clearer, resume the protected call and allows the protection to be disabled in debug version code, let's create a macro:</p>
-
 
 <pre>
 /** Use this macro instead LongJmp
@@ -921,7 +902,6 @@ int main()
 	return (int) ret;
 } 
 </pre>
-
 <p>Now we allow the antidebugging selection by call, what turns things much easier than to choose the protected points inside the code.</p>
 
 </section><hr/>

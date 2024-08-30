@@ -114,7 +114,6 @@ role="navigation" aria-label="main navigation">
 
 <p>**Solução**: copiar como string o número para o primeiro deles e colocar zero no segundo; sempre que houver a incidência do caractere '4' trocar por '3' no primeiro número e '1' no segundo (ou a soma que lhe convier).</p>
 
-
 <pre>
 #include &lt;iostream&gt;
 #include &lt;string&gt;
@@ -149,13 +148,11 @@ int main()
   }   
 }
 </pre>
-
 <h2>You can go your own way</h2>
 
 <p>**Resuminho**: tem que atravessar um labirinto formado por quadrados de N x N começando acima à esquerda saindo abaixo na direita. Enviar uma string com os comandos E ou S (East/South) para sair do labirinto. A pegadinha é não repetir nenhum dos comandos de uma garota que resolveu o labirinto antes.</p>
 
 <p>**Solução**: essa pegadinha é o que ironicamente resolve o problema, pois basta inverter os comandos S e E da string recebida como o caminho da garota e ele nunca se repete e sai do mesmo jeito, pois é o labirinto mais fácil do mundo.</p>
-
 
 <pre>
 #include &lt;iostream&gt;
@@ -181,13 +178,11 @@ int main()
   }   
 }
 </pre>
-
 <h2>Cryptopangrams (failed)</h2>
 
 <p>**Resuminho**: encontrar quais números primos são usados como letras do alfabeto baseado em uma sequência em que o primeiro número é a multiplicação do primo da primeira letra pela segunda, o segundo número é a multiplicação da segunda pela terceira e assim por diante.</p>
 
 <p>**Solução**: tentei fazer na força bruta criando o dicionário de primos usado procurando o resto zero das divisões dos números e depois já com o alfabeto montado reproduzir as reproduções. Apesar do sample funcionar devo ter perdido pelo tempo ou um erro que não descobri.</p>
-
 
 <pre>
 #include &lt;iostream&gt;
@@ -269,7 +264,6 @@ int main()
     }
 }   
 </pre>
-
 <h2>Dat Bae</h2>
 
 <p>**Resuminho**: descobrir quais bits não estão sendo retornados em um echo (ex: manda-se '1010' e recebe '010') com um limite de envios para o servidor (este é um problema interativo).</p>
@@ -760,11 +754,9 @@ int main()
 
 <p>Quem diz o asterisco fazer parte do tipo e não da variável tem razão. Pensando dessa forma ele tem que ficar próximo do tipo.</p>
 
-
 <pre>
 const int* var
 </pre>
-
 <p>Porém, outra forma de interpretar a variável é que ela equivale a um inteiro quando usado com asterisco, o que também é verdade. Ou seja, `int *var` significa que `*var` equivale a um `int` (constante ou não, mas preciso dessa variável não-const para o exemplo). É por isso que `*var = 10` possui o mesmo valor de atribuição do que `int var; var = 10`, ou seja, `*var` é sinônimo do l-value `var` (se var fosse um inteiro e não um ponteiro).</p>
 
 <p>Além disso, outro argumento pró-proximidade da variável é que declarações de múltiplas variáveis na mesma linha precisam de múltiplos asteriscos: `const int *var1, *var2, *var3`.</p>
@@ -772,7 +764,6 @@ const int* var
 <p>Portanto, como ambos os lados estão certos, separar o asterisco de ambos não dá prioridade a nenhuma forma que o programador poderá interpretar essa decisão, seja como parte do tipo ou da variável. Cada programador com seu próprio estilo irá enxergar em `const int * var` a proximidade com `int` ou com `var` de acordo com seu próprio bias (e estará certo em sua análise).</p>
 
 <p>Ergo:</p>
-
 
 <pre>
 qualifier type * name;
@@ -829,27 +820,21 @@ qualifier type * name;
 
 <p>Como nos informa <a href="https://stackoverflow.com/questions/16212816/setting-up-openssh-for-windows-using-public-key-authentication">um post do Stack Overflow</a>, é preciso comentar no arquivo `c:\programdata\ssh\ssh_config`, próximo do final, essas duas linhas:</p>
 
-
 <pre>
 Match Group administrators
        AuthorizedKeysFile __PROGRAMDATA__/ssh/administrators_authorized_keys
 </pre>
-
 <p>Para isso:</p>
-
 
 <pre>
 #Match Group administrators
 #       AuthorizedKeysFile __PROGRAMDATA__/ssh/administrators_authorized_keys
 </pre>
-
 <p>Aí, sim. Reiniciar, o serviço e testar a conexão:</p>
-
 
 <pre>
 ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no domain\user@host
 </pre>
-
 <p>Os programas `ssh.exe` (shell remoto) e `scp.exe` (cópia remota de arquivos) também estão disponíveis no pacote OpenSSH, mas a versão do Cygwin ou até do Git (que vem com um pacote de ferramentas básicas de Linux) funcionam.</p>
 
 <h4>Serviço de cópia remota de arquivos</h4>

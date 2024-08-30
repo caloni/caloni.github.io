@@ -107,7 +107,6 @@ role="navigation" aria-label="main navigation">
 
 <img src="img/miniatura-com-sacrificio-de-bispo-board2.png"/>
 
-
 <pre>
 1. Nf3 Nc6 2. d4 d5 3. Bf4 Nf6 4. Nc3 e6 5. a3 Bd6 6. Bg3 Bxg3 7. fxg3 O-O 8. e3
 Ne4 9. Bd3 Nxc3 10. bxc3 a6 11. O-O b5 12. h4 Re8 {Depois de terminada a partida
@@ -127,7 +126,6 @@ Qg4+ (16. Qd3+ Kh5 17. Qh7+ Kg4 18. Qg6+ Qg5 19. Qxg5#) 16... Kh7 17. Qh5+ Kg8
 <p>Negras jogam e colocam tudo a perder.</p>
 
 <img src="img/partida-dificil-de-equilibrar-peao-poe-tudo-a-perder-board.png"/>
-
 
 <pre>
 1. d4 g6 2. c4 Bg7 3. Nf3 Nf6 4. Nc3 d5 5. Bf4 Nc6 6. e3 Ne4 7. Be2 Nxc3 8. bxc3
@@ -155,7 +153,6 @@ Re8+ Rf8 40. Qe6+ Kg7 41. Re7+ Kh8 42. Qe5+ Kg8 43. Qg7# 1-0
 <p>Brancas jogam e é mate em 3.</p>
 
 <img src="img/sacrificio-de-bispo-infundado-board2.png"/>
-
 
 <pre>
 1. Nf3 d5 2. b3 Bg4 3. Bb2 Nc6 4. e3 Nf6 5. Be2 e6 6. O-O Bd6 7. d3 O-O 8. Nbd2
@@ -201,7 +198,6 @@ Rd7 31. Qxf5 1-0
 
 <p>Olá. Me explica por que o código abaixo que implementa em C o algoritmo NCK funciona?</p>
 
-
 <pre>
 unsigned nChoosek( unsigned n, unsigned k )
 {
@@ -216,18 +212,15 @@ unsigned nChoosek( unsigned n, unsigned k )
     return result;
 }
 </pre>
-
 <h2>ChatGPT</h2>
 
 <p>Olá!</p>
 
 <p>Este código implementa o algoritmo de combinação NCK, que calcula o número de maneiras diferentes de escolher k elementos a partir de um conjunto de n elementos. Ele funciona de forma eficiente usando a fórmula matemática de combinação:</p>
 
-
 <pre>
 nCk = n! / (k! * (n-k)!)
 </pre>
-
 <p>Onde n! representa o fatorial de n (o produto de todos os números inteiros positivos de 1 a n).</p>
 
 <p>O código começa verificando se k é maior que n. Se for, retorna 0, já que não há maneira de escolher k elementos de um conjunto de tamanho menor que k. Em seguida, verifica se k é maior que a metade de n. Se for, redefine k para n-k. Isso é feito porque, por exemplo, 6C4 é igual a 6C2, então, ao calcular a combinação, é mais eficiente calcular a menor das duas.</p>
@@ -252,27 +245,21 @@ nCk = n! / (k! * (n-k)!)
 
 <p>A fórmula geral para nCk é:</p>
 
-
 <pre>
 nCk = n! / (k! * (n-k)!)
 </pre>
-
 <p>Agora, vamos ver por que 6C4 e 6C2 têm o mesmo resultado.</p>
 
 <p>Para calcular 6C4, usamos a fórmula acima e substituímos n por 6 e k por 4:</p>
 
-
 <pre>
 6C4 = 6! / (4! * (6-4)!) = 6! / (4! * 2!) = (6 * 5 * 4 * 3 * 2 * 1) / ((4 * 3 * 2 * 1) * (2 * 1)) = 15
 </pre>
-
 <p>Para calcular 6C2, usamos a mesma fórmula e substituímos n por 6 e k por 2:</p>
-
 
 <pre>
 6C2 = 6! / (2! * (6-2)!) = 6! / (2! * 4!) = (6 * 5 * 4 * 3 * 2 * 1) / ((2 * 1) * (4 * 3 * 2 * 1)) = 15
 </pre>
-
 <p>Como podemos ver, o resultado é o mesmo para ambas as combinações, que é 15. Isso ocorre porque escolher 4 elementos de um conjunto de 6 é o mesmo que não escolher 2 elementos. Em outras palavras, se temos 6 elementos e escolhemos 4, então, os outros 2 elementos não escolhidos são automaticamente determinados. Portanto, as duas combinações são iguais.</p>
 
 <p>Espero ter ajudado!</p>
@@ -289,27 +276,21 @@ nCk = n! / (k! * (n-k)!)
 
 <p>Isso pode ser visto usando a fórmula de combinação:</p>
 
-
 <pre>
 nCk = n! / (k! * (n-k)!)
 </pre>
-
 <p>Se escolhermos k elementos, então o número de maneiras de fazer isso é nCk. Mas se escolhermos os n-k elementos restantes, então o número de maneiras de fazer isso é (n choose n-k), ou seja:</p>
-
 
 <pre>
 nC(n-k) = n! / ((n-k)! * k!)
 </pre>
-
 <p>Observe que a única diferença entre as duas fórmulas é que k e (n-k) foram trocados. Isso significa que nCk e nC(n-k) são iguais!</p>
 
 <p>Por exemplo, se quisermos encontrar 5C3, podemos aplicar a propriedade de complementaridade e dizer que 5C3 é o mesmo que 5C2, já que 2 é o complemento de 3 em relação a 5. Portanto:</p>
 
-
 <pre>
 5C3 = 5C2 = 10
 </pre>
-
 <p>Espero ter esclarecido!</p>
 
 <h2>Wanderley Caloni</h2>
@@ -320,32 +301,26 @@ nC(n-k) = n! / ((n-k)! * k!)
 
 <p>Bom, o loop de 2 a k no código é usado para calcular o resultado da combinação, aplicando a fórmula:</p>
 
-
 <pre>
 nCk = n! / (k! * (n-k)!)
 </pre>
-
 <p>No loop, a variável result é inicializada com o valor de n, que representa o número de elementos no conjunto original. Em seguida, o loop itera de i=2 até i=k, que é o número de elementos que queremos escolher.</p>
 
 <p>Dentro do loop, o resultado é atualizado multiplicando o result pelo próximo elemento do conjunto n-i+1 e dividindo pelo i. A fórmula exata usada para atualizar o resultado é:</p>
-
 
 <pre>
 result *= (n-i+1);
 result /= i;
 </pre>
-
 <p>Essa atualização é feita para cada elemento escolhido, para garantir que todas as combinações possíveis sejam consideradas. No final do loop, result conterá o valor final da combinação de n elementos escolhidos k.</p>
 
 <p>A inicialização de result com o valor de n é feita porque cada elemento escolhido para a combinação pode ser selecionado apenas uma vez. Então, no início, temos n opções para escolher o primeiro elemento. Depois de selecionar o primeiro elemento, restam n-1 opções para escolher o segundo elemento, n-2 opções para escolher o terceiro elemento, e assim por diante. Multiplicando esses valores, obtemos o fatorial de n até o n-k+1.</p>
 
 <p>No entanto, como a ordem dos elementos escolhidos não importa em uma combinação, precisamos dividir pelo fatorial de k no final para eliminar as permutações redundantes, resultando na fórmula:</p>
 
-
 <pre>
 nCk = n! / (k! * (n-k)!)
 </pre>
-
 <p>Espero que isso esclareça como a inicialização de result com o valor de n e o loop de 2 a k são usados para calcular o resultado da combinação.</p>
 
 <h2>Wanderley Caloni</h2>
@@ -360,7 +335,6 @@ nCk = n! / (k! * (n-k)!)
 
 <p>Dessa forma, o loop seria atualizado para:</p>
 
-
 <pre>
 int result = n;
 int i;
@@ -370,7 +344,6 @@ for (i = 2; i &lt;= k; ++i) {
 }
 return result / product;
 </pre>
-
 <p>Essa otimização reduz o número de divisões realizadas no loop de k para apenas uma, na linha final. Isso pode ajudar a melhorar a eficiência do algoritmo, especialmente para valores maiores de n e k.</p>
 
 <p>Além disso, pode ser útil implementar uma verificação adicional para o caso em que k é muito pequeno em relação a n, já que nesse caso pode ser mais rápido usar a fórmula de combinação direta, em vez de executar o loop. Por exemplo, para valores de k abaixo de 5 ou 6, pode ser mais rápido simplesmente calcular a combinação diretamente usando a fórmula de combinação, em vez de executar o loop.</p>
@@ -406,7 +379,6 @@ return result / product;
 
 <img src="img/miniature-with-hidden-tactic-board.png"/>
 
-
 <pre>
 1. Nf3 e6 2. e4 h6 3. d4 a6 4. Nc3 b5 5. a3 c5 6. Be3 {Three pieces already
 developed and the adversary has none.} 6... cxd4 7. Nxd4 Bb7 8. f3 Nf6 9. Bd3
@@ -429,7 +401,6 @@ anyway} 1-0
 <p>Brancas jogam e vencem.</p>
 
 <img src="img/movi-a-dama-no-pre-move-e-me-ferrei-board.png"/>
-
 
 <pre>
 1. Nf3 e6 2. e4 d5 3. exd5 Qxd5 4. Nc3 Qd8 5. Bc4 Nf6 6. O-O Bd6 7. d3 h6 8. Be3
@@ -542,7 +513,6 @@ Kh1 Kg4 69. Kh2 Kh4 70. Kh1 Kg3 71. Kg1 Kf3 72. Kh1 Kg4 73. Kh2 Kh4 74. Kg1 Kg3
 <p>Brancas movem e... e nada. É um final complicado.</p>
 
 <img src="img/comeca-um-final-de-peoes-e-cavalos-board.png"/>
-
 
 <pre>
 1. Nf3 d5 2. e4 dxe4 3. Ng5 f5 4. Bc4 Nh6 5. c3 Nc6 6. Ne6 Qd6 7. Nxf8 Rxf8 8.

@@ -492,7 +492,6 @@ role="navigation" aria-label="main navigation">
 
 <p>O Boost Meta State Machine (MSM for short) é uma das duas bibliotecas mais famosinhas de state machine do Boost. Ela é uma versão estática que permite incluir chamadas para as entradas e saídas de um estado baseado em eventos. A sua principal vantagem é poder visualizar toda a máquina de estado em um só lugar, e sua principal desvantagem é pertecer ao Boost, o que quer dizer que você vai precisar fazer seu terceiro doutorado e ler uma documentação imensa sobre UML antes de conseguir produzir alguma coisa. Ou ler este artigo de 10 minutos tops.</p>
 
-
 <pre>
 #include &lt;iostream&gt;
 #include &lt;boost/msm/back/state_machine.hpp&gt;
@@ -590,9 +589,7 @@ int main()
     MyStateMachine::TestPathway();
 }
 </pre>
-
 <p>A parte bonitinha de se ver é os eventos e estados completamente ordenados:</p>
-
 
 <pre>
 struct transition_table :mpl::vector&lt;
@@ -604,9 +601,7 @@ struct transition_table :mpl::vector&lt;
     msmf::Row &lt; Tick,      Events::Event2,           Off,               msmf::none, msmf::none &gt;
 &gt; {};
 </pre>
-
 <p>Claro que a indentação ajuda. Para cada entrada e saída de um estado é possível utilizar os métodos on_entry e on_exit de cada struct que define um estado, seja este método um template totalmente genérico ou especificado por evento (e cada evento também é um struct, com direito a dados específicos).</p>
-
 
 <pre>
 template &lt;class Event, class Fsm&gt;
@@ -630,25 +625,19 @@ void on_exit(Events::Event2 const&amp; evt, Fsm&amp;) const
     cout &lt;&lt; "on_exit On Event2 (with data " &lt;&lt; evt.data &lt;&lt; ")\n";
 }
 </pre>
-
 <p>Quando é criada uma nova máquina de estados o estado inicial é chamado pelo evento on_entry genérico. Como sabemos qual é o estado inicial? Isso é definido pelo typedef initial_state dentro da classe da máquina de estado (que deve herdar de state_machine_def no estilo WTL, com sobrecarga estática):</p>
-
 
 <pre>
 struct StateMachine :msmf::state_machine_def&lt;StateMachine&gt;
 //...
 typedef On initial_state; // On is the start
 </pre>
-
 <p>O estado final também é definido, mas por herança. O estado final, que também é uma struct, deve herdar de terminate_state:</p>
-
 
 <pre>
 struct Off :msmf::terminate_state&lt;&gt;
 </pre>
-
 <p>A partir daí o método process_event serve para enviar eventos à máquina de estado que irá alterar seu estado dependendo do fluxo criado no nome transition_table dentro da máquina de estado (a tabelinha que vimos acima). A partir daí tudo é possível; a máquina de estado está à solta:</p>
-
 
 <pre>
 int TestPathway()
@@ -664,7 +653,6 @@ int TestPathway()
     return 0;
 }
 </pre>
-
 <p>Mas nesse exemplo didático está comportada em uma função apenas. Claro que cada método recebe a própria máquina de estado para ter a chance de alterá-la, ou guardá-la para uso futuro. Ela é recebida como parâmetro assim como o evento. E o evento, por ser uma struct também, pode conter outros dados relevantes para a transição.</p>
 
 </section><hr/>
@@ -702,13 +690,10 @@ int TestPathway()
 
 <p>Isso quer dizer que este snippet de código, por exemplo:</p>
 
-
 <pre>
 _sock.write_some(::boost::asio::buffer(output.data(), output.size()), err);
 </pre>
-
 <p>Não é inocente e não funciona sempre. Se _sock for um socket cuja comunicação está encriptada por SSL (em outras palavras -- em Boostês -- ele for um ssl_socket) você **precisa** escrever output em pequenas quantidades. Como em outra implementação inocente:</p>
-
 
 <pre>
 do
@@ -719,7 +704,6 @@ do
 }
 while (err.value() == boost::system::errc::success &amp;&amp; output.size() &gt; 0 );
 </pre>
-
 <p>Se isso não for feito e a ponta server escrever, digamos, 512KB, ou 17KB, ou qualquer coisa acima de 16KB, ela irá receber... 16 KB. E acabou. O resto se perder.</p>
 
 <p>Portanto, quando for mexer com SSL, esqueça OSI e esqueça TCP/IP. As coisas funcionam de uma maneira muito mais esotérica que qualquer programador de redes jamais viu, e jamais verá.</p>

@@ -422,7 +422,6 @@ role="navigation" aria-label="main navigation">
 </pre>
 <p>_Bom, "outro tipo" é forma de dizer. Isso é uma descrição errônea em muitos livros. De fato, o compilador enxerga **o mesmo tipo com outro nome**, daí chamarmos o typedef de apelido, mesmo._</p>
 
-
 <pre>
 /** @file dois_apelidos.cpp */
 #include &lt;iostream&gt;
@@ -442,7 +441,6 @@ int main()
    cout &lt;&lt; typeid(s2).name() &lt;&lt; endl;
 }
 </pre>
-
 <blockquote>    </blockquote>
 <blockquote>    C:\Tests>cl /EHsc dois_apelidos.cpp</blockquote>
 <blockquote>    ...</blockquote>
@@ -488,9 +486,6 @@ int main()
    
    // Um cast para ponteiro para função que recebe dois inteiros e não retorna nada.
    ( ( void (*)(int, int)) pf )(x, y);
-</pre>
-
-<pre>
 #include &lt;iostream&gt;
 void func(int x, int y)
 {
@@ -502,11 +497,9 @@ int main()
    ( ( void (*)(int, int) ) pf )(3, 14);
 }
 </pre>
-
 <h4>Structs em C++</h4>
 
 <p>Antigamente, as structs eram construções em C que definiam **um agregado de tipos primitivos** (ou outras structs) e que poderiam gerar variáveis desse tipo em qualquer lugar, desde que informado seu nome e que se tratasse de uma struct:</p>
-
 
 <pre>
 /** @file structs.cpp */
@@ -526,7 +519,6 @@ int main()
    func2(ms);
 }
 </pre>
-
 <p>Para evitar toda essa digitação, os programadores usavam um pequeno truque criando um apelido para a estrutura, e usavam o apelido no lugar da struct (apesar de ambas representarem a mesma coisa).</p>
 
 <pre>
@@ -541,7 +533,6 @@ int main()
    MS ms2; // mais simples
 </pre>
 <p>Com a definição da linguagem C++ padrão, e mais moderna, essa antiguidade foi removida, apesar de ainda suportada. Era possível usar apenas o nome do struct como seu tipo:</p>
-
 
 <pre>
 /** @file structs.cpp */
@@ -561,7 +552,6 @@ int main()
    func2(ms);
 }
 </pre>
-
 <p>Porém, isso vai um pouco além de quando a Microsoft começou a fazer código para seu sistema operacional. Naquela época, o padrão ainda estava se formando e existia mais ou menos um consenso de como seria a linguagem C++ (sem muitas alterações do que de fato a linguagem C já era). De qualquer forma, a linguagem C imperava bem mais que C++. Dessa forma, já era bem formada a ideia de como declarar uma struct: a forma antiga.</p>
 
 <pre>
@@ -576,7 +566,6 @@ int main()
 <h4>Como fazer,então?</h4>
 
 <p>Ora, do mesmo jeito que é feito há vinte anos: sem typedefs. O próprio paradigma da linguagem, independente de padrões de APIs, de sistemas operacionais ou de projetos específicos já orienta o programador para entender o que o espera na leitura de um código-fonte qualquer. Qualquer pessoa que aprendeu o básico do básico sobre ponteiros e structs consegue ler o código abaixo:</p>
-
 
 <pre>
 // Papai, o que que é isso?
@@ -597,9 +586,7 @@ int main()
    func(&amp;ms);
 }
 </pre>
-
 <p>Agora, para entender a forma antiga, ou você se baseou no copy&amp;paste dos modelos Microsoftianos, ou seja, decoreba, ou você é PhD em Linguagem C/C++ e padrões históricos de linguagens legadas. Se não é, deveria começar o curso agora.</p>
-
 
 <pre>
 // Papai, o que que é isso?
@@ -625,7 +612,6 @@ int main()
    func(&amp;ms);
 }
 </pre>
-
 <img src="img/typedef-arcaico-gFNalqB.png"/>
 
 <p>Da mesma forma, o uso de uma estrutura simples de tipos mantém a lista de nomes do seu projeto limpa e clara. Compare o visualizador de classes em projetos Windows com algo mais C++ para ter uma ideia.</p>

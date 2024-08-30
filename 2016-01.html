@@ -289,7 +289,6 @@ role="navigation" aria-label="main navigation">
 
 <p>Tomemos, por exemplo, métodos. Um método é uma função chamada dentro de um contexto. Qual o contexto? O objeto. Ou seja, uma instância específica de uma classe, que é um molde para se fazer alguma coisa.</p>
 
-
 <pre>
 int main()
 {
@@ -297,9 +296,7 @@ int main()
    obj.MeuMetodo(); // o contexto é obj, uma instância de MinhaClasse
 }
 </pre>
-
 <p>Para obter esse contexto, existe uma palavra-chave reservada dentro dos métodos que é o __this__, que está tão incrustado na linguagem que não precisa ser usado explicitamente: quando referenciamos alguma propriedade (ou um outro método) da classe, só pelo fato de estarmos dentro de um método o compilador já entende que se trata do mesmo objeto, ou mesmo contexto.</p>
-
 
 <pre>
 class MinhaClasse
@@ -315,9 +312,7 @@ void MinhaClasse::MeuMetodo()
    MeuOutroMetodo(); // ou seja: this-&gt;MeuOutroMetodo();
 }
 </pre>
-
 <p>E contexto nesse sentido nada mais é que um endereço na memória para alguma coisa que nos interessa. Tal qual uma função API do Windows -- tal qual <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa364418(v=vs.85">FindFirstFile</a> -- que recebe ou retorna uma __struct__ com o que precisamos, esse geralmente é o contexto procurado.</p>
-
 
 <pre>
 WIN32_FIND_DATA findData;
@@ -328,11 +323,9 @@ if( findH != INVALID_HANDLE_VALUE )
    {
 //...
 </pre>
-
 <img src="img/classe-objeto-contexto-dilbert.context.gif"/>
 
 <p>No caso de nós, que escrevemos uma "classe", o contexto é recebido "de fora":</p>
-
 
 <pre>
 HANDLE MyFindFirstFile(const char* pattern, LPWIN32_FIND_DATA findData)
@@ -341,9 +334,7 @@ HANDLE MyFindFirstFile(const char* pattern, LPWIN32_FIND_DATA findData)
    findData-&gt;dwFileAttributes = FILE_ATTRIBUTE_ENCRYPTED;
    //...
 </pre>
-
 <p>Tal como uma __struct__ que definimos, ela vira o contexto. Da mesma forma, um objeto de uma classe em C++ é esse contexto. Podemos fazer a mesma coisa em C, com o trabalho adicional de especificar o "this" (isto é, o ponteiro para o contexto/struct):</p>
-
 
 <pre>
 struct MinhaClasse
@@ -356,7 +347,6 @@ void MinhaClasse_MeuMetodo(MinhaClasse* pThis)
    ///@todo Chamar pThis-&gt;MeuOutroMetodo();
 }
 </pre>
-
 <p>Em um <a href="posts.html?q=classe-objeto-contexto-metodo">próximo post</a> vamos ver como fazer para chamar MeuOutroMetodo a partir de uma estrutura em C.</p>
 
 
@@ -386,7 +376,6 @@ void MinhaClasse_MeuMetodo(MinhaClasse* pThis)
 
 <p>Isso é relativamente simples quando se conhece ponteiros de função, existentes tanto em C quanto em C++. Ponteiros de função são tipos que contém endereço de uma função com assinatura específica (tipo de retorno e de argumentos). Através de um ponteiro de função é possível chamar uma função e passar alguns argumentos. Como o contexto nada mais é que um argumento, será só passá-lo como parâmetro.</p>
 
-
 <pre>
 bool MinhaFuncao(int x, int y)
 {
@@ -398,9 +387,7 @@ int main()
 	PMinhaFuncao(2, 3);
 }
 </pre>
-
 <p>No exemplo anterior não sabíamos como chamar um método de nosso "objeto" em C:</p>
-
 
 <pre>
 struct MinhaClasse
@@ -413,9 +400,7 @@ void MinhaClasse_MeuMetodo(MinhaClasse* pThis)
    ///@todo Chamar pThis-&gt;MeuOutroMetodo();
 }
 </pre>
-
 <p>Isso se torna fácil se tivermos uma nova "propriedade" na nossa struct que é um ponteiro para a função que queremos chamar.</p>
-
 
 <pre>
 #include &lt;stdio.h&gt;
@@ -444,7 +429,6 @@ int main()
     printf("MinhaPropriedade = %d", obj.MinhaPropriedade);
 }
 </pre>
-
 <img src="img/classe-objeto-contexto-metodo-uzfJuTC.png"/>
 
 <img src="img/classe-objeto-contexto-metodo-JLJaAsB.png"/>
@@ -484,7 +468,6 @@ int main()
 
 <p>No <a href="posts.html?q=classe-objeto-contexto-metodo">post anterior</a> implementamos "métodos" em C usando ponteiros de função dentro de structs que eram passadas como parâmetro. Tudo isso embutido por um compilador que gera o que chamamos de instância de uma classe, ou objeto, em C++. Isso é possível graças ao contexto que é passado para uma função (que no caso de C++ é o operador implícito __this__, que sempre existe dentro de um método não-estático).</p>
 
-
 <pre>
 ClasseCpp obj;
 obj.Metodo(); // passando this implicitamente
@@ -492,9 +475,7 @@ ClasseC obj;
 obj.Metodo = ClasseC_Metodo;
 obj.Metodo(&amp;obj); // passando this explicitamente
 </pre>
-
 <p>Para objetos não-polimórficos, o C++ não precisa mudar essa tabela de funções que os objetos de uma classe contém. No entanto, quando há pelo menos um método virtual, surge a necessidade de se criar a famigerada __vtable__, ou seja, justamente uma tabela de ponteiros de função, que dependem da classe instanciada (base ou algumas das derivadas). Se uma classe derivada sobrescreve um método de alguma classe base, é o endereço desse método que irá existir na _vtable_. Já vimos isso <a href="posts.html?q=vtable">há muito tempo atrás</a> escovando os bits da vtable direto no assembly e na pilha.</p>
-
 
 <pre>
 #include &lt;iostream&gt;
@@ -529,11 +510,9 @@ int main()
     std::cout &lt;&lt; "MinhaPropriedade (obj2) = " &lt;&lt; obj2.MinhaPropriedade &lt;&lt; std::endl;
 }
 </pre>
-
 <img src="img/classe-objeto-contexto-metodo-polimorfismo-Ye5mA8L.png"/>
 
 <p>Como você deve imaginar, é possível também fazer isso em C. Basta mudar os endereços das variáveis do tipo ponteiro de função que estão na struct usada como contexto. Para ficar o mais próximo possível do "modo C++" de fazer polimorfirmo, podemos escrever _hardcoded_ a tal _vtable_ para os diferentes tipos de "classe":</p>
-
 
 <pre>
 #include &lt;stdio.h&gt;
@@ -572,7 +551,6 @@ int main()
 	printf("MinhaPropriedade (obj2) = %d\n", obj2.MinhaPropriedade);
 }
 </pre>
-
 <img src="img/classe-objeto-contexto-metodo-polimorfismo-tRAtU9d.png"/>
 
 <p>A versão C ainda tem a vantagem de não precisar de uma vtable const (embora seja adequado em situações normais de temperatura e pressão). Os "métodos" poderiam mudar caso algum estado mudasse, alguma exceção fosse disparada, mantendo o mesmo contexto, mas um comportamento (vtable) diferente. Quem utiliza muito essa estratégia é o _kernel_ do Windows, que mexe com estruturas que contém não apenas listas ligadas genéricas, mas funções de _callback_ que não apenas o código da Microsoft precisa chamar, mas os próprios _drivers_ de terceiros que se preocupam com bom comportamento e _guidelines_ que tornam o SO rodando perfeitamente.</p>
@@ -633,7 +611,6 @@ int main()
 
 <p>Em C++, fazer uma função template é muito simples:</p>
 
-
 <pre>
 #include &lt;iostream&gt;
 using namespace std;
@@ -650,17 +627,14 @@ int main()
 	cout &lt;&lt; "dx is " &lt;&lt; ( Compare(dx, dy) ? "lesser" : "bigger" ) &lt;&lt; " than dy\n";
 }
 </pre>
-
 <img src="img/gabaritos-84Ptrvk.png"/>
 
 <p>Continuando nosso tema de fazer as mesmas coisas em C, __templates__ não é tão simples, pois não existe de fato na linguagem. Templates são interpretados pelo compilador, que gera um esqueleto de algoritmo que é usado para preencher código de todos os tipos utilizados. Em C isso era feito usando macros. Porém, macros não fazem parte da linguagem C. É apenas uma ferramenta chamada pré-processador que substitui texto antes do programa ser compilado. É através do pré-processador que, por exemplo, os headers são incluídos em um código-fonte. Isso já foi explicado em um <a href="posts.html?q=os-diferentes-erros-na-linguagem-c">artigo</a> bem velhinho, e mais recentemente em uma <a href="posts.html?q=entendendo-a-compilacao">palestra</a>.</p>
-
 
 <pre>
 // qual o tipo de x e y? qualquer um que faça comparação
 #define MACRO(x, y) x &lt; y
 </pre>
-
 <p>Eu não recomendaria usar macros em C++, assim como não recomendo em C. Porém, em C é a única opção para reciclar algoritmos de maneira estática. Exceto se você usar ponteiros de função, o que adiciona pouco overhead, mas se perde, assim como a técnica de macro, a informação dos tipos. A própria libc contém uma função, <a href="http://www.cplusplus.com/reference/cstdlib/qsort/">__qsort__</a>, que é "genérica" através do uso de ponteiros sem tipo (void*) e ponteiro de função. A função ordena elementos de uma lista, mas para isso depende da função de comparação que é passada por parâmetro. Essa função recebe dois void* que deve comparar. Além disso, o leiaute na memória tem que ser fixo, contínuo, pois é assim que a função consegue mover os elementos. Ou seja, bem limitado.</p>
 
 <img src="img/gabaritos-3TkGFkN.png"/>
@@ -708,20 +682,17 @@ int main()
 
 <p>Imagine, por exemplo, a estrutura <a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff554296(v=vs.85">LIST_ENTRY</a>, que é uma tentativa de generalizar não só o tipo de uma lista ligada, como seu posicionamento:</p>
 
-
 <pre>
 typedef struct _LIST_ENTRY {
   struct _LIST_ENTRY  *Flink;
   struct _LIST_ENTRY  *Blink;
 } LIST_ENTRY, *PLIST_ENTRY;
 </pre>
-
 <p>A lógica por trás de LIST_ENTRY é que esse membro pode ser inserido em qualquer lugar da estrutura que representará um elemento:</p>
 
 <img src="img/templates-em-c-no-lugar-de-macros-865mgsu.jpg"/>
 
 <p>Ele pode estar realmente no __meio__ do elemento, pois isso não importa, desde que você saiba voltar para o começo da estrutura. Isso é útil quando um elemento pode fazer parte de diferentes listas.</p>
-
 
 <pre>
 typedef struct _LIST_ENTRY {
@@ -742,11 +713,9 @@ int main()
 	InitializeListHead(&amp;g_head);
 }
 </pre>
-
 <p>OK, temos uma lista ligada cujo head está inicializado. Para inserir um novo item, podemos usar as rotinas InsertHeadList, AppendTailList, RemoveEntryList, PushEntryList, PopEntryList, etc. Enfim, uma infinidade de rotinas já cuidam disso para a gente.</p>
 
 <p>O que não temos é como acessar o elemento. Para isso usamos um truque bem peculiar na linguagem C, já disponível também em kernel:</p>
-
 
 <pre>
 #define CONTAINING_RECORD(address, type, field) \
@@ -754,9 +723,7 @@ int main()
     (PCHAR)(address) - \
     (ULONG_PTR)(&amp;((type *)0)-&gt;field)))
 </pre>
-
 <p>Basicamente a macro obtém a partir do endereço zero o offset do membro que é a entrada da lista ligada e subtrai esse ofsset do endereço do próprio campo, ganhando de brinde o tipo de sua estrutura. Usando a macro com nossa estrutura:</p>
-
 
 <pre>
 void DoSomething(PLINK_LIST pEntry)
@@ -764,11 +731,9 @@ void DoSomething(PLINK_LIST pEntry)
 	MeuElemento* pElem = CONTAINING_RECORD(pEntry, MeuElemento, entry);
 }
 </pre>
-
 <h4>Usando template</h4>
 
 <p>Note que entry é o nome, literal, do membro na estrutura, e não há maneira possível com templates de obter isso. A solução? Usar um nome padronizado. O resultado final pode ser parecido com este:</p>
-
 
 <pre>
 template&lt;typename T&gt;
@@ -777,9 +742,7 @@ T* ContainingRecord(PLIST_ENTRY pEntry)
     return ( reinterpret_cast&lt;T*&gt;( (char*)(pEntry) - (size_t)(&amp;((T*)0)-&gt;entry)) );
 }
 </pre>
-
 <p>Em ação:</p>
-
 
 <pre>
 #include &lt;iostream&gt;
@@ -811,7 +774,6 @@ int main()
     cout &lt;&lt; "X is " &lt;&lt; elem-&gt;x &lt;&lt; endl;
 }
 </pre>
-
 <p>"Nossa, tudo isso para substituir uma macro já consagrada no WDK??" Sim, nesse post o objetivo não ficou muito útil. É apenas uma ideia de substituição possível de ser feita em macros em geral. Pode ser bem documentada, usada há 30 anos, mas ainda é uma macro. Meu conselho: se funciona bem, use. Se vai fazer algo novo, tente sempre templates.</p>
 
 
@@ -1000,7 +962,6 @@ int main()
 
 <p>A extensão/plugin que me referia é o Logexts.dll. Você pode instalar o log de API em um momento, habilitá-lo em outro, e até desabilitá-lo depois. Ou seja, é um processo ótimo para realizar inspeção pontual de chamadas API. Caso, claro, ele não exploda em um desses momentos.</p>
 
-
 <pre>
 (9c4.f04): Break instruction exception - code 80000003 (first chance)
 eax=7ffd9000 ebx=00000001 ecx=00000002 edx=00000003 esi=00000004 edi=00000005
@@ -1055,7 +1016,6 @@ Logging disabled.
 0:004&gt; .detach
 Detached
 </pre>
-
 <p>Depois de gerarmos o que precisamos, podemos desatachar do processo e analisar o resultado: **um arquivo LGV**. Para abrir esse arquivo existe uma outra ferramenta chamada **logviewer**.</p>
 
 <img src="img/log-de-apis-chamadas-direto-do-windbg-fNq4uUu.png"/>
@@ -1137,7 +1097,6 @@ Detached
 
 <img src="img/exportando-repositorios-antigos-do-bazaar-para-git-9gzHZOz.png"/>
 
-
 <pre>
 git init
 bzr fast-export --plain . | git fast-import
@@ -1182,18 +1141,14 @@ pack_report: pack_open_windows        =          4 /          6
 pack_report: pack_mapped              =  101069594 /  163170978
 ---------------------------------------------------------------------
 </pre>
-
 <p>É óbvio que nem tudo serão mil maravilhas. Eu, por exemplo, encontrei um problema com case-sensitive que me deu algumas dores de cabeça:</p>
-
 
 <pre>
 fatal: Path Something/Resource.h not in branch
 fast-import: dumping crash report to .git/fast_import_crash_676
 bzr: broken pipe
 </pre>
-
 <p>O Git gera um arquivo de report onde estão as informações do ocorrido. Uma forma de contornar esse tipo de problema é primeiro exportar para um arquivo e editá-lo (corrigindo o case, por exemplo):</p>
-
 
 <pre>
 bzr fast-export --plain . &gt; plain-export.txt
@@ -1201,11 +1156,9 @@ gvim fast-export.txt
 hack hack hack
 type fast-export.txt | git fast-import
 </pre>
-
 <p>_Note que talvez você precise de um editor que suporte arquivos gigantescos (como o Vim) e precise se debruçar sobre merges com arquivos com mesmo nome e diferentes cases. Isso que dá manter projetos com refactoring pesado._</p>
 
 <p>Por fim, faça a conversão para todos os .bzr que tiver e haverá um .git com todo o histórico desses anos usando Bazaar. O próximo passo é montar o histórico de todos eles em apenas um repositório (se assim desejar). Segue uma série de comandos que pode ajudar para usar em uma batch:</p>
-
 
 <pre>
 @echo off
@@ -1218,9 +1171,7 @@ pause
 git add --all
 git ci -m "Archiving old Bazaar repo (%1)."
 </pre>
-
 <p>Você pode chamar um a um em cima de um repo novo:</p>
-
 
 <pre>
 mkdir NewRepo
@@ -1230,14 +1181,11 @@ git init
 ..\MyMergeBatch.bat OldRepoName2
 ..\MyMergeBatch.bat OldRepoName3
 </pre>
-
 <p>Para conseguir ter acesso ao histórico dos arquivos movidos, basta usar a opção -all do log:</p>
-
 
 <pre>
 git log --all -- MyRemovedPath
 </pre>
-
 <h2>Update</h2>
 
 <p>Tive alguns problemas em rastrear o histórico utilizando a estratégia de fazer merge no mesmo branch. A solução que encontrei, embora não exatamente direta, foi realizar os merges em branches apartados primeiro, mover os arquivos (de preferência, usando o git, para que ele detecte o rename), aplicar o commit e realizar o merge com o master. Há uma vantagem nessa estratégia, além do log --follow funcionar melhor: mantenha os branches originais, além do ponteiro para remote. Dessa forma, depois de alguns anos, saberá de onde veio esse merge maluco.</p>

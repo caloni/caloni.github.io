@@ -165,7 +165,6 @@ role="navigation" aria-label="main navigation">
 
 <p>Por ela ser uma ferramenta antiga, criada por Alfred Aho, Peter Weinberger e Brian Kernighan na década de 70, AWK usa conceitos antigos, como field e record. Ela foi criada para formatar texto em formato de planilha, ou banco de dados. Um field, ou campo, é uma coluna na planilha, e um record, ou registro, é uma linha dessa planilha. Imagine que você pode usar awk para manipular e extrair dados de qualquer texto que contenha esse padrão, sendo que os detalhes como o separador de campos e registros, por padrão espaço e nova-linha, podem ser alterados no começo do programa ou via parâmetros.</p>
 
-
 <pre>
 BEGIN {
   print "FS:", FS;
@@ -183,18 +182,14 @@ BEGIN {
   print "";
 }
 </pre>
-
 <h2>One line at a time</h2>
-
 
 <pre>
 pattern { action }
         { action }
 pattern 
 </pre>
-
 <p>Se não houver padrão então a ação é executada sempre. Se não houver ação, então sempre que o padrão for encontrado em uma linha o programa imprime a linha. Ou seja, há um valor default para padrão e ação.</p>
-
 
 <pre>
 awk '/test/'
@@ -203,14 +198,12 @@ awk '/test/ { print }'
 awk '{ if( $0 ~ "test" ) print }'
 awk '{ if( $0 ~ "test" ) print $2 }'
 </pre>
-
 <blockquote></blockquote>
 <blockquote>Awk maintains a delicate balance between being a line-oriented utility like grep and a full programming language. - Andy Oram</blockquote>
 <blockquote></blockquote>
 <h2>Program</h2>
 
 <p>Um Hello World interessante do AWK é imprimir a lista de arquivos e seus proprietários de uma pasta se baseando no comando `ls -l`. Isso demonstra os conceitos básicos da linguagem e ainda é útil.</p>
-
 
 <pre>
 pattern { action }
@@ -222,11 +215,9 @@ BEGIN { print "File\tOwner"}
 END { print " - DONE -" }
 ls -l | awk '{ print $9, "\t", $3}'
 </pre>
-
 <h2>How to run</h2>
 
 <p>O uso do parâmetro `-f` é para conseguirmos rodar programas AWK sem se preocupar se ele é um script. Dessa forma ele funciona como se fosse um bash script:</p>
-
 
 <pre>
 #!/bin/sh
@@ -237,7 +228,6 @@ BEGIN { print "File\tOwner" }
 END { print " - DONE -" }
 '
 </pre>
-
 <h2>Tricks</h2>
 
 <ul><li>Awk tem internamente dois tipos primitivos (fora o array associativo): `float` e `string`.</li>

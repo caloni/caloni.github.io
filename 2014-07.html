@@ -167,7 +167,6 @@ role="navigation" aria-label="main navigation">
 
 <p>Por fim, para fazer o código que irá comentar dentro de um card no Trello, basta usar dois ou três métodos que lidam com enviar coisas pela web (não me pergunte mais que isso):</p>
 
-
 <pre>
 &lt;?php
 $url = 'https://trello.com/1/cards/ID_DO_CARD/actions/comments';
@@ -188,7 +187,6 @@ $context  = stream_context_create($options);
 $result = file_get_contents($url, false, $context);
 ?&gt;
 </pre>
-
 <p>As informações _AQUI_VAI_SUA_CHAVE_ e _AQUI_VAI_SEU_TOKEN_DE_ACESSO_ você já obteve no linque de geração de key/secret. Já o _ID_DO_CARD_ é algo que depende de em qual lista seu card está, mas felizmente também existe um shortlink único e imutável para cada card no sistema:</p>
 
 <img src="img/integrando-bitbucketgithub-com-trello-xONdnSw.png"/>
@@ -208,7 +206,6 @@ $result = file_get_contents($url, false, $context);
 <p>Lembre-se de colocar seu código PHP em um servidor visível na web. Lembre-se também de usar o método de envio urlencoded do payload para simplificar seu tratamento. Para simplificar ainda mais o processo, coloque qualquer coisa no segredo (não validaremos neste post, mas #ficadica de segurança se você não quer que outros acessem seu PHP inadvertidamente).</p>
 
 <p>Pois bem. No código que irá receber o payload do GitHub precisamos de duas coisas: saber qual <a href="https://developer.github.com/webhooks/">a estrutura que vai ser recebida</a> e _como localizar o id do card onde iremos enviar a informação_. Nesse caso, mais uma vez, para simplificar, vamos procurar pelo próprio linque permanente do cartão na mensagem do commit. Aliás, doS commitS (sendo um push, é provável que o evento seja gerado com diversos commits aninhados).</p>
-
 
 <pre>
 &lt;?php
@@ -238,7 +235,6 @@ foreach( $pushData-&gt;commits as $c )
 }
 ?&gt;
 </pre>
-
 <p>Agora é só testar. Posso pegar esse mesmo artigo e comitá-lo no <a href="https://github.com/Caloni/blog">repositório do blogue</a> usando o linque único do card da tarefa de escrever este artigo. Ou seja, aqui é Inception na veia, mermão!</p>
 
 <img src="img/integrando-bitbucketgithub-com-trello-NzQPB9o.png"/>
@@ -254,7 +250,6 @@ foreach( $pushData-&gt;commits as $c )
 <h2>_Adendo: BitBucket_</h2>
 
 <p>A única coisa que muda no caso do <a href="http://www.bitbucket.org">BitBucket</a> é a tela onde deve ser inserido seu webhook (método POST, sempre) e a estrutura JSon que é enviada. De lambuja, eis o que deve ser feito com esse payload:</p>
-
 
 <pre>
 &lt;?php
@@ -284,7 +279,6 @@ foreach( $bitData-&gt;commits as $c )
 }
 ?&gt;
 </pre>
-
 
 
 

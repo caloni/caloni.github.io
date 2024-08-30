@@ -112,7 +112,6 @@ role="navigation" aria-label="main navigation">
 
 <p>Quando armazenamos valores monetários em doubles seus cálculos conseguem manter a precisão e na maioria das vezes o ajuste de precisão funciona. Porém, encontrei alguns casos onde a subtração de dois valores fazia "perder" um centavo (ou comparações exatas) justamente pela limitação da precisão do ponto flutuante. Nesse exemplo os valores são 2.358,93 - 1.386,93, que em uma conta de padaria (mas correta) dá 972,00 (<a href="http://www.codinghorror.com/blog/2009/01/if-you-dont-change-the-ui-nobody-notices.html">até a Calc do Windows</a> e <a href="posts.html?q=o Excel">o Excel</a> funcionam), mas pelo Visual Studio 2010 chega perto, mas erra o alvo:</p>
 
-
 <pre>
 #include &lt;iostream&gt;
 int main()
@@ -130,7 +129,6 @@ int main()
 	std::cout &lt;&lt; "d2 == 1386.93: " &lt;&lt; std::boolalpha &lt;&lt; ( d2 == 1386.93 ) &lt;&lt; "\n";
 }
 </pre>
-
 <p>Isso ocorre porque sua representação dentro da variável double é diferente de 272.0 do outro double. Depurando vemos mais claramente:</p>
 
 <img src="img/ponto-flutuante-afundando-TnsgAlZ.png"/>
@@ -154,7 +152,6 @@ int main()
 
 <p>Há uma forma de arredondamento <a href="http://stackoverflow.com/questions/8316509/difference-dev-cpp-and-microsoft-visual-c-math-h">já disponível no C99</a> (mas não no Visual Studio 2010) que pode ser útil para esses casos. A única coisa que é preciso fazer é arredondar os valores antes do cálculo:</p>
 
-
 <pre>
 #include &lt;iostream&gt;
 double round(double r)
@@ -172,7 +169,6 @@ int main()
 	std::cout &lt;&lt; "d3 == 972.0: " &lt;&lt; std::boolalpha &lt;&lt; ( d3 == 972.0 ) &lt;&lt; "\n";
 }
 </pre>
-
 <p>É uma decisão arbitrária essa de arredondar para cima, mas se for adotada em todo o sistema (e já fazendo parte de um padrão, no caso, o C99), não deverão existir problemas de interpretação de cálculos entre os componentes.</p>
 
 <p>O mercado financeiro agradece =).</p>

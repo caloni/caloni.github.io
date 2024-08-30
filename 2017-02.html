@@ -185,7 +185,6 @@ role="navigation" aria-label="main navigation">
 
 <p>No caso 1, a solução é simples e direta: faça as modificações, rode os testes locais e aplique o commit já no formato definido pela sua equipe (número do ticket, texto no idioma correto, detalhes nos parágrafos abaixo). Suba e mande para code review.</p>
 
-
 <pre>
 C:\Temp\projectX&gt;git pull
 Already up-to-date.
@@ -204,9 +203,7 @@ Your branch is ahead of 'origin/dev' by 1 commit.
 nothing to commit, working tree clean
 C:\Temp\projectX&gt;
 </pre>
-
 <p>Se a política de pull request estiver sendo usada, faça isso em um branch à parte, mas já mande para o reviewer aprovar o branch como se fosse um commit apenas e de preferência pronto para o rebase (o que não deve ser nem um problema se for uma mudança pontual).</p>
-
 
 <pre>
 C:\Temp\projectX&gt;gvim main.cpp
@@ -229,11 +226,9 @@ Total 6 (delta 2), reused 0 (delta 0)
 To ..\projectXRemote
  * [new branch]      ISS-5-changing-test-return-value -&gt; ISS-5-changing-test-return-value
 </pre>
-
 <h3>Quando o buraco é mais embaixo</h3>
 
 <p>Quando mais de um commit é necessário é porque vai rolar a festa. Vários commits com texto e modificações temporárias podem ser feitos, e caso o trabalho vire a noite, é recomendado subir tudo para um branch temporário remoto (de preferência que já seja identificado pela equipe como o branch para determinado issue).</p>
-
 
 <pre>
 C:\Temp\projectX&gt;git branch
@@ -284,20 +279,16 @@ e09cf24 Starting to test return 42.
 49d28aa ISS-2 Insertind comments and whatever.
 bff8edf ISS-1 First version.
 </pre>
-
 <p>Agora nós criamos uma bela duma bagunça, mas em um branch apartado e que ainda não foi enviado para pull requet ou inserido no branch de dev. Agora chega a hora de arrumar a casa. Para isso, como tudo no git, há várias maneiras, mas a mais direta é um rebase interativo (-i), onde você pega os commits e empacota tudo junto.</p>
 
 <p>(Obs.: se sua modificação demorou algum tempo é melhor atualizar o branch de dev para ver se há algo novo e fazer o merge com o branch de feature; o rebase daí não encontrará conflitos.)</p>
-
 
 <pre>
 C:\Temp\projectX&gt;git merge dev
 Already up-to-date.
 C:\Temp\projectX&gt;git rebase -i dev
 </pre>
-
 <p>Nesse momento o git irá abrir o editor com os commits trabalhados. Você deverá escolher quais operações fazer com cada commit. Se o objetivo é empacotar tudo, geralmente é pick no primeiro e squash em todos os outros:</p>
-
 
 <pre>
 pick e09cf24 Starting to test return 42.
@@ -307,9 +298,7 @@ squash 18d3afa Screwing around.
 squash f2a63d1 Getting old version back.
 squash e612339 Small fix after unit tests.
 </pre>
-
 <p>Ao final da operação mais uma vez o git irá exibir o editor. Agora é hora de você escolher o texto bonitinho, formatadinho, do seu único commit que será usado no branch de dev. Em outras palavras, transformar isso:</p>
-
 
 <pre>
 # This is a combination of 6 commits.
@@ -326,9 +315,7 @@ Getting old version back.
 # This is the commit message #6:
 Small fix after unit tests.
 </pre>
-
 <p>Nisso:</p>
-
 
 <pre>
 ISS-6 A very hard hacking, tested and ready to merge.
@@ -338,9 +325,7 @@ This hack involved several operations:
  - Deleted backup function test.
  - Small fix after unit tests.
 </pre>
-
 <p>Agora na hora de fazer o merge seu histórico estará redondo, sem ramificações e com o resultado final de seu hacking parecendo que foi feito bonito desde o começo (ah, vá):</p>
-
 
 <pre>
 C:\Temp\projectX&gt;git log
@@ -370,7 +355,6 @@ Author: Wanderley Caloni &lt;wanderley.caloni@bitforge.com.br&gt;
 Date:   Sat Feb 4 10:47:11 2017 -0200
     ISS-1 First version.
 </pre>
-
 <h3>O que aprendemos aqui</h3>
 
 <p>Esta é uma das inúmeras formas de trabalhar com o git de maneira individual sem atrapalhar seus colegas. Basicamente você pode escolher outras estratégias de commits e branchs locais, mas através do comando rebase -i é possível sempre reorganizar a bagunça em commits comportados, e dar a impressão que esses programadores são enviados divinos que modificam o fonte e acertam de primeira.</p>
@@ -496,7 +480,6 @@ Date:   Sat Feb 4 10:47:11 2017 -0200
 
 <p>Os pacotes do projeto ficam todos na raiz do diretório da solução na sub-pasta packages. Observando o que foi baixado lá, verifiquei que a versão do boost estava ok: ele havia baixado a 1.61 como pedido, mas o erro dizia respeito justamente a um desses pacotes.</p>
 
-
 <pre>
 C:\Projects\tiodb&gt;dir /b packages
 boost.1.61.0.0
@@ -508,9 +491,7 @@ boost_regex-vc140.1.61.0.0
 boost_system-vc140.1.61.0.0
 boost_thread-vc140.1.61.0.0
 </pre>
-
 <p>O maior problema disso é que não há muitas opções na IDE que resolvam. O arquivo packages.config deveria manter essas dependências, o que de fato ele faz. As opções do projeto (as abinhas do Visual Studio onde ficam as configurações) não possuem nada relacionado ao NuGet.</p>
-
 
 <pre>
 &lt;?xml version="1.0" encoding="utf-8"?&gt;
@@ -525,9 +506,7 @@ boost_thread-vc140.1.61.0.0
   &lt;package id="boost_thread-vc140" version="1.61.0.0" targetFramework="native" /&gt;
 &lt;/packages&gt;
 </pre>
-
 <p>Então não tem jeito. Há algo de podre dentro desse projeto e o próprio Visual Studio não vai resolver. Grep nele!</p>
-
 
 <pre>
 C:\Projects\tiodb&gt;grep -r -i "boost.*1.61" --include=*proj .
@@ -535,16 +514,12 @@ C:\Projects\tiodb&gt;grep -r -i "boost.*1.61" --include=*proj .
 ./server/tio/tioserver.vcxproj:    &lt;Error Condition="!Exists('packages\boost.1.61.0.0\build\native\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\boost.1.61.0.0\build\native\boost.targets'))" /&gt;
 ...
 </pre>
-
 <p>Note (e é preciso prestar atenção!) que o projeto server/tio/tioserver.vcxproj referencia a pasta packages como se ela existisse dentro do projeto. Porém, como já sabemos, ela existe na raiz da solution, que fica duas pastas "para trás". Isso nos indica que talvez o NuGet ainda não esteja tão redondo e que um possível teste é mudar esses valores na mão e ver o que acontece.</p>
-
 
 <pre>
 gvim server\tio\tioserver.vcxproj
 </pre>
-
 <img src="img/pacotes-perdidos-nuget-em-projetos-cpp-no-visual-studio-BLUS8XJ.png"/>
-
 
 <pre>
 1&gt;------ Build started: Project: tioclientdll, Configuration: Debug x64 ------
@@ -554,7 +529,6 @@ gvim server\tio\tioserver.vcxproj
 2&gt;  tioserver.vcxproj -&gt; C:\Projects\tiocoin\tiodb\server\tio\..\..\bin\x64\Debug\tio.exe
 2&gt;  tioserver.vcxproj -&gt; ..\..\bin\x64\Debug\tio.pdb (Full PDB)
 </pre>
-
 <p>Recarregado o projeto no Visual Studio após a intervenção cirúrgica, tudo voltou a funcionar. A lição de hoje é: nunca confie completamente em uma IDE. Às vezes o bom e velho grep e o bom e velho editor de sua escolha podem resolver uma situação.</p>
 
 </section><hr/>
@@ -917,7 +891,6 @@ gvim server\tio\tioserver.vcxproj
 </ul>
 <p>Podemos rodar o tio deixando ele usar os parâmetros padrão ou alterar número da porta e outros detalhes. Vamos executar da maneira mais simples:</p>
 
-
 <pre>
 C:\Projects\tiocoin\tiodb\bin\x64\Debug&gt;tio
 Tio, The Information Overlord. Copyright Rodrigo Strauss (www.1bit.com.br)
@@ -926,7 +899,6 @@ Saving files to C:/Users/Caloni/AppData/Local/Temp
 Listening on port 2605
 Up and running!
 </pre>
-
 <p>OK, tio rodando e ativo. Podemos navegar já pelos seus contêineres usando o InteliHubExplorer:</p>
 
 <img src="img/palestra-como-criar-moedas-digitais-em-casa-com-cpp-kick-off-YJZ7wxC.png"/>
@@ -936,7 +908,6 @@ Up and running!
 <p>A partir do servidor funcionando é possível criar novos contêineres e mantê-los, adicionando, atualizando e removendo itens. A partir dessas modificações outros clientes podem receber notícias dessas modificações e tomar suas próprias decisões.</p>
 
 <p>Vamos criar e popular um contêiner inicial de transações com  um GUID zerado, e a partir dele vamos adicionando novas "transações". Também iremos permitir o monitoramento dessas transações.</p>
-
 
 <pre>
 try
@@ -1013,7 +984,6 @@ catch (...)
     break;
 }
 </pre>
-
 <p>Após executar esse código passando o argumento "--build" e atualizarmos o IntelihubExplorer poderemos ver o novo contêiner e seu conteúdo:</p>
 
 <img src="img/palestra-como-criar-moedas-digitais-em-casa-com-cpp-kick-off-3Mhj2lE.png"/>
@@ -1199,13 +1169,10 @@ catch (...)
 
 <p>O Visual Studio utiliza um mecanismo que lembra os comandos bizarros que se usa no WinDbg, mexendo com registradores e tal. Através dessa combinação é possível dizer para o depurador como interpretar determinados tipos de objetos. Ele já vem obviamente pronto para std::string, CString (ATL) e deveria vir com QString, de tão famosa que é. Mas a versão do Visual Studio 2015 não vem. O jeito então é editar diretamente o arquivo onde ficam esses padrões.</p>
 
-
 <pre>
 ; AutoExp.Dat - templates for automatically expanding data
 </pre>
-
 <p>O nome do arquivo é __autoexp.dat__ e ele fica em uma pasta no estilo Program Files, Microsoft Visual Studio, Common7, Packages, Debugger. É melhor você retirar ele dessa pasta antes de sobrescrevê-lo para não ter erro de acesso. Ao abri-lo verá que no começo há vários comentários que explicam como é o funcionamento desse padrão.</p>
-
 
 <pre>
 ; type=[text]&lt;member[,format]&gt;...
@@ -1238,14 +1205,11 @@ catch (...)
 ; For details of other format specifiers see Help under:
 ; "format specifiers/watch variable"
 </pre>
-
 <p>Felizmente (e também obviamente) o pessoal do Qt já fez <a href="https://wiki.qt.io/IDE_Debug_Helpers">uma entrada na wiki</a> que explica como fazer para interpretar corretamente uma QString. Eles mesmos admitem que a coisa ficou difícil desde a última versão (Qt 5), mas ainda assim é possível. E, se tudo falhar, ainda é possível usar a janela de Watch:</p>
-
 
 <pre>
 (char*)str.d + str.d-&gt;offset,su
 </pre>
-
 <p>Mas não foi o caso dessa vez. Tudo funcionou perfeitamente assim que incluí os valores da Wiki logo no começo da sessão __Visualizer__.</p>
 
 <img src="img/visualizando-qstring-no-visual-studio-3dnGwGK.gif"/>

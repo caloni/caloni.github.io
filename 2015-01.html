@@ -387,7 +387,6 @@ role="navigation" aria-label="main navigation">
 
 <p>Primeiro, precisamos de um solution que contenha um projeto console e uma LIB. O projeto console deve usar a LIB para fazer alguma coisa. No exemplo abaixo, estarei listando os programas instalados no Windows (os mostrados no painel de controle através da opção "Adicionar/remover programas".</p>
 
-
 <pre>
 /** library.h
 */
@@ -465,7 +464,6 @@ int main()
    return ret;
 }
 </pre>
-
 <p>___Observação importante__: para ignorar todas as estripulias da versão Debug, todos os testes foram compilados em Release._</p>
 
 <p>Primeiramente, modifico a configuração padrão dos dois projetos para não depender da DLL de runtime do VC. Isso está em __Project, Properties, C/C++, Code Generation, Runtime Library__. Depois executo em uma máquina virtual sem as runtimes do VC8 instaladas:</p>
@@ -488,7 +486,6 @@ int main()
 
 <p>Tudo bem, meu executável não é mutante ainda. Mas agora vamos trocar a chamada da nossa função que usa STL por uma função que não usa:</p>
 
-
 <pre>
 /** library.h
 */
@@ -510,9 +507,6 @@ int main()
    ret = doesNothing();
    return ret;
 }
-</pre>
-
-<pre>
    Linking
    =======
    library.lib(library.obj) : warning LNK4049: locally 

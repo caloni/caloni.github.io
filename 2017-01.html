@@ -197,16 +197,13 @@ role="navigation" aria-label="main navigation">
 
 <p>Para navegar no código, existem duas técnicas que não necessitam de nenhum plugin. A primeira é a busca por regex, que pode ser feita com os comandos <a href="posts.html?q=:vimgrep">:vimgrep</a> ou <a href="posts.html?q=:grep">:grep</a>, sendo que o primeiro busca em um padrão de arquivos (usando wildcard) e o segundo dentro dos buffers já abertos (útil se você já tiver uma sessão ativa; mais sobre isso depois).</p>
 
-
 <pre>
 " No Vim não é necessário digitar o comando completo; note que esse wildcard busca pastas recursivamente
 " Isso busca em todos os buffers abertos cujo arquivo tem a extensão de C++
 </pre>
-
 <p>O bom é que, no caso de logs, se você buscar por expressões unívocas, isso já fica no histórico de seus comandos e você pode usar quando quiser para voltar para esses logs (ou se você for maluco e guardar de cabeça seus marks, pode criar um mark de vez).</p>
 
 <p>A segunda técnica de navegar no código é através das tags que são montadas pela ferramenta ctags. Ela é genérica o suficiente para suportar várias linguagens, mas pode ser usada até para qualquer sequência de palavras. Há plugins que realizam essa varredura do fonte automática, mas particularmente não gosto de encher meu Vim de plugins, sendo que o único que uso que me lembro é o <a href="http://www.vim.org/scripts/script.php?script_id=521">MRU</a> (porque o Vim ainda não suporta algo do gênero internamente). De qualquer forma, tudo que eu preciso fazer para atualizar as tags de um projeto é abrir o readme do projeto (que geralmente fica na pasta raiz) e rodar meu atalho.</p>
-
 
 <pre>
 " Roda recursivamente e otimiza para C++ e Python.
@@ -214,26 +211,21 @@ map &lt;S-F5&gt; :!ctags --tag-relative=yes --recurse --c++-kinds=+p --python-ki
 " Busca pelo arquivo tags na pasta atual e vai subindo a hierarquia.
 set tags=tags;
 </pre>
-
 <p>Isso vai gerar um arquivo ctags na pasta do projeto que será usada automaticamente para procurar pelas tags que eu preciso. O pulo do gato na verdade é o ponto-e-vírgula após o nome do arquivo ao setar a variável tags. Isso faz com que o Vim não busque apenas o arquivo tags na pasta atual, mas em toda hierarquia. Então se você estiver na pasta Projects\SomeProject\Folder1\Folder2\Folder3\File.cpp e tiver gerado o arquivo tags na pasta SomeProject para todo o projeto, ao usar o comando de busca de tag ele eventualmente vai abrir esse arquivo tags, pois ele vai procurando em Folder3, Folder2, Folder1 e cai em SomeProject.</p>
 
 <p>Como no Windows o atalho padrão do comando tag do Vim não funciona também preciso fazer uma pequena adaptação técnica (e de quebra já uso para navegar nos próximos resultados):</p>
-
 
 <pre>
 map &lt;C-K&gt; &lt;C-]&gt;
 " O bom é que o first e o next ficam um do lado do outro.
 map &lt;C-J&gt; :tnext&lt;CR&gt;
 </pre>
-
 <p>Depois de dar uma olhada no log, encontrar os métodos que você precisa analisar, seu fluxo, etc, você terá um monte de buffers relevantes abertos nas linhas relevantes. Seria muito bom se tudo isso pudesse ser guardado em um estado para que você continue amanhã ou em sua próxima sessão de flow. Para isso existe o comando <a href="posts.html?q=:mksession">:mksession</a>.</p>
-
 
 <pre>
 " Salva estado atual dos buffers
 " Restaura um estado salvo anteriomente
 </pre>
-
 <p>O comando <a href="posts.html?q=:source">:source</a> roda um script vim que possui comandos guardados. Ele é um arquivo texto semelhante ao vimrc.</p>
 
 <p>Basicamente é isso. Tudo o que você precisa em sua análise de fonte e de log se encontra na ponta de seus dedos. Não é necessário abrir nenhuma pasta nem terminal. Simplesmente navegue através do Vim para descobrir o problema e seja feliz em sua zona.</p>
@@ -520,7 +512,6 @@ map &lt;C-J&gt; :tnext&lt;CR&gt;
 
 <p>O funcionamento padrão via overlapped é bem simples: faça a operação de I/O (passando a estrutura) e verifique o retorno. Ele deve ser FALSE e o retorno do próximo GetLastError deve ser ERROR_IO_PENDING. Bom, descrevendo a operação ela não parece ser tão intuitiva. Mas funciona:</p>
 
-
 <pre>
 if (!ReadFile(hFile,
                  pDataBuf,
@@ -540,7 +531,6 @@ if (!ReadFile(hFile,
          fOverlapped = TRUE;
    }
 </pre>
-
 <p>A questão que nós encontramos nesse projeto apenas aconteceu porque após a operação de I/O assíncrona a thread responsável por retornar o resultado ficava em wait eterno ou dava timeout. Ambas as situações são normais e esperadas. Ficar aguardando para sempre um device acontece quando este simplesmente não responde com nenhum dado. E dar timeout acontece quando não queremos aguardar o device para sempre (WaitForSingleObject(handle, 1000), por exemplo, daria timeout depois de 1 segundo, ou 1000 milissegundos).</p>
 
 <p>O motivo da thread nunca retornar (ou dar timeout), porém, não estava em nenhuma dessas situações. Ao monitorar o tráfego usb se verificou que o device respondia em tempo hábil. O problema estava mais embaixo (ou mais em cima): a hidapi não se comportava conforme o MSDN mandava. Há uma situação não-mapeada nessa lib.</p>
@@ -555,7 +545,6 @@ if (!ReadFile(hFile,
 <p>Ou seja, em caso da função ReadFile (ou WriteFile) retornar TRUE em uma operação assíncrona/overlapped, isso quer dizer que a operação foi concluída com sucesso de forma síncrona, não sendo necessário aguardar o I/O ser concluído. Na verdade, é um pouco mais específico: o WaitForSingleObject __não deve ser chamado__. No nosso caso, ao chamá-lo, criávamos uma espera eterna, já que o I/O não seria mais sinalizado (porque deveria? a operação já foi concluída!).</p>
 
 <p>Uma colinha da M$ de como deve ser feito o tratamento:</p>
-
 
 <pre>
    if (!ReadFile(hFile,
@@ -594,7 +583,6 @@ if (!ReadFile(hFile,
    else
       ReadHasCompleted(NumberOfBytesRead);
 </pre>
-
 <p>Após essa correção no projeto as coisas começaram a funcionar normalmente.</p>
 
 <p>A BitForge fez a alteração em <a href="https://github.com/bitforgebr/hidapi/commit/132e03f37e8ab8c95ee264e1cfbeef6b2ed39a5b">um fork próprio</a> da hidapi e enviou o __pull request__ para os mantenedores oficiais da hidapi, a signal11. Esta é mais uma lição de que, em se tratando de I/O, as coisas difíceis que o kernel às vezes faz lá embaixo acabam refletindo aqui em cima. Às vezes até na própria API!</p>
@@ -653,7 +641,6 @@ if (!ReadFile(hFile,
 
 <p>Você já colocou aquele seu projeto favorito em /W4? Por padrão, o Visual Studio cria seus projetos com o nível de warnings e 3, porque o nível 4 é muito, muito chato. No entanto, algumas vezes ele serve para que seu código não fique apenas correto, mas bem documentado e apresentável. Vamos tentar?</p>
 
-
 <pre>
 1&gt;------ Build started: Project: tioserver, Configuration: Debug x64 ------
 1&gt;  pch.cpp
@@ -670,11 +657,9 @@ if (!ReadFile(hFile,
 1&gt;  tioserver.vcxproj -&gt; C:\Projects\tiodb\server\tio\..\..\bin\x64\Debug\tio.exe
 1&gt;  tioserver.vcxproj -&gt; ..\..\bin\x64\Debug\tio.pdb (Full PDB)
 </pre>
-
 <p>OK, este foi o nível 3 do tioserver, o projeto principal do <a href="posts.html?q=tiodb">tiodb</a>, uma ferramenta para manter contêineres assináveis na memória e acessíveis via socket. Note que já existe um warning, mas vamos ignorar por enquanto. O objetivo aqui é descobrir quais os warnings mais comuns do projeto que você vai escolher. Vejamos o meu:</p>
 
 <img src="img/warning-de-nivel-4-XjbqVh9.png"/>
-
 
 <pre>
 1&gt;------ Rebuild All started: Project: tioserver, Configuration: Debug x64 ------
@@ -734,18 +719,14 @@ if (!ReadFile(hFile,
 1&gt;  tioserver.vcxproj -&gt; C:\Projects\tiodb\server\tio\..\..\bin\x64\Debug\tio.exe
 1&gt;  tioserver.vcxproj -&gt; ..\..\bin\x64\Debug\tio.pdb (Full PDB)
 </pre>
-
 <p>Vamos ordenar e capturar apenas o código desses warnings para ver quantos ocorrem e quais os mais comuns:</p>
-
 
 <pre>
 sort
 s/c:\\.*: \(warning C[0-9]\+\).*$/\1/
 sort u
 </pre>
-
 <p>E a resposta é:</p>
-
 
 <pre>
 warning C4456: declaration of 'identifier' hides previous local declaration
@@ -753,11 +734,9 @@ warning C4457: declaration of 'identifier' hides function parameter
 warning C4458: declaration of 'identifier' hides class member
 warning C4701: potentially uninitialized local variable 'name' used
 </pre>
-
 <p>Apenas quatro. Tão comuns que <a href="https://msdn.microsoft.com/en-us/library/mt694070.aspx">a maioria</a> está até em ordem numérica e diz respeito a repetição de nomes em escopos diferentes, o que esconde os nomes do escopo anterior, mais amplo. O outro, o <a href="https://msdn.microsoft.com/en-us/library/1wea5zwe.aspx">C4701</a>, pode ser mais problemático, já que ele representa uma variável que potencialmente não foi inicializada, fonte comum daqueles erros de "como é que essa variável virou isso?".</p>
 
 <p>Felizmente só temos em um ponto do código:</p>
-
 
 <pre>
 //
@@ -789,11 +768,9 @@ int socket_receive(SOCKET socket, void* buffer, int len, const unsigned* timeout
             // C4701: potentially uninitialized local variable 'start' used
 			time_left = *timeout_in_seconds - (int)(time(NULL) - start);
 </pre>
-
 <p>A correção é simples: inicialize a p\*\*\*\*\* das suas variáveis zero (ou determine qual o comportamento no caso else).</p>
 
 <p>Vamos dar uma olhada em um dos outros warnings:</p>
-
 
 <pre>
     string containerName = container-&gt;GetName();
@@ -804,7 +781,6 @@ int socket_receive(SOCKET socket, void* buffer, int len, const unsigned* timeout
         // warning C4456: declaration of 'identifier' hides previous local declaration
         unsigned handle = session-&gt;RegisterContainer(containerName, container);
 </pre>
-
 <p>OK, isso é meio feio. A variável handle tinha acabado de ser criada logo antes da entrada do if. A não ser que sejam de fato variáveis distintas no código (apenas analisando a função inteira) elas poderiam ser reaproveitadas em apenas uma (até porque possuem o mesmo tipo). E se forem variáveis distintas... bem, coloque nomes distintos =)</p>
 
 <p>E aqui termina mais uma sessão de "e se eu abrir mais os warnings do meu código". Espero que tenha aproveitado.</p>

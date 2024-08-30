@@ -133,7 +133,6 @@ role="navigation" aria-label="main navigation">
 
 <p>Isso às vezes não importa muito para o dia-a-dia, mas outras vezes importa. Veja o caso da biblioteca **Boost.Bind**, uma das mais antigas a entrar para o projeto. Sua função é simples: expandir o conceito do `std::bind` para quantos argumentos for necessário. Isso foi criado na época com a ajuda de inúmeros overloads da função (em modo template), mas hoje é possível fazer com variadic templates. Seu uso é simples, intuitivo, direto, e resolve muitos problemas de encaixe de código:</p>
 
-
 <pre>
 #include &lt;iostream&gt;
 #include &lt;boost/bind.hpp&gt;
@@ -151,9 +150,7 @@ int main()
     CallHandler(boost::bind(handler1, 10, 20));
 }
 </pre>
-
 <p>No entanto, o que era para ser um uso simples e direto de uma feature bem-vinda ao cinto de utilidades do programador C++ se transforma em um pesadelo quando as coisas não se encaixam tão bem:</p>
-
 
 <pre>
 #include &lt;iostream&gt;
@@ -177,9 +174,7 @@ int main()
     CallHandler(boost::bind(handler2_fail, 10, 20));
 }
 </pre>
-
 <p>Vou plotar aqui todas as mensagens de erro para sentir o drama:</p>
-
 
 <pre>
 1&gt;------ Build started: Project: boost_bind_result_type_error, Configuration: Debug Win32 ------
@@ -222,14 +217,11 @@ int main()
 1&gt;        ]
 1&gt;Done building project "boost_bind_result_type_error.vcxproj" -- FAILED.
 </pre>
-
 <p>Este é o erro encontrado usando o último Visual Studio (2017 15.9.0 Preview 2.0) e o Boost 1.68.0. A primeira linha deveria significar alguma coisa (que é para onde todo programador C++ deve olhar):</p>
-
 
 <pre>
 1&gt;c:\libs\vcpkg\installed\x86-windows\include\boost\bind\bind.hpp(75): error C2825: 'F': must be a class or namespace when followed by '::'
 </pre>
-
 <p>Mas não. Se olharmos para o código-fonte onde ocorreu o problema, a caixa de encaixe perfeito se quebra:</p>
 
 <img src="img/boost-bind-e-os-erros-escrotos-MsRp03e.png"/>
@@ -237,7 +229,6 @@ int main()
 <p>O que isso quer dizer? O que aconteceu? Onde que eu errei?</p>
 
 <p>Claro que ao final da longa listagem de erros (que se torna ainda mais longa, dependendo de quantos argumentos sua função tem) há alguma luz no fim do túnel:</p>
-
 
 <pre>
 1&gt;c:\libs\vcpkg\installed\x86-windows\include\boost\bind\bind.hpp(1284): error C2039: 'type': is not a member of 'boost::_bi::result_traits&lt;R,F&gt;'
@@ -253,7 +244,6 @@ int main()
 1&gt;            F=void (__cdecl *)(int,int,int)
 1&gt;        ]
 </pre>
-
 <p>Mas claro que essa luz pode estar ofuscada quando os tipos dos argumentos são templates de templates de templates... enfim. Deu pra entender onde o caos consegue chegar quando se trata de harmonizar uma biblioteca perfeita com uma linguagem em constante construção.</p>
 
 </section><hr/>

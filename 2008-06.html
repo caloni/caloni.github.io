@@ -784,7 +784,6 @@ role="navigation" aria-label="main navigation">
 
 <p>O código do aplicativo apenas tenta carregar a DLL em dois lugares distintos e exibe o endereço para onde elas foram mapeadas em nosso processo de teste:</p>
 
-
 <pre>
 #include &lt;windows.h&gt;
 #include &lt;stdio.h&gt;
@@ -797,9 +796,7 @@ int main()
 	return 0;
 }
 </pre>
-
 <p>A DLL é uma DLL trivial:</p>
-
 
 <pre>
 #include &lt;windows.h&gt;
@@ -808,7 +805,6 @@ BOOL WINAPI DllMain(HINSTANCE inst, DWORD reason, PVOID reserv)
 	return TRUE;
 }
 </pre>
-
 <p>Vamos aos testes.</p>
 
 <p>No caso da DLL não existir ambos os retornos serão nulos, que é o natural e esperado quando a DLL não pode ser encontrada nos lugares especificados pelo sistema e pelo aplicativo.</p>
@@ -1142,7 +1138,6 @@ BOOL WINAPI DllMain(HINSTANCE inst, DWORD reason, PVOID reserv)
 
 <p>Um leitor pediu para que eu falasse um pouco sobre essas coisas, especificamente como se faz para obter o nome da classe de onde estamos executando um determinado método. Para esse tipo de construção podemos usar o operado typeid, que retorna informações básicas sobre um tipo de acordo com um tipo, instância ou expressão:</p>
 
-
 <pre>
 #include &lt;iostream&gt;
 using namespace std;
@@ -1153,9 +1148,6 @@ int main()
 	cout &lt;&lt; typeid( x ).name() &lt;&lt; endl;
 	cout &lt;&lt; typeid( 2 + 2 ).name() &lt;&lt; endl;
 }
-</pre>
-
-<pre>
    C:\Tests&gt;cl typeid.cpp
    Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 15.00.21022.08 for 80x86
    Copyright (C) Microsoft Corporation.  All rights reserved.
@@ -1167,7 +1159,6 @@ int main()
    int
 </pre>
 <p>Dessa forma, podemos nos aproveitar do fato que todo método não-estático possui a variável implícita this, do tipo "ponteiro constante para T", onde T é o tipo da classe que contém o método sendo chamado.</p>
-
 
 <pre>
 #include &lt;iostream&gt;
@@ -1185,9 +1176,6 @@ int main()
 	MyClass myc;
 	myc.MyMethod();
 }
-</pre>
-
-<pre>
    C:\Tests&gt;cl typeid-class.cpp
    Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 15.00.21022.08 for 80x86
    Copyright (C) Microsoft Corporation.  All rights reserved.
@@ -1199,7 +1187,6 @@ int main()
    class MyClass::MyMethod
 </pre>
 <p>Com classes não-polimórficas a coisa parece não ter muita utilidade. No entanto, essa mesma técnica pode ser aplicada em classes derivadas, uma vez que o operador typeid pode trabalhar em tempo de execução:</p>
-
 
 <pre>
 #include &lt;iostream&gt;
@@ -1221,9 +1208,6 @@ int main()
 	myc1-&gt;MyMethod();
 	myc2-&gt;MyMethod();
 }
-</pre>
-
-<pre>
    C:\Tests&gt;cl typeid-class2.cpp
    Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 15.00.21022.08 for 80x86
    Copyright (C) Microsoft Corporation.  All rights reserved.
@@ -1232,9 +1216,8 @@ int main()
    typeid-class2.obj
    
    C:\Tests&gt;typeid-class2.exe
+   class MyDerivatedClass1::MyMethod class MyDerivatedClass2::MyMethod
 </pre>
-<p>class MyDerivatedClass1::MyMethod class MyDerivatedClass2::MyMethod</p>
-
 <p>Apenas se lembre de ter de fato uma classe polimórfica (eu consegui isso tornando MyMethod uma função virtual). Do contrário você pode <a href="posts.html?q=typeid-e-os-perigos-do-nao-polimorfismo">ter problemas</a>.</p>
 
 

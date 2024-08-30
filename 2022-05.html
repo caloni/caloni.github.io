@@ -343,7 +343,6 @@ role="navigation" aria-label="main navigation">
 
 <li><a href="https://tldp.org/LDP/abs/html/index.html">Advanced Bash-Scripting Guide</a></li>
 
-
 <pre>
 #
 # teste da entrevista de goiaba em bash
@@ -368,23 +367,18 @@ ordenar_numeros() {
 }
 ordenar_numeros $1 $2 $3
 </pre>
-
 </ul>
 <p>Como você deve ter percebido lendo o primeiro script da sua vida variáveis em bash script começam com `$`. As variáveis de `$0` a `$9` são os argumentos do programa, mas de resto pode ser um nome qualquer e usado em qualquer lugar, mas caso você precise tornar o nome não-ambíguo é importante colocar entre chaves:</p>
-
 
 <pre>
 [ ${var}text -ne $vartext ]
 </pre>
-
 <p>Como você já deve ter percebido lendo o primeiro script da sua vida comandos são terminados por nova-linha ou por ponto-e-vírgula, não tendo briga para ninguém. Dois comandos não podem conviver um do lado do outro e dar bom. É por isso que caso você queira fazer um `if-then` na mesma linha precisa colocar um ponto-e-vírgula antes de usar o `then`:</p>
-
 
 <pre>
 for i in "${numeros[@]}"; do
 if [ $i -le $menor ]; then
 </pre>
-
 <h2>Preparando o terreno</h2>
 
 <p>Há algumas dicas úteis para explicar para todos que mexem com bash script:</p>
@@ -396,15 +390,12 @@ if [ $i -le $menor ]; then
 </ul>
 <p>No começo dos scripts em geral você irá notar a seguinte linha:</p>
 
-
 <pre>
 set -e
 </pre>
-
 <p>O uso do parâmetro `-e` é para sair imediatamente caso qualquer comando dê ruim. Além disso, há a possibilidade de setar funções de saída para limpar coisas deixadas pelo caminho. É o garbage collector do script. Há <a href="https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html">outras opções</a> para modificar o comportamento do shell.</p>
 
 <p>A opção de limpeza pode ser setada através do <a href="https://linuxhint.com/bash_trap_command/">comando trap</a>. O comando trap permite associar chamadas de funções aos diferentes tipos de sinais que o programa pode receber. Por exemplo, abaixo é setada a função de limpeza para quando o script sair.</p>
-
 
 <pre>
 trap cleanup EXIT
@@ -415,18 +406,14 @@ cleanup() {
     done
 }
 </pre>
-
 <p>Note esta técnica utilizada para incluir operações de limpeza dentro de um array, o `cl_stack`. No decorrer da execução do script se houver a necessidade de adicionar mais uma operação de limpeza o usuário deve incluir esta operação neste array.</p>
-
 
 <pre>
 cl_stack+=( "kill pid" )
 </pre>
-
 <h3>Lendo parâmetros de entrada</h3>
 
 <p>Para ler parâmetros de entrada há um comando muito bom chamado getopt, mas por algum motivo ele não é muito popular nos scripts deste projeto. No lugar é usada a leitura toscona dos parâmetros pelas variáveis reservadas $1 a $9.</p>
-
 
 <pre>
 #
@@ -437,9 +424,7 @@ if [ "$1" = "" ] || [ ! -d ${LIB_ROOT}/libs/$2 ]; then
     exit 1
 fi
 </pre>
-
 <p>Você irá encontrar também o shift de argumentos. Conforme você vai comendo os primeiros argumentos sendo passados para seu script o $2 poderia ser o $1, o $3 viraria o $2 e assim por diante, para facilitar o reaproveitamento de script e simplificar a contagem. É particularmente útil para argumentos sem ordem específica.</p>
-
 
 <pre>
 [ -z $1 ] &amp;&amp; usage
@@ -452,11 +437,9 @@ if [ $1 = "-d" ]; then
   shift
 fi
 </pre>
-
 <h2>Estrutura do código</h2>
 
 <p>Abaixo as palavras reservadas para montar scripts. E é só. Em geral elas são usadas para definir condições e rodar código em loop. O resto são comandos disponíveis no sistema.</p>
-
 
 <pre>
 if      then   elif     else     fi        time
@@ -464,25 +447,20 @@ for     in     until    while    do        done
 case    esac   coproc   select   function
 {   }   [[     ]]       !
 </pre>
-
 <h2>Evaluation</h2>
 
 <p>Avaliações de expressões e comandos é um dos pedaços mais úteis em scripts bash. Você pode capturar a saída de um comando e guardar em uma variável ou usar uma variável como entrada de um comando, além de criar novas variáveis através da montagem de um ou mais comandos com outras strings. Em geral tudo que está dentro de `$()` pode ser usado como um minishell que irá executar e entregar o output.</p>
-
 
 <pre>
 tmpdir=$(mktemp -d)
 mountdir=$(pwd)/subdir
 echo "Today is $(date). What a lovely, lovely day!"
 </pre>
-
 <p>Evaluation precisa de redirects às vezes, e às vezes não precisa de nenhum (`/dev/null`). No exemplo abaixo nós queremos o id do usuário de um arquivo sem nos preocupar com a saída de erro.</p>
-
 
 <pre>
 uid=$(stat -c %u ${mountdir}/data/file 2&gt; /dev/null)
 </pre>
-
 <p>A saída de erro é o file descriptor 2, e por isso foi usada a construção `2&gt;` em vez do simples `&gt;`, que redirecionaria o file descriptor 1, que é a saída padrão. O file descriptor 0, caso não tenha adivinhado ainda, é a entrada padrão, que pode ser obtida com a flechinha invertida `&lt;`. Resumo:</p>
 
 <pre>
@@ -500,16 +478,13 @@ uid=$(stat -c %u ${mountdir}/data/file 2&gt; /dev/null)
 
 <h3>ifs</h3>
 
-
 <pre>
 if [ $foo -ge 3 ]; then
 if [ -f regularfile ]; then
 if [ -r readablefile]; then
 if &lt;condition&gt;; then&lt;commands&gt;fi
 </pre>
-
 <h3>if-elif-else</h3>
-
 
 <pre>
 if [ -r somefile ]; then
@@ -520,7 +495,6 @@ else
   echo "The file 'somefile' does not exist."
 fi
 </pre>
-
 <h3>Dicas sobre uso do if</h3>
 
 <ul><li>Sempre mantenha espaços entre os colchetes e a checagem/comparação; e.g. erro: “missing `]'“;</li>
@@ -529,14 +503,12 @@ fi
 
 <li>Variáveis do tipo strings podem conter espaços e isso é um problema para o comparador; solução: coloque sempre aspas entre variáveis do tipo string.</li>
 
-
 <pre>
 if [ "$1" = "" -o ! -f "$1" ]; then
   echo "usage: cpfiles &lt;compactedfile.tar&gt;"
   exit 1
 fi
 </pre>
-
 </ul>
 <h3>Brinde</h3>
 
@@ -549,7 +521,6 @@ fi
 </ul>
 <h3>Condições com colchetes-duplos</h3>
 
-
 <pre>
 if [[ "$stringvar" == *string* ]]; then
 if [[ "$stringvar" == *[sS]tring* ]]; then
@@ -558,7 +529,6 @@ if [[ -a *.sh ]]; then
 if [[ $num -eq 3 &amp;&amp; "$stringvar" == foo ]]; then
 if [[ "$title" =~ [^a-zA-Z0-9\ ] ]]; then
 </pre>
-
 <ul><li>Duplos-colchetes expandem variáveis como shell globbing (exemplo acima com asteriscos retorna verdade se houver string em qualquer parte de $stringvar;</li>
 
 <li>Por outro lado não há file globbing (e por isso a condição -a acima funciona para um arquivo chamado *.sh);</li>
@@ -579,7 +549,6 @@ if [[ "$title" =~ [^a-zA-Z0-9\ ] ]]; then
 
 <p>Sim, ele existe. E é até bonitinho:</p>
 
-
 <pre>
 case $1 in
     'start')
@@ -598,7 +567,6 @@ case $1 in
         exit 1
         ;;
 </pre>
-
 <h3>Alguns comandos úteis do Linux para se divertir</h3>
 
 <pre>
@@ -793,7 +761,6 @@ case $1 in
 
 <p>Para depurar scripts bash use o parâmetro `-x` para conseguir ver a execução de cada linha.</p>
 
-
 <pre>
 bash -x sort-number.sh 1 2 3
 + ordenar_numeros 1 2 3
@@ -819,9 +786,7 @@ bash -x sort-number.sh 1 2 3
 + echo maior=3, menor=1, media=2.00
 maior=3, menor=1, media=2.00
 </pre>
-
 <p>Ou se você precisar depurar apenas uma parte do script pode ligar e desligar o modo `-x` dentro do próprio script usando a mudança de modos como já aprendemos no começo deste artigo.</p>
-
 
 <pre>
 for i in "${numeros[@]}"; do
@@ -832,10 +797,6 @@ for i in "${numeros[@]}"; do
   fi
   set +x # stop debugging from here
   if [ $i -ge $maior ]
-</pre>
-
-
-<pre>
 bash sort-number.sh 1 2 3
 + '[' 1 -le 1 ']'
 + menor=1
@@ -856,8 +817,7 @@ maior=3, menor=1, media=2.00
 
 
 
-
-<p>[sendo inventada] para adicionar mais formas de expressar condições. É importante ter sempre em mãos também as [diferentes checagens]: https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Bash-Conditional-Expressions</p>
+<p><a href="https://acloudguru.com/blog/engineering/conditions-in-bash-scripting-if-statements">sendo inventada</a> para adicionar mais formas de expressar condições. É importante ter sempre em mãos também as <a href="posts.html?q=diferentes checagens">diferentes checagens</a>: https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Bash-Conditional-Expressions</p>
 
 </section><hr/>
 

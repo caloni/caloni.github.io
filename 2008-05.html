@@ -712,6 +712,8 @@ role="navigation" aria-label="main navigation">
        OutputDebugString(buffer);
      }
      while( 0 );
+</pre>
+
 </section><hr/>
 
 
@@ -922,7 +924,6 @@ role="navigation" aria-label="main navigation">
 
 <p>Vamos imaginar que você é muito do sem imaginação (típico de pessoas que mantêm blogues) e criou duas funções lindíssimas que somam e multiplicam dois números:</p>
 
-
 <pre>
 int sum(int a, int b)
 {
@@ -933,11 +934,9 @@ int mult(int a, int b)
     return a * b;
 }
 </pre>
-
 <p>Não são aquelas coisas, mas são genéricas e, até certo ponto, "úteis" para o nosso exemplo.</p>
 
 <p>Agora, tudo que temos que fazer é criar dois arquivos: mymath.c e mymath.h. No mymath.c, colocamos   as funções acima exatamente como estão. No mymath.h, colocamos apenas as declarações dessas duas funções, apenas para avisar outros ".c" que existem duas funções que fazem coisas incríveis nessa nossa LIB.</p>
-
 
 <pre>
 /* soma dois números */
@@ -945,9 +944,7 @@ int sum(int a, int b);
 /* multiplica dois números */
 int mult(int a, int b);
 </pre>
-
 <p>Adicionamos esses dois arquivos ao projeto (se já não estão), e voilà!</p>
-
 
 <pre>
 ------ Build started: Project: MyFirstLib, Configuration: Debug Win32 ------
@@ -957,7 +954,6 @@ Creating library...
 Build log was saved at "file://c:\Projects\temp\MyFirstLib\Debug\BuildLog.htm"
 MyFirstLib - 0 error(s), 0 warning(s)
 </pre>
-
 <p>Para usar uma LIB temos inúmeras maneiras de fazê-lo. A mais simples que eu conheço é criar um novo projeto no mesmo Solution de sua LIB. Um console, por exemplo:</p>
 
 <img src="img/como-criar-uma-lib-no-visual-studio-myfirstlib4.png"/>
@@ -967,7 +963,6 @@ MyFirstLib - 0 error(s), 0 warning(s)
 <img src="img/como-criar-uma-lib-no-visual-studio-myfirstlib6.png"/>
 
 <p>Se você seguiu todos os passos direitinho, e eu estou assumindo que você já sabia como criar um projeto console, sua saída da compilação talvez seja mais ou menos essa:</p>
-
 
 <pre>
 ------ Build started: Project: MyFirstCmd, Configuration: Debug Win32 ------
@@ -980,7 +975,6 @@ c:\Projects\temp\MyFirstLib\Debug\MyFirstCmd.exe : fatal error LNK1120: 2 unreso
 Build log was saved at "file://c:\Projects\temp\MyFirstCmd\Debug\BuildLog.htm"
 MyFirstCmd - 3 error(s), 0 warning(s)
 </pre>
-
 <p>Dois erros! Ele não achou os símbolos mult e sum. Mas eles estão logo ali! E agora?</p>
 
 <p>Nada a temer: tudo que temos que fazer é falar para o Solution que o projeto myfirstcmd depende do projeto myfirstlib:</p>
@@ -988,7 +982,6 @@ MyFirstCmd - 3 error(s), 0 warning(s)
 <img src="img/como-criar-uma-lib-no-visual-studio-myfirstlib7.png"/>
 
 <img src="img/como-criar-uma-lib-no-visual-studio-myfirstlib8.png"/>
-
 
 <pre>
 ------ Build started: Project: MyFirstCmd, Configuration: Debug Win32 ------
@@ -999,7 +992,6 @@ Copyright (C) Microsoft Corporation.  All rights reserved.
 Build log was saved at "file://c:\Projects\temp\MyFirstCmd\Debug\BuildLog.htm"
 MyFirstCmd - 0 error(s), 0 warning(s)
 </pre>
-
 <p>Isso resolve o problema de organização e compilação quando temos dezenas de ".c" espalhados pelo projeto. Existem melhores alternativas, mais bem organizadas e estruturadas, inclusive lingüisticamente falando. No entanto, tudo tem sua hora, e só se deve preocupar-se com isso quando sua solução tiver algumas dezenas de ".lib". Até lá!</p>
 
 </section><hr/>

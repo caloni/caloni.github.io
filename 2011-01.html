@@ -97,7 +97,6 @@ role="navigation" aria-label="main navigation">
 
 <p>Pois é. As coisas nem sempre acabam sendo como o esperado. Se você possuir uma LIB, por exemplo, e nela existirem duas funções, como abaixo, e você se limitar a usar em seu programa apenas a primeira, todas as dependências da segunda também irão parar no executável final.</p>
 
-
 <pre>
 #include "LibMod.h"
 #include &lt;windows.h&gt;
@@ -130,10 +129,6 @@ void UsingNewApis()
 	}
 }
  
-</pre>
-
-
-<pre>
 #include "LibMod.h"
 #include &lt;stdio.h&gt;
 #include &lt;stdlib.h&gt;
@@ -145,7 +140,6 @@ int main()
 }
  
 </pre>
-
 <h4>Por que isso ocorre?</h4>
 
 <p>Acontece que o nosso amigo linker gera uma lista de dependências por módulo (CPP), e não por função. Dessa forma, tudo que vier é lucro.</p>
@@ -155,7 +149,6 @@ int main()
 <h4>Solução?</h4>
 
 <p>Sempre existe. Nesse caso, migrarmos as funções moderninhas para um segundo CPP, recompilarmos a LIB e a dependência milagrosamente desaparecerá!</p>
-
 
 <pre>
 #include "LibMod.h"
@@ -169,10 +162,6 @@ int UsingOldApis()
 	return int( (DWORD)(LOBYTE(LOWORD(ver))) );
 }
  
-</pre>
-
-
-<pre>
 #include "LibMod.h"
 #include &lt;windows.h&gt;
 #include &lt;Tlhelp32.h&gt;
@@ -198,7 +187,6 @@ void UsingNewApis()
 	}
 }
 </pre>
-
 <img src="img/dependencia-pedindo-carona-depends-process32-not-needed.png"/>
 
 <p>Agora a aplicação poderá rodar em paz naquele que é, como diz meu amigo, um sistema operacional de ponta... da outra ponta!</p>

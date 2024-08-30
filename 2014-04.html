@@ -168,7 +168,6 @@ role="navigation" aria-label="main navigation">
 
 <p>O padrão do lambda é supor que sua função embutida e enlatada não precisa retornar nada, o que torna a sintaxe mais simples: é um void AlgumaCoisa(argumentos). No entanto, para algoritmos como o find_if isso não funciona, então é necessário retornar algo. E, no caso de find_if, chamá-lo mais de uma vez pode ser feito facilmente criando uma variável lambda:</p>
 
-
 <pre>
 #include "Common.h"
 #include &lt;algorithm&gt;
@@ -192,7 +191,6 @@ int main()
 	}
 }
 </pre>
-
 <p>O tipo de retorno que colocamos através de uma flechinha é obrigatória? De fato, não. Se eu omiti-la vai funcionar do mesmo jeito porque o único ponto de saída da minha função retorna um bool.</p>
 
 <p>Esses compiladores estão ficando cada vez mais espertos.</p>
@@ -267,9 +265,6 @@ int main()
    3 11 6 15
    9 10 7 12
    13 14 8 16
-</pre>
-
-<pre>
 import sys
 f = open(sys.argv[1])
 total = int(f.readline())
@@ -294,9 +289,7 @@ for case in range(0, total):
 	else:
 		print 'Case #' + str(case+1) + ': Volunteer cheated!'
 </pre>
-
 <p>O segundo exercício já envolvia um jogo bem divertido em que o jogador ficava clicando em cookies como se não houvese amanhã. Esse deu um pouco mais de trabalho, mas foi mais divertido que o primeiro.</p>
-
 
 <pre>
 import sys
@@ -319,9 +312,7 @@ for case in range(1, total + 1):
     ret = CookieClicker(args[0], args[1], args[2])
     print 'Case #' + str(case) + ': ' + '{0:.7f}'.format(ret)
 </pre>
-
 <p>Já o terceiro... o terceiro passa. Vamos para o quarto, um dos mais instigantes, pois envolve duas regras distintas de um jogo e a otimização das melhores estratégias para ambos. Isso consumiu bem mais tempo que os outros dois iniciais, pois lembro de ter me isolado por uma hora para conseguir colocar tudo na cabeça.</p>
-
 
 <pre>
 import sys
@@ -376,11 +367,9 @@ for case in range(1, total + 1):
         warCheat = WarCheat(naomi, ken)
         print 'Case #' + str(case) + ': ' + str(warCheat)+ ' ' + str(war)
 </pre>
-
 <p>Já o terceiro foi um fracasso total. Tentei de todas as maneiras resolver o impasse de descobrir qual disposição de um jogo de campo minado poderia ser resolvido em apenas um clique (parece o jogo oposto do viciado clicador de cookies), mas falhei miseravelmente. E desconfio o porquê. Primeiro entendo que meu perfeccionismo me impediu de realizar uma checagem padrão para exceções já conhecidas (quando há apenas uma linha ou coluna, quando há apenas um espaço sem minas, etc). Eu pensei: se o Google fez esse problema, ele deve ter bolado alguma solução genérica que independa de ifs. Bom, não que eu saiba. Depois de terminado o tempo dei uma olhada em algumas soluções dos competidores e não achei nenhuma solução que usasse algum algoritmo maluco e genérico (não achei nenhum indiano, contudo).</p>
 
 <p>Eis a solução porca e mal-resolvida (alguns pontos do códido foram feitos depois de ver o código de outrem):</p>
-
 
 <pre>
 import sys
@@ -563,7 +552,6 @@ def FieldRenderWrong(row, col, mines):
 		mines = mines - 1
 	return field
 </pre>
-
 <p>Não, eu não usei o Google para descobrir a lógica por trás do problema. Vai que os caras ficam monitorando quem fica fazendo pesquisas. E, não, tampouco usei o Bing. Não sou masoquista a esse ponto.</p>
 
 <p>_PS: Bom, estou na próxima fase. Veremos o que o futuro nos espera. Esse programador foi fisgado pelo campeonato de pastéis._</p>
@@ -862,7 +850,6 @@ def FieldRenderWrong(row, col, mines):
 
 <p>Sim, de XOR. O XOR aqui pode ser usado para detectarmos qual a combinação de switches precisamos para que cada tomada encaixa em cada dispositivo. Esse é o nosso conjunto universo de giros de disjuntores. Com esse conjunto em mãos fica fácil saber quais combinações são possíveis de encaixar todos os dispositivos: basta contar!</p>
 
-
 <pre>
 #include "CodeJam.h"
 #include &lt;algorithm&gt;
@@ -944,7 +931,6 @@ void TestCase(std::istream&amp; is, std::ostream&amp; os)
 	else os &lt;&lt; "NOT POSSIBLE\n";
 }
 </pre>
-
 <p>_Observação: note que retirei o wrapper costumeiro dos exercícios do Code Jam para não poluir demais o exemplo com código. E, na verdade, essa parte do código está compartilhada com todas as soluções (reuse!)._</p>
 
 <p>O que aprendi dessa pequena aventura foi: não importa o quanto um problema pareça fácil, anotar em um pedaço de papel é o caminho mais curto entre a mente e o código.</p>
