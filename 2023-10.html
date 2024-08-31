@@ -98,7 +98,7 @@ role="navigation" aria-label="main navigation">
 
 <p>Esta dica é para começar uma análise de reversa quando você deseja entender quais informações estão sendo trafegadas por uma chamada COM remota, ou seja, entre processos distintos. Isso vale para WinRT e para o COM tradicional. De uma forma ou de outra a chamada irá passar por `combase!NdrExtpProxySendReceive` e outras funções de RPC relacionadas, além das novas funções de ALPC, em especial `ntdll!NtAlpcSendWaitReceivePort`. Existem várias de marshaling e unmarshaling, mas o mais importante é centralizar na função que envia e recebe bytes e analisar estes bytes. Eles são a versão serializada dos parâmetro sendo trafegados.</p>
 
-<p>Outra informação útil ao colocar um breakpoint nesta função é a stack, que vai informar de onde veio a construção ou descontrução dos parâmetros. Existe a informação do número da procedure também, que aliada ao interface ID sendo chamado pode junto com <a href="posts.html?q=onboarding-no-baixo-nivel">OleViewDotNet</a> dar informações de qual a assinatura do método sendo chamada. Uma passada pelo <a href="https://hex-rays.com/ida-free/">IDA</a> pode ajudar também em entender o código. Exige conhecimentos de assembly e <a href="posts.html?q=x64-deep-dive">convenção de chamada</a>.</p>
+<p>Outra informação útil ao colocar um breakpoint nesta função é a stack, que vai informar de onde veio a construção ou descontrução dos parâmetros. Existe a informação do número da procedure também, que aliada ao interface ID sendo chamado pode junto com <a href="2023-06.html#onboarding-no-baixo-nivel">OleViewDotNet</a> dar informações de qual a assinatura do método sendo chamada. Uma passada pelo <a href="https://hex-rays.com/ida-free/">IDA</a> pode ajudar também em entender o código. Exige conhecimentos de assembly e <a href="2023-04.html#x64-deep-dive">convenção de chamada</a>.</p>
 
 
 
@@ -157,7 +157,7 @@ role="navigation" aria-label="main navigation">
 <p class="title"><a href="2023-10.html#como-investigar-a-vtable-de-uma-interface-ou-objeto-com">#</a> Como investigar a vtable de uma interface ou objeto COM</p>
 <span class="title-heading">Caloni, 2023-10-03 <a href="tag_reversing.html">tag_reversing</a> <a href="tag_windbg.html">tag_windbg</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-como-investigar-a-vtable-de-uma-interface-ou-objeto-com')"><sup>[copy]</sup></a></span>
 
-<p>Uma vez que você encontre onde está a `vtable` -- por exemplo, como o primeiro parâmetro da chamada em um método, vide <a href="posts.html?q=x64-deep-dive">convenção de chamadas do x64</a> -- liste no WinDbg os endereços contidos neste endereço (o parâmetro `L` é a quantidade de bytes para mostrar):</p>
+<p>Uma vez que você encontre onde está a `vtable` -- por exemplo, como o primeiro parâmetro da chamada em um método, vide <a href="2023-04.html#x64-deep-dive">convenção de chamadas do x64</a> -- liste no WinDbg os endereços contidos neste endereço (o parâmetro `L` é a quantidade de bytes para mostrar):</p>
 
 <pre>
 dp &lt;address&gt; L50
@@ -191,7 +191,7 @@ Windows_Security_Authentication_Web_Core!Windows::Security::Authentication::Web:
 <p class="title"><a href="2023-10.html#flow-com-enfase-na-teoria-de-sistemas">#</a> Flow com ênfase na teoria de sistemas</p>
 <span class="title-heading">Caloni, 2023-10-03 <a href="tag_books.html">tag_books</a> <a href="tag_self.html">tag_self</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-flow-com-enfase-na-teoria-de-sistemas')"><sup>[copy]</sup></a></span>
 
-<p>Reli pela enésima vez minhas anotações sobre Flow, aquele <a href="posts.html?q=flow">livro do Mihaly Csikszentmihalyi</a>, e venho dessa vez com anotações das anotações com ênfase na teoria de sistemas. O resumo é que o self, esse sistema dinâmico que reconhecemos como nós, pode ser expandido ao se acoplar a qualquer outro sistema onde invistamos energia psíquica. Porém, para isso funcionar, devemos reorientar nossa atenção e focar, ou seja, empreender nossa energia psíquica, muito mais no sistema que está sendo a atividade do momento e muito menos em nós mesmos ou em outros inputs externos que não faz parte do sistema e que é apenas entropia. É quando o self vira o sistema que nós podemos resgatar novas informações que irão ser adicionadas ao sistema original. A isso chamamos aprendizado do mundo. Nosso ser se expande e nosso organismo ressoa em harmonia.</p>
+<p>Reli pela enésima vez minhas anotações sobre Flow, aquele <a href="2020-09.html#flow">livro do Mihaly Csikszentmihalyi</a>, e venho dessa vez com anotações das anotações com ênfase na teoria de sistemas. O resumo é que o self, esse sistema dinâmico que reconhecemos como nós, pode ser expandido ao se acoplar a qualquer outro sistema onde invistamos energia psíquica. Porém, para isso funcionar, devemos reorientar nossa atenção e focar, ou seja, empreender nossa energia psíquica, muito mais no sistema que está sendo a atividade do momento e muito menos em nós mesmos ou em outros inputs externos que não faz parte do sistema e que é apenas entropia. É quando o self vira o sistema que nós podemos resgatar novas informações que irão ser adicionadas ao sistema original. A isso chamamos aprendizado do mundo. Nosso ser se expande e nosso organismo ressoa em harmonia.</p>
 
 <blockquote>"We have seen that experience depends on the way we invest psychic energy -- on the structure of attention. This, in turn, is related to goals and intentions. These processes are connected to each other by the self, or the dynamic mental representation we have of the entire system of our goals. These are the pieces that must be maneuvered if we wish to improve things. </blockquote>
 <blockquote>"Whenever information disrupts consciousness by threatening its goals we have a condition of inner disorder, or psychic entropy, a disorganization of the self that impairs its effectiveness. Prolonged experiences of this kind can weaken the self to the point that it is no longer able to invest attention and pursue its goals." </blockquote>
@@ -274,7 +274,7 @@ HRESULT RoGetActivationFactory(
   [out] void    **factory
 );
 </pre>
-<p>Sabendo como <a href="posts.html?q=hstring">obter a string raw de uma HSTRING</a> basta colocar um breakpoint no WinDbg que imprima esta string e siga vazando:</p>
+<p>Sabendo como <a href="2023-08.html#hstring">obter a string raw de uma HSTRING</a> basta colocar um breakpoint no WinDbg que imprima esta string e siga vazando:</p>
 
 <pre>
 bp combase!_RoGetActivationFactory "du poi(@rcx+0x10) ; g"
@@ -402,7 +402,7 @@ Windows.Storage.Streams.DataReader
 
 <p>Não vou poder participar da Mostra desse ano, pois estarei muito ocupado bebendo vinho no Chile. Porém, para os que ficam, fora novos diretores achei uns repetidos que pode ser interessante dar uma olhada ou escapar da sessão.</p>
 
-<p>Taika Waititi, por exemplo, que estreou com <a href="posts.html?q=Loucos por Nada">Loucos por Nada</a> e terminou em Hollywood com aquela <a href="posts.html?q=jojo-rabbit">comédia infantil sobre Hitler</a>, mas que no meio fez um mockumentary de vampiro, o divertidíssimo <a href="posts.html?q=O Que Fazemos nas Sombras">O Que Fazemos nas Sombras</a>.</p>
+<p>Taika Waititi, por exemplo, que estreou com <a href="posts.html?q=Loucos por Nada">Loucos por Nada</a> e terminou em Hollywood com aquela <a href="2020-02.html#jojo-rabbit">comédia infantil sobre Hitler</a>, mas que no meio fez um mockumentary de vampiro, o divertidíssimo <a href="posts.html?q=O Que Fazemos nas Sombras">O Que Fazemos nas Sombras</a>.</p>
 
 <p>Ou o sempre atordoado ou atordoante Manoel de Oliveira, de <a href="posts.html?q=Singularidades de uma Rapariga Loura">Singularidades de uma Rapariga Loura</a>.</p>
 
@@ -412,11 +412,11 @@ Windows.Storage.Streams.DataReader
 
 <p>O documentarista James Marsh, do clássico <a href="posts.html?q=O Equilibrista">O Equilibrista</a> e Project Nim, além de filmes bleh como <a href="posts.html?q=A Teoria de Tudo">A Teoria de Tudo</a>.</p>
 
-<p>Craig Gillespie, que dirigiu aquele filme que <a href="posts.html?q=a-garota-ideal">Ryan Gosling namora uma boneca inflável</a>, além de dirigir Margot Robbie em seu melhor trabalho, <a href="posts.html?q=Eu, Tonya">Eu, Tonya</a>.</p>
+<p>Craig Gillespie, que dirigiu aquele filme que <a href="2014-09.html#a-garota-ideal">Ryan Gosling namora uma boneca inflável</a>, além de dirigir Margot Robbie em seu melhor trabalho, <a href="posts.html?q=Eu, Tonya">Eu, Tonya</a>.</p>
 
 <p>Benoît Jacquot, do imersivo drama <a href="posts.html?q=Três Corações">Três Corações</a> e do médio <a href="posts.html?q=O Último Amor de Casanova">O Último Amor de Casanova</a>.</p>
 
-<p>Dziga Vertov, ou o russo <a href="posts.html?q=man-with-a-movie-camera">Com uma Câmera na Mão</a>, ou até mesmo <a href="posts.html?q=A História da Guerra Civil">A História da Guerra Civil</a>, filme soviético do partido (é claro).</p>
+<p>Dziga Vertov, ou o russo <a href="2015-09.html#man-with-a-movie-camera">Com uma Câmera na Mão</a>, ou até mesmo <a href="posts.html?q=A História da Guerra Civil">A História da Guerra Civil</a>, filme soviético do partido (é claro).</p>
 
 <p>Tomasz Wasilewski, de <a href="posts.html?q=Estados Unidos Pelo Amor">Estados Unidos Pelo Amor</a> (sinceramente não me lembro muito desse filme).</p>
 

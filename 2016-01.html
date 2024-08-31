@@ -367,7 +367,7 @@ void MinhaClasse_MeuMetodo(MinhaClasse* pThis)
 <p class="title"><a href="2016-01.html#classe-objeto-contexto-metodo">#</a> Classe, objeto, contexto, método</p>
 <span class="title-heading">Caloni, 2016-01-11 <a href="tag_coding.html">tag_coding</a> <a href="tag_ccpp.html">tag_ccpp</a><a href="2016-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-classe-objeto-contexto-metodo')"><sup>[copy]</sup></a></span>
 
-<p>No <a href="posts.html?q=classe-objeto-contexto">post anterior</a> falamos como a passagem de um endereço de uma struct consegue nos passar o contexto de um "objeto", seja em C (manualmente) ou em C++ (automagicamente pelo operador implícito __this__). Trocamos uma propriedade desse "objeto" em C, mas ainda não chamamos um método.</p>
+<p>No <a href="2016-01.html#classe-objeto-contexto">post anterior</a> falamos como a passagem de um endereço de uma struct consegue nos passar o contexto de um "objeto", seja em C (manualmente) ou em C++ (automagicamente pelo operador implícito __this__). Trocamos uma propriedade desse "objeto" em C, mas ainda não chamamos um método.</p>
 
 <p>Hoje faremos isso.</p>
 
@@ -463,7 +463,7 @@ int main()
 <p class="title"><a href="2016-01.html#classe-objeto-contexto-metodo-polimorfismo">#</a> Classe, objeto, contexto, método, polimorfismo</p>
 <span class="title-heading">Caloni, 2016-01-12 <a href="tag_coding.html">tag_coding</a> <a href="tag_ccpp.html">tag_ccpp</a><a href="2016-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-classe-objeto-contexto-metodo-polimorfismo')"><sup>[copy]</sup></a></span>
 
-<p>No <a href="posts.html?q=classe-objeto-contexto-metodo">post anterior</a> implementamos "métodos" em C usando ponteiros de função dentro de structs que eram passadas como parâmetro. Tudo isso embutido por um compilador que gera o que chamamos de instância de uma classe, ou objeto, em C++. Isso é possível graças ao contexto que é passado para uma função (que no caso de C++ é o operador implícito __this__, que sempre existe dentro de um método não-estático).</p>
+<p>No <a href="2016-01.html#classe-objeto-contexto-metodo">post anterior</a> implementamos "métodos" em C usando ponteiros de função dentro de structs que eram passadas como parâmetro. Tudo isso embutido por um compilador que gera o que chamamos de instância de uma classe, ou objeto, em C++. Isso é possível graças ao contexto que é passado para uma função (que no caso de C++ é o operador implícito __this__, que sempre existe dentro de um método não-estático).</p>
 
 <pre>
 ClasseCpp obj;
@@ -472,7 +472,7 @@ ClasseC obj;
 obj.Metodo = ClasseC_Metodo;
 obj.Metodo(&amp;obj); // passando this explicitamente
 </pre>
-<p>Para objetos não-polimórficos, o C++ não precisa mudar essa tabela de funções que os objetos de uma classe contém. No entanto, quando há pelo menos um método virtual, surge a necessidade de se criar a famigerada __vtable__, ou seja, justamente uma tabela de ponteiros de função, que dependem da classe instanciada (base ou algumas das derivadas). Se uma classe derivada sobrescreve um método de alguma classe base, é o endereço desse método que irá existir na _vtable_. Já vimos isso <a href="posts.html?q=vtable">há muito tempo atrás</a> escovando os bits da vtable direto no assembly e na pilha.</p>
+<p>Para objetos não-polimórficos, o C++ não precisa mudar essa tabela de funções que os objetos de uma classe contém. No entanto, quando há pelo menos um método virtual, surge a necessidade de se criar a famigerada __vtable__, ou seja, justamente uma tabela de ponteiros de função, que dependem da classe instanciada (base ou algumas das derivadas). Se uma classe derivada sobrescreve um método de alguma classe base, é o endereço desse método que irá existir na _vtable_. Já vimos isso <a href="2011-03.html#vtable">há muito tempo atrás</a> escovando os bits da vtable direto no assembly e na pilha.</p>
 
 <pre>
 #include &lt;iostream&gt;
@@ -626,7 +626,7 @@ int main()
 </pre>
 <img src="img/gabaritos-84Ptrvk.png"/>
 
-<p>Continuando nosso tema de fazer as mesmas coisas em C, __templates__ não é tão simples, pois não existe de fato na linguagem. Templates são interpretados pelo compilador, que gera um esqueleto de algoritmo que é usado para preencher código de todos os tipos utilizados. Em C isso era feito usando macros. Porém, macros não fazem parte da linguagem C. É apenas uma ferramenta chamada pré-processador que substitui texto antes do programa ser compilado. É através do pré-processador que, por exemplo, os headers são incluídos em um código-fonte. Isso já foi explicado em um <a href="posts.html?q=os-diferentes-erros-na-linguagem-c">artigo</a> bem velhinho, e mais recentemente em uma <a href="posts.html?q=entendendo-a-compilacao">palestra</a>.</p>
+<p>Continuando nosso tema de fazer as mesmas coisas em C, __templates__ não é tão simples, pois não existe de fato na linguagem. Templates são interpretados pelo compilador, que gera um esqueleto de algoritmo que é usado para preencher código de todos os tipos utilizados. Em C isso era feito usando macros. Porém, macros não fazem parte da linguagem C. É apenas uma ferramenta chamada pré-processador que substitui texto antes do programa ser compilado. É através do pré-processador que, por exemplo, os headers são incluídos em um código-fonte. Isso já foi explicado em um <a href="2008-02.html#os-diferentes-erros-na-linguagem-c">artigo</a> bem velhinho, e mais recentemente em uma <a href="2015-01.html#entendendo-a-compilacao">palestra</a>.</p>
 
 <pre>
 // qual o tipo de x e y? qualquer um que faça comparação
@@ -943,7 +943,7 @@ int main()
 <p class="title"><a href="2016-01.html#log-de-apis-chamadas-direto-do-windbg">#</a> Log de chamadas API direto do WinDbg</p>
 <span class="title-heading">Caloni, 2016-01-21 <a href="tag_coding.html">tag_coding</a><a href="2016-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-log-de-apis-chamadas-direto-do-windbg')"><sup>[copy]</sup></a></span>
 
-<p>Há <a href="posts.html?q=introducao-ao-debugging-tools-for-windows">muito tempo atrás</a> eu havia falado sobre como a ferramenta logger.exe, do Debugging Tools for Windows, poderia ser usada para gerar um arquivo de log com centenas de APIs detalhadas em sua chamada, como parâmetros de entrada, retorno e tempo. Bom, testando isso hoje, me veio à lembrança o artigo e também a constatação que o logger é muito instável. Tão instável que não consegui logar as APIs que desejava nas inúmeras tentativas que fiz. Isso em um Windows XP!</p>
+<p>Há <a href="2007-06.html#introducao-ao-debugging-tools-for-windows">muito tempo atrás</a> eu havia falado sobre como a ferramenta logger.exe, do Debugging Tools for Windows, poderia ser usada para gerar um arquivo de log com centenas de APIs detalhadas em sua chamada, como parâmetros de entrada, retorno e tempo. Bom, testando isso hoje, me veio à lembrança o artigo e também a constatação que o logger é muito instável. Tão instável que não consegui logar as APIs que desejava nas inúmeras tentativas que fiz. Isso em um Windows XP!</p>
 
 <p>Felizmente, as funções do logger também estão em uma DLL estilo plugin do próprio WinDbg, que pode ser chamada facilmente e que -- surpresa! -- internamente ao depurador funciona. Melhor ainda, não é necessário criar um processo para realizar o log, mas pode ser atachado em um processo já em execução, o que facilita bastante seu uso em serviços, por exemplo.</p>
 
