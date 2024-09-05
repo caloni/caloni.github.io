@@ -178,20 +178,20 @@ role="navigation" aria-label="main navigation">
 #include &lt;sstream&gt;
 inline void Log(std::ostringstream&amp; os)
 {
-	std::cout &lt;&lt; os.str() &lt;&lt; std::endl;
+    std::cout &lt;&lt; os.str() &lt;&lt; std::endl;
 }
 template&lt;typename First, typename...Rest &gt;
 void Log(std::ostringstream&amp; os, First parm1, Rest...parm)
 {
-	os &lt;&lt; parm1;
-	Log(os, parm...);
+    os &lt;&lt; parm1;
+    Log(os, parm...);
 }
 template&lt;typename...Rest &gt;
 void Log(Rest...parm)
 {
-	std::ostringstream os;
-	LogHeader(os);
-	Log(os, parm...);
+    std::ostringstream os;
+    LogHeader(os);
+    Log(os, parm...);
 }
 </pre>
 <p>Por que eu acho a minha versão mais legal (não valendo falar que foi porque eu fiz):</p>
@@ -240,15 +240,15 @@ nssm set MyService AppRotateBytes 10485760
 <pre>
 inline void LogHeader(std::ostringstream&amp; os)
 {
-	SYSTEMTIME st;
-	char buffer[48] = "";
-	GetLocalTime(&amp;st);
-	sprintf_s(buffer, "%04d-%02d-%02d %02d:%02d:%02d %04X.%04X %08X ",
-		st.wYear, st.wMonth, st.wDay,
-		st.wHour, st.wMinute, st.wSecond,
-		GetCurrentProcessId() &amp; 0xFFFF, GetCurrentThreadId() &amp; 0xFFFF,
-		GetLastError());
-	os &lt;&lt; buffer;
+    SYSTEMTIME st;
+    char buffer[48] = "";
+    GetLocalTime(&amp;st);
+    sprintf_s(buffer, "%04d-%02d-%02d %02d:%02d:%02d %04X.%04X %08X ",
+      st.wYear, st.wMonth, st.wDay,
+      st.wHour, st.wMinute, st.wSecond,
+      GetCurrentProcessId() &amp; 0xFFFF, GetCurrentThreadId() &amp; 0xFFFF,
+      GetLastError());
+    os &lt;&lt; buffer;
 }
 </pre>
 

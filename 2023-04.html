@@ -137,7 +137,7 @@ role="navigation" aria-label="main navigation">
 
 <p>Seja durante o trabalho ou no lazer, quando não está claro qual o objetivo final não é fácil focar.</p>
 
-<p>Por isso reli minhas anotações sobre <a href="posts.html?q={{< ref flow >}}">o livro de Mihaly Csikszentmihalyi</a> sobre como estruturar nossa consciência de forma a conseguir aos poucos alinhar a energia psíquica a maior parte do tempo possível. E deve ser aos poucos, já que o "eu" não pode se sentir impelido a fazer algo; ele precisa entender dentro de si o que ele quer fazer mais que tudo na vida.</p>
+<p>Por isso reli minhas anotações sobre <a href="2020-09.html#flow">o livro de Mihaly Csikszentmihalyi</a> sobre como estruturar nossa consciência de forma a conseguir aos poucos alinhar a energia psíquica a maior parte do tempo possível. E deve ser aos poucos, já que o "eu" não pode se sentir impelido a fazer algo; ele precisa entender dentro de si o que ele quer fazer mais que tudo na vida.</p>
 
 <blockquote>Uma artista original começa um novo trabalho com uma forte intuição e objetivos indefinidos, se mantém modificando o trabalho em resposta a resultados inesperados que surgiram, e termina com um trabalho concluído que não lembra em nada o que havia imaginado no começo. Se a artista é responsável pelos seus sentimentos internos, sabe o que ela gosta e o que ela não gosta, e presta atenção ao que está acontecendo, um bom trabalho está prestes a emergir.</blockquote>
 <p>Dentro dos meus recortes compilei e agrupei esta lista de ações em dicas mais compactadas e temáticas dos ensinamentos do livro para induzir um call to action mais pragmático:</p>
@@ -232,7 +232,7 @@ seguinte as negras perdem a dama.} 37. Rf1 Qxf1+ 38. Kxf1) 34. Qh8+ Kf7 35. Qg7#
 <p class="title"><a href="2023-04.html#timemore-c2">#</a> <a class="external" href="https://www.coffeegeek.com/mini-review/timemore-chestnut-c2-grinder-first-look">Timemore C2</a></p>
 <span class="title-heading">Caloni, 2023-04-05 <a href="tag_coffee.html">tag_coffee</a><a href="2023-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-timemore-c2')"><sup>[copy]</sup></a></span>
 
-<p>Chegou meu segundo moedor manual depois do quebra-galho que foi o <a href="posts.html?q={{< ref uma-breve-historia-sobre-preconceito-e-cafe >}}">Hario Slim</a> por mais de dois anos. Depois de muito pesquisar fiquei muito satisfeito em comprar este modelo da Timemore, por três motivos.</p>
+<p>Chegou meu segundo moedor manual depois do quebra-galho que foi o <a href="2021-02.html#uma-breve-historia-sobre-preconceito-e-cafe">Hario Slim</a> por mais de dois anos. Depois de muito pesquisar fiquei muito satisfeito em comprar este modelo da Timemore, por três motivos.</p>
 
 <p>Para começar o custo/benefício é imbatível. Há muitos moedores manuais hoje em dia, mas nenhum entrega tanta qualidade com tão poucos moluscos. No caso da Timemore a construção de seu moedor de entrada é barateado por conta de algumas partes feitas em plástico reforçado, mas ainda assim a engenharia por trás do mecanismo criado por eles impressiona por não ser um top de linha. A sensação ao segurar um moedor desse é que ele parece mais caro.</p>
 
@@ -303,14 +303,14 @@ the registers RCX, RDX, R8, R9." - X64 Deep Dive
 int TestFastCall() {
 push        rdi
 sub         rsp,30h # RBP is no longer used as frame pointer.
-	int res = FastCallTest(1, 2, 3, 4);
+    int res = FastCallTest(1, 2, 3, 4);
 mov         r9d,4
 mov         r8d,3
 mov         edx,2
 mov         ecx,1
 call        FastCall
 mov         dword ptr [res],eax
-	return res;
+    return res;
 mov         eax,dword ptr [res]
 }
 add         rsp,30h # RBP is no longer used as frame pointer.
@@ -326,14 +326,14 @@ ret
 with a jump to the callee. This avoids the overhead of setting up the stack
 frame for the callee." - x64 Deep Dive
 # TailCall3
-	return a + b;
+    return a + b;
 lea         eax,[rcx+rdx]
 }
 ret
 # TestTailCallElimination
-	TailCall1(1);
-	TailCall2(2);
-	return TailCall3(1, 2);
+    TailCall1(1);
+    TailCall2(2);
+    return TailCall3(1, 2);
 mov         edx,2
 lea         ecx,[rdx-1]
 jmp         TailCall3
@@ -349,13 +349,13 @@ for this purpose i.e. do not use the EBP register as a
 frame pointer." - x64 Deep Dive
 # Win32 (x86)
 int TestFramePointerOmission() {
-	return 1;
+    return 1;
 00601593  mov         eax,1
 }
 00601599  ret
 # Win62 (x64)
 int TestFramePointerOmission() {
-	return 1;
+    return 1;
 00007FF7D6E215E2  mov         eax,1
 }
 00007FF7D6E215E8  ret
@@ -375,12 +375,12 @@ int RSPIsTheSame(int p1, int p2, int p3, int p4, int p5, int p6, int p7, int p8)
 push        ebp
 mov         ebp,esp
 # prolog-end
-	RSPIsTheSameCall1(p1);
+    RSPIsTheSameCall1(p1);
 mov         eax,dword ptr [p1]
 push        eax # RSP--
 call        RSPIsTheSameCall1
 add         esp,4 # RSP++
-	RSPIsTheSameCall4(p1, p2, p3, p4);
+    RSPIsTheSameCall4(p1, p2, p3, p4);
 mov         ecx,dword ptr [p4]
 push        ecx # RSP--
 mov         edx,dword ptr [p3]
@@ -389,13 +389,13 @@ mov         eax,dword ptr [p2]
 ...
 call        RSPIsTheSameCall4
 add         esp,10h # RSP++
-	RSPIsTheSameCall8(p1, p2, p3, p4, p5, p6, p7, p8);
+    RSPIsTheSameCall8(p1, p2, p3, p4, p5, p6, p7, p8);
 mov         edx,dword ptr [p8]
 push        edx # RSP--
 ...
 call        RSPIsTheSameCall8
 add         esp,20h # RSP++
-	return 1;
+    return 1;
 mov         eax,1
 }
 # epilog-begin
@@ -412,19 +412,19 @@ mov         dword ptr [rsp+8],ecx
 push        rdi
 sub         rsp,40h # RSP last change
 # prolog-end
-	RSPIsTheSameCall1(p1);
+    RSPIsTheSameCall1(p1);
 mov         ecx,dword ptr [p1]
 call        RSPIsTheSameCall1
-	RSPIsTheSameCall4(p1, p2, p3, p4);
+    RSPIsTheSameCall4(p1, p2, p3, p4);
 mov         r9d,dword ptr [p4]
 ...
 call        RSPIsTheSameCall4
-	RSPIsTheSameCall8(p1, p2, p3, p4, p5, p6, p7, p8);
+    RSPIsTheSameCall8(p1, p2, p3, p4, p5, p6, p7, p8);
 mov         eax,dword ptr [p8]
 mov         dword ptr [rsp+38h],eax
 ...
 call        RSPIsTheSameCall8
-	return 1;
+    return 1;
 mov         eax,1
 }
 # epilog-begin
@@ -457,7 +457,7 @@ sub         rsp,20h
 # Win64 Release
 int TestHomingSpaceNonLeaf() {
 sub         rsp,28h
-	int ret = HomingSpaceNonLeaf(1, 2, 3, 4);
+    int ret = HomingSpaceNonLeaf(1, 2, 3, 4);
 mov         edx,2 # even begin non-leaf function, params are not saved in release
 lea         r9d,[rdx+2]
 lea         r8d,[rdx+1]
@@ -479,7 +479,7 @@ of the function are done relative to this position of the stack pointer. This
 includes access to stack based parameters and local variables." - x64 Deep Dive
 */
 # Win64 Debug
-			p5 = i + j + (i % 2 ? p1 : p2) + (j % 2 ? p3 : p4);
+        p5 = i + j + (i % 2 ? p1 : p2) + (j % 2 ? p3 : p4);
 mov         eax,dword ptr [rsp+0Ch]
 cdq
 and         eax,1
@@ -546,8 +546,8 @@ mov         dword ptr [rbp+18h],8 # p8 = 8
 call        ChildSPF1
 2. Parameters are loaded from non-volatile registers and those registers
 are saved by the callee.
-	int oldP7 = *g_ParameterRetrieval_p7_retrieval;
-	return p1 + p2 + p3 + p4 + p5 + p6 + oldP7 + p8;
+    int oldP7 = *g_ParameterRetrieval_p7_retrieval;
+    return p1 + p2 + p3 + p4 + p5 + p6 + oldP7 + p8;
 mov         eax,dword ptr [rdx]
 mov         r10,rcx
 add         eax,dword ptr [r8]
@@ -556,10 +556,10 @@ mov         rdx,qword ptr [p5]
 mov         rcx,qword ptr [g_ParameterRetrieval_p7_retrieval]
 3. Parameters are saved from the registers into memory.
 # Win64 Release
-	g_ParameterRetrieval_p7_retrieval = &amp;p7;
+    g_ParameterRetrieval_p7_retrieval = &amp;p7;
 mov         r10,qword ptr [p7]
 mov         r11,rcx
-	return p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8;
+    return p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8;
 mov         rcx,qword ptr [p8]
 mov         qword ptr [g_ParameterRetrieval_p7_retrieval],r10 # save nonvolatile register
 4. Parameters are saved into non-volatile registers and those registers
@@ -571,9 +571,9 @@ mov         qword ptr [rsp+10h],rsi
 mov         qword ptr [rsp+18h],rdi
 mov         qword ptr [rsp+20h],r14
 push        r15 # saves what will be p7
-	int oldP7 = p7;
-	for (int i = 0; i &lt; 7; ++i) {
-		p7 += p1;
+    int oldP7 = p7;
+    for (int i = 0; i &lt; 7; ++i) {
+      p7 += p1;
 mov         r10d,dword ptr [rcx]
 mov         r14,rcx
 mov         r15,qword ptr [p7] # going to use p7
@@ -582,11 +582,11 @@ mov         rdi,r9
 mov         esi,dword ptr [r15] # Parameters are saved into non-volatile registers...
 add         r10d,esi
 ...
-	}
-	int ret = p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8;
+    }
+    int ret = p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8;
 ...
-	p7 = oldP7;
-	return ret;
+    p7 = oldP7;
+    return ret;
 }
 ...
 mov         dword ptr [r15],esi # ... and those registers are saved by the callee.
@@ -623,7 +623,7 @@ ret
 <p class="title"><a href="2023-04.html#cracking-the-coding-interview">#</a> Cracking the code interview</p>
 <span class="title-heading">Caloni, 2023-04-07 <a href="tag_books.html">tag_books</a><a href="2023-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-cracking-the-coding-interview')"><sup>[copy]</sup></a></span>
 
-<p>Este livro foi recomendado pela minha amiga para treinar para as entrevistas técnicas que ando fazendo. Escolhi ler este em seguida após terminar o <a href="posts.html?q={{< ref algorithms-for-dummies >}}">Algorithm For Dummies</a>. As primeiras anotações são como compor o CV e qual a estratégia de cada big tech nos seus processos. Escapei esta parte, não estou interessado em trabalhar em um Google da vida. Porém, há alguns detalhes que achei relevante recortar.</p>
+<p>Este livro foi recomendado pela minha amiga para treinar para as entrevistas técnicas que ando fazendo. Escolhi ler este em seguida após terminar o <a href="2023-03.html#algorithms-for-dummies">Algorithm For Dummies</a>. As primeiras anotações são como compor o CV e qual a estratégia de cada big tech nos seus processos. Escapei esta parte, não estou interessado em trabalhar em um Google da vida. Porém, há alguns detalhes que achei relevante recortar.</p>
 
 <p>Estava em cerca de 8% do livro e desisti. Suas dicas são deveras avançadas para quem está apenas querendo tirar a ferrugem de algoritmos. Iniciei um outro chamado A Common-Sense Guide to Data Structures que parece mais a minha cara.</p>
 
@@ -1912,7 +1912,7 @@ void TestCase005() {
 
 <p>No caso dos "de los siete" é um blend de sete terrenos distintos da região de Mendoza, na Argentina. Pelo menos foi o que eu ouvi falar.</p>
 
-<p>Disponível no menu de vinhos do restaurante Outback, <a href="posts.html?q={{< ref vinho-do-outback >}}">descobri esses dias</a>. Altamente elogiado nas rodinhas da internet. E eu só queria abrir um vinho baratinho de minha adega, mas descobri que o potencial de guarda passa dos dez anos. Fica como dica para a próxima viagem a Mendoza.</p>
+<p>Disponível no menu de vinhos do restaurante Outback, <a href="2023-04.html#vinho-do-outback">descobri esses dias</a>. Altamente elogiado nas rodinhas da internet. E eu só queria abrir um vinho baratinho de minha adega, mas descobri que o potencial de guarda passa dos dez anos. Fica como dica para a próxima viagem a Mendoza.</p>
 
 
 

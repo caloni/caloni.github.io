@@ -109,7 +109,7 @@ role="navigation" aria-label="main navigation">
 <li>Para chamarmos um ponteiro de método precisamos sempre de um objeto da classe para a qual ele aponta.</li>
 
 </ul>
-<p>Visto isso, passemos a um <a href="posts.html?q=member_pointer.cpp">exemplo simples</a>, um chamador de métodos aleatórios, que ilustra o princípio básico de utilização:</p>
+<p>Visto isso, passemos a um exemplo simples, um chamador de métodos aleatórios, que ilustra o princípio básico de utilização:</p>
 
 <pre>
    #include &lt;iostream&gt;
@@ -179,8 +179,6 @@ role="navigation" aria-label="main navigation">
    ( pr-&gt;*pMethod )();
 </pre>
 <p>Esses operadores obrigam o programador a sempre ter um objeto e um ponteiro. Daí não tem como errar. Infelizmente, devido à ordem de precedência, temos que colocar os parênteses em torno da expressão para chamar o método. Pelo menos fica equivalente ao que precisávamos fazer antes da padronização da linguagem C.</p>
-
-
 
 </section><hr/>
 
@@ -379,10 +377,10 @@ role="navigation" aria-label="main navigation">
 <pre>
    
    HHOOK SetWindowsHookEx(
-   	int idHook,
-   	HOOKPROC lpfn,
-   	HINSTANCE hMod,
-   	DWORD dwThreadId);
+     int idHook,
+     HOOKPROC lpfn,
+     HINSTANCE hMod,
+     DWORD dwThreadId);
 </pre>
 <p>Relembrando nosso passeio pela pilha, ao entrar em uma função stdcall, os primeiros 4 bytes são o endereço de retorno, os próximos o primeiro parâmetro e assim por diante. O que quer dizer que poi ( esp + (4 * 4) ). É o apontado do quarto parâmetro (4*4) que está sendo verificado. Concluindo, se o parâmetro dwThreadId for igual a zero, estamos diante de um hook global, e é o momento em que meu .echo vai exibir na tela "*** GLOBAL HOOK ***". Do contrário, a execução vai continuar silenciosamente.</p>
 
@@ -628,8 +626,9 @@ role="navigation" aria-label="main navigation">
 
 <p>Um script no WinDbg nada mais é que uma execução em batch: um arquivo texto cheio de comandos que poderíamos digitar manualmente, mas que preferimos guardar para poupar nossos dedos. Existem quatro maneiras diferentes de chamar um script no WinDbg, todas muito parecidas, variando apenas se são permitidos espaços antes do nome do arquivo e se os comandos são condensados, isto é, as quebras de linhas substituídas por ponto-e-vírgula para executar tudo em uma linha só.</p>
 
-<p>	</p>
-
+<pre>
+   
+</pre>
 <ul><li>$&lt;nome-do-arquivo - não permite espaços e condensa comandos.</li>
 
 <li>$&gt;&lt;nome-do-arquivo - não permite espaços e não condensa comandos.</li>
@@ -649,7 +648,7 @@ role="navigation" aria-label="main navigation">
    $$&gt;a&lt;path\LoadLibrary.txt c:\\path\\mydll.dll
    $$&gt;a&lt;path\LoadLibrary.txt "c:\\path with space\\mydll.dll"
 </pre>
-<p>Não há qualquer dificuldade. Tudo que você tem que fazer é baixar o <a href="posts.html?q=loadlibrary.txt">script que carrega DLLs</a> e salvá-lo em um lugar de sua preferência. Depois é só digitar o comando que carrega scripts, o path de nosso script e o nome da DLL a ser carregada em uma das três formas exibidas. Eu costumo criar uma pasta chamada "scripts" dentro do diretório de instalação do Debugging Tools, o que quer dizer que posso simplesmente chamar todos meus scripts (ou seja, 1) dessa maneira:</p>
+<p>Não há qualquer dificuldade. Tudo que você tem que fazer é baixar o script que carrega DLLs e salvá-lo em um lugar de sua preferência. Depois é só digitar o comando que carrega scripts, o path de nosso script e o nome da DLL a ser carregada em uma das três formas exibidas. Eu costumo criar uma pasta chamada "scripts" dentro do diretório de instalação do Debugging Tools, o que quer dizer que posso simplesmente chamar todos meus scripts (ou seja, 1) dessa maneira:</p>
 
 <pre>
    
@@ -849,8 +848,6 @@ role="navigation" aria-label="main navigation">
 
 
 
-
-
 </section><hr/>
 
 
@@ -868,26 +865,26 @@ role="navigation" aria-label="main navigation">
 <pre>
    //...
    private:
-   	bool mouseDown; // essa variável guarda o estado do mouse...
+     bool mouseDown; // essa variável guarda o estado do mouse...
    //...
    
    __fastcall TForm1::TForm1(TComponent* Owner)
-   	: TForm(Owner)
+     : TForm(Owner)
    {
-   	mouseDown = false; // ... e é importante iniciá-la
+     mouseDown = false; // ... e é importante iniciá-la
    }
    
    void __fastcall TForm1::FormMouseUp(TObject *Sender, TMouseButton Button,
-   	TShiftState Shift, int X, int Y)
+     TShiftState Shift, int X, int Y)
    {
-   	mouseDown = false;
+     mouseDown = false;
    }
    
    void __fastcall TForm1::FormMouseDown(TObject *Sender, TMouseButton Button,
-   	TShiftState Shift, int X, int Y)
+     TShiftState Shift, int X, int Y)
    {
-   	Canvas-&gt;PenPos = TPoint(X, Y); // mais tarde veremos o porquê disso
-   	mouseDown = true;
+     Canvas-&gt;PenPos = TPoint(X, Y); // mais tarde veremos o porquê disso
+     mouseDown = true;
    } 
 </pre>
 <p>Saber quando o mouse está sendo arrastado também é um passo trivial, uma vez que temos esse evento (OnMove) para tratar no controle da janela.</p>
@@ -898,12 +895,12 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    void __fastcall TForm1::FormMouseMove(TObject *Sender, TShiftState Shift,
-   	int X, int Y)
+     int X, int Y)
    {
-   	if( mouseDown )
-   	{
-   		Canvas-&gt;LineTo(X, Y);
-   	}
+     if( mouseDown )
+     {
+       Canvas-&gt;LineTo(X, Y);
+     }
    } 
 </pre>
 <p>O método LineTo() desenha uma linha do ponto onde está atualmente a caneta de desenho até a coordenada especificada. Esse é o motivo pelo qual no evento OnMouseDown alteramos a propriedade PenPos do Canvas para o ponto onde o usuário pressiona o botão do mouse.</p>
@@ -917,18 +914,18 @@ role="navigation" aria-label="main navigation">
 <pre>
    //...
    private:
-   	bool mouseDown; // essa variavel guarda o estado do mouse
-   	std::vector&lt;TRect&gt; mouseHistory; // um TRect guarda duas posicoes XY
+     bool mouseDown; // essa variavel guarda o estado do mouse
+     std::vector&lt;TRect&gt; mouseHistory; // um TRect guarda duas posicoes XY
    //...
    
    // ...
    {
-   	if( mouseDown )
-   	{
-   		// guardando a pincelada para reproduzi-la depois
-   		mouseHistory.push_back( TRect(Canvas-&gt;PenPos, TPoint(X, Y)) );
-   		Canvas-&gt;LineTo(X, Y);
-   	}
+     if( mouseDown )
+     {
+       // guardando a pincelada para reproduzi-la depois
+       mouseHistory.push_back( TRect(Canvas-&gt;PenPos, TPoint(X, Y)) );
+       Canvas-&gt;LineTo(X, Y);
+     }
    }
    //... 
 </pre>

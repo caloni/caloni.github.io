@@ -396,7 +396,7 @@ role="navigation" aria-label="main navigation">
    /*my playground
    vector&lt;int&gt; test = { 12, 4, 5, 3, 8, 7, 5, 5 };
    for (size_t new_element = 1; new_element &lt; test.size(); ++new_element)
-   	insert_new_element(test, new_element);
+     insert_new_element(test, new_element);
    return 0;*/
 </pre>
 <p>I still wasn't thinking about the sort algorithm until I began to try and fail several times, but this try/error bitch always taught me how to make things faster then embryological bullshit to born from scribbed windows. It only requested a debugger to make the edit, compile, debug triple step.</p>
@@ -406,25 +406,25 @@ role="navigation" aria-label="main navigation">
 <pre>
    void insert_new_element(vector&lt;int&gt;&amp; a, size_t new_element)
    {
-   	size_t begin = 0;
-   	size_t end = new_element;
-   	size_t sz = end - begin;
+     size_t begin = 0;
+     size_t end = new_element;
+     size_t sz = end - begin;
        size_t median= begin + sz / 2 - (sz % 2 ? 0 : 1);
    
        while( sz &gt; 1 ) 
        {
            if( a[new_element] &lt; a[median] ) 
-   			end = median;
+         end = median;
            else
-   			begin = median + 1;
-   		sz = end - begin;
-   		median = median == begin? begin : begin + sz / 2 - (sz % 2 ? 0 : 1);
+         begin = median + 1;
+       sz = end - begin;
+       median = median == begin? begin : begin + sz / 2 - (sz % 2 ? 0 : 1);
        }
    
-   	size_t insert_offset = a[new_element] &lt; a[median] ? median : median + 1;
-   	int element = a[new_element];
-   	a.erase(a.begin() + new_element);
-   	a.insert(a.begin() + insert_offset, element);
+     size_t insert_offset = a[new_element] &lt; a[median] ? median : median + 1;
+     int element = a[new_element];
+     a.erase(a.begin() + new_element);
+     a.insert(a.begin() + insert_offset, element);
    }
 </pre>
 <p>This version almost done it, except for timeout error. Hacker Hank has a timeout of 2 seconds to C++ solutions and I was exceding it. After some thought (more try/error) I thought about change the container, but before I made a simples test: instead of using erase/insert methods make the things manually as in good old C.</p>
@@ -434,12 +434,12 @@ role="navigation" aria-label="main navigation">
    {
        //...
    
-   	size_t insert_offset = a[new_element] &lt; a[median] ? median : median + 1;
-   	int element = a[new_element];
+     size_t insert_offset = a[new_element] &lt; a[median] ? median : median + 1;
+     int element = a[new_element];
        //a.erase(a.begin() + new_element);
        //a.insert(a.begin() + insert_offset, element);
-   	memmove(&amp;a[insert_offset + 1], &amp;a[insert_offset], (new_element - insert_offset) * sizeof(int));
-   	a[insert_offset] = element;
+     memmove(&amp;a[insert_offset + 1], &amp;a[insert_offset], (new_element - insert_offset) * sizeof(int));
+     a[insert_offset] = element;
    }
 </pre>
 <p>And it worked. Now what I learned looking the other solutions.</p>

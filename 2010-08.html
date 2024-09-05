@@ -295,47 +295,47 @@ role="navigation" aria-label="main navigation">
 <pre>
 STDMETHODIMP CService::Open(&lt;params&gt;, PLONG *pctReturn)
 {
-	if( DeuErrado() )
-	{
-		*pctReturn = ERR_DEU_ERRADO;
-		return S_OK;
-	}
-	//...
+    if( DeuErrado() )
+    {
+      *pctReturn = ERR_DEU_ERRADO;
+      return S_OK;
+    }
+    //...
 }
 </pre>
 <p>O código retornado é 2Fh, e agora temos uma boa pista para encontrar a localização no fonte. A primeira coisa é encontrar o define responsável por esse erro, o que exige um pouco de familiaridade com o sistema, pois não se trata aqui de um código Windows.</p>
 
 <pre>
-#define OSRL_ERR	44	/* Data file serial number overflow */
-#define KLEN_ERR	45	/* Key length exceeds MAXLEN parameter */
-#define	FUSE_ERR	46	/* File number already in use */
-#define FINT_ERR	47	/* database has not been initialized */
-#define FMOD_ERR	48	/* Operation incompatible with type of file */
-#define	FSAV_ERR	49	/* Could not save file */
-#define LNOD_ERR	50	/* Could not lock node */
+#define OSRL_ERR  44  /* Data file serial number overflow */
+#define KLEN_ERR  45  /* Key length exceeds MAXLEN parameter */
+#define  FUSE_ERR  46  /* File number already in use */
+#define FINT_ERR  47  /* database has not been initialized */
+#define FMOD_ERR  48  /* Operation incompatible with type of file */
+#define  FSAV_ERR  49  /* Could not save file */
+#define LNOD_ERR  50  /* Could not lock node */
 </pre>
 <p>Ótimo. 2F, para os leigos (leigos? o que vocês estão fazendo aqui?), é 47 em decimal, exatamente nosso código listado acima. Com esse define podemos agora procurar no código-fonte e analisar todas as funções que retornam esse código em seu início. Para nossa sorte, existe apenas uma.</p>
 
 <pre>
 STDMETHODIMP CService::Open(BYTE *fileName, COUNT keyNo, COUNT *pctReturn)
 {
-	char szMsg[200];
-	// Verifica se o banco de dados foi inicializado
-	if (!_Main.m_bDBInitialized)
-	{
-		_Main.Log("Error opening file before database to be initialized.");
-		*pctReturn = FINT_ERR;
-		return S_OK;
-	}
-	// Verifica se o arquivo já foi aberto
-	if (m_pData)
-	{
-		sprintf(szMsg, "Error on open file \"%s\". File already opened.");
-		_Main.Log(szMsg);
-		*pctReturn = ERR_BLABLABLA;
-		return S_OK;
-	}
-	//...
+    char szMsg[200];
+    // Verifica se o banco de dados foi inicializado
+    if (!_Main.m_bDBInitialized)
+    {
+      _Main.Log("Error opening file before database to be initialized.");
+      *pctReturn = FINT_ERR;
+      return S_OK;
+    }
+    // Verifica se o arquivo já foi aberto
+    if (m_pData)
+    {
+      sprintf(szMsg, "Error on open file \"%s\". File already opened.");
+      _Main.Log(szMsg);
+      *pctReturn = ERR_BLABLABLA;
+      return S_OK;
+    }
+    //...
 }
 </pre>
 <p>Para confirmar que não estamos sonhando, podemos dar uma olhada no parâmetro passado para a função Log antes do código retornar. A memória deverá conter uma string idêntica a do código-fonte.</p>
@@ -651,7 +651,7 @@ STDMETHODIMP CService::Open(BYTE *fileName, COUNT keyNo, COUNT *pctReturn)
    0012fbc8 00000000 002d0036 004011b0 dcbaabcd user32!ButtonWndProcWorker+0x79b
    0:000&gt; !handle 0000007c
    Handle &lt;font color="#ff0000"&gt;0000007c&lt;/font&gt;
-     Type         	&lt;font color="#ff0000"&gt;Thread&lt;/font&gt;
+     Type           &lt;font color="#ff0000"&gt;Thread&lt;/font&gt;
    0:000&gt; ~* kv
    
    .  0  Id: 5e4.&lt;font color="#008000"&gt;39c &lt;/font&gt;Suspend: 0 Teb: 7ffdd000 Unfrozen
@@ -796,35 +796,35 @@ STDMETHODIMP CService::Open(BYTE *fileName, COUNT keyNo, COUNT *pctReturn)
 #pragma comment(lib, "dbghelp.lib")
 LONG WINAPI CrashHandler(_EXCEPTION_POINTERS* ExceptionInfo)
 {
-	LONG ret = EXCEPTION_CONTINUE_SEARCH;
-	MINIDUMP_EXCEPTION_INFORMATION minidumpInfo;
-	minidumpInfo.ClientPointers = FALSE;
-	minidumpInfo.ThreadId = GetCurrentThreadId();
-	minidumpInfo.ExceptionPointers = ExceptionInfo;
-	HANDLE hFile = CreateFile("OnCrash.dmp", GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, 0, NULL);
-	if( hFile != INVALID_HANDLE_VALUE )
-	{
-		MINIDUMP_TYPE dumpType = MiniDumpNormal;
-		if( MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), 
-			hFile, MiniDumpNormal, &amp;minidumpInfo, NULL, NULL) )
-		{
-			ret = EXCEPTION_EXECUTE_HANDLER;
-		}
-		CloseHandle(hFile);
-	}
-	return ret;
+    LONG ret = EXCEPTION_CONTINUE_SEARCH;
+    MINIDUMP_EXCEPTION_INFORMATION minidumpInfo;
+    minidumpInfo.ClientPointers = FALSE;
+    minidumpInfo.ThreadId = GetCurrentThreadId();
+    minidumpInfo.ExceptionPointers = ExceptionInfo;
+    HANDLE hFile = CreateFile("OnCrash.dmp", GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, 0, NULL);
+    if( hFile != INVALID_HANDLE_VALUE )
+    {
+      MINIDUMP_TYPE dumpType = MiniDumpNormal;
+      if( MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), 
+        hFile, MiniDumpNormal, &amp;minidumpInfo, NULL, NULL) )
+      {
+        ret = EXCEPTION_EXECUTE_HANDLER;
+      }
+      CloseHandle(hFile);
+    }
+    return ret;
 }
 DWORD WINAPI CrashThread(PVOID)
 {
-	int* x = 0;
-	*x = 13;
-	return 0;
+    int* x = 0;
+    *x = 13;
+    return 0;
 }
 int main()
 {
-	SetUnhandledExceptionFilter(CrashHandler);
-	HANDLE crashThread = CreateThread(NULL, 0, CrashThread, NULL, 0, NULL);
-	WaitForSingleObject(crashThread, INFINITE);
+    SetUnhandledExceptionFilter(CrashHandler);
+    HANDLE crashThread = CreateThread(NULL, 0, CrashThread, NULL, 0, NULL);
+    WaitForSingleObject(crashThread, INFINITE);
 }
  
 </pre>
@@ -910,7 +910,7 @@ int main()
 
 <pre>
    printf("struct ST_%s { byte key; size_t bufferSize; byte buffer[%d] }\n"
-   	" %s = { %d, %d, { ";
+     " %s = { %d, %d, { ";
    
    for( ; ; ) printf(Cada byte ofuscado);
    
@@ -925,7 +925,7 @@ int main()
    
    int main()
    {
-   	char* str = ABRE_VAR(MY_STR, char*);
+     char* str = ABRE_VAR(MY_STR, char*);
    }
 </pre>
 <p>Uma vez que a abertura se faz "inplace", ou seja, a memória da própria variável da estrutura original é alterada, pode-se fechar a variável novamente, se quiser, após o uso.</p>
@@ -938,16 +938,16 @@ int main()
 <pre>
    struct GENERIC_STRUCT
    {
-   	byte key;
-   	size_t bufferSize;
-   	byte buffer[1];
+     byte key;
+     size_t bufferSize;
+     byte buffer[1];
    };
 </pre>
 <p>Como a string é ofuscada? Sei lá, use um XOR:</p>
 
 <pre>
    for( size_t i = 0; i &lt; bufferSize; ++i )
-   	buffer[i] ^= key;
+     buffer[i] ^= key;
 </pre>
 <p>Dessa forma abrir ou fechar a variável pode ser feito usando a mesma função.</p>
 

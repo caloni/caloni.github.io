@@ -90,8 +90,9 @@ role="navigation" aria-label="main navigation">
 
 <p>Na hora de instalar, você tem três opções:</p>
 
-<p>	</p>
-
+<pre>
+   
+</pre>
 <ul><li>Full installation: desenvolvimento e depuração; use se for desenvolver e depurar na mesma máquina.</li>
 
 <li>Host machine: apenas desenvolvimento; não serve para depuração.</li>
@@ -188,10 +189,10 @@ role="navigation" aria-label="main navigation">
    
    int main()
    {
-   	int f1,f2,s=0;
-   	   for( f1 = 1; (f1 == 11 &amp;&amp; s != 5) ? s=5, f1=0, putchar(10) : ( f1 &lt;= 10 ) ? f1 = f1 : f1 = 12, f1 &lt;= 11 ; f1++ )
-   			for( f2 = 1 + s; f2 &lt;= 5+s; f2++ ) printf("%dx%d=%d%c", f2, f1, f1 * f2, ( f2 == 5 + s ) ? 10 : 9);
-   	return 0;
+     int f1,f2,s=0;
+        for( f1 = 1; (f1 == 11 &amp;&amp; s != 5) ? s=5, f1=0, putchar(10) : ( f1 &lt;= 10 ) ? f1 = f1 : f1 = 12, f1 &lt;= 11 ; f1++ )
+         for( f2 = 1 + s; f2 &lt;= 5+s; f2++ ) printf("%dx%d=%d%c", f2, f1, f1 * f2, ( f2 == 5 + s ) ? 10 : 9);
+     return 0;
    } 
 </pre>
 <p>Despite the fact the result is a strong candidate to <a href="http://www.ioccc.org">The International Obfuscated C Code Contest</a> the Linux guys told him the code was not successful on GCC, and somewhere inside those four lines there was a non-standard piece of code.</p>
@@ -374,10 +375,10 @@ role="navigation" aria-label="main navigation">
    
    void ExecThread()
    {
-   	while( true )
-   	{
-   		ExecFunction(funcNumber);
-   	}
+     while( true )
+     {
+       ExecFunction(funcNumber);
+     }
    }
    
    int Functions[] = { 
@@ -386,14 +387,14 @@ role="navigation" aria-label="main navigation">
    
    int Start()
    {
-   	CreateThread(ExecThread);
+     CreateThread(ExecThread);
    
-   	for( 0 to size(Functions) )
-   	{
-   		ExecThreadToExecFunc(Function[i]);
-   	}
+     for( 0 to size(Functions) )
+     {
+       ExecThreadToExecFunc(Function[i]);
+     }
    
-   	return 0;
+     return 0;
    } 
 </pre>
 <p>A proteção ainda não está aí. Mas fará parte intrínseca da thread de execução. Tudo que precisamos fazer é adicionar um tratamento de exceções e fazer chover ints 3. As exceções disparadas pela int 3 são capturadas por uma segunda função que antes de retornar o controle executa a próxima instrução enfileirada:</p>
@@ -401,33 +402,33 @@ role="navigation" aria-label="main navigation">
 <pre>
    DWORD ExceptFilter()
    {
-   	ExecFunction(number);
+     ExecFunction(number);
      // goes to except code
-   	return EXCEPTION_EXECUTE_HANDLER;
+     return EXCEPTION_EXECUTE_HANDLER;
    }
    
    void ExecThread()
    {
-   	while( true )
-   	{
-   		__try
-   		{
+     while( true )
+     {
+       __try
+       {
          // breakpoint exception
-   			__asm int 3
+         __asm int 3
    
-   			// it stops the debugger 
+         // it stops the debugger 
          // if we have an attached 
          // debugger in the process
          // or throws an exception 
          // if there is no one
-   		}
-   		__except( ExceptFilter() )
-   		{
-   			// does nothing
-   		}
+       }
+       __except( ExceptFilter() )
+       {
+         // does nothing
+       }
    
-   		Sleep(someTime);
-   	}
+       Sleep(someTime);
+     }
    } 
 </pre>
 <p>O algoritmo da thread de execução continua o mesmo. Só que o ponto onde cada instrução é executada depende do lançamento de uma exceção. Note que essa exceção tem que ocorrer para que a chamada da próxima instrução ocorra. Isso é fundamental, pois dessa forma ninguém pode simplesmente retirar o int 3 do código para evitar o lançamento da exceção. Se fizer isso, então mais nenhuma instrução será executada.</p>
@@ -436,15 +437,13 @@ role="navigation" aria-label="main navigation">
 
 <p>O preço pago por essa proteção fica na visibilidade e compreensão do código-fonte comprometidos pelo uso da técnica. A programação fica baseada em uma máquina de estados e as funções ficam limitadas a algum tipo de padronização no comportamento. Quando mais granular for o pseudoscript, ou seja, quanto menores forem os blocos de código contido nas minifunções, mais difícil de entender o código será.</p>
 
-<p>Fiz um <a href="posts.html?q={{< resource src="antidebug-exception.cpp" >}}">código de exemplo</a> que recebe entrada por um prompt de comandos e mapeia a primeira palavra digitada para o índice de uma função que deve ser chamada. O resto da linha digitada é passado como parâmetro para essa função. A thread de interpretação lê a entrada do usuário e escreve em uma variável-string global, ao mesmo tempo que a thread de execução espera essa string ser preenchida para executar a ação. </p>
+<p>Fiz um código de exemplo que recebe entrada por um prompt de comandos e mapeia a primeira palavra digitada para o índice de uma função que deve ser chamada. O resto da linha digitada é passado como parâmetro para essa função. A thread de interpretação lê a entrada do usuário e escreve em uma variável-string global, ao mesmo tempo que a thread de execução espera essa string ser preenchida para executar a ação. </p>
 
 <p>Foi usado o pool dessa variável para o código ficar mais simples, mas o ideal seria algum tipo de sincronismo, como eventos, por exemplo.</p>
 
 <p>O ponto forte da proteção é que a pessoa precisa entender o que está acontecendo para tomar alguma atitude inteligente para solucionar o "problema". O ponto fraco é que após entendido o problema a solução torna-se fácil de visualizar. Tão fácil que eu nem pretendo citar aqui.</p>
 
 <p>Futuramente veremos uma maneira de tornar as coisas mais legíveis e usáveis no dia-a-dia de um programador de software de segurança.</p>
-
-
 
 
 
@@ -513,7 +512,7 @@ role="navigation" aria-label="main navigation">
 <blockquote>Nota de desculpas: eu sei que estou sendo rabugento demais com o mouse. Já é o segundo artigo que escrevo falando como evitar o mouse e isso deve realmente irritar os fãs desse ponteirinho irritante.</blockquote>
 <p>Como eu já havia dito anteriormente, uso o mouse quando necessário. Quando ele não é necessário ele fica clicando inconscientemente no Windows Explorer, já que utilizo a configuração de clique único, onde as pastas e arquivos ficam selecionáveis apenas pousando o cursor sobre eles. Eu gosto dessa configuração, exceto pelo comportamento desagradável que ocorre quando mudo para a janela do Windows Explorer e meu mouse ganha vida própria, selecionando alguma pasta ou arquivo e mudando meu foco de seleção.</p>
 
-<p>Portanto, o objetivo desse programa é simples e direto: mover o mouse para um canto enquanto eu uso meu teclado. Nada mais, nada menos. Para isso iremos registrar alguns atalhos globais no Windows. Para registrar atalhos globais no Windows utilizamos a função do Windows API RegisterHotKey e é o que estou usando no <a href="posts.html?q=código">código</a>. O importante aqui é saber que iremos ser avisados do pressionamento das teclas que registrarmos por meio dessa função através do loop de mensagens da thread que chamar a função.</p>
+<p>Portanto, o objetivo desse programa é simples e direto: mover o mouse para um canto enquanto eu uso meu teclado. Nada mais, nada menos. Para isso iremos registrar alguns atalhos globais no Windows. Para registrar atalhos globais no Windows utilizamos a função do Windows API RegisterHotKey e é o que estou usando no código. O importante aqui é saber que iremos ser avisados do pressionamento das teclas que registrarmos por meio dessa função através do loop de mensagens da thread que chamar a função.</p>
 
 <p>Um loop de mensagens é a maneira definida pelo Windows para avisar as aplicações dos eventos que ocorrerem no sistema que são relevantes para as suas janelas. Teremos chance de observar isso mais vezes, mas por enquanto basta ter uma visão geral do fluxo de mensagens que ocorre quando digitarmos a nossa tecla de atalho.</p>
 

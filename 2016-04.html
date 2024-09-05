@@ -246,7 +246,7 @@ def PublishToTwitter(postInfo):
     t = twitter.Twitter(auth=twitter_credentials.auth)
     
     with open("C:\\daytoday\\caloni.github.io\\images\\" + postInfo["permalink"] + ".jpg", "rb") as imagefile:
-    	imagedata = imagefile.read()
+      imagedata = imagefile.read()
     t_up = twitter.Twitter(domain='upload.twitter.com', auth=twitter_credentials.auth)
     id_img1 = t_up.media.upload(media=imagedata)["media_id_string"]
     st = postInfo['title'] + '\n\n' + postInfo['tagline'] + '\n\n' + postInfo['shortlink'].encode('utf-8')
@@ -266,7 +266,7 @@ def PublishToFacebook(postInfo):
     http://nodotcom.org/python-facebook-tutorial.html
     """
     with open("C:\\daytoday\\caloni.github.io\\images\\" + postInfo["permalink"] + ".jpg", "rb") as imagefile:
-    	imagedata = imagefile.read()
+      imagedata = imagefile.read()
     st = postInfo['title'] + '\n\n' + postInfo['paragraph'] + '\n\n' + baseUrl + postInfo['permalink']
     post = facebook_credentials.auth.put_photo(image=imagedata, message=st)
 </pre>
@@ -389,16 +389,16 @@ def PublishToFacebook(postInfo):
 int cnt[2501] = {}; // zerando o array
 int main()
 {
-	for(int i = 0; i &lt; n * (2 * n - 1); i++)
-	{
-		cin &gt;&gt; j;
-		cnt[j] ^= 1; // inverte primeiro bit do inteiro
-	}
-	printf("Case #%d:", t);
-	for(int i = 1; i &lt; 2500; i++)
-		if (cnt[i]) 
-			cout &lt;&lt; " " &lt;&lt; i; // se não for zero (ou seja, ímpar) imprime
-	cout &lt;&lt; endl;
+    for(int i = 0; i &lt; n * (2 * n - 1); i++)
+    {
+      cin &gt;&gt; j;
+      cnt[j] ^= 1; // inverte primeiro bit do inteiro
+    }
+    printf("Case #%d:", t);
+    for(int i = 1; i &lt; 2500; i++)
+      if (cnt[i]) 
+        cout &lt;&lt; " " &lt;&lt; i; // se não for zero (ou seja, ímpar) imprime
+    cout &lt;&lt; endl;
 }
 </pre>
 <p>_Obs.: O código está higienizado, pois esse pessoal usa bastante macros, etc._</p>

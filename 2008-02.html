@@ -212,10 +212,10 @@ role="navigation" aria-label="main navigation">
 <p>A primeira busca retorna uma chave no registro referente às propriedades de joystick. Como não estou usando joysticks, podemos ignorar este erro por enquanto e passar adiante.</p>
 
 <pre>
-   MonopolyClassic.exe CreateFile	C:\Documents and ...\TikGames\Monopoly NAME COLLISION
-   MonopolyClassic.exe CreateFile	C:\Arquivos de programas\GameHouse\Monopoly Classic\Monopoly.log ACCESS DENIED
-   MonopolyClassic.exe QueryOpen	C:\Arquivos de programas\GameHouse\Monopoly Classic\DBGHELP.DLL NAME NOT FOUND
-   MonopolyClassic.exe RegOpenKey	HKLM\Software\Microsoft\...\DBGHELP.DLL NAME NOT FOUND
+   MonopolyClassic.exe CreateFile  C:\Documents and ...\TikGames\Monopoly NAME COLLISION
+   MonopolyClassic.exe CreateFile  C:\Arquivos de programas\GameHouse\Monopoly Classic\Monopoly.log ACCESS DENIED
+   MonopolyClassic.exe QueryOpen  C:\Arquivos de programas\GameHouse\Monopoly Classic\DBGHELP.DLL NAME NOT FOUND
+   MonopolyClassic.exe RegOpenKey  HKLM\Software\Microsoft\...\DBGHELP.DLL NAME NOT FOUND
 </pre>
 <p>O próximo erro diz respeito a uma tentativa de acesso ao arquivo Monopoly.log localizado no diretório de instalação do jogo, o que já é mais sugestivo. Podemos fazer um pequeno teste alterando o acesso desse arquivo.</p>
 
@@ -751,22 +751,22 @@ role="navigation" aria-label="main navigation">
 <pre>
    int cannotConvertError(const char* message)
    {
-   	int ret = message[0];
-   	return ret;
+     int ret = message[0];
+     return ret;
    }
    
    int ret = cannotConvertError(3);
    
    error C2664: 'cannotConvertError' : cannot convert parameter 1 from 'int' to 'const char *'
    if( test() )
-   	something;
-   	something-else;
+     something;
+     something-else;
    else
-   	else-something;
+     else-something;
    error C2181: illegal else without matching if
    while( (x &lt; z) &amp;&amp; func(x, func2(y) != 2 )
    {
-   	something;
+     something;
    }
    error C2143: syntax error : missing ')' before '{'
 </pre>
@@ -1193,75 +1193,75 @@ role="navigation" aria-label="main navigation">
    
    int WINAPI WinMain(HINSTANCE, HINSTANCE, PSTR cmdLine, int)
    {
-   	CHAR HOUAISS_PATH[MAX_PATH] = { };
+     CHAR HOUAISS_PATH[MAX_PATH] = { };
    
-   	sscanf(cmdLine, "-p \"%[^\"]s", HOUAISS_PATH);
+     sscanf(cmdLine, "-p \"%[^\"]s", HOUAISS_PATH);
    
-   	if( HOUAISS_PATH[0] == 0 )
-   	{
-   		MessageBox(NULL, "How to use:\r\nHouCalc.exe -p \"C:\\HouaissPath\\\"", 
-   			"Houaiss Decipher v. alpha", 0);
-   		return 0;
-   	}
+     if( HOUAISS_PATH[0] == 0 )
+     {
+       MessageBox(NULL, "How to use:\r\nHouCalc.exe -p \"C:\\HouaissPath\\\"", 
+         "Houaiss Decipher v. alpha", 0);
+       return 0;
+     }
    
-   	for( int fileIdx = 1; fileIdx &lt; 64; ++fileIdx )
-   	{
-   		CHAR path1[MAX_PATH];
-   		CHAR path2[MAX_PATH];
+     for( int fileIdx = 1; fileIdx &lt; 64; ++fileIdx )
+     {
+       CHAR path1[MAX_PATH];
+       CHAR path2[MAX_PATH];
    
-   		sprintf(path1, "%sdeah%03d.dhx", HOUAISS_PATH, fileIdx);
-   		sprintf(path2, "%sdeah%03d.txt", HOUAISS_PATH, fileIdx);
+       sprintf(path1, "%sdeah%03d.dhx", HOUAISS_PATH, fileIdx);
+       sprintf(path2, "%sdeah%03d.txt", HOUAISS_PATH, fileIdx);
    
-   		HANDLE file1 = CreateFile(path1, GENERIC_READ, FILE_SHARE_READ,
-   			NULL, OPEN_EXISTING, 0, NULL);
+       HANDLE file1 = CreateFile(path1, GENERIC_READ, FILE_SHARE_READ,
+         NULL, OPEN_EXISTING, 0, NULL);
    
-   		HANDLE file2 = CreateFile(path2, GENERIC_READ | GENERIC_WRITE, 0,
-   			NULL, CREATE_ALWAYS, 0, NULL);
+       HANDLE file2 = CreateFile(path2, GENERIC_READ | GENERIC_WRITE, 0,
+         NULL, CREATE_ALWAYS, 0, NULL);
    
-   		if( file1 != INVALID_HANDLE_VALUE &amp;&amp; file2 != INVALID_HANDLE_VALUE )
-   		{
-   			DWORD fileSize = GetFileSize(file1, NULL);
+       if( file1 != INVALID_HANDLE_VALUE &amp;&amp; file2 != INVALID_HANDLE_VALUE )
+       {
+         DWORD fileSize = GetFileSize(file1, NULL);
    
-   			if( SetFilePointer(file2, fileSize, NULL, FILE_BEGIN) )
-   			{
-   				SetEndOfFile(file2);
+         if( SetFilePointer(file2, fileSize, NULL, FILE_BEGIN) )
+         {
+           SetEndOfFile(file2);
    
-   				HANDLE map1 = CreateFileMapping(file1, NULL, PAGE_READONLY, 0, 0, NULL);
-   				HANDLE map2 = CreateFileMapping(file2, NULL, PAGE_READWRITE, 0, 0, NULL);
+           HANDLE map1 = CreateFileMapping(file1, NULL, PAGE_READONLY, 0, 0, NULL);
+           HANDLE map2 = CreateFileMapping(file2, NULL, PAGE_READWRITE, 0, 0, NULL);
    
-   				if( map1 &amp;&amp; map2 )
-   				{
-   					PBYTE view1 = (PBYTE) MapViewOfFile(map1, FILE_MAP_READ, 0, 0, 0);
-   					PBYTE view2 = (PBYTE) MapViewOfFile(map2, FILE_MAP_WRITE, 0, 0, 0);
+           if( map1 &amp;&amp; map2 )
+           {
+             PBYTE view1 = (PBYTE) MapViewOfFile(map1, FILE_MAP_READ, 0, 0, 0);
+             PBYTE view2 = (PBYTE) MapViewOfFile(map2, FILE_MAP_WRITE, 0, 0, 0);
    
-   					if( view1 &amp;&amp; view2 )
-   					{
-   						for( DWORD i = 0; i &lt; fileSize; ++i )
-   						{
-   							view2[i] = view1[i] + 0x0B;
-   						}
-   					}
+             if( view1 &amp;&amp; view2 )
+             {
+               for( DWORD i = 0; i &lt; fileSize; ++i )
+               {
+                 view2[i] = view1[i] + 0x0B;
+               }
+             }
    
-   					if( view1 )
-   						UnmapViewOfFile(view1);
-   					if( view2 )
-   						UnmapViewOfFile(view2);
-   				}
+             if( view1 )
+               UnmapViewOfFile(view1);
+             if( view2 )
+               UnmapViewOfFile(view2);
+           }
    
-   				if( map1 )
-   					CloseHandle(map1);
-   				if( map2 )
-   					CloseHandle(map2);
-   			}
-   		}
+           if( map1 )
+             CloseHandle(map1);
+           if( map2 )
+             CloseHandle(map2);
+         }
+       }
    
-   		if( file1 )
-   			CloseHandle(file1);
-   		if( file2 )
-   			CloseHandle(file2);
-   	}
+       if( file1 )
+         CloseHandle(file1);
+       if( file2 )
+         CloseHandle(file2);
+     }
    
-   	return 0;
+     return 0;
    }
 </pre>
 <p>Parte da mágica já foi feita, talvez a mais importante e divertida. Daqui pra lá deixaremos o WinDbg de lado e analisaremos o formato em que o texto do dicionário é armazenado, ignorando sua ofuscação básica, que não é mais um problema. Como o artigo já está extenso o suficiente, vou deixar a continuação dessa empreitada para uma futura publicação.</p>

@@ -529,15 +529,15 @@ role="navigation" aria-label="main navigation">
 <pre>
    int factorial(int n)
    {
-   	if (n &gt; 1)
-   		return factorial(n - 1) * n;
-   	else
-   		return 1;
+     if (n &gt; 1)
+       return factorial(n - 1) * n;
+     else
+       return 1;
    }
    
    int main()
    {
-   	return factorial(1000);
+     return factorial(1000);
    }
 </pre>
 <p>Para ver o overhead de uma função dessas, compilamos com a opção de debug e depuramos no CDB.</p>
@@ -724,19 +724,19 @@ role="navigation" aria-label="main navigation">
 <pre>
    int factorial(int n, int a)
    {
-   	if (n &lt; 0)
-   		return 0;
-   	else if (n == 0)
-   		return 1;
-   	else if (n == 1)
-   		return a;
-   	else
-   		return factorial(n - 1, n * a);
+     if (n &lt; 0)
+       return 0;
+     else if (n == 0)
+       return 1;
+     else if (n == 1)
+       return a;
+     else
+       return factorial(n - 1, n * a);
    }
    
    int main()
    {
-   	return factorial(1000, 1);
+     return factorial(1000, 1);
    }
 </pre>
 <p>Nessa segunda versão, a chamada da função recursiva não mais é parte de uma expressão, e continua sendo a última instrução executada. Agora só temos que compilar com a opção de otimização certa em ambos os compiladores e testar.</p>
@@ -1069,17 +1069,17 @@ role="navigation" aria-label="main navigation">
 <pre>
    switch( pMsg-&gt;message )
    {
-   	case WM_CHAR:
-   	{
-   		LPTSTR ptzChar =
-   		_tcschr(g_tzRussAlphabet, (TCHAR) pMsg-&gt;wParam);
+     case WM_CHAR:
+     {
+       LPTSTR ptzChar =
+       _tcschr(g_tzRussAlphabet, (TCHAR) pMsg-&gt;wParam);
    
-   		if( ptzChar )
-   		{
-   			size_t offset = ptzChar - g_tzRussAlphabet;
-   			pMsg-&gt;wParam = (WPARAM) g_tzPortAlphabet[offset];
-   		}
-   	}
+       if( ptzChar )
+       {
+         size_t offset = ptzChar - g_tzRussAlphabet;
+         pMsg-&gt;wParam = (WPARAM) g_tzPortAlphabet[offset];
+       }
+     }
    } 
 </pre>
 <p>Simples assim. E temos um keylogger que troca caracteres! É impressionante como as coisas mais simples podem se transformar nos momentos mais divertidos de um programador em um feriado.</p>

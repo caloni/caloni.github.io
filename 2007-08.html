@@ -427,7 +427,7 @@ role="navigation" aria-label="main navigation">
      int x = 10;
    }
 </pre>
-<p>Essa foi a técnica adicionada à solução do lançamento de exceções. E o <a href="posts.html?q=antidebug-exception-2.cpp">código final</a> ficou mais claro (além de rápido, por economizar o uso de uma thread para leitura dos comandos).</p>
+<p>Essa foi a técnica adicionada à solução do lançamento de exceções. E o código final ficou mais claro (além de rápido, por economizar o uso de uma thread para leitura dos comandos).</p>
 
 <pre>
    /** The only purpose of 
@@ -518,8 +518,6 @@ role="navigation" aria-label="main navigation">
 
 
 
-
-
 </section><hr/>
 
 
@@ -595,53 +593,53 @@ role="navigation" aria-label="main navigation">
       conversion of type 'x' of the next argument, other character
       sequences are printed verbatim.   Thus
    
-   	printf("delta is %d*n", delta);
+     printf("delta is %d*n", delta);
    
-   	will convert the variable delta to decimal (%d) and print the
-   	string with the converted form of delta in place of %d.   The
-   	conversions %d-decimal, %o-octal, *s-string and %c-character
-   	are allowed.
+     will convert the variable delta to decimal (%d) and print the
+     string with the converted form of delta in place of %d.   The
+     conversions %d-decimal, %o-octal, *s-string and %c-character
+     are allowed.
    
-   	This program calls upon the function `printn'. (see section
-   	9.1) */
+     This program calls upon the function `printn'. (see section
+     9.1) */
    
    printf(fmt, x1,x2,x3,x4,x5,x6,x7,x8,x9) {
-   	extrn printn, char, putchar;
-   	auto adx, x, c, i, j;
+     extrn printn, char, putchar;
+     auto adx, x, c, i, j;
    
-   	i= 0;	/* fmt index */
-   	adx = &amp;x1;	/* argument pointer */
+     i= 0;  /* fmt index */
+     adx = &amp;x1;  /* argument pointer */
    loop :
-   	while((c=char(fmt,i++) ) != `%') {
-   		if(c == `*e')
-   			return;
-   		putchar(c);
-   	}
-   	x = *adx++;
-   	switch c = char(fmt,i++) {
+     while((c=char(fmt,i++) ) != `%') {
+       if(c == `*e')
+         return;
+       putchar(c);
+     }
+     x = *adx++;
+     switch c = char(fmt,i++) {
    
-   	case `d': /* decimal */
-   	case `o': /* octal */
-   		if(x &lt; O) {
-   			x = -x ;
-   			putchar('-');
-   		}
-   		printn(x, c=='o'?8:1O);
-   		goto loop;
+     case `d': /* decimal */
+     case `o': /* octal */
+       if(x &lt; O) {
+         x = -x ;
+         putchar('-');
+       }
+       printn(x, c=='o'?8:1O);
+       goto loop;
    
-   	case 'c' : /* char */
-   		putchar(x);
-   		goto loop;
+     case 'c' : /* char */
+       putchar(x);
+       goto loop;
    
-   	case 's': /* string */
-   		while(c=char(x, j++)) != '*e')
-   			putchar(c);
-   		goto loop;
-   	}
-   	putchar('%') ;
-   	i--;
-   	adx--;
-   	goto loop;
+     case 's': /* string */
+       while(c=char(x, j++)) != '*e')
+         putchar(c);
+       goto loop;
+     }
+     putchar('%') ;
+     i--;
+     adx--;
+     goto loop;
    } 
 </pre>
 <p>Como podemos ver, vários elementos (se não todos) da linguagem C já estão presentes na B.</p>
@@ -697,27 +695,27 @@ role="navigation" aria-label="main navigation">
    
    void main(void)
    {
-   	typedef enum _COMPUTER_NAME_FORMAT
-   	{
-   		ComputerNameNetBIOS,
-   		ComputerNameDnsHostname,
-   		ComputerNameDnsDomain,
-   		ComputerNameDnsFullyQualified,
-   		ComputerNamePhysicalNetBIOS,
-   		ComputerNamePhysicalDnsHostname,
-   		ComputerNamePhysicalDnsDomain,
-   		ComputerNamePhysicalDnsFullyQualified,
-   		ComputerNameMax
-   	} COMPUTER_NAME_FORMAT;
+     typedef enum _COMPUTER_NAME_FORMAT
+     {
+       ComputerNameNetBIOS,
+       ComputerNameDnsHostname,
+       ComputerNameDnsDomain,
+       ComputerNameDnsFullyQualified,
+       ComputerNamePhysicalNetBIOS,
+       ComputerNamePhysicalDnsHostname,
+       ComputerNamePhysicalDnsDomain,
+       ComputerNamePhysicalDnsFullyQualified,
+       ComputerNameMax
+     } COMPUTER_NAME_FORMAT;
    
-   	COMPUTER_NAME_FORMAT CF = ComputerNameDnsDomain;
+     COMPUTER_NAME_FORMAT CF = ComputerNameDnsDomain;
    
-   	char szDomainName[MAX_COMPUTERNAME_LENGTH];
+     char szDomainName[MAX_COMPUTERNAME_LENGTH];
    
-   	DWORD dwSize = sizeof(szDomainName);
+     DWORD dwSize = sizeof(szDomainName);
    
-   	//GetComputerName(szDomainName, &amp;dwSize);
-   	GetComputerNameEx(CF, szDomainName, &amp;dwSize);
+     //GetComputerName(szDomainName, &amp;dwSize);
+     GetComputerNameEx(CF, szDomainName, &amp;dwSize);
    } 
 </pre>
 <p>Tirando o fato que o retorno void não é mais um protótipo padrão da função main e que a definição da enumeração COMPUTER_NAME_FORMAT dentro da função main é no mínimo suspeita, podemos testar a compilação e verificar que existe exatamente um erro grave neste fonte:</p>
@@ -792,31 +790,31 @@ role="navigation" aria-label="main navigation">
    
    void _tmain(void)
    {
-   	TCHAR buffer[256] = TEXT("");
-   	TCHAR szDescription[8][32] = {TEXT("NetBIOS"), 
-   	TEXT("DNS hostname"), 
-   	TEXT("DNS domain"), 
-   	TEXT("DNS fully-qualified"), 
-   	TEXT("Physical NetBIOS"), 
-   	TEXT("Physical DNS hostname"), 
-   	TEXT("Physical DNS domain"), 
-   	TEXT("Physical DNS fully-qualified")};
-   	int cnf = 0;
-   	DWORD dwSize = sizeof(buffer);
+     TCHAR buffer[256] = TEXT("");
+     TCHAR szDescription[8][32] = {TEXT("NetBIOS"), 
+     TEXT("DNS hostname"), 
+     TEXT("DNS domain"), 
+     TEXT("DNS fully-qualified"), 
+     TEXT("Physical NetBIOS"), 
+     TEXT("Physical DNS hostname"), 
+     TEXT("Physical DNS domain"), 
+     TEXT("Physical DNS fully-qualified")};
+     int cnf = 0;
+     DWORD dwSize = sizeof(buffer);
    
-   	for( cnf = 0; cnf &lt; ComputerNameMax; cnf++ )
-   	{
-   		if (!GetComputerNameEx( (COMPUTER_NAME_FORMAT)cnf, buffer, &amp;dwSize) )
-   		{
-   			_tprintf(TEXT("GetComputerNameEx failed (%d)\n"),
-   			GetLastError());
-   			return;
-   		}
-   			else _tprintf(TEXT("%s: %s\n"), szDescription[cnf], buffer);
+     for( cnf = 0; cnf &lt; ComputerNameMax; cnf++ )
+     {
+       if (!GetComputerNameEx( (COMPUTER_NAME_FORMAT)cnf, buffer, &amp;dwSize) )
+       {
+         _tprintf(TEXT("GetComputerNameEx failed (%d)\n"),
+         GetLastError());
+         return;
+       }
+         else _tprintf(TEXT("%s: %s\n"), szDescription[cnf], buffer);
    
-   		dwSize = sizeof(buffer);
-   		ZeroMemory(buffer, dwSize);
-   	}
+       dwSize = sizeof(buffer);
+       ZeroMemory(buffer, dwSize);
+     }
    } 
 </pre>
 <p>Outra observação que poderia ter ajudado na hora de codificar seria dar uma olhada no que os caras escrevem na seção de advertências (remarks) da documentação:</p>
@@ -855,38 +853,38 @@ role="navigation" aria-label="main navigation">
 <pre>
    void DebugLoop()
    {
-   	bool exitLoop = false;
+     bool exitLoop = false;
    
-   	while( ! exitLoop )
-   	{
-   		DEBUG_EVENT debugEvt;
+     while( ! exitLoop )
+     {
+       DEBUG_EVENT debugEvt;
    
-   		WaitForDebugEvent(&amp;debugEvt, 
+       WaitForDebugEvent(&amp;debugEvt, 
          INFINITE);
    
-   		switch( debugEvt.dwDebugEventCode )
-   		{
-   			// This one...
+       switch( debugEvt.dwDebugEventCode )
+       {
+         // This one...
    
-   			// That one...
+         // That one...
    
-   			// Process is going out.
-   			case EXIT_PROCESS_DEBUG_EVENT:
-   			  exitLoop = true;
-   			  break;
-   		}
+         // Process is going out.
+         case EXIT_PROCESS_DEBUG_EVENT:
+           exitLoop = true;
+           break;
+       }
    
-   		// Unfreeze the thread who sent the debug event.
-   		// Otherwise, it stays frozen forever!
-   		ContinueDebugEvent(debugEvt.dwProcessId, 
+       // Unfreeze the thread who sent the debug event.
+       // Otherwise, it stays frozen forever!
+       ContinueDebugEvent(debugEvt.dwProcessId, 
          debugEvt.dwThreadId, 
          DBG_EXCEPTION_NOT_HANDLED);
-   	}
+     }
    } 
 </pre>
 <p>O detalhe interessante desse processo de comunicação depurador/depurado é que um processo só pode ser depurado por apenas UM depurador. Ou seja, enquanto houver um processo depurando outro, os outros processos só ficam na vontade.</p>
 
-<p>Partindo desse princípio, podemos imaginar uma proteção baseada nessa exclusividade, criando um processo protetor que conecta no processo protegido e o "depura". Fiz um <a href="posts.html?q={{< resource src="antidebug-debugport.cpp" >}}">código de exemplo</a> que faz justamente isso: ele atacha em um processo para depurá-lo (basta passar o PID como parâmetro) e não deixa mais outro depurador ocupar a debug port. Os passos para testá-lo são:</p>
+<p>Partindo desse princípio, podemos imaginar uma proteção baseada nessa exclusividade, criando um processo protetor que conecta no processo protegido e o "depura". Fiz um código de exemplo que faz justamente isso: ele atacha em um processo para depurá-lo (basta passar o PID como parâmetro) e não deixa mais outro depurador ocupar a debug port. Os passos para testá-lo são:</p>
 
 <p>  1. Compilar o código.</p>
 
@@ -909,8 +907,6 @@ role="navigation" aria-label="main navigation">
 <p>Por isso é necessário pensar bem na implementação. Particularmente uma coisa a ser bem arquitetada é a união entre depurador e depurado. Quanto melhor essas duas peças forem encaixadas, tão mais difícil será para o atacante separá-las. Uma idéia adicional é utilizar a mesma técnica na direção oposta, ou seja, o processo depurado se atachar no depurador.</p>
 
 <p>Dessa vez não vou afirmar que, uma vez entendido o problema, a solução torna-se óbvia. Isso porque ainda não pensei o suficiente para achar uma solução óbvia. Idéias?</p>
-
-
 
 </section><hr/>
 

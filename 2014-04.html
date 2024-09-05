@@ -172,20 +172,20 @@ role="navigation" aria-label="main navigation">
 #include &lt;string&gt;
 int main()
 {
-	std::vector&lt;Employee&gt; employees; // um bando de empregados
-	std::string currentDate = GetCurrentDate();
-	// definindo uma função, como quem não quer nada, dentro de uma função
-	auto FindByBithDate = [&amp;]-&gt;bool // &lt;-- tipo de retorno
-	{
-		return employee.birthDate == currentDate;
-	};
-	GetEmployees(employees);
-	auto findIt = std::find_if(employees.begin(), employees.end(), FindByBithDate);
-	while( findIt != employees.end() )
-	{
-		SendMail(*findIt);
-		findIt = std::find_if(findIt + 1, employees.end(), FindByBithDate);
-	}
+    std::vector&lt;Employee&gt; employees; // um bando de empregados
+    std::string currentDate = GetCurrentDate();
+    // definindo uma função, como quem não quer nada, dentro de uma função
+    auto FindByBithDate = [&amp;]-&gt;bool // &lt;-- tipo de retorno
+    {
+      return employee.birthDate == currentDate;
+    };
+    GetEmployees(employees);
+    auto findIt = std::find_if(employees.begin(), employees.end(), FindByBithDate);
+    while( findIt != employees.end() )
+    {
+      SendMail(*findIt);
+      findIt = std::find_if(findIt + 1, employees.end(), FindByBithDate);
+    }
 }
 </pre>
 <p>O tipo de retorno que colocamos através de uma flechinha é obrigatória? De fato, não. Se eu omiti-la vai funcionar do mesmo jeito porque o único ponto de saída da minha função retorna um bool.</p>
@@ -266,42 +266,42 @@ import sys
 f = open(sys.argv[1])
 total = int(f.readline())
 for case in range(0, total):
-	guess1 = int(f.readline())
-	row1 = None
-	for i in range(1, 5):
-		row = f.readline().split()
-		if i == guess1:
-			row1 = row
-	guess2 = int(f.readline())
-	row2 = None
-	for i in range(1, 5):
-		row = f.readline().split()
-		if i == guess2:
-			row2 = row
-	cards = list(set(row1) &amp; set(row2))
-	if len(cards) == 1:
-		print 'Case #' + str(case+1) + ': ' + cards[0]
-	elif len(cards) &gt; 1:
-		print 'Case #' + str(case+1) + ': Bad magician!'
-	else:
-		print 'Case #' + str(case+1) + ': Volunteer cheated!'
+    guess1 = int(f.readline())
+    row1 = None
+    for i in range(1, 5):
+      row = f.readline().split()
+      if i == guess1:
+        row1 = row
+    guess2 = int(f.readline())
+    row2 = None
+    for i in range(1, 5):
+      row = f.readline().split()
+      if i == guess2:
+        row2 = row
+    cards = list(set(row1) &amp; set(row2))
+    if len(cards) == 1:
+      print 'Case #' + str(case+1) + ': ' + cards[0]
+    elif len(cards) &gt; 1:
+      print 'Case #' + str(case+1) + ': Bad magician!'
+    else:
+      print 'Case #' + str(case+1) + ': Volunteer cheated!'
 </pre>
 <p>O segundo exercício já envolvia um jogo bem divertido em que o jogador ficava clicando em cookies como se não houvese amanhã. Esse deu um pouco mais de trabalho, mas foi mais divertido que o primeiro.</p>
 
 <pre>
 import sys
 def CookieClicker(farmCost, farmIncrement, cookieTarget):
-	cookiePerSecond = 2.0
-	bestTime = cookieTarget / cookiePerSecond # melhor tempo soh fazendo cookies
-	cookieFarmTime = cookieTarget / (cookiePerSecond + farmIncrement) # melhor tempo ja com fazenda criada
-	farmTime = farmCost / cookiePerSecond + cookieFarmTime # quanto vai custar fazer a fazenda e depois fazer cookies com a fazenda
-	while farmTime &lt; bestTime: # enquanto fazer a fazenda custar menos tempo que soh fazer cookies...
-		bestTime = farmTime # por enquanto melhor tempo
-		cookiePerSecond = cookiePerSecond + farmIncrement # novo tempo para fazer cookies (mais uma fazenda ja criada)
-		farmTime = farmTime - cookieFarmTime # tiramos o tempo de soh fazer cookies para fazer mais uma fazenda
-		cookieFarmTime = cookieTarget / (cookiePerSecond + farmIncrement) # novo tempo com mais uma fazenda criada
-		farmTime = farmTime + farmCost / cookiePerSecond + cookieFarmTime # agora com o novo tempo de fazer outra fazenda e soh cookies
-	return bestTime
+    cookiePerSecond = 2.0
+    bestTime = cookieTarget / cookiePerSecond # melhor tempo soh fazendo cookies
+    cookieFarmTime = cookieTarget / (cookiePerSecond + farmIncrement) # melhor tempo ja com fazenda criada
+    farmTime = farmCost / cookiePerSecond + cookieFarmTime # quanto vai custar fazer a fazenda e depois fazer cookies com a fazenda
+    while farmTime &lt; bestTime: # enquanto fazer a fazenda custar menos tempo que soh fazer cookies...
+      bestTime = farmTime # por enquanto melhor tempo
+      cookiePerSecond = cookiePerSecond + farmIncrement # novo tempo para fazer cookies (mais uma fazenda ja criada)
+      farmTime = farmTime - cookieFarmTime # tiramos o tempo de soh fazer cookies para fazer mais uma fazenda
+      cookieFarmTime = cookieTarget / (cookiePerSecond + farmIncrement) # novo tempo com mais uma fazenda criada
+      farmTime = farmTime + farmCost / cookiePerSecond + cookieFarmTime # agora com o novo tempo de fazer outra fazenda e soh cookies
+    return bestTime
 f = open(sys.argv[1])
 total = int(f.readline())
 for case in range(1, total + 1):
@@ -314,46 +314,46 @@ for case in range(1, total + 1):
 <pre>
 import sys
 def BestBlock(block, blocks):
-	bestBlock = 0
-	for i in range(len(blocks) - 1, -1, -1):
-		if blocks[i] &lt; block: break
-		bestBlock = blocks[i]
-	if not bestBlock:
-		bestBlock = blocks[0]
-	return bestBlock
+    bestBlock = 0
+    for i in range(len(blocks) - 1, -1, -1):
+      if blocks[i] &lt; block: break
+      bestBlock = blocks[i]
+    if not bestBlock:
+      bestBlock = blocks[0]
+    return bestBlock
 def War(naomi, ken):
-	naomi = sorted(naomi)
-	ken = sorted(ken)
-	naomiCount = 0
-	while len(naomi):
-		naomiBlock = naomi[-1]
-		kenBlock = BestBlock(naomiBlock, ken)
-		if naomiBlock &gt; kenBlock:
-			naomiCount = naomiCount + 1
-		#print str(naomiBlock) + ' vs ' + str(kenBlock) + ': ' + str(naomiCount)
-		naomi.remove(naomiBlock)
-		ken.remove(kenBlock)
-	return naomiCount
+    naomi = sorted(naomi)
+    ken = sorted(ken)
+    naomiCount = 0
+    while len(naomi):
+      naomiBlock = naomi[-1]
+      kenBlock = BestBlock(naomiBlock, ken)
+      if naomiBlock &gt; kenBlock:
+        naomiCount = naomiCount + 1
+      #print str(naomiBlock) + ' vs ' + str(kenBlock) + ': ' + str(naomiCount)
+      naomi.remove(naomiBlock)
+      ken.remove(kenBlock)
+    return naomiCount
 def WarCheat(naomi, ken):
-	naomi = sorted(naomi)
-	ken = sorted(ken)
-	naomiCount = 0
-	while len(naomi):
-		naomiTold = 0
-		naomiBlock = naomi[-1]
-		bestKen = ken[-1]
-		if naomiBlock &gt; bestKen:
-			naomiTold = bestKen + 0.00000001
-		else:
-			naomiTold = bestKen - 0.00000001
-		kenBlock = BestBlock(naomiTold, ken)
-		naomiBlock = BestBlock(kenBlock, naomi)
-		if naomiBlock &gt; kenBlock:
-			naomiCount = naomiCount + 1
-		#print str(naomiTold) + '(' + str(naomiBlock) + ') vs ' + str(kenBlock) + ': ' + str(naomiCount)
-		naomi.remove(naomiBlock)
-		ken.remove(kenBlock)
-	return naomiCount
+    naomi = sorted(naomi)
+    ken = sorted(ken)
+    naomiCount = 0
+    while len(naomi):
+      naomiTold = 0
+      naomiBlock = naomi[-1]
+      bestKen = ken[-1]
+      if naomiBlock &gt; bestKen:
+        naomiTold = bestKen + 0.00000001
+      else:
+        naomiTold = bestKen - 0.00000001
+      kenBlock = BestBlock(naomiTold, ken)
+      naomiBlock = BestBlock(kenBlock, naomi)
+      if naomiBlock &gt; kenBlock:
+        naomiCount = naomiCount + 1
+      #print str(naomiTold) + '(' + str(naomiBlock) + ') vs ' + str(kenBlock) + ': ' + str(naomiCount)
+      naomi.remove(naomiBlock)
+      ken.remove(kenBlock)
+    return naomiCount
 f = open(sys.argv[1])
 total = int(f.readline())
 for case in range(1, total + 1):
@@ -372,11 +372,11 @@ for case in range(1, total + 1):
 import sys
 def FieldToString(field):
         ret = '\n'
-	for r in field:
-		for c in r:
-			ret = ret + str(c)
-		ret = ret + '\n'
-	return ret
+    for r in field:
+      for c in r:
+        ret = ret + str(c)
+      ret = ret + '\n'
+    return ret
 def CountMines(field, r, c):
         ret = 0
         row = len(field)
@@ -415,8 +415,8 @@ def ExpandClick(field, r, c):
         if r &gt; 0 and c &lt; col-1 and field[r-1][c+1] != '*':
                 Expand(field, r-1, c+1)
 def FieldClicker(field):
-	row = len(field)
-	col = len(field[0])
+    row = len(field)
+    col = len(field[0])
         for r in range(row):
                 for c in range(col):
                         if field[r][c] == 'C':
@@ -426,8 +426,8 @@ def FieldClicker(field):
         return field
 def FieldValidate(field):
         ret = True
-	row = len(field)
-	col = len(field[0])
+    row = len(field)
+    col = len(field[0])
         for r in range(row):
                 for c in range(col):
                         if field[r][c] == '.':
@@ -435,7 +435,7 @@ def FieldValidate(field):
                                 break
         return ret
 def FieldRender(row, col, mines):
-	field = []
+    field = []
         for i in range(row):
                 field.append(['.'] * col)
         if row == 2:
@@ -460,7 +460,7 @@ def FieldRender(row, col, mines):
                                 nextCol = 0
                         mines = mines - 1
                 field[row-1][0] = 'C'
-	elif row * col - mines &lt; 3:
+    elif row * col - mines &lt; 3:
                 nextRow = row - 1
                 nextCol = 0
                 while mines:
@@ -481,18 +481,18 @@ def FieldRender(row, col, mines):
                         nextCol = 0
                         while empties:
                                 
-	return field
+    return field
 def Mine(row, col, mines):
         if row * col - mines == 2 and row &gt; 1 and col &gt; 1:
-		return 'Impossible!'
-	if row * col - mines == 3:
-		return 'Impossible!'
-	elif row * col - mines == 5:
-		return 'Impossible!'
-	elif row * col - mines == 7:
-		return 'Impossible!'
-	else:
-		return FieldToString(FieldRender(row, col, mines))
+      return 'Impossible!'
+    if row * col - mines == 3:
+      return 'Impossible!'
+    elif row * col - mines == 5:
+      return 'Impossible!'
+    elif row * col - mines == 7:
+      return 'Impossible!'
+    else:
+      return FieldToString(FieldRender(row, col, mines))
 f = open(sys.argv[1])
 total = int(f.readline())
 for case in range(1, total + 1):
@@ -500,9 +500,9 @@ for case in range(1, total + 1):
         print 'Case #' + str(case) + ': ' + Mine(field[0], field[1], field[2])
 #############################################################################3
 def FieldRenderWrong(row, col, mines):
-	field = []
-	for i in range(row):
-		field.append(['.'] * col)
+    field = []
+    for i in range(row):
+      field.append(['.'] * col)
         def GetNextRow(field, clickRow, clickCol):
                 row = len(field)
                 col = len(field[0])
@@ -541,13 +541,13 @@ def FieldRenderWrong(row, col, mines):
                 return nextRow, nextCol
         clickRow = 0
         clickCol = col-1
-	field[clickRow][clickCol] = 'C'
+    field[clickRow][clickCol] = 'C'
         nextRow, nextCol = GetNextRow(field, clickRow, clickCol)
-	while mines:
-		field[nextRow][nextCol] = '*'
-		nextRow, nextCol = GetNextRow(field, clickRow, clickCol)
-		mines = mines - 1
-	return field
+    while mines:
+      field[nextRow][nextCol] = '*'
+      nextRow, nextCol = GetNextRow(field, clickRow, clickCol)
+      mines = mines - 1
+    return field
 </pre>
 <p>Não, eu não usei o Google para descobrir a lógica por trás do problema. Vai que os caras ficam monitorando quem fica fazendo pesquisas. E, não, tampouco usei o Bing. Não sou masoquista a esse ponto.</p>
 
@@ -711,43 +711,43 @@ def FieldRenderWrong(row, col, mines):
            [32, 339], [153, 339], [274, 339], [395, 339],
            [32, 461], [153, 461], [274, 461], [395, 461],
            [32, 584], [153, 584], [274, 584], [395, 584]
-   	]
+     ]
    TileSize = 106
    
    def LoadTemplate():
-   	img = Image.open('2048.png')
-   	draw= ImageDraw.Draw(img)
-   	return img, draw
+     img = Image.open('2048.png')
+     draw= ImageDraw.Draw(img)
+     return img, draw
    
    def DrawBoard(board):
-   	img, draw = LoadTemplate()
-   	bigFont = ImageFont.truetype('DejaVuSans-Bold.ttf', 48)
-   	smallFont = ImageFont.truetype('DejaVuSans-Bold.ttf', 24)
-   	dbgFont = ImageFont.truetype('DejaVuSans-Bold.ttf', 8)
-   	for r in range(len(board)):
-   		for c in range(len(board[r])):
-   			number = 2 ** board[r][c]
-   			if number &gt; 1:
-   				tileX, tileY = TilePositions[r*4 +c][0], TilePositions[r*4 +c][1]
-   				font = smallFont if number &gt; 64 else bigFont
-   				text = str(number)
-   				textW, textH = draw.textsize(text, font=font)
-   				x, y = tileX + (TileSize - textW) / 2, tileY + (TileSize - textH) /2
-   				dbgText = str(tileX) + ' + (' + str(TileSize) + ' - ' + str(textW) + ') / 2'
+     img, draw = LoadTemplate()
+     bigFont = ImageFont.truetype('DejaVuSans-Bold.ttf', 48)
+     smallFont = ImageFont.truetype('DejaVuSans-Bold.ttf', 24)
+     dbgFont = ImageFont.truetype('DejaVuSans-Bold.ttf', 8)
+     for r in range(len(board)):
+       for c in range(len(board[r])):
+         number = 2 ** board[r][c]
+         if number &gt; 1:
+           tileX, tileY = TilePositions[r*4 +c][0], TilePositions[r*4 +c][1]
+           font = smallFont if number &gt; 64 else bigFont
+           text = str(number)
+           textW, textH = draw.textsize(text, font=font)
+           x, y = tileX + (TileSize - textW) / 2, tileY + (TileSize - textH) /2
+           dbgText = str(tileX) + ' + (' + str(TileSize) + ' - ' + str(textW) + ') / 2'
                                    draw.text((x, y), text, (0,0,0), font=font)
-   	return img
+     return img
    
    def ReadNextBoard(f):
-   	lines = [lines for lines in islice(f, 4)]
-   	if (len(lines)) == 4:
-   		board = [
-   			[ int(lines[0][0], 16), int(lines[0][1], 16), int(lines[0][2], 16), int(lines[0][3], 16) ],
-   			[ int(lines[1][0], 16), int(lines[1][1], 16), int(lines[1][2], 16), int(lines[1][3], 16) ],
-   			[ int(lines[2][0], 16), int(lines[2][1], 16), int(lines[2][2], 16), int(lines[2][3], 16) ],
-   			[ int(lines[3][0], 16), int(lines[3][1], 16), int(lines[3][2], 16), int(lines[3][3], 16) ]
-   			]
-   		return board
-   	return None
+     lines = [lines for lines in islice(f, 4)]
+     if (len(lines)) == 4:
+       board = [
+         [ int(lines[0][0], 16), int(lines[0][1], 16), int(lines[0][2], 16), int(lines[0][3], 16) ],
+         [ int(lines[1][0], 16), int(lines[1][1], 16), int(lines[1][2], 16), int(lines[1][3], 16) ],
+         [ int(lines[2][0], 16), int(lines[2][1], 16), int(lines[2][2], 16), int(lines[2][3], 16) ],
+         [ int(lines[3][0], 16), int(lines[3][1], 16), int(lines[3][2], 16), int(lines[3][3], 16) ]
+         ]
+       return board
+     return None
    
    def ProcessGame(filePath):
        f = open(filePath)
@@ -858,74 +858,74 @@ using namespace std;
 static const int MAX_SWITCHES = 40;
 __int64 StringToInt(const string&amp; s, int L)
 {
-	__int64 ret = 0;
-	for( int l = L; l; --l )
-	{
-		char c = s[L-l];
-		if( c == '1' )
-			ret |= ((__int64)1 &lt;&lt; (l-1));
-	}
-	return ret;
+    __int64 ret = 0;
+    for( int l = L; l; --l )
+    {
+      char c = s[L-l];
+      if( c == '1' )
+        ret |= ((__int64)1 &lt;&lt; (l-1));
+    }
+    return ret;
 }
 int CountBits(__int64 value)
 {
-	int ret = 0;
-	while( value )
-	{
-		if( value &amp; 1 )
-			++ret;
-		value &gt;&gt;= 1;
-	}
-	return ret;
+    int ret = 0;
+    while( value )
+    {
+      if( value &amp; 1 )
+        ++ret;
+      value &gt;&gt;= 1;
+    }
+    return ret;
 }
 void TestCase(std::istream&amp; is, std::ostream&amp; os)
 {
-	int N, L;
-	is &gt;&gt; N &gt;&gt; L;
-	vector&lt;__int64&gt; outlets;
-	vector&lt;__int64&gt; devices;
-	string eletricItem;
-	for( int n = 0; n &lt; N; ++n )
-	{
-		is &gt;&gt; eletricItem;
-		outlets.push_back(StringToInt(eletricItem, L));
-	}
-	for( int n = 0; n &lt; N; ++n )
-	{
-		is &gt;&gt; eletricItem;
-		devices.push_back(StringToInt(eletricItem, L));
-	}
-	typedef map&lt;__int64, set&lt;int&gt;&gt; SwitchOcurrences;
-	SwitchOcurrences switchOcurrences;
-	
-	for( int n = 0; n &lt; N; ++n )
-	{
-		__int64 outlet = outlets[n];
-		for( int n2 = 0; n2 &lt; N; ++n2 )
-		{
-			__int64 device = devices[n2];
-			__int64 connection = outlet ^ device;
-			switchOcurrences[connection].insert(n);
-		}
-	}
-	for(auto it = switchOcurrences.begin(); it != switchOcurrences.end(); )
-	{
-		if( it-&gt;second.size() != N )
-			it = switchOcurrences.erase(it);
-		else
-			++it;
-	}
-	if( switchOcurrences.size() )
-	{
-		int switches = MAX_SWITCHES + 1;
-		for_each(switchOcurrences.begin(), switchOcurrences.end(), [&amp;](const SwitchOcurrences::value_type&amp; ocurrence)
-		{
-			int bits = CountBits(ocurrence.first);
-			switches = min(switches, bits);
-		});
-		os &lt;&lt; switches &lt;&lt; endl;
-	}
-	else os &lt;&lt; "NOT POSSIBLE\n";
+    int N, L;
+    is &gt;&gt; N &gt;&gt; L;
+    vector&lt;__int64&gt; outlets;
+    vector&lt;__int64&gt; devices;
+    string eletricItem;
+    for( int n = 0; n &lt; N; ++n )
+    {
+      is &gt;&gt; eletricItem;
+      outlets.push_back(StringToInt(eletricItem, L));
+    }
+    for( int n = 0; n &lt; N; ++n )
+    {
+      is &gt;&gt; eletricItem;
+      devices.push_back(StringToInt(eletricItem, L));
+    }
+    typedef map&lt;__int64, set&lt;int&gt;&gt; SwitchOcurrences;
+    SwitchOcurrences switchOcurrences;
+    
+    for( int n = 0; n &lt; N; ++n )
+    {
+      __int64 outlet = outlets[n];
+      for( int n2 = 0; n2 &lt; N; ++n2 )
+      {
+        __int64 device = devices[n2];
+        __int64 connection = outlet ^ device;
+        switchOcurrences[connection].insert(n);
+      }
+    }
+    for(auto it = switchOcurrences.begin(); it != switchOcurrences.end(); )
+    {
+      if( it-&gt;second.size() != N )
+        it = switchOcurrences.erase(it);
+      else
+        ++it;
+    }
+    if( switchOcurrences.size() )
+    {
+      int switches = MAX_SWITCHES + 1;
+      for_each(switchOcurrences.begin(), switchOcurrences.end(), [&amp;](const SwitchOcurrences::value_type&amp; ocurrence)
+      {
+        int bits = CountBits(ocurrence.first);
+        switches = min(switches, bits);
+      });
+      os &lt;&lt; switches &lt;&lt; endl;
+    }
+    else os &lt;&lt; "NOT POSSIBLE\n";
 }
 </pre>
 <p>_Observação: note que retirei o wrapper costumeiro dos exercícios do Code Jam para não poluir demais o exemplo com código. E, na verdade, essa parte do código está compartilhada com todas as soluções (reuse!)._</p>

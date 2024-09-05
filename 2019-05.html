@@ -340,19 +340,19 @@ role="navigation" aria-label="main navigation">
 #include "CalculatorTabajara.h"
 int soma(int x, int y)
 {
-	return x + y;
+    return x + y;
 }
 int subtrai(int x, int y)
 {
-	return x - y;
+    return x - y;
 }
 int multiplica(int x, int y)
 {
-	return x * y;
+    return x * y;
 }
 int divide(int x, int y)
 {
-	return x / y;
+    return x / y;
 }
 int main()
 {
@@ -371,31 +371,31 @@ int main()
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 namespace UnitTest1
 {
-	TEST_CLASS(UnitTest1)
-	{
-	public:
-		
-		TEST_METHOD(TestaSoma)
-		{
-			int z = soma(3, 2);
-			Assert::AreEqual(z, 5);
-		}
-		TEST_METHOD(TestaSubtracao)
-		{
-			int z = subtrai(3, 2);
-			Assert::AreEqual(z, 1);
-		}
-		TEST_METHOD(TestaMultiplicacao)
-		{
-			int z = multiplica(3, 2);
-			Assert::AreEqual(z, 6);
-		}
-		TEST_METHOD(TestaDivisao)
-		{
-			int z = divide(3, 2);
-			Assert::AreEqual(z, 1);
-		}
-	};
+    TEST_CLASS(UnitTest1)
+    {
+    public:
+      
+      TEST_METHOD(TestaSoma)
+      {
+        int z = soma(3, 2);
+        Assert::AreEqual(z, 5);
+      }
+      TEST_METHOD(TestaSubtracao)
+      {
+        int z = subtrai(3, 2);
+        Assert::AreEqual(z, 1);
+      }
+      TEST_METHOD(TestaMultiplicacao)
+      {
+        int z = multiplica(3, 2);
+        Assert::AreEqual(z, 6);
+      }
+      TEST_METHOD(TestaDivisao)
+      {
+        int z = divide(3, 2);
+        Assert::AreEqual(z, 1);
+      }
+    };
 }
 </pre>
 <p>Agora abrindo o jogo para você, amigo programador C++ que gosta de saber tudo que ocorre debaixo dos panos:</p>
@@ -428,26 +428,26 @@ namespace UnitTest1
 <pre>
 namespace Microsoft{ namespace VisualStudio {namespace CppUnitTestFramework
 {
-	struct ClassMetadata
-	{
-		const wchar_t *tag;
-		const unsigned char *helpMethodName;
-		const unsigned char *helpMethodDecoratedName;
-	};
-	struct MethodMetadata
-	{
-		const wchar_t *tag;
-		const wchar_t *methodName;
-		const unsigned char *helpMethodName;
-		const unsigned char *helpMethodDecoratedName;
-		const wchar_t *sourceFile;
-		int lineNo;
-	};
-	struct ModuleAttributeMetadata
-	{
-		enum AttributeType { MODULE_ATTRIBUTE };
-		const wchar_t *tag;
-		const wchar_t *attributeName;
+    struct ClassMetadata
+    {
+      const wchar_t *tag;
+      const unsigned char *helpMethodName;
+      const unsigned char *helpMethodDecoratedName;
+    };
+    struct MethodMetadata
+    {
+      const wchar_t *tag;
+      const wchar_t *methodName;
+      const unsigned char *helpMethodName;
+      const unsigned char *helpMethodDecoratedName;
+      const wchar_t *sourceFile;
+      int lineNo;
+    };
+    struct ModuleAttributeMetadata
+    {
+      enum AttributeType { MODULE_ATTRIBUTE };
+      const wchar_t *tag;
+      const wchar_t *attributeName;
         //...
 </pre>
 <p>É uma lib pequena e elegante que permite uma interação não apenas com a IDE, como poderia ser automatizada por um script, uma vez que sabe-se o funcionamento interno e algumas interfaces.</p>
@@ -512,30 +512,30 @@ namespace Microsoft{ namespace VisualStudio {namespace CppUnitTestFramework
 #include &lt;stdio.h&gt;
 void* mycoroutine(void* arg)
 {
-	int* counter = (int*) arg;
-	(*counter) += 1;
-	yield(arg);
-	(*counter) += 1;
-	yield(arg);
-	(*counter) += 1;
-	return arg;
+    int* counter = (int*) arg;
+    (*counter) += 1;
+    yield(arg);
+    (*counter) += 1;
+    yield(arg);
+    (*counter) += 1;
+    return arg;
 }
 int main()
 {
     int counter = 0;
-	int i;
-	coro coroutines[3];
-	int maxi = sizeof(coroutines) / sizeof(coro);
-	for (i = 0; i &lt; maxi; ++i)
-		coroutines[i] = coroutine(mycoroutine);
-	for (i = 0; i &lt; maxi; ++i)
-		resume(coroutines[i], &amp;counter);
-	for (i = 0; i &lt; maxi; ++i)
-		resume(coroutines[i], &amp;counter);
-	for (i = 0; i &lt; maxi; ++i)
-		resume(coroutines[i], &amp;counter);
+    int i;
+    coro coroutines[3];
+    int maxi = sizeof(coroutines) / sizeof(coro);
+    for (i = 0; i &lt; maxi; ++i)
+      coroutines[i] = coroutine(mycoroutine);
+    for (i = 0; i &lt; maxi; ++i)
+      resume(coroutines[i], &amp;counter);
+    for (i = 0; i &lt; maxi; ++i)
+      resume(coroutines[i], &amp;counter);
+    for (i = 0; i &lt; maxi; ++i)
+      resume(coroutines[i], &amp;counter);
     printf("final counter: %d\n", counter);
-	return 0;
+    return 0;
 }
 </pre>
 <p>É importante observar que o uso de troca de contexto pode facilmente consumir a pilha, pois ela está sendo compartilhada com muitas funções em paralelo. Para reservar espaço a `coroutine_start` aloca um array de 16 KB (fixo). Esses detalhes de implementação podem ser alterados, pois a biblioteca é tão mínima e simples de entender que construir qualquer coisa em cima dela é trivial.</p>
@@ -1035,8 +1035,8 @@ static bar_instance bar = { "bar" };
 typedef GPtrArray Argv;
 typedef struct _Method
 {
-	void* fun;
-	Argv* argv;
+    void* fun;
+    Argv* argv;
 } Method;
 typedef void (*FP_Argv0)();
 typedef void (*FP_Argv1)(cclass_instance*);
@@ -1050,197 +1050,197 @@ static MethodMap* g_methods;
 static Methods* g_calledMethods;
 void cdefgeneric_initialize()
 {
-	g_classes = g_hash_table_new(g_str_hash, g_str_equal);
-	g_methods = g_hash_table_new(g_str_hash, g_str_equal);
+    g_classes = g_hash_table_new(g_str_hash, g_str_equal);
+    g_methods = g_hash_table_new(g_str_hash, g_str_equal);
 }
 Method* method_new(void* fun, Argv* argv)
 {
-	Method* ret = (Method*)malloc(sizeof(Method));
-	if (ret)
-	{
-		ret-&gt;fun = fun;
-		ret-&gt;argv = argv ? argv : g_ptr_array_new();
-	}
-	return ret;
+    Method* ret = (Method*)malloc(sizeof(Method));
+    if (ret)
+    {
+      ret-&gt;fun = fun;
+      ret-&gt;argv = argv ? argv : g_ptr_array_new();
+    }
+    return ret;
 }
 Argv* method_free(Method* method, gboolean free_seg)
 {
-	Argv* ret = free_seg ? g_ptr_array_free(method-&gt;argv, TRUE), NULL : method-&gt;argv;
-	free(method);
-	return ret;
+    Argv* ret = free_seg ? g_ptr_array_free(method-&gt;argv, TRUE), NULL : method-&gt;argv;
+    free(method);
+    return ret;
 }
 const char* defclass(const char* name, const char* deriv)
 {
-	gboolean insertOk = g_hash_table_insert(g_classes, (gpointer*)name, (gpointer*)deriv);
-	return name;
+    gboolean insertOk = g_hash_table_insert(g_classes, (gpointer*)name, (gpointer*)deriv);
+    return name;
 }
 #define extractargv(argv, argc) \
-		va_list vl; \
-		va_start(vl, argc); \
-		for (int i = 0; i &lt; argc; ++i) \
-		{ \
-			cclass_instance* arg = va_arg(vl, cclass_instance*); \
-			g_ptr_array_add(argv, arg); \
-		}
+      va_list vl; \
+      va_start(vl, argc); \
+      for (int i = 0; i &lt; argc; ++i) \
+      { \
+        cclass_instance* arg = va_arg(vl, cclass_instance*); \
+        g_ptr_array_add(argv, arg); \
+      }
 void defmethod(const char* name, void* fun, int argc, ...)
 {
-	Method* method = method_new(fun, NULL);
-	Methods* methods = (Methods*)g_hash_table_lookup(g_methods, name);
-	extractargv(method-&gt;argv, argc);
-	if (!methods)
-	{
-		methods = g_ptr_array_new();
-		g_hash_table_insert(g_methods, (gpointer) name, (gpointer) methods);
-	}
-	g_ptr_array_add(methods, method);
+    Method* method = method_new(fun, NULL);
+    Methods* methods = (Methods*)g_hash_table_lookup(g_methods, name);
+    extractargv(method-&gt;argv, argc);
+    if (!methods)
+    {
+      methods = g_ptr_array_new();
+      g_hash_table_insert(g_methods, (gpointer) name, (gpointer) methods);
+    }
+    g_ptr_array_add(methods, method);
 }
 void callmethod(const char* name, Method* method)
 {
-	g_ptr_array_add(g_calledMethods, (gpointer) method-&gt;fun);
-	cclass_instance** argv = (cclass_instance * *)method-&gt;argv-&gt;pdata;
-	if (method-&gt;argv-&gt;len == 0)
-	{
-		FP_Argv0 fun = (FP_Argv0)method-&gt;fun;
-		fun();
-	}
-	else if (method-&gt;argv-&gt;len == 1)
-	{
-		FP_Argv1 fun = (FP_Argv1)method-&gt;fun;
-		fun(argv[0]);
-	}
-	else if (method-&gt;argv-&gt;len == 2)
-	{
-		FP_Argv2 fun = (FP_Argv2)method-&gt;fun;
-		fun(argv[0], argv[1]);
-	}
-	else if (method-&gt;argv-&gt;len == 3)
-	{
-		FP_Argv3 fun = (FP_Argv3)method-&gt;fun;
-		fun(argv[0], argv[1], argv[2]);
-	}
+    g_ptr_array_add(g_calledMethods, (gpointer) method-&gt;fun);
+    cclass_instance** argv = (cclass_instance * *)method-&gt;argv-&gt;pdata;
+    if (method-&gt;argv-&gt;len == 0)
+    {
+      FP_Argv0 fun = (FP_Argv0)method-&gt;fun;
+      fun();
+    }
+    else if (method-&gt;argv-&gt;len == 1)
+    {
+      FP_Argv1 fun = (FP_Argv1)method-&gt;fun;
+      fun(argv[0]);
+    }
+    else if (method-&gt;argv-&gt;len == 2)
+    {
+      FP_Argv2 fun = (FP_Argv2)method-&gt;fun;
+      fun(argv[0], argv[1]);
+    }
+    else if (method-&gt;argv-&gt;len == 3)
+    {
+      FP_Argv3 fun = (FP_Argv3)method-&gt;fun;
+      fun(argv[0], argv[1], argv[2]);
+    }
 }
 Method* find_method_by_fun(const char* name, void* fun)
 {
-	Method* method = NULL;
-	Methods* methods = (Methods*) g_hash_table_lookup(g_methods, name);
-	if (methods)
-	{
-		Method** meths = (Method**)methods-&gt;pdata;
-		guint i = 0;
-		while (i &lt; methods-&gt;len)
-		{
-			Method* m = meths[i];
-			if (m-&gt;fun == fun)
-			{
-				method = m;
-				break;
-			}
-			++i;
-		}
-	}
-	return method;
+    Method* method = NULL;
+    Methods* methods = (Methods*) g_hash_table_lookup(g_methods, name);
+    if (methods)
+    {
+      Method** meths = (Method**)methods-&gt;pdata;
+      guint i = 0;
+      while (i &lt; methods-&gt;len)
+      {
+        Method* m = meths[i];
+        if (m-&gt;fun == fun)
+        {
+          method = m;
+          break;
+        }
+        ++i;
+      }
+    }
+    return method;
 }
 int calcdistance_arg(cclass_instance* arg, cclass_instance* underpromo)
 {
-	int ret = 0;
-	char* promo = (char*)arg-&gt;type;
-	while (strcmp(promo, underpromo-&gt;type) != 0)
-	{
-		promo = (char*)g_hash_table_lookup(g_classes, (gpointer*)promo);
-		if (!promo || strlen(promo) == 0)
-		{
-			ret = -1;
-			break;
-		}
-		++ret;
-	}
-	return ret;
+    int ret = 0;
+    char* promo = (char*)arg-&gt;type;
+    while (strcmp(promo, underpromo-&gt;type) != 0)
+    {
+      promo = (char*)g_hash_table_lookup(g_classes, (gpointer*)promo);
+      if (!promo || strlen(promo) == 0)
+      {
+        ret = -1;
+        break;
+      }
+      ++ret;
+    }
+    return ret;
 }
 int calcdistance(cclass_instance** args, cclass_instance** underpromo, int len)
 {
-	int ret = 0;
-	for (int i = 0; i &lt; len; ++i)
-	{
-		int dist = calcdistance_arg(args[i], underpromo[i]);
-		if (dist == -1) return -1;
-		ret += dist;
-	}
-	return ret;
+    int ret = 0;
+    for (int i = 0; i &lt; len; ++i)
+    {
+      int dist = calcdistance_arg(args[i], underpromo[i]);
+      if (dist == -1) return -1;
+      ret += dist;
+    }
+    return ret;
 }
 void call_next_method(const char* name, int argc, ...)
 {
-	Method* method = method_new(NULL, NULL);
-	extractargv(method-&gt;argv, argc);
-	int nextdist = 666;
-	Methods* methods = (Methods*)g_hash_table_lookup(g_methods, name);
-	if (methods)
-	{
-		guint i = 0;
-		while( i &lt; methods-&gt;len )
-		{
-			Method* m = ((Method * *)methods-&gt;pdata)[i];
-			gboolean alreadyCalled = FALSE;
-			guint cms = 0;
-			while (cms &lt; g_calledMethods-&gt;len)
-			{
-				void* fun = ((void **)g_calledMethods-&gt;pdata)[cms];
-				if (fun == m-&gt;fun)
-				{
-					alreadyCalled = TRUE;
-					break;
-				}
-				++cms;
-			}
-			if ( ! alreadyCalled)
-			{
-				int dist = -1;
-				if (method-&gt;argv-&gt;len == m-&gt;argv-&gt;len)
-					dist = calcdistance((cclass_instance * *)method-&gt;argv-&gt;pdata, (cclass_instance * *)m-&gt;argv-&gt;pdata, method-&gt;argv-&gt;len);
-				if (dist &gt;= 0 &amp;&amp; dist &lt; nextdist)
-				{
-					if (dist &lt; nextdist)
-					{
-						method-&gt;fun = m-&gt;fun;
-						nextdist = dist;
-					}
-				}
-			}
-			++i;
-		}
-		if (method-&gt;fun)
-			callmethod(name, method);
-	}
+    Method* method = method_new(NULL, NULL);
+    extractargv(method-&gt;argv, argc);
+    int nextdist = 666;
+    Methods* methods = (Methods*)g_hash_table_lookup(g_methods, name);
+    if (methods)
+    {
+      guint i = 0;
+      while( i &lt; methods-&gt;len )
+      {
+        Method* m = ((Method * *)methods-&gt;pdata)[i];
+        gboolean alreadyCalled = FALSE;
+        guint cms = 0;
+        while (cms &lt; g_calledMethods-&gt;len)
+        {
+          void* fun = ((void **)g_calledMethods-&gt;pdata)[cms];
+          if (fun == m-&gt;fun)
+          {
+            alreadyCalled = TRUE;
+            break;
+          }
+          ++cms;
+        }
+        if ( ! alreadyCalled)
+        {
+          int dist = -1;
+          if (method-&gt;argv-&gt;len == m-&gt;argv-&gt;len)
+            dist = calcdistance((cclass_instance * *)method-&gt;argv-&gt;pdata, (cclass_instance * *)m-&gt;argv-&gt;pdata, method-&gt;argv-&gt;len);
+          if (dist &gt;= 0 &amp;&amp; dist &lt; nextdist)
+          {
+            if (dist &lt; nextdist)
+            {
+              method-&gt;fun = m-&gt;fun;
+              nextdist = dist;
+            }
+          }
+        }
+        ++i;
+      }
+      if (method-&gt;fun)
+        callmethod(name, method);
+    }
 }
 void call(const char* name, int argc, ...)
 {
-	g_calledMethods = g_ptr_array_new();
-	Method* method = method_new(NULL, NULL);
-	extractargv(method-&gt;argv, argc);
-	int nextdist = 666;
-	Methods* methods = g_hash_table_lookup(g_methods, name);
-	if (methods)
-	{
-		guint i = 0;
-		while( i &lt; methods-&gt;len )
-		{
-			Method* m = ((Method * *)methods-&gt;pdata)[i];
-			int dist = -1;
-			if (method-&gt;argv-&gt;len == m-&gt;argv-&gt;len)
-				dist = calcdistance((cclass_instance * *)method-&gt;argv-&gt;pdata, (cclass_instance * *)m-&gt;argv-&gt;pdata, method-&gt;argv-&gt;len);
-			if (dist &gt;= 0 &amp;&amp; dist &lt; nextdist)
-			{
-				if (dist &lt; nextdist)
-				{
-					method-&gt;fun = m-&gt;fun;
-					nextdist = dist;
-				}
-			}
-			++i;
-		}
-		if (method-&gt;fun)
-			callmethod(name, method);
-	}
-	method_free(method, TRUE);
+    g_calledMethods = g_ptr_array_new();
+    Method* method = method_new(NULL, NULL);
+    extractargv(method-&gt;argv, argc);
+    int nextdist = 666;
+    Methods* methods = g_hash_table_lookup(g_methods, name);
+    if (methods)
+    {
+      guint i = 0;
+      while( i &lt; methods-&gt;len )
+      {
+        Method* m = ((Method * *)methods-&gt;pdata)[i];
+        int dist = -1;
+        if (method-&gt;argv-&gt;len == m-&gt;argv-&gt;len)
+          dist = calcdistance((cclass_instance * *)method-&gt;argv-&gt;pdata, (cclass_instance * *)m-&gt;argv-&gt;pdata, method-&gt;argv-&gt;len);
+        if (dist &gt;= 0 &amp;&amp; dist &lt; nextdist)
+        {
+          if (dist &lt; nextdist)
+          {
+            method-&gt;fun = m-&gt;fun;
+            nextdist = dist;
+          }
+        }
+        ++i;
+      }
+      if (method-&gt;fun)
+        callmethod(name, method);
+    }
+    method_free(method, TRUE);
 }
 </pre>
 <p>O código é bem simples. Mapas e listas com strings e ponteiros para organizar as estruturas por detrás do sistema de tipos que estamos implementando e seus métodos sobrecarregados. Cada método possui um nome, um endereço de ponteiro e o número dos seus argumentos. Todos os argumentos são do tipo polimórfico, seguindo o que provavelmente existe por detrás da própria implementação do Lisp.</p>
@@ -1260,33 +1260,33 @@ typedef struct bar_instance { cclass_instance type; } bar_instance;
 static bar_instance bar = { "bar" };
 void test_dispatch()
 {
-	bar_instance x = bar;
-	bar_instance y = bar;
-	call("thing", 2, &amp;x, &amp;y);
+    bar_instance x = bar;
+    bar_instance y = bar;
+    call("thing", 2, &amp;x, &amp;y);
 }
 void thing_foo_foo(cclass_instance* x, cclass_instance* y)
 {
-	printf("Both are of type FOO\n");
+    printf("Both are of type FOO\n");
 }
 void thing_bar_foo(cclass_instance* x, cclass_instance* y)
 {
-	printf("X is BAR, Y is FOO. Next...\n");
-	call_next_method("thing", 2, x, y);
+    printf("X is BAR, Y is FOO. Next...\n");
+    call_next_method("thing", 2, x, y);
 }
 void thing_foo_bar(cclass_instance* x, cclass_instance* y)
 {
-	printf("X is FOO, Y is BAR. Next...\n");
-	call_next_method("thing", 2, x, y);
+    printf("X is FOO, Y is BAR. Next...\n");
+    call_next_method("thing", 2, x, y);
 }
 int main()
 {
-	cdefgeneric_initialize();
-	defclass("foo", "cclass");
-	defclass("bar", "foo");
-	defmethod("thing", &amp;thing_foo_foo, 2, &amp;foo, &amp;foo);
-	defmethod("thing", &amp;thing_bar_foo, 2, &amp;bar, &amp;foo);
-	defmethod("thing", &amp;thing_foo_bar, 2, &amp;foo, &amp;bar);
-	test_dispatch();
+    cdefgeneric_initialize();
+    defclass("foo", "cclass");
+    defclass("bar", "foo");
+    defmethod("thing", &amp;thing_foo_foo, 2, &amp;foo, &amp;foo);
+    defmethod("thing", &amp;thing_bar_foo, 2, &amp;bar, &amp;foo);
+    defmethod("thing", &amp;thing_foo_bar, 2, &amp;foo, &amp;bar);
+    test_dispatch();
 }
 </pre>
 <p>Futuros posts sobre C Resolve Tudo poderão utilizar a glib ou qualquer outra. Uma outra vantagem da linguagem C é que sua biblioteca padrão é muito enxuta, sendo fácil de ter disponível em seu ambiente um compilador C com a clib, e em cima dela você pode utilizar qualquer biblioteca de sua escolha para estruturas e algoritmos mais complexos. Ou fazer a sua própria.</p>

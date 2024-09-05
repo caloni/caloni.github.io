@@ -738,32 +738,32 @@ warning C4701: potentially uninitialized local variable 'name' used
 <pre>
 //
 // Contract: 
-//		if no timeout, it will hang until all bytes are returned
-//		if timeout is set, we can return less bytes than requested
+//    if no timeout, it will hang until all bytes are returned
+//    if timeout is set, we can return less bytes than requested
 //
 int socket_receive(SOCKET socket, void* buffer, int len, const unsigned* timeout_in_seconds)
 {
-	int ret = 0;
-	char* char_buffer = (char*)buffer;
-	int received = 0;
-	time_t start;
-	int time_left;
+    int ret = 0;
+    char* char_buffer = (char*)buffer;
+    int received = 0;
+    time_t start;
+    int time_left;
 #if _WIN32
-	FD_SET recvset;
-	struct timeval tv;
+    FD_SET recvset;
+    struct timeval tv;
 #endif
 #ifdef _DEBUG
-	memset(char_buffer, 0xFF, len);
+    memset(char_buffer, 0xFF, len);
 #endif
     // se esse if não for verdadeiro, start fica com valor indefinido
-	if(timeout_in_seconds)
-		start = time(NULL);
-	while(received &lt; len)
-	{
-		if(timeout_in_seconds)
-		{
+    if(timeout_in_seconds)
+      start = time(NULL);
+    while(received &lt; len)
+    {
+      if(timeout_in_seconds)
+      {
             // C4701: potentially uninitialized local variable 'start' used
-			time_left = *timeout_in_seconds - (int)(time(NULL) - start);
+        time_left = *timeout_in_seconds - (int)(time(NULL) - start);
 </pre>
 <p>A correção é simples: inicialize a p\*\*\*\*\* das suas variáveis zero (ou determine qual o comportamento no caso else).</p>
 

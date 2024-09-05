@@ -227,52 +227,52 @@ template&lt;typename T&gt;
 class shared_ptr
 {
 public:
-	shared_ptr() : m_p(), m_counter()
-	{
-	}
-	shared_ptr(T* p) 
-		: m_p(p), m_counter(new int(1)) 
-	{
-	}
-	shared_ptr(const shared_ptr&amp; left)
-		: m_p(left.m_p), m_counter(left.m_counter)
-	{
-		if( m_counter )
-			++*m_counter;
-	}
-	shared_ptr&amp; operator = (const shared_ptr&amp; left)
-	{
-		if( m_p )
-		{
-			if( --*m_counter == 0 )
-			{
-				delete m_counter;
-				delete m_p;
-				m_counter = 0;
-				m_p = 0;
-			}
-		}
-		if( m_counter = left.m_counter )
-			++*m_counter;
-		m_p = left.m_p;
-	}
-	~shared_ptr()
-	{
-		if( --*m_counter == 0 )
-		{
-			delete m_counter;
-			delete m_p;
-			m_counter = 0;
-			m_p = 0;
-		}
-	}
-	T* operator -&gt; ()
-	{
-		return m_p;
-	}
+    shared_ptr() : m_p(), m_counter()
+    {
+    }
+    shared_ptr(T* p) 
+      : m_p(p), m_counter(new int(1)) 
+    {
+    }
+    shared_ptr(const shared_ptr&amp; left)
+      : m_p(left.m_p), m_counter(left.m_counter)
+    {
+      if( m_counter )
+        ++*m_counter;
+    }
+    shared_ptr&amp; operator = (const shared_ptr&amp; left)
+    {
+      if( m_p )
+      {
+        if( --*m_counter == 0 )
+        {
+          delete m_counter;
+          delete m_p;
+          m_counter = 0;
+          m_p = 0;
+        }
+      }
+      if( m_counter = left.m_counter )
+        ++*m_counter;
+      m_p = left.m_p;
+    }
+    ~shared_ptr()
+    {
+      if( --*m_counter == 0 )
+      {
+        delete m_counter;
+        delete m_p;
+        m_counter = 0;
+        m_p = 0;
+      }
+    }
+    T* operator -&gt; ()
+    {
+      return m_p;
+    }
 private:
-	int* m_counter;
-	T* m_p;
+    int* m_counter;
+    T* m_p;
 };
 #include "shared_ptr.h"
 //...

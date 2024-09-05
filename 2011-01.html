@@ -102,28 +102,28 @@ role="navigation" aria-label="main navigation">
 // Essa função é usada pelo nosso App
 int UsingOldApis()
 {
-	DWORD ver = GetVersion(); // API paleozoica, OK.
-	return int( (DWORD)(LOBYTE(LOWORD(ver))) );
+    DWORD ver = GetVersion(); // API paleozoica, OK.
+    return int( (DWORD)(LOBYTE(LOWORD(ver))) );
 }
 // Essa função NÃO é usada pelo nosso App
 void UsingNewApis()
 {
-	// Opa: função moderninha!!
-	if( HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL) )
-	{
-		PROCESSENTRY32 procEntry;
-		// Tudo bem, nosso App não vai usar essa função.
-		if( Process32First(snapshot, &amp;procEntry) )
-		{
-			printf("Process list:\n");
-			do
-			{
-				printf("%s\n", procEntry.szExeFile);
-			}
-			while( Process32Next(snapshot, &amp;procEntry) );
-		}
-		CloseHandle(snapshot);
-	}
+    // Opa: função moderninha!!
+    if( HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL) )
+    {
+      PROCESSENTRY32 procEntry;
+      // Tudo bem, nosso App não vai usar essa função.
+      if( Process32First(snapshot, &amp;procEntry) )
+      {
+        printf("Process list:\n");
+        do
+        {
+          printf("%s\n", procEntry.szExeFile);
+        }
+        while( Process32Next(snapshot, &amp;procEntry) );
+      }
+      CloseHandle(snapshot);
+    }
 }
  
 #include "LibMod.h"
@@ -131,9 +131,9 @@ void UsingNewApis()
 #include &lt;stdlib.h&gt;
 int main()
 {
-	// Usando apenas funções paleozoicas, certo?
-	printf("Our Major OS version is %d\n", UsingOldApis() );
-	system("pause");
+    // Usando apenas funções paleozoicas, certo?
+    printf("Our Major OS version is %d\n", UsingOldApis() );
+    system("pause");
 }
  
 </pre>
@@ -155,8 +155,8 @@ int main()
 // Essa função é usada pelo nosso App
 int UsingOldApis()
 {
-	DWORD ver = GetVersion(); // API paleozoica, OK.
-	return int( (DWORD)(LOBYTE(LOWORD(ver))) );
+    DWORD ver = GetVersion(); // API paleozoica, OK.
+    return int( (DWORD)(LOBYTE(LOWORD(ver))) );
 }
  
 #include "LibMod.h"
@@ -166,22 +166,22 @@ int UsingOldApis()
 // Essa função NÃO é usada pelo nosso App
 void UsingNewApis()
 {
-	// Opa: função moderninha!!
-	if( HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL) )
-	{
-		PROCESSENTRY32 procEntry;
-		// Tudo bem, nosso App não vai usar essa função.
-		if( Process32First(snapshot, &amp;procEntry) )
-		{
-			printf("Process list:\n");
-			do
-			{
-				printf("%s\n", procEntry.szExeFile);
-			}
-			while( Process32Next(snapshot, &amp;procEntry) );
-		}
-		CloseHandle(snapshot);
-	}
+    // Opa: função moderninha!!
+    if( HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL) )
+    {
+      PROCESSENTRY32 procEntry;
+      // Tudo bem, nosso App não vai usar essa função.
+      if( Process32First(snapshot, &amp;procEntry) )
+      {
+        printf("Process list:\n");
+        do
+        {
+          printf("%s\n", procEntry.szExeFile);
+        }
+        while( Process32Next(snapshot, &amp;procEntry) );
+      }
+      CloseHandle(snapshot);
+    }
 }
 </pre>
 <img src="img/dependencia-pedindo-carona-depends-process32-not-needed.png"/>

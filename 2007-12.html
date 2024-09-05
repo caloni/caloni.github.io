@@ -77,15 +77,15 @@ role="navigation" aria-label="main navigation">
    
    WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
    {
-   	try
-   	{
-   		Application-&gt;Initialize();
-   		Application-&gt;CreateForm(__classid(TForm1), &amp;Form1);
-   		Application-&gt;Run();
-   	}
-   	//...
+     try
+     {
+       Application-&gt;Initialize();
+       Application-&gt;CreateForm(__classid(TForm1), &amp;Form1);
+       Application-&gt;Run();
+     }
+     //...
    
-   	return 0;
+     return 0;
    } 
 </pre>
 <p>Sim, existe um WinMain e ele não está escondido! Nele você pode fazer o que quiser. A IDE apenas auxilia você a gerenciar seus forms. Note que também existe a inclusão de um cabeçalho chamado vcl.h (obrigatório), o que nos leva diretamente para a base de toda a programação Delphi/Builder.</p>
@@ -102,7 +102,7 @@ role="navigation" aria-label="main navigation">
    __published: // IDE-managed Components
    private: // User declarations
    public:  // User declarations
-   	__fastcall TForm1(TComponent* Owner);
+     __fastcall TForm1(TComponent* Owner);
    };
    
    extern PACKAGE TForm1 *Form1; 
@@ -120,12 +120,12 @@ role="navigation" aria-label="main navigation">
 <pre>
    void __fastcall TForm1::Button1Click(TObject *Sender)
    {
-   	TButton* btn2 = new TButton(this); // this é o meu form
+     TButton* btn2 = new TButton(this); // this é o meu form
    
-   	btn2-&gt;Parent = this; // será o owner e o parent do novo botão
-   	btn2-&gt;SetBounds(10, 10, 150, 25); // definindo as fronteiras dentro do form
-   	btn2-&gt;Caption = "Prazer! Sou dinâmico!";
-   	btn2-&gt;Visible = true;
+     btn2-&gt;Parent = this; // será o owner e o parent do novo botão
+     btn2-&gt;SetBounds(10, 10, 150, 25); // definindo as fronteiras dentro do form
+     btn2-&gt;Caption = "Prazer! Sou dinâmico!";
+     btn2-&gt;Visible = true;
    } 
 </pre>
 <p>O Parent é o component que abriga a representação visual do objeto dentro de si. Parent e Owner são dois conceitos distintos. Pra frente veremos como as janelas são gerenciadas pela VCL e pela IDE.</p>
@@ -158,11 +158,11 @@ role="navigation" aria-label="main navigation">
 <pre>
    void __fastcall TForm1::Button1Click(TObject *Sender)
    {
-   	if( !Edit1-&gt;Text.IsEmpty() )
-   	{
-   		ListBox1-&gt;AddItem(Edit1-&gt;Text, 0);
-   		Edit1-&gt;Text = "";
-   	}
+     if( !Edit1-&gt;Text.IsEmpty() )
+     {
+       ListBox1-&gt;AddItem(Edit1-&gt;Text, 0);
+       Edit1-&gt;Text = "";
+     }
    } 
 </pre>
 <p>Percebeu? Não? Então rode e note o que acontece quando você aperta o botão.</p>
@@ -172,11 +172,11 @@ role="navigation" aria-label="main navigation">
 <pre>
    void __fastcall TForm1::Button1Click(TObject *Sender)
    {
-   	if( !Edit1-&gt;Text.IsEmpty() )
-   	{
-   		ListBox1-&gt;AddItem(Edit1-&gt;Text, 0);
-   		Edit1-&gt;Text = "";
-   	}
+     if( !Edit1-&gt;Text.IsEmpty() )
+     {
+       ListBox1-&gt;AddItem(Edit1-&gt;Text, 0);
+       Edit1-&gt;Text = "";
+     }
    } 
 </pre>
 <p>Mais simples, impossível. E com um pouco de imaginação, o mais besta dos aplicativos pode se tornar uma utilidade do dia a dia. Até sua mãe vai adorar.</p>
@@ -198,10 +198,10 @@ role="navigation" aria-label="main navigation">
 <pre>
    try
    {
-   	Application-&gt;Initialize();
-   	Application-&gt;CreateForm(__classid(TForm1), &amp;Form1);
-   	Application-&gt;CreateForm(__classid(TForm2), &amp;Form2);
-   	Application-&gt;Run();
+     Application-&gt;Initialize();
+     Application-&gt;CreateForm(__classid(TForm1), &amp;Form1);
+     Application-&gt;CreateForm(__classid(TForm2), &amp;Form2);
+     Application-&gt;Run();
    }
 </pre>
 <p>Porém, se rodarmos a aplicação nesse momento, podemos notar que o programa exibe apenas a janela correspondente ao primeiro formulário. De fato, ao chamar o método Application-&gt;Run(), apenas o primeiro form criado é exibido. Isso não significa, é claro, que o segundo form não tenha sido criado. Para demonstrar como ele está lá, coloque o seguinte evento no clique de um botão do Form1:</p>
@@ -211,7 +211,7 @@ role="navigation" aria-label="main navigation">
    
    void __fastcall TForm1::Button1Click(TObject *Sender)
    {
-   	Form2-&gt;Show();
+     Form2-&gt;Show();
    } 
 </pre>
 <p>Agora ao clicar do botão a janela correspondente ao formulário número 2 também aparece. Podemos fechá-la e abri-la quantas vezes quisermos que o aplicativo continua rodando. Apenas ao fechar a janela no. 1 o aplicativo realmente encerra. Esse comportamento segue o mesmo padrão da função main() na forma clássica das linguagens C/C++:</p>
@@ -235,7 +235,7 @@ role="navigation" aria-label="main navigation">
 <pre>
    void __fastcall TForm2::Button1Click(TObject *Sender)
    {
-   	Application-&gt;Terminate();
+     Application-&gt;Terminate();
    } 
 </pre>
 <p>Agora, no evento de OnClose (acho que você conhece o Object Inspector, não? Bom, se não conhece, talvez isso mereça um <a href="2007-09.html#introducao-ao-c-builderturbo-c">artigo à parte</a>) do TForm1 insira o seguinte código:</p>
@@ -243,7 +243,7 @@ role="navigation" aria-label="main navigation">
 <pre>
    void __fastcall TForm1::FormClose(TObject *Sender, TCloseAction &amp;Action)
    {
-   	Action = caNone;
+     Action = caNone;
    } 
 </pre>
 <p>Pronto! Agora você decide onde termina e onde acaba sua aplicação.</p>
@@ -458,61 +458,61 @@ role="navigation" aria-label="main navigation">
    void __fastcall TMain::FormDragOver(TObject *Sender, TObject *Source,
          int X, int Y, TDragState State, bool &amp;Accept)
    {
-   	Accept = true;
+     Accept = true;
    }
    
    void __fastcall TMain::ListBoxDragOver(TObject *Sender, TObject *Source,
          int X, int Y, TDragState State, bool &amp;Accept)
    {
-   	Accept = dynamic_cast&lt;TWinControl*&gt;( Source ) ? true : false;
+     Accept = dynamic_cast&lt;TWinControl*&gt;( Source ) ? true : false;
    } 
 </pre>
 <p>A parte mais interessante do código fica por conta da hora que o objeto é "jogado", no evento OnDragDrop. Nela recebemos o ponteiro para o Sender (como sempre), que é o target object, e um Source. Geralmente para manipular o source object é necessário antes realizar um cast para um tipo mais conhecido.</p>
 
 <pre>
    void __fastcall TMain::ListBoxDragDrop(TObject *Sender, TObject *Source, 
-   	int X, int Y)
+     int X, int Y)
    {
-   	if( TListBox* listBox = dynamic_cast&lt;TListBox*&gt;(Sender) )
-   	{
-   		TWinControl* winCtrl = static_cast&lt;TWinControl*&gt;(Source);
+     if( TListBox* listBox = dynamic_cast&lt;TListBox*&gt;(Sender) )
+     {
+       TWinControl* winCtrl = static_cast&lt;TWinControl*&gt;(Source);
    
-   		if( listBox != winCtrl )
-   		{
-   			listBox-&gt;Items-&gt;Add(winCtrl-&gt;Name);
-   			winCtrl-&gt;Visible = false;
-   		}
-   	}
+       if( listBox != winCtrl )
+       {
+         listBox-&gt;Items-&gt;Add(winCtrl-&gt;Name);
+         winCtrl-&gt;Visible = false;
+       }
+     }
    }
    void __fastcall TMain::FormDragDrop(TObject *Sender, TObject *Source,
-   	int X, int Y)
+     int X, int Y)
    {
-   	if( TForm* form = dynamic_cast&lt;TForm*&gt;(Sender) )
-   	{
-   		TControl* ctrl = 0;
+     if( TForm* form = dynamic_cast&lt;TForm*&gt;(Sender) )
+     {
+       TControl* ctrl = 0;
    
-   		if( TListBox* listBox = dynamic_cast&lt;TListBox*&gt;( Source ) )
-   		{
-   			for( int i = 0; i &lt; listBox-&gt;Count; ++i )
-   			{
-   				if( listBox-&gt;Selected[i] )
-   				{
-   					ctrl = this-&gt;FindChildControl(listBox-&gt;Items-&gt;Strings[i]);
-   					listBox-&gt;Items-&gt;Delete(i);
-   					break;
-   				}
-   			}
-   		}
-   		else
-   			ctrl = dynamic_cast&lt;TControl*&gt;(Source);
+       if( TListBox* listBox = dynamic_cast&lt;TListBox*&gt;( Source ) )
+       {
+         for( int i = 0; i &lt; listBox-&gt;Count; ++i )
+         {
+           if( listBox-&gt;Selected[i] )
+           {
+             ctrl = this-&gt;FindChildControl(listBox-&gt;Items-&gt;Strings[i]);
+             listBox-&gt;Items-&gt;Delete(i);
+             break;
+           }
+         }
+       }
+       else
+         ctrl = dynamic_cast&lt;TControl*&gt;(Source);
    
-   		if( ctrl )
-   		{
-   			ctrl-&gt;Top = Y;
-   			ctrl-&gt;Left = X;
-   			ctrl-&gt;Visible = true;
-   		}
-   	}
+       if( ctrl )
+       {
+         ctrl-&gt;Top = Y;
+         ctrl-&gt;Left = X;
+         ctrl-&gt;Visible = true;
+       }
+     }
    } 
 </pre>
 <p>E mais uma vez voilà! Pouquíssimas linhas de código e um movimentador e empilhador de controles. Dois detalhes merecem ser destacados:</p>
@@ -620,11 +620,11 @@ role="navigation" aria-label="main navigation">
    
    int main()
    {
-   	int x = INT_MAX;
+     int x = INT_MAX;
    
-   	std::cout &lt;&lt; x &lt;&lt; std::endl;
-   	x = x + 1;
-   	std::cout &lt;&lt; x &lt;&lt; std::endl;
+     std::cout &lt;&lt; x &lt;&lt; std::endl;
+     x = x + 1;
+     std::cout &lt;&lt; x &lt;&lt; std::endl;
    } 
    Saída:
     2147483647
@@ -687,10 +687,10 @@ role="navigation" aria-label="main navigation">
    
    int main()
    {
-   	char ditado[] = "Diga-me com que programas e eu te direi quem és.";
-   	int indice = 8;
+     char ditado[] = "Diga-me com que programas e eu te direi quem és.";
+     int indice = 8;
    
-   	std::cout &lt;&lt; "E a linguagem é: " &lt;&lt; ditado[indice] &lt;&lt; std::endl;
+     std::cout &lt;&lt; "E a linguagem é: " &lt;&lt; ditado[indice] &lt;&lt; std::endl;
    } 
 </pre>
 <p>A teoria comprovada na prática: temos duas expressões no formato E1 <a href="posts.html?q= E2 "> E2 </a> sendo uma do tipo ponteiro para char e a outra do tipo int, exatamente como a regra define. O detalhe obscuro que permaneceu durante a evolução dessas duas linguagens é que a regra de acesso a elementos não define a ordem das expressões. Assim sendo, me aproveito dessa flexibilidade e inverto os elementos do subscrito:</p>

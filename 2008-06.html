@@ -254,9 +254,9 @@ role="navigation" aria-label="main navigation">
    struct Teste
    {
      /* tamanho em memória: zero bytes */
-   	char bufao[0x100000]; 
+     char bufao[0x100000]; 
      /* tamanho em memória: zero bytes */
-   	int intao[0xffffff];
+     int intao[0xffffff];
    };
    
    /* tamanho em memória: adivinha! */
@@ -268,8 +268,8 @@ role="navigation" aria-label="main navigation">
    /* tamanho em memória: */
    int func(int x, int y, int z)
    {
-   	int ret = x + y + z; /* alguns _asm add + */
-   	return ret;          /* um _asm ret */
+     int ret = x + y + z; /* alguns _asm add + */
+     return ret;          /* um _asm ret */
    }
    /* tamanho em memória: 
       0x100000 + 0xffffff * 4 
@@ -304,7 +304,7 @@ role="navigation" aria-label="main navigation">
    struct Estrutura
    {
      /* recursividade? é apenas um ponteiro! */
-   	Estrutura* st;
+     Estrutura* st;
    };
 </pre>
 <p>Se vermos pelo lado prático, de qualquer forma seria impossível definir uma variável dentro dela mesma, pois isso geraria uma recursão infinita de definições, e, como sabemos, os recurso da máquina são finitos.</p>
@@ -786,11 +786,11 @@ role="navigation" aria-label="main navigation">
 #include &lt;stdio.h&gt;
 int main()
 {
-	HMODULE dll1 = LoadLibrary(".\\DLL\\DLL.dll");
-	HMODULE dll2 = LoadLibrary(".\\DLL.dll");
-	printf("First DLL: %p\nSecond DLL: %p",
-			dll1, dll2);
-	return 0;
+    HMODULE dll1 = LoadLibrary(".\\DLL\\DLL.dll");
+    HMODULE dll2 = LoadLibrary(".\\DLL.dll");
+    printf("First DLL: %p\nSecond DLL: %p",
+        dll1, dll2);
+    return 0;
 }
 </pre>
 <p>A DLL é uma DLL trivial:</p>
@@ -799,7 +799,7 @@ int main()
 #include &lt;windows.h&gt;
 BOOL WINAPI DllMain(HINSTANCE inst, DWORD reason, PVOID reserv)
 {
-	return TRUE;
+    return TRUE;
 }
 </pre>
 <p>Vamos aos testes.</p>
@@ -1140,10 +1140,10 @@ BOOL WINAPI DllMain(HINSTANCE inst, DWORD reason, PVOID reserv)
 using namespace std;
 int main()
 {
-	cout &lt;&lt; typeid( int ).name() &lt;&lt; endl;
-	int x;
-	cout &lt;&lt; typeid( x ).name() &lt;&lt; endl;
-	cout &lt;&lt; typeid( 2 + 2 ).name() &lt;&lt; endl;
+    cout &lt;&lt; typeid( int ).name() &lt;&lt; endl;
+    int x;
+    cout &lt;&lt; typeid( x ).name() &lt;&lt; endl;
+    cout &lt;&lt; typeid( 2 + 2 ).name() &lt;&lt; endl;
 }
    C:\Tests&gt;cl typeid.cpp
    Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 15.00.21022.08 for 80x86
@@ -1162,16 +1162,16 @@ int main()
 using namespace std;
 class MyClass
 {
-	public:
-		void MyMethod()
-		{
-			cout &lt;&lt; typeid(*this).name() &lt;&lt; "::MyMethod" &lt;&lt; endl;
-		}
+    public:
+      void MyMethod()
+      {
+        cout &lt;&lt; typeid(*this).name() &lt;&lt; "::MyMethod" &lt;&lt; endl;
+      }
 };
 int main()
 {
-	MyClass myc;
-	myc.MyMethod();
+    MyClass myc;
+    myc.MyMethod();
 }
    C:\Tests&gt;cl typeid-class.cpp
    Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 15.00.21022.08 for 80x86
@@ -1190,20 +1190,20 @@ int main()
 using namespace std;
 class MyClass
 {
-	public:
-		virtual void MyMethod()
-		{
-			cout &lt;&lt; typeid(*this).name() &lt;&lt; "::MyMethod" &lt;&lt; endl;
-		}
+    public:
+      virtual void MyMethod()
+      {
+        cout &lt;&lt; typeid(*this).name() &lt;&lt; "::MyMethod" &lt;&lt; endl;
+      }
 };
 class MyDerivatedClass1 : public MyClass { };
 class MyDerivatedClass2 : public MyClass { };
 int main()
 {
-	MyClass* myc1 = new MyDerivatedClass1;
-	MyClass* myc2 = new MyDerivatedClass2;
-	myc1-&gt;MyMethod();
-	myc2-&gt;MyMethod();
+    MyClass* myc1 = new MyDerivatedClass1;
+    MyClass* myc2 = new MyDerivatedClass2;
+    myc1-&gt;MyMethod();
+    myc2-&gt;MyMethod();
 }
    C:\Tests&gt;cl typeid-class2.cpp
    Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 15.00.21022.08 for 80x86

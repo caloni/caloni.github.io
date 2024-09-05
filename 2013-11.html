@@ -113,17 +113,17 @@ role="navigation" aria-label="main navigation">
 #include &lt;iostream&gt;
 int main()
 {
-	double d1 = 2358.93;
-	double d2 = 1386.93;
-	double d3 = d1 - d2;
-	std::cout &lt;&lt; "d1: " &lt;&lt; d1 &lt;&lt; "\n";
-	std::cout &lt;&lt; "d2: " &lt;&lt; d2 &lt;&lt; "\n";
-	std::cout &lt;&lt; "d1 - d2 = 3d: " &lt;&lt; d3 &lt;&lt; "\n";
-	// comparando armazenamentos que diferem
-	std::cout &lt;&lt; "d3 == 972.0: " &lt;&lt; std::boolalpha &lt;&lt; ( d3 == 972.0 ) &lt;&lt; "\n";
-	// comparando armazenamentos similares
-	std::cout &lt;&lt; "d1 == 2358.93: " &lt;&lt; std::boolalpha &lt;&lt; ( d1 == 2358.93 ) &lt;&lt; "\n";
-	std::cout &lt;&lt; "d2 == 1386.93: " &lt;&lt; std::boolalpha &lt;&lt; ( d2 == 1386.93 ) &lt;&lt; "\n";
+    double d1 = 2358.93;
+    double d2 = 1386.93;
+    double d3 = d1 - d2;
+    std::cout &lt;&lt; "d1: " &lt;&lt; d1 &lt;&lt; "\n";
+    std::cout &lt;&lt; "d2: " &lt;&lt; d2 &lt;&lt; "\n";
+    std::cout &lt;&lt; "d1 - d2 = 3d: " &lt;&lt; d3 &lt;&lt; "\n";
+    // comparando armazenamentos que diferem
+    std::cout &lt;&lt; "d3 == 972.0: " &lt;&lt; std::boolalpha &lt;&lt; ( d3 == 972.0 ) &lt;&lt; "\n";
+    // comparando armazenamentos similares
+    std::cout &lt;&lt; "d1 == 2358.93: " &lt;&lt; std::boolalpha &lt;&lt; ( d1 == 2358.93 ) &lt;&lt; "\n";
+    std::cout &lt;&lt; "d2 == 1386.93: " &lt;&lt; std::boolalpha &lt;&lt; ( d2 == 1386.93 ) &lt;&lt; "\n";
 }
 </pre>
 <p>Isso ocorre porque sua representação dentro da variável double é diferente de 272.0 do outro double. Depurando vemos mais claramente:</p>
@@ -157,13 +157,13 @@ double round(double r)
 }
 int main()
 {
-	double d1 = 2358.93;
-	double d2 = 1386.93;
-	double d3 = round(d1) - round(d2);
-	std::cout &lt;&lt; "d1: " &lt;&lt; d1 &lt;&lt; "\n";
-	std::cout &lt;&lt; "d2: " &lt;&lt; d2 &lt;&lt; "\n";
-	std::cout &lt;&lt; "d1 - d2 = 3d: " &lt;&lt; d3 &lt;&lt; "\n";
-	std::cout &lt;&lt; "d3 == 972.0: " &lt;&lt; std::boolalpha &lt;&lt; ( d3 == 972.0 ) &lt;&lt; "\n";
+    double d1 = 2358.93;
+    double d2 = 1386.93;
+    double d3 = round(d1) - round(d2);
+    std::cout &lt;&lt; "d1: " &lt;&lt; d1 &lt;&lt; "\n";
+    std::cout &lt;&lt; "d2: " &lt;&lt; d2 &lt;&lt; "\n";
+    std::cout &lt;&lt; "d1 - d2 = 3d: " &lt;&lt; d3 &lt;&lt; "\n";
+    std::cout &lt;&lt; "d3 == 972.0: " &lt;&lt; std::boolalpha &lt;&lt; ( d3 == 972.0 ) &lt;&lt; "\n";
 }
 </pre>
 <p>É uma decisão arbitrária essa de arredondar para cima, mas se for adotada em todo o sistema (e já fazendo parte de um padrão, no caso, o C99), não deverão existir problemas de interpretação de cálculos entre os componentes.</p>

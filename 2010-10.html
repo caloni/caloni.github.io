@@ -172,21 +172,21 @@ role="navigation" aria-label="main navigation">
 
 <pre>
 CreateWindowEx(0, WC_LINK, 
-	L"&lt;a href=\"http://www.caloni.com.br\"&gt;This site rocks!&lt;/a&gt;", 
-	WS_VISIBLE | WS_CHILD | WS_TABSTOP, ...);
+    L"&lt;a href=\"http://www.caloni.com.br\"&gt;This site rocks!&lt;/a&gt;", 
+    WS_VISIBLE | WS_CHILD | WS_TABSTOP, ...);
 //...
-	case WM_NOTIFY:
-		switch( ((LPNMHDR)lParam)-&gt;code )
-		{
-		case NM_CLICK:
-		case NM_RETURN:
-		{
-			PNMLINK pNMLink = (PNMLINK)lParam;
-			LITEM item = pNMLink-&gt;item;
-			if( (((LPNMHDR)lParam)-&gt;hwndFrom == st_linkHwnd[hWndDlg]) )
-			{
-				// codigo util
-			}
+    case WM_NOTIFY:
+      switch( ((LPNMHDR)lParam)-&gt;code )
+      {
+      case NM_CLICK:
+      case NM_RETURN:
+      {
+        PNMLINK pNMLink = (PNMLINK)lParam;
+        LITEM item = pNMLink-&gt;item;
+        if( (((LPNMHDR)lParam)-&gt;hwndFrom == st_linkHwnd[hWndDlg]) )
+        {
+          // codigo util
+        }
  
 </pre>
 <p>Você que não está fazendo subclassing de janelas existe outra técnica que você pode utilizar: arrastar-e-soltar o controle do seu ToolBox. Qual é a graça?</p>
@@ -479,41 +479,41 @@ void main(void)
 using namespace std;
 wstring GetErrorDescription(DWORD errNumber)
 {
-	wstring ret;
-	bool msgOk = false;
-	LPVOID lpMsgBuf = NULL;
-	if( FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER // aloque pra mim (não sei o tamanho)
-		| FORMAT_MESSAGE_FROM_SYSTEM // descrição do erro está no sistema
-		| FORMAT_MESSAGE_IGNORE_INSERTS, // ignora os inserts pra não sofrer com hackerzinhos
-		NULL, // sem fonte:
-		errNumber, // a fonte é o código de erro
-		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // idioma padrão
-		(LPTSTR)&amp;lpMsgBuf,// isso é um ponteiro para um ponteiro para um buffer que será alocado
-		0, // nada disso
-		NULL // e nem disso
-		) &gt; 0 ) // maior que zero quer dizer "beleza!"
-	{
-		if( lpMsgBuf ) // só pra...
-		{
-			ret = (PCWSTR) lpMsgBuf; // ok, vamos usar essa string
-			msgOk = true;
-			LocalFree(lpMsgBuf); // não precisamos mais da memória alocada
-		}
-	}
-	if( ! msgOk ) // alguma coisa não deu certo
-	{
-		wchar_t msgBuf[100]; // o suficiente
-		_snwprintf(msgBuf, 100, L"Unknown error (code %d)", errNumber);
-		ret = msgBuf;
-	}
-	return ret;
+    wstring ret;
+    bool msgOk = false;
+    LPVOID lpMsgBuf = NULL;
+    if( FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER // aloque pra mim (não sei o tamanho)
+      | FORMAT_MESSAGE_FROM_SYSTEM // descrição do erro está no sistema
+      | FORMAT_MESSAGE_IGNORE_INSERTS, // ignora os inserts pra não sofrer com hackerzinhos
+      NULL, // sem fonte:
+      errNumber, // a fonte é o código de erro
+      MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // idioma padrão
+      (LPTSTR)&amp;lpMsgBuf,// isso é um ponteiro para um ponteiro para um buffer que será alocado
+      0, // nada disso
+      NULL // e nem disso
+      ) &gt; 0 ) // maior que zero quer dizer "beleza!"
+    {
+      if( lpMsgBuf ) // só pra...
+      {
+        ret = (PCWSTR) lpMsgBuf; // ok, vamos usar essa string
+        msgOk = true;
+        LocalFree(lpMsgBuf); // não precisamos mais da memória alocada
+      }
+    }
+    if( ! msgOk ) // alguma coisa não deu certo
+    {
+      wchar_t msgBuf[100]; // o suficiente
+      _snwprintf(msgBuf, 100, L"Unknown error (code %d)", errNumber);
+      ret = msgBuf;
+    }
+    return ret;
 }
 int CALLBACK wWinMain(HINSTANCE, HINSTANCE, PWSTR errNumberStr, int)
 {
-	int errNumber = _wtoi(errNumberStr);
-	wstring errDesc = GetErrorDescription(errNumber);
-	MessageBox(NULL, errDesc.c_str(), L"GetLastError", MB_OK | MB_ICONINFORMATION);
-	return errNumber;
+    int errNumber = _wtoi(errNumberStr);
+    wstring errDesc = GetErrorDescription(errNumber);
+    MessageBox(NULL, errDesc.c_str(), L"GetLastError", MB_OK | MB_ICONINFORMATION);
+    return errNumber;
 }
  
 </pre>

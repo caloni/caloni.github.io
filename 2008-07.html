@@ -254,15 +254,15 @@ role="navigation" aria-label="main navigation">
 <pre>
 void MessageError(DWORD err, PCSTR msg, ...)
 {
-	CHAR errBuffer[100];
-	CHAR msgBuffer[ERR_STR_BUF_SIZE];
-	va_list vaList;
-	va_start(vaList, msg);
-	vsprintf(msgBuffer, msg, vaList);
-	va_end(vaList);
-	sprintf(errBuffer, " Erro de sistema número %d.", (int) err);
-	strcat(msgBuffer, errBuffer);
-	MessageBox(NULL, msgBuffer, STR_PROJECT_NAME, MB_OK | MB_ICONERROR);
+    CHAR errBuffer[100];
+    CHAR msgBuffer[ERR_STR_BUF_SIZE];
+    va_list vaList;
+    va_start(vaList, msg);
+    vsprintf(msgBuffer, msg, vaList);
+    va_end(vaList);
+    sprintf(errBuffer, " Erro de sistema número %d.", (int) err);
+    strcat(msgBuffer, errBuffer);
+    MessageBox(NULL, msgBuffer, STR_PROJECT_NAME, MB_OK | MB_ICONERROR);
 }
 </pre>
 <p>Se você notou, a função acima pode receber um número de argumentos variáveis para formatar a string da mensagem principal do erro, além de exibir seu código. Essa mágica pode ser feita usando-se o cabeçalho padrão "stdarg.h". Através dele temos acesso ao tipo va_list, que representa uma lista de argumentos variáveis.</p>
@@ -405,18 +405,18 @@ void MessageError(DWORD err, PCSTR msg, ...)
 #include &lt;windows.h&gt;
 int main()
 {
-	HANDLE hFile = CreateFile("c:\\tests\\myfile.txt", GENERIC_READ, 
-		FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
-	if( hFile )
-	{
-		DWORD read = 0;
-		CHAR buffer[100];
-		if( ReadFile(hFile, buffer, sizeof(buffer), &amp;read, NULL) )
-		{
-			WriteBuffer(buffer);
-		}
-		CloseHandle(hFile);
-	}
+    HANDLE hFile = CreateFile("c:\\tests\\myfile.txt", GENERIC_READ, 
+      FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
+    if( hFile )
+    {
+      DWORD read = 0;
+      CHAR buffer[100];
+      if( ReadFile(hFile, buffer, sizeof(buffer), &amp;read, NULL) )
+      {
+        WriteBuffer(buffer);
+      }
+      CloseHandle(hFile);
+    }
 }
 </pre>
 <p>No entanto, está errado.</p>
@@ -452,13 +452,13 @@ int main()
 #include &lt;stdio.h&gt;
 int main()
 {
-	DWORD winVer = GetVersion();
-	BOOL isPlatformNT = winVer &gt;= 0x80000000 ? FALSE : TRUE;
-	if( isPlatformNT )
-		printf("Plataforma NT\n");
-	else
-		printf("Bem-vindo ao parque dos dinossauros!\n");
-	return isPlatformNT ? 1 : 0;
+    DWORD winVer = GetVersion();
+    BOOL isPlatformNT = winVer &gt;= 0x80000000 ? FALSE : TRUE;
+    if( isPlatformNT )
+      printf("Plataforma NT\n");
+    else
+      printf("Bem-vindo ao parque dos dinossauros!\n");
+    return isPlatformNT ? 1 : 0;
 }
 </pre>
 <img src="img/aprenda-a-usar-sua-api-jurassicpark.png"/>
@@ -526,28 +526,28 @@ void WellDefinedFunctionN( args );
 // well-defined function. the parameter that it receives is the function number
 void ExecutionThread()
 {
-	// 2. ad aeternum
-	while( true )
-	{
-		// 5. it runs some well-defined function by number
-		ExecuteWellDefinedFunction( functionNumber );
-	}
+    // 2. ad aeternum
+    while( true )
+    {
+      // 5. it runs some well-defined function by number
+      ExecuteWellDefinedFunction( functionNumber );
+    }
 }
 // the well-defined functions script is an integer array indicating 
 // the number for the next function that is going to be called
 int FunctionsToBeCalled[] = { 3, 4, 1, 2, 34, 66, 982, n };
 int Start()
 {
-	// 1. we create the thread that is going to run commands
-	CreateThread( ExecutionThread );
-	// 3. for each script item (each function number)
-	for( int i = 0; i &lt; sizeof(FunctionsToBeCalled); ++i )
-	{
-		// 4. tells the thread to run the function number N
-		TellExecutionThreadToExecuteWellDefinedFunction( FunctionToBeCalled[i] );
-	}
-	// 6. end of execution.
-	return 0;
+    // 1. we create the thread that is going to run commands
+    CreateThread( ExecutionThread );
+    // 3. for each script item (each function number)
+    for( int i = 0; i &lt; sizeof(FunctionsToBeCalled); ++i )
+    {
+      // 4. tells the thread to run the function number N
+      TellExecutionThreadToExecuteWellDefinedFunction( FunctionToBeCalled[i] );
+    }
+    // 6. end of execution.
+    return 0;
 } 
 </pre>
 <p>The protection isn't there yet. But it will as intrinsic part of the execution thread. All we need to do is to add a exception handling and to throw lots of int 3. The thrown exceptions are caught by a second function that runs the instruction before to returning:</p>
@@ -556,29 +556,29 @@ int Start()
 // filter exceptions that were thrown by the thread below
 DWORD ExceptionFilterButExecuteWellDefinedFunction()
 {
-	// 5. run some well-defined function by number
-	ExecuteWellDefinedFunction( number );
-	return EXCEPTION_EXECUTE_HANDLER; // goes to except code
+    // 5. run some well-defined function by number
+    ExecuteWellDefinedFunction( number );
+    return EXCEPTION_EXECUTE_HANDLER; // goes to except code
 }
 // this thread stays forever waiting execution commands from a 
 // well-defined function. its "parameter" is the function number
 void ExecutionThread()
 {
-	// 2. ad aeternum
-	while( true )
-	{
-		__try
-		{
-			__asm int 3 // breakpoint exception
-			// it stops the debugger if we have an attached debugger in
-			// the process, or throws an exception if there is no one
-		}
-		__except( ExceptionFilterButExecuteWellDefinedFunction() )
-		{
-			// it does nothing. here is NOT where is the code (obvious, huh?)
-		}
-		Sleep( someTime ); // give some time
-	}
+    // 2. ad aeternum
+    while( true )
+    {
+      __try
+      {
+        __asm int 3 // breakpoint exception
+        // it stops the debugger if we have an attached debugger in
+        // the process, or throws an exception if there is no one
+      }
+      __except( ExceptionFilterButExecuteWellDefinedFunction() )
+      {
+        // it does nothing. here is NOT where is the code (obvious, huh?)
+      }
+      Sleep( someTime ); // give some time
+    }
 } 
 </pre>
 <p>The execution thread algorithm is the same. Just the point where each instruction is executed depends to the exception throw system. Note that this exception has to be thrown in order to the next instruction run. This is fundamental, since this way nobody can just rip of the int 3 code to avoid the exception. If one does that, so no instruction will be executed at all.</p>
@@ -680,7 +680,7 @@ DWORD WINAPI AntiDebugThread(PVOID)
          // FilterException is the function who runs minifunctions
          __except( FilterException() )
          {
-				// we can put some fake code here
+          // we can put some fake code here
          }
       }
       __except( EXCEPTION_EXECUTE_HANDLER )
@@ -740,29 +740,29 @@ int main()
 // Go back to place pre-defined by the restoration point.
 void LongJmp(restorePoint)
 {
-	// Here we will generate an exception to make things difficult.
-	// @todo Make a breakpoint exception and catch it.
-	// 3. We return to the if without using the stack, but from the restoration point.
-	GoBackToTheStartFunction(restorePoint);
+    // Here we will generate an exception to make things difficult.
+    // @todo Make a breakpoint exception and catch it.
+    // 3. We return to the if without using the stack, but from the restoration point.
+    GoBackToTheStartFunction(restorePoint);
 }
 // Here everything begins.
 int Start()
 {
-	// Obs.: follow the agreement flow according to the numbers.
-	// 1. First pass: we define a restoration point to the return of LongJmp.
-	// 4. Second pass: we go back from the LongJmp function, but this time we get into the else.
-	if( RestorePointDefined() == Defined )
-	{
-		// 2. We call the function that will return to the if.
-		LongJmp( if );
-	}
-	else
-	{
-		// 5. Call the real function, our true target.
-		CallTheUsefulFunction();
-	}
-	// 6. End of execution.
-	return 0;
+    // Obs.: follow the agreement flow according to the numbers.
+    // 1. First pass: we define a restoration point to the return of LongJmp.
+    // 4. Second pass: we go back from the LongJmp function, but this time we get into the else.
+    if( RestorePointDefined() == Defined )
+    {
+      // 2. We call the function that will return to the if.
+      LongJmp( if );
+    }
+    else
+    {
+      // 5. Call the real function, our true target.
+      CallTheUsefulFunction();
+    }
+    // 6. End of execution.
+    return 0;
 } 
 </pre>
 <p>The solution above is explained in pseudocode to make things clearer. Notice that exist some kind of invisible return, not stack based. To handle it, however, we can use the good for all C ANSI standard, using the setjmp (step one) and longjmp (step 3). To understand the implementation for theses functions running on the 8086 platform we need to get the basic vision of the function calls in a stack based environment (the C and Pascal way).</p>
@@ -815,16 +815,16 @@ int Start()
 jmp_buf env; // Contains the next instruction (stack state).
 void Func()
 {
-	// 3. Return using the "nonconventional" way
-	longjmp(env, 1);
+    // 3. Return using the "nonconventional" way
+    longjmp(env, 1);
 }
 void CallFunc()
 {
-	// 1. If we're setting, returns 0.
-	// 2. If we're returning, returns a value different from 0.
-	if( setjmp(env) == 0 )
-		Func();
-	int x = 10; // 4. Next instruction.
+    // 1. If we're setting, returns 0.
+    // 2. If we're returning, returns a value different from 0.
+    if( setjmp(env) == 0 )
+      Func();
+    int x = 10; // 4. Next instruction.
 } 
 </pre>
 <p>That was the new trick for the trowing of exceptions. The final code is clearer, now:</p>
@@ -834,37 +834,37 @@ void CallFunc()
 */
 DWORD LongJmp(jmp_buf* env)
 {
-	__try
-	{
-		__asm int 3
-	}
-		__except( EXCEPTION_EXECUTE_HANDLER )
-	{
-		longjmp(*env, 1);
-	}
-	return ERROR_SUCCESS;
+    __try
+    {
+      __asm int 3
+    }
+      __except( EXCEPTION_EXECUTE_HANDLER )
+    {
+      longjmp(*env, 1);
+    }
+    return ERROR_SUCCESS;
 }
 /** And God said: 'int main!'
 */
 int main()
 {
-	DWORD ret = ERROR_SUCCESS;
-	while( cin )
-	{
-		string line;
-		cout &lt;&lt; "Type something\n";
-		getline(cin, line);
-		jmp_buf env;
-		if( setjmp(env) == 0 )
-		{
-			LongJmp(&amp;env);
-		}
-		else
-		{
-			cout &lt;&lt; line &lt;&lt; endl;
-		}
-	}
-	return (int) ret;
+    DWORD ret = ERROR_SUCCESS;
+    while( cin )
+    {
+      string line;
+      cout &lt;&lt; "Type something\n";
+      getline(cin, line);
+      jmp_buf env;
+      if( setjmp(env) == 0 )
+      {
+        LongJmp(&amp;env);
+      }
+      else
+      {
+        cout &lt;&lt; line &lt;&lt; endl;
+      }
+    }
+    return (int) ret;
 } 
 </pre>
 <p>At first sight, it seems a waste the if being directly in the code (remember we gonna use the same conditional structure in several parts in the code). To turn things clearer, resume the protected call and allows the protection to be disabled in debug version code, let's create a macro:</p>
@@ -874,29 +874,29 @@ int main()
 */
 #define ANTIDEBUG(code)
 {
-	jmp_buf env;
-	if( setjmp(env) == 0 )
-	{
-		LongJmp(&amp;env);
-	}
-	else
-	{
-		code;
-	}
+    jmp_buf env;
+    if( setjmp(env) == 0 )
+    {
+      LongJmp(&amp;env);
+    }
+    else
+    {
+      code;
+    }
 }
 /** And God said: 'int main!'
 */
 int main()
 {
-	DWORD ret = ERROR_SUCCESS;
-	while( cin )
-	{
-		string line;
-		cout &lt;&lt; "Type something\n";
-		getline(cin, line);
-		ANTIDEBUG(( cout &lt;&lt; line &lt;&lt; endl ));
-	}
-	return (int) ret;
+    DWORD ret = ERROR_SUCCESS;
+    while( cin )
+    {
+      string line;
+      cout &lt;&lt; "Type something\n";
+      getline(cin, line);
+      ANTIDEBUG(( cout &lt;&lt; line &lt;&lt; endl ));
+    }
+    return (int) ret;
 } 
 </pre>
 <p>Now we allow the antidebugging selection by call, what turns things much easier than to choose the protected points inside the code.</p>

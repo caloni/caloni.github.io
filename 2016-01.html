@@ -376,12 +376,12 @@ void MinhaClasse_MeuMetodo(MinhaClasse* pThis)
 <pre>
 bool MinhaFuncao(int x, int y)
 {
-	return x == y;
+    return x == y;
 }
 int main()
 {
-	bool (*PMinhaFuncao)(int, int) = MinhaFuncao;
-	PMinhaFuncao(2, 3);
+    bool (*PMinhaFuncao)(int, int) = MinhaFuncao;
+    PMinhaFuncao(2, 3);
 }
 </pre>
 <p>No exemplo anterior não sabíamos como chamar um método de nosso "objeto" em C:</p>
@@ -403,26 +403,26 @@ void MinhaClasse_MeuMetodo(MinhaClasse* pThis)
 #include &lt;stdio.h&gt;
 struct MinhaClasse
 {
-	int MinhaPropriedade;
-	void (*MeuMetodo)(MinhaClasse*);
-	void (*MeuOutroMetodo)(MinhaClasse*);
+    int MinhaPropriedade;
+    void (*MeuMetodo)(MinhaClasse*);
+    void (*MeuOutroMetodo)(MinhaClasse*);
 };
 void MinhaClasse_MeuMetodo(MinhaClasse* pThis)
 {
-	pThis-&gt;MeuOutroMetodo(pThis);
+    pThis-&gt;MeuOutroMetodo(pThis);
 }
 void MinhaClasse_MeuOutroMetodo(MinhaClasse* pThis)
 {
-	pThis-&gt;MinhaPropriedade = 42;
+    pThis-&gt;MinhaPropriedade = 42;
 }
 int main()
 {
-	MinhaClasse obj;
-	obj.MinhaPropriedade = 0;
-	// precisamos iniciar os "métodos" em C; em C++ é automágico
-	obj.MeuMetodo = MinhaClasse_MeuMetodo; 
-	obj.MeuOutroMetodo = MinhaClasse_MeuOutroMetodo;
-	obj.MeuMetodo(&amp;obj);
+    MinhaClasse obj;
+    obj.MinhaPropriedade = 0;
+    // precisamos iniciar os "métodos" em C; em C++ é automágico
+    obj.MeuMetodo = MinhaClasse_MeuMetodo; 
+    obj.MeuOutroMetodo = MinhaClasse_MeuOutroMetodo;
+    obj.MeuMetodo(&amp;obj);
     printf("MinhaPropriedade = %d", obj.MinhaPropriedade);
 }
 </pre>
@@ -516,13 +516,13 @@ int main()
 struct MinhaVTable;
 struct MinhaClasse
 {
-	const MinhaVTable* VTable;
-	int MinhaPropriedade;
+    const MinhaVTable* VTable;
+    int MinhaPropriedade;
 };
 struct MinhaVTable
 {
-	void (*MeuMetodo)(MinhaClasse*);
-	void (*MeuOutroMetodo)(MinhaClasse*);
+    void (*MeuMetodo)(MinhaClasse*);
+    void (*MeuOutroMetodo)(MinhaClasse*);
 };
 void MinhaClasse_MeuMetodo(MinhaClasse* pThis)
 {
@@ -540,12 +540,12 @@ static const MinhaVTable g_minhaVTableOriginal = { MinhaClasse_MeuMetodo, MinhaC
 static const MinhaVTable g_minhaVTableVersao75 = { MinhaClasse_MeuMetodo, MinhaClasse_MeuOutroMetodoVersao75 };
 int main()
 {
-	MinhaClasse obj = { &amp;g_minhaVTableOriginal };
-	MinhaClasse obj2 = { &amp;g_minhaVTableVersao75 };
-	obj.VTable-&gt;MeuMetodo(&amp;obj);
-	obj2.VTable-&gt;MeuMetodo(&amp;obj2);
-	printf("MinhaPropriedade (obj) = %d\n", obj.MinhaPropriedade);
-	printf("MinhaPropriedade (obj2) = %d\n", obj2.MinhaPropriedade);
+    MinhaClasse obj = { &amp;g_minhaVTableOriginal };
+    MinhaClasse obj2 = { &amp;g_minhaVTableVersao75 };
+    obj.VTable-&gt;MeuMetodo(&amp;obj);
+    obj2.VTable-&gt;MeuMetodo(&amp;obj2);
+    printf("MinhaPropriedade (obj) = %d\n", obj.MinhaPropriedade);
+    printf("MinhaPropriedade (obj2) = %d\n", obj2.MinhaPropriedade);
 }
 </pre>
 <img src="img/classe-objeto-contexto-metodo-polimorfismo-tRAtU9d.png"/>
@@ -614,14 +614,14 @@ using namespace std;
 template&lt;typename T&gt;
 bool Compare(T&amp; var1, T&amp; var2)
 {
-	return var1 &lt; var2;
+    return var1 &lt; var2;
 }
 int main()
 {
-	int x = 24, y = 42;
-	double dx = 100.0, dy = 10.0;
-	cout &lt;&lt; "x is " &lt;&lt; ( Compare(x, y) ? "lesser" : "bigger" ) &lt;&lt; " than y\n";
-	cout &lt;&lt; "dx is " &lt;&lt; ( Compare(dx, dy) ? "lesser" : "bigger" ) &lt;&lt; " than dy\n";
+    int x = 24, y = 42;
+    double dx = 100.0, dy = 10.0;
+    cout &lt;&lt; "x is " &lt;&lt; ( Compare(x, y) ? "lesser" : "bigger" ) &lt;&lt; " than y\n";
+    cout &lt;&lt; "dx is " &lt;&lt; ( Compare(dx, dy) ? "lesser" : "bigger" ) &lt;&lt; " than dy\n";
 }
 </pre>
 <img src="img/gabaritos-84Ptrvk.png"/>
@@ -698,16 +698,16 @@ typedef struct _LIST_ENTRY {
 } LIST_ENTRY, *PLIST_ENTRY;
 struct MeuElemento
 {
-	int x;
-	int y;
-	LIST_ENTRY entry;
-	double d;
-	float f;
+    int x;
+    int y;
+    LIST_ENTRY entry;
+    double d;
+    float f;
 };
 LIST_ENTRY g_head;
 int main()
 {
-	InitializeListHead(&amp;g_head);
+    InitializeListHead(&amp;g_head);
 }
 </pre>
 <p>OK, temos uma lista ligada cujo head está inicializado. Para inserir um novo item, podemos usar as rotinas InsertHeadList, AppendTailList, RemoveEntryList, PushEntryList, PopEntryList, etc. Enfim, uma infinidade de rotinas já cuidam disso para a gente.</p>
@@ -725,7 +725,7 @@ int main()
 <pre>
 void DoSomething(PLINK_LIST pEntry)
 {
-	MeuElemento* pElem = CONTAINING_RECORD(pEntry, MeuElemento, entry);
+    MeuElemento* pElem = CONTAINING_RECORD(pEntry, MeuElemento, entry);
 }
 </pre>
 <h4>Usando template</h4>
@@ -750,11 +750,11 @@ typedef struct _LIST_ENTRY {
 } LIST_ENTRY, *PLIST_ENTRY;
 struct MeuElemento
 {
-	int x;
-	int y;
-	LIST_ENTRY entry;
-	double d;
-	float f;
+    int x;
+    int y;
+    LIST_ENTRY entry;
+    double d;
+    float f;
 };
 LIST_ENTRY g_head;
 template&lt;typename T&gt;

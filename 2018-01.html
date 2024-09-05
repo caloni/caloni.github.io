@@ -686,17 +686,17 @@ int main()
 typedef std::map&lt;std::string, std::string&gt; Args;
 inline void ParseCommandLine(int argc, char* argv[], Args&amp; args)
 {
-	for (int i = 1; i &lt; argc; ++i)
-	{
-		std::string cmd = argv[i];
-		std::string arg;
-		if (i &lt; argc - 1 &amp;&amp; argv[i + 1][0] != '-')
-		{
-			arg = argv[i + 1];
-			++i;
-		}
-		args[cmd] = arg;
-	}
+    for (int i = 1; i &lt; argc; ++i)
+    {
+      std::string cmd = argv[i];
+      std::string arg;
+      if (i &lt; argc - 1 &amp;&amp; argv[i + 1][0] != '-')
+      {
+        arg = argv[i + 1];
+        ++i;
+      }
+      args[cmd] = arg;
+    }
 }
 </pre>
 <p>Com a função ParseCommandLine disponível assim que você adicionar este header (eu chamo de args.h) basta no início do seu main chamá-lo passando o argv e o argc recebidos:</p>
@@ -704,8 +704,8 @@ inline void ParseCommandLine(int argc, char* argv[], Args&amp; args)
 <pre>
 int main(int argc, char* argv[])
 {
-	Args args;
-	ParseCommandLine(argc, argv, args);
+    Args args;
+    ParseCommandLine(argc, argv, args);
     // ...
 </pre>
 <p>O resultado é que a variável args irá conter um mapa entre parâmetros e valores. Se seu programa for chamado com, por exemplo, a seguinte linha de comando:</p>

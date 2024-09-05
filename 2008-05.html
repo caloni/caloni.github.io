@@ -576,24 +576,24 @@ role="navigation" aria-label="main navigation">
    #define MYTRACE(message) /*nada*/
    #else
    #define MYTRACE(message)  \
-   	{ \
-   		char buffer[500]; \
-   		sprintf(buffer, \
-   			"DBG: %s(%d) %s\n", \
-   			__FILE__, \
-   			__LINE__, \
-   			message); \
-   		output(buffer); \
-   	}
+     { \
+       char buffer[500]; \
+       sprintf(buffer, \
+         "DBG: %s(%d) %s\n", \
+         __FILE__, \
+         __LINE__, \
+         message); \
+       output(buffer); \
+     }
    #endif /* NDEBUG */ 
 </pre>
 <p>Nada de mais, e parece até funcionar. Porém, como veremos nas próximas linhas, esse é realmente um exemplo de código "buguento", já que uma chamada dentro de uma construção if-else simplesmente não funciona.</p>
 
 <pre>
    if( exploded() )
-   	MYTRACE("Oh, my God");
+     MYTRACE("Oh, my God");
    else
-   	MYTRACE("That's right"); 
+     MYTRACE("That's right"); 
    
    error C2181: illegal else without matching if
 </pre>
@@ -772,8 +772,9 @@ role="navigation" aria-label="main navigation">
 
 <p>PS: MouseTool agora tem uma versão Linux em um projeto no Source Forge! Seu nome é <a href="http://gmousetool.sourceforge.net">GMouseTool</a>, projeto criado por Márcio de Oliveira.</p>
 
-<p>	</p>
-
+<pre>
+   
+</pre>
 
 
 

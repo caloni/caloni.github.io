@@ -86,26 +86,26 @@ role="navigation" aria-label="main navigation">
 <pre>
 void DebugLoop()
 {
-	bool exitLoop = false;
-	while( ! exitLoop )
-	{
-		DEBUG_EVENT debugEvt;
-		// Wait for some debug event.
-		WaitForDebugEvent(&amp;debugEvt, INFINITE);
-		// Let us see what it is about.
-		switch( debugEvt.dwDebugEventCode )
-		{
-			// This one...
-			// That one...
-			// Process is going out. We get out the loop and go away.
-			case EXIT_PROCESS_DEBUG_EVENT:
-			exitLoop = true;
-			break;
-		}
-		// We need to unfreeze the thread who sent the debug event.
-		// Otherwise, it stays frozen forever!
-		ContinueDebugEvent(debugEvt.dwProcessId, debugEvt.dwThreadId, DBG_EXCEPTION_NOT_HANDLED);
-	}
+    bool exitLoop = false;
+    while( ! exitLoop )
+    {
+      DEBUG_EVENT debugEvt;
+      // Wait for some debug event.
+      WaitForDebugEvent(&amp;debugEvt, INFINITE);
+      // Let us see what it is about.
+      switch( debugEvt.dwDebugEventCode )
+      {
+        // This one...
+        // That one...
+        // Process is going out. We get out the loop and go away.
+        case EXIT_PROCESS_DEBUG_EVENT:
+        exitLoop = true;
+        break;
+      }
+      // We need to unfreeze the thread who sent the debug event.
+      // Otherwise, it stays frozen forever!
+      ContinueDebugEvent(debugEvt.dwProcessId, debugEvt.dwThreadId, DBG_EXCEPTION_NOT_HANDLED);
+    }
 } 
 </pre>
 <p>The interesting detail about this communication process is that a program can be debugged actively only for ONE debugger. In other words, while there's a process A debugging process B, no one besides A can debug and break B.Using this principle, we can imagine a debugging protection based on this exclusivity, creating a protector process that connects to the protected process and "debugs" it:</p>
@@ -121,54 +121,54 @@ debugging events sent by the operating system.
 */
 DWORD DebugLoop()
 {
-	DWORD ret = ERROR_SUCCESS;
-	bool exitLoop = false;
-	while( ! exitLoop )
-	{
-		DEBUG_EVENT debugEvt;
-		WaitForDebugEvent(&amp;debugEvt, INFINITE);
-		switch( debugEvt.dwDebugEventCode )
-		{
-			// Process going out. We get out the loop and leave.
-			case EXIT_PROCESS_DEBUG_EVENT:
-			exitLoop = true;
-			break;
-		}
-		// Necessary, since the current thread is frozen.
-		ContinueDebugEvent(debugEvt.dwProcessId, debugEvt.dwThreadId, DBG_EXCEPTION_NOT_HANDLED);
-	}
-	return ret;
+    DWORD ret = ERROR_SUCCESS;
+    bool exitLoop = false;
+    while( ! exitLoop )
+    {
+      DEBUG_EVENT debugEvt;
+      WaitForDebugEvent(&amp;debugEvt, INFINITE);
+      switch( debugEvt.dwDebugEventCode )
+      {
+        // Process going out. We get out the loop and leave.
+        case EXIT_PROCESS_DEBUG_EVENT:
+        exitLoop = true;
+        break;
+      }
+      // Necessary, since the current thread is frozen.
+      ContinueDebugEvent(debugEvt.dwProcessId, debugEvt.dwThreadId, DBG_EXCEPTION_NOT_HANDLED);
+    }
+    return ret;
 }
 /* Attachs to the protected process againt debugging. Actually, we protect it
 againt debugging being its debugger.
 */
 DWORD AntiAttach(DWORD pid)
 {
-	DWORD ret = ERROR_SUCCESS;
-	if( pid )
-	{
-		BOOL dbgActProc;
-		dbgActProc = DebugActiveProcess(pid);
-		if( dbgActProc )
-			DebugLoop();
-		else
-			ret = GetLastError();
-	}
-	else
-		ret = ERROR_INVALID_HANDLE;
-	return ret;
+    DWORD ret = ERROR_SUCCESS;
+    if( pid )
+    {
+      BOOL dbgActProc;
+      dbgActProc = DebugActiveProcess(pid);
+      if( dbgActProc )
+        DebugLoop();
+      else
+        ret = GetLastError();
+    }
+    else
+      ret = ERROR_INVALID_HANDLE;
+    return ret;
 }
 /* In the beginning, God said: 'int main!'
 */
 int main(int argc, char* argv[])
 {
-	DWORD ret = ERROR_SUCCESS;
-	if( argc &gt; 1 )
-	{
-		DWORD pid = atoi(argv[1]);
-		ret = AntiAttach(pid);
-	}
-	return (int) ret;
+    DWORD ret = ERROR_SUCCESS;
+    if( argc &gt; 1 )
+    {
+      DWORD pid = atoi(argv[1]);
+      ret = AntiAttach(pid);
+    }
+    return (int) ret;
 } 
 </pre>
 <p>The needed steps to test the code above are:</p>
@@ -222,45 +222,45 @@ using namespace std;
 */
 void AntiAttachAbort()
 {
-	// this is a test application, remember?
-	MessageBox(NULL, "Espertinho, hein?", "AntiAttachDetector", MB_OK | MB_ICONERROR);
-	// this is the end
-	TerminateProcess(GetCurrentProcess(), -1);
+    // this is a test application, remember?
+    MessageBox(NULL, "Espertinho, hein?", "AntiAttachDetector", MB_OK | MB_ICONERROR);
+    // this is the end
+    TerminateProcess(GetCurrentProcess(), -1);
 }
 /** This function installs  a trigger that is activated when a debugger try to attach.
 @see AntiAttachAbort.
 */
 void InstallAntiAttach()
 {
-	PVOID attachBreak = GetProcAddress(
-		GetModuleHandle("ntdll"), // this dll is ALWAYS loaded
-		"DbgUiRemoteBreakin"); // this function is ALWAYS called on the attach event
-	assert(attachBreak); // attachBreak NEVER can be null
-	// opcodes to run a jump to the function AntiAttachAbort
-	BYTE jmpToAntiAttachAbort[] =
-	{ 0xB8, 0xCC, 0xCC, 0xCC, 0xCC,   // mov eax, 0xCCCCCCCC
-	0xFF, 0xE0 };                     // jmp eax
-	// we change 0xCCCCCCCC using a more useful address
-	*reinterpret_cast&lt;PVOID*&gt;(&amp;jmpToAntiAttachAbort[1]) = AntiAttachAbort;
-	DWORD oldProtect = 0;
-	if( VirtualProtect(attachBreak, sizeof(jmpToAntiAttachAbort), 
-		PAGE_EXECUTE_READWRITE, &amp;oldProtect) )
-	{
-		// if we can change the code page protection we put a jump to our code
-		CopyMemory(attachBreak, 
-			jmpToAntiAttachAbort, sizeof(jmpToAntiAttachAbort));
-		// restore old protection
-		VirtualProtect(attachBreak, sizeof(jmpToAntiAttachAbort), 
-			oldProtect, &amp;oldProtect);
-	}
+    PVOID attachBreak = GetProcAddress(
+      GetModuleHandle("ntdll"), // this dll is ALWAYS loaded
+      "DbgUiRemoteBreakin"); // this function is ALWAYS called on the attach event
+    assert(attachBreak); // attachBreak NEVER can be null
+    // opcodes to run a jump to the function AntiAttachAbort
+    BYTE jmpToAntiAttachAbort[] =
+    { 0xB8, 0xCC, 0xCC, 0xCC, 0xCC,   // mov eax, 0xCCCCCCCC
+    0xFF, 0xE0 };                     // jmp eax
+    // we change 0xCCCCCCCC using a more useful address
+    *reinterpret_cast&lt;PVOID*&gt;(&amp;jmpToAntiAttachAbort[1]) = AntiAttachAbort;
+    DWORD oldProtect = 0;
+    if( VirtualProtect(attachBreak, sizeof(jmpToAntiAttachAbort), 
+      PAGE_EXECUTE_READWRITE, &amp;oldProtect) )
+    {
+      // if we can change the code page protection we put a jump to our code
+      CopyMemory(attachBreak, 
+        jmpToAntiAttachAbort, sizeof(jmpToAntiAttachAbort));
+      // restore old protection
+      VirtualProtect(attachBreak, sizeof(jmpToAntiAttachAbort), 
+        oldProtect, &amp;oldProtect);
+    }
 }
 /** In the beginning, God said: 'int main!'
 */
 int main()
 {
-	InstallAntiAttach();
-	cout &lt;&lt; "Try to attach, if you can...";
-	cin.get();
+    InstallAntiAttach();
+    cout &lt;&lt; "Try to attach, if you can...";
+    cin.get();
 } 
 </pre>
 <p>To compile the code above, just call the compiler and linker normally. Obs.: We need the user32.lib in order to call MessageBox API:</p>
@@ -696,11 +696,11 @@ BYTE jmpToAntiAttachAbort[] =
 #include &lt;stdio.h&gt;
 int main()
 {
-	DWORD pid;
-	while( scanf("%d", &amp;pid) == 1 )
-	{
-		HANDLE proc = OpenProcess(SYNCHRONIZE, FALSE, pid);
-	}
+    DWORD pid;
+    while( scanf("%d", &amp;pid) == 1 )
+    {
+      HANDLE proc = OpenProcess(SYNCHRONIZE, FALSE, pid);
+    }
 }
 </pre>
 <p>Para usá-lo, basta abrir um Gerenciador de Tarefas com opção de exibir o PID dos processos.</p>
