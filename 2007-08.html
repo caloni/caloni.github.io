@@ -965,7 +965,7 @@ role="navigation" aria-label="main navigation">
 <p class="title"><a href="2007-08.html#hook-de-api-no-windbg">#</a> Hook de API no WinDbg</p>
 <span class="title-heading">Caloni, 2007-08-29 <a href="tag_coding.html">tag_coding</a><a href="2007-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-hook-de-api-no-windbg')"><sup>[copy]</sup></a></span>
 
-<p>Basicamente existem duas maneiras de um executável obter o endereço de uma função API do Windows: ou ele usa uma lib de interface com a DLL (o chamado "link estático") ou ele chama a função GetProcAddress explicitamente <a href="posts.html?q=^1">^1</a>.</p>
+<p>Basicamente existem duas maneiras de um executável obter o endereço de uma função API do Windows: ou ele usa uma lib de interface com a DLL (o chamado "link estático") ou ele chama a função GetProcAddress explicitamente <a href="posts.html?q=1">1</a>.</p>
 
 <p>Para conseguir saber as funções das quais um executável obtém o endereço através da primeira técnica podemos utilizar o mundialmente famoso Dependency Walker. Ele nos mostrará quais DLLs ele utiliza e quais funções por DLL ele quer o endereço. Ele também nos avisa sobre as DLLs que estão utilizando delay load, uma técnica inventada no Visual Studio para que os executáveis não dependam estaticamente de APIs muito novas que podem não existir em versões do Windows mais antigas. Com o (carinhosamente chamado) Depends também é possível fazer hook de chamadas de API utilizando a opção profiling (F7), mas não costuma funcionar muito bem com trojans, pois eles capotam antes que alguma coisa interessante ocorra.</p>
 
@@ -1027,11 +1027,11 @@ role="navigation" aria-label="main navigation">
 </pre>
 <p>Daí é só organizar a lista obtida em ordem alfabética, acabar com duplicidades e criar o mesmo tipo de breakpoint que foi usado para as funções estáticas (pode ser sem o nome da DLL porque, embora não recomendado, o WinDbg se vira para encontrar os símbolos). Depois de criados os comandos, rodamos novamente o executável e, logo no início, já colocamos todos os breakpoints das funções coletadas.</p>
 
-<p>Essa é uma maneira rústica, porém eficaz e rápida de obter a lista de execução da API utilizada por um programa <a href="posts.html?q=^2">^2</a>.</p>
+<p>Essa é uma maneira rústica, porém eficaz e rápida de obter a lista de execução da API utilizada por um programa <a href="posts.html?q=2">2</a>.</p>
 
+<p><a href="posts.html?q=1">1</a> Uma variação do método GetProcAddress é a técnica de delay load usado pelo Visual C++. Porém, como o Dependency Walker nos mostra também as DLLs que estão linkadas usando essa técnica se torna dispensável um tratamento ad hoc.</p>
 
-
-
+<p><a href="posts.html?q=2">2</a> Essa técnica nem sempre funciona com todas as chamadas API, pois o aplicativo ainda pode utilizar outras maneiras de obter o endereço de uma função e chamá-la. A solução definitiva seria escrever diretamente um assembly esperto no começo da função, o que pode gerar mais problemas que soluções. Do jeito que está, conseguimos resolver 90% dos nossos problemas com análise de chamadas API. O resto nós podemos resolver em futuros artigos.</p>
 
 </section><hr/>
 
