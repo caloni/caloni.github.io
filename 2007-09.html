@@ -43,36 +43,36 @@ role="navigation" aria-label="main navigation">
 <div style="padding-bottom: 1em;"></div>
 <ul style="list-style: none;">
 
-<li><small><a href="2007-09.html#historia-do-windows-parte-40">História do Windows - parte 4.0</a></small></li>
+<li><small><a href="2007-09.html#historia_do_windows_parte_40">História do Windows - parte 4.0</a></small></li>
 
-<li><small><a href="2007-09.html#o-passado-torto-de-um-programador-por-acaso">O passado torto de um programador por acaso</a></small></li>
+<li><small><a href="2007-09.html#o_passado_torto_de_um_programador_por_acaso">O passado torto de um programador por acaso</a></small></li>
 
-<li><small><a href="2007-09.html#antidebug-detectando-attach">Antidebug: Detectando Attach</a></small></li>
+<li><small><a href="2007-09.html#antidebug_detectando_attach">Antidebug: Detectando Attach</a></small></li>
 
-<li><small><a href="2007-09.html#guia-basico-de-controle-de-codigo-source-safe">Guia básico de controle de código (Source Safe)</a></small></li>
+<li><small><a href="2007-09.html#guia_basico_de_controle_de_codigo_source_safe">Guia básico de controle de código (Source Safe)</a></small></li>
 
-<li><small><a href="2007-09.html#aquisicao-de-recurso-e-inicializacao">Aquisição de recurso é inicialização</a></small></li>
+<li><small><a href="2007-09.html#aquisicao_de_recurso_e_inicializacao">Aquisição de recurso é inicialização</a></small></li>
 
-<li><small><a href="2007-09.html#hook-de-com-no-windbg">Hook de COM no WinDbg</a></small></li>
+<li><small><a href="2007-09.html#hook_de_com_no_windbg">Hook de COM no WinDbg</a></small></li>
 
-<li><small><a href="2007-09.html#a-mobilidade-das-variaveis-no-printf">A mobilidade das variáveis no printf</a></small></li>
+<li><small><a href="2007-09.html#a_mobilidade_das_variaveis_no_printf">A mobilidade das variáveis no printf</a></small></li>
 
-<li><small><a href="2007-09.html#why-is-my-dll-locked">Why is my DLL locked?</a></small></li>
+<li><small><a href="2007-09.html#why_is_my_dll_locked">Why is my DLL locked?</a></small></li>
 
-<li><small><a href="2007-09.html#introducao-ao-c-builderturbo-c">Introdução ao C++ Builder...Turbo C++</a></small></li>
+<li><small><a href="2007-09.html#introducao_ao_c_builderturbo_c">Introdução ao C++ Builder...Turbo C++</a></small></li>
 
-<li><small><a href="2007-09.html#developer-you-need-to-know-english">Developer: you need to know English!</a></small></li>
+<li><small><a href="2007-09.html#developer_you_need_to_know_english">Developer: you need to know English!</a></small></li>
 </ul>
 
 
-<span id="historia-do-windows-parte-40" title="História do Windows - parte 4.0"/></span>
-<section id="section-historia-do-windows-parte-40">
-<p class="title"><a href="2007-09.html#historia-do-windows-parte-40">#</a> História do Windows - parte 4.0</p>
-<span class="title-heading">Caloni, 2007-09-04 <a href="tag_coding.html">tag_coding</a><a href="2007-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-historia-do-windows-parte-40')"><sup>[copy]</sup></a></span>
+<span id="historia_do_windows_parte_40" title="História do Windows - parte 4.0"/></span>
+<section id="section-historia_do_windows_parte_40">
+<p class="title"><a href="2007-09.html#historia_do_windows_parte_40">#</a> História do Windows - parte 4.0</p>
+<span class="title-heading">Caloni, 2007-09-04 <a href="tag_coding.html">tag_coding</a><a href="2007-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-historia_do_windows_parte_40')"><sup>[copy]</sup></a></span>
 
 <p>Em meio a uma febre de consumismo, no dia 24 de agosto de 1995, foi lançado a revolução no sistema gráfico da Microsoft: a interface do Windows 95. Ela foi considerada muito mais amigável que suas versões anteriores. Ainda possuía a vantagem de não necessitar mais de uma instalação prévia do DOS, passou a suportar nomes de arquivos longos, incluir suporte a TCP/IP e dial-up networking integrados. Muitas mudanças foram feitas no sistema em si, como a passagem para 32 bits (como já vimos, parcial) e o novo conceito de threads, que é o que veremos com mais detalhes neste artigo.</p>
 
-<img src="img/historia-do-windows-parte-40-windows_95.png"/>
+<img src="img/historia_do_windows_parte_40-windows_95.png"/>
 
 <blockquote>Bem, o "novo conceito" de threads já havia sido implementado no Windows NT desde o seu rascunho e já existia no início do projeto, mas não no velho Windows 3.1 de 16 bits, que foi a versão anterior ao 95. Parte dos requisitos do sistema foi que ele seria compatível com o NT no nível de aplicativo, o que de fato aconteceu.</blockquote>
 <p>Para esse milagre da multiplicação das threads acontecer a Microsoft foi obrigada a portar boa parte do código de 16 bits para 32 e entrar em modo protegido. Mesmo assim, um legado razoável do MS-DOS permaneceu debaixo dos panos suportando o novo sistema operacional através de suas interrupções e código residente. Ou seja, havia ainda partes do SO rodando em modo real.</p>
@@ -83,11 +83,11 @@ role="navigation" aria-label="main navigation">
 
 <p>Porém, em uma plataforma com apenas um processador, como é natural supor, apenas uma thread roda de cada vez. Para dar a impressão de rodar ao mesmo tempo o tempo de execução das threads é dividido entre elas, de forma que aparentemente todas elas rodam ao mesmo tempo. Essa unidade de divisão do tempo de execução é conhecido como quantum, ou Time Slice, e é caracterizado como o tempo em que uma thread fica rodando até que outra thread tome o seu lugar, ou seja, ocorra uma troca de contexto (switch context). Quando uma thread é criada ela ganha seu primeiro time slice (se não iniciar suspensa) e divide o tempo de processamento com outras threads que executam no mesmo processador.</p>
 
-<img src="img/historia-do-windows-parte-40-threads_architecture.gif"/>
+<img src="img/historia_do_windows_parte_40-threads_architecture.gif"/>
 
 <p>Para exemplificar o uso de threads imagine um programa que quebra senhas por força bruta. Funciona assim: enquanto uma thread fica cuidando das mensagens da janela, como digitação e movimentação do mouse e janela, uma segunda thread irá ficar constantemente tentanto descobrir sua senha digitada por tentativa e erro. Toda vez que é alterado um caractere na senha, a thread quebradora reinicia seu trabalho.</p>
 
-<img src="img/historia-do-windows-parte-40-threads_pwdbreaker.png"/>
+<img src="img/historia_do_windows_parte_40-threads_pwdbreaker.png"/>
 
 <p>Todo programa inicia com uma thread que roda seu int main. A criação de uma nova thread é feita através da chamada da função API CreateThread.</p>
 
@@ -102,9 +102,9 @@ role="navigation" aria-label="main navigation">
        &amp;g_bruteForceThreadId);
    }
 </pre>
-<p>Para quem está acompanhando <a href="2020-09.html#historia-do-windows">a série de artigos sobre o Windows</a> deve lembrar que assim como na criação de janelas, na criação de uma thread é passada uma função de callback. Só que diferente de uma função de janela, essa função não é executada na mesma thread que criou a janela, mas é um novo "int main" para uma nova linha de execução, que irá rodar em paralelo com a primeira. Essa segunda linha de execução termina quando retornamos dessa função, que no nosso exemplo é nunca, mas poderia ser quando fosse terminada sua tarefa.</p>
+<p>Para quem está acompanhando <a href="2020-09.html#historia_do_windows">a série de artigos sobre o Windows</a> deve lembrar que assim como na criação de janelas, na criação de uma thread é passada uma função de callback. Só que diferente de uma função de janela, essa função não é executada na mesma thread que criou a janela, mas é um novo "int main" para uma nova linha de execução, que irá rodar em paralelo com a primeira. Essa segunda linha de execução termina quando retornamos dessa função, que no nosso exemplo é nunca, mas poderia ser quando fosse terminada sua tarefa.</p>
 
-<img src="img/historia-do-windows-parte-40-threads_pwdbreaker_windows.png"/>
+<img src="img/historia_do_windows_parte_40-threads_pwdbreaker_windows.png"/>
 
 <p>Bom, acho que para explicar o uso de um sistema multithreading em um artigo só não basta. Mas para explicar por que sua senha deve ter mais de três caracteres, acho que é o bastante. Até a próxima.</p>
 
@@ -113,10 +113,10 @@ role="navigation" aria-label="main navigation">
 </section><hr/>
 
 
-<span id="o-passado-torto-de-um-programador-por-acaso" title="O passado torto de um programador por acaso"/></span>
-<section id="section-o-passado-torto-de-um-programador-por-acaso">
-<p class="title"><a href="2007-09.html#o-passado-torto-de-um-programador-por-acaso">#</a> O passado torto de um programador por acaso</p>
-<span class="title-heading">Caloni, 2007-09-06<a href="2007-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-o-passado-torto-de-um-programador-por-acaso')"><sup>[copy]</sup></a></span>
+<span id="o_passado_torto_de_um_programador_por_acaso" title="O passado torto de um programador por acaso"/></span>
+<section id="section-o_passado_torto_de_um_programador_por_acaso">
+<p class="title"><a href="2007-09.html#o_passado_torto_de_um_programador_por_acaso">#</a> O passado torto de um programador por acaso</p>
+<span class="title-heading">Caloni, 2007-09-06<a href="2007-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-o_passado_torto_de_um_programador_por_acaso')"><sup>[copy]</sup></a></span>
 
 <p>Observação: este é um artigo não-técnico, o que quer dizer que você pode se deparar com termos desconhecidos. Procure ter à mão um dicionário de pessoas comuns.</p>
 
@@ -199,10 +199,10 @@ role="navigation" aria-label="main navigation">
 </section><hr/>
 
 
-<span id="antidebug-detectando-attach" title="Antidebug: Detectando Attach"/></span>
-<section id="section-antidebug-detectando-attach">
-<p class="title"><a href="2007-09.html#antidebug-detectando-attach">#</a> <a class="external" href="https://github.com/Caloni/lectures/blob/master/antidebugging-eu-nao-quero-que-vc-mexa-no-meu-codigo.pdf">Antidebug: Detectando Attach</a></p>
-<span class="title-heading">Caloni, 2007-09-10 <a href="tag_coding.html">tag_coding</a> <a href="tag_projects.html">tag_projects</a><a href="2007-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-antidebug-detectando-attach')"><sup>[copy]</sup></a></span>
+<span id="antidebug_detectando_attach" title="Antidebug: Detectando Attach"/></span>
+<section id="section-antidebug_detectando_attach">
+<p class="title"><a href="2007-09.html#antidebug_detectando_attach">#</a> <a class="external" href="https://github.com/Caloni/lectures/blob/master/antidebugging-eu-nao-quero-que-vc-mexa-no-meu-codigo.pdf">Antidebug: Detectando Attach</a></p>
+<span class="title-heading">Caloni, 2007-09-10 <a href="tag_coding.html">tag_coding</a> <a href="tag_projects.html">tag_projects</a><a href="2007-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-antidebug_detectando_attach')"><sup>[copy]</sup></a></span>
 
 <p>Hoje foi um belo dia para engenharia reversa e análise de proteções. Dois ótimos programas vieram ao meu conhecimento: um <a href="http://www.kakeeware.com">monitor de chamadas de API</a> e um <a href="http://www.blunck.info/comtrace.html">monitor de chamadas de COM</a> (complementando o primeiro, que não monitora funções depois que CoCreateInstance foi chamado). Além de que no site do primeiro programa - de algum entusiasta do bom e velho Assembly Win32, diga-se de passagem - encontrei o código-fonte para mais uma técnica antidebugging, o que nos leva de volta para a já consagrada série de técnicas antidepuração.</p>
 
@@ -229,10 +229,10 @@ role="navigation" aria-label="main navigation">
 </section><hr/>
 
 
-<span id="guia-basico-de-controle-de-codigo-source-safe" title="Guia básico de controle de código (Source Safe)"/></span>
-<section id="section-guia-basico-de-controle-de-codigo-source-safe">
-<p class="title"><a href="2007-09.html#guia-basico-de-controle-de-codigo-source-safe">#</a> Guia básico de controle de código (Source Safe)</p>
-<span class="title-heading">Caloni, 2007-09-12 <a href="tag_coding.html">tag_coding</a><a href="2007-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-guia-basico-de-controle-de-codigo-source-safe')"><sup>[copy]</sup></a></span>
+<span id="guia_basico_de_controle_de_codigo_source_safe" title="Guia básico de controle de código (Source Safe)"/></span>
+<section id="section-guia_basico_de_controle_de_codigo_source_safe">
+<p class="title"><a href="2007-09.html#guia_basico_de_controle_de_codigo_source_safe">#</a> Guia básico de controle de código (Source Safe)</p>
+<span class="title-heading">Caloni, 2007-09-12 <a href="tag_coding.html">tag_coding</a><a href="2007-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-guia_basico_de_controle_de_codigo_source_safe')"><sup>[copy]</sup></a></span>
 
 <p>O primeiro passo para se passar no Teste do Joel é possuir algum tipo de controle de código. E ele está mais do que certo. Não existe nada mais frustrante do que não ter exatamente o código-fonte da versão que está rodando no cliente ou não saber o que mudou desde que a versão foi entregue. Esse tipo de coisa pode acabar com uma empresa ou fazer com que ela fique muito mal vista no mercado.</p>
 
@@ -286,10 +286,10 @@ role="navigation" aria-label="main navigation">
 </section><hr/>
 
 
-<span id="aquisicao-de-recurso-e-inicializacao" title="Aquisição de recurso é inicialização"/></span>
-<section id="section-aquisicao-de-recurso-e-inicializacao">
-<p class="title"><a href="2007-09.html#aquisicao-de-recurso-e-inicializacao">#</a> Aquisição de recurso é inicialização</p>
-<span class="title-heading">Caloni, 2007-09-14 <a href="tag_coding.html">tag_coding</a> <a href="tag_ccpp.html">tag_ccpp</a><a href="2007-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-aquisicao-de-recurso-e-inicializacao')"><sup>[copy]</sup></a></span>
+<span id="aquisicao_de_recurso_e_inicializacao" title="Aquisição de recurso é inicialização"/></span>
+<section id="section-aquisicao_de_recurso_e_inicializacao">
+<p class="title"><a href="2007-09.html#aquisicao_de_recurso_e_inicializacao">#</a> Aquisição de recurso é inicialização</p>
+<span class="title-heading">Caloni, 2007-09-14 <a href="tag_coding.html">tag_coding</a> <a href="tag_ccpp.html">tag_ccpp</a><a href="2007-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-aquisicao_de_recurso_e_inicializacao')"><sup>[copy]</sup></a></span>
 
 <p>O título desse artigo é uma técnica presente no paradigma da programação em C++, razão pela qual não temos o operador finally. A idéia por trás dessa técnica é conseguirmos usar recursos representados por objetos locais de maneira que ao final da função esses objetos sejam destruídos e, junto com eles, os recursos que foram alocados. Podemos chamar de recursos aquele arquivo que necessita ser aberto para escrita, o bitmap que é exibido na tela, o ponteiro de uma interface COM, etc. O nosso exemplo é sobre arquivos:</p>
 
@@ -388,16 +388,16 @@ role="navigation" aria-label="main navigation">
 </section><hr/>
 
 
-<span id="hook-de-com-no-windbg" title="Hook de COM no WinDbg"/></span>
-<section id="section-hook-de-com-no-windbg">
-<p class="title"><a href="2007-09.html#hook-de-com-no-windbg">#</a> Hook de COM no WinDbg</p>
-<span class="title-heading">Caloni, 2007-09-18 <a href="tag_coding.html">tag_coding</a><a href="2007-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-hook-de-com-no-windbg')"><sup>[copy]</sup></a></span>
+<span id="hook_de_com_no_windbg" title="Hook de COM no WinDbg"/></span>
+<section id="section-hook_de_com_no_windbg">
+<p class="title"><a href="2007-09.html#hook_de_com_no_windbg">#</a> Hook de COM no WinDbg</p>
+<span class="title-heading">Caloni, 2007-09-18 <a href="tag_coding.html">tag_coding</a><a href="2007-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-hook_de_com_no_windbg')"><sup>[copy]</sup></a></span>
 
 <p>Continuando com o tema hooks no WinDbg vamos aqui "hookear" e analisar as chamadas de métodos de um objeto COM. O que será feito aqui é o mesmo experimento feito para uma palestra de engenharia reversa que apresentei há um tempo atrás, mas com as opções de pause, rewind, replay e câmera lenta habilitadas.</p>
 
 <p>Antes de começar, se você não sabe nada sobre COM, não deveria estar aqui, mas nunca é tarde para aprender. Pra começar, vamos dar uma olhada na representação da interface IUnknown em UML e em memória:</p>
 
-<img src="img/hook-de-com-no-windbg-iunknown_disasm.png"/>
+<img src="img/hook_de_com_no_windbg-iunknown_disasm.png"/>
 
 <p>Como podemos ver, para implementar o polimorfismo os endereços das funções virtuais de uma classe são colocados em uma tabela, a chamada vtable, famosa tanto no COM quanto no C++. Existe uma tabela para cada classe-base polimórfica, e não para cada objeto. Se fosse para cada objeto não faria sentido deixar esses endereços "do lado de fora" do leiaute. E não seria nada simples e elegante fazer uma cópia desse objeto.</p>
 
@@ -405,7 +405,7 @@ role="navigation" aria-label="main navigation">
 
 <p>Sabendo de tudo isso, agora sabemos como teoricamente proceder para colocar uns breakpoints nessas chamadas:</p>
 
-<img src="img/hook-de-com-no-windbg-iunknown_breakpoint.png"/>
+<img src="img/hook_de_com_no_windbg-iunknown_breakpoint.png"/>
 
 <p>Note que o breakpoint não é colocado dentro da tabela, o que seria absurdo. Uma tabela são dados e dados geralmente não são executados (eu disse geralmente). Porém, usamos a tabela para saber onde está o começo da função para daí colocar a parada nesse endereço, que por fazer parte do código da função é (quem diria!) executado.</p>
 
@@ -567,10 +567,10 @@ role="navigation" aria-label="main navigation">
 </section><hr/>
 
 
-<span id="a-mobilidade-das-variaveis-no-printf" title="A mobilidade das variáveis no printf"/></span>
-<section id="section-a-mobilidade-das-variaveis-no-printf">
-<p class="title"><a href="2007-09.html#a-mobilidade-das-variaveis-no-printf">#</a> A mobilidade das variáveis no printf</p>
-<span class="title-heading">Caloni, 2007-09-20 <a href="tag_coding.html">tag_coding</a> <a href="tag_ccpp.html">tag_ccpp</a><a href="2007-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-a-mobilidade-das-variaveis-no-printf')"><sup>[copy]</sup></a></span>
+<span id="a_mobilidade_das_variaveis_no_printf" title="A mobilidade das variáveis no printf"/></span>
+<section id="section-a_mobilidade_das_variaveis_no_printf">
+<p class="title"><a href="2007-09.html#a_mobilidade_das_variaveis_no_printf">#</a> A mobilidade das variáveis no printf</p>
+<span class="title-heading">Caloni, 2007-09-20 <a href="tag_coding.html">tag_coding</a> <a href="tag_ccpp.html">tag_ccpp</a><a href="2007-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-a_mobilidade_das_variaveis_no_printf')"><sup>[copy]</sup></a></span>
 
 <p>O printf (e derivados) tem sérios problemas por conta de sua falta de tipagem. Não vou aqui dizer que cout é a alternativa óbvia e melhorada porque não é. Mas isso é uma discussão que eu não deveria começar aqui. E não começarei. Portanto, ignorem essa linha =).</p>
 
@@ -607,10 +607,10 @@ role="navigation" aria-label="main navigation">
 </section><hr/>
 
 
-<span id="why-is-my-dll-locked" title="Why is my DLL locked?"/></span>
-<section id="section-why-is-my-dll-locked">
-<p class="title"><a href="2007-09.html#why-is-my-dll-locked">#</a> Why is my DLL locked?</p>
-<span class="title-heading">Caloni, 2007-09-24 <a href="tag_coding.html">tag_coding</a> <a href="tag_english.html">tag_english</a><a href="2007-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-why-is-my-dll-locked')"><sup>[copy]</sup></a></span>
+<span id="why_is_my_dll_locked" title="Why is my DLL locked?"/></span>
+<section id="section-why_is_my_dll_locked">
+<p class="title"><a href="2007-09.html#why_is_my_dll_locked">#</a> Why is my DLL locked?</p>
+<span class="title-heading">Caloni, 2007-09-24 <a href="tag_coding.html">tag_coding</a> <a href="tag_english.html">tag_english</a><a href="2007-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-why_is_my_dll_locked')"><sup>[copy]</sup></a></span>
 
 <p>The Windows code responsible to call DllMain for each loaded and unloaded DLLs uses an exclusive access object, the so-called mutex, to synchronize its calls. The result is that inside a process just one DllMain can be called at a given moment. This object-mutex is called "loader lock" into the Microsoft documentation.</p>
 
@@ -642,10 +642,10 @@ role="navigation" aria-label="main navigation">
 </section><hr/>
 
 
-<span id="introducao-ao-c-builderturbo-c" title="Introdução ao C++ Builder...Turbo C++"/></span>
-<section id="section-introducao-ao-c-builderturbo-c">
-<p class="title"><a href="2007-09.html#introducao-ao-c-builderturbo-c">#</a> Introdução ao C++ Builder...Turbo C++</p>
-<span class="title-heading">Caloni, 2007-09-26 <a href="tag_coding.html">tag_coding</a><a href="2007-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-introducao-ao-c-builderturbo-c')"><sup>[copy]</sup></a></span>
+<span id="introducao_ao_c_builderturbo_c" title="Introdução ao C++ Builder...Turbo C++"/></span>
+<section id="section-introducao_ao_c_builderturbo_c">
+<p class="title"><a href="2007-09.html#introducao_ao_c_builderturbo_c">#</a> Introdução ao C++ Builder...Turbo C++</p>
+<span class="title-heading">Caloni, 2007-09-26 <a href="tag_coding.html">tag_coding</a><a href="2007-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-introducao_ao_c_builderturbo_c')"><sup>[copy]</sup></a></span>
 
 <p>Após mais de um ano de tentativas, finalmente consegui instalar e iniciar com sucesso o Borland Developer Studio. Esse foi o nome pomposo dado pela Borland para a "continuação" do velho C++ Builder e seus parentes, o Delphi e o C# Builder.</p>
 
@@ -706,10 +706,10 @@ role="navigation" aria-label="main navigation">
 </section><hr/>
 
 
-<span id="developer-you-need-to-know-english" title="Developer: you need to know English!"/></span>
-<section id="section-developer-you-need-to-know-english">
-<p class="title"><a href="2007-09.html#developer-you-need-to-know-english">#</a> Developer: you need to know English!</p>
-<span class="title-heading">Caloni, 2007-09-28<a href="2007-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-developer-you-need-to-know-english')"><sup>[copy]</sup></a></span>
+<span id="developer_you_need_to_know_english" title="Developer: you need to know English!"/></span>
+<section id="section-developer_you_need_to_know_english">
+<p class="title"><a href="2007-09.html#developer_you_need_to_know_english">#</a> Developer: you need to know English!</p>
+<span class="title-heading">Caloni, 2007-09-28<a href="2007-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-developer_you_need_to_know_english')"><sup>[copy]</sup></a></span>
 
 <p>Eu realmente gostei desse negócio de tagging. =)</p>
 

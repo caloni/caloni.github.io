@@ -43,28 +43,28 @@ role="navigation" aria-label="main navigation">
 <div style="padding-bottom: 1em;"></div>
 <ul style="list-style: none;">
 
-<li><small><a href="2008-08.html#antidebugging-using-the-debugport">Antidebugging using the DebugPort</a></small></li>
+<li><small><a href="2008-08.html#antidebugging_using_the_debugport">Antidebugging using the DebugPort</a></small></li>
 
-<li><small><a href="2008-08.html#antidebugging-during-the-process-attach">Antidebugging during the process attach</a></small></li>
+<li><small><a href="2008-08.html#antidebugging_during_the_process_attach">Antidebugging during the process attach</a></small></li>
 
-<li><small><a href="2008-08.html#aprendizado-em-kernel-mode">Aprendizado em kernel mode</a></small></li>
+<li><small><a href="2008-08.html#aprendizado_em_kernel_mode">Aprendizado em kernel mode</a></small></li>
 
-<li><small><a href="2008-08.html#guia-para-iniciantes-no-driverentry">Guia para iniciantes no DriverEntry</a></small></li>
+<li><small><a href="2008-08.html#guia_para_iniciantes_no_driverentry">Guia para iniciantes no DriverEntry</a></small></li>
 
-<li><small><a href="2008-08.html#quando-o-navegador-nao-quer-largar-um-arquivo">Quando o navegador não quer largar um arquivo</a></small></li>
+<li><small><a href="2008-08.html#quando_o_navegador_nao_quer_largar_um_arquivo">Quando o navegador não quer largar um arquivo</a></small></li>
 
-<li><small><a href="2008-08.html#duas-pequenas-dicas-para-programar-no-caos">Duas pequenas dicas para programar no caos</a></small></li>
+<li><small><a href="2008-08.html#duas_pequenas_dicas_para_programar_no_caos">Duas pequenas dicas para programar no caos</a></small></li>
 
-<li><small><a href="2008-08.html#os-processos-fantasma">Os processos-fantasma</a></small></li>
+<li><small><a href="2008-08.html#os_processos_fantasma">Os processos-fantasma</a></small></li>
 
 <li><small><a href="2008-08.html#processleaker">ProcessLeaker</a></small></li>
 </ul>
 
 
-<span id="antidebugging-using-the-debugport" title="Antidebugging using the DebugPort"/></span>
-<section id="section-antidebugging-using-the-debugport">
-<p class="title"><a href="2008-08.html#antidebugging-using-the-debugport">#</a> Antidebugging using the DebugPort</p>
-<span class="title-heading">Caloni, 2008-08-01 <a href="tag_coding.html">tag_coding</a> <a href="tag_projects.html">tag_projects</a> <a href="tag_english.html">tag_english</a><a href="2008-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-antidebugging-using-the-debugport')"><sup>[copy]</sup></a></span>
+<span id="antidebugging_using_the_debugport" title="Antidebugging using the DebugPort"/></span>
+<section id="section-antidebugging_using_the_debugport">
+<p class="title"><a href="2008-08.html#antidebugging_using_the_debugport">#</a> Antidebugging using the DebugPort</p>
+<span class="title-heading">Caloni, 2008-08-01 <a href="tag_coding.html">tag_coding</a> <a href="tag_projects.html">tag_projects</a> <a href="tag_english.html">tag_english</a><a href="2008-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-antidebugging_using_the_debugport')"><sup>[copy]</sup></a></span>
 
 <p>When a debugger starts a process to be debugged or, the article case, connects to a already created process, the communication between these processes is made through an internal resource inside Windows called LPC (Local Procedure Call). The system creates a "magic" communication port for debugging and the debugging events pass throw it.</p>
 
@@ -185,7 +185,7 @@ int main(int argc, char* argv[])
 
 <p>After the attach process, the debug port is occupied, and the communication between the debugger and debuggee is made throug LPC. Bellow we can see a little illustration of how things work:</p>
 
-<img src="img/antidebugging-using-the-debugport-debug-port2.gif"/>
+<img src="img/antidebugging_using_the_debugport-debug-port2.gif"/>
 
 <p>Basically the process stay receiving debugging events (through the LPC message queue) until the final event, the process exit. Notice that if someone try to terminate the protector process the debuggee process will be terminated, too.</p>
 
@@ -200,10 +200,10 @@ int main(int argc, char* argv[])
 </section><hr/>
 
 
-<span id="antidebugging-during-the-process-attach" title="Antidebugging during the process attach"/></span>
-<section id="section-antidebugging-during-the-process-attach">
-<p class="title"><a href="2008-08.html#antidebugging-during-the-process-attach">#</a> Antidebugging during the process attach</p>
-<span class="title-heading">Caloni, 2008-08-05 <a href="tag_coding.html">tag_coding</a> <a href="tag_projects.html">tag_projects</a> <a href="tag_english.html">tag_english</a><a href="2008-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-antidebugging-during-the-process-attach')"><sup>[copy]</sup></a></span>
+<span id="antidebugging_during_the_process_attach" title="Antidebugging during the process attach"/></span>
+<section id="section-antidebugging_during_the_process_attach">
+<p class="title"><a href="2008-08.html#antidebugging_during_the_process_attach">#</a> Antidebugging during the process attach</p>
+<span class="title-heading">Caloni, 2008-08-05 <a href="tag_coding.html">tag_coding</a> <a href="tag_projects.html">tag_projects</a> <a href="tag_english.html">tag_english</a><a href="2008-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-antidebugging_during_the_process_attach')"><sup>[copy]</sup></a></span>
 
 <p>Today was a great day for reverse engineering and protection analysis. I've found two great programs to to these things: a API call monitor (update: does not exist anymore) and a COM call monitor (update: either). Besides that, in the first program site - from a enthusiastic of the good for all Win32 Assembly - I've found the source code for one more antidebugging technique, what bring us back to our series of antidebugging techniques.</p>
 
@@ -277,7 +277,7 @@ int main()
 <pre>
    windbg -pn antiattach.exe
 </pre>
-<img src="img/antidebugging-during-the-process-attach-espertinho.png"/>
+<img src="img/antidebugging_during_the_process_attach-espertinho.png"/>
 
 <h4>Code peculiarities</h4>
 
@@ -306,10 +306,10 @@ BYTE jmpToAntiAttachAbort[] =
 </section><hr/>
 
 
-<span id="aprendizado-em-kernel-mode" title="Aprendizado em kernel mode"/></span>
-<section id="section-aprendizado-em-kernel-mode">
-<p class="title"><a href="2008-08.html#aprendizado-em-kernel-mode">#</a> Aprendizado em kernel mode</p>
-<span class="title-heading">Caloni, 2008-08-07<a href="2008-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-aprendizado-em-kernel-mode')"><sup>[copy]</sup></a></span>
+<span id="aprendizado_em_kernel_mode" title="Aprendizado em kernel mode"/></span>
+<section id="section-aprendizado_em_kernel_mode">
+<p class="title"><a href="2008-08.html#aprendizado_em_kernel_mode">#</a> Aprendizado em kernel mode</p>
+<span class="title-heading">Caloni, 2008-08-07<a href="2008-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-aprendizado_em_kernel_mode')"><sup>[copy]</sup></a></span>
 
 <p>Hoje terminei minha primeira leitura de Memory Dump Analysis Vol. 1, e qual não foi a minha surpresa ao encontrar entre os últimos posts justamente o que eu estava precisando: um guia de livros que se deve ler para começar a programar em kernel mode.</p>
 
@@ -322,10 +322,10 @@ BYTE jmpToAntiAttachAbort[] =
 </section><hr/>
 
 
-<span id="guia-para-iniciantes-no-driverentry" title="Guia para iniciantes no DriverEntry"/></span>
-<section id="section-guia-para-iniciantes-no-driverentry">
-<p class="title"><a href="2008-08.html#guia-para-iniciantes-no-driverentry">#</a> Guia para iniciantes no DriverEntry</p>
-<span class="title-heading">Caloni, 2008-08-11 <a href="tag_coding.html">tag_coding</a><a href="2008-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-guia-para-iniciantes-no-driverentry')"><sup>[copy]</sup></a></span>
+<span id="guia_para_iniciantes_no_driverentry" title="Guia para iniciantes no DriverEntry"/></span>
+<section id="section-guia_para_iniciantes_no_driverentry">
+<p class="title"><a href="2008-08.html#guia_para_iniciantes_no_driverentry">#</a> Guia para iniciantes no DriverEntry</p>
+<span class="title-heading">Caloni, 2008-08-11 <a href="tag_coding.html">tag_coding</a><a href="2008-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-guia_para_iniciantes_no_driverentry')"><sup>[copy]</sup></a></span>
 
 <p>A mensagem anterior deixou bem claro que tenho um roteiro de leituras bem hardcore a fazer nos próximos 20 anos. Pretendo, enquanto isso, programar alguma coisinha rodando em ring0, porque nem só de teoria vive o programador-escovador-de-bits. Pensando nisso, esse fim-de-semana comecei a me aventurar nos ótimos exemplos e explicações do www.driverentry.com.br, nossa referência kernel mode tupiniquim.</p>
 
@@ -370,10 +370,10 @@ BYTE jmpToAntiAttachAbort[] =
 </section><hr/>
 
 
-<span id="quando-o-navegador-nao-quer-largar-um-arquivo" title="Quando o navegador não quer largar um arquivo"/></span>
-<section id="section-quando-o-navegador-nao-quer-largar-um-arquivo">
-<p class="title"><a href="2008-08.html#quando-o-navegador-nao-quer-largar-um-arquivo">#</a> Quando o navegador não quer largar um arquivo</p>
-<span class="title-heading">Caloni, 2008-08-13<a href="2008-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-quando-o-navegador-nao-quer-largar-um-arquivo')"><sup>[copy]</sup></a></span>
+<span id="quando_o_navegador_nao_quer_largar_um_arquivo" title="Quando o navegador não quer largar um arquivo"/></span>
+<section id="section-quando_o_navegador_nao_quer_largar_um_arquivo">
+<p class="title"><a href="2008-08.html#quando_o_navegador_nao_quer_largar_um_arquivo">#</a> Quando o navegador não quer largar um arquivo</p>
+<span class="title-heading">Caloni, 2008-08-13<a href="2008-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-quando_o_navegador_nao_quer_largar_um_arquivo')"><sup>[copy]</sup></a></span>
 
 <p>De vez em quando gosto muito de um vídeo que estou assistindo. Gosto tanto que faço questão de guardar para assistir mais vezes depois. O problema é que o meu Firefox ou, para ser mais técnico, o plugin de vídeo que roda em cima do meu navegador, não permite isso. Ele simplesmente cria um arquivo temporário para exibir o vídeo e logo depois o apaga, utilizando uma técnica muito útil da função CreateFile, que bloqueia o acesso do arquivo temporário e apaga-o logo após o uso:</p>
 
@@ -464,10 +464,10 @@ BYTE jmpToAntiAttachAbort[] =
 </section><hr/>
 
 
-<span id="duas-pequenas-dicas-para-programar-no-caos" title="Duas pequenas dicas para programar no caos"/></span>
-<section id="section-duas-pequenas-dicas-para-programar-no-caos">
-<p class="title"><a href="2008-08.html#duas-pequenas-dicas-para-programar-no-caos">#</a> Duas pequenas dicas para programar no caos</p>
-<span class="title-heading">Caloni, 2008-08-15<a href="2008-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-duas-pequenas-dicas-para-programar-no-caos')"><sup>[copy]</sup></a></span>
+<span id="duas_pequenas_dicas_para_programar_no_caos" title="Duas pequenas dicas para programar no caos"/></span>
+<section id="section-duas_pequenas_dicas_para_programar_no_caos">
+<p class="title"><a href="2008-08.html#duas_pequenas_dicas_para_programar_no_caos">#</a> Duas pequenas dicas para programar no caos</p>
+<span class="title-heading">Caloni, 2008-08-15<a href="2008-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-duas_pequenas_dicas_para_programar_no_caos')"><sup>[copy]</sup></a></span>
 
 <p>Ultimamente não tenho acertado muito bem meus cronogramas, com erros que variam de um dia a uma semana. A causa desse problema, pelo que eu tenho conseguido detectar, está em dois problemas que acredito acontecer de maneira muito freqüente em um ambiente de desenvolvimento que ainda está no caos:</p>
 
@@ -491,10 +491,10 @@ BYTE jmpToAntiAttachAbort[] =
 </section><hr/>
 
 
-<span id="os-processos-fantasma" title="Os processos-fantasma"/></span>
-<section id="section-os-processos-fantasma">
-<p class="title"><a href="2008-08.html#os-processos-fantasma">#</a> Os processos-fantasma</p>
-<span class="title-heading">Caloni, 2008-08-20 <a href="tag_coding.html">tag_coding</a><a href="2008-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-os-processos-fantasma')"><sup>[copy]</sup></a></span>
+<span id="os_processos_fantasma" title="Os processos-fantasma"/></span>
+<section id="section-os_processos_fantasma">
+<p class="title"><a href="2008-08.html#os_processos_fantasma">#</a> Os processos-fantasma</p>
+<span class="title-heading">Caloni, 2008-08-20 <a href="tag_coding.html">tag_coding</a><a href="2008-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section-os_processos_fantasma')"><sup>[copy]</sup></a></span>
 
 <p>Estava eu outro belo dia tentando achar um problema em um driver que controla criação de processos quando, por acaso, listo os processos na máquina pelo depurador de kernel, após ter dado alguns logons e logoffs, quando me vem a seguinte lista de processos do Windows Explorer:</p>
 
