@@ -274,7 +274,7 @@ CMake projects should use: "-DCMAKE_TOOLCHAIN_FILE=c:/Libs/vcpkg/scripts/buildsy
 
 <p>A mágica ocorre já na hora de dar include. E é mágica desde o autocomplete até o link. Por exemplo, digamos que vamos fazer um embedded de Python usando o <a href="posts.html?q=exemplo do help">exemplo do help</a>:</p>
 
-<img src="img/vcpkg_internals-7XMj026.png"/>
+<img src="img/vcpkg_internals_7XMj026.png"/>
 
 <pre>
 int main(int argc, char* argv[])
@@ -400,7 +400,7 @@ if (Test-Path "$installedDir\$_") {
 
 <p>O uso do CMake permite aos usuários do vcpkg ter boas ideias apenas lendo os scripts do projeto. Se você abrir o solution vcpkg.sln dentro de toolsrc vai descobrir todos os scripts listados por lá. Há funções espertinhas como o download e extração de pacotes 7zip do Source Forge.</p>
 
-<img src="img/vcpkg_internals-aOHtf5a.png"/>
+<img src="img/vcpkg_internals_aOHtf5a.png"/>
 
 <p>Essa parte fica em **vcpkg/scripts/cmake**. Olhe, por exemplo, como retornar a versão do Windows SDK (vcpkg_get_windows_sdk.cmake):</p>
 
@@ -620,7 +620,7 @@ c:\Libs\vcpkg\installed\x86-windows\share\bitforge
 </pre>
 <p>E voilá! Agora o include está disponível, as funções estão disponíveis, o link está funcionando e seu pacote pode ser compartilhado com toda a empresa. Basta copiar a pasta ports/bitforge ou adicioná-la no repositório por um commit.</p>
 
-<img src="img/vcpkg_internals-XeeD4Se.png"/>
+<img src="img/vcpkg_internals_XeeD4Se.png"/>
 
 
 
@@ -708,11 +708,11 @@ int main()
 
 <p>Note que falei chamada porque se a stack não retornou da função ela não terminou ainda seu trabalho. Não houve o "return". Outra forma de entender isso é que ela é chamada aos poucos. Enfim, deixo para você a discussão semântica. O fato é que a saída é "Hello, world":</p>
 
-<img src="img/coroutine_internals-bPO1fFa.png"/>
+<img src="img/coroutine_internals_bPO1fFa.png"/>
 
 <p>Vamos depurar.</p>
 
-<img src="img/coroutine_internals-WJeFtYq.png"/>
+<img src="img/coroutine_internals_WJeFtYq.png"/>
 
 <p>Oh, oh! A stack de cooperative nos indica que ela não partiu do main, apesar de ter sido chamada através da construção de `coroutine&lt;void&gt;::pull_type`. O método sink chamado logo após imprimir "Hello" deve colocar essa rotina para dormir, voltando o controle para main. Vamos ver como isso é feito.</p>
 
@@ -720,7 +720,7 @@ int main()
 
 <p>Oh, não. O depurador do Visual Studio está fazendo caquinha, pois rodando passo-a-passo voltei para a mesma função cooperative sem passar pelo main. No entanto, a vírgula ", " foi impressa.</p>
 
-<img src="img/coroutine_internals-S1Ywlhl.png"/>
+<img src="img/coroutine_internals_S1Ywlhl.png"/>
 
 <p>Para conseguirmos depurar diferentes rotinas dentro da mesma thread é imperativo entendermos como o mecanismo de troca de contexto funciona por baixo dos panos. Para isso nada como depurar as próprias trocas de contexto.</p>
 
@@ -753,7 +753,7 @@ explicit pull_coroutine( coroutine_fn fn, attributes const&amp; attrs = attribut
 <p>O tamanho total da stack reservada no Windows é de 1 MB, mas a granuralidade padrão é de 64 KB ("que é suficiente para qualquer um" - Gates, Bill). Então é por isso que quando o Boost aloca uma stack com atributos padrões esse é o tamanho que vemos (65536).</p>
 
 <blockquote>The default size for the reserved and initially committed stack memory is specified in the executable file header. Thread or fiber creation fails if there is not enough memory to reserve or commit the number of bytes requested. The default stack reservation size used by the linker is 1 MB. To specify a different default stack reservation size for all threads and fibers, use the STACKSIZE statement in the module definition (.def) file. The operating system rounds up the specified size to the nearest multiple of the system's allocation granularity (typically 64 KB). To retrieve the allocation granularity of the current system, use the GetSystemInfo function.</blockquote>
-<img src="img/coroutine_internals-0dMVf0k.png"/>
+<img src="img/coroutine_internals_0dMVf0k.png"/>
 
 <p>_Detalhe curioso de arquitetura x86 (32 bits): na hora de alocar, o sp (stack pointer) aponta para o final da pilha. Isso porque no x86 a **pilha cresce "para baixo"**._</p>
 
@@ -839,11 +839,11 @@ inline void push()
 </pre>
 <p>Com os dados disponíveis nos objetos de contexto (no exemplo do main, a variável source) é possível pelo Windbg analisar qualquer tipo de stack com o comando **k**.</p>
 
-<img src="img/coroutine_internals-mDcM4jk.png"/>
+<img src="img/coroutine_internals_mDcM4jk.png"/>
 
 <p>A variável de uma coroutine contém o contexto do chamador e do chamado. Quando houver a necessidade de explorar uma pilha não-ativa é preciso obter o valor de **sp** através dessa variável. Ela fica um pouco escondida, mas está lá. Acredite.</p>
 
-<img src="img/coroutine_internals-uQ7WYl8.png"/>
+<img src="img/coroutine_internals_uQ7WYl8.png"/>
 
 <p>Usando o comando `k = BasePtr StackPtr InstructionPtr` passando o conteúdo de sp como o stack pointer o Windbg deve mostrar a pilha de todas as formas possíveis (especificar se terá FPO, mostrar código-fonte, argumentos, etc). Para a demonstração live fica bom ter um loop "eterno" para poder repetir a análise quantas vezes forem necessárias:</p>
 
@@ -872,7 +872,7 @@ int main()
     }
 }
 </pre>
-<img src="img/coroutine_internals-bBIzRrm.png"/>
+<img src="img/coroutine_internals_bBIzRrm.png"/>
 
 <pre>
 0:000&gt; ~kvn
@@ -1079,7 +1079,7 @@ WARNING: Stack unwind information not available. Following frames may be wrong.
 
 <p>Felizmente o povo do sul é um povo decente, de respeito e que graças a Deus não parece ter dado muita atenção nos movimentos de "justiça social" que assolam o país. Há uma casa de coxinhas muito boa, a Maria Coxinha, onde um dos pratos se chama Kibexinha. Isso é tudo que precisa ser dito sobre a saúde do povo da cidade.</p>
 
-<img src="img/native_floripa_2018-nBLf4ZB.png"/>
+<img src="img/native_floripa_2018_nBLf4ZB.png"/>
 
 <p>O evento teve lugar, como no ano passado, na <a href="https://www.acate.com.br/">Acate</a>, uma incubadora de startups, nos dias 22 e 23 de setembro de 2018 (sábado e domingo). Houve em alguns momentos duas trilhas, que eu condeno por ser um evento pequeno, mas no salão principal houve a filmagem para publicação na internet, que eu invejo, pois logo teremos disponível para todos as palestras da trilha principal. Essa filmagem se torna ainda mais especial quando se percebe que houve muitos poucos participante no evento, girando em torno de 20 no sábado e 10 no domingo. As palestras do ano passado já se encontram publicadas, mas como houve uma demora de alguns meses talvez esse ano teremos a mesma espera.</p>
 
@@ -1087,11 +1087,11 @@ WARNING: Stack unwind information not available. Following frames may be wrong.
 
 <p>O destaque do evento com certeza foram as corrotinas em C++. Verdadeiras máquinas de performance onde se economiza troca de contexto, houve três palestras sobre o assunto, podemos dizer. Duas delas ministradas por Vinicius, mantenedor da Boost.Http, onde ambas dialogam sobre a fascinante questão de como adequar o uso de corrotinas sem interferir no fluxo do programa. A terceira palestra é minha, onde discurso sobre a dificuldade atual de depurar corrotinas sem ferramentas atualizadas para este "novo" paradigma.</p>
 
-<img src="img/native_floripa_2018-gx0X8pr.png"/>
+<img src="img/native_floripa_2018_gx0X8pr.png"/>
 
 <p>Outra palestra que me lembro com muita empolgação é a sobre WebAssenbly. Não torça o nariz antes de entender. O palestrante nos apresenta algo ainda em andamento sobre transpilar código C/C++ para uma máquina virtual criada a partir de JavaScript. A estrutura da palestra é muito boa e o palestrante melhor ainda. Ele chegou a alterar o código durante a palestra para nos demonstrar diversos usos dessa tecnologia. Ainda em testes, mas muito promissora.</p>
 
-<img src="img/native_floripa_2018-l8iCVUL.png"/>
+<img src="img/native_floripa_2018_l8iCVUL.png"/>
 
 <p>Por fim, as conversas entre os palestrantes e os participantes foi muito frutífera. Assim como nosso grupo do Telegram, importa menos o tema do que as pessoas envolvidas. E todos concordam que não há nada melhor no mundo que conversar com pessoas inteligentes e beber chopes do Sul. E lá na Acate há a melhor praça de alimentação que já vi na vida. Comida e bebida (chopes e vinhos por taça) boa e barata. Há massas e carnes de muita qualidade. O Madero do lado, que já não é nada de mais, ficou ainda menor.</p>
 
@@ -1101,7 +1101,7 @@ WARNING: Stack unwind information not available. Following frames may be wrong.
 <blockquote>Kairós Sol Poente é uma West Coast IPA de respeito. Equilibrada de corpo leve, seu chope é aromático e um pouco salgado com amargor presente sem exageros.</blockquote>
 <p>Ficamos hospedados em uma casa na Barra da Lagoa pelo AirBnB em alta concentração de temas filosóficos. Fizemos um churrasco imprestável, fomos em restaurantes medíocres da orla, mas a conversa foi sempre interessante. Era como se o grupo de filosofia do Telegram tivesse se mudado temporariamente para lá. Temas como metafísica, política, social justice, auto ajuda e imprint de traumas eram frequentes. A paisagem belíssima, a casa aconchegante e a companhia agradável.</p>
 
-<img src="img/native_floripa_2018-tQXeDFn.png"/>
+<img src="img/native_floripa_2018_tQXeDFn.png"/>
 
 <p>Native Floripa virou já uma tradição. Ano que vem nos vemos de novo.</p>
 

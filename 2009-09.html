@@ -58,15 +58,15 @@ role="navigation" aria-label="main navigation">
 
 <p>Nesse caso decidi salpicar a explicação com uma boa dose de _reversing_ para aproveitarmos a caminhada e fuçarmos um pouco no funcionamento interno dos componentes de boot e ver no que dá. Antes de começar, porém, aviso que este não é um tratado sobre o sistema de boot. Eu diria que é apenas o resultado de algumas mexidas inconsequentes pelo _disassembly _do código de boot. Espero encontrar alguém tão curioso (ou mais) do que eu que compartilhe o que achou de todo esse processo. Antes de mais nada um mapinha para vermos até onde chegamos:</p>
 
-<img src="img/o_boot_no_windows_pre_ntldr-boot-map.png"/>
+<img src="img/o_boot_no_windows_pre_ntldr_boot_map.png"/>
 
 <p>Pelo visto esse foi só o começo. O próximo passo é saber como do setor de boot chegamos ao NTLDR. O que não é nenhum segredo, uma vez que o NTLDR é um arquivo que fica na pasta raiz do sistema de arquivos. Como todos sabemos, qualquer assembly 16 bits de 400 bytes de tamanho consegue ler um arquivo de 250 KB na memória e executá-lo.</p>
 
-<img src="img/o_boot_no_windows_pre_ntldr-YSNdf8w.png"/>
+<img src="img/o_boot_no_windows_pre_ntldr_YSNdf8w.png"/>
 
 <p>Se o NTLDR não conseguir ser encontrado, o seguinte erro será exibido:</p>
 
-<img src="img/o_boot_no_windows_pre_ntldr-JNekHia.png"/>
+<img src="img/o_boot_no_windows_pre_ntldr_JNekHia.png"/>
 
 <p>Que usuário merece ver isso?</p>
 
@@ -84,15 +84,15 @@ role="navigation" aria-label="main navigation">
 
 <p>(3) existe um campo onde é possível obter o offset de onde está o primeiro setor dessa partição (em setores);</p>
 
-<img src="img/o_boot_no_windows_pre_ntldr-EfbrmZd.png"/>
+<img src="img/o_boot_no_windows_pre_ntldr_EfbrmZd.png"/>
 
 <p>(4) uma simples conversão de Little Endian e de hexadecimal para decimal nos retorna o número do setor que precisamos;</p>
 
-<img src="img/o_boot_no_windows_pre_ntldr-qSx2aLD.png"/>
+<img src="img/o_boot_no_windows_pre_ntldr_qSx2aLD.png"/>
 
 <p>(5) o próprio HxD nos consegue levar para esse setor, de onde podemos selecioná-lo e salvá-lo em um arquivo!</p>
 
-<img src="img/o_boot_no_windows_pre_ntldr-mZoLCyZ.png"/>
+<img src="img/o_boot_no_windows_pre_ntldr_mZoLCyZ.png"/>
 
 <p>Isso é tudo o que você precisa para fazer engenharia reversa do setor de boot. Bom divertimento!</p>
 
@@ -201,7 +201,7 @@ role="navigation" aria-label="main navigation">
 </pre>
 <p>Se fuçarmos por um tempo esse código podemos encontrar várias coisas interessantes, como por exemplo a mensagem que é exibida quando o setor de boot não contém a assinatura padrão 0x55 0xAA em seu final:</p>
 
-<img src="img/o_boot_no_windows_pre_ntldr-7dZZZag.png"/>
+<img src="img/o_boot_no_windows_pre_ntldr_7dZZZag.png"/>
 
 <p> Outra coisa interessante é encontrar a sub-rotina que carrega blocos e blocos de conteúdo do disco na memória, utilizando-se para isso da <a href="http://www.ctyme.com/intr/rb-0708.htm">interrupção 0x13 função 0x42</a>: a leitura estendida!</p>
 

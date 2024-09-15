@@ -76,7 +76,7 @@ role="navigation" aria-label="main navigation">
 
 <p>Confesso que adoro estudar sobre a história da linguagem C. Essa verdadeira adoração pela linguagem me fez estudar suas precursoras, como as linguagens BCPL e B. Posso dizer que todo esse conhecimento, no final das contas, valeu a pena. Hoje entendo muito melhor as decisões tomadas na criação da linguagem e, principalmente, a origem de algumas idiossincrasias e boas idéias que permaneceram até hoje.</p>
 
-<img src="img/historia_da_linguagem_c_parte_1-martin_richards.gif"/>
+<img src="img/historia_da_linguagem_c_parte_1_martin_richards.gif"/>
 
 <p>Em 21 de julho de 1967 Martin Richards libera <a href="https://archive.org/details/richards1979bcpl">o manual</a> da sua recém-criada linguagem BCLP. Na verdade, ela havia sido criada em 66 e implementada na primavera do ano seguinte no Instituto de Tecnologia de Massachusetts (vulgo MIT). Seus objetivos eram claros, como para todo criador de uma nova linguagem: melhorar uma linguagem anterior. Nesse caso, foi uma melhoria da Combined Programming Language (CPL), retirando, de acordo com Martin, "todas aquelas características da linguagem completa que tornavam a compilação difícil".</p>
 
@@ -84,17 +84,17 @@ role="navigation" aria-label="main navigation">
 
 <p>Essa portabilidade era obtida com o uso de um artifício mais ou menos conhecido da comunidade C/C++ hoje em dia: a divisão entre código objeto e código final. O compilador era dividido em duas partes: a primeira parte era responsável por criar um código em estado intermediário feito para rodar em uma máquina virtual. Esse código era chamado de O-code (O de object). A segunda parte do compilador era responsável por traduzir esse O-code no código da máquina-alvo (onde iria ser rodado o programa). Essa sacada genial de 40 anos atrás permitiu que fosse mais simples fazer um compilador para uma nova plataforma e portar todo o código que já tinha sido escrito para uma plataforma anterior, driblando o grande problema daquela época: a incompatibilidade entre plataformas.</p>
 
-<img src="img/historia_da_linguagem_c_parte_1-ocode.gif"/>
+<img src="img/historia_da_linguagem_c_parte_1_ocode.gif"/>
 
 <p>Perceba que é possível fazer toda a parte do compilador detrás do código-objeto uma única vez e, conforme a necessidade, criar novos interpretadores BCPL para máquinas diferentes.</p>
 
-<img src="img/historia_da_linguagem_c_parte_1-portable_bcpl.gif"/>
+<img src="img/historia_da_linguagem_c_parte_1_portable_bcpl.gif"/>
 
 <p>O código intermediário é gerado para uma máquina virtual. O interpretador, cerca de um quinto do compilador, tem a função de traduzir o código gerado para a máquina-alvo. Qualquer semelhança com Java ou .NET não é mera coincidência. Pois é. As boas idéias têm mais idade que seus criadores.</p>
 
 <p>É inevitável também não fazer a associação entre essa forma de funcionamento do compilador BCPL e a divisão feita em C/C++ entre o pré-processador, o compilador e o ligador (linker, em inglês).</p>
 
-<img src="img/historia_da_linguagem_c_parte_1-ccpp_build_steps.gif"/>
+<img src="img/historia_da_linguagem_c_parte_1_ccpp_build_steps.gif"/>
 
 <p>O uso do pré-processador na linguagem C facilitou a portabilidade por um bom tempo, quando não existiam typedefs. Diferente do BCPL, C já tinha tipagem, o que quer dizer que era necessário escolher o espaço de armazenamento que seria utilizado para as variáveis. Com o pré-processamento, essa escolha pode ser feita de maneira seletiva, documentada e generalizada.</p>
 
@@ -123,7 +123,7 @@ role="navigation" aria-label="main navigation">
 
 <p>Em 22 de maio de 1990 a versão 3.0 do Windows foi lançada. Foi melhorado o gerenciador de programas e o sistema de ícones, além de um novo gerenciador de arquivos e suporte a 16 cores. Entre as mudanças internas podemos citar a velocidade e a confiabilidade. Como a partir dessa versão apareceram muitos desenvolvedores que passaram a suportar a plataforma, o número de programas disponíveis aumentou, o que conseqüentemente fez com que as vendas alavancassem. Três milhões de cópias foram vendidas apenas no primeiro ano, e assim o Windows se tornou padrão nos computadores domésticos. Quando a versão 3.1 foi lançada, em 6 de abril de 1992, mais três milhões de cópias foram vendidos em apenas dois meses.</p>
 
-<img src="img/historia_do_windows_parte_30-windows_30_workspace.png"/>
+<img src="img/historia_do_windows_parte_30_windows_30_workspace.png"/>
 
 <p>As fontes TrueType foram adicionadas, junto de novas capacidades multimídia. Outro grande avanço foi na área de comunicação entre aplicativos com a implementação da tecnologia OLE (Object Linking and Embedding), que permitiu documentos de diferentes fabricantes serem intercambiados.</p>
 
@@ -131,7 +131,7 @@ role="navigation" aria-label="main navigation">
 
 <p>E, finalmente, agora já é hora de conversarmos sobre a figura ilustre que popularizou ainda mais o desenvolvimento para Windows.</p>
 
-<img src="img/historia_do_windows_parte_30-charles_petzold.gif"/>
+<img src="img/historia_do_windows_parte_30_charles_petzold.gif"/>
 
 <p>Quem começou a programar para Windows naquela época com certeza deve ter ouvido falar do livro clássico de Charles Petzold, uma das poucas referências naquela época sem internet: Programming Windows 3.1. É um livro consideravelmente completo se considerarmos a época em que foi escrito. Vários exemplos estão disponíveis em suas páginas, mas para os que não viveram essa época (como eu) existe <a href="http://www.charlespetzold.com/books.html">a versão eletrônica disponível para download</a>. Você deve estar se perguntando se todo esse código-fonte serve para alguma coisa hoje em dia. Por incrível que pareça, serve sim. E para demonstrar o conceito de compatibilidade retroativa da Microsoft, iremos utilizar os mesmos exemplos deste livro, sem por nem tirar uma linha de código. Com o devido copyright e respeito merecidos ao autor, é claro =).</p>
 
@@ -161,7 +161,7 @@ role="navigation" aria-label="main navigation">
 </pre>
 <p>Uma mensagem é um evento que ocorre relativo à sua janela ou o que está acontecendo ao redor dela no mundo Windows. Por exemplo, as janelas recebem eventos a respeito dos cliques do usuário, redesenho da janela, etc. Quem envia essas mensagens é o próprio Windows, e ele espera uma resposta da sua função de janela. Agora a parte esquisita: quem envia essas mensagens para o Windows é o seu próprio aplicativo!</p>
 
-<img src="img/historia_do_windows_parte_30-windows_message_loop.gif"/>
+<img src="img/historia_do_windows_parte_30_windows_message_loop.gif"/>
 
 <p>O aplicativo fica aguardando por eventos em um loop conhecido como loop de mensagens. A função do loop basicamente é chamar a função GetMessage e redirecionar as mensagens obtidas para as respectivas funções de janela.</p>
 
@@ -304,7 +304,7 @@ role="navigation" aria-label="main navigation">
 
 <p>Em setembro de 1994 é lançada o Windows NT 3.5. A versão Workstation substituiu o Windows NT 3.1 e a versão Server o Windows NT 3.1 Advanced Server.</p>
 
-<img src="img/historia_do_windows_parte_351-windows_workstation.jpg"/>
+<img src="img/historia_do_windows_parte_351_windows_workstation.jpg"/>
 
 <p>Como todo projeto de sucesso, a primeira coisa a ser feita é definir os objetivos principais. No caso do Windows NT não foi diferente. É importante para nós sabermos que objetivos eram esses e como eles foram mudando de acordo com o momento histórico de forma a analisarmos as conseqüências. Em outubro de 1988 os objetivos do novo sistema operacional eram os seguintes:</p>
 
@@ -568,7 +568,7 @@ role="navigation" aria-label="main navigation">
 
 <p>No princípio... não, não, não. Antes do princípio, quando C era considerada a terceira letra do alfabeto e o que tínhamos eram linguagens experimentais para todos os lados, dois famigerados senhores dos Laboratórios Bell, K. Thompson e D. Ritchie, criaram uma linguagem chamada B. E B era bom.</p>
 
-<img src="img/historia_da_linguagem_c_parte_2-kthompson_dritchie.jpg"/>
+<img src="img/historia_da_linguagem_c_parte_2_kthompson_dritchie.jpg"/>
 
 <p>O bom de B era sua rica expressividade e sua simples gramática. Tão simples que o <a href="http://cm.bell-labs.co/who/dmr/kbman.html">manual da linguagem</a> consistia de apenas 30 páginas. Isso é menos do que as 32 palavras reservadas de C. As instruções eram definidas em termos de ifs e gotos e as variáveis eram definidas em termos de um padrão de bits de tamanho fixo, geralmente a word, ou palavra, da plataforma, que utilizada em expressões definiam seu tipo. Esse padrão de bits era chamado rvalue. Imagine a linguagem C de hoje em dia com apenas um tipo: int.</p>
 
@@ -898,7 +898,7 @@ role="navigation" aria-label="main navigation">
 
 <p>Após o processo de attach, a porta de debug é ocupada, e a comunicação entre depurador e depurado é feita através do LPC. Abaixo uma pequena ilustração de como as coisas ocorrem:</p>
 
-<img src="img/antidebug_ocupando_a_debugport-debugport.gif"/>
+<img src="img/antidebug_ocupando_a_debugport_debugport.gif"/>
 
 <p>Basicamente o processo fica recebendo eventos de debug (através da fila de mensagens LPC) continuamente até o evento final, o de final de processo. Note que se alguém tentar derrubar o processo que depura o processo depurado cai junto.</p>
 
@@ -926,7 +926,7 @@ role="navigation" aria-label="main navigation">
 
 <p>Bem, me parecia mais do que eu precisava. No entanto ele é flexível, e suas colunas podem ser configuradas da maneira que lhe aprouver. Abaixo um screenshot de como utilizo o ToDoList:</p>
 
-<img src="img/todolist-todolist.png"/>
+<img src="img/todolist_todolist.png"/>
 
 <p>Entre algumas coisas legais que gosto nesse programa que me fizeram ficar com ele, consigo me lembrar da seguinte lista:</p>
 

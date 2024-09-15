@@ -147,15 +147,15 @@ role="navigation" aria-label="main navigation">
 
 <h2>É a incerteza, idiota!</h2>
 
-<img src="img/poker_face-LmkKDXm.jpg"/>
+<img src="img/poker_face_LmkKDXm.jpg"/>
 
 <p>O problema reza que existem dois algoritmos para embaralhar uma sequência numérica (de 0 a N): o bom e o ruim. Ambos traçam um loop do iníco ao fim pegando aleatoriamente um elemento da lista e trocando de lugar com o elemento que está sendo varrido no momento.</p>
 
-<img src="img/poker_face-UTQPIST.jpg"/>
+<img src="img/poker_face_UTQPIST.jpg"/>
 
 <p>A diferença entre o bom e o ruim é que o bom pega aleatoriamente apenas os elementos DEPOIS do elemento que está sendo varrido, enquanto o algoritmo ruim pega qualquer um dos elementos SEMPRE. Isso aparentemente e intuitivamente não parece interferir na aleatoriedade do embaralhamento, mas se levarmos ao extremo de embaralhar repetidas vezes somando a lista resultante percebemos uma tendência gritante do algoritmo ruim em manter o ordenamento inicial, ou pelo menos na média sempre tender para números menores no início e números maiores no fim, como pode ser visto nesse teste que fiz, gerado pelo Excel:</p>
 
-<img src="img/poker_face-OL0hpLv.jpg"/>
+<img src="img/poker_face_OL0hpLv.jpg"/>
 
 <p>O que eu tentei fazer durante meu fim-de-semana retrasado e o feriado foi encontrar um detector de aleatoriedade (aliás, encontrei um bem interessante chamado <a href="http://www.fourmilab.ch/random/">ent</a>), tanto "na mão" quanto pesquisando. O que eu não imaginava foi que o teste que eu tinha feito no início usando uma simples planilha Excel era a solução óbvia (naquelas de é óbvio só depois que você vê). E foi essa a solução adotada por Kaizero.</p>
 
@@ -244,7 +244,7 @@ int main()
 </pre>
 <p>O que ele basicamente faz é acumular os resultados de três milhões de embaralhamentos feitos pelo algoritmo ruim e inferir através dos resultados que metade é bom e metade é ruim. O ruim fica do lado desbalanceado da sequência.</p>
 
-<img src="img/poker_face-oe3heEP.jpg"/>
+<img src="img/poker_face_oe3heEP.jpg"/>
 
 <p>Tão óbvio, tão simples, tão elegante.</p>
 
@@ -425,7 +425,7 @@ int main()
 </pre>
 <p>Ele compila e roda sem problemas:</p>
 
-<img src="img/estruturas_vs_classes_fight-APlOm65.jpg"/>
+<img src="img/estruturas_vs_classes_fight_APlOm65.jpg"/>
 
 <p>"Estruturalmente" falando, **MinhaEstrutura** e **MinhaClasse** são idênticas, pois são os detalhes de sintaxe que diferem, e diferem pouco. Abrindo o jogo, a única diferença que poderá ser sentida em usar um ou outro é que **structs possuem seus membros públicos por padrão e classes possuem seus membros privados por padrão**. Apenas isso. O resto, nada muda.</p>
 
@@ -446,7 +446,7 @@ int main()
     MinhaClasse mc;
 }
 </pre>
-<img src="img/estruturas_vs_classes_fight-vwpucpm.jpg"/>
+<img src="img/estruturas_vs_classes_fight_vwpucpm.jpg"/>
 
 <p>Antes não havia problemas para **MinhaClasse** porque o construtor padrão criado para ela é público por default. Porém, explicitando no código um construtor e deixando sua privacidade ligada por padrão temos esse erro que NÃO ocorre em **MinhaEstrutura**.</p>
 
@@ -476,7 +476,7 @@ int main()
     std::cout &lt;&lt; "x: " &lt;&lt; me.x &lt;&lt; ", y: " &lt;&lt; me.y &lt;&lt; ", c: " &lt;&lt; me.c &lt;&lt; std::endl;
 }
 </pre>
-<img src="img/estruturas_vs_classes_fight-rdpllNf.jpg"/>
+<img src="img/estruturas_vs_classes_fight_rdpllNf.jpg"/>
 
 <p>E, por que não, uma sobrecarga do operador de stream para imprimirmos diretamente os valores de **MinhaEstrutura** para a saída com apenas um comando?</p>
 
@@ -498,7 +498,7 @@ int main()
     std::cout &lt;&lt; me &lt;&lt; std::endl;
 }
 </pre>
-<img src="img/estruturas_vs_classes_fight-np4trf9.jpg"/>
+<img src="img/estruturas_vs_classes_fight_np4trf9.jpg"/>
 
 <p>Enfim, não há nenhum limite que se aplica a uma _struct_ além do bom senso. A criação da palavra _class_ não foi por falta do que fazer. Ela diz claramente que estamos definindo um objeto que contém usos mais adequados à orientação a objetos de C++ do que a programação estruturada de C, e vice-versa. É uma forma de tornar o código mais legível, mas nada do outro mundo. Sabemos, no final das contas, que o compilador trata as duas (quase) da mesma maneira.</p>
 

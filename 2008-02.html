@@ -185,7 +185,7 @@ role="navigation" aria-label="main navigation">
 
 <p>Primeiramente, quero deixar bem claro que jogamos Monopoly por mais ou menos dois meses sem ter qualquer tipo de problema, em três computadores diferentes. Até que resolvemos usar uma conta mais restrita. Foi o bastante para o programinha inocente começar a chiar.</p>
 
-<img src="img/process_monitor_e_o_monopolio_malcriado-monopoly-crash.png"/>
+<img src="img/process_monitor_e_o_monopolio_malcriado_monopoly_crash.png"/>
 
 <p>Mau garoto. Bons tempos em que quando um jogo travava o máximo que tínhamos que fazer era apertar um botão.</p>
 
@@ -195,19 +195,19 @@ role="navigation" aria-label="main navigation">
 
 <p>É por isso que ele vem "de fábrica" já com uma série de filtros, que evitam lotar o log de eventos com informação sempre gerada pelo sistema, mas quase sempre inútil. Além dos filtros-padrão, podemos inserir nossos próprios filtros. É isso que faremos aqui para pegar o monopólio malcriado (sem trocadilhos).</p>
 
-<img src="img/process_monitor_e_o_monopolio_malcriado-monopoly-procmon.png"/>
+<img src="img/process_monitor_e_o_monopolio_malcriado_monopoly_procmon.png"/>
 
 <p>Como podemos ver, iremos mostrar em nosso log todos os eventos cujo nome do processo seja monopolyclassic.exe (o nosso amigo faltoso) e iremos excluir do log qualquer evento cujo resultado tenha sido sucesso (se deu certo, provavelmente não é um erro).</p>
 
 <p>Executamos novamente o jogo, dessa vez com o Process Monitor capturando todos seus movimentos.</p>
 
-<img src="img/process_monitor_e_o_monopolio_malcriado-monopoly-crash.png"/>
+<img src="img/process_monitor_e_o_monopolio_malcriado_monopoly_crash.png"/>
 
 <p>Agora, uma pequena ressalva: eu estou cansado de ver isso, mas para quem nunca viu, pode não ser tão óbvio. Como eu disse no início do artigo, programas mal-escritos costumam tentar acessar áreas do sistema que não são acessíveis para usuários comuns. Isso quer dizer que, se o problema que está acontecendo com o jogo tem a ver com essa peculiaridade, a primeira coisa a procurar é por erros de acesso negado.</p>
 
-<img src="img/process_monitor_e_o_monopolio_malcriado-monopoly-procmon-access-denied1.png"/>
+<img src="img/process_monitor_e_o_monopolio_malcriado_monopoly_procmon_access_denied1.png"/>
 
-<img src="img/process_monitor_e_o_monopolio_malcriado-monopoly-procmon-access-denied2.png"/>
+<img src="img/process_monitor_e_o_monopolio_malcriado_monopoly_procmon_access_denied2.png"/>
 
 <p>A primeira busca retorna uma chave no registro referente às propriedades de joystick. Como não estou usando joysticks, podemos ignorar este erro por enquanto e passar adiante.</p>
 
@@ -242,13 +242,13 @@ role="navigation" aria-label="main navigation">
    
    C:\Arquivos de programas\GameHouse\Monopoly Classic&gt;start monopolyclassic.exe
 </pre>
-<img src="img/process_monitor_e_o_monopolio_malcriado-monopoly-screenshot.jpg"/>
+<img src="img/process_monitor_e_o_monopolio_malcriado_monopoly_screenshot.jpg"/>
 
 <p>Ora essa, estou conseguindo rodar o jogo! Isso quer dizer que nosso único problema, o acesso a esse arquivo, foi resolvido. Sabendo que um arquivo de log provavelmente não será executado por nenhuma conta privilegiada, podemos deixá-lo com acesso irrestrito para todos.</p>
 
 <p>Para ter certeza que isso resolveu o problema, uma segunda auditoria de execução executada pelo Process Monitor pode nos revelar mais detalhes.</p>
 
-<img src="img/process_monitor_e_o_monopolio_malcriado-monopoly-procmon-find2.png"/>
+<img src="img/process_monitor_e_o_monopolio_malcriado_monopoly_procmon_find2.png"/>
 
 <pre>
    MonopolyClassic.exe QueryStandardInformationFile C:\Documents ...\Monopoly\save.gcf SUCCESS
@@ -273,7 +273,7 @@ role="navigation" aria-label="main navigation">
 
 <p>Let's say you have to manage a big solution in Visual Studio made of more than 30 projects, and needs to rebuild all them. Suddenly, something goes wrong. The question is: how to discover, in a heartbeat, what project has failed?</p>
 
-<img src="img/silly_regex_trick_finding_the_project_who_failed_inside_a_vs_big_solution-find-error-regex2.png"/>
+<img src="img/silly_regex_trick_finding_the_project_who_failed_inside_a_vs_big_solution_find_error_regex2.png"/>
 
 <p>Note that you need to enable "Regular Expressions" option in the Find Dialog (not shown here).</p>
 
@@ -740,7 +740,7 @@ role="navigation" aria-label="main navigation">
 
 <p>Após o processo de preprocessamento, de todos os arquivos indicados terem sido incluídos, de todas as macros terem sido substituídas, todas as constantes colocadas literalmente no código-fonte, temos  o que é chamado unidade de compilação, que será entregue ao compilador, que, por sua vez, irá começar a análise sintática de fato, descobrindo novos erros que podem ou não (como vimos) ter a ver com a fase anterior. A figura abaixo ilustra esse processo, com algumas trocas conhecidas:</p>
 
-<img src="img/os_diferentes_erros_na_linguagem_c-preprocessor.gif"/>
+<img src="img/os_diferentes_erros_na_linguagem_c_preprocessor.gif"/>
 
 <p>Dica: quando o bicho estiver pegando, e tudo o que você sabe sobre linguagem C não estiver te ajudando a resolver um problema, tente gerar uma unidade de compilação em C e analisar sua saída. Às vezes o que é claro no código pode se tornar obscuro após o preprocessamento. Para fazer isso no VC++ em linha de comando, use o parâmetro /E.</p>
 
@@ -790,7 +790,7 @@ role="navigation" aria-label="main navigation">
 
 <p>Do ponto de vista técnico, é a fase onde o linker junta todos os arquivos-objeto especificados, encontra as funções, métodos e classes necessárias e monta uma unidade executável, como ilustrado pela figura abaixo.</p>
 
-<img src="img/os_diferentes_erros_na_linguagem_c-linker.gif"/>
+<img src="img/os_diferentes_erros_na_linguagem_c_linker.gif"/>
 
 <p>Dica: uma LIB, ou biblioteca, nada mais é que uma coleção de arquivos-objeto que já foram compilados, ou seja, já passaram pelas duas primeiras fases, mas ainda não foram linkeditados. Muitas vezes é importante manter compatibilidade entre LIBs e os projetos que as usam, de forma que o processo de linkedição ocorra da maneira menos dolorosa possível.</p>
 
@@ -955,11 +955,11 @@ role="navigation" aria-label="main navigation">
 
 <p>O Babylon possui um mecanismo para criação de dicionários chamado Babylon Builder. É muito simples e fácil de usar (além de ser gratuito). Sabendo que possuo ambas as licenças desses dois programas me sinto mais aliviado em tentar desencriptar a base de dados do primeiro para construir um dicionário para o segundo, e assim realizar meu sonho de consumo: um Babylon com um dicionário de peso!</p>
 
-<img src="img/conversor_de_houaiss_para_babylon_parte_1-houaiss-license.png"/>
+<img src="img/conversor_de_houaiss_para_babylon_parte_1_houaiss_license.png"/>
 
 <p>É necessário que, na hora da instalação, seja escolhida a opção de copiar os arquivos para o disco. Estarei utilizando o path padrão de um Windows em português, que é "C:\Arquivos de Programas\Houaiss".</p>
 
-<img src="img/conversor_de_houaiss_para_babylon_parte_1-houaiss-install.png"/>
+<img src="img/conversor_de_houaiss_para_babylon_parte_1_houaiss_install.png"/>
 
 <p>A estrutura de diretórios interna da instalação é bem simples:</p>
 
@@ -975,7 +975,7 @@ role="navigation" aria-label="main navigation">
 <pre>
    for %i in (*.*) do type %i | less
 </pre>
-<img src="img/conversor_de_houaiss_para_babylon_parte_1-cmd.gif"/>
+<img src="img/conversor_de_houaiss_para_babylon_parte_1_cmd.gif"/>
 
 <p>Sabendo que o conteúdo do dicionário está em arquivos localizados no disco, e que teoricamente o programa não deve copiar todo o conteúdo para a memória, iremos depurar o processo do dicionário de olho nas chamadas da função ReadFile quando clicarmos em uma definição de palavra.</p>
 

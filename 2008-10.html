@@ -108,7 +108,7 @@ role="navigation" aria-label="main navigation">
 
 <p>No entanto, num belo dia, qual não foi minha surpresa ao notar umas pastinhas chamadas atl21, atl30 e atl71 dentro da distribuição do WDK (o finado DDK, renomeado sabe-se-lá-por-quê)? Pelo visto, tem alguém arrastando coisa errada pra onde não devia nos instaladores de Seattle. Esses estagiários!</p>
 
-<img src="img/como_usar_wtl_com_o_atl_do_ddk-OoiV6X7.png"/>
+<img src="img/como_usar_wtl_com_o_atl_do_ddk_OoiV6X7.png"/>
 
 <p>O fato é que eles fizeram isso, e agora é possível ter o WTL mais novo compilado com o WDK. E nem é tão difícil assim.</p>
 
@@ -118,9 +118,9 @@ role="navigation" aria-label="main navigation">
 
 <p>Após instalado, em qualquer lugar da sua escolha, configure no seu Visual Studio o caminho de onde se encontra a pasta atl71 (ou a 30, ou a 21). Aproveite também para colocar a pasta do WTL e o diretório de LIBs:</p>
 
-<img src="img/como_usar_wtl_com_o_atl_do_ddk-TJyNrlE.png"/>
+<img src="img/como_usar_wtl_com_o_atl_do_ddk_TJyNrlE.png"/>
 
-<img src="img/como_usar_wtl_com_o_atl_do_ddk-VLryS9L.png"/>
+<img src="img/como_usar_wtl_com_o_atl_do_ddk_VLryS9L.png"/>
 
 <p>Isso vai fazer com que pelo menos os exemplos que vêem com o WTL compilem.</p>
 
@@ -275,13 +275,13 @@ role="navigation" aria-label="main navigation">
 
 <p>Já fizemos isso logo acima. Se trata apenas de observar o programa funcionando. Ao mesmo tempo em que entendemos seu _modus operandi_ coletamos pistas sobre suas entranhas. No caso do PsExec, que faz coisas além-mar, como redirecionar os _pipes_ de entrada/saída de um programa console, iremos checar a existência de algum serviço novo na máquina-alvo e arquivos novos que foram copiados, além de opcionalmente dar uma olhada no registro. Ferramentas da própria SysInternals como <a href="posts.html?q=Process Explorer">Process Explorer</a> e <a href="posts.html?q=Process Monitor">Process Monitor</a> também são úteis nessa análise inicial.</p>
 
-<img src="img/como_funciona_o_psexec-lCf4KiT.png"/>
+<img src="img/como_funciona_o_psexec_lCf4KiT.png"/>
 
 <p>Como podemos ver, um serviço com o nome de PsExec foi criado na máquina-alvo. Se procurarmos saber o caminho do arquivo que corresponde a esse serviço, tanto pelo Process Explorer ou o Service Manager, descobriremos que se trata de um arquivo no diretório do windows chamado **psexecsvc.exe**.</p>
 
-<img src="img/como_funciona_o_psexec-qo6PZWS.png"/>
+<img src="img/como_funciona_o_psexec_qo6PZWS.png"/>
 
-<img src="img/como_funciona_o_psexec-2sSwUA9.png"/>
+<img src="img/como_funciona_o_psexec_2sSwUA9.png"/>
 
 <p>Se o arquivo existe nessa pasta, então é óbvio que alguém o copiou. Resta saber **como**.</p>
 
@@ -436,7 +436,7 @@ role="navigation" aria-label="main navigation">
 </pre>
 <p>Também podemos notar que, enquanto estamos parados depurando o processo psexec.exe, temos acesso ao compartilhamento admin$:</p>
 
-<img src="img/como_funciona_o_psexec-vBGHXoC.png"/>
+<img src="img/como_funciona_o_psexec_vBGHXoC.png"/>
 
 <p>A análise desses fatos demonstra como é importante fazer as coisas, pelo menos na fase "iniciante",  bem lentamente, e entender a **mudança de estado** durante o processo. Nem sempre isso é possível, é verdade, ainda mais quando estamos falando de análise de kernel. Mas, quando as condições permitem, vale a pena pensar antes de fazer.</p>
 

@@ -317,15 +317,15 @@ int main(int argc, char* argv[]) // No princípio havia a pilha, quando Deus dis
 </pre>
 <p>Se olharmos de perto o processamento e a memória consumida por esse processo, veremos que no início existe um boom de ambos, mas após um momento de pico, o processamento praticamente pára, mas a memória se mantém:</p>
 
-<img src="img/consumo_abusivo_de_memoria-hoxWfdi.png"/>
+<img src="img/consumo_abusivo_de_memoria_hoxWfdi.png"/>
 
 <p>Depois de pesquisar <a href="https://twitter.com/#!/caloni/status/138632431765954560">por meus tweets favoritos</a>, fica fácil ter a receita para verificarmos isso usando nosso depurador favorito: &lt;del&gt;Visual Studio&lt;/del&gt; WinDbg!</p>
 
-<img src="img/consumo_abusivo_de_memoria-ZKVVT0O.png"/>
+<img src="img/consumo_abusivo_de_memoria_ZKVVT0O.png"/>
 
 <p>windbg -pn MemoryConsumption.exe</p>
 
-<img src="img/consumo_abusivo_de_memoria-Bzb2XVY.png"/>
+<img src="img/consumo_abusivo_de_memoria_Bzb2XVY.png"/>
 
 <p>Achamos onde está a memória consumida. Agora precisamos de dicas do que pode estar consumindo essa memória. Vamos começar por listar os chunks alocados por tamanho de alocação:</p>
 
@@ -367,7 +367,7 @@ int main(int argc, char* argv[]) // No princípio havia a pilha, quando Deus dis
 </pre>
 <p>A listagem do depurador nos dá o endereço onde o chunk foi alocado no heap e o endereço devolvido para o usuário, onde colocamos nossas tralhas. Através de ambos é possível trackear a pilha da chamada que alocou cada pedaço de memória. Isso, claro, se previamente tivermos habilitado essa informação através do <a href="http://msdn.microsoft.com/en-us/library/windows/hardware/ff549596(v=vs.85">GFlags</a>:</p>
 
-<img src="img/consumo_abusivo_de_memoria-JeqoBju.png"/>
+<img src="img/consumo_abusivo_de_memoria_JeqoBju.png"/>
 
 <pre>
    

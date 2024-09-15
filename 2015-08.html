@@ -300,27 +300,27 @@ role="navigation" aria-label="main navigation">
 
 <p>E eis que alguém, muito provavelmente eu mesmo, naquele momento de inspiração, criei a seguinte configuração para a geração dos PDBs, os símbolos para depurar programas no Windows:</p>
 
-<img src="img/o_estranho_caso_do_pdb_mal_formado-AmoYVLS.png"/>
+<img src="img/o_estranho_caso_do_pdb_mal_formado_AmoYVLS.png"/>
 
 <p>Faz sentido, não? Afinal de contas, o PDB costuma ter o nome do projeto, e ele já está setado até em outro lugar para gerar com o mesmo nome. Nada de novo no _front_.</p>
 
-<img src="img/o_estranho_caso_do_pdb_mal_formado-SYoMbtq.png"/>
+<img src="img/o_estranho_caso_do_pdb_mal_formado_SYoMbtq.png"/>
 
 <p>Até aí tudo bem. Aliás, tudo ficou muito bem por estranhos 13 anos.</p>
 
 <p>Até que alguém decidiu migrar para o já não tão novo Visual Studio 2013!</p>
 
-<img src="img/o_estranho_caso_do_pdb_mal_formado-YZ6v5eP.png"/>
+<img src="img/o_estranho_caso_do_pdb_mal_formado_YZ6v5eP.png"/>
 
 <p>E tudo correu muito bem por algumas horas... talvez 13.</p>
 
 <p>Até que a depuração de repente parou de funcionar.</p>
 
-<img src="img/o_estranho_caso_do_pdb_mal_formado-xbk6WsP.png"/>
+<img src="img/o_estranho_caso_do_pdb_mal_formado_xbk6WsP.png"/>
 
 <p>Será o benedito? Ou o co-piloto?</p>
 
-<img src="img/o_estranho_caso_do_pdb_mal_formado-5ZSZu4g.png"/>
+<img src="img/o_estranho_caso_do_pdb_mal_formado_5ZSZu4g.png"/>
 
 <p>Pesquisando nos fóruns da vida, antro dos desesperados, achei/lembrei de um comando muito útil no WinDbg que não apenas diz se os símbolos estão "mismatch", ou seja, os símbolos ou o PDB não está combinando com o EXE, mas também por quê.</p>
 
@@ -344,17 +344,17 @@ DBGHELP: Module - no symbols loaded
 </pre>
 <p>Para saber o que está errado, o famigerado **!IToldYouSo**</p>
 
-<img src="img/o_estranho_caso_do_pdb_mal_formado-AxapyHQ.jpg"/>
+<img src="img/o_estranho_caso_do_pdb_mal_formado_AxapyHQ.jpg"/>
 
-<img src="img/o_estranho_caso_do_pdb_mal_formado-di9JV7u.png"/>
+<img src="img/o_estranho_caso_do_pdb_mal_formado_di9JV7u.png"/>
 
 <p>Mano, como assim?!?!? Eu acabei de compilar esse binário, eu já apaguei 15 vezes as pastas de Debug e Release, eu já rebootei mais do que o Windows me obriga a rebootar por causa das falhas de segurança.</p>
 
 <p>Pois, então, desesperançado, crio um projeto novo para comparar as configurações, e voltamos 13 anos atrás, naquele fatídico dia, e entendo por que o nome do PDB temporário não é igual. Bom, na verdade não entendo, mas intuo que tenha alguma relação:</p>
 
-<img src="img/o_estranho_caso_do_pdb_mal_formado-x19BKm4.png"/>
+<img src="img/o_estranho_caso_do_pdb_mal_formado_x19BKm4.png"/>
 
-<img src="img/o_estranho_caso_do_pdb_mal_formado-P23UaPY.png"/>
+<img src="img/o_estranho_caso_do_pdb_mal_formado_P23UaPY.png"/>
 
 <p>E, de fato. Solução? Copie as configurações usuais do "novo" Visual Studio comparando com o velho.</p>
 
@@ -363,7 +363,7 @@ DBGHELP: Module - no symbols loaded
 <blockquote>Just got stuck in the same problem, but in a C++ source that has 13 years, where its first solution was in VS 2003. Comparing the Project Properties in C/C++, Output Files, Program Database File Name, I found out that the project was pointing to the same file path that Linker, Debugging, Generate Program Database File, when the normal situation is to generate a vc120.pdb. Comparing with a new project, the "right" value can't be $(OutDir)$(TargetName).pdb (ou ProjectName), but $(IntDir)vc$(PlatformToolsetVersion).pdb. That solved the problem. I hope solve another one's problem as well =)</blockquote>
 <blockquote></blockquote>
 <blockquote>[]s</blockquote>
-<img src="img/o_estranho_caso_do_pdb_mal_formado-uDmJxtB.png"/>
+<img src="img/o_estranho_caso_do_pdb_mal_formado_uDmJxtB.png"/>
 
 <p>Minha próxima tarefa, aparentemente, é ver como sendo sócio da <a href="http://www.bitforge.com.br">BitForge</a> e da <a href="http://www.intelitrader.com.br">Intelitrader</a>, e mesmo tendo já atualizado meu perfil MVP há anos, continuo sendo funcionário da UOL Diveo/Broker =/</p>
 

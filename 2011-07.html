@@ -305,11 +305,11 @@ int main()
 </pre>
 <p>Quando chamamos func, ele lança uma exceção que é capturada no main que, por sua vez, formata uma stream e obtém sua string (através do método str) e através dessa string obtém o ponteiro da string em C puro (através do método c_str). Porém, a mensagem resultante na saída-padrão de erro não era o esperado:</p>
 
-<img src="img/cuidado_com_variaveis_temporarias-Gs3Khz7.png"/>
+<img src="img/cuidado_com_variaveis_temporarias_Gs3Khz7.png"/>
 
 <p>Depurando diretamente, vemos que a stream, de fato, contém o que esperávamos. O único elemento errante é justamente o ponteiro obtido através da chamada dupla de métodos.</p>
 
-<img src="img/cuidado_com_variaveis_temporarias-x3n9FXS.png"/>
+<img src="img/cuidado_com_variaveis_temporarias_x3n9FXS.png"/>
 
 <p>O porquê isso ocorre só fica óbvio quando vemos <a href="http://www.cplusplus.com/reference/iostream/stringstream/str/">a ajuda</a> (ou a assinatura) da função str da classe stringstream:</p>
 
@@ -337,7 +337,7 @@ int main()
 
 <p>Vamos ver em câmera lenta:</p>
 
-<img src="img/cuidado_com_variaveis_temporarias-vXQjDjK.png"/>
+<img src="img/cuidado_com_variaveis_temporarias_vXQjDjK.png"/>
 
 <p>Nada como assembly fresquinho para refrescar os conceitos de C++ por baixo dos panos.</p>
 
@@ -377,13 +377,13 @@ int main()
 
 <p>  2. Depurar localmente o problema.</p>
 
-<img src="img/depuracao_de_emergencia-imt8kmB.png"/>
+<img src="img/depuracao_de_emergencia_imt8kmB.png"/>
 
 <h3>Analisar um dump gerado</h3>
 
 <p>Para a primeira opção, basta abrir o Gerenciador de Tarefas, localizar o processo e gerar o dump através do menu de contexto.</p>
 
-<img src="img/depuracao_de_emergencia-RWPemAU.png"/>
+<img src="img/depuracao_de_emergencia_RWPemAU.png"/>
 
 <p>Com o dump e o Windbg em mãos, basta analisá-lo. Porém, se o seu processo é 32 bits e o servidor é 64 bits (geralmente é), o dump gerado será de 64 bits, EMBORA seja de um process 32. Ou seja, ao abri-lo, o sistema vai mostrar as threads de manipulação do SO para sistemas 32 (todos com o nosso amigo wow64cpu).</p>
 
@@ -452,7 +452,7 @@ int main()
 
 <h4>1. Abrir o WinDbg e escolher File, Open Executable. Escolha o executável e pare por aí.</h4>
 
-<img src="img/depuracao_de_emergencia-A2p4Q9y.png"/>
+<img src="img/depuracao_de_emergencia_A2p4Q9y.png"/>
 
 <h4>2. Na tela de comando do WinDbg (View, Command, ou Alt + 1) execute os comandos abaixo:</h4>
 

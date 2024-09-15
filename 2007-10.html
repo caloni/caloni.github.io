@@ -115,13 +115,13 @@ role="navigation" aria-label="main navigation">
 
 <p>O item 2 é justamente o que utiliza essa interrupção para ler do disco. Eu prefiri colocar o breakpoint no item 2, mas nada impediria de você colocá-lo no item 3 e já iniciar a depuração no código do boot loader. Mas, como eu já passei por problemas encontrados no código da BIOS que impediam o sistema de entregar a execução para o setor de boot, já dei a dica de lambuja caso você também tenha a oportunidade de se divertir em um cliente depurando a BIOS de algum laptop desajustado.</p>
 
-<img src="img/debug_da_bios_com_o_softice_16_bits-bpint-boot.png"/>
+<img src="img/debug_da_bios_com_o_softice_16_bits_bpint_boot.png"/>
 
 <p>A referência para saber quais as funções para cada interrupção na hora de depurar a BIOS pode ser encontrada em listas como a Ralf Brown's Interrupt List <a href="posts.html?q=2">2</a></p>
 
 <p>A partir dessa leitura se usa o comando p ret do depurador, que é mais ou menos o step out do SoftIce 32. Ou seja, ele avança a execução até a função retornar. No caso do SoftIce 16 ele irá avançar até o próximo ret/iret. Por isso que também precisamos executar a próxima instrução (o próprio ret) para cair onde queremos. É nesse ponto que o "nosso" código começa a executar e onde conseguimos colocar breakpoints "de verdade", ou seja, escrevendo no parte do código que deve ser interrompida a chamada da interrupção de breakpoint (int 3). Lembre-se que não é isso o que é feito para parar no código da BIOS, uma vez que esta reside em memória de somente leitura (pelo menos durante a execução).</p>
 
-<img src="img/debug_da_bios_com_o_softice_16_bits-myos-start.png"/>
+<img src="img/debug_da_bios_com_o_softice_16_bits_myos_start.png"/>
 
 <p><a href="posts.html?q=1">1</a> <a href="https://dqsoft.blogspot.com/2006/10/gerenciamento-de-memria-386.html">Gerenciamento de memória 386</a> - Daniel Quadros</p>
 
@@ -200,7 +200,7 @@ role="navigation" aria-label="main navigation">
 
 <p>Em novembro de 1998 (apenas para parceiros Microsoft) é lançada a versão 5.0 do Windows NT, conhecida como Windows 2000. Melhorias significativas foram feitas no acesso à internet, intranet e extranet. Aplicações de gerenciamento se integram fortemente e a grande novidade em termos de estruturação de dados é o Active Directory, uma tecnologia compatível com o conceito de Distributed File System, que viabiliza uma nova forma das empresas organizarem seus dados de maneira mais transparente à rede. Assim começou a <a href="2020-09.html#historia_do_windows">História do Windows</a> para redes de gente grande.</p>
 
-<img src="img/historia_do_windows_parte_50-windows_2000.png"/>
+<img src="img/historia_do_windows_parte_50_windows_2000.png"/>
 
 <p>Vamos aproveitar que a versão NT foi melhorada para dar uma recapitulada geral de como as coisas funcionam internamente no sistema operacional. Em um desenho da arquitetura veremos diferentes módulos que fazem parte do sistema operacional que dividem funções específicas e que possuem métodos específicos de comunicação interna e externa. Importante notar que a divisão entre os componentes que descreverei abaixo já existia desde a primeira versão do NT, sendo que apenas alguns itens foram adicionados, como o Gerenciador de Plug &amp; Play e o Gerenciador de Energia. Os elementos principais do Windows, visto sob camadas de abstração, são:</p>
 
@@ -229,7 +229,7 @@ role="navigation" aria-label="main navigation">
 <li>Por fim, o hardware.</li>
 
 </ul>
-<img src="img/historia_do_windows_parte_50-windows_architecture.png"/>
+<img src="img/historia_do_windows_parte_50_windows_architecture.png"/>
 
 <blockquote>Um outro item importantíssimo que foi movido da versão 3.51 para a 4.0 é a GDI, responsável pelos gráficos. Inicialmente ela estava no modo de usuário, mas a necessidade de aumentar o desempenho do sistema fez com que ela fosse incorporada ao núcleo do sistema.  Agora vamos dissecar as partes interessantes.</blockquote>
 <p>As aplicações, ou programas, que rodam sobre o sistema operacional preferencialmente são feitas para rodar no Windows, mas não precisa ser assim. A abstração inicial que se fez foi o uso de subsistemas que suportam um ambiente de execução. Essa foi a maneira escolhida pelos projetistas para que existisse compatibilidade com outros sistemas operacionais, como o OS/2 e POSIX (um padrão de aplicativo utilizado em ambientes UNIX/Linux). A mesma abstração permite que se rodem aplicativos 16 bits em cima do ambiente NT, que é todo feito em 32.</p>
@@ -320,7 +320,7 @@ role="navigation" aria-label="main navigation">
 
 <p>Aparentemente o tema estrutura é mais simples que ponteiros, e deveria ser tratado antes. Porém, fazer isso impediria abordar o tema de listas ligadas e outras estruturas que dependem do uso de ponteiros para que estruturas referenciem elas mesmas, algo extremamente recorrente no mundo da programação.</p>
 
-<img src="img/the_c_programming_language-binary-tree.gif"/>
+<img src="img/the_c_programming_language_binary_tree.gif"/>
 
 <p>É sempre bom lembrar que o uso de estruturas foi o nascimento do C++, que prima pela elegância na organização e harmonia entre seu código e dados. A linguagem C também não fica para trás, mas é importante saber usar.</p>
 
@@ -438,19 +438,19 @@ role="navigation" aria-label="main navigation">
 
 <p>If significa "se", ou seja, faz uma comparação, e retorna se a comparação é verdadeira (sim!) ou não (não!). Porém, o if apenas faz alguma coisa se o resultado for sim.</p>
 
-<img src="img/guia_basico_para_programadores_de_primeiro_int_main-if.gif"/>
+<img src="img/guia_basico_para_programadores_de_primeiro_int_main_if.gif"/>
 
 <p>Else significa "senão", ou seja, é o complemento do if. Lembra-se que o if só faz alguma coisa se o resultado da comparação for sim? Pois bem, o else permite fazer outra coisa se o resultado for não.</p>
 
-<img src="img/guia_basico_para_programadores_de_primeiro_int_main-else.gif"/>
+<img src="img/guia_basico_para_programadores_de_primeiro_int_main_else.gif"/>
 
 <p>While significa "enquanto", e é o nosso primeiro exemplo de laço, ou loop. Um loop faz constantemente a mesma coisa enquanto o resultado da comparação for sim. Uma vez que for não (pode ser a primeira, inclusive), ele não faz mais nada e o programa continua seu fluxo natural.</p>
 
-<img src="img/guia_basico_para_programadores_de_primeiro_int_main-while.gif"/>
+<img src="img/guia_basico_para_programadores_de_primeiro_int_main_while.gif"/>
 
 <p>For significa "por", com o mesmo sentido que em "ele me chutou por 5 vezes seguidas". Ele pode ter muitos usos, mas o tradicional é fazer n vezes alguma coisa, sabendo que n é um número de vezes já conhecido. Nesse caso, o loop serve apenas para repetir um determinado número de vezes uma ação, sem nunca variar esse número de vezes.</p>
 
-<img src="img/guia_basico_para_programadores_de_primeiro_int_main-for.gif"/>
+<img src="img/guia_basico_para_programadores_de_primeiro_int_main_for.gif"/>
 
 <h2>É só isso?</h2>
 
@@ -496,7 +496,7 @@ role="navigation" aria-label="main navigation">
 
 <p>O resumo da ópera é que o código do Windows chamador do DllMain das DLLs carregadas/descarregadas utiliza um objeto de acesso exclusivo (leia "mutex") para sincronizar as chamadas. O resultado é que, em um processo, apenas um DllMain é chamado em um dado momento. Esse objeto é chamado de loader lock na documentação da Microsoft.</p>
 
-<img src="img/por_que_minha_dll_travou-loader_lock.gif"/>
+<img src="img/por_que_minha_dll_travou_loader_lock.gif"/>
 
 <p>Escrevi um código besta para exemplificar, mas representa o que já vi em muito código-fonte, e muitas vezes não consegui perceber o que estava acontecendo (tanto porque desconhecia a existência desse loader lock quanto o código estava obscuro demais pra entender mesmo).</p>
 
@@ -535,7 +535,7 @@ role="navigation" aria-label="main navigation">
 
 <p>É interessante notar como muitos ignoram a utilidade e conveniência das tradicionais e poderosas ferramentas de depuração passo-a-passo. O motivo pode ser puro desdém ou ignorância (no sentido de desconhecimento). Se for pelo segundo, aí vão algumas dicas para dar uma passada geral no seu programa e, quem sabe, encontrar um ou outro bug pelo caminho.</p>
 
-<img src="img/guia_basico_para_programadores_de_primeiro_breakpoint-debug.png"/>
+<img src="img/guia_basico_para_programadores_de_primeiro_breakpoint_debug.png"/>
 
 <p>Os comandos mais comuns de debug são: Start/Continue, Break, Stop, Restart, Show Next Statement, Step Into, Step Over e Step Out.</p>
 
@@ -800,7 +800,7 @@ role="navigation" aria-label="main navigation">
 </ul>
 <p>Explicado o começo o resto é fácil. Para continuar a execução do bloco de notas basta usarmos o comando g (Go), ou pressionar F5, ou ir no menu "Debug, Go", ou ainda apertar um dos botões de fluxo do depurador listado no seu toolbar:</p>
 
-<img src="img/brincando_com_o_windbg-debug_windbg.png"/>
+<img src="img/brincando_com_o_windbg_debug_windbg.png"/>
 
 <p>Nos depuradores mais comums você terá todas essas opções ao seu dispor e nos comandos mais incomuns tudo o que você terá será o prompt de comando do WinDbg e a ajuda, acionada por F1 ou pelo comando .hh &lt;tópico&gt;. Geralmente os comandos do WinDbg possuem milhares de parâmetros e é considerada atitude sábia olhar de vez em quando o que alguns desses parâmetros significam para que, aos poucos, aprenda-se alguns truques até a chegada da iluminação completa, onde seu espírito irá fluir livremente pela memória de todos os processos do sistema.</p>
 
@@ -810,11 +810,11 @@ role="navigation" aria-label="main navigation">
 
 <p>Vamos fazer algo não tão esperto para ver como o bloco de notas reage. Tente abrir um arquivo com um nome inexistente:</p>
 
-<img src="img/brincando_com_o_windbg-notepad_file_not_found.png"/>
+<img src="img/brincando_com_o_windbg_notepad_file_not_found.png"/>
 
 <p>Como podemos ver o Bloco de Notas exibe uma mensagem de erro indicando que o arquivo cujo nome você digitou não existe, pede para você verificar a orografia e tudo o mais. O importante aqui não é que você não sabe digitar nomes de arquivos, mas sim qual a função que o notepad usa para exibir sua mensagem de erro. Na versão original deste post esta função era a MessageBox, e eu seguia explicando o protótipo da função e seus argumentos. Hoje, 2021-03-07, no Windows 10, descubro que o MessageBox não é mais usado, dando lugar ao ShellMessageBoxW. Como eu descobri isso? Bom, eu segui os mesmos passos do post original e coloquei um breakpoint em MessageBox e executei novamente a abertura de um arquivo inválido e... o breakpoint não disparou. Nesse caso eu dei uma olhada na pilha de chamada de todas as threads para encontrar alguma thread que chamou funções de janela. Para isso você pode usar o comando ~*kvn (para todas as threads exiba a pilha de chamadas no modo verbose).</p>
 
-<img src="img/brincando_com_o_windbg-orografia.jpg"/>
+<img src="img/brincando_com_o_windbg_orografia.jpg"/>
 
 <p>Na saída abaixo você pode encontrar essa chamada na primeira thread, a 2b14.30f8, no stack frame 0x0e.</p>
 
@@ -881,7 +881,7 @@ role="navigation" aria-label="main navigation">
 </pre>
 <p>Note que se estivéssemos tentando exibir uma string Ansi iríamos usar o comando eza (edit zero terminated ansi string). O WinDbg possui inúmeros comandos parecidos que começam com e, cuja lista pode ser consultada pelo comando .hh e. O equivalente para leitura é o comando d (de dump).</p>
 
-<img src="img/brincando_com_o_windbg-notepad_wonderful_file.png"/>
+<img src="img/brincando_com_o_windbg_notepad_wonderful_file.png"/>
 
 <p>Repare que colocamos esse breakpoint diretamente na função API, ou seja, qualquer outro ponto do notepad em que ele tiver vontade de chamar a mesma API irá ativar o mesmo breakpoint e exibir a mesma mensagem, o que pode ser um pouco importuno da parte dele. Um bom exercício pós-leitura seria tratar as condições em que a mensagem será trocada, talvez se baseando na mensagem recebida. Mas isso já é lição de casa, e paramos por aqui.</p>
 

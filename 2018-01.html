@@ -548,7 +548,7 @@ int main()
 </pre>
 <p>Para isso funcionar você criar um projeto console no Visual Studo. Essa opção está no Linker, System:</p>
 
-<img src="img/como_apagar_o_prompt_do_seu_programa_windows-uWYtwqL.png"/>
+<img src="img/como_apagar_o_prompt_do_seu_programa_windows_uWYtwqL.png"/>
 
 <p>E voilà!</p>
 
@@ -597,7 +597,7 @@ int main()
 
 <p>Abrir um dump (dmp) pode ser feito pelo Visual Studio, Windbg ou sua ferramenta de análise favorita. Mais importante que isso é <a href="2011-10.html#depuracao_de_emergencia_receita_de_bolo">carregar seus símbolos adequadamente</a>.</p>
 
-<img src="img/como_achar_erros_no_printf_via_dump-NhkhrJa.png"/>
+<img src="img/como_achar_erros_no_printf_via_dump_NhkhrJa.png"/>
 
 <p>Com o dump e símbolos abertos é possível analisar a stack de chamadas, o que nos revela que há um problema em uma função de Log. Como se trata de uma versão release não há muita informação da pilha, que pode fazer parte de uma stack modificada (otimização de código). Portanto, tudo que vier é lucro. Como variáveis.</p>
 
@@ -605,13 +605,13 @@ int main()
 
 <p>Demos sorte e é possível ver o que tem na variável de format, a mais importante de uma função de log estilo printf, pois geralmente é ela a responsável pelas dores de cabeça infernais.</p>
 
-<img src="img/como_achar_erros_no_printf_via_dump-uOkd4VF.png"/>
+<img src="img/como_achar_erros_no_printf_via_dump_uOkd4VF.png"/>
 
 <p>Através dessa string é possível buscar no código usando grep, vim ou até o Visual Studio. Com isso reduzimos nosso escopo de busca ao mínimo.</p>
 
 <h2>Code</h2>
 
-<img src="img/como_achar_erros_no_printf_via_dump-rAo1T0H.png"/>
+<img src="img/como_achar_erros_no_printf_via_dump_rAo1T0H.png"/>
 
 <p>E voilà! Temos uma chamada de log que teoricamente teria que passar uma string C, mas não passa nada. Isso quer dizer que a função de printf irá procurar na pilha pelo endereço de uma string, mas irá encontrar um endereço aleatório. Lendo esse endereço, que tem ótimas chances de ser inválido, ele irá capotar. Para dores de cabeças mais intensas, ele irá capotar aleatoriamente (ou na máquina do chefe, o mais provável).</p>
 
