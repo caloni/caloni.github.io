@@ -88,8 +88,6 @@ role="navigation" aria-label="main navigation">
 
 <p>Porém, se você prefere algo mais amigável, mais ainda que o WinDbg, você pode iniciar o depurador do Visual Studio por linha de comando: vsjitdebugger notepad.exe ou vsjitdebugger -p meu-pid-do-coracao.  Daí não tem jeito: você economiza no start, mas o Visual Studio vai acabar subindo. Ou um ou outro. Por isso eu recomendo aprender a usar o WinDbg ou até o NTSD. Quer dizer, é muito melhor do que esperar por uma versão mais light do Visual Studio no próximo ano.</p>
 
-
-
 </section><hr/>
 
 
@@ -320,8 +318,6 @@ role="navigation" aria-label="main navigation">
 </pre>
 <p>Como podemos ver, não é nenhuma magia negra a responsável por fazer os ponteiros de métodos e de membros funcionarem em C++. Porém, eles não são ponteiros ordinário que costumamos misturar a torto e a direito. Essa distinção na linguagem é importante para manter o código "minimamente sadio".</p>
 
-
-
 </section><hr/>
 
 
@@ -384,10 +380,6 @@ role="navigation" aria-label="main navigation">
 </pre>
 <p>Relembrando nosso passeio pela pilha, ao entrar em uma função stdcall, os primeiros 4 bytes são o endereço de retorno, os próximos o primeiro parâmetro e assim por diante. O que quer dizer que poi ( esp + (4 * 4) ). É o apontado do quarto parâmetro (4*4) que está sendo verificado. Concluindo, se o parâmetro dwThreadId for igual a zero, estamos diante de um hook global, e é o momento em que meu .echo vai exibir na tela "*** GLOBAL HOOK ***". Do contrário, a execução vai continuar silenciosamente.</p>
 
-
-
-
-
 </section><hr/>
 
 
@@ -415,10 +407,6 @@ role="navigation" aria-label="main navigation">
 <p>Click in the link in the end of the post and make good use of it.</p>
 
 <p>Update: MouseTool now has a home page and a Source Forge project! Its new name is <a href="http://gmousetool.sourceforge.net">GMouseTool</a>.</p>
-
-
-
-
 
 </section><hr/>
 
@@ -499,8 +487,6 @@ role="navigation" aria-label="main navigation">
 <p>Agora esqueça essa viagem teórica de arquitetura. Para a organização dos recursos do sistema foi adotado um outro modelo, semelhante (embora não seja) ao conceito de orientação a objetos. Nesse modelo, os recursos são organizados em entidades identificáveis em sua maioria por um ponteiro opaco (kernel) ou um identificador, chamado de handle (user mode). Todos os recursos recebem o mesmo tratamento, embora se refiram a coisas extremamente diferentes, como um arquivo, uma porta de rede, um pedaço de memória, um processo e uma janela.</p>
 
 <p>Essa organização foi adotada principalmente pela sua grande vantagem de minimizar mudanças, uma vez que as informações sobre os recursos são armazenadas em estruturas opacas, isto é, elas existem, porém não são acessíveis a todos. Isso permite que elas sofram mudanças internas no decorrer do tempo sem impactar para seus usuários. Essa é a abordagem pragmática que tem feito com que mesmo contando já décadas, o projeto Windows consiga avançar rapidamente junto com a tecnologia disponível para que o sistema operacional não fique parado no tempo. O que o futuro nos reserva depende apenas dos fatores externos.</p>
-
-
 
 </section><hr/>
 
@@ -611,8 +597,6 @@ role="navigation" aria-label="main navigation">
    ...
 </pre>
 <p>Como pudemos ver pela saída, a DLL foi carregada e agora temos a possibilidade de chamar qualquer código que lá esteja. Como fazer isso? Provavelmente usando o mesmo método aqui aplicado. Live-assembly é o que manda 8).</p>
-
-
 
 </section><hr/>
 
@@ -841,12 +825,6 @@ role="navigation" aria-label="main navigation">
 <p>Eu não me responsabilizo por qualquer (mau) uso do script aqui disponibilizado, assim como as eventuais perdas de código-fonte, trilhas de HD e placas de memória RAM pela sua execução. Assim sendo, bom divertimento.</p>
 
 <p>O criador do <a href="http://www.driverentry.com.br">DriverEntry</a> me questionou se não seria mais fácil, em vez de escrever todos os opcodes em hexa, usar o comando a, que permite entrar o código assembly diretamente a partir de um endereço especificado. Essa realmente é uma ótima idéia, e de fato eu tentei isso no começo de meus testes. Porém, infelizmente para scripts isso não funciona bem. A partir do comando a o prompt fica esperando uma entrada do usuário, não lendo o assembly que estaria no próprio script. Pior ainda, a escrita do assembly não permite usar os registradores temporários, como $t0 ou $t1, o que nos força a escrever um código dependende de valores constantes. Por esses motivos, tive que apelar para o comando e, que é a forma mais confusa de escrever e entender assembly. Nesse tipo de edição é vital comentar bem cada linha que se escreve.</p>
-
-
-
-
-
-
 
 </section><hr/>
 

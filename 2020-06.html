@@ -258,21 +258,7 @@ END { print " - DONE -" }
 <li><a href="https://www.gnu.org/software/gawk/manual/gawk.html">Gawk Guide</a>.</li>
 
 </ul>
-
-
-
-
-
-
-
-
 <p><a href="https://www.grymoire.com/Unix/Awk.html">Tutorial from an Experient Mind</a>, de Bruce Barnett. Ele vai um pouco além porque é de alguém interessado em contar alguns macetes que dão uma visão mais interna da linguagem. E para referência eu considero o <a href="https://www.gnu.org/software/gawk/manual/gawk.html">Gawk Guide</a>: https://www.gnu.org/software/gawk/manual/gawk.html</p>
-
-
-
-
-
-
 
 </section><hr/>
 
@@ -303,8 +289,6 @@ END { print " - DONE -" }
 <p>O jeito foi ir destroçando o código, classe por classe, até fazer o padrão de consumo crescente estabilizar. Este projeto tem uma arquitetura complexa, cheia de interfaces e classes que manipulam dados internos através delas. É complicado destrinchar e me custou o domingo inteiro. E quando finalmente encontrei o problema, não tinha nada a ver com o que eu imaginava. Se tratava da fila de linhas de log que não eram apagadas porque o servidor de log não havia sido configurado no componente, e como ele nunca conectava, a lib de log decidia manter as linhas em memória até conseguir. Pode ser um erro de arquitetura ou uma decisão de segurança. De qualquer forma, não há leak. Apenas um sintoma.</p>
 
 <p>Essa sessão de debugging me deu alguns insights, entre eles um que é sempre mais frequente: nunca supor nada antes de analisar um problema. Minha estratégia de dividir para conquistar sempre foi a única que gerou resultados rápidos, ainda que às custas de não confiar em minha intuição. A longo prazo essa estratégia é vencedora, pois a intuição não utilizada sem critérios fica mais afiada conforme você acumula conhecimento. É como o cara dos <a href="2017-05.html#axiomas_de_zurique">Axiomas de Zurique</a> (o livro) dizia, intuição é um quase-conhecimento. Saber cada vez mais irá fazer com que você consiga caminhar mais rapidamente por onde quer chegar.</p>
-
-
 
 </section><hr/>
 
@@ -358,6 +342,7 @@ END { print " - DONE -" }
 <ul><li>2021-05-15 Frutado maduro e tânico, esse Bourbon faz um belo corpo com poucos grãos. Sua persistência é perene; minutos depois do último gole ainda fica a sensação de um ótimo café.</li>
 
 <li>2020-05-13 A torra foi feita na quinta, quarto dia de junho, e eu recebi na noite de segunda e foi o café da manhã da terça. Moído na hora para coado, vinte e poucos gramas, e passado na Aeopress com cerca de um minuto de infusão, seguindo da já tradicional virada antes de abaixar o êmbolo, este café ultra-fresco trouxe para mim, diferente de sua ficha, notas cítricas, lembrando limão. O sabor com certeza é tânico, algo que adoro e que me traz um vício desgraçado. O amargor desta torra média é equilibrado e seu corpo é quase médio.</li>
+</ul>
 
 </section><hr/>
 
@@ -366,7 +351,6 @@ END { print " - DONE -" }
 <p class="title"><a href="2020-06.html#historical_price">#</a> <a class="external" href="https://gist.github.com/Caloni/368a8ce88206c13aac6ca27a56975af2">Historical Price</a></p>
 <span class="title-heading">Caloni, 2020-06-13 <a href="coding.html">coding</a><a href="2020-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_historical_price')"><sup>[copy]</sup></a></span>
 
-</ul>
 <p>Havia um job esta semana de um assunto que me encanta desde a época de investidor: base histórica de cotações. Estamos falando de ações da Bovespa. Na época que era investidor frequente mantinha uma base que era atualizada por um programinha em Java (esqueci o nome), mas nunca tive certeza se os ajustes feitos pelo programa eram os corretos. Surgiu agora a possibilidade de eu realizar código que converte uma base histórica recebida com um minuto por linha em campos divididos por ponto-e-vírgula (o CSV do Windows) para candles de várias periodicidades. E isso justo agora que ando estudando awk. Então não deu outra: usei esta linguagem clássica como ferramenta para esta conversão.</p>
 
 <p>O código ficou, em minha humilde opinião, elegante e pequeno, pois se aproveita da composição das periodicidades. Ou seja, o período de cinco minutos é a consolidação de cinco linhas de um minuto, mas a de quinze minutos não são quinze linhas de um minuto, mas três de cinco minutos, que já estão sendo calculados a cada cinco linha. E assim por diante. Usando os arrays associativos do awk é possível manter o estado de cada candle até o momento de gerar a saída desejada, que no exemplo que codifiquei ficou como um comando SQL de insert em um banco fictício que grava cada tipo de candle em uma tabela.</p>

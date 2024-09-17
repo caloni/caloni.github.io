@@ -126,7 +126,6 @@ role="navigation" aria-label="main navigation">
 <p class="title"><a href="2024-03.html#windbg_travado">#</a> WinDbg travado</p>
 <span class="title-heading">Caloni, 2024-03-14 <a href="windbg.html">windbg</a><a href="2024-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_windbg_travado')"><sup>[copy]</sup></a></span>
 
-</ul>
 <p>Uma das coisas mais irritantes no WinDbg é quando ele trava sem motivo aparente. Isso pode acontecer porque ele está baixando símbolos de módulos necessários para mostrar o resultado do comando enviado ou procurando por eles. O comando !sym noisy ajuda a manter alguma saída na tela para entender esse cenário. Entre esses cenários o mais irritante é quando colocamos um breakpoint em um ponto no código fonte e ele precisa encontrar qual o módulo correspondente se ele ainda não souber. Para fazer isso ele sai baixando os símbolos de todos os módulos até encontrar. E ele não para facilmente nesse caso, então os comandos de break não irão funcionar. A janela do WinDbg parecerá travada e não há nada o que fazer.</p>
 
 <p>Para evitar isso coloque um breakpoint deferido para uma função conhecida do código fonte onde quer colocar o breakpoint original. Tendo um nome o WinDbg saberá pelo escopo do módulo que quando este módulo for carregado na memória ele precisa baixar os símbolos deste módulo e setar este breakpoint. Quando isso acontecer e o breakpoint for ativado você pode colocar o breakpoint específico pela janela do código fonte e isso ocorrerá de maneira instantânea, pois agora o debugger já sabe do que você está falando.</p>
@@ -604,6 +603,7 @@ role="navigation" aria-label="main navigation">
 <li>Cole endereços para efetuar transações offline e salve em arquivo no PenDrive (validar)</li>
 
 <li>Envie as transações do device online (validar) importando do PenDrive</li>
+</ul>
 
 </section><hr/>
 
@@ -765,6 +765,7 @@ gawk 'BEGIN { FS=","; PID=1 } { if( !($1 in PIDS) ) PIDS[$1]=PID++ ; $1 = PIDS[$
 <li>Premeditatio Malorum: I will face hard times, my mind must be prepared.</li>
 
 <li>Summum Bonum: My focus must always be on the ultimate good - acting virtuously.</li>
+</ul>
 
 </section><hr/>
 
