@@ -182,7 +182,9 @@ role="navigation" aria-label="main navigation">
 
 <pre>
 &quot; No Vim não é necessário digitar o comando completo; note que esse wildcard busca pastas recursivamente
+:vimg /regex/ \Projects\SomeProject\**\*.cpp
 &quot; Isso busca em todos os buffers abertos cujo arquivo tem a extensão de C++
+:grep regex *.cpp
 </pre>
 <p>O bom é que, no caso de logs, se você buscar por expressões unívocas, isso já fica no histórico de seus comandos e você pode usar quando quiser para voltar para esses logs (ou se você for maluco e guardar de cabeça seus marks, pode criar um mark de vez).</p>
 
@@ -207,7 +209,9 @@ map &lt;C-J&gt; :tnext&lt;CR&gt;
 
 <pre>
 &quot; Salva estado atual dos buffers
+:mksession \temp\analise.vim
 &quot; Restaura um estado salvo anteriomente
+:so \temp\analise.vim
 </pre>
 <p>O comando <a href="http://vimdoc.sourceforge.net/htmldoc/repeat.html#:source">:source</a> roda um script vim que possui comandos guardados. Ele é um arquivo texto semelhante ao vimrc.</p>
 

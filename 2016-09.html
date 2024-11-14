@@ -608,6 +608,9 @@ C:\Projects\samples\ConsoleApplication5&gt;
 
 <p>Pois é. Tirando essa facilidade, as coisas no Vim para msbuild rodam particularmente bem. Basta alterarmos o makeprg da seguinte maneira:</p>
 
+<pre>
+:set makeprg=msbuild\ /nologo\ /v:q\ /property:GenerateFullPaths=true&lt;CR&gt;
+</pre>
 <p>As opções específicas são para gerar o path completo, as barras invertidas são por causa dessa mania do Vim de dar pau quando tem espaço em tudo.</p>
 
 <p>A partir dessa configuração já é possível compilar um projeto estando em sua pasta:</p>
@@ -616,6 +619,9 @@ C:\Projects\samples\ConsoleApplication5&gt;
 
 <p>Para o Visual Studio 2003 (ou qualquer um usando o devenv.com) é necessário mudar esse comando:</p>
 
+<pre>
+:set makeprg=devenv\ %\ /build\ Debug&lt;CR&gt;
+</pre>
 <p>Sim, temos que escolher uma configuração (o msbuild já escolhe por você). E note que ele usa o arquivo atual (%) para compilar. Isso quer dizer que isso irá exigir do usuário de Vim abrir o sln ou o vcproj e executar o :make a partir daí. De qualquer forma, ele funciona também:</p>
 
 <img src="img/usando_gvim_com_projetos_do_visual_studio_PEr73NL.png"/>
