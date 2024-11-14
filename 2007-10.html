@@ -485,15 +485,15 @@ role="navigation" aria-label="main navigation">
 <pre>
    int main()
    {
-     printf("load dll");
-     HMODULE lockDll = LoadLibrary(_T("dll_lock.dll"));
+     printf(&quot;load dll&quot;);
+     HMODULE lockDll = LoadLibrary(_T(&quot;dll_lock.dll&quot;));
    
      if( lockDll )
      {
        Sleep(2000);
-       printf("free dll");
+       printf(&quot;free dll&quot;);
        FreeLibrary(lockDll), lockDll  = NULL;
-       printf("done");
+       printf(&quot;done&quot;);
      }
    }
 </pre>
@@ -558,13 +558,13 @@ role="navigation" aria-label="main navigation">
    public:
      Base()
      {
-       cout &lt;&lt; "Base()\n";
+       cout &lt;&lt; &quot;Base()\n&quot;;
        m_x = 0;
      }
    
      ~Base()
      {
-       cout &lt;&lt; "~Base()\n";
+       cout &lt;&lt; &quot;~Base()\n&quot;;
      }
    
      int m_x;
@@ -575,7 +575,7 @@ role="navigation" aria-label="main navigation">
    public:
      Deriv()
      {
-       cout &lt;&lt; "Deriv()\n";
+       cout &lt;&lt; &quot;Deriv()\n&quot;;
    
        m_x = 1;
        m_y = 0;
@@ -583,7 +583,7 @@ role="navigation" aria-label="main navigation">
    
      virtual ~Deriv()
      {
-       cout &lt;&lt; "~Deriv()\n";
+       cout &lt;&lt; &quot;~Deriv()\n&quot;;
      }
    
      int m_y;
@@ -614,7 +614,7 @@ role="navigation" aria-label="main navigation">
 <pre>
    virtual ~Base()
    {
-     cout &lt;&lt; "~Base()\n";
+     cout &lt;&lt; &quot;~Base()\n&quot;;
    } 
 </pre>
 <p>Esse é um erro equivalente ao chamar o operador delete usando o ponteiro recebido em func. Se isso fosse feito, seria chamado apenas o destrutor da classe Base. Por falar nisso, temos nesse exemplo um leak de memória (percebeu pela saída que os destrutores não são chamados?). Mas esse é um erro bem menos sutil que o visto pelo nosso amigo typeid amigo-da-onça ;).</p>
@@ -849,7 +849,7 @@ role="navigation" aria-label="main navigation">
 <pre>
    0:000&gt; .dvalloc 10
    Allocated 1000 bytes starting at 00000211`43d60000
-   0:000&gt; ezu 00000211`43d60000 "Obrigado por utilizar o maravilhoso Bloco de Notas!"
+   0:000&gt; ezu 00000211`43d60000 &quot;Obrigado por utilizar o maravilhoso Bloco de Notas!&quot;
    0:000&gt; rr8 = 00000211`43d60000
    0:000&gt; g
    

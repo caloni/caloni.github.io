@@ -275,12 +275,12 @@ role="navigation" aria-label="main navigation">
 using namespace std;
 void LogError(const char* msg)
 {
-    cerr &lt;&lt; "** " &lt;&lt; msg &lt;&lt; endl;
+    cerr &lt;&lt; &quot;** &quot; &lt;&lt; msg &lt;&lt; endl;
 }
 void func()
 {
     //doSomething();
-    throw exception("sbrubles exception");
+    throw exception(&quot;sbrubles exception&quot;);
 }
 int main()
 {
@@ -291,7 +291,7 @@ int main()
     catch(exception&amp; e)
     {
         stringstream ss;
-        ss &lt;&lt; "Error calling func: " &lt;&lt; e.what() &lt;&lt; endl;
+        ss &lt;&lt; &quot;Error calling func: &quot; &lt;&lt; e.what() &lt;&lt; endl;
         const char* errorMessage = ss.str().c_str();
         LogError(errorMessage);
     }
@@ -407,7 +407,7 @@ int main()
    00000000`001ced30 00000000`76de72f8 :  : ntdll!LdrGetKnownDllSectionHandle+0x1a7
    00000000`001cf230 00000000`76dd2ace :  : ntdll!RtlInitCodePageTable+0xe8
    00000000`001cf2a0 00000000`00000000 : : ntdll!LdrInitializeThunk+0xe
-   Para entrar dentro do Inception, é necessário usar a extensão wow64exts e usar o comando ".effmach x86".
+   Para entrar dentro do Inception, é necessário usar a extensão wow64exts e usar o comando &quot;.effmach x86&quot;.
    0:000&gt; .load wow64exts
    0:000&gt; .effmach x86
    Effective machine: x86 compatible (x86)

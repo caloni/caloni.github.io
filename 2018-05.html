@@ -484,7 +484,7 @@ namespace MyStateMachine
             template &lt;class Event, class Fsm&gt;
             void on_entry(Event const&amp;, Fsm&amp;) const
             {
-                cout &lt;&lt; "on_entry Off generic event\n";
+                cout &lt;&lt; &quot;on_entry Off generic event\n&quot;;
             }
         }; 
         struct On :msmf::state&lt;&gt;
@@ -492,22 +492,22 @@ namespace MyStateMachine
             template &lt;class Event, class Fsm&gt;
             void on_entry(Event const&amp;, Fsm&amp;) const
             {
-                cout &lt;&lt; "on_entry On generic event\n";
+                cout &lt;&lt; &quot;on_entry On generic event\n&quot;;
             }
             template &lt;class Fsm&gt;
             void on_entry(Events::Event1 const&amp;, Fsm&amp;) const
             {
-                cout &lt;&lt; "on_entry On Event1\n";
+                cout &lt;&lt; &quot;on_entry On Event1\n&quot;;
             }
             template &lt;class Event, class Fsm&gt;
             void on_exit(Event const&amp;, Fsm&amp;) const
             {
-                cout &lt;&lt; "on_exit On generic event\n";
+                cout &lt;&lt; &quot;on_exit On generic event\n&quot;;
             }
             template &lt;class Fsm&gt;
             void on_exit(Events::Event2 const&amp; evt, Fsm&amp;) const
             {
-                cout &lt;&lt; "on_exit On Event2 (with data " &lt;&lt; evt.data &lt;&lt; ")\n";
+                cout &lt;&lt; &quot;on_exit On Event2 (with data &quot; &lt;&lt; evt.data &lt;&lt; &quot;)\n&quot;;
             }
         };
         struct Tick :msmf::state&lt;&gt;
@@ -515,17 +515,17 @@ namespace MyStateMachine
             template &lt;class Event, class Fsm&gt;
             void on_entry(Event const&amp;, Fsm&amp;) const
             {
-                cout &lt;&lt; "on_entry Tick generic event\n";
+                cout &lt;&lt; &quot;on_entry Tick generic event\n&quot;;
             }
             template &lt;class Fsm&gt;
             void on_entry(Events::Event3 const&amp;, Fsm&amp;) const
             {
-                cout &lt;&lt; "on_entry Tick Event3\n";
+                cout &lt;&lt; &quot;on_entry Tick Event3\n&quot;;
             }
             template &lt;class Event, class Fsm&gt;
             void on_exit(Event const&amp;, Fsm&amp;) const
             {
-                cout &lt;&lt; "on_exit Tick generic event\n";
+                cout &lt;&lt; &quot;on_exit Tick generic event\n&quot;;
             }
         };
         typedef On initial_state; // On is the start
@@ -574,22 +574,22 @@ struct transition_table :mpl::vector&lt;
 template &lt;class Event, class Fsm&gt;
 void on_entry(Event const&amp;, Fsm&amp;) const
 {
-    cout &lt;&lt; "on_entry On generic event\n";
+    cout &lt;&lt; &quot;on_entry On generic event\n&quot;;
 }
 template &lt;class Fsm&gt;
 void on_entry(Events::Event1 const&amp;, Fsm&amp;) const
 {
-    cout &lt;&lt; "on_entry On Event1\n";
+    cout &lt;&lt; &quot;on_entry On Event1\n&quot;;
 }
 template &lt;class Event, class Fsm&gt;
 void on_exit(Event const&amp;, Fsm&amp;) const
 {
-    cout &lt;&lt; "on_exit On generic event\n";
+    cout &lt;&lt; &quot;on_exit On generic event\n&quot;;
 }
 template &lt;class Fsm&gt;
 void on_exit(Events::Event2 const&amp; evt, Fsm&amp;) const
 {
-    cout &lt;&lt; "on_exit On Event2 (with data " &lt;&lt; evt.data &lt;&lt; ")\n";
+    cout &lt;&lt; &quot;on_exit On Event2 (with data &quot; &lt;&lt; evt.data &lt;&lt; &quot;)\n&quot;;
 }
 </pre>
 <p>Quando é criada uma nova máquina de estados o estado inicial é chamado pelo evento on_entry genérico. Como sabemos qual é o estado inicial? Isso é definido pelo typedef initial_state dentro da classe da máquina de estado (que deve herdar de state_machine_def no estilo WTL, com sobrecarga estática):</p>

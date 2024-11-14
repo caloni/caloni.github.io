@@ -263,9 +263,9 @@ role="navigation" aria-label="main navigation">
 
 <pre>
 /*
-"Fastcall registers are used to pass parameters to functions. Fastcall is the
+&quot;Fastcall registers are used to pass parameters to functions. Fastcall is the
 default calling convention on X64 where in the first 4 parameters are passed via
-the registers RCX, RDX, R8, R9." - X64 Deep Dive
+the registers RCX, RDX, R8, R9.&quot; - X64 Deep Dive
 int TestFastCall() {
 push        rdi
 sub         rsp,30h # RBP is no longer used as frame pointer.
@@ -288,9 +288,9 @@ ret
 
 <pre>
 /*
-"X64 compiler can optimize the last call made from a function by replacing it
+&quot;X64 compiler can optimize the last call made from a function by replacing it
 with a jump to the callee. This avoids the overhead of setting up the stack
-frame for the callee." - x64 Deep Dive
+frame for the callee.&quot; - x64 Deep Dive
 # TailCall3
     return a + b;
 lea         eax,[rcx+rdx]
@@ -309,10 +309,10 @@ jmp         TailCall3
 
 <pre>
 /*
-"Unlike the X86 CPU where the EBP register is used to access parameters and
+&quot;Unlike the X86 CPU where the EBP register is used to access parameters and
 local variables on the stack, X64 functions do not make use of the RBP register
 for this purpose i.e. do not use the EBP register as a
-frame pointer." - x64 Deep Dive
+frame pointer.&quot; - x64 Deep Dive
 # Win32 (x86)
 int TestFramePointerOmission() {
     return 1;
@@ -404,14 +404,14 @@ ret
 
 <pre>
 /*
-"(...) homing space and is used to store parameter values if either the function
+&quot;(...) homing space and is used to store parameter values if either the function
 accesses the parameters by address instead of by value or if the function is
 compiled with the /homeparams flag. The minimum size of this homing space is
 0x20 bytes or four 64-bit slots, even if the function takes less than 4
 parameters. When the homing space is not used to store parameter values, the
-compiler uses it to save non-volatile registers." - x64 Deep Dive
-"The register based parameter homing space exists only for non-leaf 
-functions." - x64 Deep Dive
+compiler uses it to save non-volatile registers.&quot; - x64 Deep Dive
+&quot;The register based parameter homing space exists only for non-leaf 
+functions.&quot; - x64 Deep Dive
 # Win64 Debug
 int HomingSpaceNonLeaf(int p1, int p2, int p3, int p4) {
 mov         dword ptr [rsp+20h],r9d # homing space saving params
@@ -435,14 +435,14 @@ call        HomingSpaceNonLeaf
 
 <pre>
 /*
-"The value of the Child-SP register displayed by the debugger's "k" command
+&quot;The value of the Child-SP register displayed by the debugger's &quot;k&quot; command
 represents the address at which the stack pointer (RSP) points to, as the point
 where the function displayed in that frame, has finished executing its prolog.
 The next item that would be pushed on the stack would be the return address of
 the function as it invokes its callees. Since X64 functions do not modify the
 value of RSP after the function prolog, any stack accesses performed by the rest
 of the function are done relative to this position of the stack pointer. This
-includes access to stack based parameters and local variables." - x64 Deep Dive
+includes access to stack based parameters and local variables.&quot; - x64 Deep Dive
 */
 # Win64 Debug
         p5 = i + j + (i % 2 ? p1 : p2) + (j % 2 ? p3 : p4);
@@ -487,7 +487,7 @@ mov         dword ptr [rcx],eax
 
 <pre>
 /*
-"(...) as execution progresses within the function body, the contents of the
+&quot;(...) as execution progresses within the function body, the contents of the
 parameter registers change and the initial parameter value gets overwritten. So,
 to determine the value of these register based parameters at any point during
 function execution, one needs to find out - where is the value of the parameter
@@ -502,7 +502,7 @@ parameter values. Determine if the parameters are saved from the registers into
 memory. If so, the memory location can be examined to determine the parameter
 values. Determine if the parameters are saved into non-volatile registers and if
 those registers are saved by the callee. If so, the saved non-volatile register
-values can be examined to determine the parameter values." - x64 Deep Dive
+values can be examined to determine the parameter values.&quot; - x64 Deep Dive
 # Win64 Release
 1. Parameters are loaded into the registers from memory.
 mov         dword ptr [rbp+30h],5 # p5 = 5
@@ -934,7 +934,7 @@ void MatchingCharacters(string s)
     map&lt;char, int&gt; m; // declarar um map entre char e int
     for_each(s.begin(), s.end(), [&amp;m] { m[c] += 1; }); // loop caractere a caractere incrementando contador para cada um
     for( auto c: m ) {
-      cout &lt;&lt; c.first &lt;&lt; ": " &lt;&lt; c.second &lt;&lt; "\n";
+      cout &lt;&lt; c.first &lt;&lt; &quot;: &quot; &lt;&lt; c.second &lt;&lt; &quot;\n&quot;;
     }
 }
 </pre>
@@ -1150,7 +1150,7 @@ void Fibonacci()
 {
     int num1 = 0, num2 = 1;
     int total = 5;
-    cout &lt;&lt; "fibonacci of first " &lt;&lt; total &lt;&lt; " elements\n";
+    cout &lt;&lt; &quot;fibonacci of first &quot; &lt;&lt; total &lt;&lt; &quot; elements\n&quot;;
     for (int i = 0; i &lt; total; ++i)
     {
         int result = num1 + num2;
@@ -1447,8 +1447,8 @@ int main() {
         {1, 999}, {1, 599} };
     for (const vector&lt;int&gt;&amp; i : intervals) {
         int isum = sum(1, 1, 999, i[0], i[1], tree);
-        cout &lt;&lt; "the interval [" &lt;&lt; i[0] &lt;&lt; "," &lt;&lt; i[1] 
-            &lt;&lt; "] has the value " &lt;&lt; isum &lt;&lt; endl;
+        cout &lt;&lt; &quot;the interval [&quot; &lt;&lt; i[0] &lt;&lt; &quot;,&quot; &lt;&lt; i[1] 
+            &lt;&lt; &quot;] has the value &quot; &lt;&lt; isum &lt;&lt; endl;
     }
 }
 </pre>
@@ -1579,22 +1579,22 @@ vector&lt;int&gt; TestCase(vector&lt;string&gt; operations, vector&lt;vector&lt;
     HashTable hashTable(DEFAULT_HASH_TABLE_SIZE);
     vector&lt;int&gt; results;
     for( int i = 0; i &lt; operations.size(); ++i ) {
-        if (operations[i] == "get") {
+        if (operations[i] == &quot;get&quot;) {
             if (auto* item = FindItem(hashTable, operands[i][0]))
                 results.push_back((*item)[1]);
         }
-        else if (operations[i] == "insert") {
+        else if (operations[i] == &quot;insert&quot;) {
             if (auto* item = FindItem(hashTable, operands[i][0]))
                 (*item)[1] = operands[i][1];
             else
                 hashTable[HashFunction(operands[i][0], hashTable.tableSize)].push_back(operands[i]);
         }
-        else if (operations[i] == "add_to_values") {
+        else if (operations[i] == &quot;add_to_values&quot;) {
             for (int j = 0; j &lt; hashTable.tableSize; ++j)
                 for (auto&amp; item : hashTable[j])
                     item[1] += operands[i][0];
         }
-        else if (operations[i] == "add_to_keys") {
+        else if (operations[i] == &quot;add_to_keys&quot;) {
             for (int j = 0; j &lt; hashTable.tableSize; ++j)
                 for (auto&amp; item : hashTable[j])
                     item[0] += operands[i][0];
@@ -1610,15 +1610,15 @@ vector&lt;int&gt; TestCase(vector&lt;string&gt; operations, vector&lt;vector&lt;
 void TestCase005() {
     vector&lt;string&gt; operations;
     vector&lt;vector&lt;int&gt;&gt; operands;
-    operations.push_back("insert");
+    operations.push_back(&quot;insert&quot;);
     operands.push_back({ 1, 2 });
-    operations.push_back("insert");
+    operations.push_back(&quot;insert&quot;);
     operands.push_back({ 2, 3 });
-    operations.push_back("add_to_values");
+    operations.push_back(&quot;add_to_values&quot;);
     operands.push_back({ 2 });
-    operations.push_back("add_to_keys");
+    operations.push_back(&quot;add_to_keys&quot;);
     operands.push_back({ -150 });
-    operations.push_back("get");
+    operations.push_back(&quot;get&quot;);
     operands.push_back({ -148 });
     vector&lt;int&gt; results = TestCase(operations, operands);
     assert(results.size() == 1);

@@ -264,7 +264,7 @@ role="navigation" aria-label="main navigation">
 <pre>
 #include &lt;iostream&gt;
 #include &lt;windows.h&gt;
-#pragma comment(lib, "user32")
+#pragma comment(lib, &quot;user32&quot;)
 int main()
 {
     if( ! SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_FULLSCREEN_MODE | CONSOLE_WINDOWED_MODE, NULL) )
@@ -272,7 +272,7 @@ int main()
         // Se falhas com GLE 120 (função não suportada) usar função abaixo.
         ::SendMessage(::GetConsoleWindow(), WM_SYSKEYDOWN, VK_RETURN, 0x20000000);
     }
-    system("chcp 65001");
+    system(&quot;chcp 65001&quot;);
 }
 </pre>
 <h3>Configurando o git para controlar o fonte rapidamente</h3>
@@ -460,8 +460,8 @@ import SimpleHTTPServer
 import SocketServer
 PORT = 8000
 Handler = SimpleHTTPServer.SimpleHTTPRequestHandler
-httpd = SocketServer.TCPServer(("", PORT), Handler)
-print "serving at port", PORT
+httpd = SocketServer.TCPServer((&quot;&quot;, PORT), Handler)
+print &quot;serving at port&quot;, PORT
 httpd.serve_forever()
 </pre>
 <p>Esse script pode ser compilado pela ferramenta py2exe, instalável pelo próprio Python. É necessário criar um arquivo setup.py na mesma pasta do script e através desse script gerar uma pasta dist com o script "compilado" e pronto para ser executado.</p>

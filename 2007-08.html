@@ -172,7 +172,7 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    /*--------------------------------------------------------
-     HELLOWIN.C -- Displays "Hello, Windows" in client area
+     HELLOWIN.C -- Displays &quot;Hello, Windows&quot; in client area
      (c) Charles Petzold, 1990
      --------------------------------------------------------*/
    
@@ -183,7 +183,7 @@ role="navigation" aria-label="main navigation">
    int PASCAL WinMain (HANDLE hInstance, HANDLE hPrevInstance,
        LPSTR lpszCmdParam, int nCmdShow)
    {
-     static char szAppName[] = "HelloWin" ;
+     static char szAppName[] = &quot;HelloWin&quot; ;
      HWND        hwnd ;
      MSG         msg ;
      WNDCLASS    wndclass ;
@@ -206,7 +206,7 @@ role="navigation" aria-label="main navigation">
    
      hwnd = CreateWindow (
        szAppName,           // window class name
-       "The Hello Program", // window caption
+       &quot;The Hello Program&quot;, // window caption
        WS_OVERLAPPEDWINDOW, // window style
        CW_USEDEFAULT,       // initial x position
        CW_USEDEFAULT,       // initial y position
@@ -241,7 +241,7 @@ role="navigation" aria-label="main navigation">
    
          GetClientRect (hwnd, &amp;rect) ;
    
-         DrawText (hdc, "Hello, Windows!", -1, &amp;rect,
+         DrawText (hdc, &quot;Hello, Windows!&quot;, -1, &amp;rect,
              DT_SINGLELINE | DT_CENTER | DT_VCENTER) ;
    
          EndPaint (hwnd, &amp;ps) ;
@@ -394,7 +394,7 @@ role="navigation" aria-label="main navigation">
    00411F61 ...
    00411F73 catch_exception
    00411F74 mov ESP, 0012FD3C ; ESP = 0012FD3C, como em CallFunc
-   00411F75 jmp 00411FA3 ; "pula" para CallFunc::next_instruction
+   00411F75 jmp 00411FA3 ; &quot;pula&quot; para CallFunc::next_instruction
 </pre>
 <p>Toda essa esculhambada em assembly não precisa ser necessariamente feita em linguagem de baixo nível. Foi apenas uma maneira que encontrei pra ilustrar as diferenças entre retorno baseado em pilha e alteração no fluxo do código. Como já foi dito, para a sorte e o bem-estar de todos, essa mesma técnica pode ser implementada com funções C da biblioteca ANSI:</p>
 
@@ -446,7 +446,7 @@ role="navigation" aria-label="main navigation">
      {
        string line;
    
-       cout &lt;&lt; "Type something\n";
+       cout &lt;&lt; &quot;Type something\n&quot;;
        getline(cin, line);
    
        jmp_buf env;
@@ -493,7 +493,7 @@ role="navigation" aria-label="main navigation">
      {
        string line;
    
-       cout &lt;&lt; "Type something\n";
+       cout &lt;&lt; &quot;Type something\n&quot;;
        getline(cin, line);
    
        ANTIDEBUG(( cout &lt;&lt; line &lt;&lt; endl ));
@@ -577,7 +577,7 @@ role="navigation" aria-label="main navigation">
       conversion of type 'x' of the next argument, other character
       sequences are printed verbatim.   Thus
    
-     printf("delta is %d*n", delta);
+     printf(&quot;delta is %d*n&quot;, delta);
    
      will convert the variable delta to decimal (%d) and print the
      string with the converted form of delta in place of %d.   The
@@ -651,8 +651,8 @@ role="navigation" aria-label="main navigation">
 <p>Para criar um junction pode-se usar uma ferramenta disponível no Windows Resource Kit chamada linkd.exe. Porém, para evitar de ter que baixar todo o pacote para usar um único arquivo, existe uma outra ferramenta desenvolvida à parte por Mark Russinovich chamada... junction. O comando para criar junctions é bem fácil e direto:</p>
 
 <pre>
-   junction c:\library\mssdk "path where is microsoft platform sdk"
-   junction c:\library\ddk "path where is winddk"
+   junction c:\library\mssdk &quot;path where is microsoft platform sdk&quot;
+   junction c:\library\ddk &quot;path where is winddk&quot;
 </pre>
 <p>E é isso aí. A partir de agora tanto as pastas originais quanto os junctions criados para elas respondem como se fossem a mesma coisa, porém com paths diferentes.</p>
 
@@ -772,15 +772,15 @@ role="navigation" aria-label="main navigation">
    
    void _tmain(void)
    {
-     TCHAR buffer[256] = TEXT("");
-     TCHAR szDescription[8][32] = {TEXT("NetBIOS"), 
-     TEXT("DNS hostname"), 
-     TEXT("DNS domain"), 
-     TEXT("DNS fully-qualified"), 
-     TEXT("Physical NetBIOS"), 
-     TEXT("Physical DNS hostname"), 
-     TEXT("Physical DNS domain"), 
-     TEXT("Physical DNS fully-qualified")};
+     TCHAR buffer[256] = TEXT(&quot;&quot;);
+     TCHAR szDescription[8][32] = {TEXT(&quot;NetBIOS&quot;), 
+     TEXT(&quot;DNS hostname&quot;), 
+     TEXT(&quot;DNS domain&quot;), 
+     TEXT(&quot;DNS fully-qualified&quot;), 
+     TEXT(&quot;Physical NetBIOS&quot;), 
+     TEXT(&quot;Physical DNS hostname&quot;), 
+     TEXT(&quot;Physical DNS domain&quot;), 
+     TEXT(&quot;Physical DNS fully-qualified&quot;)};
      int cnf = 0;
      DWORD dwSize = sizeof(buffer);
    
@@ -788,11 +788,11 @@ role="navigation" aria-label="main navigation">
      {
        if (!GetComputerNameEx( (COMPUTER_NAME_FORMAT)cnf, buffer, &amp;dwSize) )
        {
-         _tprintf(TEXT("GetComputerNameEx failed (%d)\n"),
+         _tprintf(TEXT(&quot;GetComputerNameEx failed (%d)\n&quot;),
          GetLastError());
          return;
        }
-         else _tprintf(TEXT("%s: %s\n"), szDescription[cnf], buffer);
+         else _tprintf(TEXT(&quot;%s: %s\n&quot;), szDescription[cnf], buffer);
    
        dwSize = sizeof(buffer);
        ZeroMemory(buffer, dwSize);
@@ -956,12 +956,12 @@ role="navigation" aria-label="main navigation">
 <pre>
    
    ...
-   bp user32!GetDC ".echo GetDC; g"
-   bp user32!GetDesktopWindow ".echo GetDesktopWindow; g"
-   bp user32!GetDlgCtrlID ".echo GetDlgCtrlID; g"
-   bp user32!GetDlgItem ".echo GetDlgItem; g"
-   bp user32!GetDlgItemTextW ".echo GetDlgItemTextW; g"
-   bp user32!GetFocus ".echo GetFocus; g"
+   bp user32!GetDC &quot;.echo GetDC; g&quot;
+   bp user32!GetDesktopWindow &quot;.echo GetDesktopWindow; g&quot;
+   bp user32!GetDlgCtrlID &quot;.echo GetDlgCtrlID; g&quot;
+   bp user32!GetDlgItem &quot;.echo GetDlgItem; g&quot;
+   bp user32!GetDlgItemTextW &quot;.echo GetDlgItemTextW; g&quot;
+   bp user32!GetFocus &quot;.echo GetFocus; g&quot;
    ...
 </pre>
 <p>O comando "bp" cria um breakpoint no endereço requisitado. O que está entre aspas são os comandos que você deseja executar quando o breakpoint for disparado. No caso, para todas as funções será impresso o seu nome (comando ".echo") e a execução irá continuar (comando "g"). Ao rodar o programa, as chamadas das funções são mostradas na saída do depurador:</p>
@@ -983,7 +983,7 @@ role="navigation" aria-label="main navigation">
 <p>Lindo, não? Porém ainda podem estar sendo chamadas as funções obtidas pela segunda técnica, a do GetProcAddress. Para esse caso devemos ir um pouquinho mais fundo e rodar o executável duas vezes. Na primeira, coletamos as funções que são obtidas por essa técnica através do seguinte comando:</p>
 
 <pre>
-   bp kernel32!GetProcAddress "da poi(esp + 8); g"
+   bp kernel32!GetProcAddress &quot;da poi(esp + 8); g&quot;
 </pre>
 <p>O comando "da" exibe o conteúdo de uma string em C (caracteres ANSI e terminada em zero) na memória. A memória no caso é o "apontado do valor contido no segundo parâmetro da pilha". Complicado? Nem tanto: lembre-se que o ESP aponta sempre pro endereço de retorno da função chamadora e os parâmetros são sempre empilhados na ordem inversa da declaração em C. Logo, se o protótipo de GetProcAddress é:</p>
 
@@ -996,15 +996,15 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    ...
-   746e29f8  "ImmReleaseContext"
-   746e2a30  "ImmNotifyIME"
-   746e2934  "CtfImmEnterCoInitCountSkipMode"
-   746e2978  "CtfImmLeaveCoInitCountSkipMode"
-   746e29bc  "ImmGetDefaultIMEWnd"
-   746e2a64  "ImmSetConversionStatus"
-   746e2aa0  "ImmGetConversionStatus"
-   746e2adc  "ImmGetProperty"
-   746e2b10  "ImmGetOpenStatus"
+   746e29f8  &quot;ImmReleaseContext&quot;
+   746e2a30  &quot;ImmNotifyIME&quot;
+   746e2934  &quot;CtfImmEnterCoInitCountSkipMode&quot;
+   746e2978  &quot;CtfImmLeaveCoInitCountSkipMode&quot;
+   746e29bc  &quot;ImmGetDefaultIMEWnd&quot;
+   746e2a64  &quot;ImmSetConversionStatus&quot;
+   746e2aa0  &quot;ImmGetConversionStatus&quot;
+   746e2adc  &quot;ImmGetProperty&quot;
+   746e2b10  &quot;ImmGetOpenStatus&quot;
    ...
 </pre>
 <p>Daí é só organizar a lista obtida em ordem alfabética, acabar com duplicidades e criar o mesmo tipo de breakpoint que foi usado para as funções estáticas (pode ser sem o nome da DLL porque, embora não recomendado, o WinDbg se vira para encontrar os símbolos). Depois de criados os comandos, rodamos novamente o executável e, logo no início, já colocamos todos os breakpoints das funções coletadas.</p>

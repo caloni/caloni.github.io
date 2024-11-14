@@ -343,7 +343,7 @@ role="navigation" aria-label="main navigation">
    added winboard/extends/infboard/msvc.mak
    added winboard/extends/infboard/support.c
    
-   C:\Tests\project1&gt;bzr commit -m "Comentario sobre a revisao"
+   C:\Tests\project1&gt;bzr commit -m &quot;Comentario sobre a revisao&quot;
    Committing to: C:/Tests/project1/
    added AUTHORS
    added COPYING
@@ -394,7 +394,7 @@ role="navigation" aria-label="main navigation">
    added winboard/extends/infboard/msvc.mak
    added winboard/extends/infboard/support.c
    
-   C:\Tests\project1&gt;bzr commit -m "Comentario sobre a revisao"
+   C:\Tests\project1&gt;bzr commit -m &quot;Comentario sobre a revisao&quot;
    Committing to: C:/Tests/project1/
    added AUTHORS
    added COPYING
@@ -435,9 +435,9 @@ role="navigation" aria-label="main navigation">
    
    C:\Tests\client&gt;cd project1
    
-   C:\Tests\client\project1&gt;echo "New changes" &gt;&gt; FAQ
+   C:\Tests\client\project1&gt;echo &quot;New changes&quot; &gt;&gt; FAQ
    
-   C:\Tests\client\project1&gt;bzr commit -m "New changes comment"
+   C:\Tests\client\project1&gt;bzr commit -m &quot;New changes comment&quot;
    Committing to: C:/Tests/server/project1/
    modified FAQ
    Committed revision 2.
@@ -565,7 +565,7 @@ role="navigation" aria-label="main navigation">
    C:\Tests\linux&gt;bzr add
    added lnx
    
-   C:\Tests\linux&gt;bzr commit -m "Linux 1"
+   C:\Tests\linux&gt;bzr commit -m &quot;Linux 1&quot;
    Committing to: C:/Tests/linux/
    added lnx
    Committed revision 1.
@@ -578,7 +578,7 @@ role="navigation" aria-label="main navigation">
    C:\Tests\linux&gt;bzr add
    added lnx2
    
-   C:\Tests\linux&gt;bzr commit -m "Linux 2"
+   C:\Tests\linux&gt;bzr commit -m &quot;Linux 2&quot;
    Committing to: C:/Tests/linux/
    added lnx2
    Committed revision 2.
@@ -597,7 +597,7 @@ role="navigation" aria-label="main navigation">
    C:\Tests\windows&gt;bzr add
    added win1
    
-   C:\Tests\windows&gt;bzr commit -m "Windows 1"
+   C:\Tests\windows&gt;bzr commit -m &quot;Windows 1&quot;
    Committing to: C:/Tests/windows/
    added win1
    Committed revision 1.
@@ -609,7 +609,7 @@ role="navigation" aria-label="main navigation">
    C:\Tests\windows&gt;bzr add
    added win2
    
-   C:\Tests\windows&gt;bzr commit -m "Windows 2"
+   C:\Tests\windows&gt;bzr commit -m &quot;Windows 2&quot;
    Committing to: C:/Tests/windows/
    added win2
    Committed revision 2.
@@ -772,9 +772,9 @@ role="navigation" aria-label="main navigation">
 #include &lt;stdio.h&gt;
 int main()
 {
-    HMODULE dll1 = LoadLibrary(".\\DLL\\DLL.dll");
-    HMODULE dll2 = LoadLibrary(".\\DLL.dll");
-    printf("First DLL: %p\nSecond DLL: %p",
+    HMODULE dll1 = LoadLibrary(&quot;.\\DLL\\DLL.dll&quot;);
+    HMODULE dll2 = LoadLibrary(&quot;.\\DLL.dll&quot;);
+    printf(&quot;First DLL: %p\nSecond DLL: %p&quot;,
         dll1, dll2);
     return 0;
 }
@@ -889,7 +889,7 @@ BOOL WINAPI DllMain(HINSTANCE inst, DWORD reason, PVOID reserv)
    cd _template
    bzr init _template
    hack hack hack
-   bzr commit -m "Primeira versao de nosso projeto-modelo"
+   bzr commit -m &quot;Primeira versao de nosso projeto-modelo&quot;
 </pre>
 <p>Como podemos ver acima, o projeto modelo segue o mesmo padrão de repositório compartilhado. Os projetos que criarmos serão baseados nesse projeto modelo, mas em outro repositório compartilhado.</p>
 
@@ -898,7 +898,7 @@ BOOL WINAPI DllMain(HINSTANCE inst, DWORD reason, PVOID reserv)
    bzr branch _template\_template novo-projeto\novo-projeto
    cd novo-projeto\novo-projeto
    hack hack hack
-   bzr commit -m "Primeira versao de nosso novo projeto"
+   bzr commit -m &quot;Primeira versao de nosso novo projeto&quot;
 </pre>
 <p>A ramificação dos projetos estará sempre no mesmo lugar, independente da pasta raiz.</p>
 
@@ -932,7 +932,7 @@ BOOL WINAPI DllMain(HINSTANCE inst, DWORD reason, PVOID reserv)
 <p>Para manter o Bazaar eternamente rodando, usamos <a href="http://www.driverentry.com.br/blog/2007/02/prog2svc-servio-sem-trabalho.html">o programa do DriverEntry</a> que transforma qualquer coisa no formato de um serviço <a href="http://en.wikipedia.org/wiki/Wonder_Twins">de gelo</a>.</p>
 
 <pre>
-   prog2svc -add Bazaar "c:\program files\Bazaar\bzr.exe serve --allow-writes --diretory=c:\src"
+   prog2svc -add Bazaar &quot;c:\program files\Bazaar\bzr.exe serve --allow-writes --diretory=c:\src&quot;
 </pre>
 <p>Ou não sei usar direito esse programa ou ele não permite uso de aspas no nome do aplicativo junto de argumentos. Por isso tive que editar o registro onde ele fica para colocar aspas duplas em torno do bzr.exe.</p>
 
@@ -971,8 +971,8 @@ BOOL WINAPI DllMain(HINSTANCE inst, DWORD reason, PVOID reserv)
 <p>Um checkout funciona como o branch, só que faz um bind (ligação) com o servidor. O que quer dizer que qualquer commit feito localmente irá parar imediatamente também no servidor, a não ser que seja usado o parâmetro --local.</p>
 
 <pre>
-   bzr commit -m "Eu sei que isso vai ser feito aqui e no servidor"
-   bzr commit --local -m "Apenas umas mudancinhas; depois jogo no servidor"
+   bzr commit -m &quot;Eu sei que isso vai ser feito aqui e no servidor&quot;
+   bzr commit --local -m &quot;Apenas umas mudancinhas; depois jogo no servidor&quot;
 </pre>
 <p>O modo checkout permite usar o comando update para ver se existem mudanças entre a máquina local e o servidor, diferente do modo standalone, onde o update apenas compara com o branch local e o diretório de trabalho.</p>
 
@@ -1145,7 +1145,7 @@ class MyClass
     public:
       void MyMethod()
       {
-        cout &lt;&lt; typeid(*this).name() &lt;&lt; "::MyMethod" &lt;&lt; endl;
+        cout &lt;&lt; typeid(*this).name() &lt;&lt; &quot;::MyMethod&quot; &lt;&lt; endl;
       }
 };
 int main()
@@ -1173,7 +1173,7 @@ class MyClass
     public:
       virtual void MyMethod()
       {
-        cout &lt;&lt; typeid(*this).name() &lt;&lt; "::MyMethod" &lt;&lt; endl;
+        cout &lt;&lt; typeid(*this).name() &lt;&lt; &quot;::MyMethod&quot; &lt;&lt; endl;
       }
 };
 class MyDerivatedClass1 : public MyClass { };

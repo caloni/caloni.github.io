@@ -236,10 +236,10 @@ role="navigation" aria-label="main navigation">
            CardStats[i]++;
      }
    }
-   printf("cards stats: \n");
+   printf(&quot;cards stats: \n&quot;);
    for( i = 0; i &lt; 52; ++i )
    {
-     printf("%d ", CardStats[i]);
+     printf(&quot;%d &quot;, CardStats[i]);
    }
 </pre>
 <p>A versão original do algoritmo rodando um milhão de vezes demonstra o viés de forma descarada:</p>
@@ -291,19 +291,19 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    time(&amp;curr_time);
-   printf("how is the flop? ");
-   scanf("%d %d %d", &amp;flop1, &amp;flop2, &amp;flop3);
+   printf(&quot;how is the flop? &quot;);
+   scanf(&quot;%d %d %d&quot;, &amp;flop1, &amp;flop2, &amp;flop3);
    while( 1 )
    {
      DeckShuffle(curr_time);
      if( Card[0] == flop1 &amp;&amp; Card[1] == flop2 &amp;&amp; Card[2] == flop3 )
      {
-       printf("%d: ", (int) curr_time);
+       printf(&quot;%d: &quot;, (int) curr_time);
        for( i = 0; i &lt; 52; ++i )
        {
-         printf("%d ", Card[i]);
+         printf(&quot;%d &quot;, Card[i]);
        }
-       printf("\n");
+       printf(&quot;\n&quot;);
      }
      curr_time--;
    }
@@ -316,25 +316,25 @@ role="navigation" aria-label="main navigation">
 <p>  </p>
 
 <pre>
-   printf("(for you) your cards, player#%d: %d %d\n", 
+   printf(&quot;(for you) your cards, player#%d: %d %d\n&quot;, 
      player, Card[3 + (player-1) * 2], Card[3 + (player-1) * 2 + 1]);
-   printf("(for all) flop: %d %d %d\n", Card[0], Card[1], Card[2]);
+   printf(&quot;(for all) flop: %d %d %d\n&quot;, Card[0], Card[1], Card[2]);
    player1_card1 = Card[3];
    player1_card2 = Card[4];
 </pre>
 <p>  </p>
 
 <pre>
-   printf("do you know which cards have player #1? ");
-   scanf("%d %d", &amp;player1_guess1, &amp;player1_guess2);
+   printf(&quot;do you know which cards have player #1? &quot;);
+   scanf(&quot;%d %d&quot;, &amp;player1_guess1, &amp;player1_guess2);
    if( player1_guess1 == player1_card1 
      &amp;&amp; player1_guess2 == player1_card2 )
    {
-     printf("acerto, miseravi!\n");
+     printf(&quot;acerto, miseravi!\n&quot;);
    }
    else
    {
-     printf("no no no, I am still secure!\n");
+     printf(&quot;no no no, I am still secure!\n&quot;);
    }
 </pre>
 <p>Para rodar os programas basta iniciar o cassino e copiar as cartas do flop. Em seguida rodar o exploit e colar o flop. A partir daí ele começa a calcular e quando houver um deck em que aparecem as suas cartas copiar e colar as cartas do adversário, ou seja, o jogador #1, que são as cartas logo depois do flop.</p>

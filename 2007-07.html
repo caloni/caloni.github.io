@@ -162,10 +162,10 @@ role="navigation" aria-label="main navigation">
 <p>To put Google search shortcuts inside Firefox probably your search plugin will be in one of these two folder bellow. Try one of them: %programfiles%, Mozilla Firefox, searchplugins or %appdata%, MozillaFirefoxProfiles, *.defaultsearchplugins. The search plugin file has the name google.xml and you can edit it using notepad or another simple text editor. Bellow is the point where you must insert the new line that will get the plugin able to show the shortcuts inside Google.</p>
 
 <pre>
-   &lt;Url type="text/html" method="GET" template="http://www.google.com/search"&gt;
-   &lt;Param name="q" value="{searchTerms}"/&gt;
+   &lt;Url type=&quot;text/html&quot; method=&quot;GET&quot; template=&quot;http://www.google.com/search&quot;&gt;
+   &lt;Param name=&quot;q&quot; value=&quot;{searchTerms}&quot;/&gt;
    &lt;...&gt;
-   &lt;Param name="esrch" value="BetaShortcuts"/&gt; &lt;!-- Google Shortcuts Here --&gt;
+   &lt;Param name=&quot;esrch&quot; value=&quot;BetaShortcuts&quot;/&gt; &lt;!-- Google Shortcuts Here --&gt;
    &lt;!-- Dynamic parameters --&gt;
    &lt;...&gt;
    &lt;/Url&gt;
@@ -189,7 +189,7 @@ role="navigation" aria-label="main navigation">
    {
      int f1,f2,s=0;
         for( f1 = 1; (f1 == 11 &amp;&amp; s != 5) ? s=5, f1=0, putchar(10) : ( f1 &lt;= 10 ) ? f1 = f1 : f1 = 12, f1 &lt;= 11 ; f1++ )
-         for( f2 = 1 + s; f2 &lt;= 5+s; f2++ ) printf("%dx%d=%d%c", f2, f1, f1 * f2, ( f2 == 5 + s ) ? 10 : 9);
+         for( f2 = 1 + s; f2 &lt;= 5+s; f2++ ) printf(&quot;%dx%d=%d%c&quot;, f2, f1, f1 * f2, ( f2 == 5 + s ) ? 10 : 9);
      return 0;
    } 
 </pre>
@@ -459,7 +459,7 @@ role="navigation" aria-label="main navigation">
 <pre>
    
    template&lt;typename T&gt;
-   static_assert( sizeof(T) &gt;= sizeof(int), "T is not big enough" )
+   static_assert( sizeof(T) &gt;= sizeof(int), &quot;T is not big enough&quot; )
 </pre>
 <p>Existem outros lugares onde esse novo comando pode ser usado. Para saber quando usá-lo, lembre-se que a verificação é feita durante a compilação, diferente do assert tradicional, que é chamada em tempo de execução.</p>
 

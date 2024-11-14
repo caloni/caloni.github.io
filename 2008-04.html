@@ -82,7 +82,7 @@ role="navigation" aria-label="main navigation">
    catch(...) // note: this IS right!
    {
        // do something about
-       // just like "throw" over here
+       // just like &quot;throw&quot; over here
    }
 </pre>
 <p>Apesar dessa capacidade, não conseguimos parar o lançamento da exceção. Após seu lançamento, caímos no bloco catch abaixo do corpo do construtor e a exceção é lançada novamente, como se houvesse uma intrução throw no final do catch.</p>
@@ -104,7 +104,7 @@ role="navigation" aria-label="main navigation">
    
        void print()
        {
-         std::cout &lt;&lt; "The number: " &lt;&lt; m_x &lt;&lt; std::endl;
+         std::cout &lt;&lt; &quot;The number: &quot; &lt;&lt; m_x &lt;&lt; std::endl;
        }
    
      private:
@@ -117,12 +117,12 @@ role="navigation" aria-label="main navigation">
      public:
        Victim() try : m_explode(5)
        {
-         std::cout &lt;&lt; "You're supposed to NOT seeing this...\n";
+         std::cout &lt;&lt; &quot;You're supposed to NOT seeing this...\n&quot;;
        }
        catch(...) 
        { 
-         std::cerr &lt;&lt; "Something BAD hapenned\n";
-         std::cerr &lt;&lt; "We're going to blow up\n";
+         std::cerr &lt;&lt; &quot;Something BAD hapenned\n&quot;;
+         std::cerr &lt;&lt; &quot;We're going to blow up\n&quot;;
          // just like 'throw' over here
        }
    
@@ -143,7 +143,7 @@ role="navigation" aria-label="main navigation">
      }
      catch(...)
      {
-       std::cerr &lt;&lt; "Something BAD BAD happenned...\n";
+       std::cerr &lt;&lt; &quot;Something BAD BAD happenned...\n&quot;;
      }
    }
 </pre>
@@ -222,7 +222,7 @@ role="navigation" aria-label="main navigation">
          break;
    
        case ':': // definição
-         cout &lt;&lt; line &lt;&lt; "&lt;br&gt;\n";
+         cout &lt;&lt; line &lt;&lt; &quot;&lt;br&gt;\n&quot;;
          break;
        }
      }
@@ -243,15 +243,15 @@ role="navigation" aria-label="main navigation">
      string::size_type pos2 = 0;
    
      while( (pos1 = str.find('&lt;')) != string::npos )
-       str.replace(pos1, 1, "&lt;");
+       str.replace(pos1, 1, &quot;&lt;&quot;);
    
      while( (pos1 = str.find('&gt;')) != string::npos )
-       str.replace(pos1, 1, "&gt;");
+       str.replace(pos1, 1, &quot;&gt;&quot;);
    
      while( (pos1 = str.find('{')) != string::npos )
      {
        if( pos1 &amp;&amp; str[pos1 - 1] == '\\' ) // caractere de escape
-         str.replace(pos1 - 1, 2, "{");
+         str.replace(pos1 - 1, 2, &quot;{&quot;);
        else
        {
          string subStr;
@@ -272,17 +272,17 @@ role="navigation" aria-label="main navigation">
          if( word[0] == ' ' )
          word.erase(0, 1);
    
-         if( fmt.find("\\i") != string::npos )
-           word = "&lt;i&gt;" + word + "&lt;/i&gt;";
+         if( fmt.find(&quot;\\i&quot;) != string::npos )
+           word = &quot;&lt;i&gt;&quot; + word + &quot;&lt;/i&gt;&quot;;
    
-         if( fmt.find("\\b") != string::npos )
-           word = "&lt;b&gt;" + word + "&lt;/b&gt;";
+         if( fmt.find(&quot;\\b&quot;) != string::npos )
+           word = &quot;&lt;b&gt;&quot; + word + &quot;&lt;/b&gt;&quot;;
    
-         if( fmt.find("\\f20") != string::npos )
-           word = "&lt;font style=\"text-transform: uppercase;\"&gt;" + word + "&lt;/font&gt;";
+         if( fmt.find(&quot;\\f20&quot;) != string::npos )
+           word = &quot;&lt;font style=\&quot;text-transform: uppercase;\&quot;&gt;&quot; + word + &quot;&lt;/font&gt;&quot;;
    
-         if( fmt.find("\\super") != string::npos )
-           word = "&lt;font style=\"vertical-align: super;\"&gt;" + word + "&lt;/font&gt;";
+         if( fmt.find(&quot;\\super&quot;) != string::npos )
+           word = &quot;&lt;font style=\&quot;vertical-align: super;\&quot;&gt;&quot; + word + &quot;&lt;/font&gt;&quot;;
    
          if( pos2 != string::npos )
            str.replace(pos1, pos2 - pos1 + 1, word);
@@ -458,10 +458,10 @@ role="navigation" aria-label="main navigation">
    0007f6d8  01001fc4 00010226 000b2850 000a7ac2 ; ret   handle message caption
    0007f6e8  00000033                            ; mb_ok
    0:000&gt; du 000b2850
-   000b2850  "O texto do arquivo Sem título fo"
-   000b2890  "i alterado...Deseja salvar as al"
-   000b28d0  "terações?"
-   0:000&gt; ezu 000b2850 "Tem certeza que deseja salvar esse artigo de merda?"
+   000b2850  &quot;O texto do arquivo Sem título fo&quot;
+   000b2890  &quot;i alterado...Deseja salvar as al&quot;
+   000b28d0  &quot;terações?&quot;
+   0:000&gt; ezu 000b2850 &quot;Tem certeza que deseja salvar esse artigo de merda?&quot;
    0:000&gt; g
    ModLoad: 75f50000 7604d000   C:\WINDOWS\system32\BROWSEUI.dll
 </pre>
@@ -544,7 +544,7 @@ role="navigation" aria-label="main navigation">
    adding Main.cpp
    adding Project.cpp
    adding Project.vcproj
-   &gt; hg commit -m "Primeira versao"
+   &gt; hg commit -m &quot;Primeira versao&quot;
 </pre>
 <p>Se o programa não disse nada ao efetuar o commit, é porque está tudo certo. Agora podemos controlar as mudanças de nosso código usando o comando status. Para vermos o histórico usamos o comando log.</p>
 
@@ -560,7 +560,7 @@ role="navigation" aria-label="main navigation">
    &gt; hg status
    M Main.cpp
    
-   &gt; hg commit -m "Alterado algumas coisas"
+   &gt; hg commit -m &quot;Alterado algumas coisas&quot;
    
    &gt; hg log
    changeset:   1:829b081df653

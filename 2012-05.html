@@ -268,7 +268,7 @@ DWORD WINAPI InsertItems(LPVOID pvQueue) // insere, insere, insere....
         LeaveCriticalSection(&amp;queue.cs); // deixa eu sair!
         Sleep(10); // dá uma dormidinha (sempre menor dormidinhas do processamento)
     }
-    return ERROR_SUCCESS; // "tá tudo certo!" (by Starcraft 2)
+    return ERROR_SUCCESS; // &quot;tá tudo certo!&quot; (by Starcraft 2)
 }
 DWORD WINAPI ProcessItems(LPVOID pvQueue) // processa, processa, processa...
 {
@@ -284,7 +284,7 @@ DWORD WINAPI ProcessItems(LPVOID pvQueue) // processa, processa, processa...
         delete [] buffer;
         Sleep(queue.wait); // aguarda por... por quanto mesmo?
     }
-    return ERROR_SUCCESS; // "tá tudo certo!" (by Starcraft 2)
+    return ERROR_SUCCESS; // &quot;tá tudo certo!&quot; (by Starcraft 2)
 }
 int main(int argc, char* argv[]) // No princípio havia a pilha, quando Deus disse: 'int main!'
 {
@@ -303,7 +303,7 @@ int main(int argc, char* argv[]) // No princípio havia a pilha, quando Deus dis
         queueThreads[QUEUES_SIZE + i] = CreateThread(NULL, 0, ProcessItems, &amp;queues[i], 0, NULL); // criamos thread de processamento
     }
     WaitForMultipleObjects(QUEUES_SIZE * 2, queueThreads, TRUE, INFINITE); // espera a 'gaguera'
-    return 0; // "tá tudo certo!" (by Starcraft 2)
+    return 0; // &quot;tá tudo certo!&quot; (by Starcraft 2)
 }
  
 </pre>
@@ -342,7 +342,7 @@ int main(int argc, char* argv[]) // No princípio havia a pilha, quando Deus dis
     _HEAP @ 420000
     _HEAP @ 670000
     HEAP_ENTRY Size Prev Flags UserPtr UserSize - state
-   &lt;span style="color: #ff0000;"&gt; 00558600 0221 0000 [00] 00558618 01037 - (busy)&lt;/span&gt;         &lt;--- vamos usar esse primeiro mais tarde
+   &lt;span style=&quot;color: #ff0000;&quot;&gt; 00558600 0221 0000 [00] 00558618 01037 - (busy)&lt;/span&gt;         &lt;--- vamos usar esse primeiro mais tarde
     0055fd38 0221 0221 [00] 0055fd50 01037 - (busy)
     00561f48 0221 0221 [00] 00561f60 01037 - (busy)
     00565260 0221 0221 [00] 00565278 01037 - (busy)
@@ -363,11 +363,11 @@ int main(int argc, char* argv[]) // No princípio havia a pilha, quando Deus dis
 
 <pre>
    
-   0:004&gt; !heap -p -a &lt;span style="color: #ff0000;"&gt;00558600&lt;/span&gt;
+   0:004&gt; !heap -p -a &lt;span style=&quot;color: #ff0000;&quot;&gt;00558600&lt;/span&gt;
     address 00558600 found in
     _HEAP @ 670000
     HEAP_ENTRY Size Prev Flags UserPtr UserSize - state
-    &lt;span style="color: #ff0000;"&gt;00558600 0221 0000 [00] 00558618 01037 - (busy)&lt;/span&gt;
+    &lt;span style=&quot;color: #ff0000;&quot;&gt;00558600 0221 0000 [00] 00558618 01037 - (busy)&lt;/span&gt;
     Trace: b7a24
     7722dfa2 ntdll!RtlAllocateHeap+0x00000274
     5b628343 MSVCR100D!_heap_alloc_base+0x00000053
@@ -377,7 +377,7 @@ int main(int argc, char* argv[]) // No princípio havia a pilha, quando Deus dis
     5b639c5b MSVCR100D!malloc+0x0000001b
     5b627db1 MSVCR100D!operator new+0x00000011
     e84dee MemoryConsumption!operator new[]+0x0000000e
-   &lt;span style="color: #ff0000;"&gt; e818be MemoryConsumption!InsertItems+0x0000004e&lt;/span&gt;
+   &lt;span style=&quot;color: #ff0000;&quot;&gt; e818be MemoryConsumption!InsertItems+0x0000004e&lt;/span&gt;
     7679339a kernel32!BaseThreadInitThunk+0x0000000e
     771e9ef2 ntdll!__RtlUserThreadStart+0x00000070
     771e9ec5 ntdll!_RtlUserThreadStart+0x0000001b
@@ -386,7 +386,7 @@ int main(int argc, char* argv[]) // No princípio havia a pilha, quando Deus dis
 
 <pre>
    
-   0:004&gt; u &lt;span style="color: #ff0000;"&gt;e818be&lt;/span&gt;
+   0:004&gt; u &lt;span style=&quot;color: #ff0000;&quot;&gt;e818be&lt;/span&gt;
    MemoryConsumption!InsertItems+0x4e [c:\...\memoryconsumption.cpp @ 18]:
    00e818be 83c404 add esp,4
    00e818c1 898514ffffff mov dword ptr [ebp-0ECh],eax
@@ -401,7 +401,7 @@ int main(int argc, char* argv[]) // No princípio havia a pilha, quando Deus dis
 
 <pre>
    
-   0:004&gt; db &lt;span style="color: #ff0000;"&gt;00558618&lt;/span&gt;
+   0:004&gt; db &lt;span style=&quot;color: #ff0000;&quot;&gt;00558618&lt;/span&gt;
    00558618 c0 b7 8c 0b 98 03 55 00-00 00 00 00 00 00 00 00 ......U.........
    00558628 13 10 00 00 01 00 00 00-15 94 00 00 fd fd fd fd ................
    00558638 51 51 51 51 51 51 51 51-51 51 51 51 51 51 51 51 QQQQQQQQQQQQQQQQ

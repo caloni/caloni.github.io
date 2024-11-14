@@ -323,14 +323,14 @@ STDMETHODIMP CService::Open(BYTE *fileName, COUNT keyNo, COUNT *pctReturn)
     // Verifica se o banco de dados foi inicializado
     if (!_Main.m_bDBInitialized)
     {
-      _Main.Log("Error opening file before database to be initialized.");
+      _Main.Log(&quot;Error opening file before database to be initialized.&quot;);
       *pctReturn = FINT_ERR;
       return S_OK;
     }
     // Verifica se o arquivo já foi aberto
     if (m_pData)
     {
-      sprintf(szMsg, "Error on open file \"%s\". File already opened.");
+      sprintf(szMsg, &quot;Error on open file \&quot;%s\&quot;. File already opened.&quot;);
       _Main.Log(szMsg);
       *pctReturn = ERR_BLABLABLA;
       return S_OK;
@@ -352,8 +352,8 @@ STDMETHODIMP CService::Open(BYTE *fileName, COUNT keyNo, COUNT *pctReturn)
    0040608c eb65            jmp     Service+0x60f3 (004060f3)
    
    0:000&gt; da 00415160
-   00415160  "Error opening file before databa"
-   00415180  "se to be initialized."
+   00415160  &quot;Error opening file before databa&quot;
+   00415180  &quot;se to be initialized.&quot;
 </pre>
 <p>E, agora sim, encontramos o culpado!</p>
 
@@ -614,10 +614,10 @@ STDMETHODIMP CService::Open(BYTE *fileName, COUNT keyNo, COUNT *pctReturn)
    *** ERROR: Module load completed but symbols could not be loaded for NotMyFaultEither.exe
    0012f678 004018aa 0040a1dc e280eec4 1d7f113b kernel32!UnhandledExceptionFilter+0x55b
    WARNING: Stack unwind information not available. Following frames may be wrong.
-   0012f9ac 00401357 &lt;font color="#ff0000"&gt;dededede dededede dededede&lt;/font&gt; NotMyFaultEither+0x18aa
-   0012fbe8 &lt;font color="#ff0000"&gt;dededede dededede dededede dededede&lt;/font&gt; NotMyFaultEither+0x1357
-   0012fbec &lt;font color="#ff0000"&gt;dededede dededede dededede dededede&lt;/font&gt; 0xdededede
-   0012fbf4 &lt;font color="#ff0000"&gt;dededede dededede dededede dededede&lt;/font&gt; 0xdededede
+   0012f9ac 00401357 &lt;font color=&quot;#ff0000&quot;&gt;dededede dededede dededede&lt;/font&gt; NotMyFaultEither+0x18aa
+   0012fbe8 &lt;font color=&quot;#ff0000&quot;&gt;dededede dededede dededede dededede&lt;/font&gt; NotMyFaultEither+0x1357
+   0012fbec &lt;font color=&quot;#ff0000&quot;&gt;dededede dededede dededede dededede&lt;/font&gt; 0xdededede
+   0012fbf4 &lt;font color=&quot;#ff0000&quot;&gt;dededede dededede dededede dededede&lt;/font&gt; 0xdededede
    ...
 </pre>
 <p>Como foi visto na palestra, uma pilha nesse estado demonstra claramente alguma variável que estourou e corrompeu o resto da pilha de chamadas. Na hora de voltar para a função chamadora, o endereço usado foi o endereço reescrito por lixo, e daí temos o "crash-pattern" Stack Trash.</p>
@@ -629,7 +629,7 @@ STDMETHODIMP CService::Open(BYTE *fileName, COUNT keyNo, COUNT *pctReturn)
    0:000&gt; kv
    ChildEBP RetAddr  Args to Child
    0012f900 7c90df3c 7c8025db 0000007c 00000000 ntdll!KiFastSystemCallRet
-   0012f904 7c8025db &lt;font color="#ff0000"&gt;0000007c &lt;/font&gt;00000000 00000000 ntdll!NtWaitForSingleObject+0xc
+   0012f904 7c8025db &lt;font color=&quot;#ff0000&quot;&gt;0000007c &lt;/font&gt;00000000 00000000 ntdll!NtWaitForSingleObject+0xc
    0012f968 7c802542 0000007c ffffffff 00000000 kernel32!WaitForSingleObjectEx+0xa8
    0012f97c 00401176 0000007c ffffffff 00000111 kernel32!WaitForSingleObject+0x12
    WARNING: Stack unwind information not available. Following frames may be wrong.
@@ -642,11 +642,11 @@ STDMETHODIMP CService::Open(BYTE *fileName, COUNT keyNo, COUNT *pctReturn)
    0012fb3c 7e375ba2 0000800a 002d0036 fffffffc user32!NotifyWinEvent+0xd
    0012fbc8 00000000 002d0036 004011b0 dcbaabcd user32!ButtonWndProcWorker+0x79b
    0:000&gt; !handle 0000007c
-   Handle &lt;font color="#ff0000"&gt;0000007c&lt;/font&gt;
-     Type           &lt;font color="#ff0000"&gt;Thread&lt;/font&gt;
+   Handle &lt;font color=&quot;#ff0000&quot;&gt;0000007c&lt;/font&gt;
+     Type           &lt;font color=&quot;#ff0000&quot;&gt;Thread&lt;/font&gt;
    0:000&gt; ~* kv
    
-   .  0  Id: 5e4.&lt;font color="#008000"&gt;39c &lt;/font&gt;Suspend: 0 Teb: 7ffdd000 Unfrozen
+   .  0  Id: 5e4.&lt;font color=&quot;#008000&quot;&gt;39c &lt;/font&gt;Suspend: 0 Teb: 7ffdd000 Unfrozen
    ChildEBP RetAddr  Args to Child
    0012f900 7c90df3c 7c8025db 0000007c 00000000 ntdll!KiFastSystemCallRet
    0012f904 7c8025db 0000007c 00000000 00000000 ntdll!NtWaitForSingleObject+0xc
@@ -667,16 +667,16 @@ STDMETHODIMP CService::Open(BYTE *fileName, COUNT keyNo, COUNT *pctReturn)
    00b8ff10 7c90df3c 7c91b22b 00000080 00000000 ntdll!KiFastSystemCallRet
    00b8ff14 7c91b22b 00000080 00000000 00000000 ntdll!NtWaitForSingleObject+0xc
    00b8ff9c 7c901046 0040e940 004010e0 0040e940 ntdll!RtlpWaitForCriticalSection+0x132
-   00b8ffa4 004010e0 &lt;font color="#0000ff"&gt;0040e940 &lt;/font&gt;00000000 00000000 ntdll!RtlEnterCriticalSection+0x46
+   00b8ffa4 004010e0 &lt;font color=&quot;#0000ff&quot;&gt;0040e940 &lt;/font&gt;00000000 00000000 ntdll!RtlEnterCriticalSection+0x46
    WARNING: Stack unwind information not available. Following frames may be wrong.
    00b8ffec 00000000 004010c0 0012f99c 00000000 NotMyFaultEither+0x10e0
-   0:000&gt; !cs &lt;font color="#0000ff"&gt;0040e940&lt;/font&gt;
+   0:000&gt; !cs &lt;font color=&quot;#0000ff&quot;&gt;0040e940&lt;/font&gt;
    -----------------------------------------
    Critical section   = 0x0040e940 (NotMyFaultEither+0xE940)
    DebugInfo          = 0x00154498
-   &lt;font color="#0000ff"&gt;LOCKED&lt;/font&gt;
+   &lt;font color=&quot;#0000ff&quot;&gt;LOCKED&lt;/font&gt;
    LockCount          = 0x1
-   OwningThread       = &lt;font color="#008000"&gt;0x0000039c&lt;/font&gt;
+   OwningThread       = &lt;font color=&quot;#008000&quot;&gt;0x0000039c&lt;/font&gt;
    RecursionCount     = 0x1
    LockSemaphore      = 0x80
    SpinCount          = 0x00000000
@@ -698,11 +698,11 @@ STDMETHODIMP CService::Open(BYTE *fileName, COUNT keyNo, COUNT *pctReturn)
    0012fb30 7e3799d8 0000800a 0012fbc8 7e375ba2 0x1100a0
    0012fb3c 7e375ba2 0000800a 001100a0 fffffffc user32!NotifyWinEvent+0xd
    0012fbc8 00000000 001100a0 004010f0 dcbaabcd user32!ButtonWndProcWorker+0x79b
-   0:000&gt; &lt;font color="#ff0000"&gt;? eax+edx&lt;/font&gt;
-   Evaluate expression: 0 = &lt;font color="#ff0000"&gt;00000000&lt;/font&gt;
+   0:000&gt; &lt;font color=&quot;#ff0000&quot;&gt;? eax+edx&lt;/font&gt;
+   Evaluate expression: 0 = &lt;font color=&quot;#ff0000&quot;&gt;00000000&lt;/font&gt;
    0:000&gt; u
    NotMyFaultEither+0x10a3:
-   004010a3 66890c02        mov     word ptr [&lt;font color="#ff0000"&gt;edx+eax&lt;/font&gt;],cx
+   004010a3 66890c02        mov     word ptr [&lt;font color=&quot;#ff0000&quot;&gt;edx+eax&lt;/font&gt;],cx
    004010a7 83c002          add     eax,2
    004010aa 6685c9          test    cx,cx
 </pre>
@@ -716,10 +716,10 @@ STDMETHODIMP CService::Open(BYTE *fileName, COUNT keyNo, COUNT *pctReturn)
    eip=7c90120e esp=0012f9a0 ebp=00000001 iopl=0         nv up ei pl zr na pe nc
    cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
    ntdll!DbgBreakPoint:
-   &lt;font color="#ff0000"&gt;7c90120e cc              int     3&lt;/font&gt;
+   &lt;font color=&quot;#ff0000&quot;&gt;7c90120e cc              int     3&lt;/font&gt;
    0:000&gt; kv
    ChildEBP RetAddr  Args to Child
-   0012f99c 004011ec 0012fc24 004010d0 0012fbe8 &lt;font color="#ff0000"&gt;ntdll!DbgBreakPoint&lt;/font&gt; (FPO: [0,0,0])
+   0012f99c 004011ec 0012fc24 004010d0 0012fbe8 &lt;font color=&quot;#ff0000&quot;&gt;ntdll!DbgBreakPoint&lt;/font&gt; (FPO: [0,0,0])
    WARNING: Stack unwind information not available. Following frames may be wrong.
    0012f9cc 7e37f916 01010054 005a0049 0012f9f4 NotMyFaultEither+0x11ec
    0012fa58 7e37f991 01010054 00000043 01100076 user32!ClientFrame+0xe0
@@ -781,7 +781,7 @@ STDMETHODIMP CService::Open(BYTE *fileName, COUNT keyNo, COUNT *pctReturn)
 #include &lt;windows.h&gt;
 #include &lt;dbghelp.h&gt;
 #include &lt;time.h&gt;
-#pragma comment(lib, "dbghelp.lib")
+#pragma comment(lib, &quot;dbghelp.lib&quot;)
 LONG WINAPI CrashHandler(_EXCEPTION_POINTERS* ExceptionInfo)
 {
     LONG ret = EXCEPTION_CONTINUE_SEARCH;
@@ -789,7 +789,7 @@ LONG WINAPI CrashHandler(_EXCEPTION_POINTERS* ExceptionInfo)
     minidumpInfo.ClientPointers = FALSE;
     minidumpInfo.ThreadId = GetCurrentThreadId();
     minidumpInfo.ExceptionPointers = ExceptionInfo;
-    HANDLE hFile = CreateFile("OnCrash.dmp", GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, 0, NULL);
+    HANDLE hFile = CreateFile(&quot;OnCrash.dmp&quot;, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, 0, NULL);
     if( hFile != INVALID_HANDLE_VALUE )
     {
       MINIDUMP_TYPE dumpType = MiniDumpNormal;
@@ -881,29 +881,29 @@ int main()
 <p>Vamos ver um exemplo:</p>
 
 <pre>
-   #define MY_STR "Essa é minha string do coração"
+   #define MY_STR &quot;Essa é minha string do coração&quot;
 </pre>
 <p>Conseguimos capturar os três elementos desse define (um descartável) por um simples scanf:</p>
 
 <pre>
-   scanf("#define %s \"%[^\"]", def, str);
+   scanf(&quot;#define %s \&quot;%[^\&quot;]&quot;, def, str);
 </pre>
 <p>A função scanf retorna o número de argumentos capturados. Então se a coisa funcionou é só comparar com 2.</p>
 
 <p>Depois de capturado, imprimimos na saída (o arquivo pós-processado) uma estrutura que irá conter nosso amigo embaralhado:</p>
 
 <pre>
-   printf("struct ST_%s { byte key; size_t bufferSize; byte buffer[%d] }\n"
-     " %s = { %d, %d, { ";
+   printf(&quot;struct ST_%s { byte key; size_t bufferSize; byte buffer[%d] }\n&quot;
+     &quot; %s = { %d, %d, { &quot;;
    
    for( ; ; ) printf(Cada byte ofuscado);
    
-   printtf(" } };\n");
+   printtf(&quot; } };\n&quot;);
 </pre>
 <p>Pronto. Agora o usuário da string precisa abri-la usando uma macro esperta que irá chamar uma função esperta para desofuscar a string e entregar o ponteiro de buffer devidamente "casteado":</p>
 
 <pre>
-   #include "header-pos-processado.h"
+   #include &quot;header-pos-processado.h&quot;
    
    #define ABRE_VAR(var, type) (type) OpenVar( (GENERIC_STRUCT) var)
    

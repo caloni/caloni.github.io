@@ -223,7 +223,7 @@ using namespace std;
 void AntiAttachAbort()
 {
     // this is a test application, remember?
-    MessageBox(NULL, "Espertinho, hein?", "AntiAttachDetector", MB_OK | MB_ICONERROR);
+    MessageBox(NULL, &quot;Espertinho, hein?&quot;, &quot;AntiAttachDetector&quot;, MB_OK | MB_ICONERROR);
     // this is the end
     TerminateProcess(GetCurrentProcess(), -1);
 }
@@ -233,8 +233,8 @@ void AntiAttachAbort()
 void InstallAntiAttach()
 {
     PVOID attachBreak = GetProcAddress(
-      GetModuleHandle("ntdll"), // this dll is ALWAYS loaded
-      "DbgUiRemoteBreakin"); // this function is ALWAYS called on the attach event
+      GetModuleHandle(&quot;ntdll&quot;), // this dll is ALWAYS loaded
+      &quot;DbgUiRemoteBreakin&quot;); // this function is ALWAYS called on the attach event
     assert(attachBreak); // attachBreak NEVER can be null
     // opcodes to run a jump to the function AntiAttachAbort
     BYTE jmpToAntiAttachAbort[] =
@@ -259,7 +259,7 @@ void InstallAntiAttach()
 int main()
 {
     InstallAntiAttach();
-    cout &lt;&lt; "Try to attach, if you can...";
+    cout &lt;&lt; &quot;Try to attach, if you can...&quot;;
     cin.get();
 } 
 </pre>
@@ -453,9 +453,9 @@ BYTE jmpToAntiAttachAbort[] =
 <p>Nesse caso, a solução mais óbvia e simples foi deixar esse bit desabilitado, não importando se o modo de compartilhamento está desativado. Tudo que temos que fazer é assistir o vídeo mais uma vez e fechar a aba do navegador. O arquivo será fechado, o compartilhamento aberto, e o arquivo, não apagado.</p>
 
 <pre>
-   0:012&gt; bp kernel32!CreateFileW "ed @esp+4*6 poi(@esp+4*6) &amp; 0xfbffffff"
+   0:012&gt; bp kernel32!CreateFileW &quot;ed @esp+4*6 poi(@esp+4*6) &amp; 0xfbffffff&quot;
    breakpoint 1 redefined
-   0:012&gt; bp kernel32!CreateFileA "ed @esp+4*6 poi(@esp+4*6) &amp; 0xfbffffff"
+   0:012&gt; bp kernel32!CreateFileA &quot;ed @esp+4*6 poi(@esp+4*6) &amp; 0xfbffffff&quot;
    breakpoint 0 redefined
    0:012&gt; g
 </pre>
@@ -537,7 +537,7 @@ BYTE jmpToAntiAttachAbort[] =
 <p>Para descobrirmos quem detém esse handle, existe o comando !handle, que pode exibir informações sobre todos os handles de um determinado tipo no processo atual. Como queremos procurar por todos os handles do tipo Process em todos os processos existentes, é necessário usá-lo em conjunto com o comando mais esperto for_each_process, que pode fazer coisas incríveis para o programador de user/kernel:</p>
 
 <pre>
-   kd&gt; !for_each_process "!handle 0 1 @#Process Process"
+   kd&gt; !for_each_process &quot;!handle 0 1 @#Process Process&quot;
    processor number 0, process 817cc830
    Searching for handles of type Process
    PROCESS 817cc830  SessionId: none  Cid: 0004    Peb: 00000000  ParentCid: 0000
@@ -697,7 +697,7 @@ BYTE jmpToAntiAttachAbort[] =
 int main()
 {
     DWORD pid;
-    while( scanf("%d", &amp;pid) == 1 )
+    while( scanf(&quot;%d&quot;, &amp;pid) == 1 )
     {
       HANDLE proc = OpenProcess(SYNCHRONIZE, FALSE, pid);
     }

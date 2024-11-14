@@ -288,10 +288,10 @@ role="navigation" aria-label="main navigation">
 ordenar_numeros() {
         maior=0
         menor=$1
-        media=$(echo "scale=2; ( $1 + $2 + $3 ) / 3" | bc -l)
+        media=$(echo &quot;scale=2; ( $1 + $2 + $3 ) / 3&quot; | bc -l)
         #media=$(( ($1 + $2 + $3) / 3 ))
         numeros=($1 $2 $3)
-        for i in "${numeros[@]}"; do
+        for i in &quot;${numeros[@]}&quot;; do
                 if [ $i -le $menor ]
                 then
                         menor=$i
@@ -314,7 +314,7 @@ ordenar_numeros $1 $2 $3
 <p>Como você já deve ter percebido lendo o primeiro script da sua vida comandos são terminados por nova-linha ou por ponto-e-vírgula, não tendo briga para ninguém. Dois comandos não podem conviver um do lado do outro e dar bom. É por isso que caso você queira fazer um `if-then` na mesma linha precisa colocar um ponto-e-vírgula antes de usar o `then`:</p>
 
 <pre>
-for i in "${numeros[@]}"; do
+for i in &quot;${numeros[@]}&quot;; do
 if [ $i -le $menor ]; then
 </pre>
 <h2>Preparando o terreno</h2>
@@ -347,7 +347,7 @@ cleanup() {
 <p>Note esta técnica utilizada para incluir operações de limpeza dentro de um array, o `cl_stack`. No decorrer da execução do script se houver a necessidade de adicionar mais uma operação de limpeza o usuário deve incluir esta operação neste array.</p>
 
 <pre>
-cl_stack+=( "kill pid" )
+cl_stack+=( &quot;kill pid&quot; )
 </pre>
 <h3>Lendo parâmetros de entrada</h3>
 
@@ -357,8 +357,8 @@ cl_stack+=( "kill pid" )
 #
 # Read the params.
 #
-if [ "$1" = "" ] || [ ! -d ${LIB_ROOT}/libs/$2 ]; then
-    echo "usage: ./copy-lib &lt;lib-path&gt;"
+if [ &quot;$1&quot; = &quot;&quot; ] || [ ! -d ${LIB_ROOT}/libs/$2 ]; then
+    echo &quot;usage: ./copy-lib &lt;lib-path&gt;&quot;
     exit 1
 fi
 </pre>
@@ -366,11 +366,11 @@ fi
 
 <pre>
 [ -z $1 ] &amp;&amp; usage
-if [ $1 = "-b" ]; then
+if [ $1 = &quot;-b&quot; ]; then
   do_boot=y
   shift
 fi
-if [ $1 = "-d" ]; then
+if [ $1 = &quot;-d&quot; ]; then
   do_delete=y
   shift
 fi
@@ -392,7 +392,7 @@ case    esac   coproc   select   function
 <pre>
 tmpdir=$(mktemp -d)
 mountdir=$(pwd)/subdir
-echo "Today is $(date). What a lovely, lovely day!"
+echo &quot;Today is $(date). What a lovely, lovely day!&quot;
 </pre>
 <p>Evaluation precisa de redirects às vezes, e às vezes não precisa de nenhum (`/dev/null`). No exemplo abaixo nós queremos o id do usuário de um arquivo sem nos preocupar com a saída de erro.</p>
 
@@ -428,9 +428,9 @@ if &lt;condition&gt;; then&lt;commands&gt;fi
 if [ -r somefile ]; then
   content=$(cat somefile)
 elif [ -f somefile ]; then
-  echo "The file 'somefile' exists but is not readable to the script."
+  echo &quot;The file 'somefile' exists but is not readable to the script.&quot;
 else
-  echo "The file 'somefile' does not exist."
+  echo &quot;The file 'somefile' does not exist.&quot;
 fi
 </pre>
 <h3>Dicas sobre uso do if</h3>
@@ -442,8 +442,8 @@ fi
 <li>Variáveis do tipo strings podem conter espaços e isso é um problema para o comparador; solução: coloque sempre aspas entre variáveis do tipo string.</li>
 
 <pre>
-if [ "$1" = "" -o ! -f "$1" ]; then
-  echo "usage: cpfiles &lt;compactedfile.tar&gt;"
+if [ &quot;$1&quot; = &quot;&quot; -o ! -f &quot;$1&quot; ]; then
+  echo &quot;usage: cpfiles &lt;compactedfile.tar&gt;&quot;
   exit 1
 fi
 </pre>
@@ -460,12 +460,12 @@ fi
 <h3>Condições com colchetes-duplos</h3>
 
 <pre>
-if [[ "$stringvar" == *string* ]]; then
-if [[ "$stringvar" == *[sS]tring* ]]; then
+if [[ &quot;$stringvar&quot; == *string* ]]; then
+if [[ &quot;$stringvar&quot; == *[sS]tring* ]]; then
 if [[ $stringvarwithspaces != foo ]]; then
 if [[ -a *.sh ]]; then
-if [[ $num -eq 3 &amp;&amp; "$stringvar" == foo ]]; then
-if [[ "$title" =~ [^a-zA-Z0-9\ ] ]]; then
+if [[ $num -eq 3 &amp;&amp; &quot;$stringvar&quot; == foo ]]; then
+if [[ &quot;$title&quot; =~ [^a-zA-Z0-9\ ] ]]; then
 </pre>
 <ul><li>Duplos-colchetes expandem variáveis como shell globbing (exemplo acima com asteriscos retorna verdade se houver string em qualquer parte de $stringvar;</li>
 
@@ -501,7 +501,7 @@ case $1 in
         echo -n
         ;;
     *)
-        echo "usage: $(basename $0) [start|stop|run]" &gt;&amp;2
+        echo &quot;usage: $(basename $0) [start|stop|run]&quot; &gt;&amp;2
         exit 1
         ;;
 </pre>
@@ -708,16 +708,16 @@ bash -x sort-number.sh 1 2 3
 ++ bc -l
 + media=2.00
 + numeros=($1 $2 $3)
-+ for i in "${numeros[@]}"
++ for i in &quot;${numeros[@]}&quot;
 + '[' 1 -le 1 ']'
 + menor=1
 + '[' 1 -ge 0 ']'
 + maior=1
-+ for i in "${numeros[@]}"
++ for i in &quot;${numeros[@]}&quot;
 + '[' 2 -le 1 ']'
 + '[' 2 -ge 1 ']'
 + maior=2
-+ for i in "${numeros[@]}"
++ for i in &quot;${numeros[@]}&quot;
 + '[' 3 -le 1 ']'
 + '[' 3 -ge 2 ']'
 + maior=3
@@ -727,7 +727,7 @@ maior=3, menor=1, media=2.00
 <p>Ou se você precisar depurar apenas uma parte do script pode ligar e desligar o modo `-x` dentro do próprio script usando a mudança de modos como já aprendemos no começo deste artigo.</p>
 
 <pre>
-for i in "${numeros[@]}"; do
+for i in &quot;${numeros[@]}&quot;; do
   set -x # activate debugging from here
   if [ $i -le $menor ]
   then

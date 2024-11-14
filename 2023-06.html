@@ -320,12 +320,12 @@ std::string ReadEntireFile(std::ifstream&amp; in)
 }
 int main()
 {
-    std::string path = ".";
+    std::string path = &quot;.&quot;;
     for (const auto&amp; entry : fs::directory_iterator(path))
     {
         string path = entry.path().string();
         ifstream ifs(path);
-        ofstream ofs(path + ".html");
+        ofstream ofs(path + &quot;.html&quot;);
         if( ifs &amp;&amp; ofs )
         {
             string content = ReadEntireFile(ifs);

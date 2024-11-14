@@ -378,7 +378,7 @@ role="navigation" aria-label="main navigation">
 <p>OK. A primeira coisa é procurar pela string digitada, na esperança de achar a estrutura que escreve as respostas de acordo com a digitação. Isso pode ser feito facilmente graças ao WinDbg e ao <a href="http://voneinem-windbg.blogspot.com/2007/06/scan-full-process-memory-for-pattern.html">artigo de Volker von Einem</a> que ensina como procurar strings por toda a memória de um processo (mais tarde iremos também usar o comando-bônus do comentário de Roberto Farah).</p>
 
 <pre>
-   0:017&gt; s -a 0 0fffffff "caca fantasmas"
+   0:017&gt; s -a 0 0fffffff &quot;caca fantasmas&quot;
    0575f458  63 61 63 61 20 66 61 6e-74 61 73 6d 61 73 00 63  caca fantasmas.c
    057fb950  63 61 63 61 20 66 61 6e-74 61 73 6d 61 73 00 00  caca fantasmas..
 </pre>
@@ -418,7 +418,7 @@ role="navigation" aria-label="main navigation">
    cs=001b  ss=0023  ds=0023  es=0023  fs=0038  gs=0000             efl=00000246
    ntdll!DbgBreakPoint:
    7c901230 cc              int     3
-   0:017&gt; s -a 0 0fffffff "caca fantasmas"
+   0:017&gt; s -a 0 0fffffff &quot;caca fantasmas&quot;
    0575f458  63 61 63 61 20 66 61 6e-74 61 73 6d 61 73 00 63  caca fantasmas.c
 </pre>
 <p>De fato, a lista de respostas é tudo que encontramos.</p>
@@ -437,7 +437,7 @@ role="navigation" aria-label="main navigation">
 <p>Para o .foreach, um token é uma string separada por espaço(s). A saída dos comandos do WinDbg nem sempre vai gerar algo que podemos usar diretamente, como no caso da busca que fizemos inicialmente. Apenas para demonstração, vamos imprimir todos os tokens da saída de nosso comando.</p>
 
 <pre>
-   .foreach ( answerList { s -a 0 0fffffff "caca fantasmas" } ) { .echo answerList }
+   .foreach ( answerList { s -a 0 0fffffff &quot;caca fantasmas&quot; } ) { .echo answerList }
    
    0575f458
    63
@@ -466,36 +466,36 @@ role="navigation" aria-label="main navigation">
 <p>Por isso usamos a flag `-<a href="posts.html?q=1">1</a>`, que faz com que o comando imprima apenas o endereço onde ele encontrou a string.</p>
 
 <pre>
-   0:017&gt; s -[1]a 0 0fffffff "caca fantasmas"
+   0:017&gt; s -[1]a 0 0fffffff &quot;caca fantasmas&quot;
    0x0575f458
 </pre>
 <p>Enfim, vamos ao que interessa. Para imprimir todas as strings que representam as respostas, podemos simplesmente, no OutCommands, fazer uma nova busca por string, só que dessa vez genérica, dentro de uma faixa razoável (digamos, 4KB).</p>
 
 <pre>
-   0:006&gt; .foreach ( answerList { s -[1]a 0 0fffffff "caca fantasmas" } ) { s -sa answerList L1000 }
-   059ff458  "caca fantasmas"
-   059ff467  "caca-fantasmas"
-   059ff47a  "a fantasmas"
-   059ff48a  "a-fantasmas"
-   059ff496  "ghostbusters"
-   059ff4a3  "Array"
-   059ff4a9  "mus1"
-   059ff4ae  "james bond"
-   059ff4b9  "007"
-   059ff4bd  "mus2"
-   059ff4c2  "mission impossible"
-   059ff4d5  "missao impossivel"
-   059ff4e7  "miss"
-   059ff4ed  "o impossivel"
-   059ff4fa  "missao imposs"
-   059ff509  "vel"
-   059ff50d  "miss"
-   059ff513  "o imposs"
-   059ff51d  "vel"
-   059ff521  "mus3"
-   059ff526  "carruagens de fogo"
-   059ff539  "charriots of fire"
-   059ff54b  "chariots of fire"
+   0:006&gt; .foreach ( answerList { s -[1]a 0 0fffffff &quot;caca fantasmas&quot; } ) { s -sa answerList L1000 }
+   059ff458  &quot;caca fantasmas&quot;
+   059ff467  &quot;caca-fantasmas&quot;
+   059ff47a  &quot;a fantasmas&quot;
+   059ff48a  &quot;a-fantasmas&quot;
+   059ff496  &quot;ghostbusters&quot;
+   059ff4a3  &quot;Array&quot;
+   059ff4a9  &quot;mus1&quot;
+   059ff4ae  &quot;james bond&quot;
+   059ff4b9  &quot;007&quot;
+   059ff4bd  &quot;mus2&quot;
+   059ff4c2  &quot;mission impossible&quot;
+   059ff4d5  &quot;missao impossivel&quot;
+   059ff4e7  &quot;miss&quot;
+   059ff4ed  &quot;o impossivel&quot;
+   059ff4fa  &quot;missao imposs&quot;
+   059ff509  &quot;vel&quot;
+   059ff50d  &quot;miss&quot;
+   059ff513  &quot;o imposs&quot;
+   059ff51d  &quot;vel&quot;
+   059ff521  &quot;mus3&quot;
+   059ff526  &quot;carruagens de fogo&quot;
+   059ff539  &quot;charriots of fire&quot;
+   059ff54b  &quot;chariots of fire&quot;
    ...
 </pre>
 <p>Bom, vou parar o dump por aqui, já que, entre os leitores, pode haver quem queria se divertir primeiro do jeito certo =)</p>
@@ -626,9 +626,9 @@ role="navigation" aria-label="main navigation">
    Copyright (C) 2006 Free Software Foundation, Inc.
    GDB is free software, covered by the GNU General Public License, and you are
    welcome to change it and/or distribute copies of it under certain conditions.
-   Type "show copying" to see the conditions.
-   There is absolutely no warranty for GDB.  Type "show warranty" for details.
-   This GDB was configured as "i686-pc-cygwin"...
+   Type &quot;show copying&quot; to see the conditions.
+   There is absolutely no warranty for GDB.  Type &quot;show warranty&quot; for details.
+   This GDB was configured as &quot;i686-pc-cygwin&quot;...
    (gdb) break factorial
    Breakpoint 1 at 0x401056: file recursive-factorial1.c, line 3.
    (gdb) run
@@ -954,12 +954,12 @@ role="navigation" aria-label="main navigation">
        {
            int num = atoi(argv[1]);
            int ret = factorial(num, 1);
-           printf("factorial %d = %d\n", num, ret);
+           printf(&quot;factorial %d = %d\n&quot;, num, ret);
            return ret;
        }
        else
        {
-           printf("how to use: %s &lt;number&gt;\n", argv[0]);
+           printf(&quot;how to use: %s &lt;number&gt;\n&quot;, argv[0]);
            return 1;
        }
    }
@@ -1161,7 +1161,7 @@ role="navigation" aria-label="main navigation">
    DWORD WINAPI RmThread(LPVOID lpParameter)
    {
      HMODULE hDll = (HMODULE) lpParameter;
-     LPCTSTR ptzMsg = _T("Congratulations! You called RmThread.dll successfully!");
+     LPCTSTR ptzMsg = _T(&quot;Congratulations! You called RmThread.dll successfully!&quot;);
    
      // Wait DllMain termination.
      WaitForSingleObject(g_hThrDllMain, INFINITE);
@@ -1196,7 +1196,7 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    // aqui definimos uma nova seção (note o 'shared' usado como atributo)
-   #pragma section("shared", read, write, shared)
+   #pragma section(&quot;shared&quot;, read, write, shared)
    
    // um conjunto de variáveis agrupadas para facilitar o compartilhamento
    struct EstruturaDoCoracao
@@ -1207,7 +1207,7 @@ role="navigation" aria-label="main navigation">
    };
    
    // uma instância da struct acima para podermos usar nos processo amigos
-   __declspec(allocate("shared")) EstruturaDoCoracao g_coracao;
+   __declspec(allocate(&quot;shared&quot;)) EstruturaDoCoracao g_coracao;
    
    int main()
    {
@@ -1313,13 +1313,13 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    #define _CRT_SECURE_NO_DEPRECATE
-   #include "ShareVar.h"
+   #include &quot;ShareVar.h&quot;
    #include &lt;windows.h&gt;
    #include &lt;tchar.h&gt;
    
    #include &lt;stdio.h&gt;
    
-   #define SHARED_VAR "FraseSecreta"
+   #define SHARED_VAR &quot;FraseSecreta&quot;
    
    /** Exemplo de como usar as funções de alocação de memória compartilhada
    AllocSharedVariable, OpenSharedVariable e FreeSharedVariable.
@@ -1330,15 +1330,15 @@ role="navigation" aria-label="main navigation">
    
      if( argc &gt; 1 )
      {
-       system("pause");
+       system(&quot;pause&quot;);
    
        TCHAR (*sharedVar)[100] = 0; // ponteiro para array de 100 TCHARs
        HANDLE varH = AllocSharedVariable(&amp;sharedVar, _T(SHARED_VAR));
    
        if( varH &amp;&amp; sharedVar )
        {
-         _tprintf(_T("Frase secreta: '%s'n"), *sharedVar);
-         _tprintf(_T("Pressione &lt;enter&gt; para retornar..."));
+         _tprintf(_T(&quot;Frase secreta: '%s'n&quot;), *sharedVar);
+         _tprintf(_T(&quot;Pressione &lt;enter&gt; para retornar...&quot;));
          getchar();
        }
      }
@@ -1351,11 +1351,11 @@ role="navigation" aria-label="main navigation">
        if( varH &amp;&amp; sharedVar )
        {
          PTSTR cmd = new TCHAR[ _tcslen(argv[0]) + 10 ];
-         _tcscpy(cmd, _T("\""));
+         _tcscpy(cmd, _T(&quot;\&quot;&quot;));
          _tcscat(cmd, argv[0]);
-         _tcscat(cmd, _T("\" 2"));
+         _tcscat(cmd, _T(&quot;\&quot; 2&quot;));
    
-         _tcscpy(*sharedVar, _T("Tuintuintuclaim"));
+         _tcscpy(*sharedVar, _T(&quot;Tuintuintuclaim&quot;));
          _tsystem(cmd);
    
          delete [] cmd;

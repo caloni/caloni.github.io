@@ -95,7 +95,7 @@ role="navigation" aria-label="main navigation">
 <p>Pois é. As coisas nem sempre acabam sendo como o esperado. Se você possuir uma LIB, por exemplo, e nela existirem duas funções, como abaixo, e você se limitar a usar em seu programa apenas a primeira, todas as dependências da segunda também irão parar no executável final.</p>
 
 <pre>
-#include "LibMod.h"
+#include &quot;LibMod.h&quot;
 #include &lt;windows.h&gt;
 #include &lt;Tlhelp32.h&gt;
 #include &lt;stdio.h&gt;
@@ -115,10 +115,10 @@ void UsingNewApis()
       // Tudo bem, nosso App não vai usar essa função.
       if( Process32First(snapshot, &amp;procEntry) )
       {
-        printf("Process list:\n");
+        printf(&quot;Process list:\n&quot;);
         do
         {
-          printf("%s\n", procEntry.szExeFile);
+          printf(&quot;%s\n&quot;, procEntry.szExeFile);
         }
         while( Process32Next(snapshot, &amp;procEntry) );
       }
@@ -126,14 +126,14 @@ void UsingNewApis()
     }
 }
  
-#include "LibMod.h"
+#include &quot;LibMod.h&quot;
 #include &lt;stdio.h&gt;
 #include &lt;stdlib.h&gt;
 int main()
 {
     // Usando apenas funções paleozoicas, certo?
-    printf("Our Major OS version is %d\n", UsingOldApis() );
-    system("pause");
+    printf(&quot;Our Major OS version is %d\n&quot;, UsingOldApis() );
+    system(&quot;pause&quot;);
 }
  
 </pre>
@@ -148,7 +148,7 @@ int main()
 <p>Sempre existe. Nesse caso, migrarmos as funções moderninhas para um segundo CPP, recompilarmos a LIB e a dependência milagrosamente desaparecerá!</p>
 
 <pre>
-#include "LibMod.h"
+#include &quot;LibMod.h&quot;
 #include &lt;windows.h&gt;
 #include &lt;Tlhelp32.h&gt;
 #include &lt;stdio.h&gt;
@@ -159,7 +159,7 @@ int UsingOldApis()
     return int( (DWORD)(LOBYTE(LOWORD(ver))) );
 }
  
-#include "LibMod.h"
+#include &quot;LibMod.h&quot;
 #include &lt;windows.h&gt;
 #include &lt;Tlhelp32.h&gt;
 #include &lt;stdio.h&gt;
@@ -173,10 +173,10 @@ void UsingNewApis()
       // Tudo bem, nosso App não vai usar essa função.
       if( Process32First(snapshot, &amp;procEntry) )
       {
-        printf("Process list:\n");
+        printf(&quot;Process list:\n&quot;);
         do
         {
-          printf("%s\n", procEntry.szExeFile);
+          printf(&quot;%s\n&quot;, procEntry.szExeFile);
         }
         while( Process32Next(snapshot, &amp;procEntry) );
       }

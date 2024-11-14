@@ -112,14 +112,14 @@ int main()
     double d1 = 2358.93;
     double d2 = 1386.93;
     double d3 = d1 - d2;
-    std::cout &lt;&lt; "d1: " &lt;&lt; d1 &lt;&lt; "\n";
-    std::cout &lt;&lt; "d2: " &lt;&lt; d2 &lt;&lt; "\n";
-    std::cout &lt;&lt; "d1 - d2 = 3d: " &lt;&lt; d3 &lt;&lt; "\n";
+    std::cout &lt;&lt; &quot;d1: &quot; &lt;&lt; d1 &lt;&lt; &quot;\n&quot;;
+    std::cout &lt;&lt; &quot;d2: &quot; &lt;&lt; d2 &lt;&lt; &quot;\n&quot;;
+    std::cout &lt;&lt; &quot;d1 - d2 = 3d: &quot; &lt;&lt; d3 &lt;&lt; &quot;\n&quot;;
     // comparando armazenamentos que diferem
-    std::cout &lt;&lt; "d3 == 972.0: " &lt;&lt; std::boolalpha &lt;&lt; ( d3 == 972.0 ) &lt;&lt; "\n";
+    std::cout &lt;&lt; &quot;d3 == 972.0: &quot; &lt;&lt; std::boolalpha &lt;&lt; ( d3 == 972.0 ) &lt;&lt; &quot;\n&quot;;
     // comparando armazenamentos similares
-    std::cout &lt;&lt; "d1 == 2358.93: " &lt;&lt; std::boolalpha &lt;&lt; ( d1 == 2358.93 ) &lt;&lt; "\n";
-    std::cout &lt;&lt; "d2 == 1386.93: " &lt;&lt; std::boolalpha &lt;&lt; ( d2 == 1386.93 ) &lt;&lt; "\n";
+    std::cout &lt;&lt; &quot;d1 == 2358.93: &quot; &lt;&lt; std::boolalpha &lt;&lt; ( d1 == 2358.93 ) &lt;&lt; &quot;\n&quot;;
+    std::cout &lt;&lt; &quot;d2 == 1386.93: &quot; &lt;&lt; std::boolalpha &lt;&lt; ( d2 == 1386.93 ) &lt;&lt; &quot;\n&quot;;
 }
 </pre>
 <p>Isso ocorre porque sua representação dentro da variável double é diferente de 272.0 do outro double. Depurando vemos mais claramente:</p>
@@ -135,7 +135,7 @@ int main()
    ======================
    d3 971.999999999999777
    ||||||
-   Esse é o valor "desejado".
+   Esse é o valor &quot;desejado&quot;.
 </pre>
 <p>Na comparação com o valor redondo aparece a falha, mas note que isso não ocorre com os outros valores d1 e d2, já que o armazenamento adquire o mesmo formato:</p>
 
@@ -156,10 +156,10 @@ int main()
     double d1 = 2358.93;
     double d2 = 1386.93;
     double d3 = round(d1) - round(d2);
-    std::cout &lt;&lt; "d1: " &lt;&lt; d1 &lt;&lt; "\n";
-    std::cout &lt;&lt; "d2: " &lt;&lt; d2 &lt;&lt; "\n";
-    std::cout &lt;&lt; "d1 - d2 = 3d: " &lt;&lt; d3 &lt;&lt; "\n";
-    std::cout &lt;&lt; "d3 == 972.0: " &lt;&lt; std::boolalpha &lt;&lt; ( d3 == 972.0 ) &lt;&lt; "\n";
+    std::cout &lt;&lt; &quot;d1: &quot; &lt;&lt; d1 &lt;&lt; &quot;\n&quot;;
+    std::cout &lt;&lt; &quot;d2: &quot; &lt;&lt; d2 &lt;&lt; &quot;\n&quot;;
+    std::cout &lt;&lt; &quot;d1 - d2 = 3d: &quot; &lt;&lt; d3 &lt;&lt; &quot;\n&quot;;
+    std::cout &lt;&lt; &quot;d3 == 972.0: &quot; &lt;&lt; std::boolalpha &lt;&lt; ( d3 == 972.0 ) &lt;&lt; &quot;\n&quot;;
 }
 </pre>
 <p>É uma decisão arbitrária essa de arredondar para cima, mas se for adotada em todo o sistema (e já fazendo parte de um padrão, no caso, o C99), não deverão existir problemas de interpretação de cálculos entre os componentes.</p>

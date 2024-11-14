@@ -160,19 +160,19 @@ role="navigation" aria-label="main navigation">
 
 <pre>
 BEGIN {
-  print "FS:", FS;
-  print "RS:", RS;
-  print "OFS:", OFS;
-  print "ORS:", ORS;
+  print &quot;FS:&quot;, FS;
+  print &quot;RS:&quot;, RS;
+  print &quot;OFS:&quot;, OFS;
+  print &quot;ORS:&quot;, ORS;
 }
 {
-  print "NF:", NF
-  print "NR:", NR
-  print "$0:", $0;
-  print "$1:", $1;
-  print "$2:", $2;
-  print "$NR:", $NR;
-  print "";
+  print &quot;NF:&quot;, NF
+  print &quot;NR:&quot;, NR
+  print &quot;$0:&quot;, $0;
+  print &quot;$1:&quot;, $1;
+  print &quot;$2:&quot;, $2;
+  print &quot;$NR:&quot;, $NR;
+  print &quot;&quot;;
 }
 </pre>
 <h2>One line at a time</h2>
@@ -188,8 +188,8 @@ pattern
 awk '/test/'
 awk '{ print }'
 awk '/test/ { print }'
-awk '{ if( $0 ~ "test" ) print }'
-awk '{ if( $0 ~ "test" ) print $2 }'
+awk '{ if( $0 ~ &quot;test&quot; ) print }'
+awk '{ if( $0 ~ &quot;test&quot; ) print $2 }'
 </pre>
 <blockquote></blockquote>
 <blockquote>Awk maintains a delicate balance between being a line-oriented utility like grep and a full programming language. - Andy Oram</blockquote>
@@ -200,13 +200,13 @@ awk '{ if( $0 ~ "test" ) print $2 }'
 
 <pre>
 pattern { action }
-BEGIN { print "START" }
+BEGIN { print &quot;START&quot; }
       { print         }
-END   { print "STOP"  }
-BEGIN { print "File\tOwner"}
-{ print $9, "\t", $3}
-END { print " - DONE -" }
-ls -l | awk '{ print $9, "\t", $3}'
+END   { print &quot;STOP&quot;  }
+BEGIN { print &quot;File\tOwner&quot;}
+{ print $9, &quot;\t&quot;, $3}
+END { print &quot; - DONE -&quot; }
+ls -l | awk '{ print $9, &quot;\t&quot;, $3}'
 </pre>
 <h2>How to run</h2>
 
@@ -216,9 +216,9 @@ ls -l | awk '{ print $9, "\t", $3}'
 #!/bin/sh
 # Linux users have to change $8 to $9
 awk '
-BEGIN { print "File\tOwner" }
-{ print $8, "\t", $3}
-END { print " - DONE -" }
+BEGIN { print &quot;File\tOwner&quot; }
+{ print $8, &quot;\t&quot;, $3}
+END { print &quot; - DONE -&quot; }
 '
 </pre>
 <h2>Tricks</h2>

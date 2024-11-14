@@ -131,9 +131,9 @@ role="navigation" aria-label="main navigation">
        }
    
      private:
-       void FuncOne()   { std::cout &lt;&lt; "One!\n"; }
-       void FuncTwo()   { std::cout &lt;&lt; "Two!\n"; }
-       void FuncThree() { std::cout &lt;&lt; "Three!\n"; }
+       void FuncOne()   { std::cout &lt;&lt; &quot;One!\n&quot;; }
+       void FuncTwo()   { std::cout &lt;&lt; &quot;Two!\n&quot;; }
+       void FuncThree() { std::cout &lt;&lt; &quot;Three!\n&quot;; }
    
        static FP m_funcs[3];
    };
@@ -212,9 +212,9 @@ role="navigation" aria-label="main navigation">
    
      void Print()
      {
-       std::cout &lt;&lt; "this: " 
+       std::cout &lt;&lt; &quot;this: &quot; 
          &lt;&lt; std::hex &lt;&lt; this 
-         &lt;&lt; ", member: " 
+         &lt;&lt; &quot;, member: &quot; 
          &lt;&lt; std::dec &lt;&lt; m_num
          &lt;&lt; std::endl;
      }
@@ -237,21 +237,21 @@ role="navigation" aria-label="main navigation">
    
      std::cout &lt;&lt; std::endl;
      
-     std::cout &lt;&lt; "this: " 
+     std::cout &lt;&lt; &quot;this: &quot; 
        &lt;&lt; std::hex &lt;&lt; &amp;r1 
-       &lt;&lt; ", member: " 
+       &lt;&lt; &quot;, member: &quot; 
        &lt;&lt; std::dec &lt;&lt; r1.*mp 
        &lt;&lt; std::endl;
    
-     std::cout &lt;&lt; "this: " 
+     std::cout &lt;&lt; &quot;this: &quot; 
        &lt;&lt; std::hex &lt;&lt; &amp;r2 
-       &lt;&lt; ", member: " 
+       &lt;&lt; &quot;, member: &quot; 
        &lt;&lt; std::dec &lt;&lt; r2.*mp 
        &lt;&lt; std::endl;
    
-     std::cout &lt;&lt; "this: " 
+     std::cout &lt;&lt; &quot;this: &quot; 
        &lt;&lt; std::hex &lt;&lt; &amp;r3 
-       &lt;&lt; ", member: " 
+       &lt;&lt; &quot;, member: &quot; 
        &lt;&lt; std::dec &lt;&lt; r3.*mp 
        &lt;&lt; std::endl;
    } 
@@ -341,7 +341,7 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    
-   0:000&gt; bp $exentry ".echo Passou pelo main; g"
+   0:000&gt; bp $exentry &quot;.echo Passou pelo main; g&quot;
    0:000&gt; g
    ModLoad: 5cb70000 5cb96000 ShimEng.dll
    ModLoad: 774e0000 7761d000 ole32.dll
@@ -505,7 +505,7 @@ role="navigation" aria-label="main navigation">
    
    int main()
    {
-     puts("oi, mundo!\n");
+     puts(&quot;oi, mundo!\n&quot;);
    } 
 </pre>
 <p>Desde o Windows 95, existe uma DLL na pasta de sistema chamada msvcrt.dll com a maioria das funções da libc disponíveis para link dinâmico. Só que, com o uso padrão do Visual C++, é usada sempre a biblioteca que vem junto com o ambiente, com suas trocentas funções (e consequentes bytes enche-linguiça). Porém, é possível utilizar diretamente a msvcrt.dll distribuída no diretório do sistema se criarmos uma LIB de importação para ela.</p>
@@ -567,7 +567,7 @@ role="navigation" aria-label="main navigation">
    .dvalloc 0x1000
    Allocated 1000 bytes starting at 000001d9`abd20000
    
-   eza 000001d9`abd20000 "c:\\tools\\tioclient.dll"
+   eza 000001d9`abd20000 &quot;c:\\tools\\tioclient.dll&quot;
    
    0:000&gt; a 000001d9`abd20000+0x100
    000001d9`abd20100 call KERNEL32!LoadLibraryA
@@ -630,7 +630,7 @@ role="navigation" aria-label="main navigation">
    How to use:
    $$&gt;a&lt;path\LoadLibrary.txt mydll.dll
    $$&gt;a&lt;path\LoadLibrary.txt c:\\path\\mydll.dll
-   $$&gt;a&lt;path\LoadLibrary.txt "c:\\path with space\\mydll.dll"
+   $$&gt;a&lt;path\LoadLibrary.txt &quot;c:\\path with space\\mydll.dll&quot;
 </pre>
 <p>Não há qualquer dificuldade. Tudo que você tem que fazer é baixar o script que carrega DLLs e salvá-lo em um lugar de sua preferência. Depois é só digitar o comando que carrega scripts, o path de nosso script e o nome da DLL a ser carregada em uma das três formas exibidas. Eu costumo criar uma pasta chamada "scripts" dentro do diretório de instalação do Debugging Tools, o que quer dizer que posso simplesmente chamar todos meus scripts (ou seja, 1) dessa maneira:</p>
 
@@ -683,7 +683,7 @@ role="navigation" aria-label="main navigation">
        r $t2 = @$ip
        .foreach /pS 5 ( addr { .dvalloc 0x1000 } ) { r$t0 = addr }
        r $t1 = @$t0 + 0x100
-       eza @$t0 "${$arg1}"
+       eza @$t0 &quot;${$arg1}&quot;
        .echo Trying to load the following module:
        da @$t0
        $$ push $ip
@@ -706,7 +706,7 @@ role="navigation" aria-label="main navigation">
        $$ ret
        eb @$t1 + 0x13 0xc3
        r $ip = @$t1
-       bp /1 @$t2 ".dvfree @$t0 0"
+       bp /1 @$t2 &quot;.dvfree @$t0 0&quot;
        g
    }
    .else
@@ -714,7 +714,7 @@ role="navigation" aria-label="main navigation">
       .echo How to use:
       .echo $$&gt;a&lt;path\LoadLibrary.txt mydll.dll
       .echo $$&gt;a&lt;path\LoadLibrary.txt c:\\path\\mydll.dll
-      .echo $$&gt;a&lt;path\LoadLibrary.txt "c:\\path with space\\mydll.dll"
+      .echo $$&gt;a&lt;path\LoadLibrary.txt &quot;c:\\path with space\\mydll.dll&quot;
    }
 </pre>
 <p>Como podemos ver, ele é um pouco grandinho. Por isso mesmo que ele é um script, já que não precisamos, sempre que formos usar este comando, ficar olhando para o fonte. Por falar em olhar, uma primeira olhada revela a seguinte estrutura:</p>
@@ -760,7 +760,7 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    
-   eza @$t0 "${$arg1}"
+   eza @$t0 &quot;${$arg1}&quot;
 </pre>
 <p>O código assembly que irá chamar fica um ponto à frente, mas na mesma memória alocada.</p>
 
@@ -820,7 +820,7 @@ role="navigation" aria-label="main navigation">
 <p>Somos um script bem comportado (na medida do possível) e por isso colocamos um breakpoint temporário no final para, quando retornarmos para o código atual, desalocarmos a memória usada para a escrita e execução das instruções.</p>
 
 <pre>
-   bp /1 @$t2 ".dvfree @$t0 0"
+   bp /1 @$t2 &quot;.dvfree @$t0 0&quot;
 </pre>
 <p>Eu não me responsabilizo por qualquer (mau) uso do script aqui disponibilizado, assim como as eventuais perdas de código-fonte, trilhas de HD e placas de memória RAM pela sua execução. Assim sendo, bom divertimento.</p>
 

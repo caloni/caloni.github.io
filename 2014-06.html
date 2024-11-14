@@ -93,9 +93,9 @@ int main()
 {
     int x = 0x00000001;
     int y = 4;
-    int z = x &lt;&lt; y; // isso desloca 4 bits para a "esquerda"
+    int z = x &lt;&lt; y; // isso desloca 4 bits para a &quot;esquerda&quot;
     std::cout &lt;&lt; z // WHAT??
-        &lt;&lt; "\nestranho..." &lt;&lt; std::endl; // WHAT^^2!?!?!?!??!?!
+        &lt;&lt; &quot;\nestranho...&quot; &lt;&lt; std::endl; // WHAT^^2!?!?!?!??!?!
 }
 </pre>
 <img src="img/ss_tnVztzy.png"/>
@@ -110,8 +110,8 @@ int main()
 int main()
 {
     int x = 0x00AB3451;
-    printf("int x = 0x%08X;\n", x); // nao eh tao legivel, mas da conta do recado
-    std::cout &lt;&lt; "int x = 0x" &lt;&lt; std::hex &lt;&lt; x &lt;&lt; ";" &lt;&lt; std::endl; // pois eh, parece que melhoramos mesmo com streams...
+    printf(&quot;int x = 0x%08X;\n&quot;, x); // nao eh tao legivel, mas da conta do recado
+    std::cout &lt;&lt; &quot;int x = 0x&quot; &lt;&lt; std::hex &lt;&lt; x &lt;&lt; &quot;;&quot; &lt;&lt; std::endl; // pois eh, parece que melhoramos mesmo com streams...
 }
 </pre>
 <img src="img/ss_7hFREwa.png"/>
@@ -162,13 +162,13 @@ struct ss
 <p>O código acima serve bem ao nosso propósito de formatar strings em uma linha como um cout, mas retornar uma string no lugar. Ele é simples, ele é direto, ele tem defeitos que não vem ao caso (como não suportar endl), mas pode ser usado de maneira... simples e direta!</p>
 
 <pre>
-#include "ss.h"
+#include &quot;ss.h&quot;
 #include &lt;iostream&gt;
 int main()
 {
     for( int i = 0; i &lt; 5; ++i )
     {
-        std::string s = ss() &lt;&lt; "Teste numero " &lt;&lt; i;
+        std::string s = ss() &lt;&lt; &quot;Teste numero &quot; &lt;&lt; i;
         std::cout &lt;&lt; s &lt;&lt; std::endl;
     }
 }
@@ -289,7 +289,7 @@ My_WlxLoggedOutSAS
  )
 {
    FWlxLoggedOutSAS *WlxLoggedOutSAS = reinterpret_cast&lt;FWlxLoggedOutSAS*&gt;(
-      GetProcAddress(g_msginaDll, "WlxLoggedOutSAS") );
+      GetProcAddress(g_msginaDll, &quot;WlxLoggedOutSAS&quot;) );
    int ret = WlxLoggedOutSAS(pWlxContext, dwSasType, pAuthenticationId, 
       pLogonSid, pdwOptions, phToken, pNprNotifyInfo, pProfile);
    if( ret == WLX_SAS_ACTION_LOGON )

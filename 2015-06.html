@@ -225,9 +225,9 @@ nssm set MyService AppRotateBytes 10485760
 inline void LogHeader(std::ostringstream&amp; os)
 {
     SYSTEMTIME st;
-    char buffer[48] = "";
+    char buffer[48] = &quot;&quot;;
     GetLocalTime(&amp;st);
-    sprintf_s(buffer, "%04d-%02d-%02d %02d:%02d:%02d %04X.%04X %08X ",
+    sprintf_s(buffer, &quot;%04d-%02d-%02d %02d:%02d:%02d %04X.%04X %08X &quot;,
       st.wYear, st.wMonth, st.wDay,
       st.wHour, st.wMinute, st.wSecond,
       GetCurrentProcessId() &amp; 0xFFFF, GetCurrentThreadId() &amp; 0xFFFF,

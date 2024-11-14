@@ -298,7 +298,7 @@ void MinhaClasse::MeuMetodo()
 
 <pre>
 WIN32_FIND_DATA findData;
-HANDLE findH = FindFirstFile("*.txt", &amp;findData);
+HANDLE findH = FindFirstFile(&quot;*.txt&quot;, &amp;findData);
 if( findH != INVALID_HANDLE_VALUE )
 {
    if( findData.dwFileAttributes &amp; FILE_ATTRIBUTE_ENCRYPTED )
@@ -391,11 +391,11 @@ int main()
 {
     MinhaClasse obj;
     obj.MinhaPropriedade = 0;
-    // precisamos iniciar os "métodos" em C; em C++ é automágico
+    // precisamos iniciar os &quot;métodos&quot; em C; em C++ é automágico
     obj.MeuMetodo = MinhaClasse_MeuMetodo; 
     obj.MeuOutroMetodo = MinhaClasse_MeuOutroMetodo;
     obj.MeuMetodo(&amp;obj);
-    printf("MinhaPropriedade = %d", obj.MinhaPropriedade);
+    printf(&quot;MinhaPropriedade = %d&quot;, obj.MinhaPropriedade);
 }
 </pre>
 <img src="img/classe_objeto_contexto_metodo_uzfJuTC.png"/>
@@ -471,8 +471,8 @@ int main()
     MinhaClasseVersao75 obj2;
     obj.MeuMetodo();
     obj2.MeuMetodo();
-    std::cout &lt;&lt; "MinhaPropriedade (obj) = " &lt;&lt; obj.MinhaPropriedade &lt;&lt; std::endl;
-    std::cout &lt;&lt; "MinhaPropriedade (obj2) = " &lt;&lt; obj2.MinhaPropriedade &lt;&lt; std::endl;
+    std::cout &lt;&lt; &quot;MinhaPropriedade (obj) = &quot; &lt;&lt; obj.MinhaPropriedade &lt;&lt; std::endl;
+    std::cout &lt;&lt; &quot;MinhaPropriedade (obj2) = &quot; &lt;&lt; obj2.MinhaPropriedade &lt;&lt; std::endl;
 }
 </pre>
 <img src="img/classe_objeto_contexto_metodo_polimorfismo_Ye5mA8L.png"/>
@@ -512,8 +512,8 @@ int main()
     MinhaClasse obj2 = { &amp;g_minhaVTableVersao75 };
     obj.VTable-&gt;MeuMetodo(&amp;obj);
     obj2.VTable-&gt;MeuMetodo(&amp;obj2);
-    printf("MinhaPropriedade (obj) = %d\n", obj.MinhaPropriedade);
-    printf("MinhaPropriedade (obj2) = %d\n", obj2.MinhaPropriedade);
+    printf(&quot;MinhaPropriedade (obj) = %d\n&quot;, obj.MinhaPropriedade);
+    printf(&quot;MinhaPropriedade (obj2) = %d\n&quot;, obj2.MinhaPropriedade);
 }
 </pre>
 <img src="img/classe_objeto_contexto_metodo_polimorfismo_tRAtU9d.png"/>
@@ -575,8 +575,8 @@ int main()
 {
     int x = 24, y = 42;
     double dx = 100.0, dy = 10.0;
-    cout &lt;&lt; "x is " &lt;&lt; ( Compare(x, y) ? "lesser" : "bigger" ) &lt;&lt; " than y\n";
-    cout &lt;&lt; "dx is " &lt;&lt; ( Compare(dx, dy) ? "lesser" : "bigger" ) &lt;&lt; " than dy\n";
+    cout &lt;&lt; &quot;x is &quot; &lt;&lt; ( Compare(x, y) ? &quot;lesser&quot; : &quot;bigger&quot; ) &lt;&lt; &quot; than y\n&quot;;
+    cout &lt;&lt; &quot;dx is &quot; &lt;&lt; ( Compare(dx, dy) ? &quot;lesser&quot; : &quot;bigger&quot; ) &lt;&lt; &quot; than dy\n&quot;;
 }
 </pre>
 <img src="img/gabaritos_84Ptrvk.png"/>
@@ -715,7 +715,7 @@ int main()
     newElem-&gt;x = 42;
     g_head.Flink = &amp;newElem-&gt;entry; // inserindo um elemento
     auto elem = ContainingRecord&lt;MeuElemento&gt;(g_head.Flink);
-    cout &lt;&lt; "X is " &lt;&lt; elem-&gt;x &lt;&lt; endl;
+    cout &lt;&lt; &quot;X is &quot; &lt;&lt; elem-&gt;x &lt;&lt; endl;
 }
 </pre>
 <p>"Nossa, tudo isso para substituir uma macro já consagrada no WDK??" Sim, nesse post o objetivo não ficou muito útil. É apenas uma ideia de substituição possível de ser feita em macros em geral. Pode ser bem documentada, usada há 30 anos, mas ainda é uma macro. Meu conselho: se funciona bem, use. Se vai fazer algo novo, tente sempre templates.</p>
@@ -917,22 +917,22 @@ ntdll!DbgBreakPoint:
 Windows API Logging Extensions  v3.01
 Parsing the manifest files...
 Location: C:\Temp\DbgTools(x86)\winext\manifest\main.h
-   Parsing file "main.h" ...
-   Parsing file "winerror.h" ...
-   Parsing file "kernel32.h" ...
+   Parsing file &quot;main.h&quot; ...
+   Parsing file &quot;winerror.h&quot; ...
+   Parsing file &quot;kernel32.h&quot; ...
    ...
-   Parsing file "dsound.h" ...
+   Parsing file &quot;dsound.h&quot; ...
 Parsing completed.
-Logexts injected. Output: "C:\Documents and Settings..."
+Logexts injected. Output: &quot;C:\Documents and Settings...&quot;
 0:001&gt; g
 ModLoad: 50000000 50056000   C:\Temp\DbgTools(x86)\winext\logexts.dll
 Parsing the manifest files...
 Location: C:\Temp\DbgTools(x86)\winext\manifest\main.h
-   Parsing file "main.h" ...
-   Parsing file "winerror.h" ...
-   Parsing file "kernel32.h" ...
+   Parsing file &quot;main.h&quot; ...
+   Parsing file &quot;winerror.h&quot; ...
+   Parsing file &quot;kernel32.h&quot; ...
    ...
-   Parsing file "dsound.h" ...
+   Parsing file &quot;dsound.h&quot; ...
 Parsing completed.
 (9c4.664): Break instruction exception - code 80000003 (first chance)
 eax=7ffd9000 ebx=00000001 ecx=00000002 edx=00000003 esi=00000004 edi=00000005
@@ -941,7 +941,7 @@ cs=001b  ss=0023  ds=0023  es=0023  fs=0038  gs=0000             efl=00000246
 ntdll!DbgBreakPoint:
 7c90120e cc              int     3
 0:001&gt; !logexts.loge
-Logging already initialized. Output "C:\Documents and Settings\..."
+Logging already initialized. Output &quot;C:\Documents and Settings\...&quot;
 Logging enabled.
 0:001&gt; g
 ModLoad: 77b40000 77b62000   C:\WINDOWS\system32\appHelp.dll
@@ -1109,7 +1109,7 @@ mkdir Archive\%1
 echo Mova os arquivos importados
 pause
 git add --all
-git ci -m "Archiving old Bazaar repo (%1)."
+git ci -m &quot;Archiving old Bazaar repo (%1).&quot;
 </pre>
 <p>Você pode chamar um a um em cima de um repo novo:</p>
 

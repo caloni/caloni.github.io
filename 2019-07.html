@@ -258,43 +258,43 @@ role="navigation" aria-label="main navigation">
 &lt;!DOCTYPE html&gt;
   &lt;head&gt;
     &lt;title&gt;Blogue do Caloni&lt;/title&gt;
-    &lt;meta http-equiv="content-type" content="text/html; charset=utf8"&gt;
+    &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=utf8&quot;&gt;
   &lt;/head&gt;
-  &lt;body style="min-height:100vh;display:flex;flex-direction:column"&gt;
-    &lt;section class="section" style="flex:1"&gt;
-      &lt;div class="container"&gt;
-        &lt;div class="columns"&gt;
-          &lt;div class="column"&gt;
-            &lt;h2 id="begin" style="page-break-before: always;"&gt;Índices&lt;/h2&gt;
+  &lt;body style=&quot;min-height:100vh;display:flex;flex-direction:column&quot;&gt;
+    &lt;section class=&quot;section&quot; style=&quot;flex:1&quot;&gt;
+      &lt;div class=&quot;container&quot;&gt;
+        &lt;div class=&quot;columns&quot;&gt;
+          &lt;div class=&quot;column&quot;&gt;
+            &lt;h2 id=&quot;begin&quot; style=&quot;page-break-before: always;&quot;&gt;Índices&lt;/h2&gt;
             &lt;ul&gt;
-              &lt;li&gt;&lt;a href="#daytoday"&gt;DayToDay&lt;/a&gt;&lt;/li&gt;
-              &lt;li&gt;&lt;a href="#idx"&gt;Alfabético&lt;/a&gt;&lt;/li&gt;
+              &lt;li&gt;&lt;a href=&quot;#daytoday&quot;&gt;DayToDay&lt;/a&gt;&lt;/li&gt;
+              &lt;li&gt;&lt;a href=&quot;#idx&quot;&gt;Alfabético&lt;/a&gt;&lt;/li&gt;
               &lt;ul&gt;
-                &lt;li&gt;{{ $letters := split "ABCDEFGHIJKLMNOPQRSTUVWXYZ" "" }}
+                &lt;li&gt;{{ $letters := split &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot; &quot;&quot; }}
                   {{ range $letters }}
-                    &lt;a href="#letter{{ . }}"&gt;{{ . }}&lt;/a&gt;
+                    &lt;a href=&quot;#letter{{ . }}&quot;&gt;{{ . }}&lt;/a&gt;
                   {{ end }}
                 &lt;/li&gt;
               &lt;/ul&gt;
-              &lt;li&gt;&lt;a href="#cat"&gt;Categorias&lt;/a&gt;&lt;/li&gt;
+              &lt;li&gt;&lt;a href=&quot;#cat&quot;&gt;Categorias&lt;/a&gt;&lt;/li&gt;
               &lt;ul&gt;
                 {{ range $key, $value := .Site.Taxonomies.categories }}
-                   &lt;li&gt;&lt;a href="#{{ $key }}"&gt;{{ $key | humanize }}({{ len $value }})&lt;/a&gt;&lt;/li&gt;
+                   &lt;li&gt;&lt;a href=&quot;#{{ $key }}&quot;&gt;{{ $key | humanize }}({{ len $value }})&lt;/a&gt;&lt;/li&gt;
                 {{ end }}
               &lt;/ul&gt;
-              &lt;li&gt;&lt;a href="#posts"&gt;Data (ir para Conteúdo)&lt;/a&gt;&lt;/li&gt;
+              &lt;li&gt;&lt;a href=&quot;#posts&quot;&gt;Data (ir para Conteúdo)&lt;/a&gt;&lt;/li&gt;
               &lt;ul&gt;
                 {{ range .Site.RegularPages }}
-                    &lt;li&gt;&lt;a href="#{{ .UniqueID }}"&gt;{{ .Title }} &lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href=&quot;#{{ .UniqueID }}&quot;&gt;{{ .Title }} &lt;/a&gt;&lt;/li&gt;
                 {{ end }}
               &lt;/ul&gt;
             &lt;/ul&gt;
-            &lt;h2 id="daytoday" style="page-break-before: always;"&gt;DayToDay&lt;/h2&gt;
-            &lt;pre&gt; {{readFile "..\\caloni.txt"}} &lt;/pre&gt;
-            &lt;h2 id="idx" style="page-break-before: always;"&gt;Índice Alfabético&lt;/h2&gt;
+            &lt;h2 id=&quot;daytoday&quot; style=&quot;page-break-before: always;&quot;&gt;DayToDay&lt;/h2&gt;
+            &lt;pre&gt; {{readFile &quot;..\\caloni.txt&quot;}} &lt;/pre&gt;
+            &lt;h2 id=&quot;idx&quot; style=&quot;page-break-before: always;&quot;&gt;Índice Alfabético&lt;/h2&gt;
             &lt;ul&gt;
             &lt;!-- create a list with all uppercase letters --&gt;
-            {{ $letters := split "ABCDEFGHIJKLMNOPQRSTUVWXYZ" "" }}
+            {{ $letters := split &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot; &quot;&quot; }}
             &lt;!-- range all pages sorted by their title --&gt;
             {{ range .Data.Pages.ByTitle }}
               &lt;!-- get the first character of each title. Assumes that the title is never empty! --&gt;
@@ -302,36 +302,36 @@ role="navigation" aria-label="main navigation">
               &lt;!-- in case $firstChar is a letter --&gt;
               {{ if $firstChar | in $letters }}
                 &lt;!-- get the current letter --&gt;
-                {{ $curLetter := $.Scratch.Get "curLetter" }}
+                {{ $curLetter := $.Scratch.Get &quot;curLetter&quot; }}
                 &lt;!-- if $curLetter isn't set or the letter has changed --&gt;
                 {{ if ne $firstChar $curLetter }}
                   &lt;!-- update the current letter and print it --&gt;
-                  {{ $.Scratch.Set "curLetter" $firstChar }}
-                  &lt;h3 id="letter{{ $firstChar }}"&gt;{{ $firstChar }}&lt;/h3&gt;
+                  {{ $.Scratch.Set &quot;curLetter&quot; $firstChar }}
+                  &lt;h3 id=&quot;letter{{ $firstChar }}&quot;&gt;{{ $firstChar }}&lt;/h3&gt;
                 {{ end }}
-                &lt;li&gt;&lt;a href="#{{ .UniqueID }}"&gt;{{ .Title }}&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;a href=&quot;#{{ .UniqueID }}&quot;&gt;{{ .Title }}&lt;/a&gt;&lt;/li&gt;
               {{ end }}
             {{ end }}
             &lt;/ul&gt;
-            &lt;h2 id="cat" style="page-break-before: always;"&gt;Índice por Categoria&lt;/h2&gt;
+            &lt;h2 id=&quot;cat&quot; style=&quot;page-break-before: always;&quot;&gt;Índice por Categoria&lt;/h2&gt;
             &lt;ul&gt;
             {{ range $taxonomyname, $taxonomy := .Site.Taxonomies }}
-              {{ if eq "categories" $taxonomyname }}
+              {{ if eq &quot;categories&quot; $taxonomyname }}
                 {{ range $key, $value := $taxonomy }}
-                  &lt;h3 id="{{ $key }}"&gt;{{ $key | humanize }}&lt;/h3&gt;
+                  &lt;h3 id=&quot;{{ $key }}&quot;&gt;{{ $key | humanize }}&lt;/h3&gt;
                     &lt;ul&gt;
                       {{ range $value.Pages }}
-                        &lt;li&gt;&lt;a href="#{{ .UniqueID }}"&gt;{{ .Title }} &lt;/a&gt;&lt;/li&gt;
+                        &lt;li&gt;&lt;a href=&quot;#{{ .UniqueID }}&quot;&gt;{{ .Title }} &lt;/a&gt;&lt;/li&gt;
                       {{ end }}
                     &lt;/ul&gt;
                 {{ end }}
               {{ end }}
             {{ end }}
             &lt;/ul&gt;
-            &lt;h2 id="posts" style="page-break-before: always;"&gt;Conteúdo&lt;/h2&gt;
+            &lt;h2 id=&quot;posts&quot; style=&quot;page-break-before: always;&quot;&gt;Conteúdo&lt;/h2&gt;
             {{ range .Site.RegularPages }}
-              &lt;h3 style="page-break-before: always" id="{{ .UniqueID }}"&gt;{{ .Title }}&lt;/h3&gt; {{ dateFormat "2006-01-02" .Date }} {{ .Content }}
-              {{ partial "taglist.html" . }}
+              &lt;h3 style=&quot;page-break-before: always&quot; id=&quot;{{ .UniqueID }}&quot;&gt;{{ .Title }}&lt;/h3&gt; {{ dateFormat &quot;2006-01-02&quot; .Date }} {{ .Content }}
+              {{ partial &quot;taglist.html&quot; . }}
             {{ end }}
             &lt;/div&gt;
             &lt;br&gt;
@@ -529,11 +529,11 @@ popd
    C:\WINDOWS\system32&gt;sqllocaldb i
    MSSQLLocalDB
    
-   C:\WINDOWS\system32&gt;sqllocaldb create "test"
-   LocalDB instance "test" created with version 13.1.4001.0.
+   C:\WINDOWS\system32&gt;sqllocaldb create &quot;test&quot;
+   LocalDB instance &quot;test&quot; created with version 13.1.4001.0.
    
-   C:\WINDOWS\system32&gt;sqllocaldb start "test"
-   LocalDB instance "test" started.
+   C:\WINDOWS\system32&gt;sqllocaldb start &quot;test&quot;
+   LocalDB instance &quot;test&quot; started.
    
    C:\WINDOWS\system32&gt;sqlcmd -S (localdb)\test
    ...

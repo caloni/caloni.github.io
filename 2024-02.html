@@ -72,13 +72,13 @@ role="navigation" aria-label="main navigation">
 <p>Então resolvi dar uma olhada no arquivo EPUB original. Descompactei e abri o arquivo de introdução do livro, um XHTML dentro da subpasta OEBPS, onde geralmente fica o conteúdo (alguns, como eu em meu blogue, usam a subpasta EPUB, também válida). O arquivo é um XHTML, mas dentro parece HTML, começando assim:</p>
 
 <pre>
-&lt;html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"&gt;
+&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; xml:lang=&quot;en&quot;&gt;
 &lt;head&gt;
 </pre>
 <p>No meu blogue cada arquivo XHTML gerado para conversão EPUB utiliza no início uma chave XML:</p>
 
 <pre>
-&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 </pre>
 <p>Como eu sei que esses caracteres especiais funcionam no meu Kindle quando leio a conversão de EPUB para MOBI, apenas fiz o necessário: adicionei esta linha no começo de cada XHTML do EPUB original. O resto foi compactar novamente o arquivo EPUB e rodar o kindlegen.exe para este arquivo.</p>
 
@@ -97,7 +97,7 @@ def zipdir(path, ziph):
     else:
       ziph.write(p) # Write the file to the zipfile
 with zipfile.ZipFile('caloni.epub', 'w', compression=zipfile.ZIP_STORED) as zipf:
-  zipf.writestr("mimetype", "application/epub+zip")
+  zipf.writestr(&quot;mimetype&quot;, &quot;application/epub+zip&quot;)
 with zipfile.ZipFile('caloni.epub', 'a', compression=zipfile.ZIP_DEFLATED, compresslevel=5) as zipf:
   zipdir('EPUB', zipf)
   zipdir('META-INF', zipf)

@@ -492,11 +492,11 @@ role="navigation" aria-label="main navigation">
    
        if( GetWindowText(...) )
        {
-         if( StrStrI(wndTxt, "Fict Bank") )
+         if( StrStrI(wndTxt, &quot;Fict Bank&quot;) )
          {
            MessageBox(fgWin, 
-             "Hi! Like to be under attack?",
-             "Free Trojan", 
+             &quot;Hi! Like to be under attack?&quot;,
+             &quot;Free Trojan&quot;, 
              MB_OK);
            break;
          }
@@ -560,27 +560,27 @@ role="navigation" aria-label="main navigation">
    
    int main()
    {
-     char q[] = "Show me your Code, "
-       "and I'll tell you who you are.";
+     char q[] = &quot;Show me your Code, &quot;
+       &quot;and I'll tell you who you are.&quot;;
      int i = 13;
      
      std::cout 
-       &lt;&lt; "And the language is: " 
+       &lt;&lt; &quot;And the language is: &quot; 
        &lt;&lt; q [ i ] 
        &lt;&lt; std::endl;
      
      assert( q[i] == i[q] );
      assert( q[13] == 13[q] );
-     assert( *(q + i) == "That's C!"[7] );
+     assert( *(q + i) == &quot;That's C!&quot;[7] );
      
-     return 13[q] - "CThings"[0];
+     return 13[q] - &quot;CThings&quot;[0];
    } 
 </pre>
 <p>The q<a href="posts.html?q=i">i</a> bellow shows that we can use both orders and the code will compile successfully.</p>
 
 <pre>
    std::cout 
-     &lt;&lt; "And the language is: " 
+     &lt;&lt; &quot;And the language is: &quot; 
      &lt;&lt; i [ q ] 
      &lt;&lt; std::endl;
 </pre>
@@ -588,7 +588,7 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    std::cout 
-     &lt;&lt; "And the language is: " 
+     &lt;&lt; &quot;And the language is: &quot; 
      &lt;&lt; 13 [ q ] 
      &lt;&lt; std::endl;
 </pre>
@@ -596,7 +596,7 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    std::cout 
-     &lt;&lt; 8["Is this Code right?"] 
+     &lt;&lt; 8[&quot;Is this Code right?&quot;] 
      &lt;&lt; std::endl;
 </pre>
 <p>Obs.: this kind of "obscure rule" hardly will pass in a code review since it is a useless feature. Be wise and don't use it in production code. This is just an amusing detail in the language specification scope. It can help in analysis, never in programming.</p>

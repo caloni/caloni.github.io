@@ -234,35 +234,35 @@ HRESULT RoGetActivationFactory(
 <p>Sabendo como <a href="2023-08.html#hstring">obter a string raw de uma HSTRING</a> basta colocar um breakpoint no WinDbg que imprima esta string e siga vazando:</p>
 
 <pre>
-bp combase!_RoGetActivationFactory "du poi(@rcx+0x10) ; g"
+bp combase!_RoGetActivationFactory &quot;du poi(@rcx+0x10) ; g&quot;
 </pre>
 <p>Estou olhando em meu trabalho o comportamento do Teams quando me autentico com um email corporativo. Essa é a saída do breakpoint:</p>
 
 <pre>
 0:044&gt; g
-00007ffe`6f8a4190  "Windows.Security.Authentication."
-00007ffe`6f8a41d0  "Web.Core.WebAuthenticationCoreMa"
-00007ffe`6f8a4210  "nager"
-00007ffe`64a52ae8  "Windows.Foundation.Uri"
-00007ffe`64a52a30  "Windows.Internal.Security.Authen"
-00007ffe`64a52a70  "tication.Web.WamProviderRegistra"
-00007ffe`64a52ab0  "tion"
-00007ffe`64a528a0  "Windows.Internal.Security.Creden"
-00007ffe`64a528e0  "tials.WebAccountProviderInternal"
-00007ffe`64a52920  ""
-00007ffe`64a52ae8  "Windows.Foundation.Uri"
-00007ffe`6f8a4910  "Windows.Security.Authentication."
-00007ffe`6f8a4950  "Web.Core.WebTokenRequest"
-00007ffe`6f8a42c0  "Windows.Security.Authentication."
-00007ffe`6f8a4300  "Web.Core.WebAuthenticationCoreMa"
-00007ffe`6f8a4340  "nager"
+00007ffe`6f8a4190  &quot;Windows.Security.Authentication.&quot;
+00007ffe`6f8a41d0  &quot;Web.Core.WebAuthenticationCoreMa&quot;
+00007ffe`6f8a4210  &quot;nager&quot;
+00007ffe`64a52ae8  &quot;Windows.Foundation.Uri&quot;
+00007ffe`64a52a30  &quot;Windows.Internal.Security.Authen&quot;
+00007ffe`64a52a70  &quot;tication.Web.WamProviderRegistra&quot;
+00007ffe`64a52ab0  &quot;tion&quot;
+00007ffe`64a528a0  &quot;Windows.Internal.Security.Creden&quot;
+00007ffe`64a528e0  &quot;tials.WebAccountProviderInternal&quot;
+00007ffe`64a52920  &quot;&quot;
+00007ffe`64a52ae8  &quot;Windows.Foundation.Uri&quot;
+00007ffe`6f8a4910  &quot;Windows.Security.Authentication.&quot;
+00007ffe`6f8a4950  &quot;Web.Core.WebTokenRequest&quot;
+00007ffe`6f8a42c0  &quot;Windows.Security.Authentication.&quot;
+00007ffe`6f8a4300  &quot;Web.Core.WebAuthenticationCoreMa&quot;
+00007ffe`6f8a4340  &quot;nager&quot;
 ...
-00007ffe`7abc9c30  "Windows.Foundation.PropertyValue"
-00007ffe`7abc9c70  ""
-00007ffe`7abc9c30  "Windows.Foundation.PropertyValue"
-00007ffe`7abc9c70  ""
-00007ffe`7abc9c30  "Windows.Foundation.PropertyValue"
-00007ffe`7abc9c70  ""
+00007ffe`7abc9c30  &quot;Windows.Foundation.PropertyValue&quot;
+00007ffe`7abc9c70  &quot;&quot;
+00007ffe`7abc9c30  &quot;Windows.Foundation.PropertyValue&quot;
+00007ffe`7abc9c70  &quot;&quot;
+00007ffe`7abc9c30  &quot;Windows.Foundation.PropertyValue&quot;
+00007ffe`7abc9c70  &quot;&quot;
 </pre>
 <p>Há muitas saídas repetidas, claro, além de quebra de linha. Nada que conhecimentos básicos de Vim não resolvam para montar esta lista:</p>
 

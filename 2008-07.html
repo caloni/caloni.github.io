@@ -143,7 +143,7 @@ role="navigation" aria-label="main navigation">
    bzr mkdir Docs
    bzr mkdir Interface
    bzr ...
-   bzr ci -m "Projeto-modelo. Herde desse projeto sua estrutura inicial"
+   bzr ci -m &quot;Projeto-modelo. Herde desse projeto sua estrutura inicial&quot;
 </pre>
 <p>Estruturação proposta:</p>
 
@@ -260,7 +260,7 @@ void MessageError(DWORD err, PCSTR msg, ...)
     va_start(vaList, msg);
     vsprintf(msgBuffer, msg, vaList);
     va_end(vaList);
-    sprintf(errBuffer, " Erro de sistema número %d.", (int) err);
+    sprintf(errBuffer, &quot; Erro de sistema número %d.&quot;, (int) err);
     strcat(msgBuffer, errBuffer);
     MessageBox(NULL, msgBuffer, STR_PROJECT_NAME, MB_OK | MB_ICONERROR);
 }
@@ -405,7 +405,7 @@ void MessageError(DWORD err, PCSTR msg, ...)
 #include &lt;windows.h&gt;
 int main()
 {
-    HANDLE hFile = CreateFile("c:\\tests\\myfile.txt", GENERIC_READ, 
+    HANDLE hFile = CreateFile(&quot;c:\\tests\\myfile.txt&quot;, GENERIC_READ, 
       FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
     if( hFile )
     {
@@ -455,9 +455,9 @@ int main()
     DWORD winVer = GetVersion();
     BOOL isPlatformNT = winVer &gt;= 0x80000000 ? FALSE : TRUE;
     if( isPlatformNT )
-      printf("Plataforma NT\n");
+      printf(&quot;Plataforma NT\n&quot;);
     else
-      printf("Bem-vindo ao parque dos dinossauros!\n");
+      printf(&quot;Bem-vindo ao parque dos dinossauros!\n&quot;);
     return isPlatformNT ? 1 : 0;
 }
 </pre>
@@ -559,7 +559,7 @@ DWORD ExceptionFilterButExecuteWellDefinedFunction()
     return EXCEPTION_EXECUTE_HANDLER; // goes to except code
 }
 // this thread stays forever waiting execution commands from a 
-// well-defined function. its "parameter" is the function number
+// well-defined function. its &quot;parameter&quot; is the function number
 void ExecutionThread()
 {
     // 2. ad aeternum
@@ -604,10 +604,10 @@ using namespace std;
 // show available commands
 bool Help(const string&amp;)
 {
-   cout &lt;&lt; "AntiDebug Test Program\n"
-      &lt;&lt; " Echo string to be printed\n"
-      &lt;&lt; " System command [params]\n"
-      &lt;&lt; " Quit\n\n";
+   cout &lt;&lt; &quot;AntiDebug Test Program\n&quot;
+      &lt;&lt; &quot; Echo string to be printed\n&quot;
+      &lt;&lt; &quot; System command [params]\n&quot;
+      &lt;&lt; &quot; Quit\n\n&quot;;
    return true;
 }
 // run system/shell command
@@ -630,15 +630,15 @@ bool Quit(const string&amp;)
 }
 // minifunctions array
 bool (* (g_miniFuncs[]) )(const string&amp;) = { Help, System, Echo, Quit };
-// "minifunction -&gt; index" mapping
+// &quot;minifunction -&gt; index&quot; mapping
 map&lt;string, int&gt; g_miniFuncIdx;
 // start minifunctions mapping
 void InitializeMiniFuncIdx()
 {
-   g_miniFuncIdx["Help"] = 0;
-   g_miniFuncIdx["System"] = 1;
-   g_miniFuncIdx["Echo"] = 2;
-   g_miniFuncIdx["Quit"] = 3;
+   g_miniFuncIdx[&quot;Help&quot;] = 0;
+   g_miniFuncIdx[&quot;System&quot;] = 1;
+   g_miniFuncIdx[&quot;Echo&quot;] = 2;
+   g_miniFuncIdx[&quot;Quit&quot;] = 3;
 }
 // last line read from input
 string g_currentLine;
@@ -703,7 +703,7 @@ int main()
       // 3. for each item in the script (function numbers)
       while( cin )
       {
-         cout &lt;&lt; "Type something\n";
+         cout &lt;&lt; &quot;Type something\n&quot;;
          // 4. tells the thread to run the function number N
          getline(cin, g_currentLine);
          if( WaitForSingleObject(antiDebugThr, g_waitTime * 2) != WAIT_TIMEOUT )
@@ -811,7 +811,7 @@ int Start()
 jmp_buf env; // Contains the next instruction (stack state).
 void Func()
 {
-    // 3. Return using the "nonconventional" way
+    // 3. Return using the &quot;nonconventional&quot; way
     longjmp(env, 1);
 }
 void CallFunc()
@@ -848,7 +848,7 @@ int main()
     while( cin )
     {
       string line;
-      cout &lt;&lt; "Type something\n";
+      cout &lt;&lt; &quot;Type something\n&quot;;
       getline(cin, line);
       jmp_buf env;
       if( setjmp(env) == 0 )
@@ -888,7 +888,7 @@ int main()
     while( cin )
     {
       string line;
-      cout &lt;&lt; "Type something\n";
+      cout &lt;&lt; &quot;Type something\n&quot;;
       getline(cin, line);
       ANTIDEBUG(( cout &lt;&lt; line &lt;&lt; endl ));
     }

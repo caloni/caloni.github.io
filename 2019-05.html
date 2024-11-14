@@ -309,7 +309,7 @@ role="navigation" aria-label="main navigation">
 <p>Este é nosso projeto de exemplo:</p>
 
 <pre>
-#include "CalculatorTabajara.h"
+#include &quot;CalculatorTabajara.h&quot;
 int soma(int x, int y)
 {
     return x + y;
@@ -337,9 +337,9 @@ int main()
 <p>Após isso basta incluir algum header que contenha os tipos, funções, classes e métodos que deseja testar e vá criando métodos de teste dentro da classe de exemplo:</p>
 
 <pre>
-#include "pch.h"
-#include "CppUnitTest.h"
-#include "..\CalculatorTabajara.h"
+#include &quot;pch.h&quot;
+#include &quot;CppUnitTest.h&quot;
+#include &quot;..\CalculatorTabajara.h&quot;
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 namespace UnitTest1
 {
@@ -478,7 +478,7 @@ namespace Microsoft{ namespace VisualStudio {namespace CppUnitTestFramework
 <p>Vamos começar com um exemplo simples: apenas um corrotina que recebe um inteiro e incrementa três vezes. A cada vez que ele incrementa ele devolve o controle de execução via yield. O `main` cria três dessas corrotinas e dá resume em cada uma delas três vezes, finalizando a execução de todas. Ao final, o counter final é de 9.</p>
 
 <pre>
-#include "..\picoro\picoro.h"
+#include &quot;..\picoro\picoro.h&quot;
 #include &lt;stdio.h&gt;
 void* mycoroutine(void* arg)
 {
@@ -504,7 +504,7 @@ int main()
       resume(coroutines[i], &amp;counter);
     for (i = 0; i &lt; maxi; ++i)
       resume(coroutines[i], &amp;counter);
-    printf("final counter: %d\n", counter);
+    printf(&quot;final counter: %d\n&quot;, counter);
     return 0;
 }
 </pre>
@@ -876,7 +876,7 @@ int main()
     int x = 10, y = 32;
     int z = calc.sum(x, y);
     int k = calc.mult(&amp;calc, z, y);
-    printf("%d + %d = %d, %d * %d = %d\n", x, y, z, z, y, k);
+    printf(&quot;%d + %d = %d, %d * %d = %d\n&quot;, x, y, z, z, y, k);
 }
 10 + 32 = 42, 42 * 32 = 1344
 </pre>
@@ -913,7 +913,7 @@ int calc_cat(int x, int y)
 {
     char buf[100];
     int ret;
-    sprintf(buf, "%d%d", x, y);
+    sprintf(buf, &quot;%d%d&quot;, x, y);
     ret = atoi(buf);
     return ret;
 }
@@ -929,7 +929,7 @@ int main()
     int x = 1, y = 1;
     int z = calc.sum(x, y);
     int k = calc.mult(&amp;calc, z, y);
-    printf("%d + %d = %d, %d * %d = %d\n", x, y, z, z, y, k);
+    printf(&quot;%d + %d = %d, %d * %d = %d\n&quot;, x, y, z, z, y, k);
 }
 10 + 32 = 1032, 1032 * 32 = 2147483647
 </pre>
@@ -955,10 +955,10 @@ int main()
 <pre>
 /* defclass(foo, cclass_instance); */
 typedef struct foo_instance { cclass_instance type; } foo_instance;
-static foo_instance foo = { "foo" };
+static foo_instance foo = { &quot;foo&quot; };
 /* defclass(bar, foo); */
 typedef struct bar_instance { cclass_instance type; } bar_instance; 
-static bar_instance bar = { "bar" };
+static bar_instance bar = { &quot;bar&quot; };
 </pre>
 <h2>Estruturas de dados</h2>
 
@@ -967,7 +967,7 @@ static bar_instance bar = { "bar" };
 <p>Inicialmente feito em STL pela produtividade, a solução atual no GitHub é feita inteiramente em C usando a <a href="https://developer.gnome.org/glib/">glib</a> (lib comum em Linux com estrutura de dados, etc). O legal dessa biblioteca é que ela tem 20 anos (desde 1998) e já foi muito usada e testada, além de possuir estruturas e algoritmos simples que fazem parte do pacote básico de qualquer programador, como arrays, strings, hash tables.</p>
 
 <pre>
-#include "cclos.h"
+#include &quot;cclos.h&quot;
 #include &lt;stdarg.h&gt;
 #include &lt;string.h&gt;
 #include &lt;gmodule.h&gt;
@@ -1189,42 +1189,42 @@ void call(const char* name, int argc, ...)
 <p>O código que utiliza a clos.c é bem direto e enxuto. Como no Lisp.</p>
 
 <pre>
-#include "cclos.h"
+#include &quot;cclos.h&quot;
 #include &lt;stdio.h&gt;
 /* defclass(foo, cclass_instance); */
 typedef struct foo_instance { cclass_instance type; } foo_instance;
-static foo_instance foo = { "foo" };
+static foo_instance foo = { &quot;foo&quot; };
 /* defclass(bar, foo); */
 typedef struct bar_instance { cclass_instance type; } bar_instance; 
-static bar_instance bar = { "bar" };
+static bar_instance bar = { &quot;bar&quot; };
 void test_dispatch()
 {
     bar_instance x = bar;
     bar_instance y = bar;
-    call("thing", 2, &amp;x, &amp;y);
+    call(&quot;thing&quot;, 2, &amp;x, &amp;y);
 }
 void thing_foo_foo(cclass_instance* x, cclass_instance* y)
 {
-    printf("Both are of type FOO\n");
+    printf(&quot;Both are of type FOO\n&quot;);
 }
 void thing_bar_foo(cclass_instance* x, cclass_instance* y)
 {
-    printf("X is BAR, Y is FOO. Next...\n");
-    call_next_method("thing", 2, x, y);
+    printf(&quot;X is BAR, Y is FOO. Next...\n&quot;);
+    call_next_method(&quot;thing&quot;, 2, x, y);
 }
 void thing_foo_bar(cclass_instance* x, cclass_instance* y)
 {
-    printf("X is FOO, Y is BAR. Next...\n");
-    call_next_method("thing", 2, x, y);
+    printf(&quot;X is FOO, Y is BAR. Next...\n&quot;);
+    call_next_method(&quot;thing&quot;, 2, x, y);
 }
 int main()
 {
     cdefgeneric_initialize();
-    defclass("foo", "cclass");
-    defclass("bar", "foo");
-    defmethod("thing", &amp;thing_foo_foo, 2, &amp;foo, &amp;foo);
-    defmethod("thing", &amp;thing_bar_foo, 2, &amp;bar, &amp;foo);
-    defmethod("thing", &amp;thing_foo_bar, 2, &amp;foo, &amp;bar);
+    defclass(&quot;foo&quot;, &quot;cclass&quot;);
+    defclass(&quot;bar&quot;, &quot;foo&quot;);
+    defmethod(&quot;thing&quot;, &amp;thing_foo_foo, 2, &amp;foo, &amp;foo);
+    defmethod(&quot;thing&quot;, &amp;thing_bar_foo, 2, &amp;bar, &amp;foo);
+    defmethod(&quot;thing&quot;, &amp;thing_foo_bar, 2, &amp;foo, &amp;bar);
     test_dispatch();
 }
 </pre>
@@ -1461,7 +1461,7 @@ int main()
    */
    return 0;
    usage:
-   printf("How to use: ...");
+   printf(&quot;How to use: ...&quot;);
    return 1;
 </pre>
 <p>Claro que esse uso é trivial demais para valer a pena uma troca de fluxo tão desestruturada. Há formas mais úteis de desviar o fluxo padrão. No exemplo acima bastaria colocar todo o código que se segue dentro do grupo pertencente ao if e o goto seria desnecessário.</p>
@@ -1488,7 +1488,7 @@ int main()
    code
    */
    
-   printf("closing f5\n");
+   printf(&quot;closing f5\n&quot;);
    fclose(f5);
    end_f4: 
      fclose(f4);

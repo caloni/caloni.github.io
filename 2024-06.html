@@ -173,7 +173,7 @@ int main()
 {
     auto alloc = std::allocator&lt;A&gt;();
     A* p = alloc.allocate(2);
-    p[1].y = "y"; // crash
+    p[1].y = &quot;y&quot;; // crash
 }
 </pre>
 <p>Ao depurar a chamada ao `operator =` que chama por sua vez o método `std::string::assign` é possível ver que o objeto está com os membros `size` e `capacity` com lixo. O que faz sentido, já que o construtor dessa string nunca foi chamado.</p>

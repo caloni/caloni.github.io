@@ -192,8 +192,8 @@ struct A
 p[1000];
 int main()
 {
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
+    freopen(&quot;input.txt&quot;, &quot;r&quot;, stdin);
+    freopen(&quot;output.txt&quot;, &quot;w&quot;, stdout);
     int i, TC, T, n, j;
     srand((unsigned)time(NULL)); // mexendo o saco de bingo...
     // a parte mais demorada: construir um contador gigante estilo 
@@ -216,17 +216,17 @@ int main()
         C[j][w[j]]++;
       }
     }
-    // agora a parte "fácil"...
+    // agora a parte &quot;fácil&quot;...
     // ler número de casos de teste (sempre 120)
-    scanf("%d", &amp;TC);
+    scanf(&quot;%d&quot;, &amp;TC);
     for (T = 1; T &lt;= TC; T++) // iterar por cada linha
     {
-      scanf("%d", &amp;n);
+      scanf(&quot;%d&quot;, &amp;n);
       p[T].ord = T; // guardando sua posição
       // lendo os números de todos os casos
       for (i = 0; i &lt; n; i++)
       {
-        scanf("%d", &amp;O[i]);
+        scanf(&quot;%d&quot;, &amp;O[i]);
         p[T].R += C[i][O[i]]; // mas gravando o peso de cada posição (cálculo de 3M)
       }
     }
@@ -236,9 +236,9 @@ int main()
       v[p[i].ord] = true; // metade tem que ser bom (a melhor metade)
     for (i = 1; i &lt;= TC; i++)
     {
-      printf("Case #%d: ", i);
-      if (v[i])printf("GOOD\n");
-      else printf("BAD\n");
+      printf(&quot;Case #%d: &quot;, i);
+      if (v[i])printf(&quot;GOOD\n&quot;);
+      else printf(&quot;BAD\n&quot;);
     }
 }
 </pre>
@@ -467,7 +467,7 @@ struct MinhaEstrutura
 int main()
 {
     MinhaEstrutura me;
-    std::cout &lt;&lt; "x: " &lt;&lt; me.x &lt;&lt; ", y: " &lt;&lt; me.y &lt;&lt; ", c: " &lt;&lt; me.c &lt;&lt; std::endl;
+    std::cout &lt;&lt; &quot;x: &quot; &lt;&lt; me.x &lt;&lt; &quot;, y: &quot; &lt;&lt; me.y &lt;&lt; &quot;, c: &quot; &lt;&lt; me.c &lt;&lt; std::endl;
 }
 </pre>
 <img src="img/estruturas_vs_classes_fight_rdpllNf.jpg"/>
@@ -483,7 +483,7 @@ struct MinhaEstrutura
 };
 std::ostream&amp; operator &lt;&lt; (std::ostream&amp; os, const MinhaEstrutura&amp; me)
 {
-    std::cout &lt;&lt; "x: " &lt;&lt; me.x &lt;&lt; ", y: " &lt;&lt; me.y &lt;&lt; ", c: " &lt;&lt; me.c;
+    std::cout &lt;&lt; &quot;x: &quot; &lt;&lt; me.x &lt;&lt; &quot;, y: &quot; &lt;&lt; me.y &lt;&lt; &quot;, c: &quot; &lt;&lt; me.c;
     return os;
 }
 int main()

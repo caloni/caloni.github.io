@@ -118,15 +118,15 @@ eles, quase da mesma forma, as atividades que para eles
 <p>Então eu edito essas linhas para fazer parte de uma busca coletiva através da função matchadd do Vim.</p>
 
 <pre>
-%s/\(.*\) $/call matchadd("search", "\1")/
+%s/\(.*\) $/call matchadd(&quot;search&quot;, &quot;\1&quot;)/
 </pre>
 <p>Com isso cada linha conterá um comando válido do Vim para adicionar o trecho sublinhado como parte de um grupo de busca.</p>
 
 <pre>
-call matchadd("search", "minhas anotações de leitura. [^1]")
-call matchadd("search", "loquaz, densa,")
-call matchadd("search", "cada detalhe dessa questão é explorada em mais detalhes.")
-call matchadd("search", "eles, quase da mesma forma, as atividades que para eles")
+call matchadd(&quot;search&quot;, &quot;minhas anotações de leitura. [^1]&quot;)
+call matchadd(&quot;search&quot;, &quot;loquaz, densa,&quot;)
+call matchadd(&quot;search&quot;, &quot;cada detalhe dessa questão é explorada em mais detalhes.&quot;)
+call matchadd(&quot;search&quot;, &quot;eles, quase da mesma forma, as atividades que para eles&quot;)
 </pre>
 <p>Dessa forma eu salvo as modificações e rodo o arquivo como um arquivo de comandos do Vim com `:so %`. O editor irá então realçar todos os itens deste grupo de busca em qualquer arquivo que eu abra. E agora é a hora de abrir os rascunhos ou textos que andei revisando.</p>
 

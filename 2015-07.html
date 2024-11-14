@@ -471,13 +471,13 @@ public:
         static const char* st_UsingCollection = name;
     }
 };
-static const Using st_Using("using minhalib 0.0.1");
+static const Using st_Using(&quot;using minhalib 0.0.1&quot;);
 </pre>
 <p>Agora uma variável estática do módulo deverá ser inicializada como um objeto da classe Using e irá jogar em uma variável estática dentro do construtor. Se ela será usada fica a dúvida do compilador, que deixa tudo como está. Ou seja, ganhamos nossa string no binário:</p>
 
 <pre>
-#include "Using.h"
-static const Using st_Using("using minhalib 0.0.1");
+#include &quot;Using.h&quot;
+static const Using st_Using(&quot;using minhalib 0.0.1&quot;);
 int main()
 {
 }
@@ -495,10 +495,10 @@ int main()
 <pre>
 // Using.h
 #pragma once 
-#define USING_FILE(version) static const Using st_Using ## __LINE__("using file " __FILE__ " " version)
-#define USING_CLASS(name, version) static const Using st_Using ## __LINE__("using class " #name " " version)
-#define USING_LIB(name, version) static const Using st_Using ## __LINE__("using lib " #name " " version)
-#define USING_FUNCTION(version) static const Using st_Using ## __LINE__("using function " __FUNCTION__ " " version)
+#define USING_FILE(version) static const Using st_Using ## __LINE__(&quot;using file &quot; __FILE__ &quot; &quot; version)
+#define USING_CLASS(name, version) static const Using st_Using ## __LINE__(&quot;using class &quot; #name &quot; &quot; version)
+#define USING_LIB(name, version) static const Using st_Using ## __LINE__(&quot;using lib &quot; #name &quot; &quot; version)
+#define USING_FUNCTION(version) static const Using st_Using ## __LINE__(&quot;using function &quot; __FUNCTION__ &quot; &quot; version)
 class Using
 {
 public:
@@ -512,24 +512,24 @@ public:
 
 <pre>
 // File1.cpp
-#include "Using.h"
-USING_LIB(extralib, "0.0.1");
+#include &quot;Using.h&quot;
+USING_LIB(extralib, &quot;0.0.1&quot;);
 void ImportantFunction()
 {
-    USING_FUNCTION("0.3.1");
+    USING_FUNCTION(&quot;0.3.1&quot;);
 }
 // File2.cpp
-#include "Using.h"
-USING_FILE("0.0.1");
+#include &quot;Using.h&quot;
+USING_FILE(&quot;0.0.1&quot;);
 // File3.cpp
-#include "Using.h"
-USING_CLASS(ImportantClass, "1.3.4");
+#include &quot;Using.h&quot;
+USING_CLASS(ImportantClass, &quot;1.3.4&quot;);
 class ImportantClass
 {
 public:
 };
-#include "Using.h"
-USING_LIB(lib1, "0.0.1");
+#include &quot;Using.h&quot;
+USING_LIB(lib1, &quot;0.0.1&quot;);
 </pre>
 <img src="img/voce_sabe_o_que_esta_usando_no_seu_codigo_all_strings_using.png"/>
 

@@ -137,16 +137,16 @@ role="navigation" aria-label="main navigation">
 <p>Porém, eis que chega o final de ano e pergunto para o meu amigo o que ele vai fazer.</p>
 
 <pre>
-   -- "Processamento de Dados!"
-   -- "Hummm... computadores."
-   -- "Isso!"
+   -- &quot;Processamento de Dados!&quot;
+   -- &quot;Hummm... computadores.&quot;
+   -- &quot;Isso!&quot;
 </pre>
 <p>Mas que coisa, hein. Balancei, balancei, e acabei mudando minha decisão do início do ano: iria tentar o curso de PD.</p>
 
 <p>E foi assim. Fizemos o vestibulinho. Meu amigo não passou, mas a família dele tinha recursos, colocou ele em uma escola técnica particular. Eu também não passei. A nota de corte era 38. Tirei 37. Por um ponto fiquei sem opções de estudo. Então procurei por vagas em escolas técnicas. Minha mãe encontrou uma, onde existiam dois cursos: magistério e contabilidade.</p>
 
 <pre>
-   -- "Magistério é legal. E se não for legal, pelo menos tem um monte de mulher."
+   -- &quot;Magistério é legal. E se não for legal, pelo menos tem um monte de mulher.&quot;
 </pre>
 <p>Mas dessa vez meu lado numérico falou mais alto, e acabei ficando na sala mais chata. Prestei para contabilidade. Passei fácil.</p>
 
@@ -161,7 +161,7 @@ role="navigation" aria-label="main navigation">
 <p>Naquele momento, meu lado letrado foi mais forte.</p>
 
 <pre>
-   -- "Quero ser escritor, logo, vou fazer letras. Deve ser bem legal! Mas se não for bem legal, pelo menos tem um monte de mulher."
+   -- &quot;Quero ser escritor, logo, vou fazer letras. Deve ser bem legal! Mas se não for bem legal, pelo menos tem um monte de mulher.&quot;
 </pre>
 <p>E comecei a estudar para o vestibular. Apenas um vestibular. Fuvest. Se não passasse ficaria a Deus dará. O que me importunava bastante àquela época da vida: depois de 13 anos de escola eu havia ficado um tanto condicionado a comparecer em sala de aula todos os dias de semana da minha vida.</p>
 
@@ -170,7 +170,7 @@ role="navigation" aria-label="main navigation">
 <p>Mas terminei. E passei. E de repente lá estava eu no antro da perdição, o início de tudo: FFLCH (lê-se "fefeléche"). E o subsolo era de fato um antro: xadrez, MPB, sebos, discussões filosóficas e muita fumaça. No meio das revoluções estratégicas do pessoal do CAELL eu me sentia extremamente "humanizado", seja lá o que isso for. E, sim, pela primeira vez na vida, milhares de mulheres interessantes passarelavam pelos corredores dos pensadores da palavra.</p>
 
 <pre>
-   -- "Viva a linguística!"
+   -- &quot;Viva a linguística!&quot;
 </pre>
 <p>Tudo estaria bem na cabeça daquele promissor "professor de português das escolas da rede pública de ensino" se não fosse o meu lado numérico.</p>
 
@@ -295,7 +295,7 @@ role="navigation" aria-label="main navigation">
      public:
      File(char* name)
      {
-       m_file = fopen(name, "r");
+       m_file = fopen(name, &quot;r&quot;);
      }
    
      ~File()
@@ -308,7 +308,7 @@ role="navigation" aria-label="main navigation">
    
    int UseFile()
    {
-     File config("config.txt");
+     File config(&quot;config.txt&quot;);
      // using config.txt
      return 0; // config.m_file released
    } 
@@ -328,7 +328,7 @@ role="navigation" aria-label="main navigation">
    
    int UseFileEx()
    {
-     File config("config.txt");
+     File config(&quot;config.txt&quot;);
      BlowUpFunction(); // exception thrown:
                        // config.m_file is 
                        // automagically released
@@ -346,7 +346,7 @@ role="navigation" aria-label="main navigation">
    
      void Open(char* name)
      {
-       m_file = fopen(name, "r");
+       m_file = fopen(name, &quot;r&quot;);
      }
    
      void Close()
@@ -360,7 +360,7 @@ role="navigation" aria-label="main navigation">
    int UseFile2()
    {
      File2 config;
-     config.Open("config.txt");
+     config.Open(&quot;config.txt&quot;);
    
      BlowUpFunction(); // exception thrown:
                        // the resource was 
@@ -406,7 +406,7 @@ role="navigation" aria-label="main navigation">
 <p>Agora vamos sair da teoria e tentar fazer as coisas mais ou menos parecidas na prática. O nosso sorteado desse artigo foi o IMalloc, a interface de alocação de memória do COM, que existe desde a época em que não se sabia direito pra que esse tal de COM iria servir. O IMalloc é definido como se segue:</p>
 
 <pre>
-   MIDL_INTERFACE("00000002-0000-0000-C000-000000000046")
+   MIDL_INTERFACE(&quot;00000002-0000-0000-C000-000000000046&quot;)
    IMalloc : public IUnknown
    {
      public:
@@ -523,8 +523,8 @@ role="navigation" aria-label="main navigation">
 <p>E não é que tudo deu certo? A variável foi preenchida, e partir dela demos uma espiadela nos endereços das funções da vtable. Nós pegamos o valor da variável que foi preenchida (o endereço da interface) e obtemos os seus primeiros 4 bytes (o endereço da vtable) e listamos o seu conteúdo (a própria vtable!). Agora basta usarmos o resultados de nossas contagens lá em cima e colocarmos os breakpoints nas funções corretas. E mandar rodar. E analisar os resultados.</p>
 
 <pre>
-   0:000&gt; bp 774dd00d ".echo IMalloc::Alloc"
-   0:000&gt; bp 774dcfe8 ".echo IMalloc::Free"
+   0:000&gt; bp 774dd00d &quot;.echo IMalloc::Alloc&quot;
+   0:000&gt; bp 774dcfe8 &quot;.echo IMalloc::Free&quot;
    0:000&gt; g
    IMalloc::Alloc
    eax=775e6034 ebx=00000000 ecx=775e600c edx=774dd00d esi=00000001 edi=00403374
@@ -573,7 +573,7 @@ role="navigation" aria-label="main navigation">
 <pre>
    void f(wchar_t* arg)
    {
-    printf("%s", arg);
+    printf(&quot;%s&quot;, arg);
     return 0;
    }
 </pre>
@@ -583,7 +583,7 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    char ch = getc();
-   printf("%d", ch);
+   printf(&quot;%d&quot;, ch);
 </pre>
 <p>É mais sutil, também costuma confundir no meio de vários parâmetros, e pode ser detectado utilizando a técnica de transformar tudo em assembly, pois com isso temos dica de tipagem ao empilhar os argumentos na saída do arquivo asm. É claro que hoje em dia existem compiladores muito espertos, que detectam na hora o que você está digitando e a cagada que isso vai dar depois de compilado. Mas, assumindo que você não tem toda essa tecnologia ao seu dispor, ou está mesmo interessado em entender como as coisas funcionam, e não apenas seguir o manual do seu ambiente de desenvolvimento preferido, essa é uma maneira interessante de analisar o que ocorre com o seu código. Agora, a pergunta que não quer calar: por que isso acontece?</p>
 
@@ -615,15 +615,15 @@ role="navigation" aria-label="main navigation">
 <pre>
    int main()
    {
-     printf("load dll");
-     HMODULE lockDll = LoadLibrary(_T("dll_lock.dll"));
+     printf(&quot;load dll&quot;);
+     HMODULE lockDll = LoadLibrary(_T(&quot;dll_lock.dll&quot;));
    
      if( lockDll )
      {
        Sleep(2000);
-       printf("free dll");
+       printf(&quot;free dll&quot;);
        FreeLibrary(lockDll), lockDll  = NULL;
-       printf("done");
+       printf(&quot;done&quot;);
      }
    }
 </pre>

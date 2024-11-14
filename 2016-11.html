@@ -725,11 +725,11 @@ DWORD ClassicHandleLeak()
 {
     DWORD ret = 0;
     HKEY hKey;
-    if ( RegOpenKeyEx(HKEY_LOCAL_MACHINE, L"Software\\Something", 
+    if ( RegOpenKeyEx(HKEY_LOCAL_MACHINE, L&quot;Software\\Something&quot;, 
       0, GENERIC_READ, &amp;hKey) == ERROR_SUCCESS )
     {
       DWORD retSz = sizeof(ret);
-      if (RegQueryValueEx(hKey, L"SomeValue", NULL, NULL, 
+      if (RegQueryValueEx(hKey, L&quot;SomeValue&quot;, NULL, NULL, 
         (PBYTE) &amp;ret, &amp;retSz) == ERROR_SUCCESS)
       {
         // success!

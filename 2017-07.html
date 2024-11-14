@@ -437,34 +437,34 @@ nssm.exe install Msvsmon msvsmon.exe /timeout 999999 /anyuser /silent /noauth
 #include &lt;windows.h&gt;
 int main()
 {
-    if( HMODULE dll = LoadLibraryA("DLL") )
+    if( HMODULE dll = LoadLibraryA(&quot;DLL&quot;) )
     {
         void (*start)(), (*stop)();
-        *((FARPROC*)&amp;start) = GetProcAddress(dll, "DLL_Start");
-        *((FARPROC*)&amp;stop) = GetProcAddress(dll, "DLL_Stop");
+        *((FARPROC*)&amp;start) = GetProcAddress(dll, &quot;DLL_Start&quot;);
+        *((FARPROC*)&amp;stop) = GetProcAddress(dll, &quot;DLL_Stop&quot;);
         if( start )
             start();
-        std::cout &lt;&lt; "Type &lt;enter&gt; to exit\n";
+        std::cout &lt;&lt; &quot;Type &lt;enter&gt; to exit\n&quot;;
         std::cin.get();
         if( stop )
             stop();
         FreeLibrary(dll);
     }
-    else std::cout &lt;&lt; "DLL not found\n";
+    else std::cout &lt;&lt; &quot;DLL not found\n&quot;;
 }
 </pre>
 <p>As funções de start e stop não fazem nada, apenas imprimem um passou-por-aqui:</p>
 
 <pre>
-#include "DLL.h"
+#include &quot;DLL.h&quot;
 #include &lt;iostream&gt;
 void DLL_Start()
 {
-    std::cout &lt;&lt; "DLL started\n";
+    std::cout &lt;&lt; &quot;DLL started\n&quot;;
 }
 void DLL_Stop()
 {
-    std::cout &lt;&lt; "DLL stopped\n";
+    std::cout &lt;&lt; &quot;DLL stopped\n&quot;;
 }
 </pre>
 <p>Depois de copiar Service.exe e DLL.dll para a máquina-alvo (e não se esquecer de instalar as <a href="https://www.google.com.br/search?q=visual+c%2B%2B+redistributable+2017<a href="posts.html?q=dependências">dependências</a>oq=visual+c%2B%2B+redistributable">dependências</a>) instalar da mesma forma com que foi instalado o msvsmon:</p>
@@ -477,7 +477,7 @@ nssm.exe install Service service.exe
 <p>Agora ache o IP da máquina-alvo e vá em Debug, Attach to Process (Ctrl+Alt+P) no Visual Studio, modo remoto e digite o IP.</p>
 
 <pre>
-cmd /k ipconfig | find "192"
+cmd /k ipconfig | find &quot;192&quot;
 </pre>
 <img src="img/forma_mais_simples_de_depurar_processos_antes_do_logon_GpNPhiC.png"/>
 
@@ -491,7 +491,7 @@ void DLL_Start()
 {
     while( ! IsDebuggerPresent() )
         Sleep(1000);
-    std::cout &lt;&lt; "DLL started\n";
+    std::cout &lt;&lt; &quot;DLL started\n&quot;;
 }
 </pre>
 <p>Depois que houver o attach você irá continuar a execução. Portanto, coloque um breakpoint logo depois.</p>
@@ -563,7 +563,7 @@ for img in imgs:
 <p>Executando este script será possível gerar um log no formato nome-original-do-arquivo para id-da-imagem-usado-pelo-imgur. O ID deles também é usado para link direto da imagem, de onde virá o comando sed que vai substituir nos artigos os nomes originais pelo link do imgur:</p>
 
 <pre>
-sed -i "s/&lt;nome-original-do-arquivo&gt;/http\/\/:\/&lt;link-da-imagem-no-imgur&gt;/&lt;id-do-imgur&gt;.&lt;extensao&gt;/" *.md
+sed -i &quot;s/&lt;nome-original-do-arquivo&gt;/http\/\/:\/&lt;link-da-imagem-no-imgur&gt;/&lt;id-do-imgur&gt;.&lt;extensao&gt;/&quot; *.md
 </pre>
 <p>Lembrar de apagar o all.md. Ele só foi usado para gerar a saída mais simples do grep.</p>
 

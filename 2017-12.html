@@ -367,11 +367,11 @@ int main(int argc, const char **argv)
     HRESULT hr = obj.init();
     if ( SUCCEEDED(hr) )
     {
-        if ( args have "cmd1" )
+        if ( args have &quot;cmd1&quot; )
         {
             hr = obj.cmd1();
         }
-        else if ( args have "cmd2" )
+        else if ( args have &quot;cmd2&quot; )
         {
             hr = obj.cmd2();
         }
@@ -465,14 +465,14 @@ int main(int argc, char* argv[])
     SECURITY_ATTRIBUTES sa = { 0, NULL, TRUE };
     STARTUPINFOA si = { sizeof(si) };
     PROCESS_INFORMATION pi;
-    CHAR cmd[4096] = "cmd.exe";
+    CHAR cmd[4096] = &quot;cmd.exe&quot;;
     SECURITY_ATTRIBUTES saAttr;
  
     saAttr.nLength = sizeof(SECURITY_ATTRIBUTES);
     saAttr.bInheritHandle = TRUE;
     saAttr.lpSecurityDescriptor = NULL;
     si.dwFlags = STARTF_USESTDHANDLES;
-    si.hStdOutput = CreateFileA("cmd.log", GENERIC_WRITE, FILE_SHARE_READ, &amp;sa, CREATE_ALWAYS, 0, NULL);
+    si.hStdOutput = CreateFileA(&quot;cmd.log&quot;, GENERIC_WRITE, FILE_SHARE_READ, &amp;sa, CREATE_ALWAYS, 0, NULL);
     si.hStdError = si.hStdOutput;
     if( si.hStdOutput != NULL &amp;&amp; si.hStdOutput != INVALID_HANDLE_VALUE )
     {

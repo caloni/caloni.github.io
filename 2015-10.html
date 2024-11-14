@@ -493,7 +493,7 @@ rc_new_content = re.sub(u'^.*FILEVERSION.*$', file_version_string, rc_new_conten
 <p>Para resolver isso, o mínimo que se deve fazer é super-simples e nada difícil: crie uma pasta em algum lugar, nomeie essa pasta seu servidor de símbolos, a cada novo binário que será entregue, indexe o binário e os seus símbolos. Como? Com o <a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff551063(v=vs.85">"Debugging Tools for Windows"</a>, como dizia um amigo meu, é mamão com açúcar:</p>
 
 <pre>
-"c:\Tools\DbgTools(x86)\symstore" add /r /f &lt;MINHA-PASTA-COM-BINÁRIOS&gt; /s c:\Tools\Symbols /t "IndexSymbols"
+&quot;c:\Tools\DbgTools(x86)\symstore&quot; add /r /f &lt;MINHA-PASTA-COM-BINÁRIOS&gt; /s c:\Tools\Symbols /t &quot;IndexSymbols&quot;
 </pre>
 <p>Essa e outra técnicas de indexar fontes e binário você pode ver no meu <a href="2015-05.html#depurando_ate_o_fim_do_mundo_e_de_volta_de_novo_source_server_com_github">artigo</a>, na <a href="http://caloni.com.br/ccppbr-rio-12/">palestra</a> e <a href="https://www.youtube.com/watch?v=mZewxqlFShA">vídeo de demonstração</a>. Se você for cego, ainda tem a vantagem da áudio-narração do vídeo. Brincadeira, ainda não temos isso.</p>
 
@@ -505,7 +505,7 @@ rc_new_content = re.sub(u'^.*FILEVERSION.*$', file_version_string, rc_new_conten
 Windows Registry Editor Version 5.00
 [HKEY_CLASSES_ROOT\dllfile\shell\Index Symbols]
 [HKEY_CLASSES_ROOT\dllfile\shell\Index Symbols\command]
-@="cmd.exe /c c:\\tools\\indexsymbols.bat  \"%1\""
+@=&quot;cmd.exe /c c:\\tools\\indexsymbols.bat  \&quot;%1\&quot;&quot;
 </pre>
 <p>Você pode baixar um arquivo reg aqui (update: não mais), copiar as linhas acima em um .reg que você gerar, ou simplesmente seguir o passo-a-passo dessas linhas e gerar seu próprio registro. Após feito isso, surgirá um novo comando para qualquer DLL que você clicar com o outro botão do mouse:</p>
 

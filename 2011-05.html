@@ -147,7 +147,7 @@ public:
 int main()
 {
         MyClass c;
-        if( auto m = typeid(c). methods. getaddresof( "Method1" ) )
+        if( auto m = typeid(c). methods. getaddresof( &quot;Method1&quot; ) )
                 m();
 }
 </pre>
@@ -255,7 +255,7 @@ int main()
     CHAR sysPath[MAX_PATH];
     CHAR findPath[MAX_PATH];
     GetSystemDirectory(sysPath, MAX_PATH);
-    sprintf(findPath, "%s\\*.*", sysPath);
+    sprintf(findPath, &quot;%s\\*.*&quot;, sysPath);
     WIN32_FIND_DATA findData;
     HANDLE findH = FindFirstFile(findPath, &amp;findData);
     if( findH != INVALID_HANDLE_VALUE )
@@ -263,7 +263,7 @@ int main()
       do
       {
         CHAR filePath[MAX_PATH];
-        sprintf(filePath, "%s\\%s", sysPath, findData.cFileName);
+        sprintf(filePath, &quot;%s\\%s&quot;, sysPath, findData.cFileName);
         HANDLE fileH = CreateFile(filePath, GENERIC_READ, 
           FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
         if( fileH )
@@ -272,7 +272,7 @@ int main()
           DWORD wasRead = 0;
           if( ReadFile(fileH, firstBytes, 4, &amp;wasRead, NULL) &amp;&amp; wasRead == 4 )
           {
-            printf("%s: %02X %02X %02X %02X\n", findData.cFileName,
+            printf(&quot;%s: %02X %02X %02X %02X\n&quot;, findData.cFileName,
               (int) firstBytes[0], (int) firstBytes[1], 
               (int) firstBytes[2], (int) firstBytes[3]);
           }
@@ -306,9 +306,9 @@ int main()
    
    0:000&gt; da poi(esp+4)
    
-   001bf918  "C:\Windows\system32\accessibilit"
+   001bf918  &quot;C:\Windows\system32\accessibilit&quot;
    
-   001bf938  "ycpl.dll"
+   001bf938  &quot;ycpl.dll&quot;
    
    0:000&gt; g
    
@@ -326,7 +326,7 @@ int main()
    
    0:000&gt; da poi(esp+4)
    
-   001bf918  "C:\Windows\system32\ACCTRES.dll"
+   001bf918  &quot;C:\Windows\system32\ACCTRES.dll&quot;
    
 </pre>
 <p>O padrão aqui é que todo path passado para o CreateFile vai começar com c:\windows\system32, o que não é uma informação que podemos usar para buscar um arquivo específico.</p>
@@ -352,14 +352,14 @@ int main()
    001bf92c  54434341
    0:000&gt; .dvalloc 100
    Allocated 1000 bytes starting at 00030000
-   0:000&gt; ea 00030000 "ACCTRES.dll"
+   0:000&gt; ea 00030000 &quot;ACCTRES.dll&quot;
    0:000&gt; dd 00030000 l1
    00030000  54434341
 </pre>
 <p>Ótimo. Os padrões bateram, então podemos colocar um breakpoint condicional partindo do padrão de bits do nome do arquivo que precisamos.</p>
 
 <pre>
-   0:000&gt; bp kernel32!CreateFileA "j (poi(poi(esp+4)+14)=6c656873) ''; 'g'"
+   0:000&gt; bp kernel32!CreateFileA &quot;j (poi(poi(esp+4)+14)=6c656873) ''; 'g'&quot;
    breakpoint 0 redefined
    0:000&gt; g
    eax=0021f48c ebx=7efde000 ecx=0021f354 edx=0021f354 esi=0021f398 edi=0021f904
@@ -368,7 +368,7 @@ int main()
    kernel32!CreateFileA:
    7663ca6e 8bff            mov     edi,edi
    0:000&gt; da poi(esp+4)
-   0021f48c  "C:\Windows\system32\shell32.dll"
+   0021f48c  &quot;C:\Windows\system32\shell32.dll&quot;
    
 </pre>
 <p>Com isso, economizamos alguns minutos de puro tédio, verificando os nomes um a um conforme eles são abertos. Ou, dependendo da massa de dados, algumas décadas. Quem sabe. Pode ser muito mais útil um outro dia.</p>

@@ -124,7 +124,7 @@ role="navigation" aria-label="main navigation">
    
      btn2-&gt;Parent = this; // será o owner e o parent do novo botão
      btn2-&gt;SetBounds(10, 10, 150, 25); // definindo as fronteiras dentro do form
-     btn2-&gt;Caption = "Prazer! Sou dinâmico!";
+     btn2-&gt;Caption = &quot;Prazer! Sou dinâmico!&quot;;
      btn2-&gt;Visible = true;
    } 
 </pre>
@@ -161,7 +161,7 @@ role="navigation" aria-label="main navigation">
      if( !Edit1-&gt;Text.IsEmpty() )
      {
        ListBox1-&gt;AddItem(Edit1-&gt;Text, 0);
-       Edit1-&gt;Text = "";
+       Edit1-&gt;Text = &quot;&quot;;
      }
    } 
 </pre>
@@ -175,7 +175,7 @@ role="navigation" aria-label="main navigation">
      if( !Edit1-&gt;Text.IsEmpty() )
      {
        ListBox1-&gt;AddItem(Edit1-&gt;Text, 0);
-       Edit1-&gt;Text = "";
+       Edit1-&gt;Text = &quot;&quot;;
      }
    } 
 </pre>
@@ -207,7 +207,7 @@ role="navigation" aria-label="main navigation">
 <p>Porém, se rodarmos a aplicação nesse momento, podemos notar que o programa exibe apenas a janela correspondente ao primeiro formulário. De fato, ao chamar o método Application-&gt;Run(), apenas o primeiro form criado é exibido. Isso não significa, é claro, que o segundo form não tenha sido criado. Para demonstrar como ele está lá, coloque o seguinte evento no clique de um botão do Form1:</p>
 
 <pre>
-   #include "Unit2.h" // extern PACKAGE TForm2 *Form2;
+   #include &quot;Unit2.h&quot; // extern PACKAGE TForm2 *Form2;
    
    void __fastcall TForm1::Button1Click(TObject *Sender)
    {
@@ -218,12 +218,12 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    ShowMessage(
-     "O MainForm de Application"
-     " é o primeiro TForm criado."
-     " É o princípio e o fim,"
-     " o Alfa e o Ômega."
-     " Nele tudo começa"
-     " e tudo termina"
+     &quot;O MainForm de Application&quot;
+     &quot; é o primeiro TForm criado.&quot;
+     &quot; É o princípio e o fim,&quot;
+     &quot; o Alfa e o Ômega.&quot;
+     &quot; Nele tudo começa&quot;
+     &quot; e tudo termina&quot;
    );
 </pre>
 <p>Podemos, também como em C/C++ padrão, finalizar explicitamente a aplicação chamando o método Application-&gt;Terminate. O MainForm em tempo de execução é uma propriedade de somente leitura de Application. Em tempo de design, ele pode ser alterado pela ordem de criação dos formulários no código ou pela IDE em Project, Options, Forms. Lá você também escolhe quais forms serão criados automaticamente.</p>
@@ -267,8 +267,8 @@ role="navigation" aria-label="main navigation">
    ...
    Ctrl+Break
    0:001&gt; bm /a user32!GetMessage?
-   1: 7e4191c6 @!"USER32!GetMessageW"
-   2: 7e42e002 @!"USER32!GetMessageA"
+   1: 7e4191c6 @!&quot;USER32!GetMessageW&quot;
+   2: 7e42e002 @!&quot;USER32!GetMessageA&quot;
    0:001&gt; g
 </pre>
 <p>E o resultado é... nada! Mesmo mexendo com a janela e apertando seus botões não há uma única ocorrência do GetMessage. Bruxaria? Programação oculta?</p>
@@ -278,8 +278,8 @@ role="navigation" aria-label="main navigation">
 <pre>
    0:001&gt; bc*
    0:001&gt; bm /a user32!PeekMessage?
-     1: 7e41929b @!"USER32!PeekMessageW"
-     2: 7e41c96c @!"USER32!PeekMessageA"
+     1: 7e41929b @!&quot;USER32!PeekMessageW&quot;
+     2: 7e41c96c @!&quot;USER32!PeekMessageA&quot;
    0:001&gt; g
    Breakpoint 2 hit
    eax=00b1c6b0 ebx=00000000 ecx=0012ff44 edx=0012fef8 esi=00b1c6b0 edi=0012fef8
@@ -317,8 +317,8 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    0:001&gt; bc*
-   0:001&gt; bp user32!PeekMessageA ".echo PeekMessage; g"
-   0:001&gt; bp user32!DispatchMessageA ".echo DispatchMessage; g"
+   0:001&gt; bp user32!PeekMessageA &quot;.echo PeekMessage; g&quot;
+   0:001&gt; bp user32!DispatchMessageA &quot;.echo DispatchMessage; g&quot;
    0:001&gt; g
    PeekMessage
    DispatchMessage
@@ -382,8 +382,8 @@ role="navigation" aria-label="main navigation">
 <p>Vamos tomar, por exemplo, o seguinte minicódigo:</p>
 
 <pre>
-   size_t len = sizeof("A simple string");
-   memcpy(buf, "A simple string", len);
+   size_t len = sizeof(&quot;A simple string&quot;);
+   memcpy(buf, &quot;A simple string&quot;, len);
 </pre>
 <p>A pergunta ingênua: quantos bytes são copiados para buf?</p>
 
@@ -426,7 +426,7 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    ...
-   static char aSimpleString[] = "A simple string";
+   static char aSimpleString[] = &quot;A simple string&quot;;
    ...
    size_t len = sizeof(aSimpleString);
    memcpy(buf, aSimpleString, len);
@@ -674,26 +674,26 @@ role="navigation" aria-label="main navigation">
    
    int main()
    {
-     char ditado[] = "Diga-me com que programas e eu te direi quem és.";
+     char ditado[] = &quot;Diga-me com que programas e eu te direi quem és.&quot;;
      int indice = 8;
    
-     std::cout &lt;&lt; "E a linguagem é: " &lt;&lt; ditado[indice] &lt;&lt; std::endl;
+     std::cout &lt;&lt; &quot;E a linguagem é: &quot; &lt;&lt; ditado[indice] &lt;&lt; std::endl;
    } 
 </pre>
 <p>A teoria comprovada na prática: temos duas expressões no formato E1 <a href="posts.html?q= E2 "> E2 </a> sendo uma do tipo ponteiro para char e a outra do tipo int, exatamente como a regra define. O detalhe obscuro que permaneceu durante a evolução dessas duas linguagens é que a regra de acesso a elementos não define a ordem das expressões. Assim sendo, me aproveito dessa flexibilidade e inverto os elementos do subscrito:</p>
 
 <pre>
-   std::cout &lt;&lt; "E a linguagem é: " &lt;&lt; indice[ditado] &lt;&lt; std::endl;
+   std::cout &lt;&lt; &quot;E a linguagem é: &quot; &lt;&lt; indice[ditado] &lt;&lt; std::endl;
 </pre>
 <p>Isso também compila e tem o mesmo resultado, pois também é equivalente a *( (E1) + (E2) ). No final dá na mesma. E do jeito que está a inversão nem dá tanto susto assim, pois estamos lidando com duas variáveis. A coisa começa a ficar mais <a href="http://www.ioccc.org">IOCCC</a> se colocarmos em vez de uma delas uma constante:</p>
 
 <pre>
-   std::cout &lt;&lt; "E a linguagem é: " &lt;&lt; 8[ditado] &lt;&lt; std::endl;
+   std::cout &lt;&lt; &quot;E a linguagem é: &quot; &lt;&lt; 8[ditado] &lt;&lt; std::endl;
 </pre>
 <p>Isso ainda é válido, certo? Os tipos das expressões estão de acordo com a regra. Fica simples de visualizar se sempre pensarmos no "equivalente universal" *( (E1) + (E2) ). Até coisas bizarras como essa acabam ficando simples:</p>
 
 <pre>
-   std::cout &lt;&lt; 5["Isso Compila?"] &lt;&lt; std::endl;
+   std::cout &lt;&lt; 5[&quot;Isso Compila?&quot;] &lt;&lt; std::endl;
 </pre>
 <p>Nota do autor: esse tipo de "recurso obscuro" dificilmente passará por uma revisão de código, e com razão, dado que não é um método útil e muito menos conhecido. Sábio é saber evitar. Não acredito, porém, que o conhecimento de certos detalhes da linguagem em que se programa sejam completamente inúteis. Conhecimento nunca é demais, pois quanto mais se conhece maior é o número de ferramentas conceituais que se dispõe para resolver um certo problema. Em muitas vezes o "conhecimento inútil" de hoje se torna um guia sábio quando se precisa de bons conceitos sobre a coisa toda. No entanto, que não venha um <a href="http://www.google.com.br/search?q=boi+corneta+site%3Asualingua.com.br">boi-corneta</a> me dizer que esse código fere as boas práticas de programação. Tenho dito.</p>
 
@@ -722,11 +722,11 @@ role="navigation" aria-label="main navigation">
      int first = 13;
      int second = 42;
    
-     cout &lt;&lt; "first: " &lt;&lt; first 
-       &lt;&lt; ", second: " &lt;&lt; second &lt;&lt; endl;
+     cout &lt;&lt; &quot;first: &quot; &lt;&lt; first 
+       &lt;&lt; &quot;, second: &quot; &lt;&lt; second &lt;&lt; endl;
      normalSwap(first, second);
-     cout &lt;&lt; "first: " &lt;&lt; first 
-       &lt;&lt; ", second: " &lt;&lt; second &lt;&lt; endl;
+     cout &lt;&lt; &quot;first: &quot; &lt;&lt; first 
+       &lt;&lt; &quot;, second: &quot; &lt;&lt; second &lt;&lt; endl;
    } 
 </pre>
 <p>  </p>
@@ -742,13 +742,13 @@ role="navigation" aria-label="main navigation">
    void xorTable()
    {
      cout 
-       &lt;&lt; "-----------\n"
-       &lt;&lt; " XOR Table\n"
-       &lt;&lt; "-----------\n"
-       &lt;&lt; "0 XOR 0 = " &lt;&lt; ( 0 ^ 0 ) &lt;&lt; '\n'
-       &lt;&lt; "1 XOR 0 = " &lt;&lt; ( 1 ^ 0 ) &lt;&lt; '\n'
-       &lt;&lt; "0 XOR 1 = " &lt;&lt; ( 0 ^ 1 ) &lt;&lt; '\n'
-       &lt;&lt; "1 XOR 1 = " &lt;&lt; ( 1 ^ 1 ) &lt;&lt; '\n'
+       &lt;&lt; &quot;-----------\n&quot;
+       &lt;&lt; &quot; XOR Table\n&quot;
+       &lt;&lt; &quot;-----------\n&quot;
+       &lt;&lt; &quot;0 XOR 0 = &quot; &lt;&lt; ( 0 ^ 0 ) &lt;&lt; '\n'
+       &lt;&lt; &quot;1 XOR 0 = &quot; &lt;&lt; ( 1 ^ 0 ) &lt;&lt; '\n'
+       &lt;&lt; &quot;0 XOR 1 = &quot; &lt;&lt; ( 0 ^ 1 ) &lt;&lt; '\n'
+       &lt;&lt; &quot;1 XOR 1 = &quot; &lt;&lt; ( 1 ^ 1 ) &lt;&lt; '\n'
      ;
    } 
    
@@ -815,24 +815,24 @@ role="navigation" aria-label="main navigation">
    {
      int x = 13, y = 42;
    
-     cout &lt;&lt; "x: " &lt;&lt; x 
-       &lt;&lt; ", y: " &lt;&lt; y &lt;&lt; '\n';
+     cout &lt;&lt; &quot;x: &quot; &lt;&lt; x 
+       &lt;&lt; &quot;, y: &quot; &lt;&lt; y &lt;&lt; '\n';
      universalXor(x, y, x);
      universalXor(x, y, y);
      universalXor(x, y, x);
-     cout &lt;&lt; "x: " &lt;&lt; x 
-       &lt;&lt; ", y: " &lt;&lt; y &lt;&lt; "\n\n";
+     cout &lt;&lt; &quot;x: &quot; &lt;&lt; x 
+       &lt;&lt; &quot;, y: &quot; &lt;&lt; y &lt;&lt; &quot;\n\n&quot;;
    
-     char str1[50] = "teste de xor";
-     char str2[50] = "aceita strings!";
+     char str1[50] = &quot;teste de xor&quot;;
+     char str2[50] = &quot;aceita strings!&quot;;
    
-     cout &lt;&lt; "str1: " &lt;&lt; str1 
-       &lt;&lt; ", str2: " &lt;&lt; str2 &lt;&lt; '\n';
+     cout &lt;&lt; &quot;str1: &quot; &lt;&lt; str1 
+       &lt;&lt; &quot;, str2: &quot; &lt;&lt; str2 &lt;&lt; '\n';
      universalXor(str1, str2, str1);
      universalXor(str1, str2, str2);
      universalXor(str1, str2, str1);
-     cout &lt;&lt; "str1: " &lt;&lt; str1 
-       &lt;&lt; ", str2: " &lt;&lt; str2 &lt;&lt; '\n';
+     cout &lt;&lt; &quot;str1: &quot; &lt;&lt; str1 
+       &lt;&lt; &quot;, str2: &quot; &lt;&lt; str2 &lt;&lt; '\n';
    
      return 0;
    } 
@@ -864,11 +864,11 @@ role="navigation" aria-label="main navigation">
      int first = 13;
      int second = 42;
    
-     cout &lt;&lt; "first: " &lt;&lt; first 
-       &lt;&lt; ", second: " &lt;&lt; second &lt;&lt; endl;
+     cout &lt;&lt; &quot;first: &quot; &lt;&lt; first 
+       &lt;&lt; &quot;, second: &quot; &lt;&lt; second &lt;&lt; endl;
      anormalSwap(first, second);
-     cout &lt;&lt; "first: " &lt;&lt; first 
-       &lt;&lt; ", second: " &lt;&lt; second &lt;&lt; endl;
+     cout &lt;&lt; &quot;first: &quot; &lt;&lt; first 
+       &lt;&lt; &quot;, second: &quot; &lt;&lt; second &lt;&lt; endl;
    } 
    Saída:
    first: 13, second: 42

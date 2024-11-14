@@ -364,26 +364,26 @@ Successfully installed cx-Freeze-5.1.1 protobuf-3.6.0 pyodbc-4.0.23 six-1.11.0
 (python27) d:\src\MyFictionalPackage&gt;python setup.py build_exe
 running build_exe
 Traceback (most recent call last):
-  File "setup.py", line 19, in &lt;module&gt;
+  File &quot;setup.py&quot;, line 19, in &lt;module&gt;
     executables=exe
-  File "D:\deploy\python27\lib\site-packages\cx_Freeze\dist.py", line 349, in setup
+  File &quot;D:\deploy\python27\lib\site-packages\cx_Freeze\dist.py&quot;, line 349, in setup
     distutils.core.setup(**attrs)
-  File "c:\programs\python27\Lib\distutils\core.py", line 151, in setup
+  File &quot;c:\programs\python27\Lib\distutils\core.py&quot;, line 151, in setup
     dist.run_commands()
-  File "c:\programs\python27\Lib\distutils\dist.py", line 953, in run_commands
+  File &quot;c:\programs\python27\Lib\distutils\dist.py&quot;, line 953, in run_commands
     self.run_command(cmd)
-  File "c:\programs\python27\Lib\distutils\dist.py", line 972, in run_command
+  File &quot;c:\programs\python27\Lib\distutils\dist.py&quot;, line 972, in run_command
     cmd_obj.run()
-  File "D:\deploy\python27\lib\site-packages\cx_Freeze\dist.py", line 219, in run
+  File &quot;D:\deploy\python27\lib\site-packages\cx_Freeze\dist.py&quot;, line 219, in run
     freezer.Freeze()
-  File "D:\deploy\python27\lib\site-packages\cx_Freeze\freezer.py", line 616, in Freeze
+  File &quot;D:\deploy\python27\lib\site-packages\cx_Freeze\freezer.py&quot;, line 616, in Freeze
     self.finder = self._GetModuleFinder()
-  File "D:\deploy\python27\lib\site-packages\cx_Freeze\freezer.py", line 340, in _GetModuleFinder
+  File &quot;D:\deploy\python27\lib\site-packages\cx_Freeze\freezer.py&quot;, line 340, in _GetModuleFinder
     finder.IncludeModule(name)
-  File "D:\deploy\python27\lib\site-packages\cx_Freeze\finder.py", line 651, in IncludeModule
+  File &quot;D:\deploy\python27\lib\site-packages\cx_Freeze\finder.py&quot;, line 651, in IncludeModule
     namespace = namespace)
-  File "D:\deploy\python27\lib\site-packages\cx_Freeze\finder.py", line 351, in _ImportModule
-    raise ImportError("No module named %r" % name)
+  File &quot;D:\deploy\python27\lib\site-packages\cx_Freeze\finder.py&quot;, line 351, in _ImportModule
+    raise ImportError(&quot;No module named %r&quot; % name)
 ImportError: No module named 'google.protobuf'
 (python27) d:\src\MyFictionalPackage&gt;
 </pre>
@@ -501,9 +501,9 @@ option = { 'build_exe' : {
         'includes' : ['google.protobuf', 'pkgutil', 'pyodbc', 'decimal'],
     }
 }
-setup(name = "teste_cx_Freeze",
-        version = "0.1",
-        description = "",
+setup(name = &quot;teste_cx_Freeze&quot;,
+        version = &quot;0.1&quot;,
+        description = &quot;&quot;,
         options = option,
         executables=exe
 )
@@ -679,12 +679,12 @@ wget --recursive --domains plato.stanford.edu --page-requisites --no-parent --co
 <h4>calibre_remove_head.bat</h4>
 
 <pre>
-for %%i in (index.html.*.html) do sed -n -i "/BEGIN ARTICLE HTML/,$p" %%i
+for %%i in (index.html.*.html) do sed -n -i &quot;/BEGIN ARTICLE HTML/,$p&quot; %%i
 </pre>
 <h4>calibre_remove_bottom.bat</h4>
 
 <pre>
-for %%i in (index.html.*.html) do sed -i "/END ARTICLE HTML/,$d" %%i
+for %%i in (index.html.*.html) do sed -i &quot;/END ARTICLE HTML/,$d&quot; %%i
 </pre>
 <h3>calibre_entries.bat (gera índice com as entradas)</h3>
 
@@ -693,14 +693,14 @@ for %%i in (index.html.*.html) do sed -i "/END ARTICLE HTML/,$d" %%i
 <pre>
 if exist calibre_entries.txt del calibre_entries.txt
 for %%i in (index.html.*.html) do calibre_title.bat %%i &gt;&gt; calibre_entries.txt
-sed -i -e "s/&lt;em&gt;//" -e "s/&lt;\/em&gt;//" calibre_entries.txt
+sed -i -e &quot;s/&lt;em&gt;//&quot; -e &quot;s/&lt;\/em&gt;//&quot; calibre_entries.txt
 </pre>
 <h3>calibre_entries_clean.bat (limpa formatação das entradas)</h3>
 
 <p>Algumas entradas possuem o marcador **em**, que deve ser retirado antes de ordenar os títulos.</p>
 
 <pre>
-sed -i -e "s/&lt;em&gt;//" -e "s/&lt;\/em&gt;//" calibre_entries.txt
+sed -i -e &quot;s/&lt;em&gt;//&quot; -e &quot;s/&lt;\/em&gt;//&quot; calibre_entries.txt
 </pre>
 <h3>calibre_entries_sort.bat (ordena entradas por título)</h3>
 
@@ -718,7 +718,7 @@ sort calibre_entries.txt &gt; calibre_entries_sorted.txt
 <p>Essa parte do processo precisa converter as entradas no formato Título Link para entradas HTML com a tag **a**, no formato que o Calibre espera:</p>
 
 <pre>
-sed -e "s/\(^.*\) \(index.*$\)/        &lt;a href=\"\2\"&gt;\1&lt;\/a&gt;&lt;br\/&gt;/" calibre_entries_sorted.txt &gt; calibre_template_entries.html
+sed -e &quot;s/\(^.*\) \(index.*$\)/        &lt;a href=\&quot;\2\&quot;&gt;\1&lt;\/a&gt;&lt;br\/&gt;/&quot; calibre_entries_sorted.txt &gt; calibre_template_entries.html
 </pre>
 <h3>calibre_merge_templates.bat (junta início, meio e fim do template do Calibre)</h3>
 

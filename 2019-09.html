@@ -221,7 +221,7 @@ role="navigation" aria-label="main navigation">
      if (argc == 2)
      {
        const char* file_name = argv[1];
-       FILE* file = fopen(file_name, "r");
+       FILE* file = fopen(file_name, &quot;r&quot;);
    
        if (file)
        {
@@ -229,12 +229,12 @@ role="navigation" aria-label="main navigation">
          if (fgets(line, 1000, file))
            puts(line);
          else
-           puts("Error reading line\n");
+           puts(&quot;Error reading line\n&quot;);
          fclose(file);
        }
-       else puts("Error opening file\n");
+       else puts(&quot;Error opening file\n&quot;);
      }
-     else puts("How to use: program file_name\n");
+     else puts(&quot;How to use: program file_name\n&quot;);
    }
 </pre>
 <p>O programa acima verifica se a variável argc contém o valor 2. Argc é um int, o que quer dizer que na minha arquitetura são 4 bytes, ou 32 bits. Se esses 32 bits estão configurados com 0s e 1s de tal maneira que a soma de todos totalizam o valor 2, então meu código entrará dentro do primeiro if. Se não, então o código cairá no else e enviará os caracteres "How to use..." blá blá blá para a saída padrão através da chamada da função da libc puts. Esses caracteres também são formados por bits. Cada caractere possui 8 bits. E estão configurados de tal forma que darão um valor de 0 a 255 que será interpretado de tal maneira: o nth elemento da entrada de uma tabela de caracteres. Essa tabela se chama tabela ascii, e contém os números 0 a 9, as letras de a até z (e maiúculas, A até Z), alguns sinais, etc. Essa é uma nova forma de interpretar os números que conseguimos somando os bits, e só funciona dessa forma porque a linguagem C está especificada dessa maneira.</p>

@@ -172,8 +172,8 @@ x UserDeviceRegistration!Windows::Internal::UserDeviceRegistration::CUserDeviceR
 <p>Já que estou interessado no macro coloco breakpoint em todos os métodos da classe. Faço isso também do lado do BrokerPlugin e seus métodos dentro de `UserDeviceRegistration::IUserDeviceRegManagerStatics`. Posso acompanhar o fluxo sem parar usando um parâmetro bem esperto nos breakpoints do WinDbg: um comando qualquer. Nesse caso uso imprimir o nome da função chamada e o comando `g`, que segue a execução sem parar. Por exemplos (RuntimeBroker e BrokerPlugin, respectivamente):</p>
 
 <pre>
-bp UserDeviceRegistration!Windows::Internal::UserDeviceRegistration::CUserDeviceRegManagerStatic::DelegatedWorkplaceJoinWithRequestId ".echotime; .echo UserDeviceRegistration!Windows::Internal::UserDeviceRegistration::CUserDeviceRegManagerStatic::DelegatedWorkplaceJoinWithRequestId; g"
-bp AAD_Core!Windows::Internal::UserDeviceRegistration::IUserDeviceRegManagerStatics::GetJoinInfo ".echotime; .echo AAD_Core!Windows::Internal::UserDeviceRegistration::IUserDeviceRegManagerStatics::GetJoinInfo; g"
+bp UserDeviceRegistration!Windows::Internal::UserDeviceRegistration::CUserDeviceRegManagerStatic::DelegatedWorkplaceJoinWithRequestId &quot;.echotime; .echo UserDeviceRegistration!Windows::Internal::UserDeviceRegistration::CUserDeviceRegManagerStatic::DelegatedWorkplaceJoinWithRequestId; g&quot;
+bp AAD_Core!Windows::Internal::UserDeviceRegistration::IUserDeviceRegManagerStatics::GetJoinInfo &quot;.echotime; .echo AAD_Core!Windows::Internal::UserDeviceRegistration::IUserDeviceRegManagerStatics::GetJoinInfo; g&quot;
 </pre>
 <p>Com isso eu descobri qual o processo e qual a classe envolvida neste processo de registro de máquina. Graças também aos símbolos disponibilizados pela Microsoft fica muito mais fácil entender o fluxo. Pretendo usar esta técnica mais vezes no futuro.</p>
 
@@ -371,7 +371,7 @@ bp AAD_Core!Windows::Internal::UserDeviceRegistration::IUserDeviceRegManagerStat
 using namespace std;
 int main()
 {
-    wstring str = L"my hstring";
+    wstring str = L&quot;my hstring&quot;;
     HSTRING hstr = NULL;
     HRESULT hr = WindowsCreateString(str.c_str(), (UINT32) str.size(), &amp;hstr);
     if( SUCCEEDED( hr ) )

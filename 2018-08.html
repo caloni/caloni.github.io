@@ -833,19 +833,19 @@ const char* GetArg(char* argv[], const char* arg)
             if( *(argv+1) )
                 return *(argv+1);
             else
-                return "";
+                return &quot;&quot;;
         }
     }
     return NULL;
 }
 int main(int argc, char* argv[])
 {
-    printf("Type enter to start...");
+    printf(&quot;Type enter to start...&quot;);
     getchar();
-    if( GetArg(argv, "--debug") )
-        printf("Waiting for debugger...\n");
-    if( const char* command = GetArg(argv, "--command") )
-        printf("Command %s received\n", command);
+    if( GetArg(argv, &quot;--debug&quot;) )
+        printf(&quot;Waiting for debugger...\n&quot;);
+    if( const char* command = GetArg(argv, &quot;--command&quot;) )
+        printf(&quot;Command %s received\n&quot;, command);
 }
 </pre>
 <p>Nessa versão elminamos a necessidade do argc e de brinde ganhamos a possibilidade de usar um único ponteiro como start de um parseamento de argumentos.</p>

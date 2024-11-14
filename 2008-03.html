@@ -193,7 +193,7 @@ role="navigation" aria-label="main navigation">
 <p>Para filtrar o path do arquivo, e ao mesmo tempo retirar seu nome, podemos usar o seguinte comando (fora outras trilhões de variantes):</p>
 
 <pre>
-   programa | sed -e "s/^.*\\//" -e "s/.*\.\(.*\)/\1/"
+   programa | sed -e &quot;s/^.*\\//&quot; -e &quot;s/.*\.\(.*\)/\1/&quot;
 </pre>
 <p>Após esse processamento, a saída é um monte de extensões vindas de um monte de arquivos:</p>
 
@@ -232,7 +232,7 @@ role="navigation" aria-label="main navigation">
 <p>Como podemos ver e é óbvio de imaginar, muitas extensões irão se repetir. Para eliminar as repetições e ordenar a saída da saída corretamente, usamos o comando sort:</p>
 
 <pre>
-   programa | sed -e "s/^.*\\//" -e "s/.*\.\(.*\)/\1/" | sort -u
+   programa | sed -e &quot;s/^.*\\//&quot; -e &quot;s/.*\.\(.*\)/\1/&quot; | sort -u
    
 </pre>
 <p>Os caracteres .*[]^$\ dão problemas se usados sem escape no sed, pois fazem parte dos comandos para procurar expressões regulares. Use-os com o caractere de escape `\`.</p>
@@ -267,7 +267,7 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    windbg -pn houaiss2.exe
-   0:001&gt; bp kernel32!ReadFile "dd @$csp L6" $$ Dando uma olhada nos parâmetros
+   0:001&gt; bp kernel32!ReadFile &quot;dd @$csp L6&quot; $$ Dando uma olhada nos parâmetros
    g
    
    0012fa70  0040a7a9 00000200 08bbf1d0 00000200
@@ -288,7 +288,7 @@ role="navigation" aria-label="main navigation">
    08bbf220  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................
    08bbf230  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................
    08bbf240  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................
-   0:000&gt; bp /1 @$ra "db 08bbf1d0 L80"
+   0:000&gt; bp /1 @$ra &quot;db 08bbf1d0 L80&quot;
    0:000&gt; g
    08bbf1d0  2a 70 72 6f 67 72 61 6d-61 2d 66 6f 6e 74 65 0d  *programa-fonte.
    08bbf1e0  0a 43 73 2e 6d 2e 0d 0a-64 7b 5c 69 20 73 58 58  .Cs.m...d{\i sXX
@@ -342,7 +342,7 @@ role="navigation" aria-label="main navigation">
      Kernel time: 0 days 0:00:01.482
      User time: 0 days 0:00:02.723
    Live user mode: &lt;Local&gt;
-   command line: '"C:\Tools\DbgTools\windbg.exe" -pn houaiss2.exe'  Debugger Process 0xEC4
+   command line: '&quot;C:\Tools\DbgTools\windbg.exe&quot; -pn houaiss2.exe'  Debugger Process 0xEC4
    dbgeng:  image 6.6.0007.5, built Sat Jul 08 17:12:40 2006
            [path: C:\Tools\DbgTools\dbgeng.dll]
    dbghelp: image 6.6.0007.5, built Sat Jul 08 17:11:32 2006
@@ -371,7 +371,7 @@ role="navigation" aria-label="main navigation">
      Kernel time: 0 days 0:00:00.406
      User time: 0 days 0:00:01.078
    Live user mode: &lt;Local&gt;
-   command line: '"C:\Tools\DbgTools\windbg.exe" -pn houaiss2.exe'  Debugger Process 0x864
+   command line: '&quot;C:\Tools\DbgTools\windbg.exe&quot; -pn houaiss2.exe'  Debugger Process 0x864
    dbgeng:  image 6.8.0004.0, built Thu Sep 27 18:28:09 2007
            [path: C:\Tools\DbgTools\dbgeng.dll]
    dbghelp: image 6.8.0004.0, built Thu Sep 27 18:27:05 2007
@@ -476,7 +476,7 @@ role="navigation" aria-label="main navigation">
 <p>Bem, o Bloco de Notas é a vítima padrão de testes. Logo, a linha a seguir provaria que é possível rodá-lo na conta de sistema:</p>
 
 <pre>
-   sc create Notepad binpath= "%systemroot%\NOTEPAD.EXE" type= interact type= own
+   sc create Notepad binpath= &quot;%systemroot%\NOTEPAD.EXE&quot; type= interact type= own
 </pre>
 <p>Porém, como todo serviço, é esperado que ele se comunique com o Gerenciador de Serviços do Windows. Como o Bloco de Notas mal imagina que agora ele é um motta-fucka service, expira o timeout de inicialização e o SCM (Service Control Manager) mata o processo.</p>
 
@@ -492,7 +492,7 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    set binpath=%systemroot%\system32\cmd.exe /c c:\Tools\msvcmon.exe -tcpip -anyuser -timeout -1
-   sc create Msvcmon binpath= "%binpath%" type= interact type= own
+   sc create Msvcmon binpath= &quot;%binpath%&quot; type= interact type= own
 </pre>
 <p>Agora, quando iniciarmos o serviço Msvcmon, o processo cmd.exe será criado, que por sua vez irá rodar o msvcmon.exe que queríamos, e ficará esperando inocentemente pela sua "funesta morte" pelo SCM.</p>
 
