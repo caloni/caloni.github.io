@@ -43,7 +43,7 @@ role="navigation" aria-label="main navigation">
 <div style="padding-bottom: 1em;"></div>
 <ul style="list-style: none;">
 
-<li><small><a href="2023-10.html#como_inspecionar_chamadas_com_remotas_olhando_a_informaçao_de_marshaling">Como inspecionar chamadas COM remotas olhando a informação de marshaling</a></small></li>
+<li><small><a href="2023-10.html#como_inspecionar_chamadas_com_remotas_olhando_a_informacao_de_marshaling">Como inspecionar chamadas COM remotas olhando a informação de marshaling</a></small></li>
 <li><small><a href="2023-10.html#beginning_mathematical_logic_a_study_guide_de_peter_smith">Beginning Mathematical Logic: A Study Guide, de Peter Smith</a></small></li>
 <li><small><a href="2023-10.html#como_colocar_breakpoint_nas_chamadas_a_outputdebugstring">Como colocar breakpoint nas chamadas a OutputDebugString</a></small></li>
 <li><small><a href="2023-10.html#na_mira_do_juri">Na Mira do Júri</a></small></li>
@@ -51,7 +51,7 @@ role="navigation" aria-label="main navigation">
 <li><small><a href="2023-10.html#flow_com_enfase_na_teoria_de_sistemas">Flow com ênfase na teoria de sistemas</a></small></li>
 <li><small><a href="2023-10.html#meninas_malvadas">Meninas Malvadas</a></small></li>
 
-<li><small><a href="2023-10.html#setando_proxima_instruçao_no_windbg">Setando próxima instrução no WinDbg</a></small></li>
+<li><small><a href="2023-10.html#setando_proxima_instrucao_no_windbg">Setando próxima instrução no WinDbg</a></small></li>
 
 <li><small><a href="2023-10.html#como_saber_quais_classes_winrt_estao_sendo_ativadas">Como saber quais classes winrt estão sendo ativadas</a></small></li>
 
@@ -72,10 +72,10 @@ role="navigation" aria-label="main navigation">
 </ul>
 
 
-<span id="como_inspecionar_chamadas_com_remotas_olhando_a_informaçao_de_marshaling" title="Como inspecionar chamadas COM remotas olhando a informação de marshaling"/></span>
-<section id="section_como_inspecionar_chamadas_com_remotas_olhando_a_informaçao_de_marshaling">
-<p class="title"><a href="2023-10.html#como_inspecionar_chamadas_com_remotas_olhando_a_informaçao_de_marshaling">#</a> Como inspecionar chamadas COM remotas olhando a informação de marshaling</p>
-<span class="title-heading">Caloni, 2023-10-03 <a href="reversing.html">reversing</a> <a href="windbg.html">windbg</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_como_inspecionar_chamadas_com_remotas_olhando_a_informaçao_de_marshaling')"><sup>[copy]</sup></a></span>
+<span id="como_inspecionar_chamadas_com_remotas_olhando_a_informacao_de_marshaling" title="Como inspecionar chamadas COM remotas olhando a informação de marshaling"/></span>
+<section id="section_como_inspecionar_chamadas_com_remotas_olhando_a_informacao_de_marshaling">
+<p class="title"><a href="2023-10.html#como_inspecionar_chamadas_com_remotas_olhando_a_informacao_de_marshaling">#</a> Como inspecionar chamadas COM remotas olhando a informação de marshaling</p>
+<span class="title-heading">Caloni, 2023-10-03 <a href="reversing.html">reversing</a> <a href="windbg.html">windbg</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_como_inspecionar_chamadas_com_remotas_olhando_a_informacao_de_marshaling')"><sup>[copy]</sup></a></span>
 
 <p>Esta dica é para começar uma análise de reversa quando você deseja entender quais informações estão sendo trafegadas por uma chamada COM remota, ou seja, entre processos distintos. Isso vale para WinRT e para o COM tradicional. De uma forma ou de outra a chamada irá passar por `combase!NdrExtpProxySendReceive` e outras funções de RPC relacionadas, além das novas funções de ALPC, em especial `ntdll!NtAlpcSendWaitReceivePort`. Existem várias de marshaling e unmarshaling, mas o mais importante é centralizar na função que envia e recebe bytes e analisar estes bytes. Eles são a versão serializada dos parâmetro sendo trafegados.</p>
 
@@ -203,10 +203,10 @@ Windows_Security_Authentication_Web_Core!Windows::Security::Authentication::Web:
 </section><hr/>
 
 
-<span id="setando_proxima_instruçao_no_windbg" title="Setando próxima instrução no WinDbg"/></span>
-<section id="section_setando_proxima_instruçao_no_windbg">
-<p class="title"><a href="2023-10.html#setando_proxima_instruçao_no_windbg">#</a> Setando próxima instrução no WinDbg</p>
-<span class="title-heading">Caloni, 2023-10-04 <a href="windbg.html">windbg</a> <a href="reversing.html">reversing</a> <a href="debugging.html">debugging</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_setando_proxima_instruçao_no_windbg')"><sup>[copy]</sup></a></span>
+<span id="setando_proxima_instrucao_no_windbg" title="Setando próxima instrução no WinDbg"/></span>
+<section id="section_setando_proxima_instrucao_no_windbg">
+<p class="title"><a href="2023-10.html#setando_proxima_instrucao_no_windbg">#</a> Setando próxima instrução no WinDbg</p>
+<span class="title-heading">Caloni, 2023-10-04 <a href="windbg.html">windbg</a> <a href="reversing.html">reversing</a> <a href="debugging.html">debugging</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_setando_proxima_instrucao_no_windbg')"><sup>[copy]</sup></a></span>
 
 <p>Procurando onde setar a próxima instrução no WinDbg? Dica: curiosamente ela não fica no meio dos comandos de debug, mas no menu Edit. Selecione a linha desejada no assembly ou código-fonte para onde deseja alterar o fluxo de execução e use a opção "Set Current Instruction".</p>
 
