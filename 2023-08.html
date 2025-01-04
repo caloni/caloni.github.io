@@ -131,25 +131,25 @@ role="navigation" aria-label="main navigation">
 
 <p>Buscando no registro pelo nome dessa interface existe uma entrada em `HKEY_CLASSES_ROOT\Interface\{b5decd05-58ef-4cd3-ae25-d177bcbcea9e}` aonde existe uma subkey `ProxyStubClsid32`. Essa subkey, de acordo com o <a href="https://learn.microsoft.com/en-us/previous-versions/br205771(v=vs.85">MSDN</a>, é usado para traduzir um IID -- ID de Interface -- para um CLSID -- ID de classe. Nas palavras do MSDN (em inglês, por favor): "Maps an IID to a CLSID in 32-bit proxy DLLs".</p>
 
-<blockquote></blockquote>
+
 <blockquote>If you add interfaces, you must use this entry to register them (32-bit systems) so that OLE can find the appropriate remoting code to establish interprocess communication.</blockquote>
-<blockquote></blockquote>
+
 <p>Eu acredito que a mesma lógica se aplica a ambientes de 64 bits, que é o caso do Windows 10 onde estou analisando.</p>
 
 <p>Então esse ID é um CLSID para o código de um proxy que irá me ajudar a chamar esta interface `IUserDeviceRegManagerStatics`. Tudo bem, vamos lá. O valor default dentro dessa subkey é `{65704743-2513-4987-9fc9-826bbedde743}` e eu devo fazer a busca por este ID dentro de `HKEY_CLASSES_ROOT\CLSID`, já que se trata de um ID de classe. Eu encontro. O valor default dessa chave diz "UserDeviceRegistration", então eu penso ser este o cara que estou procurando.</p>
 
 <p>Existe uma chave `InProcServer32` dentro desta chave. Novamente vamos à documentação, e de acordo com o <a href="https://learn.microsoft.com/en-us/previous-versions/br205771(v=vs.85">MSDN</a>:</p>
 
-<blockquote></blockquote>
+
 <blockquote>Registers a 32-bit in-process server and specifies the threading model of the apartment the server can run in.</blockquote>
-<blockquote></blockquote>
+
 <p>Isso faz todo o sentido, porque o valor default para esta mesma chave é "C:\Windows\System32\UserDeviceRegistration.dll"  e existe uma string `ThreadingModel` também especificando "Both". Olhando para as funções exportadas por esta DLL `UserDeviceRegistration.dll` são listadas as bem conhecidas `DllCanUnloadNow`, `DllGetActivationFactory` e `DllGetClassObject`. Isso é bê-a-bá de COM. O código que eu quero usar deve carregar esta DLL e chamar `DllGetActivationFactory` ou `DllGetClassObject` para obter um ponteiro para uma classe implementando esta interface ou um proxy para chamar esta classe remotamente.</p>
 
 <p>Ao analisar pelo OleView pela `IUserDeviceRegManagerStatics` não há uma biblioteca de tipos com os nomes dos métodos e argumentos. Existe uma vtable genérica com algumas procedures chamadas "Proc1", "Proc2" e assim por diante. Já que desde minha sessão de debugging anterior eu vi um monte de funções RPC sendo chamadas eu irei assumir que `UserDeviceRegistration!DllGetActivationFactory` está sendo chamada. E, mais uma vez, de acordo com o <a href="https://learn.microsoft.com/en-us/previous-versions/br205771(v=vs.85">MSDN</a>, este entry point:</p>
 
-<blockquote></blockquote>
+
 <blockquote>Retrieves the activation factory from a DLL that contains activatable Windows Runtime classes.</blockquote>
-<blockquote></blockquote>
+
 <p>That's a bingo! Windows Runtime classes é o que estou procurando mesmo. Como eu já estudei anteriormente, isso bate com o retorno desta função: um ponteiro para a interface `IActivationFactory`. A entrada deste argumento é uma `HSTRING`, que é uma nova string definida pela Windows Runtime para strings imutáveis das linguagens mais populares, como C# e JS. E, mais uma vez, isso explica porque em minhas sessões de debug observei um monte de chamadas a `WindowsDeleteString`. Quando você começa a fazer reversa começa a ouvir ecos de sessões passadas para conseguir montar o quebra-cabeças.</p>
 
 <p>Com tudo isso que descobri resolvi colocar um breakpoint no evento de load desta DLL.</p>
