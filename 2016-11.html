@@ -655,55 +655,55 @@ role="navigation" aria-label="main navigation">
 <p>Stroustrup não fez tudo do zero, nem fez tudo de uma vez. A primeira necessidade era apenas criar uma abstração já existente na linguagem C, mas que ainda não havia sido integrada à sintaxe: o contexto de uma estrutura, que se assemelha a uma proto-classe, ou para alguns já é até uma classe, pois possui membros e métodos:</p>
 
 <pre>
-   class Cpp
-   {
-     int x;
-     int GetX();
-   };
-   int Cpp::GetX()
-   {
-     return x;
-   }
-   void Func(Cpp cpp)
-   {
-     int y = 33 + cpp.GetX();
-   }
-   int main()
-   {
-       Cpp cpp;
-       cpp.x = 42;
-       Func(cpp);
-   }
+    class Cpp
+    {
+      int x;
+      int GetX();
+    };
+    int Cpp::GetX()
+    {
+      return x;
+    }
+    void Func(Cpp cpp)
+    {
+      int y = 33 + cpp.GetX();
+    }
+    int main()
+    {
+        Cpp cpp;
+        cpp.x = 42;
+        Func(cpp);
+    }
 </pre>
 <p>A grande sacada é que no meio de toda essa sintaxe de chamada de método havia a passagem de um parâmetro escondido, o this, que se referia a uma instância específica da classe: um objeto.</p>
 
 <pre>
-   int Cpp::GetX()
-   {
-     return this-&gt;x;
-   }
+    int Cpp::GetX()
+    {
+      return this-&gt;x;
+    }
 </pre>
 <p>Isso equivaleria a uma struct em C com funções que recebessem um this adaptado:</p>
 
 <pre>
-   struct C
-   {
-     int x;
-   };
-   int C_GetX(C* pThis)
-   {
-     return pThis-&gt;x;
-   }
-   void Func(C c)
-   {
-     int y = 33 + C_GetX(&amp;c);
-   }
-   int main()
-   {
-     struct C c;
-     c.x = 42;
-     Func(c);
-   }
+    struct C
+    {
+      int x;
+    };
+    int C_GetX(C* pThis)
+    {
+      return pThis-&gt;x;
+    }
+    void Func(C c)
+    {
+      int y = 33 + C_GetX(&amp;c);
+    }
+    int main()
+    {
+      struct C c;
+      c.x = 42;
+      Func(c);
+    }
 </pre>
 <p>Esse tipo de abstração nem é tão complicada assim. O ojetivo eram vários: conseguir proteger os membros de acesso indevido, abstrair o comportamento de um objeto. Com o tempo Stroustrup foi realmente criando algo de novo e muito mais difícil de se manter em C. Algo para um próximo post =)</p>
 

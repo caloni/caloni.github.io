@@ -160,13 +160,13 @@ role="navigation" aria-label="main navigation">
 <p>Definir que estamos programando para XP ou superior:</p>
 
 <pre>
-   #define _WIN32_WINNT 0x0600
+    #define _WIN32_WINNT 0x0600
 </pre>
 <p>Inserir suporte a linques na biblioteca de controles comuns:</p>
 
 <pre>
-   INITCOMMONCONTROLSEX icc = { sizeof(icc), ICC_LINK_CLASS }; 
-   InitCommonControlsEx(&amp;icc);
+    INITCOMMONCONTROLSEX icc = { sizeof(icc), ICC_LINK_CLASS }; 
+    InitCommonControlsEx(&amp;icc);
 </pre>
 <p>Usar o CreateWindow com a classe certa, fazer markup html dentro do título e cuidar das mensagens de click e enter no controle:</p>
 
@@ -200,14 +200,14 @@ CreateWindowEx(0, WC_LINK,
 <p>A partir do Vista temos uma nova API para fazer isso. E é muito simples:</p>
 
 <pre>
-   BOOL WINAPI ShutdownBlockReasonCreate( 
-     __in  HWND hWnd, 
-     __in  LPCWSTR pwszReason 
-   );   
-   
-   BOOL WINAPI ShutdownBlockReasonDestroy( 
-     __in  HWND hWnd 
-   );
+    BOOL WINAPI ShutdownBlockReasonCreate( 
+      __in  HWND hWnd, 
+      __in  LPCWSTR pwszReason 
+    );   
+    
+    BOOL WINAPI ShutdownBlockReasonDestroy( 
+      __in  HWND hWnd 
+    );
 </pre>
 <p>Quando ao receber a famigerada WM_QUERYENDSESSION, basta retornar FALSE. O Windows faz o resto.</p>
 
@@ -347,16 +347,16 @@ CreateWindowEx(0, WC_LINK,
 <p>O resto da função funciona mais ou menos como o sprintf, cuspindo a mensagem-modelo em uma saída formatada de acordo com os parâmetros de entrada.</p>
 
 <pre>
-   
-   DWORD WINAPI FormatMessage(
-      __in      DWORD dwFlags,
-      __in_opt  LPCVOID lpSource,
-      __in      DWORD dwMessageId,
-      __in      DWORD dwLanguageId,
-      __out     LPTSTR lpBuffer,
-      __in      DWORD nSize,
-      __in_opt  va_list *Arguments
-   );
+    
+    DWORD WINAPI FormatMessage(
+       __in      DWORD dwFlags,
+       __in_opt  LPCVOID lpSource,
+       __in      DWORD dwMessageId,
+       __in      DWORD dwLanguageId,
+       __out     LPTSTR lpBuffer,
+       __in      DWORD nSize,
+       __in_opt  va_list *Arguments
+    );
 </pre>
 <h4>Flags</h4>
 

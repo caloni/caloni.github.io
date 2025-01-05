@@ -105,7 +105,7 @@ role="navigation" aria-label="main navigation">
 <p>Quando o código da BIOS é executado, ele precisa, entre outras coisas, fazer três:</p>
 
 <pre>
-   
+    
 </pre>
 <p>  1. Encontrar o dispositivo padrão de boot.</p>
 
@@ -149,7 +149,7 @@ role="navigation" aria-label="main navigation">
 <p>Porém, essa função ainda:</p>
 
 <pre>
-   
+    
 </pre>
 <ul><li>não foi comentada,</li>
 
@@ -350,15 +350,15 @@ role="navigation" aria-label="main navigation">
 <p>Vamos analisar essas abstrações em exemplos da vida real:</p>
 
 <pre>
-   
-   | Exemplo          | Dados de entrada            | Processamento                 | Dados de saída                    |
-   | ---------------- | --------------------------  | ----------------------------  | --------------------------------- |
-   | Bloco de Notas   | Digitação do usuário        | Leitura do teclado            | Texto exibido na tela             |
-   | Chat Online      | Envio de mensagem           | Conexão com a internet        | Seu amigo recebe a mensagem       |
-   | Editor de imagem | Movimento do mouse          | Interpretação de movimento    | Retângulo desenhado               |
-   | Browser          | Clique do mouse em uma URL  | Conexão com o site            | Exibição da nova página           |
-   | Jogo de Tiro     | Clique no botão de tiro     | Cálculo do projétil           | Inimigo acertado                  |
-   | Compilador       | Código do programador       | Interpretação das instruções  | Código de máquina (seu programa!) |
+    
+    | Exemplo          | Dados de entrada            | Processamento                 | Dados de saída                    |
+    | ---------------- | --------------------------  | ----------------------------  | --------------------------------- |
+    | Bloco de Notas   | Digitação do usuário        | Leitura do teclado            | Texto exibido na tela             |
+    | Chat Online      | Envio de mensagem           | Conexão com a internet        | Seu amigo recebe a mensagem       |
+    | Editor de imagem | Movimento do mouse          | Interpretação de movimento    | Retângulo desenhado               |
+    | Browser          | Clique do mouse em uma URL  | Conexão com o site            | Exibição da nova página           |
+    | Jogo de Tiro     | Clique no botão de tiro     | Cálculo do projétil           | Inimigo acertado                  |
+    | Compilador       | Código do programador       | Interpretação das instruções  | Código de máquina (seu programa!) |
 </pre>
 <p>Como podemos ver, podemos abstrair esse lance de "dados de entrada + processamento = dados de saída" com qualquer tipo de programa que usarmos. Basta relacionar o que fazemos (digitar algo, arrastar o mouse, apertar um botão, etc) para obtermos a saída desejada (texto/gráfico na tela, no arquivo, na impressora, etc). O programa é o elemento que fica no meio fazendo essa "mágica".</p>
 
@@ -377,32 +377,32 @@ role="navigation" aria-label="main navigation">
 <p>Seguindo esse raciocínio, podemos deduzir que um programa deve tomar decisões para saber o que fazer. E para tomar essas decisões ele usa o que recebeu como entrada, que são exatamente os dados de entrada. Nesse contexto, tomar decisão significa alterar o fluxo de execução. Ou seja, a ordem não necessariamente será sempre linha 1, linha 2, linha 3, etc, mas poderá ser, por exemplo, linha 1, linha 52, linha 237643, linha 52 de novo, linha 890, e assim por diante.</p>
 
 <pre>
-   001: inicia
-   002: lê entrada
-   003: atirar?
-   004: sim! ir para 514
-   005: não! ir para 002
-   006: ...
-   ...
-   514: acertei?
-   515: sim! ir para 489
-   516: não! ir para 234
-   517: ...
-   ...
-   234: fui acertado?
-   235: sim! ir para 918
-   236: não! ir para 002
-   ...
-   489: aumenta pontos
-   490: ir para 002
-   ...
-   918: diminui vida
-   919: morri?
-   920: sim! ir para 980
-   921: não! ir para 002
-   ...
-   980: game over!
-   981: sai do programa
+    001: inicia
+    002: lê entrada
+    003: atirar?
+    004: sim! ir para 514
+    005: não! ir para 002
+    006: ...
+    ...
+    514: acertei?
+    515: sim! ir para 489
+    516: não! ir para 234
+    517: ...
+    ...
+    234: fui acertado?
+    235: sim! ir para 918
+    236: não! ir para 002
+    ...
+    489: aumenta pontos
+    490: ir para 002
+    ...
+    918: diminui vida
+    919: morri?
+    920: sim! ir para 980
+    921: não! ir para 002
+    ...
+    980: game over!
+    981: sai do programa
 </pre>
 <p>Note que existem várias perguntas que o programa precisa responder para seguir em frente. Para respondê-las, o programa pede a ajuda do computador para fazer comparações entre variáveis. E aí está o uso desses dados internos.</p>
 
@@ -411,7 +411,7 @@ role="navigation" aria-label="main navigation">
 <p>Bem, até aqui você já aprendeu um montão de coisas:</p>
 
 <pre>
-   
+    
 </pre>
 <ul><li>Programas podem ser armazenados em arquivos.</li>
 
@@ -483,19 +483,19 @@ role="navigation" aria-label="main navigation">
 <p>Uma simples vítima disso pode ser um pobre executável usando uma pobremente escrita DLL, assim como no código abaixo:</p>
 
 <pre>
-   int main()
-   {
-     printf(&quot;load dll&quot;);
-     HMODULE lockDll = LoadLibrary(_T(&quot;dll_lock.dll&quot;));
-   
-     if( lockDll )
-     {
-       Sleep(2000);
-       printf(&quot;free dll&quot;);
-       FreeLibrary(lockDll), lockDll  = NULL;
-       printf(&quot;done&quot;);
-     }
-   }
+    int main()
+    {
+      printf(&quot;load dll&quot;);
+      HMODULE lockDll = LoadLibrary(_T(&quot;dll_lock.dll&quot;));
+    
+      if( lockDll )
+      {
+        Sleep(2000);
+        printf(&quot;free dll&quot;);
+        FreeLibrary(lockDll), lockDll  = NULL;
+        printf(&quot;done&quot;);
+      }
+    }
 </pre>
 <p>É importante sempre lembrar que a Microsoft acha feio, muito feio você ficar dependendo do DllMain pra fazer alguma coisa, mas admite que em alguns casos o único lugar onde podemos rodar código é no DllMain. Nesses casos -- e em alguns outros -- utilize uma comunicação paralela com sua thread travadona, por meio de um evento ou algo do gênero, antes que ela realmente saia. Com isso a thread pode ainda não ter saído, mas pode avisar a thread principal que o que ela precisava fazer já foi feito.</p>
 
@@ -548,82 +548,82 @@ role="navigation" aria-label="main navigation">
 <p>Eis um exemplo singelo, sem dramatização (com dramatização == "500 linhas de código de produção além do código abaixo").</p>
 
 <pre>
-   #include &lt;iostream&gt;
-   #include &lt;typeinfo&gt;
-   
-   using namespace std;
-   
-   class Base
-   {
-   public:
-     Base()
-     {
-       cout &lt;&lt; &quot;Base()\n&quot;;
-       m_x = 0;
-     }
-   
-     ~Base()
-     {
-       cout &lt;&lt; &quot;~Base()\n&quot;;
-     }
-   
-     int m_x;
-   };
-   
-   class Deriv : public Base
-   {
-   public:
-     Deriv()
-     {
-       cout &lt;&lt; &quot;Deriv()\n&quot;;
-   
-       m_x = 1;
-       m_y = 0;
-     }
-   
-     virtual ~Deriv()
-     {
-       cout &lt;&lt; &quot;~Deriv()\n&quot;;
-     }
-   
-     int m_y;
-   };
-   
-   void func(Base* b)
-   {
-     cout &lt;&lt; typeid(*b).name() &lt;&lt; '\n';
-   }
-   
-   int main()
-   {
-     Base* b = new Deriv();
-     func(b);
-   } 
-   
+    #include &lt;iostream&gt;
+    #include &lt;typeinfo&gt;
+    
+    using namespace std;
+    
+    class Base
+    {
+    public:
+      Base()
+      {
+        cout &lt;&lt; &quot;Base()\n&quot;;
+        m_x = 0;
+      }
+    
+      ~Base()
+      {
+        cout &lt;&lt; &quot;~Base()\n&quot;;
+      }
+    
+      int m_x;
+    };
+    
+    class Deriv : public Base
+    {
+    public:
+      Deriv()
+      {
+        cout &lt;&lt; &quot;Deriv()\n&quot;;
+    
+        m_x = 1;
+        m_y = 0;
+      }
+    
+      virtual ~Deriv()
+      {
+        cout &lt;&lt; &quot;~Deriv()\n&quot;;
+      }
+    
+      int m_y;
+    };
+    
+    void func(Base* b)
+    {
+      cout &lt;&lt; typeid(*b).name() &lt;&lt; '\n';
+    }
+    
+    int main()
+    {
+      Base* b = new Deriv();
+      func(b);
+    } 
+    
 </pre>
 <p>O typeid usado nesse exemplo será o estático, no estilo typeid(type), porque o tipo do objeto para a função é de "ponteiro para objeto de classe não-polimórfica", ou seja, sem nenhuma função virtual. É importante lembrar que o polimorfismo em C++ só é aplicado se houver razão para tal, pois na linguagem a regra é que "não existe sobrecarga de execução sem que o programador queira":</p>
 
 <pre>
-   &gt;./program
-   Base()
-   Deriv()
-   class Base
+    &gt;./program
+    Base()
+    Deriv()
+    class Base
 </pre>
 <p>Se o esperado pelo programador fosse um class Deriv na última linha da saída, ou seja, que o typeid utilizado fosse a versão dinâmica, então a nossa classe Base tem que ser polimórfica:</p>
 
 <pre>
-   virtual ~Base()
-   {
-     cout &lt;&lt; &quot;~Base()\n&quot;;
-   } 
+    virtual ~Base()
+    {
+      cout &lt;&lt; &quot;~Base()\n&quot;;
+    } 
 </pre>
 <p>Esse é um erro equivalente ao chamar o operador delete usando o ponteiro recebido em func. Se isso fosse feito, seria chamado apenas o destrutor da classe Base. Por falar nisso, temos nesse exemplo um leak de memória (percebeu pela saída que os destrutores não são chamados?). Mas esse é um erro bem menos sutil que o visto pelo nosso amigo typeid amigo-da-onça ;).</p>
 
 <pre>
-   &gt;./program
-   Base()
-   Deriv()
-   class Deriv
+    &gt;./program
+    Base()
+    Deriv()
+    class Deriv
 </pre>
 
 </section><hr/>
@@ -637,86 +637,86 @@ role="navigation" aria-label="main navigation">
 <p>Quando queremos que um membro de nossa classe seja visível apenas dentro dos métodos da classe e dentro dos métodos das classes derivadas dessa classe usamos o nível de proteção protected. Isso, é claro, não quer dizer que uma classe derivada vá ter acesso aos membros protegidos de outra:</p>
 
 <pre>
-   #include &lt;iostream&gt;
-   
-   using namespace std;
-   
-   class Base
-   {
-   protected:
-     int m_protected;
-   };
-   
-   class Derived : public Base
-   {
-   public:
-     int GetProtected();
-     int GetAnotherProtected();
-   };
-   
-   class AnotherDerived : public Base
-   {
-   };
-   
-   int Derived::GetProtected()
-   {
-     return m_protected;
-   }
-   
-   int Derived::GetAnotherProtected()
-   {
-     AnotherDerived anotherDeriv;
-     return anotherDeriv.m_protected;
-   }
-   
-   int main()
-   {
-     Derived deriv;
-     deriv.GetProtected();
-     deriv.GetAnotherProtected();
-   }
-   
-   &gt;./program
-   error C2248: 'Base::m_protected' : cannot access protected member declared in class 'Base'
-   see declaration of 'Base::m_protected'
-   see declaration of 'Base'
+    #include &lt;iostream&gt;
+    
+    using namespace std;
+    
+    class Base
+    {
+    protected:
+      int m_protected;
+    };
+    
+    class Derived : public Base
+    {
+    public:
+      int GetProtected();
+      int GetAnotherProtected();
+    };
+    
+    class AnotherDerived : public Base
+    {
+    };
+    
+    int Derived::GetProtected()
+    {
+      return m_protected;
+    }
+    
+    int Derived::GetAnotherProtected()
+    {
+      AnotherDerived anotherDeriv;
+      return anotherDeriv.m_protected;
+    }
+    
+    int main()
+    {
+      Derived deriv;
+      deriv.GetProtected();
+      deriv.GetAnotherProtected();
+    }
+    
+    &gt;./program
+    error C2248: 'Base::m_protected' : cannot access protected member declared in class 'Base'
+    see declaration of 'Base::m_protected'
+    see declaration of 'Base'
 </pre>
 <p>Esse é o motivo fundamental do porquê não podermos fazer isso:</p>
 
 <pre>
-   int Derived::GetAnotherProtected()
-   {
-     Base base;
-     return base.m_protected;
-   } 
+    int Derived::GetAnotherProtected()
+    {
+      Base base;
+      return base.m_protected;
+    } 
 </pre>
 <p>Ao acessar membros protegidos é importante o tipo da expressão que está do lado esquerdo do "." ou "-&gt;". Afinal, o nível de proteção se baseia no escopo, e as classes são um escopo. É por isso que consigo acessar os membros protegidos de um outro objeto de minha classe, mesmo sendo outro objeto:</p>
 
 <pre>
-   int Derived::GetAnotherProtected()
-   {
-     Derived deriv; // typeid(deriv) == typeid(*this).
-     return deriv.m_protected; // OK
-   } 
+    int Derived::GetAnotherProtected()
+    {
+      Derived deriv; // typeid(deriv) == typeid(*this).
+      return deriv.m_protected; // OK
+    } 
 </pre>
 <p>A definição do escopo é tudo o que o compilador dispõe para saber se acessa ou não acessa um membro. Podemos ter acesso a m_protected enquanto somos do tipo Derived, mas não quando o mesmo objeto é usado como Base:</p>
 
 <pre>
-   int Derived::GetAnotherProtected()
-   {
-     Base&amp; base = *this; // typeid(deriv) != typeid(*this).
-     return base.m_protected; // ERROR
-   } 
+    int Derived::GetAnotherProtected()
+    {
+      Base&amp; base = *this; // typeid(deriv) != typeid(*this).
+      return base.m_protected; // ERROR
+    } 
 </pre>
 <p>Essa proteção parece desnecessária e até mesmo incoerente quando lidamos com o mesmo objeto que acessa. Afinal, somos nós mesmos! Só que o compilador não sabe disso, e ele deve desconfiar de tudo e de todos para evitar esse tipo de "ataque":</p>
 
 <pre>
-   int Derived::GetAnotherProtected()
-   {
-     AnotherDerived anotherDeriv;
-     Base&amp; base = anotherDeriv; // typeid(deriv) != typeid(*this)
-     return base.m_protected; // ERROR
-   } 
+    int Derived::GetAnotherProtected()
+    {
+      AnotherDerived anotherDeriv;
+      Base&amp; base = anotherDeriv; // typeid(deriv) != typeid(*this)
+      return base.m_protected; // ERROR
+    } 
 </pre>
 <p>Agora a proteção do compilador faz sentido. Parece um detalhe frívolo, mas depois que vi alguns programadores de respeito se debatendo pela "burrice" do compilador, imaginei que talvez houvesse mais pessoas com a mesma dúvida de se existe ou não um "bug na linguagem".</p>
 
@@ -735,32 +735,32 @@ role="navigation" aria-label="main navigation">
 <p>Para variar, iremos depurar o Bloco de Notas, o maravilhoso editor de textos da Microsoft e plataforma de testes para serviços, GINAs e drivers. Para começar, poderemos usar quaisquer das opções anteriores, o que nos levará para uma saída poluída como a seguinte:</p>
 
 <pre>
-   
-   Microsoft (R) Windows Debugger  Version 6.7.0005.1
-   Copyright (c) Microsoft Corporation. All rights reserved.
-   
-   CommandLine: notepad.exe
-   Symbol search path is: SRV*C:Symbols*http://msdl.microsoft.com/downloads/symbols
-   Executable search path is:
-   ModLoad: 01000000 01014000   notepad.exe
-   ModLoad: 7c900000 7c9b0000   ntdll.dll
-   ModLoad: 7c800000 7c8f5000   C:\WINDOWS\system32\kernel32.dll
-   ModLoad: 763b0000 763f9000   C:\WINDOWS\system32\comdlg32.dll
-   ModLoad: 77f60000 77fd6000   C:\WINDOWS\system32\SHLWAPI.dll
-   ModLoad: 77dd0000 77e6b000   C:\WINDOWS\system32\ADVAPI32.dll
-   ModLoad: 77e70000 77f01000   C:\WINDOWS\system32\RPCRT4.dll
-   ModLoad: 77f10000 77f57000   C:\WINDOWS\system32\GDI32.dll
-   ModLoad: 7e410000 7e4a0000   C:\WINDOWS\system32\USER32.dll
-   ModLoad: 77c10000 77c68000   C:\WINDOWS\system32\msvcrt.dll
-   ModLoad: 773d0000 774d3000   C:WINDOWS\WinSxSx86_Microsoft.Windows.Common-Controls_Sbrubles
-   ModLoad: 7c9c0000 7d1d5000   C:\WINDOWS\system32\SHELL32.dll
-   ModLoad: 73000000 73026000   C:\WINDOWS\system32\WINSPOOL.DRV
-   (df8.e28): Break instruction exception - code 80000003 (first chance)
-   eax=001a1eb4 ebx=7ffd5000 ecx=00000000 edx=00000001 esi=001a1f48 edi=001a1eb4
-   eip=7c901230 esp=0007fb20 ebp=0007fc94 iopl=0         nv up ei pl nz na po nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000202
-   ntdll!DbgBreakPoint:
-   7c901230 cc              int     3
+    
+    Microsoft (R) Windows Debugger  Version 6.7.0005.1
+    Copyright (c) Microsoft Corporation. All rights reserved.
+    
+    CommandLine: notepad.exe
+    Symbol search path is: SRV*C:Symbols*http://msdl.microsoft.com/downloads/symbols
+    Executable search path is:
+    ModLoad: 01000000 01014000   notepad.exe
+    ModLoad: 7c900000 7c9b0000   ntdll.dll
+    ModLoad: 7c800000 7c8f5000   C:\WINDOWS\system32\kernel32.dll
+    ModLoad: 763b0000 763f9000   C:\WINDOWS\system32\comdlg32.dll
+    ModLoad: 77f60000 77fd6000   C:\WINDOWS\system32\SHLWAPI.dll
+    ModLoad: 77dd0000 77e6b000   C:\WINDOWS\system32\ADVAPI32.dll
+    ModLoad: 77e70000 77f01000   C:\WINDOWS\system32\RPCRT4.dll
+    ModLoad: 77f10000 77f57000   C:\WINDOWS\system32\GDI32.dll
+    ModLoad: 7e410000 7e4a0000   C:\WINDOWS\system32\USER32.dll
+    ModLoad: 77c10000 77c68000   C:\WINDOWS\system32\msvcrt.dll
+    ModLoad: 773d0000 774d3000   C:WINDOWS\WinSxSx86_Microsoft.Windows.Common-Controls_Sbrubles
+    ModLoad: 7c9c0000 7d1d5000   C:\WINDOWS\system32\SHELL32.dll
+    ModLoad: 73000000 73026000   C:\WINDOWS\system32\WINSPOOL.DRV
+    (df8.e28): Break instruction exception - code 80000003 (first chance)
+    eax=001a1eb4 ebx=7ffd5000 ecx=00000000 edx=00000001 esi=001a1f48 edi=001a1eb4
+    eip=7c901230 esp=0007fb20 ebp=0007fc94 iopl=0         nv up ei pl nz na po nc
+    cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000202
+    ntdll!DbgBreakPoint:
+    7c901230 cc              int     3
 </pre>
 <p>Não se preocupe, nada aconteceu de errado. Essa é apenas a maneira do WinDbg de dizer "oi, estou aqui, positivo e operando". Vamos destrinchar as informações iniciais para evitar confusão:</p>
 
@@ -794,28 +794,28 @@ role="navigation" aria-label="main navigation">
 <p>Na saída abaixo você pode encontrar essa chamada na primeira thread, a 2b14.30f8, no stack frame 0x0e.</p>
 
 <pre>
-   0:003&gt; ~* kvn
-   
-      0  Id: 2b14.30f8 Suspend: 1 Teb: 000000b7`5be5b000 Unfrozen
-    # Child-SP          RetAddr               : Args to Child                                                           : Call Site
-   00 000000b7`5bdbd6f8 00007ff9`c74e078e     : 00000000`ffffffff 00007ff9`ae84cd4c 000000b7`00000000 00000000`00000001 : win32u!NtUserMsgWaitForMultipleObjectsEx+0x14
-   01 000000b7`5bdbd700 00007ff9`ae85352b     : 00000211`41e83718 00007ff9`c87d0454 00000000`00000001 00000000`000000e5 : USER32!RealMsgWaitForMultipleObjectsEx+0x1e
-   02 000000b7`5bdbd740 00007ff9`ae853422     : 00000000`ffffffff 00000000`00000000 00000000`008f06b6 00000000`00000410 : DUser!CoreSC::WaitMessage+0xeb
-   03 000000b7`5bdbd7b0 00007ff9`c74edbe1     : 00000000`00000000 00000000`00000001 00000000`00000121 00007ff9`c74cde1b : DUser!MphWaitMessageEx+0x62
-   04 000000b7`5bdbd7e0 00007ff9`c87d0454     : 00000000`00000001 00000002`00000001 00000000`0000412a 00000000`00000000 : USER32!_ClientWaitMessageExMPH+0x21
-   ...
-   0a 000000b7`5bdbd9e0 00007ff9`b14545e7     : 00000000`00000000 00000000`00000000 00000000`00000000 00000000`00000187 : USER32!DialogBoxIndirectParamW+0x18
-   0b 000000b7`5bdbda20 00007ff9`b145456e     : 15e684dc`00000800 00000000`00000000 00000000`00000000 000000b7`5bdbdb20 : COMCTL32!SHFusionDialogBoxIndirectParam+0x57
-   0c 000000b7`5bdbda60 00007ff9`c748cf3e     : 00000211`479c00a0 00000000`00000000 000000b7`5bdbdbf0 000000b7`5bdbdb20 : COMCTL32!CTaskDialog::Show+0x122
-   0d 000000b7`5bdbdab0 00007ff9`c747959e     : 00000000`00000000 00000000`00220a9c 00000000`00000000 00000000`00220a9c : shlwapi!TaskDialogIndirect+0x56
-   0e 000000b7`5bdbdaf0 00007ff9`c68f92cd     : 00000000`00000000 00000211`47a57dd0 00000211`41e69208 00007ff9`c74cde1b : shlwapi!ShellMessageBoxW+0x18e
-   0f 000000b7`5bdbdcc0 00007ff9`c68bf17c     : 00000000`80070002 000000b7`5bdbdda9 00000000`00000000 00000000`00000000 : comdlg32!_DisplayErrorMessage+0x291
-   ...
-   24 000000b7`5bdbeb30 00007ff9`c68b609a     : 00000000`00000000 000000b7`00000000 00000211`00000004 000000b7`5bdbed68 : USER32!DialogBoxIndirectParamW+0x18
-   25 000000b7`5bdbeb70 00007ff9`c6893084     : 00000211`41e69090 00000211`00000000 00000211`41e69098 00000003`00000003 : comdlg32!&lt;lambda_3a7baec315efe719b0d1bc9a8eafe6df&gt;::operator()+0xee
-   26 000000b7`5bdbebc0 00007ff6`2c3987ae     : 00000000`00000000 00000000`008e07ea 00000000`00000000 000000b7`5bdbf0a8 : comdlg32!CFileOpenSave::Show+0xa34
-   27 000000b7`5bdbef80 00007ff6`2c398aff     : 00000000`00000000 00000000`00001808 00000000`008e07ea 00000000`00000000 : notepad!ShowOpenSaveDialog+0xfe
-   ...
+    0:003&gt; ~* kvn
+    
+       0  Id: 2b14.30f8 Suspend: 1 Teb: 000000b7`5be5b000 Unfrozen
+     # Child-SP          RetAddr               : Args to Child                                                           : Call Site
+    00 000000b7`5bdbd6f8 00007ff9`c74e078e     : 00000000`ffffffff 00007ff9`ae84cd4c 000000b7`00000000 00000000`00000001 : win32u!NtUserMsgWaitForMultipleObjectsEx+0x14
+    01 000000b7`5bdbd700 00007ff9`ae85352b     : 00000211`41e83718 00007ff9`c87d0454 00000000`00000001 00000000`000000e5 : USER32!RealMsgWaitForMultipleObjectsEx+0x1e
+    02 000000b7`5bdbd740 00007ff9`ae853422     : 00000000`ffffffff 00000000`00000000 00000000`008f06b6 00000000`00000410 : DUser!CoreSC::WaitMessage+0xeb
+    03 000000b7`5bdbd7b0 00007ff9`c74edbe1     : 00000000`00000000 00000000`00000001 00000000`00000121 00007ff9`c74cde1b : DUser!MphWaitMessageEx+0x62
+    04 000000b7`5bdbd7e0 00007ff9`c87d0454     : 00000000`00000001 00000002`00000001 00000000`0000412a 00000000`00000000 : USER32!_ClientWaitMessageExMPH+0x21
+    ...
+    0a 000000b7`5bdbd9e0 00007ff9`b14545e7     : 00000000`00000000 00000000`00000000 00000000`00000000 00000000`00000187 : USER32!DialogBoxIndirectParamW+0x18
+    0b 000000b7`5bdbda20 00007ff9`b145456e     : 15e684dc`00000800 00000000`00000000 00000000`00000000 000000b7`5bdbdb20 : COMCTL32!SHFusionDialogBoxIndirectParam+0x57
+    0c 000000b7`5bdbda60 00007ff9`c748cf3e     : 00000211`479c00a0 00000000`00000000 000000b7`5bdbdbf0 000000b7`5bdbdb20 : COMCTL32!CTaskDialog::Show+0x122
+    0d 000000b7`5bdbdab0 00007ff9`c747959e     : 00000000`00000000 00000000`00220a9c 00000000`00000000 00000000`00220a9c : shlwapi!TaskDialogIndirect+0x56
+    0e 000000b7`5bdbdaf0 00007ff9`c68f92cd     : 00000000`00000000 00000211`47a57dd0 00000211`41e69208 00007ff9`c74cde1b : shlwapi!ShellMessageBoxW+0x18e
+    0f 000000b7`5bdbdcc0 00007ff9`c68bf17c     : 00000000`80070002 000000b7`5bdbdda9 00000000`00000000 00000000`00000000 : comdlg32!_DisplayErrorMessage+0x291
+    ...
+    24 000000b7`5bdbeb30 00007ff9`c68b609a     : 00000000`00000000 000000b7`00000000 00000211`00000004 000000b7`5bdbed68 : USER32!DialogBoxIndirectParamW+0x18
+    25 000000b7`5bdbeb70 00007ff9`c6893084     : 00000211`41e69090 00000211`00000000 00000211`41e69098 00000003`00000003 : comdlg32!&lt;lambda_3a7baec315efe719b0d1bc9a8eafe6df&gt;::operator()+0xee
+    26 000000b7`5bdbebc0 00007ff6`2c3987ae     : 00000000`00000000 00000000`008e07ea 00000000`00000000 000000b7`5bdbf0a8 : comdlg32!CFileOpenSave::Show+0xa34
+    27 000000b7`5bdbef80 00007ff6`2c398aff     : 00000000`00000000 00000000`00001808 00000000`008e07ea 00000000`00000000 : notepad!ShowOpenSaveDialog+0xfe
+    ...
 </pre>
 <p>Essa é uma função equivalente à antiga MessageBox, cujo protótipo é int ShellMessageBoxW(HINSTANCE hAppInst, HWND hWnd, LPCWSTR lpcText, LPCWSTR lpcTitle, UINT fuStyle, ...), ou seja, uma função que recebe cinco ou mais parâmetros: o handle da instância caso a string passada esteja em um resource, o handle da janela pai, o texto da mensagem, o título e flags de exibição. As reticências ao final do protótipo indicam que ele pode conter mais argumentos.</p>
 
@@ -826,33 +826,33 @@ role="navigation" aria-label="main navigation">
 <p>Agora podemos efetuar a mesma operação de abrir um arquivo inexistente no bloco de notas que a execução irá parar no início da função ShellMessageBoxW da API:</p>
 
 <pre>
-   Breakpoint 0 hit
-   shlwapi!ShellMessageBoxW:
-   00007ff9`c7479410 4055            push    rbp
-   0:000&gt; r
-   rax=00007ff9c6933000 rbx=0000000000000187 rcx=00007ff9c6880000
-   rdx=0000000000220a9c rsi=0000000000000001 rdi=00000211479d6030
-   rip=00007ff9c7479410 rsp=000000b75bdbd728 rbp=00000211479ba190
-    r8=0000000000000187  r9=0000000000000000 r10=0000021148ed1ae0
-   r11=000000b75bdbd2c8 r12=0000000000000000 r13=0000000000000000
-   r14=0000000000220a9c r15=0000000000000000
-   iopl=0         nv up ei pl zr na po nc
-   cs=0033  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000246
-   shlwapi!ShellMessageBoxW:
-   00007ff9`c7479410 4055            push    rbp
-   
+    Breakpoint 0 hit
+    shlwapi!ShellMessageBoxW:
+    00007ff9`c7479410 4055            push    rbp
+    0:000&gt; r
+    rax=00007ff9c6933000 rbx=0000000000000187 rcx=00007ff9c6880000
+    rdx=0000000000220a9c rsi=0000000000000001 rdi=00000211479d6030
+    rip=00007ff9c7479410 rsp=000000b75bdbd728 rbp=00000211479ba190
+     r8=0000000000000187  r9=0000000000000000 r10=0000021148ed1ae0
+    r11=000000b75bdbd2c8 r12=0000000000000000 r13=0000000000000000
+    r14=0000000000220a9c r15=0000000000000000
+    iopl=0         nv up ei pl zr na po nc
+    cs=0033  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000246
+    shlwapi!ShellMessageBoxW:
+    00007ff9`c7479410 4055            push    rbp
+    
 </pre>
 <p>Analisando pela convenção de chamada x64 sabemos que o terceiro parâmetro, lpcText, está em r8 e é um ID do resource. O que valida essa análise é também o primeiro parâmetro, a instância do módulo que contém os resources que serão usados para carregar a mensagem, que fica em rcx e não está zerado (ele aponta para o módulo commdlg32.dll). Dessa forma nossa tarefa se torna particularmente mais difícil, pois para encontrar a string usada na mensagem de erro seria necessário buscar no meio dos resources dessa DLL.</p>
 
 <p>No entanto, vou realizar aqui brincadeira semelhante ao post original, que é alterar a mensagem de erro. Para isso precisamos alocar alguma memória para escrever uma string UNICODE e alterar o registrador r8 para o endereço dessa memória. A alocação de memória pelo WinDbg pode ser feita usando o comando .dvalloc e a edição de uma string UNICODE terminada em zero pelo comando ezu (edit zero terminated unicode string). Após isso alteramos o valor do registrador com o comando r.</p>
 
 <pre>
-   0:000&gt; .dvalloc 10
-   Allocated 1000 bytes starting at 00000211`43d60000
-   0:000&gt; ezu 00000211`43d60000 &quot;Obrigado por utilizar o maravilhoso Bloco de Notas!&quot;
-   0:000&gt; rr8 = 00000211`43d60000
-   0:000&gt; g
-   
+    0:000&gt; .dvalloc 10
+    Allocated 1000 bytes starting at 00000211`43d60000
+    0:000&gt; ezu 00000211`43d60000 &quot;Obrigado por utilizar o maravilhoso Bloco de Notas!&quot;
+    0:000&gt; rr8 = 00000211`43d60000
+    0:000&gt; g
+    
 </pre>
 <p>Note que se estivéssemos tentando exibir uma string Ansi iríamos usar o comando eza (edit zero terminated ansi string). O WinDbg possui inúmeros comandos parecidos que começam com e, cuja lista pode ser consultada pelo comando .hh e. O equivalente para leitura é o comando d (de dump).</p>
 

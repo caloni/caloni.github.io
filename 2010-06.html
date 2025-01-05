@@ -88,15 +88,15 @@ role="navigation" aria-label="main navigation">
 <p>Padrão C (ISO/IEC 9899:1990)</p>
 
 <pre>
-   
-   6.5.3 type-qualifier
-    const
-    volatile
-   Padrão C++ (ISO/IEC 14882:1998)
-   
-   cv-qualifier
-    const
-    volatile
+    
+    6.5.3 type-qualifier
+     const
+     volatile
+    Padrão C++ (ISO/IEC 14882:1998)
+    
+    cv-qualifier
+     const
+     volatile
 </pre>
 <h4>Qualificadores de tipo</h4>
 
@@ -107,7 +107,7 @@ role="navigation" aria-label="main navigation">
 <p>Uma variável const não pode ser alterada pelo programa durante sua execução, apenas durante sua inicialização:</p>
 
 <pre>
-   const float pi = 3.14; // até onde sabemos, pi não irá mudar neste Universo
+    const float pi = 3.14; // até onde sabemos, pi não irá mudar neste Universo
 </pre>
 <p>No exemplo acima, o valor de pi não pode mais ser alterado. Só que repare que ele foi, em determinado momento, alterado com um valor constante: na sua inicialização. Isso quer dizer que:</p>
 
@@ -116,9 +116,9 @@ role="navigation" aria-label="main navigation">
 <p>  * pi não é um define do pré-processador que irá virar uma constante literal (3.14, por exemplo)</p>
 
 <pre>
-   // eu posso endereçar uma constante,
-   // desde que qualifique corretamente meu ponteiro
-   const float* ppi = &amp; pi;
+    // eu posso endereçar uma constante,
+    // desde que qualifique corretamente meu ponteiro
+    const float* ppi = &amp; pi;
 </pre>
 <img src="img/const_e_volatile_V6eR9ln.png"/>
 
@@ -170,9 +170,9 @@ int func2(int y)
 <p>É possível que exista uma variável que não pode ser modificada pelo seu programa, mas é modificada pelo sistema, de forma que ela é uma mutante!</p>
 
 <pre>
-   
-   /// endereça o relógio do sistema, atualizado a cada 1/100 milissegundos
-   const volatile int* g_systemClock = (const volatile int*) 0x7689B9D4;
+    
+    /// endereça o relógio do sistema, atualizado a cada 1/100 milissegundos
+    const volatile int* g_systemClock = (const volatile int*) 0x7689B9D4;
 </pre>
 <img src="img/const_e_volatile_4zUSxmJ.jpg"/>
 

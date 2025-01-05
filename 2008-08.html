@@ -266,16 +266,16 @@ int main()
 <p>To compile the code above, just call the compiler and linker normally. Obs.: We need the user32.lib in order to call MessageBox API:</p>
 
 <pre>
-   cl /c antiattach.cpp
-   link antiattach.obj user32.lib
-   
-   antiattach.exe
-   Try to attach, if you can...
+    cl /c antiattach.cpp
+    link antiattach.obj user32.lib
+    
+    antiattach.exe
+    Try to attach, if you can...
 </pre>
 <p>After the program has been running, every try to attach will show a detection message and program termination.</p>
 
 <pre>
-   windbg -pn antiattach.exe
+    windbg -pn antiattach.exe
 </pre>
 <img src="img/antidebugging_during_the_process_attach_espertinho.png"/>
 
@@ -378,30 +378,30 @@ BYTE jmpToAntiAttachAbort[] =
 <p>De vez em quando gosto muito de um vídeo que estou assistindo. Gosto tanto que faço questão de guardar para assistir mais vezes depois. O problema é que o meu Firefox ou, para ser mais técnico, o plugin de vídeo que roda em cima do meu navegador, não permite isso. Ele simplesmente cria um arquivo temporário para exibir o vídeo e logo depois o apaga, utilizando uma técnica muito útil da função CreateFile, que bloqueia o acesso do arquivo temporário e apaga-o logo após o uso:</p>
 
 <pre>
-   HANDLE WINAPI CreateFile(
-     __in      LPCTSTR lpFileName,
-     __in      DWORD dwDesiredAccess,
-     __in      DWORD dwShareMode,
-     __in_opt  LPSECURITY_ATTRIBUTES lpSecurityAttributes,
-     __in      DWORD dwCreationDisposition,
-     __in      DWORD dwFlagsAndAttributes,
-     __in_opt  HANDLE hTemplateFile
-   );
+    HANDLE WINAPI CreateFile(
+      __in      LPCTSTR lpFileName,
+      __in      DWORD dwDesiredAccess,
+      __in      DWORD dwShareMode,
+      __in_opt  LPSECURITY_ATTRIBUTES lpSecurityAttributes,
+      __in      DWORD dwCreationDisposition,
+      __in      DWORD dwFlagsAndAttributes,
+      __in_opt  HANDLE hTemplateFile
+    );
 </pre>
 <h4>dwShareMode</h4>
 
 <pre>
-   Value                        Meaning
-   0                            Disables subsequent open operations on a file or device
-   0x00000000                   to request any type of access to that file or device.
+    Value                        Meaning
+    0                            Disables subsequent open operations on a file or device
+    0x00000000                   to request any type of access to that file or device.
 </pre>
 <h4>dwFlagsAndAttributes</h4>
 
 <pre>
-   Value                        Meaning
-   FILE_FLAG_DELETE_ON_CLOSE    The file is to be deleted immediately after all of its
-                                handles are closed, which includes the specified handle
-                                and any other open or duplicated handles.
+    Value                        Meaning
+    FILE_FLAG_DELETE_ON_CLOSE    The file is to be deleted immediately after all of its
+                                 handles are closed, which includes the specified handle
+                                 and any other open or duplicated handles.
 </pre>
 <p>Muito bem. Isso quer dizer que é possível abrir um arquivo que mais ninguém pode abrir (nem para copiar para outro arquivo), e ao mesmo tempo garante que quando ele for fechado será apagado. Isso parece uma ótima proteção de cópia não-autorizada para a maioria das pessoas.</p>
 
@@ -412,52 +412,52 @@ BYTE jmpToAntiAttachAbort[] =
 <p>Antes de iniciar a reprodução do vídeo, e conseqüentemente a criação do arquivo temporário, podemos atachar uma instância do nosso depurador do coração e colocar um breakpoint onde interessa:</p>
 
 <pre>
-   windbg -pn firefox.exe
-   Microsoft (R) Windows Debugger Version 6.8.0004.0 X86
-   Copyright (c) Microsoft Corporation. All rights reserved.
-   
-   *** wait with pending attach
-   Symbol search path is: SRV*C:\Symbols*http://msdl.microsoft.com/download/symbols;K:\Docs\Projects
-   Executable search path is:
-   ModLoad: 00400000 00b64000   L:\FirefoxPortable\App\firefox\firefox.exe
-   ModLoad: 7c900000 7c9b4000   C:\WINDOWS\system32\ntdll.dll
-   ModLoad: 7c800000 7c8ff000   C:\WINDOWS\system32\kernel32.dll
-   ...
-   ModLoad: 77a00000 77a55000   C:\WINDOWS\System32\cscui.dll
-   ModLoad: 765d0000 765ed000   C:\WINDOWS\System32\CSCDLL.dll
-   (b58.ba8): Break instruction exception - code 80000003 (first chance)
-   eax=7ffdb000 ebx=00000001 ecx=00000002 edx=00000003 esi=00000004 edi=00000005
-   eip=7c901230 esp=021bffcc ebp=021bfff4 iopl=0         nv up ei pl zr na pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=0038  gs=0000             efl=00000246
-   ntdll!DbgBreakPoint:
-   7c901230 cc              int     3
-   0:017&gt; bp kernel32!CreateFileA
-   0:017&gt; bp kernel32!CreateFileW
-   0:017&gt; g
-   Breakpoint 2 hit
-   eax=00000001 ebx=00000000 ecx=05432c10 edx=0000003e esi=0532ea00 edi=00000000
-   eip=7c831f31 esp=0317fdc4 ebp=0317fde8 iopl=0         nv up ei pl nz na po nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000202
-   kernel32!CreateFileW:
-   7c810760 8bff            mov     edi,edi
+    windbg -pn firefox.exe
+    Microsoft (R) Windows Debugger Version 6.8.0004.0 X86
+    Copyright (c) Microsoft Corporation. All rights reserved.
+    
+    *** wait with pending attach
+    Symbol search path is: SRV*C:\Symbols*http://msdl.microsoft.com/download/symbols;K:\Docs\Projects
+    Executable search path is:
+    ModLoad: 00400000 00b64000   L:\FirefoxPortable\App\firefox\firefox.exe
+    ModLoad: 7c900000 7c9b4000   C:\WINDOWS\system32\ntdll.dll
+    ModLoad: 7c800000 7c8ff000   C:\WINDOWS\system32\kernel32.dll
+    ...
+    ModLoad: 77a00000 77a55000   C:\WINDOWS\System32\cscui.dll
+    ModLoad: 765d0000 765ed000   C:\WINDOWS\System32\CSCDLL.dll
+    (b58.ba8): Break instruction exception - code 80000003 (first chance)
+    eax=7ffdb000 ebx=00000001 ecx=00000002 edx=00000003 esi=00000004 edi=00000005
+    eip=7c901230 esp=021bffcc ebp=021bfff4 iopl=0         nv up ei pl zr na pe nc
+    cs=001b  ss=0023  ds=0023  es=0023  fs=0038  gs=0000             efl=00000246
+    ntdll!DbgBreakPoint:
+    7c901230 cc              int     3
+    0:017&gt; bp kernel32!CreateFileA
+    0:017&gt; bp kernel32!CreateFileW
+    0:017&gt; g
+    Breakpoint 2 hit
+    eax=00000001 ebx=00000000 ecx=05432c10 edx=0000003e esi=0532ea00 edi=00000000
+    eip=7c831f31 esp=0317fdc4 ebp=0317fde8 iopl=0         nv up ei pl nz na po nc
+    cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000202
+    kernel32!CreateFileW:
+    7c810760 8bff            mov     edi,edi
 </pre>
 <p>Nesse momento podemos dar uma boa olhada nos parâmetros 4 e 6 da função para ver se trata-se realmente da proteção prevista (na verdade, prevista, nada; esse é um artigo baseado em uma experiência passada; vamos imaginar, contudo, que estamos descobrindo essas coisas como na primeira vez).</p>
 
 <pre>
-   0:000&gt; dd esp
-   0012f30c  300afc06 03f91920 c0000000 00000000
-   0012f31c  00000000 00000002 14000000 00000000
+    0:000&gt; dd esp
+    0012f30c  300afc06 03f91920 c0000000 00000000
+    0012f31c  00000000 00000002 14000000 00000000
 </pre>
 <p>Como podemos ver, o modo de compartilhamento do arquivo é nenhum. Entre os flags definidos no sexto parâmetro, está o de apagar o arquivo ao fechar o handle, como pude constatar no header do SDK.</p>
 
 <p>Nesse caso, a solução mais óbvia e simples foi deixar esse bit desabilitado, não importando se o modo de compartilhamento está desativado. Tudo que temos que fazer é assistir o vídeo mais uma vez e fechar a aba do navegador. O arquivo será fechado, o compartilhamento aberto, e o arquivo, não apagado.</p>
 
 <pre>
-   0:012&gt; bp kernel32!CreateFileW &quot;ed @esp+4*6 poi(@esp+4*6) &amp; 0xfbffffff&quot;
-   breakpoint 1 redefined
-   0:012&gt; bp kernel32!CreateFileA &quot;ed @esp+4*6 poi(@esp+4*6) &amp; 0xfbffffff&quot;
-   breakpoint 0 redefined
-   0:012&gt; g
+    0:012&gt; bp kernel32!CreateFileW &quot;ed @esp+4*6 poi(@esp+4*6) &amp; 0xfbffffff&quot;
+    breakpoint 1 redefined
+    0:012&gt; bp kernel32!CreateFileA &quot;ed @esp+4*6 poi(@esp+4*6) &amp; 0xfbffffff&quot;
+    breakpoint 0 redefined
+    0:012&gt; g
 </pre>
 <p>E agora posso voltar a armazenar meus vídeos favoritos.</p>
 
@@ -499,183 +499,183 @@ BYTE jmpToAntiAttachAbort[] =
 <p>Estava eu outro belo dia tentando achar um problema em um driver que controla criação de processos quando, por acaso, listo os processos na máquina pelo depurador de kernel, após ter dado alguns logons e logoffs, quando me vem a seguinte lista de processos do Windows Explorer:</p>
 
 <pre>
-   PROCESS 815f0da0  SessionId: 0  Cid: 0694    Peb: 7ffd8000  ParentCid: 0100
-       DirBase: 0d6e9000  ObjectTable: 00000000  HandleCount:   0.
-       Image: explorer.exe
-   
-   PROCESS 8164bda0  SessionId: 0  Cid: 03b0    Peb: 7ffdf000  ParentCid: 0100
-       DirBase: 02673000  ObjectTable: 00000000  HandleCount:   0.
-       Image: explorer.exe
-   
-   PROCESS 815f7d50  SessionId: 0  Cid: 020c    Peb: 7ffd9000  ParentCid: 0100
-       DirBase: 0bc7f000  ObjectTable: 00000000  HandleCount:   0.
-       Image: explorer.exe
-   
-   PROCESS 8164c698  SessionId: 0  Cid: 0794    Peb: 7ffde000  ParentCid: 0100
-       DirBase: 0cb08000  ObjectTable: e1a40f20  HandleCount: 279.
-       Image: explorer.exe
+    PROCESS 815f0da0  SessionId: 0  Cid: 0694    Peb: 7ffd8000  ParentCid: 0100
+        DirBase: 0d6e9000  ObjectTable: 00000000  HandleCount:   0.
+        Image: explorer.exe
+    
+    PROCESS 8164bda0  SessionId: 0  Cid: 03b0    Peb: 7ffdf000  ParentCid: 0100
+        DirBase: 02673000  ObjectTable: 00000000  HandleCount:   0.
+        Image: explorer.exe
+    
+    PROCESS 815f7d50  SessionId: 0  Cid: 020c    Peb: 7ffd9000  ParentCid: 0100
+        DirBase: 0bc7f000  ObjectTable: 00000000  HandleCount:   0.
+        Image: explorer.exe
+    
+    PROCESS 8164c698  SessionId: 0  Cid: 0794    Peb: 7ffde000  ParentCid: 0100
+        DirBase: 0cb08000  ObjectTable: e1a40f20  HandleCount: 279.
+        Image: explorer.exe
 </pre>
 <p>Analisando pelo Gerenciador de Tarefas, podemos detectar que o único processo de pé possui o PID (Process ID) do último elemento de nossa lista, curiosamente o único com um contador de handles diferente de zero.</p>
 
 <p>Lembrando que 1940 em hexadecimal é 0x794, exatamente o valor deixado em destaque na lista acima, e reproduzido abaixo:</p>
 
 <pre>
-   PROCESS 8164c698  SessionId: 0  Cid: 0794    Peb: 7ffde000  ParentCid: 0100
-       DirBase: 0cb08000  ObjectTable: e1a40f20  HandleCount: 279.
-       Image: explorer.exe
+    PROCESS 8164c698  SessionId: 0  Cid: 0794    Peb: 7ffde000  ParentCid: 0100
+        DirBase: 0cb08000  ObjectTable: e1a40f20  HandleCount: 279.
+        Image: explorer.exe
 </pre>
 <p>Sendo ele o único processo a rodar, a única explicação válida para as outras instâncias do explorer.exe estarem de pé seria o fato de haver algum outro processo (inclusive o sistema operacional) com um handle aberto para ele. Felizmente isso pode ser facilmente verificado pelo uso do comando !object do WinDbg, no caso abaixo com o primeiro explorer.exe da lista, utilizando-se a sua estrutura EPROCESS (em vermelho na lista acima).</p>
 
 <pre>
-   kd&gt; !object 815f0da0
-   Object: 815f0da0  Type: (817cce70) Process
-       ObjectHeader: 815f0d88 (old version)
-       HandleCount: 2  PointerCount: 3
+    kd&gt; !object 815f0da0
+    Object: 815f0da0  Type: (817cce70) Process
+        ObjectHeader: 815f0d88 (old version)
+        HandleCount: 2  PointerCount: 3
 </pre>
 <p>Muito bem. Temos dois handles e dois ponteiros ainda abertos para o objeto processo-fantasma explorer.exe. O fato de haver um handle aberto indica que é muito provável que se trate de um outro processo rodando em user mode, já que normalmente as referências para objetos dentro do kernel são feitas com o uso de ponteiros.</p>
 
 <p>Para descobrirmos quem detém esse handle, existe o comando !handle, que pode exibir informações sobre todos os handles de um determinado tipo no processo atual. Como queremos procurar por todos os handles do tipo Process em todos os processos existentes, é necessário usá-lo em conjunto com o comando mais esperto for_each_process, que pode fazer coisas incríveis para o programador de user/kernel:</p>
 
 <pre>
-   kd&gt; !for_each_process &quot;!handle 0 1 @#Process Process&quot;
-   processor number 0, process 817cc830
-   Searching for handles of type Process
-   PROCESS 817cc830  SessionId: none  Cid: 0004    Peb: 00000000  ParentCid: 0000
-       DirBase: 00039000  ObjectTable: e1000cc0  HandleCount: 286.
-       Image: System
-   
-   Handle table at e1002000 with 286 Entries in use
-   0004: Object: 817cc830  GrantedAccess: 001f0fff
-   
-   0298: Object: 8169a958  GrantedAccess: 001f03ff
-   
-   0308: Object: 8156c880  GrantedAccess: 00000438
-   
-   067c: Object: 816744e8  GrantedAccess: 001f03ff
-   
-   processor number 0, process 81589020
-   Searching for handles of type Process
-   PROCESS 81589020  SessionId: none  Cid: 016c    Peb: 7ffd7000  ParentCid: 0004
-       DirBase: 06978000  ObjectTable: e130d688  HandleCount:  21.
-       Image: smss.exe
-   
-   Handle table at e12a5000 with 21 Entries in use
-   0038: Object: 81561128  GrantedAccess: 001f0fff
-   
-   003c: Object: 81561128  GrantedAccess: 00000400
-   
-   0050: Object: 815b2128  GrantedAccess: 001f0fff
-   
-   0054: Object: 81668020  GrantedAccess: 00000400
-   
-   processor number 0, process 81561128
-   Searching for handles of type Process
-   PROCESS 81561128  SessionId: 0  Cid: 0234    Peb: 7ffde000  ParentCid: 016c
-       DirBase: 0742d000  ObjectTable: e13e0418  HandleCount: 342.
-       Image: csrss.exe
-   
-   Handle table at e14f3000 with 342 Entries in use
-   0014: Object: 815b2128  GrantedAccess: 001f0fff
-   
-   00ec: Object: 8154e880  GrantedAccess: 001f0fff
-   
-   0100: Object: 8156c880  GrantedAccess: 001f0fff
-   
-   0130: Object: 815dc798  GrantedAccess: 001f0fff
-   
-   processor number 0, process 815b2128
-   Searching for handles of type Process
-   PROCESS 815b2128  SessionId: 0  Cid: 024c    Peb: 7ffde000  ParentCid: 016c
-       DirBase: 075b2000  ObjectTable: e13d5790  HandleCount: 448.
-       Image: winlogon.exe
-   
-   Handle table at e102b000 with 448 Entries in use
-   018c: Object: 8154e880  GrantedAccess: 001f0fff
-   
-   019c: Object: 8156c880  GrantedAccess: 001f0fff
-   
-   processor number 0, process 8154e880
-   Searching for handles of type Process
-   PROCESS 8154e880  SessionId: 0  Cid: 0290    Peb: 7ffda000  ParentCid: 024c
-       DirBase: 07908000  ObjectTable: e15fea78  HandleCount: 261.
-       Image: services.exe
-   
-   Handle table at e15cf000 with 261 Entries in use
-   029c: Object: 81668020  GrantedAccess: 001f0fff
-   
-   0330: Object: 815dc798  GrantedAccess: 001f0fff
-   ... continua por muuuuuuuito mais tempo
+    kd&gt; !for_each_process &quot;!handle 0 1 @#Process Process&quot;
+    processor number 0, process 817cc830
+    Searching for handles of type Process
+    PROCESS 817cc830  SessionId: none  Cid: 0004    Peb: 00000000  ParentCid: 0000
+        DirBase: 00039000  ObjectTable: e1000cc0  HandleCount: 286.
+        Image: System
+    
+    Handle table at e1002000 with 286 Entries in use
+    0004: Object: 817cc830  GrantedAccess: 001f0fff
+    
+    0298: Object: 8169a958  GrantedAccess: 001f03ff
+    
+    0308: Object: 8156c880  GrantedAccess: 00000438
+    
+    067c: Object: 816744e8  GrantedAccess: 001f03ff
+    
+    processor number 0, process 81589020
+    Searching for handles of type Process
+    PROCESS 81589020  SessionId: none  Cid: 016c    Peb: 7ffd7000  ParentCid: 0004
+        DirBase: 06978000  ObjectTable: e130d688  HandleCount:  21.
+        Image: smss.exe
+    
+    Handle table at e12a5000 with 21 Entries in use
+    0038: Object: 81561128  GrantedAccess: 001f0fff
+    
+    003c: Object: 81561128  GrantedAccess: 00000400
+    
+    0050: Object: 815b2128  GrantedAccess: 001f0fff
+    
+    0054: Object: 81668020  GrantedAccess: 00000400
+    
+    processor number 0, process 81561128
+    Searching for handles of type Process
+    PROCESS 81561128  SessionId: 0  Cid: 0234    Peb: 7ffde000  ParentCid: 016c
+        DirBase: 0742d000  ObjectTable: e13e0418  HandleCount: 342.
+        Image: csrss.exe
+    
+    Handle table at e14f3000 with 342 Entries in use
+    0014: Object: 815b2128  GrantedAccess: 001f0fff
+    
+    00ec: Object: 8154e880  GrantedAccess: 001f0fff
+    
+    0100: Object: 8156c880  GrantedAccess: 001f0fff
+    
+    0130: Object: 815dc798  GrantedAccess: 001f0fff
+    
+    processor number 0, process 815b2128
+    Searching for handles of type Process
+    PROCESS 815b2128  SessionId: 0  Cid: 024c    Peb: 7ffde000  ParentCid: 016c
+        DirBase: 075b2000  ObjectTable: e13d5790  HandleCount: 448.
+        Image: winlogon.exe
+    
+    Handle table at e102b000 with 448 Entries in use
+    018c: Object: 8154e880  GrantedAccess: 001f0fff
+    
+    019c: Object: 8156c880  GrantedAccess: 001f0fff
+    
+    processor number 0, process 8154e880
+    Searching for handles of type Process
+    PROCESS 8154e880  SessionId: 0  Cid: 0290    Peb: 7ffda000  ParentCid: 024c
+        DirBase: 07908000  ObjectTable: e15fea78  HandleCount: 261.
+        Image: services.exe
+    
+    Handle table at e15cf000 with 261 Entries in use
+    029c: Object: 81668020  GrantedAccess: 001f0fff
+    
+    0330: Object: 815dc798  GrantedAccess: 001f0fff
+    ... continua por muuuuuuuito mais tempo
 </pre>
 <p>Uma simples busca pelo EPROCESS do processo-fantasma nos retorna dois processos que o estão referenciando: um svchost.exe e um outro processo com um nome muito suspeito, provavelmente feito sob encomenda para a confecção desse artigo:</p>
 
 <pre>
-   Handle table at e167b000 with 247 Entries in use
-   processor number 0, process 8169a958
-   Searching for handles of type Process
-   PROCESS 8169a958  SessionId: 0  Cid: 03f4    Peb: 7ffdb000  ParentCid: 0290
-       DirBase: 08437000  ObjectTable: e156bc38  HandleCount: 1302.
-       Image: svchost.exe
-   
-   Handle table at e19fe000 with 1302 Entries in use
-   0108: Object: 815b2128  GrantedAccess: 00000478
-   
-   0128: Object: 815b2128  GrantedAccess: 00000478
-   
-   012c: Object: 815b2128  GrantedAccess: 00100000
-   
-   015c: Object: 815b2128  GrantedAccess: 0000047a
-   
-   01f4: Object: 81615928  GrantedAccess: 00000478
-   
-   02f0: Object: 815f7d50  GrantedAccess: 00100068
-   
-   035c: Object: 8169a958  GrantedAccess: 001f0fff
-   
-   0dbc: Object: 8156c880  GrantedAccess: 00100000
-   
-   0f44: Object: 8169a958  GrantedAccess: 00000068
-   
-   1020: Object: 815f0da0  GrantedAccess: 00100068
-   
-   10dc: Object: 8169a958  GrantedAccess: 00100000
-   
-   1118: Object: 815f42f0  GrantedAccess: 00100068
-   ...
-   processor number 0, process 8164c220
-   Searching for handles of type Process
-   PROCESS 8164c220  SessionId: 0  Cid: 044c    Peb: 7ffdf000  ParentCid: 02a4
-       DirBase: 0db16000  ObjectTable: e15c66b8  HandleCount:  12.
-       Image: ProcessLeaker.exe
-   
-   Handle table at e103a000 with 12 Entries in use
-   0010: Object: 815f0da0  GrantedAccess: 00100000
-   
-   001c: Object: 815f42f0  GrantedAccess: 00100000
-   
-   0028: Object: 8164bda0  GrantedAccess: 00100000
-   
-   002c: Object: 815f7d50  GrantedAccess: 00100000
-   
-   0030: Object: 8164c698  GrantedAccess: 00100000
+    Handle table at e167b000 with 247 Entries in use
+    processor number 0, process 8169a958
+    Searching for handles of type Process
+    PROCESS 8169a958  SessionId: 0  Cid: 03f4    Peb: 7ffdb000  ParentCid: 0290
+        DirBase: 08437000  ObjectTable: e156bc38  HandleCount: 1302.
+        Image: svchost.exe
+    
+    Handle table at e19fe000 with 1302 Entries in use
+    0108: Object: 815b2128  GrantedAccess: 00000478
+    
+    0128: Object: 815b2128  GrantedAccess: 00000478
+    
+    012c: Object: 815b2128  GrantedAccess: 00100000
+    
+    015c: Object: 815b2128  GrantedAccess: 0000047a
+    
+    01f4: Object: 81615928  GrantedAccess: 00000478
+    
+    02f0: Object: 815f7d50  GrantedAccess: 00100068
+    
+    035c: Object: 8169a958  GrantedAccess: 001f0fff
+    
+    0dbc: Object: 8156c880  GrantedAccess: 00100000
+    
+    0f44: Object: 8169a958  GrantedAccess: 00000068
+    
+    1020: Object: 815f0da0  GrantedAccess: 00100068
+    
+    10dc: Object: 8169a958  GrantedAccess: 00100000
+    
+    1118: Object: 815f42f0  GrantedAccess: 00100068
+    ...
+    processor number 0, process 8164c220
+    Searching for handles of type Process
+    PROCESS 8164c220  SessionId: 0  Cid: 044c    Peb: 7ffdf000  ParentCid: 02a4
+        DirBase: 0db16000  ObjectTable: e15c66b8  HandleCount:  12.
+        Image: ProcessLeaker.exe
+    
+    Handle table at e103a000 with 12 Entries in use
+    0010: Object: 815f0da0  GrantedAccess: 00100000
+    
+    001c: Object: 815f42f0  GrantedAccess: 00100000
+    
+    0028: Object: 8164bda0  GrantedAccess: 00100000
+    
+    002c: Object: 815f7d50  GrantedAccess: 00100000
+    
+    0030: Object: 8164c698  GrantedAccess: 00100000
 </pre>
 <p>Se lembrarmos o ponteiro dos outros processos, podemos notar que ele está bloqueando todas as outras instâncias dos antigos explorer.exe, executados em outras sessões do usuário:</p>
 
 <pre>
-   PROCESS 815f0da0  SessionId: 0  Cid: 0694    Peb: 7ffd8000  ParentCid: 0100
-       DirBase: 0d6e9000  ObjectTable: 00000000  HandleCount:   0.
-       Image: explorer.exe
-   
-   PROCESS 8164bda0  SessionId: 0  Cid: 03b0    Peb: 7ffdf000  ParentCid: 0100
-       DirBase: 02673000  ObjectTable: 00000000  HandleCount:   0.
-       Image: explorer.exe
-   
-   PROCESS 815f7d50  SessionId: 0  Cid: 020c    Peb: 7ffd9000  ParentCid: 0100
-       DirBase: 0bc7f000  ObjectTable: 00000000  HandleCount:   0.
-       Image: explorer.exe
-   
-   PROCESS 8164c698  SessionId: 0  Cid: 0794    Peb: 7ffde000  ParentCid: 0100
-       DirBase: 0cb08000  ObjectTable: e1a40f20  HandleCount: 279.
-       Image: explorer.exe
+    PROCESS 815f0da0  SessionId: 0  Cid: 0694    Peb: 7ffd8000  ParentCid: 0100
+        DirBase: 0d6e9000  ObjectTable: 00000000  HandleCount:   0.
+        Image: explorer.exe
+    
+    PROCESS 8164bda0  SessionId: 0  Cid: 03b0    Peb: 7ffdf000  ParentCid: 0100
+        DirBase: 02673000  ObjectTable: 00000000  HandleCount:   0.
+        Image: explorer.exe
+    
+    PROCESS 815f7d50  SessionId: 0  Cid: 020c    Peb: 7ffd9000  ParentCid: 0100
+        DirBase: 0bc7f000  ObjectTable: 00000000  HandleCount:   0.
+        Image: explorer.exe
+    
+    PROCESS 8164c698  SessionId: 0  Cid: 0794    Peb: 7ffde000  ParentCid: 0100
+        DirBase: 0cb08000  ObjectTable: e1a40f20  HandleCount: 279.
+        Image: explorer.exe
 </pre>
 <p>Esse ProcessLeaker se tratava de um serviço do mesmo produto que contém de fato um leak de recurso: em um dado momento ele abre um handle para o processo explorer.exe, só que por alguns motivos obscuros ele não é fechado nunca, gerando uma lista interminável de processos-fantasma. E é lógico que ele originalmente não chama ProcessLeaker.exe =)</p>
 

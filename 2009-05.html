@@ -101,81 +101,81 @@ role="navigation" aria-label="main navigation">
 <h4>C++</h4>
 
 <pre>
-   
+    
 </pre>
 <p>  * História</p>
 
 <pre>
-   
-   * [A linguagem BCPL]
-   * [O código-objeto]
-   * [A linguagem B]
-   * [A &quot;função&quot; char]
-   * [O primeiro printf da história]
-   * [A linguagem C]
-   * [A linguagem C++]
-   * As influências
-   
+    
+    * [A linguagem BCPL]
+    * [O código-objeto]
+    * [A linguagem B]
+    * [A &quot;função&quot; char]
+    * [O primeiro printf da história]
+    * [A linguagem C]
+    * [A linguagem C++]
+    * As influências
+    
 </pre>
 <p>  * Conceitos</p>
 
 <pre>
-   
-   * [O conceito programa]
-   * [O código-objeto]
-   * [Processo de compilação]
-   * [Declaração x definição]
-   * [Tipos]
-   * [Lvalue x Rvalue]
-   * [A passagem por valor]
-   * [Ponteiros]
-   * [Estruturas e classes]
-   * Espaços de nomes
-   * [Polimorfismo estático]
-   * [Herança]
-   * [Polimorfismo dinâmico]
-   * [Iteradores]
-   * [Função-objeto]
-   * [Templates]
-   * Algoritmos genéricos
-   * Qualificadores (traits)
-   * [O conceito RAII]
-   
+    
+    * [O conceito programa]
+    * [O código-objeto]
+    * [Processo de compilação]
+    * [Declaração x definição]
+    * [Tipos]
+    * [Lvalue x Rvalue]
+    * [A passagem por valor]
+    * [Ponteiros]
+    * [Estruturas e classes]
+    * Espaços de nomes
+    * [Polimorfismo estático]
+    * [Herança]
+    * [Polimorfismo dinâmico]
+    * [Iteradores]
+    * [Função-objeto]
+    * [Templates]
+    * Algoritmos genéricos
+    * Qualificadores (traits)
+    * [O conceito RAII]
+    
 </pre>
 <p>  * Linguagem</p>
 
 <pre>
-   
-   * [O operador de subscrito]
-   * [A proteção protected]
-   * [Sizeof e strings literais]
-   * [Uso de reflexão com typeid]
-   * [Typeid e o polimorfismo]
-   * [Ponteiros de método]
-   * [Ponteiros de método e o this]
-   * [Try-catch fora do corpo da função]
-   * [Sobrecarga de operadores]
+    
+    * [O operador de subscrito]
+    * [A proteção protected]
+    * [Sizeof e strings literais]
+    * [Uso de reflexão com typeid]
+    * [Typeid e o polimorfismo]
+    * [Ponteiros de método]
+    * [Ponteiros de método e o this]
+    * [Try-catch fora do corpo da função]
+    * [Sobrecarga de operadores]
 </pre>
 <p>  * Biblioteca</p>
 
 <pre>
-   * [Biblioteca C no Windows]
-   * [Mobilidade da pilha com prinff]
-   * [Erros comuns de iteradores]
-   * STL
-   * Boost
-   
+    * [Biblioteca C no Windows]
+    * [Mobilidade da pilha com prinff]
+    * [Erros comuns de iteradores]
+    * STL
+    * Boost
+    
 </pre>
 <p>  * Dicas</p>
 
 <pre>
-   
-   * [Erros comuns de iniciantes]
-   * [Ponteiro nulo em entrevistas]
-   * [Nem todo ponteiro nulo é inválido]
-   * [Decifrando código obscuro]
-   * [Usando do-while para evitar erros de macro]
-   * [Sobrecarga por tipo de retorno]
+    
+    * [Erros comuns de iniciantes]
+    * [Ponteiro nulo em entrevistas]
+    * [Nem todo ponteiro nulo é inválido]
+    * [Decifrando código obscuro]
+    * [Usando do-while para evitar erros de macro]
+    * [Sobrecarga por tipo de retorno]
 </pre>
 <p>Espero que isso me ajude a continuar completando as lacunas do saite. Se não der certo, pelo menos já sei o que fiz.</p>
 
@@ -194,7 +194,7 @@ role="navigation" aria-label="main navigation">
 <p>Compilação automática geralmente está disponível nas ferramentas de desenvolvimento. Se você estiver usando o Visual Studio, por exemplo, é possível fazer isso com uma linha:</p>
 
 <pre>
-   devenv minha-solução.sln /Rebuild Release
+    devenv minha-solução.sln /Rebuild Release
 </pre>
 <p>Se não for exatamente o que você precisa, basta fazer uma <a href="http://www.google.com/search?q=visual%20studio%20automatic%20build">pesquisa de quinze minutos</a> e encontrar os parâmetros corretos. O objetivo é: **eu rodo esse comando em cima do projeto inteiro em uma máquina zerada e ele simplesmente compila**.</p>
 
@@ -203,17 +203,17 @@ role="navigation" aria-label="main navigation">
 <p>É lógico que ter apenas um _solution/workspace_ para guardar projetos médios e grandes é inviável. Demora para carregar no ambiente e possuem dezenas de dependências. Isso já foi tentado duas vezes nas duas empresas em que trabalhei e não funcionou. Talvez por isso seja necessário criar um _script_ que rode o comando acima para todas as soluções do projeto, o que não muda muito o _modus operandi_ da coisa:</p>
 
 <pre>
-   
-   call :Build ..\Libraries\Libraries.sln
-   call :Build ..\Services\Services.sln
-   call :Build ..\Drivers\Drivers.sln
-   call :Build ..\Tools\Tools.sln
-   goto :eof
-   
-   :Build
-   echo %1...
-   devenv &quot;%1&quot; /Rebuild Release
-   exit /b %errorlevel%
+    
+    call :Build ..\Libraries\Libraries.sln
+    call :Build ..\Services\Services.sln
+    call :Build ..\Drivers\Drivers.sln
+    call :Build ..\Tools\Tools.sln
+    goto :eof
+    
+    :Build
+    echo %1...
+    devenv &quot;%1&quot; /Rebuild Release
+    exit /b %errorlevel%
 </pre>
 <p>Note que meu script usa a estrutura padronizada dos diretórios de um projeto, onde cada tipo de componente tem sua pasta e solução.</p>
 
