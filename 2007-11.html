@@ -101,12 +101,8 @@ role="navigation" aria-label="main navigation">
 <p>Três regras iniciais que devem ser consideradas para usarmos ponteiros para métodos são:</p>
 
 <ul><li>A semântica para lidar com ponteiros de método é totalmente diferente de ponteiros de função.</li>
-
 <li>Ponteiros de método de classes distintas nunca se misturam.</li>
-
-<li>Para chamarmos um ponteiro de método precisamos sempre de um objeto da classe para a qual ele aponta.</li>
-
-</ul>
+<li>Para chamarmos um ponteiro de método precisamos sempre de um objeto da classe para a qual ele aponta.</li></ul>
 <p>Visto isso, passemos a um exemplo simples, um chamador de métodos aleatórios, que ilustra o princípio básico de utilização:</p>
 
 <pre>
@@ -541,12 +537,8 @@ role="navigation" aria-label="main navigation">
 <p>Durante meus testes para a correção de um bug me deparei com a necessidade de carregar uma DLL desenvolvida por mim no processo depurado. O detalhe é que o processo depurado é de terceiros e não possuo o fonte. Portanto, as opções para mim mais simples são:</p>
 
 <ul><li>Usar o projeto <a href="http://www.codeproject.com/threads/RmThread.asp">RmThread</a> para injetar a DLL (nesse caso iniciando o processo através dele).</li>
-
 <li>Fazer um módulo wrapper para uma DLL qualquer e ser carregado de brinde.</li>
-
-<li>Usar o WinDbg e brincar um pouco.</li>
-
-</ul>
+<li>Usar o WinDbg e brincar um pouco.</li></ul>
 <p>Por um motivo desconhecido a terceira opção me pareceu mais interessante =).</p>
 
 <p>A seqüência mais simples para carregar uma DLL através do WinDbg na época que escrevi este post era chamar kernel32!LoadLibrary através de um código digitado na hora, o que podemos chamar de live assembly (algo como "assembly ao vivo"). Porém, essa simples seqüência que contém um pouco mais que uma dúzia de passos hoje teria que ser feito em assembly 64 bits e é um pouco mais complicado. Para quem ainda quer se divertir dessa forma por esse caminho irei deixar as instruções para 32 bits.</p>
@@ -613,17 +605,11 @@ role="navigation" aria-label="main navigation">
 <pre>
    
 </pre>
-<ul><li>$&lt;nome-do-arquivo - não permite espaços e condensa comandos.</li>
-
-<li>$&gt;&lt;nome-do-arquivo - não permite espaços e não condensa comandos.</li>
-
-<li>$$&lt;nome-do-arquivo - permite espaços e condensa comandos.</li>
-
-<li>$$&gt;&lt;nome-do-arquivo - permite espaços e não condensa comandos.</li>
-
-<li>$$&gt;a&lt;nome-do-arquivo - igual ao anterior, e ainda permite passar argumentos.</li>
-
-</ul>
+<ul><li>$<nome-do-arquivo - não permite espaços e condensa comandos.</li>
+<li>$><nome-do-arquivo - não permite espaços e não condensa comandos.</li>
+<li>$$<nome-do-arquivo - permite espaços e condensa comandos.</li>
+<li>$$><nome-do-arquivo - permite espaços e não condensa comandos.</li>
+<li>$$>a<nome-do-arquivo - igual ao anterior, e ainda permite passar argumentos.</li></ul>
 <p>A ajuda do WinDbg descreve as diferenças dos comandos acima de forma adversa, afirmando que os comandos '&lt;'  não condensam as linhas e os '&gt;&lt;' o fazem, quando na realidade é o contrário. Não se deixe enganar por esse detalhe. No caso do script desse artigo, utilizaremos a última forma, pois precisamos de um argumento para funcionar: o nome da DLL. Caso você não digite esse argumento, a ajuda do script será impressa:</p>
 
 <pre>
