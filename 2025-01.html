@@ -53,7 +53,7 @@ role="navigation" aria-label="main navigation">
 
 <li><small><a href="2025-01.html#kick_a_knight_in_a_sicilian_game">Kick a Knight in a Sicilian Game</a></small></li>
 
-<li><small><a href="2025-01.html#um_quimico_na_cozinha_haumont_raphaël">Um químico na cozinha (Haumont, Raphaël)</a></small></li>
+<li><small><a href="2025-01.html#um_quimico_na_cozinha">Um químico na cozinha (Haumont, Raphaël)</a></small></li>
 <li><small><a href="2025-01.html#anotacoes_de_a_hacker_manifesto_mckenzie_wark">Anotações de A Hacker Manifesto (Mckenzie Wark)</a></small></li>
 <li><small><a href="2025-01.html#anotacoes_de_head_first_software_architecture_raju_gandhi_mark_richardsneal_ford">Anotações de Head First Software Architecture (Raju Gandhi, Mark Richards;Neal Ford)</a></small></li>
 <li><small><a href="2025-01.html#clean_architecture_a_craftsmans_guide_to_software_structure_and_design_robert_c_martin_aka_uncle_bob">Clean Architecture: A Craftsman's Guide to Software Structure and Design (Robert C. Martin aka Uncle Bob)</a></small></li>
@@ -61,6 +61,14 @@ role="navigation" aria-label="main navigation">
 <li><small><a href="2025-01.html#tactical_sacrifices_bishop">Tactical sacrifices bishop</a></small></li>
 
 <li><small><a href="2025-01.html#this_move_loses_a_pawn_italian_game">This move loses a pawn (Italian Game)</a></small></li>
+
+<li><small><a href="2025-01.html#colinha_que_todos_usamos_para_esperar_o_debugger_quando_o_notepad_inicia">Colinha que todos usamos para esperar o debugger quando o notepad inicia</a></small></li>
+<li><small><a href="2025-01.html#flow_em_portugues">Flow em português</a></small></li>
+
+<li><small><a href="2025-01.html#what_we_do_not_know_nicolas_gomez_davila">What we do not know (Nicolas Gomez Davila)</a></small></li>
+
+<li><small><a href="2025-01.html#pinning_a_piece">Pinning a piece</a></small></li>
+<li><small><a href="2025-01.html#win_piece_with_a_check_fork">Win piece with a check fork</a></small></li>
 </ul>
 
 
@@ -161,10 +169,10 @@ Nd5+ Kd7 15. e5 Bg7 16. e6+ 1-0
 </section><hr/>
 
 
-<span id="um_quimico_na_cozinha_haumont_raphaël" title="Um químico na cozinha (Haumont, Raphaël)"/></span>
-<section id="section_um_quimico_na_cozinha_haumont_raphaël">
-<p class="title"><a href="2025-01.html#um_quimico_na_cozinha_haumont_raphaël">#</a> Um químico na cozinha (Haumont, Raphaël)</p>
-<span class="title-heading">Caloni, 2025-01-09 <a href="cooking.html">cooking</a> <a href="books.html">books</a><a href="2025-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_um_quimico_na_cozinha_haumont_raphaël')"><sup>[copy]</sup></a></span>
+<span id="um_quimico_na_cozinha" title="Um químico na cozinha (Haumont, Raphaël)"/></span>
+<section id="section_um_quimico_na_cozinha">
+<p class="title"><a href="2025-01.html#um_quimico_na_cozinha">#</a> Um químico na cozinha (Haumont, Raphaël)</p>
+<span class="title-heading">Caloni, 2025-01-09 <a href="cooking.html">cooking</a> <a href="books.html">books</a><a href="2025-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_um_quimico_na_cozinha')"><sup>[copy]</sup></a></span>
 
 <p>Ano passado havia comprado um livro de gastronomia que uma chef vendedora ambulante de brigadeiro recomendou enquanto estava vendendo sua mercadoria para nós, meros bêbados eventuais. Porém, tive que devolver no dia seguinte: o texto é muito ruim e confuso. Ele investe em defender cozinha molecular e eu, leitor desavisado, nem sabia que isso estava em ataque. Eu nem sabia que isso era uma coisa. Pra falar a verdade, não me identifico muito com essas cozinhas diferentonas que querem cobrar horrores pela experiência. De vez em quando é legal de ir, mas bem de vez em quando.</p>
 
@@ -405,6 +413,105 @@ Qa3 Kb5 73. Kd5 c4 74. Qc5+ Ka6 75. Qxc4+ Ka5 76. Qa2 a3 77. Qxa3+ Kb5 78. Qb3+
 Ka6 79. Kc5 Ka7 80. Kc6 Ka8 81. Qb7# 1-0
 </pre>
 <img src="img/this_move_loses_a_pawn_italian_game.png"/>
+
+</section><hr/>
+
+
+<span id="colinha_que_todos_usamos_para_esperar_o_debugger_quando_o_notepad_inicia" title="Colinha que todos usamos para esperar o debugger quando o notepad inicia"/></span>
+<section id="section_colinha_que_todos_usamos_para_esperar_o_debugger_quando_o_notepad_inicia">
+<p class="title"><a href="2025-01.html#colinha_que_todos_usamos_para_esperar_o_debugger_quando_o_notepad_inicia">#</a> Colinha que todos usamos para esperar o debugger quando o notepad inicia</p>
+<span class="title-heading">Caloni, 2025-01-13 <a href="computer.html">computer</a><a href="2025-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_colinha_que_todos_usamos_para_esperar_o_debugger_quando_o_notepad_inicia')"><sup>[copy]</sup></a></span>
+
+<p>Ou qualquer outro processo (mas a vítima padrão continua sendo o notepad).</p>
+
+<pre>
+int WaitForDebugger(const char* processName = &quot;notepad&quot;, int timeout = 60)
+{
+    int secondsWaiting = 0;
+    char fileName[MAX_PATH];
+    GetModuleFileNameA(nullptr, fileName, MAX_PATH);
+    if( StrStrIA(fileName, processName))
+    {
+        while( IsDebuggerPresent() == FALSE &amp;&amp; secondsWaiting &lt; timeout )
+        {
+            Sleep(1000);
+            secondsWaiting++;
+        }
+    }
+    return secondsWaiting;
+}
+</pre>
+
+</section><hr/>
+
+<span id="flow_em_portugues" title="Flow em português"/></span>
+<section id="section_flow_em_portugues">
+<p class="title"><a href="2025-01.html#flow_em_portugues">#</a> Flow em português</p>
+<span class="title-heading">Caloni, 2025-01-13 <a href="books.html">books</a> <a href="self.html">self</a> <a href="drafts.html">drafts</a><a href="2025-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_flow_em_portugues')"><sup>[copy]</sup></a></span>
+
+<p>Sem mais o que ler, estou pegando agora a versão em português que eu adquiri por ter me arrependido de ter comprado um livro muito ruim de gastronomia chamado <a href="2025-01.html#um_quimico_na_cozinha">Um Químico na Cozinha</a>. Estou tentando criar recortes minimalistas que dão uma visão ligeiramente diferente das minhas primeiras leituras em inglês.</p>
+
+<h2>Clippings</h2>
+
+<blockquote>Quando as pessoas tentam alcançar a felicidade por conta própria, sem a ajuda de uma fé, em geral procuram maximizar prazeres que estão biologicamente programados em seus genes ou que sejam vistos como atraentes pela sociedade em que vivem.</blockquote>
+<blockquote>Mas a qualidade de vida não pode ser melhorada dessa maneira. Só o controle direto da experiência, a capacidade de apreciar momento a momento tudo o que fazemos, pode superar os obstáculos para a realização pessoal.</blockquote>
+<blockquote>O principal motivo de ser tão difícil conquistar a felicidade é que o universo não foi projetado levando o conforto dos seres humanos em consideração.</blockquote>
+<blockquote>Como escreveu J. S. Mill: “Nenhum grande aperfeiçoamento da humanidade como um todo é possível até que uma grande mudança tenha lugar na constituição fundamental de seu modo de pensar”.</blockquote>
+<blockquote>Quando as pessoas começam a acreditar que o progresso é inevitável e a vida é fácil, podem rapidamente perder a coragem e a determinação aos primeiros sinais de adversidade.</blockquote>
+<blockquote>Somos meras partículas de poeira esquecidas vagando pelo vácuo. A cada ano que passa, o caos do universo físico é ampliado na mente coletiva.</blockquote>
+<blockquote>A essência da socialização é tornar as pessoas dependentes de controles sociais, fazer com que reajam previsivelmente a recompensas e punições.</blockquote>
+<blockquote>Praticamente todo desejo que se tornou parte da natureza humana, da sexualidade à agressão, da aspiração por segurança a uma receptividade à mudança, foi explorado como fonte de controle social por políticos, igrejas, corporações e publicitários.</blockquote>
+<blockquote>Alguém incapaz de ignorar suas instruções genéticas quando necessário está sempre vulnerável.</blockquote>
+<blockquote>O passo mais importante para se emancipar dos controles sociais é a capacidade de a todo momento encontrar recompensas nos eventos.</blockquote>
+<blockquote>Uma vez que, até onde nos diz respeito, nossa experiência é a realidade, podemos transformá-la na medida em que influenciarmos o que acontece no consciente e, desse modo, nos libertar das ameaças e seduções do mundo externo.</blockquote>
+<blockquote>O progresso é relativamente rápido em áreas que aplicam conhecimento ao mundo material, como física ou genética. Mas é dolorosamente lento quando a aplicação do conhecimento visa modificar nossos hábitos e desejos.</blockquote>
+<blockquote>O controle da consciência não pode ser institucionalizado. Assim que passa a integrar um conjunto de regras e normas sociais, ele deixa de ser eficaz do modo como originalmente se pretendera.</blockquote>
+<blockquote>Uma pessoa pode ficar feliz, ou sofrer terrivelmente, independente do que esteja ocorrendo do lado de “fora”, apenas mudando o conteúdo da consciência.</blockquote>
+<blockquote>Os eventos que constituem a consciência — as “coisas” que vemos, sentimos, pensamos e desejamos — são uma informação que podemos manipular e usar.</blockquote>
+<blockquote>Embora acreditemos que existem “coisas” fora da consciência, temos evidência direta apenas das que encontram um lugar nela.</blockquote>
+<blockquote>Alguém com fome não tem consciência da taxa de glicose em sua corrente sanguínea; sabe apenas da existência de um bit de informação em sua consciência que aprendeu a identificar como “fome”.</blockquote>
+</section><hr/>
+
+
+<span id="what_we_do_not_know_nicolas_gomez_davila" title="What we do not know (Nicolas Gomez Davila)"/></span>
+<section id="section_what_we_do_not_know_nicolas_gomez_davila">
+<p class="title"><a href="2025-01.html#what_we_do_not_know_nicolas_gomez_davila">#</a> What we do not know (Nicolas Gomez Davila)</p>
+<span class="title-heading">Caloni, 2025-01-15 <a href="quotes.html">quotes</a> <a href="self.html">self</a><a href="2025-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_what_we_do_not_know_nicolas_gomez_davila')"><sup>[copy]</sup></a></span>
+
+<blockquote>In an age in which the media broadcast countless pieces of foolishness, the educated man is defined not by what he knows, but by what he doesn't know.</blockquote>
+<blockquote>Nicolas Gomez Davila</blockquote>
+</section><hr/>
+
+
+<span id="pinning_a_piece" title="Pinning a piece"/></span>
+<section id="section_pinning_a_piece">
+<p class="title"><a href="2025-01.html#pinning_a_piece">#</a> <a class="external" href="https://www.chess.com/game/live/130961387933">Pinning a piece</a></p>
+<span class="title-heading">Caloni, 2025-01-18 <a href="chess.html">chess</a> <a href="drafts.html">drafts</a> <a href="blogging.html">blogging</a><a href="2025-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_pinning_a_piece')"><sup>[copy]</sup></a></span>
+
+<blockquote>This permits the opponent to win a queen by pinning a piece to the king.</blockquote>
+<pre>
+1. e4 c5 2. Nf3 g6 3. d4 Bg7 4. c3 Nc6 5. Be3 d6 6. Nbd2 Bg4 7. Bb5 a6 8. Ba4 b5
+9. Bc2 cxd4 10. cxd4 Bxd4 11. h3 Bxe3 12. hxg4 Bf4 13. g3 Be5 14. Nxe5 Nxe5 15.
+f4 Nc4 16. Nxc4 bxc4 17. Qd4 Qa5+ 18. Ke2 f6 19. Qxc4 Qb5 20. Qxb5+ axb5 21. Bd3
+b4 22. a3 bxa3 23. Rxa3 Rxa3 24. bxa3 Kf7 25. Bc4+ Kg7 26. a4 e5 27. Bb5 Ne7 28.
+Rc1 Ra8 29. Rc7 Kf8 30. f5 d5 31. fxg6 hxg6 32. Ke3 dxe4 33. Kxe4 Rd8 34. Rd7
+Rc8 35. a5 Rc5 36. Rd8+ Kf7 37. Be8+ Kg7 38. a6 Ra5 39. Rd6 Kf8 40. Bd7 Kf7 41.
+Rb6 Nd5 42. Rd6 Nc3+ 43. Kd3 Nb5 44. Bxb5 Rxb5 45. a7 Ra5 46. Rd7+ Ke6 47. Rb7
+f5 48. gxf5+ Kxf5 49. Kc4 Kg4 50. Kb4 Ra1 51. Rg7 Kf5 52. g4+ Kxg4 53. Rxg6+ Kf5
+54. Rg7 e4 55. Kc3 e3 56. Kd3 Ra3+ 57. Ke2 Kf4 58. Rf7+ Ke4 59. Re7+ Kf4 60.
+Rf7+ Ke4 61. Re7+ Kf4 62. Rf7+ 1/2-1/2
+</pre>
+<img src="img/pinning_a_piece.png"/>
+
+</section><hr/>
+
+<span id="win_piece_with_a_check_fork" title="Win piece with a check fork"/></span>
+<section id="section_win_piece_with_a_check_fork">
+<p class="title"><a href="2025-01.html#win_piece_with_a_check_fork">#</a> <a class="external" href="https://www.chess.com/game/live/130961387933">Win piece with a check fork</a></p>
+<span class="title-heading">Caloni, 2025-01-18 <a href="chess.html">chess</a> <a href="drafts.html">drafts</a> <a href="blogging.html">blogging</a><a href="2025-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_win_piece_with_a_check_fork')"><sup>[copy]</sup></a></span>
+
+<blockquote>This permits the opponent to win a knight through a fork. This misses an opportunity to win material through a tactic.</blockquote>
+<img src="img/win_piece_with_check_fork.png"/>
 
 </section><hr/>
 
