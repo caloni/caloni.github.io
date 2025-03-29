@@ -66,12 +66,28 @@ role="navigation" aria-label="main navigation">
 <li><small><a href="2025-03.html#superman_o_filme">Superman: O Filme (Richard Donner, 1978)</a></small></li>
 <li><small><a href="2025-03.html#os_mercenarios">Os Mercenários (Sylvester Stallone, 2010)</a></small></li>
 
-<li><small><a href="2025-03.html#e_melhor_manter_binarios_de_teste_no_codigofonte">É melhor manter binários de teste no código-fonte?</a></small></li>
-
 <li><small><a href="2025-03.html#kill_bill">Kill Bill (Quentin Tarantino, 2003)</a></small></li>
 <li><small><a href="2025-03.html#baaria_a_porta_do_vento">Baarìa - A Porta do Vento (Giuseppe Tornatore, 2009)</a></small></li>
 <li><small><a href="2025-03.html#moscou_belgica_christophe_van_rompaey_2008">Moscou Bélgica (Christophe Van Rompaey, 2008)</a></small></li>
 <li><small><a href="2025-03.html#o_ultimo_exorcismo_daniel_stamm_2010">O Último Exorcismo (Daniel Stamm, 2010)</a></small></li>
+
+<li><small><a href="2025-03.html#wall_street_o_dinheiro_nunca_dorme">Wall Street: O Dinheiro Nunca Dorme (Oliver Stone, 2010)</a></small></li>
+<li><small><a href="2025-03.html#tropa_de_elite">Tropa de Elite (José Padilha, 2007)</a></small></li>
+
+<li><small><a href="2025-03.html#comer_rezar_amar_ryan_murphy_2010">Comer, Rezar, Amar (Ryan Murphy, 2010)</a></small></li>
+<li><small><a href="2025-03.html#a_letter_to_elia_kent_jones_martin_scorsese_2010">A Letter to Elia (Kent Jones, Martin Scorsese, 2010)</a></small></li>
+<li><small><a href="2025-03.html#curva_do_destino_detour">Curva do Destino (Edgar G. Ulmer, 1945)</a></small></li>
+<li><small><a href="2025-03.html#broder_jeferson_de_2010">Bróder (Jeferson De, 2010)</a></small></li>
+<li><small><a href="2025-03.html#o_magico_sylvain_chomet_2010">O Mágico (Sylvain Chomet, 2010)</a></small></li>
+<li><small><a href="2025-03.html#a_suprema_felicidade">A Suprema Felicidade (Arnaldo Jabor, 2010)</a></small></li>
+<li><small><a href="2025-03.html#cargo_ivan_engler_ralph_etter_2009">Cargo (Ivan Engler, Ralph Etter, 2009)</a></small></li>
+<li><small><a href="2025-03.html#atividade_paranormal_2">Atividade Paranormal 2 (Tod Williams, 2010)</a></small></li>
+<li><small><a href="2025-03.html#um_homem_misterioso_anton_corbijn_2010">Um Homem Misterioso (Anton Corbijn, 2010)</a></small></li>
+<li><small><a href="2025-03.html#muita_calma_nessa_hora">Muita Calma Nessa Hora (Felipe Joffily, 2010)</a></small></li>
+<li><small><a href="2025-03.html#o_encouracado_potemkin">O Encouraçado Potemkin (Sergei Eisenstein, 1925)</a></small></li>
+<li><small><a href="2025-03.html#senna_asif_kapadia_2010">Senna (Asif Kapadia, 2010)</a></small></li>
+
+<li><small><a href="2025-03.html#e_melhor_manter_binarios_de_teste_no_codigofonte">É melhor manter binários de teste no código-fonte?</a></small></li>
 </ul>
 
 
@@ -313,46 +329,6 @@ role="navigation" aria-label="main navigation">
 </section><hr/>
 
 
-<span id="e_melhor_manter_binarios_de_teste_no_codigofonte" title="É melhor manter binários de teste no código-fonte?"/></span>
-<section id="section_e_melhor_manter_binarios_de_teste_no_codigofonte">
-<p class="title"><a href="2025-03.html#e_melhor_manter_binarios_de_teste_no_codigofonte">#</a> É melhor manter binários de teste no código-fonte?</p>
-<span class="title-heading">Caloni, 2025-03-22 <a href="code.html">code</a><a href="2025-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_e_melhor_manter_binarios_de_teste_no_codigofonte')"><sup>[copy]</sup></a></span>
-
-<p>Esta é uma das questões da semana com que me deparei. Sinceramente não gosto de soluções que envolvem dependências fora do domínio do controle de fonte, mas por outro lado me parece feio e não muito escalável manter os binários necessários no controle de fonte. Sim, existem "soluções" como Git LFS, que no fundo é uma maneira educada de manter os mesmos procedimentos para organizar o código-fonte no controle e "junto" seus binários (que no fundo estarão em algum repositórios de arquivos da AWS, por exemplo).</p>
-
-<p>Independente de onde ficam os binários, escrevendo uns testes unitários decidi levar o conceito de manter os recursos do teste o mais próximo possível colocando os binários não apenas no sistema de arquivos, mas também dentro dos recursos do executável Windows. Ao longo do teste eu extraio estes recursos para o sistema de arquivos e rodo o teste como se os arquivos sempre estivessem lá, na mesma pasta do executável.</p>
-
-<pre>
-// Keep updated with Test.
-ID_101 BIN &quot;resources\\binary.dll&quot;
-ID_102 BIN &quot;resources\\binary.exe&quot;
-//...
-const std::vector&lt;ResourceIdFileName&gt; Resources =
-{ 
-  { ID_101, &quot;binary.dll&quot; },
-  { ID_102, &quot;binary.exe&quot; },
-  //...
-bool ExtractResourceToFile(const ResourceIdFileName&amp; resource)
-{
-    HMODULE hModule = GetModuleHandle(NULL);
-    HRSRC hRes = FindResource(hModule, MAKEINTRESOURCE(resource.id), RESOURCE_TYPE);
-    if (!hRes) return false;
-    HGLOBAL hResData = LoadResource(hModule, hRes);
-    if (!hResData) return false;
-    DWORD dataSize = SizeofResource(hModule, hRes);
-    if (!dataSize) return false;
-    void* pData = LockResource(hResData);
-    if (!pData) return false;
-    std::ofstream outFile(resource.fileName, std::ios::binary);
-    if (!outFile) return false;
-    outFile.write(reinterpret_cast&lt;const char*&gt;(pData), dataSize);
-    return true;
-}
-</pre>
-
-</section><hr/>
-
-
 <span id="kill_bill" title="Kill Bill (Quentin Tarantino, 2003)"/></span>
 <section id="section_kill_bill">
 <p class="title"><a href="2025-03.html#kill_bill">#</a> Kill Bill (Quentin Tarantino, 2003)</p>
@@ -386,6 +362,181 @@ bool ExtractResourceToFile(const ResourceIdFileName&amp; resource)
 <span class="title-heading">Caloni, 2025-03-22 v2 <a href="cinema.html">cinema</a> <a href="movies.html">movies</a> <a href="miniviews.html">miniviews</a><a href="2025-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_o_ultimo_exorcismo_daniel_stamm_2010')"><sup>[copy]</sup></a></span>
 
 <p>Um O Exorcista invertido. O padre usa a religião como um meio de ganhar a vida e o pseudo-documentário busca mostrar um exorcismo sendo feito e mostrar como tudo é fajuto. A primeira parte do filme de fato soa mais como um documentário real, mas chegando na segunda ele pressupõe que uma menina está realmente possuída. Porém, nunca revelando um teor sobrenatural de fato, o filme brinca muitas vezes com o improvável sem se revelar forçado. Por fim, era questão de tempo para ele se revelar mais um da série Atividade Paranormal ao exagerar na narrativa e nos efeitos. Os espectadores entraram na sala por isso. Você não entregar geraria a mesma revolta da sessão em que estive de A Bruxa de Blair, onde após a última cena dezenas de pessoas jogaram suas pipocas para a tela.</p>
+
+</section><hr/>
+
+
+<span id="wall_street_o_dinheiro_nunca_dorme" title="Wall Street: O Dinheiro Nunca Dorme (Oliver Stone, 2010)"/></span>
+<section id="section_wall_street_o_dinheiro_nunca_dorme">
+<p class="title"><a href="2025-03.html#wall_street_o_dinheiro_nunca_dorme">#</a> Wall Street: O Dinheiro Nunca Dorme (Oliver Stone, 2010)</p>
+<span class="title-heading">Caloni, 2025-03-28 v2 <a href="cinema.html">cinema</a> <a href="movies.html">movies</a> <a href="miniviews.html">miniviews</a><a href="2025-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_wall_street_o_dinheiro_nunca_dorme')"><sup>[copy]</sup></a></span>
+
+<p>De um lado a narrativa de acontecimentos comuns em crises financeiras listadas uma a uma. De outro, o destino imprevisível dos personagens orquestrado pela teoria do caos. Apresentando o dilema de uma filha que não se decide se gosta do pai, do dinheiro ou de ambos, o filme vai se esvaindo da sua premissa e perdendo seus personagens, também um a um. Resta o documentário de uma crise.</p>
+
+</section><hr/>
+
+<span id="tropa_de_elite" title="Tropa de Elite (José Padilha, 2007)"/></span>
+<section id="section_tropa_de_elite">
+<p class="title"><a href="2025-03.html#tropa_de_elite">#</a> Tropa de Elite (José Padilha, 2007)</p>
+<span class="title-heading">Caloni, 2025-03-28 v2 <a href="cinema.html">cinema</a> <a href="movies.html">movies</a> <a href="miniviews.html">miniviews</a><a href="2025-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_tropa_de_elite')"><sup>[copy]</sup></a></span>
+
+<p>A história conta sobre o Batalhão de Operações Especiais da polícia do Rio de Janeiro, uma cidade em eterna guerra com os traficantes. Aborda vários esquemas de corrupção e o treinamento dos policiais de elite que integram o batalhão conhecido pela sigla BOPE. Capitão Nascimento, protagonista absoluto, fascista de carteirinha e adorado por todos os brasileiros, demonstra um trabalho denso e coeso de deu performer, o ator esquerdinha Wagner Moura, no que pode ser descrito pela fauna nacional como o maior tiro na culatra que o cinema brasileiro já viu. Uma pessoa de carne e osso, que sofre de estresse, tem problemas na família e tenta fazer o melhor com as armas ao seu dispor. Toda a ação e violência do filme nos remete para este personagem, que encarna de maneira condensadora todas as questões em pauta em um filme tão rico de conteúdo quanto de visões de um mesmo problema. A história narrada em caráter imediatista por seu diretor José Padilha reacende uma velha discussão sobre segurança pública e o papel da sociedade, onde cada ação desencadeia outra. Longe de ser um esquema maniqueista de mocinho versus bandido que gostaríamos que fosse, Tropa escancara um problema no fundo de todos nós, traficantes ou não, policiais ou não, corruptos, certinhos, ricos e pobres. E ao mesmo tempo mostra como é bom dar uns tabefes nessa renca de alienados e meliantes.</p>
+
+</section><hr/>
+
+
+<span id="comer_rezar_amar_ryan_murphy_2010" title="Comer, Rezar, Amar (Ryan Murphy, 2010)"/></span>
+<section id="section_comer_rezar_amar_ryan_murphy_2010">
+<p class="title"><a href="2025-03.html#comer_rezar_amar_ryan_murphy_2010">#</a> Comer, Rezar, Amar (Ryan Murphy, 2010)</p>
+<span class="title-heading">Caloni, 2025-03-29 v2 <a href="cinema.html">cinema</a> <a href="movies.html">movies</a> <a href="miniviews.html">miniviews</a><a href="2025-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_comer_rezar_amar_ryan_murphy_2010')"><sup>[copy]</sup></a></span>
+
+<p>Puro êxtase turístico em um filme que apresenta suas locações com propósitos marketeiros. O máximo que conseguimos extrair dessa experiência é como existem lugares bonitos para conhecer no mundo e como seria bom ter um limite maior no cartão de crédito. O lado espiritual do filme nos mostra o quão valiosas são ações hoje vistas como triviais, e até mesmo como perda de tempo. Vivemos em uma sociedade cujo objetivo é otimizar o escasso tempo em momentos unicamente prazerosos, despidos de significado. A ironia é um filme comercial sobre viagens salpicadas de prazer nos dizer isso. A única parte espiritual, a meditação na Índia, soa como propaganda da nova era.</p>
+
+</section><hr/>
+
+<span id="a_letter_to_elia_kent_jones_martin_scorsese_2010" title="A Letter to Elia (Kent Jones, Martin Scorsese, 2010)"/></span>
+<section id="section_a_letter_to_elia_kent_jones_martin_scorsese_2010">
+<p class="title"><a href="2025-03.html#a_letter_to_elia_kent_jones_martin_scorsese_2010">#</a> A Letter to Elia (Kent Jones, Martin Scorsese, 2010)</p>
+<span class="title-heading">Caloni, 2025-03-29 v2 <a href="cinema.html">cinema</a> <a href="movies.html">movies</a> <a href="miniviews.html">miniviews</a><a href="2025-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_a_letter_to_elia_kent_jones_martin_scorsese_2010')"><sup>[copy]</sup></a></span>
+
+<p>As opiniões de Scorsese e Kazan às vezes são confrontadas, como se ambos estivessem tendo um diálogo impossível, como ele mesmo coloca no final. O filme acaba revelando muito mais sobre o próprio Scorsese, sua visão estilística dos filmes do colega e suas motivações como diretor, do que propriamente revelações sobre o destinatário da carta cuja ideia inspirou o filme. No entanto, o quão prazeroso não seria “assistir” cartas entre cineastas talentosos como se fossem cientistas do século 16 trocando impressões sobre a realidade em que vivem.</p>
+
+</section><hr/>
+
+<span id="curva_do_destino_detour" title="Curva do Destino (Edgar G. Ulmer, 1945)"/></span>
+<section id="section_curva_do_destino_detour">
+<p class="title"><a href="2025-03.html#curva_do_destino_detour">#</a> Curva do Destino (Edgar G. Ulmer, 1945)</p>
+<span class="title-heading">Caloni, 2025-03-29 v2 <a href="cinema.html">cinema</a> <a href="movies.html">movies</a> <a href="miniviews.html">miniviews</a><a href="2025-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_curva_do_destino_detour')"><sup>[copy]</sup></a></span>
+
+<p>Um homem que busca se encontrar com sua mulher. Ele vai de carona em carona, de NY para LA. Encontra um homem que morre no carro. Esconde o corpo e encontra uma mulher. Descobrem que o pai do sujeito, milionário, morreu, deixando toda sua fortuna para o filho. Ele acidentalmente a mata com o fio do telefone. Deixando esse passado para trás, o nosso protagonista vaga sem destino. Como um dos primeiros filmes noir, a experiência de Detour é intensa dentro de uma história corriqueira. Dramática em seu âmago, sentimos pelo destino de seus personagens, pois sabemos que, de uma forma ou de outra, não haveria final feliz para eles. A situação vai se complicando aos poucos, até chegarmos no beco sem saída que a vida desse homem simples que não tinha nada de errado começar a desmoronar. Vemos isso com uma grande empatia pelo sujeito, que é um simples mortal sendo levado pela enxurrada de acontecimentos. Poderia acontecer com qualquer um.</p>
+
+</section><hr/>
+
+<span id="broder_jeferson_de_2010" title="Bróder (Jeferson De, 2010)"/></span>
+<section id="section_broder_jeferson_de_2010">
+<p class="title"><a href="2025-03.html#broder_jeferson_de_2010">#</a> Bróder (Jeferson De, 2010)</p>
+<span class="title-heading">Caloni, 2025-03-29 v2 <a href="mostrasp.html">mostrasp</a> <a href="cinema.html">cinema</a> <a href="movies.html">movies</a> <a href="miniviews.html">miniviews</a><a href="2025-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_broder_jeferson_de_2010')"><sup>[copy]</sup></a></span>
+
+<p>O estreante diretor Jeferson De, cuja sessão na Mostra de SP em que estava presente tive o privilégio de participar, inicia com uma grande sequência sem cortes em que “Macu” desce a ladeira de sua casa pelos becos e ruas do bairro; elementos que trazem identidade à vida de classe pobre da capital paulista, como garrafas de cerveja dentro de uma sacola de feira, ou a simpatia de benzedeira. Escolhendo uma fotografia cinzenta para o Capão Redondo e uma coloração mais viva para o resto das locações, a morte no bairro periférico faz parte de uma rotina que não assusta mais seus moradores. Essa história poderia acontecer em qualquer lugar, com qualquer um; ninguém ficou sabendo, e ninguém nunca sabe.</p>
+
+</section><hr/>
+
+<span id="o_magico_sylvain_chomet_2010" title="O Mágico (Sylvain Chomet, 2010)"/></span>
+<section id="section_o_magico_sylvain_chomet_2010">
+<p class="title"><a href="2025-03.html#o_magico_sylvain_chomet_2010">#</a> O Mágico (Sylvain Chomet, 2010)</p>
+<span class="title-heading">Caloni, 2025-03-29 v2 <a href="mostrasp.html">mostrasp</a> <a href="cinema.html">cinema</a> <a href="movies.html">movies</a> <a href="miniviews.html">miniviews</a><a href="2025-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_o_magico_sylvain_chomet_2010')"><sup>[copy]</sup></a></span>
+
+<p>Novo longa de Sylvain Chomet, o mesmo diretor de As Bicicletas de Belleville. Foi baseado em um roteiro de Jacques Tati (do clássico Meu Tio). Um roteiro escrito com pureza no coração dirigido por alguém com o controle do surreal não é bom sinal. A primeira metade é deslumbrante pela direção de arte que compõe quadros inspirados de belas cidades e teatros em que o velho mágico se apresenta. Aos poucos percebemos ser uma comédia baseada em coincidências ingênuas, descobrindo aos poucos a magia daquele pequeno universo criado para contar a história desse mágico decadente e sua fuga da triste realidade que as pessoas não gostam mais de mágicos. Já na segunda metade tudo começa a ficar confuso, pois já não nos interessamos mais pelos personagens que no início nos encantavam. E isso talvez seja, ou não, o reflexo do próprio mágico que as pessoas já não querem mais.</p>
+
+</section><hr/>
+
+<span id="a_suprema_felicidade" title="A Suprema Felicidade (Arnaldo Jabor, 2010)"/></span>
+<section id="section_a_suprema_felicidade">
+<p class="title"><a href="2025-03.html#a_suprema_felicidade">#</a> A Suprema Felicidade (Arnaldo Jabor, 2010)</p>
+<span class="title-heading">Caloni, 2025-03-29 v2 <a href="mostrasp.html">mostrasp</a> <a href="cinema.html">cinema</a> <a href="movies.html">movies</a> <a href="miniviews.html">miniviews</a><a href="2025-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_a_suprema_felicidade')"><sup>[copy]</sup></a></span>
+
+<p>Comecemos por Baarìa - A Porta do Vento, de Giuseppe Tornatore, onde o cineasta sacrifica a clareza narrativa em prol de um bem maior: sua visão autobiográfica. Traçando um objetivo similar, o último trabalho de Arnaldo Jabor, depois de mais de vinte anos sem dirigir um filme, emociona mais do que o exemplo italiano mesmo sendo galhofa e um novelão. O seu universo quer soar autêntico, mas o resultado é puro teatro chinfrim, como nas conversas sobre futebol ou o uso de gírias contemporâneas; detalhes que servem unicamente como curiosidade histórica. A Suprema Felicidade poderia muito bem ter sido uma Baarìa nacional, representando no Rio de Janeiro o coração de todos os habitantes do Brasil, mesmo com todos seus defeitos. Mas a rima final que Tornatore aprontou para o filme italiano faz falta no seu irmão tupiniquim, em uma conclusão com cheiro de esgoto carioca da década de 30.</p>
+
+</section><hr/>
+
+<span id="cargo_ivan_engler_ralph_etter_2009" title="Cargo (Ivan Engler, Ralph Etter, 2009)"/></span>
+<section id="section_cargo_ivan_engler_ralph_etter_2009">
+<p class="title"><a href="2025-03.html#cargo_ivan_engler_ralph_etter_2009">#</a> Cargo (Ivan Engler, Ralph Etter, 2009)</p>
+<span class="title-heading">Caloni, 2025-03-29 v2 <a href="mostrasp.html">mostrasp</a> <a href="cinema.html">cinema</a> <a href="movies.html">movies</a> <a href="miniviews.html">miniviews</a><a href="2025-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_cargo_ivan_engler_ralph_etter_2009')"><sup>[copy]</sup></a></span>
+
+<p>Começa como Aliens - O Resgate e termina como Matrix. Cai no lugar comum de passeios contemplativos pelo cenário com trilhas sonoras igualmente batidas. O roteiro escrito a 8 mãos – nunca um bom sinal – flerta perigosamente com seus segredos. Uma bela mulher passeando por um campo de trigo. Uma fria e gigantesca nave no espaço vazio. O tédio impera no espaço. Quando não estão congelados para economizar tempo de vida, os passageiros nitidamente passam muito tempo sem fazer absolutamente nada. A única coisa pelo qual esperam é a reviravolta óbvia do filme.</p>
+
+</section><hr/>
+
+<span id="atividade_paranormal_2" title="Atividade Paranormal 2 (Tod Williams, 2010)"/></span>
+<section id="section_atividade_paranormal_2">
+<p class="title"><a href="2025-03.html#atividade_paranormal_2">#</a> Atividade Paranormal 2 (Tod Williams, 2010)</p>
+<span class="title-heading">Caloni, 2025-03-29 v2 <a href="cinema.html">cinema</a> <a href="movies.html">movies</a> <a href="miniviews.html">miniviews</a><a href="2025-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_atividade_paranormal_2')"><sup>[copy]</sup></a></span>
+
+<p>Quem nunca saiu sorrateiramente do recinto ao presenciar uma panela caindo inexplicavelmente por duas vezes seguidas? A série Atividade Paranormal se escora no seu gênero fácil de found footage e simplesmente encadeia filmagens realizadas de forma caseira e que relatam acontecimentos verdadeiramente inexplicáveis. Felizmente, o filme alcança pelo menos esse objetivo, e com uma boa tensão e explicações plausíveis, como o espectador moderno gosta. Tendo no início a casa invadida, a família decide instalar câmeras de segurança para sua proteção, em especial do bebê do casal, que adiciona fragilidade e vulnerabilidade ao ambiente. Partindo de uma quase paranoia, essas câmeras espalhadas por toda a casa passarão aos poucos essa sensação para nós mesmos, que iremos tentar dia e noite localizar qualquer fato anormal registrado por elas. Uma câmera caseira, usada quase sempre para gravar os primeiros passos de Hunter, o bebê mencionado, proporciona um pouco mais de dinamismo nas cenas, como quando a mãe filma o quarto, uma cena que inicia pela câmera de segurança e termina comandada por suas mãos. Mesmo com limitações para esse tipo de criação, é um bom sinal que o filme confie na capacidade do espectador de criar as sequências em poucos ângulos. Mesmo que a conclusão dessa história (que não vou revelar aqui) peque pelo excesso, ela consegue convencer ao ponto de encontrarmos ligações com o primeiro filme, em uma espécie de lupa que não aumenta apenas o significado da história, mas a sensação de desconforto em sair da sala de projeção. É o cinema parque de diversões.</p>
+
+</section><hr/>
+
+<span id="um_homem_misterioso_anton_corbijn_2010" title="Um Homem Misterioso (Anton Corbijn, 2010)"/></span>
+<section id="section_um_homem_misterioso_anton_corbijn_2010">
+<p class="title"><a href="2025-03.html#um_homem_misterioso_anton_corbijn_2010">#</a> Um Homem Misterioso (Anton Corbijn, 2010)</p>
+<span class="title-heading">Caloni, 2025-03-29 v2 <a href="cinema.html">cinema</a> <a href="movies.html">movies</a> <a href="miniviews.html">miniviews</a><a href="2025-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_um_homem_misterioso_anton_corbijn_2010')"><sup>[copy]</sup></a></span>
+
+<p>O tiro que ele dá na cabeça da amante, além de impactante, dá o tom exato da vida desse homem do título, que deve sempre se manter fechado para o mundo, um anônimo eterno. A neurose do personagem é transmitida diretamente para nós, nos deixando em constante tensão. Então nós tentamos, juntando pistas aqui e lá, entender a vida do protagonista até o último corte, que chega a ser poético, pois foca, mas bem de leve, uma borboleta de uma outra cena subindo ao céu, finalmente livre para escolher seu próprio rumo. Um significado inusitado para um filme de matador de aluguel.</p>
+
+</section><hr/>
+
+<span id="muita_calma_nessa_hora" title="Muita Calma Nessa Hora (Felipe Joffily, 2010)"/></span>
+<section id="section_muita_calma_nessa_hora">
+<p class="title"><a href="2025-03.html#muita_calma_nessa_hora">#</a> Muita Calma Nessa Hora (Felipe Joffily, 2010)</p>
+<span class="title-heading">Caloni, 2025-03-29 v2 <a href="cinema.html">cinema</a> <a href="movies.html">movies</a> <a href="miniviews.html">miniviews</a><a href="2025-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_muita_calma_nessa_hora')"><sup>[copy]</sup></a></span>
+
+<p>Mari é constantemente assediada por seu chefe na agência publicitária onde trabalha; cansada de ser confundida com uma mulher fácil, decide não ficar mais com homem nenhum. Tita é a mulher certinha, virgem de um homem só (o marido), mas que encontra seu noivo com outra em seu apartamento e, desacreditada, decide esquecer esse negócio de monogamia e partir para tirar o atraso. Aninha, uma eterna indecisa, já trancou sete vezes a faculdade por nunca ter certeza do que quer fazer; sim, ela concorda com ambas as amigas; ao mesmo tempo. Com uma introdução rápida como nas comédias de televisão e um ritmo eloquente com a juventude das personagens que favorece os diálogos com muitas palavras, Muita Calma Nessa Hora pelo menos não é chato, e até tenta ser diferentão, com trilha sonora e legendas a la Tarantino. É um bom lero-lero de pseudo-conflitos existenciais no saquinho de pipoca.</p>
+
+</section><hr/>
+
+<span id="o_encouracado_potemkin" title="O Encouraçado Potemkin (Sergei Eisenstein, 1925)"/></span>
+<section id="section_o_encouracado_potemkin">
+<p class="title"><a href="2025-03.html#o_encouracado_potemkin">#</a> O Encouraçado Potemkin (Sergei Eisenstein, 1925)</p>
+<span class="title-heading">Caloni, 2025-03-29 v2 <a href="cinema.html">cinema</a> <a href="movies.html">movies</a> <a href="miniviews.html">miniviews</a><a href="2025-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_o_encouracado_potemkin')"><sup>[copy]</sup></a></span>
+
+<p>A intensidade com que a ação no clássico do cinema mudo é filmada faz o filme de ficção se confundir com um documentário em tempo real. A cena da escadaria, como não poderia deixar de ser, é belíssima por resumir tão impecavelmente o massacre dos povos na época czarista, além de explorar de forma tocante o pseudo-documentário pró-revolucionário que Eisenstein nos apresenta. Uma peça digna de ser revista.</p>
+
+</section><hr/>
+
+<span id="senna_asif_kapadia_2010" title="Senna (Asif Kapadia, 2010)"/></span>
+<section id="section_senna_asif_kapadia_2010">
+<p class="title"><a href="2025-03.html#senna_asif_kapadia_2010">#</a> Senna (Asif Kapadia, 2010)</p>
+<span class="title-heading">Caloni, 2025-03-29 v2 <a href="cinema.html">cinema</a> <a href="movies.html">movies</a> <a href="miniviews.html">miniviews</a><a href="2025-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_senna_asif_kapadia_2010')"><sup>[copy]</sup></a></span>
+
+<p>De que são feitos os herois? Como uma pessoa cresce internamente e transparece externamente, ou como alguém que faz a diferença. O que vemos no início do documentário é um ser humano em seu estado latente, habilidoso no que sabe fazer (correr), mas ainda inapto para sobreviver nas agruras do jogo de dinheiro e poder que ocorre na nata da indústria automobilística. O uso da montagem a partir de filmagens de diversas origens, como as câmeras das corridas e videos amadores dos bastidores das equipes faz com que a narrativa adote uma estrutura de mosaico que funciona com uma fluidez admirável, ainda mais ao percebermos que nada daquilo foi produzido para o filme. Um esforço consciente e elaborado em construir ao mesmo tempo a psique do seu personagem-título, acompanhar seus erros e acertos que irão culminar na evolução do seu próprio caráter. É na busca incessante pelos seus objetivos que o documentário converge para drama, que personagem vira protagonista, que protagonista torna-se heroi por uma simples mensagem para levar para a vida: Senna nunca, durante toda a carreira, havia abandonado os princípios que o guiaram do começo ao fim em busca do que faz um verdadeiro piloto, esteja ele onde estiver: correr o mais rápido que puder.</p>
+
+</section><hr/>
+
+
+<span id="e_melhor_manter_binarios_de_teste_no_codigofonte" title="É melhor manter binários de teste no código-fonte?"/></span>
+<section id="section_e_melhor_manter_binarios_de_teste_no_codigofonte">
+<p class="title"><a href="2025-03.html#e_melhor_manter_binarios_de_teste_no_codigofonte">#</a> É melhor manter binários de teste no código-fonte?</p>
+<span class="title-heading">Caloni, 2025-03-29 v3 <a href="english.html">english</a> <a href="tarot.html">tarot</a><a href="2025-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_e_melhor_manter_binarios_de_teste_no_codigofonte')"><sup>[copy]</sup></a></span>
+
+<p>Esta é uma das questões da semana com que me deparei. Sinceramente não gosto de soluções que envolvem dependências fora do domínio do controle de fonte, mas por outro lado me parece feio e não muito escalável manter os binários necessários no controle de fonte. Sim, existem "soluções" como Git LFS, que no fundo é uma maneira educada de manter os mesmos procedimentos para organizar o código-fonte no controle e "junto" seus binários (que no fundo estarão em algum repositórios de arquivos da AWS, por exemplo).</p>
+
+<p>Independente de onde ficam os binários, escrevendo uns testes unitários decidi levar o conceito de manter os recursos do teste o mais próximo possível colocando os binários não apenas no sistema de arquivos, mas também dentro dos recursos do executável Windows. Ao longo do teste eu extraio estes recursos para o sistema de arquivos e rodo o teste como se os arquivos sempre estivessem lá, na mesma pasta do executável.</p>
+
+<pre>
+// Keep updated with Test.
+ID_101 BIN &quot;resources\\binary.dll&quot;
+ID_102 BIN &quot;resources\\binary.exe&quot;
+//...
+const std::vector&lt;ResourceIdFileName&gt; Resources =
+{ 
+  { ID_101, &quot;binary.dll&quot; },
+  { ID_102, &quot;binary.exe&quot; },
+  //...
+bool ExtractResourceToFile(const ResourceIdFileName&amp; resource)
+{
+    HMODULE hModule = GetModuleHandle(NULL);
+    HRSRC hRes = FindResource(hModule, MAKEINTRESOURCE(resource.id), RESOURCE_TYPE);
+    if (!hRes) return false;
+    HGLOBAL hResData = LoadResource(hModule, hRes);
+    if (!hResData) return false;
+    DWORD dataSize = SizeofResource(hModule, hRes);
+    if (!dataSize) return false;
+    void* pData = LockResource(hResData);
+    if (!pData) return false;
+    std::ofstream outFile(resource.fileName, std::ios::binary);
+    if (!outFile) return false;
+    outFile.write(reinterpret_cast&lt;const char*&gt;(pData), dataSize);
+    return true;
+}
+</pre>
+<p>= Learning English and Tarot</p>
+
+<p>Now that I am reading my daily Tarot in English I have some words and expressions to capture better their meaning and I will be listing them here to catch up:</p>
+
+<p>Accountability, actionable, blazing force, calm demeanor, compassionate, feeling feisty, fickle, artistic flair, touch of flair, fostering endurance, fosters insights, giving in, grounded perspective, grounding, harness, harnessing your power, heartfelt gesture, hinder, innermost emotions, joyful exploration, litigation, material endeavors, maturing, nurturing, outlook, realms of fantasy, roar of willpower, sham fight, shedding of the old, soothe your emotions, stand out, summoning courage, surge, swayed, trickery, withholding your thoughts.</p>
+
+<p>Nurture and grow, sanctuary, grounding, fruitful investment or venture, grounded, enterprising, ungrounded energy, check in with yourself, lack of grounding, page, intricacies of everyday life, immediate surroundings, grounded decisions, bursting, nudges you, harnessing your drive, endeavours with steadfast reliability, fostering your desires, overcoming obstacles, perfect contentment, shews prosperity.</p>
 
 </section><hr/>
 
