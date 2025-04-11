@@ -59,6 +59,8 @@ role="navigation" aria-label="main navigation">
 <li><small><a href="2025-04.html#cisne_negro_darren_aronofsky_2010">Cisne Negro (Darren Aronofsky, 2010)</a></small></li>
 <li><small><a href="2025-04.html#esposa_de_mentirinha_dennis_dugan_2011">Esposa de Mentirinha (Dennis Dugan, 2011)</a></small></li>
 <li><small><a href="2025-04.html#gnomeu_e_julieta_kelly_asbury_2011">Gnomeu e Julieta (Kelly Asbury, 2011)</a></small></li>
+
+<li><small><a href="2025-04.html#baixando_simbolos_e_modulos_programaticamente">Baixando símbolos e módulos programaticamente</a></small></li>
 </ul>
 
 
@@ -195,6 +197,86 @@ role="navigation" aria-label="main navigation">
 <span class="title-heading">Caloni, 2025-04-04 v2 <a href="2025-04.html#lixo_extraordinario_lucy_walker_karen_harley_joao_jardim_2010">&lt;</a><a href="cinema.html">cinema</a><a href="2025-04.html#esposa_de_mentirinha_dennis_dugan_2011">&gt;</a> <a href="2025-04.html#lixo_extraordinario_lucy_walker_karen_harley_joao_jardim_2010">&lt;</a><a href="movies.html">movies</a><a href="2025-04.html#esposa_de_mentirinha_dennis_dugan_2011">&gt;</a> <a href="2025-04.html#lixo_extraordinario_lucy_walker_karen_harley_joao_jardim_2010">&lt;</a><a href="miniviews.html">miniviews</a><a href="2025-04.html#esposa_de_mentirinha_dennis_dugan_2011">&gt;</a><a href="2025-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_gnomeu_e_julieta_kelly_asbury_2011')"><sup>[copy]</sup></a></span>
 
 <p>Em "Romeu + Julieta", praticamente se muda apenas a época em que a história foi concebida, chegando a utilizar os mesmos diálogos datados do texto de Shakespeare. Como filme ele se sai incrivelmente bem. Muito melhor do que os bonecos de cerâmica engraçadinhos deste Gnomeu e Julieta, exatamente por explorar a mudança de ambiente e os desafios que isso implicou na adaptação das falas e não os dois únicos detalhes que mudam nessa recriação: a técnica (animação) e o apelo infantil (gnomos de jardim). A própria narrativa não nos apresenta nada de realmente novo, em uma história que tropeça em piadas que tentam criar um clima engraçadinho nunca eficaz e em referências totalmente desnecessárias. Mesmo que o aspecto dos bonecos criados sejam admiravelmente bem feitos, pois conseguimos notar seus detalhes de cerâmica e até mesmo o som de cerâmica raspando quando se mexem, isso não basta para contar uma mesma história se não houver nada de novo em sua forma.</p>
+
+</section><hr/>
+
+
+<span id="baixando_simbolos_e_modulos_programaticamente" title="Baixando símbolos e módulos programaticamente"/></span>
+<section id="section_baixando_simbolos_e_modulos_programaticamente">
+<p class="title"><a href="2025-04.html#baixando_simbolos_e_modulos_programaticamente">#</a> Baixando símbolos e módulos programaticamente</p>
+<span class="title-heading">Caloni, 2025-04-07 <a href="self.html">self</a><a href="2025-03.html#ego_ou_intuicao">&gt;</a> <a href="drafts.html">drafts</a><a href="2025-03.html#learning_english_and_tarot">&gt;</a><a href="2025-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_baixando_simbolos_e_modulos_programaticamente')"><sup>[copy]</sup></a></span>
+
+<p>Essa semana descobri que é possível baixar não apenas os PDBs do symbol server da Microsoft, mas os binários também. Existem relatos de erros de download para alguns binários específicos, mas em geral é possível baixar qualquer arquivo indexado por eles. Para isso você precisa ter em mãos o timestamp do binário, que antes era um timestamp mesmo, mas após o Windows 10 virou um hash único que identifica o mesmo binário e passível de ser compilado de novo exatamente como era, e o tamanho da imagem. Ambas as informações ficam na header do arquivo PE, mas depois que você consegui-las não precisa mais do binário (teoricamente). O código abaixo demonstra isso:</p>
+
+<pre>
+#include &lt;windows.h&gt;
+#include &lt;dbghelp.h&gt;
+#include &lt;algorithm&gt;
+#include &lt;cstdint&gt;
+#include &lt;filesystem&gt;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#pragma comment(lib, &quot;dbghelp.lib&quot;)
+namespace fs = std::filesystem;
+int main()
+{
+    const fs::path RootPath = fs::path(&quot;resources&quot;);
+    auto isBinary = [](const fs::path&amp; path) { return path.extension() == &quot;.exe&quot; || path.extension() == &quot;.dll&quot; || path.extension() == &quot;.sys&quot;; };
+    ::SymInitialize(::GetCurrentProcess(), NULL, FALSE);
+    try
+    {
+        for (const auto&amp; entry : fs::directory_iterator(RootPath))
+        {
+            std::cout &lt;&lt; entry.path().string() &lt;&lt; std::endl;
+            try
+            {
+                if (entry.is_regular_file() &amp;&amp; isBinary(entry.path()))
+                {
+                    auto imageName = entry.path().string();
+                    SYMSRV_INDEX_INFO imageFileInfo = { sizeof(imageFileInfo) };
+                    ::SymSrvGetFileIndexInfo(imageName.c_str(), &amp;imageFileInfo, 0);
+                    char downloadedImagePath[MAX_PATH + 1] = { 0 };
+                    if (::SymFindFileInPath(GetCurrentProcess(), NULL, imageName.c_str(),
+                        &amp;imageFileInfo.timestamp, imageFileInfo.size, 0, SSRVOPT_DWORDPTR,
+                        downloadedImagePath, nullptr, nullptr))
+                    {
+                        std::cout &lt;&lt; &quot;Image file downloaded to &quot; &lt;&lt; downloadedImagePath &lt;&lt; std::endl;
+                    }
+                    char downloadedPdbPath[MAX_PATH + 1] = { 0 };
+                    if (::SymFindFileInPath(GetCurrentProcess(), NULL, imageFileInfo.pdbfile,
+                        &amp;imageFileInfo.guid, imageFileInfo.age, 0, SSRVOPT_GUIDPTR,
+                        downloadedPdbPath, nullptr, nullptr))
+                    {
+                        std::cout &lt;&lt; &quot;PDB file downloaded to &quot; &lt;&lt; downloadedPdbPath &lt;&lt; std::endl;
+                    }
+                }
+            }
+            catch (std::exception&amp; e)
+            {
+                std::cerr &lt;&lt; entry.path().string() &lt;&lt; &quot;: &quot; &lt;&lt; e.what() &lt;&lt; std::endl;
+            }
+        }
+    }
+    catch (std::filesystem::filesystem_error&amp; e)
+    {
+        std::cout &lt;&lt; &quot;No resources directory found; nothing to do here: &quot; &lt;&lt; e.what();
+    }
+    ::SymCleanup(::GetCurrentProcess());
+    return 0;
+}
+</pre>
+<p>= O desafio de Ulisses</p>
+
+<p>O desafio de Ulisses é sobre o que o personagem de Odisseia fez para conseguir ouvir o canto da sereia sem se render aos seus feitiços e acabar sendo devorado por estas criaturas dos mares. Ele pediu que fosse amarrado ao mastro do navio e que em hipótese alguma fosse solto enquanto passassem pelas sereias. Durante o trajeto ele tentou de todas as formas fazer a tripulação o soltar, mas eles foram fiéis ao que ele havia ordenado antes de adentrarem nas tentações do que antes nem eram mulheres com rabo (era o canto a verdadeira tentação).</p>
+
+<p>Esta história é usada por alguns educadores para demonstrar um comprometimento de alguém sobre algo que este alguém não tem controle. É uma técnica de autodisciplina que não depende da disciplina da pessoa nos momentos de tentação.</p>
+
+<p>Com base nisso proponho o seguinte desafio quando estiver para procrastinar ou devanear e precisar focar em algo naquele momento: se desafie a não se distrair por alguns minutos. Não precisam ser muitos, mas precisam ser precisos: "irei trabalhar unicamente nisso pelo menos até 10:15". Em meus testes eu diria que até menos de meia-hora é suficiente para que o momentum se construa e após este tempo você esteja mais tentado a continuar trabalhando do que se render a alguma distração frívola.</p>
+
+<p>A nossa mente é nosso principal algoz contra tendência fisiológicas e esta estratégia inevitavelmente irá sucumbir em algum momento. Quando isso acontecer o que deve ser feito é diminuir mais ainda o número de minutos até um mínimo inegociável. Não se pode abusar dessa técnica e ficar trabalhando horas a fio apenas "aumentando as apostas". Haverá dias melhores.</p>
+
+<p>A ideia do desafio é apenas dar um tempo para que a mente entre e se acostume com o flow do que deve ser feito a ponto disso ser tão ou mais interessante do que qualquer outra coisa que você quisesse fazer antes. Com isso você compromete pouco e sem precisar perder tempo argumento consigo mesmo de que isso é importante. Você está apostando contra sua própria capacidade de controle. Não é tão fácil quanto estar amarrado a um mastro do navio, impedido de se mexer. Mas é simples e tem o potencial de ser efetivo.</p>
 
 </section><hr/>
 
