@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="BlogWriter 0.2.0 MarkdownParser 0.2.0">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery-ui.css"/>
+<script src="/js/jquery-1.12.4.js"></script>
+<script src="/js/jquery-ui.js"></script>
+<script src="/js/copy_clipboard.js"></script>
+<script>
+var quick_search_posts = [ 
+ ]; 
+</script>
+<script src="/js/quick_search.js"></script>
+<script src="/js/list.js"></script>
+<link rel="icon" href="/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="months.html">
+<div class="is-4"><b>caloni::2011-03</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<ul style="list-style: none;">
+
+<li><small><a href="2011-03.html#vtable">VTable</a></small></li>
+
+<li><small><a href="2011-03.html#projeto_daytoday">Projeto DayToDay</a></small></li>
+
+<li><small><a href="2011-03.html#base64">Base64</a></small></li>
+
+<li><small><a href="2011-03.html#reorganizando_meus_feeds_de_novo">Reorganizando meus feeds (de novo)</a></small></li>
+
+<li><small><a href="2011-03.html#loucuras_multithreading">Loucuras multithreading</a></small></li>
+
+<li><small><a href="2011-03.html#houaiss_no_kindle">Houaiss no Kindle</a></small></li>
+
+<li><small><a href="2011-03.html#bazaar_com_subversion">Bazaar com Subversion</a></small></li>
+</ul>
+
+
+<span id="vtable" title="VTable"/></span>
+<section id="section_vtable">
+<p class="title"><a href="2011-03.html#vtable">#</a> VTable</p>
+<span class="title-heading">Caloni, 2011-03-01 <a href="2011-03.html#base64">&lt;</a><a href="computer.html">computer</a><a href="2011-01.html#esse_ponteiro_vai_ate_onde">&gt;</a><a href="2011-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_vtable')"><sup>[copy]</sup></a></span>
+
+<p>Acho que na breve história desse blogue nunca contei a história do vtable. No máximo fizemos um <a href="http://www.caloni.com.br/hook-de-com-no-windbg">hookzinho nos métodos de um componente COM</a>. Mas só.</p>
+
+<p>Não encontro uma analogia simples, assim, de cabeça. Então vou contar no cru, mesmo. Talvez seja até mais divertido.</p>
+
+<p>A vtable foi um mecanismo criado para implementar o polimorfismo em C++ quando falamos de ponteiros para classes base cujos métodos virtuais foram sobrescritos por uma classe derivada.</p>
+
+<p>A coisa fica mais simples quando explicamos que em C++ você só paga pelo que usa. Se você declarar uma classe que não tenha nenhum método virtual, os objetos dessa classe não precisarão de uma vtable. No entanto, você não conseguirá sobrescrever um método dessa classe através de uma derivada:</p>
+
+<pre>
+#include &lt;iostream&gt;
+class C
+{
+public:
+        void method()
+    {
+      std::cout &lt;&lt; &quot;C::method\n&quot;;
+    }
+};
+class D : public C
+{
+public:
+        void method()
+    {
+      std::cout &lt;&lt; &quot;D::method\n&quot;;
+    }
+};
+void func(C* c)
+{
+        c-&gt;method(); 
+}
+int main()
+{
+        D d;
+        func(&amp;d); // passa endereço de C &quot;dentro de D&quot;
+}
+   
+   Saída
+   =====
+   
+   C::method
+</pre>
+<p>No exemplo acima, a chamada feita em func irá chamar o método da classe C, mesmo que a classe D tenha sobrescrito esse método. O programador semi-experiente deve pensar "lógico, ela não é virtual!", e está certo, assim como qualquer pessoa que decora essas formulazinhas de vestibular.</p>
+
+<p>Para criarmos polimorfismo de verdade, precisamos declarar o método em C como virtual:</p>
+
+<pre>
+   
+   class C
+   {
+   public:
+           virtual void method();
+   };
+</pre>
+<p>Agora sim, a chamada em func irá ser para D::method.</p>
+
+<p>Pergunte para o programador semi-experiente em C++ por que as coisas são assim e provavelmente ele irá falar algo sobre vtable, mesmo que não saiba exatamente como ela funciona.</p>
+
+<p>A vtable é uma tabela que guarda o endereço dos métodos virtuais de uma classe. Se uma classe derivada sobrescrever um ou mais métodos de sua classe base, ela terá uma outra vtable com os endereços dos métodos "corrigidos".</p>
+
+<img src="img/vtable_vtable11.png"/>
+
+<p>Dessa forma, algo um pouco diferente ocorre na chamada c-&gt;method() quando estamos lidando com classes polimórficas: o início de um objeto dessa classe terá um ponteiro para a vtable de sua classe. Quando um método virtual é chamado, em vez do compilador gerar uma chamada estática para o endereço do método da classe cujo tipo estamos usando, ele irá redirecionar essa chamada para uma posição na vtable para onde esse objeto aponta. No caso de um objeto do tipo D, a entrada para method em sua vtable apontará não para C::method, mas para D::method, uma função com a mesma assinatura contida na classe base C e que, portanto, a sobrescreve.</p>
+
+<p>Façamos um pequeno teste para comprovar o que falamos. Vamos escancarar a chamada feita a partir de uma instância de D e a partir de uma instância de C. Nada que um WinDbg não resolva de braços cruzados:</p>
+
+<pre>
+   
+   int main()
+   {
+           D d;
+           C c;
+   
+           func(&amp;d);
+           func(&amp;c);
+   }
+   
+   cl /Zi vtable3.cpp
+   windbg vtable3.exe
+</pre>
+<img src="img/vtable_vtable2.png"/>
+
+</section><hr/>
+
+
+<span id="projeto_daytoday" title="Projeto DayToDay"/></span>
+<section id="section_projeto_daytoday">
+<p class="title"><a href="2011-03.html#projeto_daytoday">#</a> Projeto DayToDay</p>
+<span class="title-heading">Caloni, 2011-03-03<a href="2011-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_projeto_daytoday')"><sup>[copy]</sup></a></span>
+
+<p>O DayToDay é um projetinho que criei para fazer tracking das minhas atividades diárias. Eu o criei há mais de 6 anos, e provavelmente se tivesse pensado em como isso seria útil para as pessoas compartilharem suas ideias e limitasse o número de caracteres para 140, estaria rico hoje.</p>
+
+<p>O "conceito" é bem simples: executo o programa, ele exibe um campo texto para digitar o que estou fazendo, digito enter ou clico no botão de OK e ele fecha. O que eu digitei cai em um arquivo texto com o mesmo nome do programa.</p>
+
+<p>Algumas "features" avançadas que é bom saber:</p>
+
+<p>  * Ele gera o arquivo texto em UNICODE. Na época em que eu digitava em russo, isso era importante.</p>
+
+<p>  * Ele já gera suas anotações com data e hora.</p>
+
+<p>  * Você pode gerar um atalho para chamá-lo rapidamente e definir um diretório de trabalho diferente: o arquivo será gerado no diretório de trabalho especificado, e não onde está o executável.</p>
+
+<p>  * Existe uma versão em .NET que fiz na época que estudava C#. Felizmente eu perdi esse projeto.</p>
+
+</section><hr/>
+
+
+<span id="base64" title="Base64"/></span>
+<section id="section_base64">
+<p class="title"><a href="2011-03.html#base64">#</a> Base64</p>
+<span class="title-heading">Caloni, 2011-03-09 <a href="2011-05.html#sem_reflection">&lt;</a><a href="computer.html">computer</a><a href="2011-03.html#vtable">&gt;</a><a href="2011-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_base64')"><sup>[copy]</sup></a></span>
+
+<p>No meio dos meus artigos pendentes, encontrei esse, de Luiz Rocha, que fala sobre a dificuldade de entender o que seria Base64:</p>
+
+<blockquote>Salve Caloni,</blockquote>
+
+<blockquote>Já leio o seu site a algum tempo. Realmente acho complicado, alguns eu nem entendo =D.  Mais eh o seguinte, eu estou montando um projeto, mas eu não entendo nada de trabalhar com binários. Então pesquisei na internet, e achei um algoritmo que pode me ajudar, [na lógica]. É o base64 mas eu não entendi como ele converte e desconverte em binário. Será que vc pode me ajudar, obrigado!!</blockquote>
+<p>Não é a primeira pessoa que pede informações sobre algo específico demais para explicar (para isso existe a <a href="http://en.wikipedia.org/wiki/Base64">Wikipedia</a> e o <a href="posts.html?q=Google">Google</a>, não?). No meio da minha escrita, percebi que já havia escrito sobre os fundamentos do conhecimento por trás da criação do Base64, conhecimento esse, acredito eu, todo programador que quer sair do lugar com os próprios pés deve ter.</p>
+
+<p>  * <a href="http://www.caloni.com.br/basico-do-basico-assembly">Básico do básico: assembly</a></p>
+
+<p>  * <a href="http://www.caloni.com.br/basico-do-basico-binario">Básico do básico: binário</a> &lt;-- Luiz, você está procurando por esse!</p>
+
+<p>  * <a href="http://www.caloni.com.br/basico-do-basico-tipos">Básico do básico: tipos</a></p>
+
+<p>  * <a href="http://www.caloni.com.br/basico-do-basico-ponteiros">Básico do básico: ponteiros</a></p>
+
+<p>Bônus:</p>
+
+<p>  * <a href="http://www.caloni.com.br/como-ofuscar-strings">Como ofuscar strings</a></p>
+
+<p>  * <a href="http://www.caloni.com.br/passagem-por-valor-e-emails-com-anexo">Passagem por valor e emails com anexo</a></p>
+
+<p>  * <a href="http://www.caloni.com.br/strings">Como funcionam as strings</a></p>
+
+<p>REALMENTE para iniciantes:</p>
+
+<p>  * <a href="http://www.caloni.com.br/configurando-seus-projetos-no-visual-studio">Configurando seus projetos no Visual Studio</a></p>
+
+<p>  * <a href="http://www.caloni.com.br/como-criar-uma-lib-no-visual-studio">Como criar uma LIB no Visual Studio</a></p>
+
+<p>Acredito que tudo que um programador precisa saber é o básico. O problema é que esse básico cresce a cada ano, mas, de qualquer forma, continua sendo necessário voltar às raízes de vez em quando, e se existe algo que ele nunca deve esquecer, é isso.</p>
+
+<p>Até porque na programação, 90% não se cria, se copia.</p>
+
+<p>Imaginemos o cenário para a criação do Base64:</p>
+
+<p>Alguns meios de comunicação, notadamente <a href="http://pt.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol">envio de e-mails</a> e a <a href="posts.html?q=navegação web">navegação web</a>, por incrível que pareça, trabalham em um protocolo totalmente em modo texto. É até fácil de entender, pois quando essas tecnologias nasceram as limitações de velocidade e estabilidade das conexões permitiam apenas o envio de texto puro de uma ponta a outra.</p>
+
+<p>Isso quer dizer que, na prática, os anexos de um e-mail e as imagens de uma página trafegam, pelo protocolo definido, em modo texto.</p>
+
+<p>Como isso é possível?</p>
+
+<p>A solução não é tão obscura quanto possa parecer. Se um programador médio tivesse esse problema e nenhuma solução existisse ainda, ele faria o que sempre fez para resolver problemas desse tipo: codificar a mensagem na forma permitida. Isso já é feito com o próprio texto, que é apenas <a href="http://www.caloni.com.br/basico-do-basico-binario">uma interpretação de tabelas de caracteres</a>.</p>
+
+<p>Tudo que é necessário fazer é o contrário, mas usando a mesma lógica: montar uma tabela de caracteres válidos e traduzir para um conteúdo binário, sendo que todas as combinações possíveis devem caber nessa tabela.</p>
+
+<p>A forma mais básica binária de comunicação é um byte, constituído por 8 bits, que combinados darão 2^8 entradas em nossa tabela, que precisaria de 256 caracteres diferentes. Como isso ultrapassa o limite dos protocolos que estamos lidando, que em sua maioria utilizam a tabela ascii básica, que possui 128 posições, sendo que algumas posições não possuem caracteres imprimíveis, decidiu-se usar o múltiplo anterior: 64 posições, o que nos dá a chance de codificar 6 bits de cada vez (2^6).</p>
+
+<p>Esse padrão de codificação se chama Base64. Se quiser mais detalhes, basta ler a <a href="http://tools.ietf.org/html/rfc989">RFC</a>, que é pequena e muito simples de se ler.</p>
+
+<p>Agora, como codificar essa solução? Só entendendo o básico, é claro.</p>
+
+<p><a href="http://en.wikipedia.org/wiki/Base64">Wikipedia</a> e o <a href="posts.html?q=Google">Google</a>: http://www.google.com/search?q=base64</p>
+
+<p><a href="http://pt.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol">envio de e-mails</a> e a <a href="posts.html?q=navegação web">navegação web</a>: http://pt.wikipedia.org/wiki/Hypertext_Transfer_Protocol</p>
+
+</section><hr/>
+
+
+<span id="reorganizando_meus_feeds_de_novo" title="Reorganizando meus feeds (de novo)"/></span>
+<section id="section_reorganizando_meus_feeds_de_novo">
+<p class="title"><a href="2011-03.html#reorganizando_meus_feeds_de_novo">#</a> Reorganizando meus feeds (de novo)</p>
+<span class="title-heading">Caloni, 2011-03-10<a href="2011-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_reorganizando_meus_feeds_de_novo')"><sup>[copy]</sup></a></span>
+
+<p>Depois da minha opinião dada ao Efetividade na matéria sobre ferramentas para gerenciar as leituras tenho que atualizar que não utilizo mais o esquema das estrelinhas, porque acabei me dando conta que nunca lia o que marcava para ler "depois".</p>
+
+<p>Porém, ainda utilizo o Google Reader por uma série de motivos:</p>
+
+<p>  * Integrado com as ferramentas Google, que eu venero;</p>
+
+<p>  * Tem atalhos no teclado, que eu venero</p>
+
+<p>  * Consigo anotar o que quiser em qualquer página que navegar;</p>
+
+<p>  * Posso organizar os feeds por categorias.</p>
+
+<p>Minha organização de feeds, até semana passada, usava categorias específicas (programação, cinema, economia) e tinha duas categorias no topo que organizava por frequência (diário, semanal), seguindo uma dica de um leitor do Efetividade. Porém, meu maior problema sempre fora os feeds que cospem milhares de entradas por dia, e que sempre ficava para ler no meu fim-de-semana, consumindo às vezes o dia inteiro!</p>
+
+<p>Por isso, para evitar ser abarrotado de notícias, mantenho a seguinte organização de categorias:</p>
+
+<p>  1. Notícias: todos os feeds que cospem milhares de entradas. Organizo por "mágica" e leio apenas os que ficarem no topo. Ao final, clico no famigerado "Mark all as read" e fim de história.</p>
+
+<p>  2. Diário: leituras imediatas, que não requerem mais que cinco minutos, como a tirinha do Dilbert e minhas pesquisas cadastradas no Google.</p>
+
+<p>  3. Semanal: leitura um pouco mais demorada, para quando tiver mais que 10 minutos sobrando.</p>
+
+<p>  4. Amigos: todos os feeds das pessoas que eu conheço e acompanho.</p>
+
+<p>  5. Pessoal: meus próprios feeds, para reler o que eu escrevi e capturar "o outro lado da comunicação" (você, leitor).</p>
+
+<p>  6. Fóruns: mensagens do grupo de programação C++, por exemplo. Está no final da lista porque posso dedicar um pouco do fim-de-semana para ler a evolução dos tópicos, ou até colaborar quando tiver algum conhecimento a acrescentar.</p>
+
+<p>Além disso, os Shared Itens estão configurados como Start page, sendo que tudo que eu anotar durante minha navegação deve ser lida quando eu abro o Reader (incluindo minhas anotações).</p>
+
+<p>Basicamente é isso. Espero não ter que mudar novamente a estrutura. Se tiver, que seja pra melhor.</p>
+
+<p>Idéias?</p>
+
+</section><hr/>
+
+
+<span id="loucuras_multithreading" title="Loucuras multithreading"/></span>
+<section id="section_loucuras_multithreading">
+<p class="title"><a href="2011-03.html#loucuras_multithreading">#</a> Loucuras multithreading</p>
+<span class="title-heading">Caloni, 2011-03-18<a href="2011-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_loucuras_multithreading')"><sup>[copy]</sup></a></span>
+
+<p>Estava eu depurando um sistema cliente/servidor com um tantão de threads e me veio à cabeça na volta pra casa como que um programador iniciante entenderia aquela bagunça de dar F10 em uma função e cair no meio de outra, dar outro F10 na outra e voltar pra primeira.</p>
+
+<p>Loucura, não?</p>
+
+<p>Nem tanto. O multithreading de um sistema operacional está aí pra isso. O que ocorre, no caso de depurações em uma única IDE, é que os breakpoints temporários que são definidos ao usar o comando de step into/over podem ser ativados em paralelo, simultaneamente.</p>
+
+<p>Mas confesso que, de vez em quando, depurar múltiplas threads fica parecendo coisa de maluco.</p>
+
+</section><hr/>
+
+
+<span id="houaiss_no_kindle" title="Houaiss no Kindle"/></span>
+<section id="section_houaiss_no_kindle">
+<p class="title"><a href="2011-03.html#houaiss_no_kindle">#</a> <a class="external" href="http://zeribeiropena.wordpress.com/2011/03/21/dicionario-houaiss-e-babylon-no-kindle/#comment-3">Houaiss no Kindle</a></p>
+<span class="title-heading">Caloni, 2011-03-22 <a href="2011-04.html#houaiss_13">&lt;</a><a href="projects.html">projects</a><a href="2010-10.html#atualizando_houaissparababylon_no_saite">&gt;</a> <a href="2011-06.html#videos_do_boostcon">&lt;</a><a href="blogging.html">blogging</a><a href="2009-06.html#programadores_de_verdade_nao_usam_java">&gt;</a><a href="2011-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_houaiss_no_kindle')"><sup>[copy]</sup></a></span>
+
+<p>O blogue de José Ribeiro Pena Neto, aparentemente recém-criado, conseguiu utilizar minha solução de conversão do dicionário Houaiss para Babylon em algo mais incrívei ainda: converter, em alguns passos, a base de dados do Houaiss para o Amazon Kindle.</p>
+
+<p>De uma maneira simples e efetiva, ele cita o passo-a-passo para a conversão da base Houaiss para o formato Babylon e, a partir disso, reconverter para o formato usado pelo gratuito e multiplataforma Stardict.</p>
+
+</section><hr/>
+
+
+<span id="bazaar_com_subversion" title="Bazaar com Subversion"/></span>
+<section id="section_bazaar_com_subversion">
+<p class="title"><a href="2011-03.html#bazaar_com_subversion">#</a> Bazaar com Subversion</p>
+<span class="title-heading">Caloni, 2011-03-23<a href="2011-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_bazaar_com_subversion')"><sup>[copy]</sup></a></span>
+
+<p>Para pessoas que ficaram viciadas em commits curtos e todo o histórico do fonte na própria máquina, foi uma surpresa descobrir que com o uso do plugin <a href="http://doc.bazaar.canonical.com/latest/en/user-guide/svn_plugin.html">bzr-svn</a> (já incluso no pacote de instalação), consigo ainda utilizar o Bazaar, mesmo que agora esteja trabalhando com um branch do Subversion.</p>
+
+<p>Na verdade, melhor ainda: o bzr-svn baixa o SVN trunk com todo o histórico na máquina local, como se fosse um branch do próprio Bazaar, e permite a criação de branches desconectados para pequenos commits e o merge final para o servidor SVN.</p>
+
+<p>E o melhor de tudo: não há segredo. Tudo que precisa fazer é instalar o Bazaar e fazer um get/co com o endereço do branch SVN que o plugin se vira sozinho para detectar que se trata do Subversion. (Se for um branch protegido, o usuário e senha serão pedidos durante o processo).</p>
+
+<pre>
+   
+   C:\Projetos&gt;bzr co http://subversion.assembla.com/svn/caloni/ caloni
+   Initialising Subversion metadata cache in C:\Users\Caloni\AppData\Local\svn-cache\sbrubles.
+   C:\Projetos&gt;cd caloni
+   C:\Projetos\caloni&gt;bzr qlog
+   C:\Projetos\caloni&gt;bzr get . ..\caloni.local
+   Branched 2 revision(s).
+   C:\Projetos\caloni&gt;cd ..\caloni.local
+   C:\Projetos\caloni.local&gt;vim readme.txt
+   C:\Projetos\caloni.local&gt;bzr ci -m &quot;Commit local&quot;
+   Committing to: C:/Projetos/caloni.local/modified readme.txt
+   Committed revision 3.
+   C:\Projetos\caloni.local&gt;vim readme.txt
+   C:\Projetos\caloni.local&gt;bzr ci -m &quot;Commit local&quot;
+   Committing to: C:/Projetos/caloni.local/modified readme.txt
+   Committed revision 4.
+   C:\Projetos\caloni.local&gt;vim readme.txt
+   C:\Projetos\caloni.local&gt;bzr ci -m &quot;Commit local&quot;
+   Committing to: C:/Projetos/caloni.local/modified readme.txt
+   Committed revision 5.
+   C:\Projetos\caloni.local&gt;cd ..\caloni
+   C:\Projetos\caloni&gt;bzr merge ..\caloni.local
+    M  readme.txt
+   All changes applied successfully.
+   C:\Projetos\caloni&gt;bzr st
+   modified:  readme.txt
+   pending merge tips: (use -v to see all merge revisions)  
+   Wanderley Caloni 2011-03-23 Commit local
+   C:\Projetos\caloni&gt;bzr ci -m &quot;Commit pro servidor&quot;
+   Committing to: http://subversion.assembla.com/svn/caloni
+   modified readme.txtHTTP subversion.assembla.com 
+   username: caloni
+   &lt;http://subversion.assembla.com:80&gt; 
+   Restricted Area caloni 
+   password:
+   Committed revision 3.
+   C:\Projetos\caloni&gt;bzr qlog
+</pre>
+<img src="img/bazaar_com_subversion_bazaar_subversion.png"/>
+
+</section><hr/>
+
+<span style="float: left;">
+ <a href="2011-02.html">[2011-02]</a>
+ <a href="2011-04.html">[2011-04]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

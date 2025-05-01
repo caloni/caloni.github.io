@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="BlogWriter 0.2.0 MarkdownParser 0.2.0">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery-ui.css"/>
+<script src="/js/jquery-1.12.4.js"></script>
+<script src="/js/jquery-ui.js"></script>
+<script src="/js/copy_clipboard.js"></script>
+<script>
+var quick_search_posts = [ 
+ ]; 
+</script>
+<script src="/js/quick_search.js"></script>
+<script src="/js/list.js"></script>
+<link rel="icon" href="/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="months.html">
+<div class="is-4"><b>caloni::2010-12</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<ul style="list-style: none;">
+
+<li><small><a href="2010-12.html#posii_seminario_portabilidade_e_performance">Pós-II Seminário Portabilidade e Performance</a></small></li>
+
+<li><small><a href="2010-12.html#trabalhando_em_multiplos_ambientes">Trabalhando em múltiplos ambientes</a></small></li>
+</ul>
+
+
+<span id="posii_seminario_portabilidade_e_performance" title="Pós-II Seminário Portabilidade e Performance"/></span>
+<section id="section_posii_seminario_portabilidade_e_performance">
+<p class="title"><a href="2010-12.html#posii_seminario_portabilidade_e_performance">#</a> Pós-II Seminário Portabilidade e Performance</p>
+<span class="title-heading">Caloni, 2010-12-21 <a href="2011-01.html#reuniao_de_programadores_c++_ha_5_anos">&lt;</a><a href="ccppbr.html">ccppbr</a><a href="2010-11.html#ii_seminario_portabilidade_e_performance">&gt;</a><a href="2010-12.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_posii_seminario_portabilidade_e_performance')"><sup>[copy]</sup></a></span>
+
+<p>O nosso seminário da semana retrasada sobre portabilidade e performance teve um clima mais familiar, lembrando os antigos eventos. O tamanho menor da sala, aliado ao fato dos palestrantes não precisarem usar microfone, como foi da última vez, fez com que houvesse mais interação com o público, com destaque para minha própria palestra, onde tivemos um hiato significativo para falar sobre o desempenho da classe std::string e outros assuntos mais obscuros.</p>
+
+<p>A ordem das palestras também ajudou muito a tecer os conteúdos individuais para algo maior e em comum, que eram os temas do seminário: se com Galuppo tivemos uma pitada do desenvolvimento concorrente, com Fernando conseguimos entender de uma maneira simples e didática como funcionam os recursos de sincronismo entre threads rodando em múltiplos cores, com uma pequena ajuda de um exemplo em C levado ao nível de assembly, onde foi possível acompanhar o que já havíamos aprendido com a palestra do Caloni.</p>
+
+<p>Pra terminar, um apanhado de boas práticas e  a experiência de quem já mexeu muito com análise e desempenho no código: Rodrigo Strauss. Além das dicas e do bom humor costumeiros, tivemos uma pequena prévia do que poderemos ter em breve com o tema "C++ com outra linguagens".</p>
+
+<p>Deixarei disponibilizado para download minha transparência, onde infelizmente não estão embutidos o áudio nem o vídeo do momento realmente importante,que foi a interação do grupo durante a apresentação. Se você perdeu, so sorry. Até a próxima!</p>
+
+</section><hr/>
+
+
+<span id="trabalhando_em_multiplos_ambientes" title="Trabalhando em múltiplos ambientes"/></span>
+<section id="section_trabalhando_em_multiplos_ambientes">
+<p class="title"><a href="2010-12.html#trabalhando_em_multiplos_ambientes">#</a> Trabalhando em múltiplos ambientes</p>
+<span class="title-heading">Caloni, 2010-12-27<a href="2010-12.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_trabalhando_em_multiplos_ambientes')"><sup>[copy]</sup></a></span>
+
+<p>Existem diversas maneiras de se trabalhar com o Bazaar. Eu já <a href="http://www.caloni.com.br/como-estou-trabalhando-com-o-bazaar">havia definido</a> como fazer na máquina de desenvolvedor para modificar o mesmo código-fonte em projetos paralelos, onde basicamente tenho um branch principal conectado no servidor (assim todo commit vai pra lá) e crio branches paralelos e desconectados para fazer quantos commits eu tenho vontade durante o desenvolvimento. Após todas as mudanças e testes básicos, atualizo o branch principal (com mudanças dos meus colegas) e faço o merge com o branch paralelo onde fiz todas as mudanças. Antes de subir com o commit final, ainda realizo um build de teste local, se necessário.</p>
+
+<p>Nos casos em que eu trabalho em casa (ou em outro ambiente), posso fazer basicamente a mesma coisa, só que meu branch paralelo é copiado para outra máquina:</p>
+
+<pre>
+   C:\&gt;cd \Src\projeto-principal
+   
+   C:\Src\projeto-principal&gt;bzr get . ..\projeto-principal.TravamentoServico.MeuNotePessoal
+   Branched 950 revision(s).
+</pre>
+<p>Geralmente o que faço depois é compactar a pasta gerada (se desejar, use uma senha forte nesse passo), fazer uma cópia para um PenDrive e descompactar na máquina que irei trabalhar.</p>
+
+<pre>
+   C:\Src\projeto-principal.TravamentoServico&gt;hack hack hack
+   
+   C:\Src\projeto-principal.TravamentoServico&gt;bzr ci -m &quot;Uma mudancinha inicial&quot;
+   Committing to: C:/Src/projeto-principal.TravamentoServico/
+   added teste.txt
+   Committed revision 951.
+   
+   C:\Src\projeto-principal.TravamentoServico&gt;hack hack hack
+   
+   C:\Src\projeto-principal.TravamentoServico&gt;bzr ci -m &quot;Vamos ver se funciona&quot;
+   Committing to: C:/Src/projeto-principal.TravamentoServico/
+   modified teste.txt
+   Committed revision 952.
+   
+   C:\Src\projeto-principal.TravamentoServico&gt;hack hack hack
+   
+   C:\Src\projeto-principal.TravamentoServico&gt;bzr ci -m &quot;Não funcionou. Mais uma vez.&quot;
+   Committing to: C:/Src/projeto-principal.TravamentoServico/
+   modified teste.txt
+   Committed revision 953.
+   
+   C:\Src\projeto-principal.TravamentoServico&gt;hack hack hack
+   
+   C:\Src\projeto-principal.TravamentoServico&gt;bzr ci -m &quot;Desconfio de uma coisa...&quot;
+   Committing to: C:/Src/projeto-principal.TravamentoServico/
+   modified teste.txt
+   Committed revision 954.
+   
+   C:\Src\projeto-principal.TravamentoServico&gt;hack hack hack
+   
+   C:\Src\projeto-principal.TravamentoServico&gt;bzr ci -m &quot;Corrigido travamento.&quot;
+   Committing to: C:/Src/projeto-principal.TravamentoServico/
+   modified teste.txt
+   Committed revision 955.
+   
+   C:\Src\projeto-principal.TravamentoServico&gt;doc doc doc
+   
+   C:\Src\projeto-principal.TravamentoServico&gt;bzr ci -m &quot;Comentando e documentando solucao.&quot;
+   Committing to: C:/Src/projeto-principal.TravamentoServico/
+   modified teste.txt
+   Committed revision 956.
+</pre>
+<p>Terminado o trabalho naquela máquina, geralmente gero um branch novo (para limpar o diretório) e recompacto a solução, copio para o Pendrive, e descompacto na máquina da empresa. O resto do caminho é como se eu tivesse feito as modificações na própria máquina:</p>
+
+<img src="img/trabalhando_em_multiplos_ambientes_server_commit.png"/>
+
+</section><hr/>
+
+<span style="float: left;">
+ <a href="2010-11.html">[2010-11]</a>
+ <a href="2011-01.html">[2011-01]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

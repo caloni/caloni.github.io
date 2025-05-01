@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="BlogWriter 0.2.0 MarkdownParser 0.2.0">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery-ui.css"/>
+<script src="/js/jquery-1.12.4.js"></script>
+<script src="/js/jquery-ui.js"></script>
+<script src="/js/copy_clipboard.js"></script>
+<script>
+var quick_search_posts = [ 
+ ]; 
+</script>
+<script src="/js/quick_search.js"></script>
+<script src="/js/list.js"></script>
+<link rel="icon" href="/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="months.html">
+<div class="is-4"><b>caloni::2011-05</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<ul style="list-style: none;">
+
+<li><small><a href="2011-05.html#sem_reflection">Sem reflection</a></small></li>
+
+<li><small><a href="2011-05.html#comparando_strings_no_windbg">Comparando strings no WinDbg</a></small></li>
+
+<li><small><a href="2011-05.html#novo_branch_para_projetos_do_calonicombr">Novo branch para projetos do Caloni.com.br</a></small></li>
+</ul>
+
+
+<span id="sem_reflection" title="Sem reflection"/></span>
+<section id="section_sem_reflection">
+<p class="title"><a href="2011-05.html#sem_reflection">#</a> Sem reflection</p>
+<span class="title-heading">Caloni, 2011-05-18 <a href="2011-05.html#comparando_strings_no_windbg">&lt;</a><a href="computer.html">computer</a><a href="2011-03.html#base64">&gt;</a><a href="2011-05.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_sem_reflection')"><sup>[copy]</sup></a></span>
+
+<p>Em C++ não temos (ainda) a possibilidade de listarmos, por exemplo, a lista de métodos de um determinado tipo, a fim de chamá-lo pelo nome em tempo de execução. Algo assim:</p>
+
+<pre>
+class MyClass
+{
+public:
+        void Method1();
+        void Method2();
+        void Method3();
+};
+int main()
+{
+        MyClass c;
+        if( auto m = typeid(c). methods. getaddresof( &quot;Method1&quot; ) )
+                m();
+}
+</pre>
+<p>OK, foi apenas um exemplo tosco de como seria um reflection em C++.</p>
+
+<p>Porém, existem algumas maneiras de contornar esse problema. A solução, é claro, depende de qual problema você está tentando resolver.</p>
+
+<p>Vamos supor, por exemplo, que você queira cadastrar funções para serem chamadas de maneira uniforme pelo prompt de comando. Vamos chamar nossa classe tratadora de CommandPrompt.</p>
+
+<pre>
+typedef void (Method*)(vector&lt;string&gt;&amp; args);
+class CommandPrompt
+{
+public:
+        void Add(string name, Method m); // adiciona novo método
+        void Interact(ostream&amp; os, istream&amp; is); // começa interação com usuário
+};
+</pre>
+<p>Internamente, para armazenar as funções de acordo com o nome dado, basta criarmos um mapeamento entre esses dois tipos e fazemos a amarração necessária para o método principal de parseamento:</p>
+
+<pre>
+typedef map&lt;string, Method&gt; MethodList; // uma variável desse tipo armazena todas as funções
+void CommandPrompt::Interact(ostream&amp; os, istream&amp; is)
+{
+        while( is )
+        {
+                string func;
+                vector&lt;string&gt; args;
+                if( ParseLine(is, func, args) )
+                {
+                        // se a função desejada está em nossa lista,
+                        // podemos chamá-la, mesmo sem conhecer qual é
+                        if( Method m = m_funcs[func] )
+                                m(args);
+                }
+        }
+}
+</pre>
+<p>Essa solução não é exatamente um reflection, mas apenas parte do que o verdadeiro reflection possibilita. Existem outras funcionalidades, como traits, que a STL já consegue se virar razoavelmente bem, por exemplo.</p>
+
+</section><hr/>
+
+
+<span id="comparando_strings_no_windbg" title="Comparando strings no WinDbg"/></span>
+<section id="section_comparando_strings_no_windbg">
+<p class="title"><a href="2011-05.html#comparando_strings_no_windbg">#</a> Comparando strings no WinDbg</p>
+<span class="title-heading">Caloni, 2011-05-22 <a href="2011-07.html#cuidado_com_variaveis_temporarias">&lt;</a><a href="computer.html">computer</a><a href="2011-05.html#sem_reflection">&gt;</a><a href="2011-05.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_comparando_strings_no_windbg')"><sup>[copy]</sup></a></span>
+
+<p>O WinDbg fornece aos programadores diversos meios (muitos redundantes) de comparar valores inteiros em quaquer lugar da memória, em qualquer tamanho (8, 16, 32, 64 bits). Porém, quando precisamos comparar strings, que todos sabem ser uma sequência de bytes de tamanho arbitrário (se for em C, até o zero terminador).</p>
+
+<p>Uma solução simples e rápida é comparar os 4 primeiros bytes de uma string, ou os 4 primeiros bytes que diferem de uma lista grande.</p>
+
+<p>Por exemplo, imagine o seguinte código que abre todos os arquivos da pasta de sistema:</p>
+
+<pre>
+#define _CRT_SECURE_NO_WARNINGS
+#include &lt;Windows.h&gt;
+#include &lt;stdio.h&gt;
+int main()
+{
+    CHAR sysPath[MAX_PATH];
+    CHAR findPath[MAX_PATH];
+    GetSystemDirectory(sysPath, MAX_PATH);
+    sprintf(findPath, &quot;%s\\*.*&quot;, sysPath);
+    WIN32_FIND_DATA findData;
+    HANDLE findH = FindFirstFile(findPath, &amp;findData);
+    if( findH != INVALID_HANDLE_VALUE )
+    {
+      do
+      {
+        CHAR filePath[MAX_PATH];
+        sprintf(filePath, &quot;%s\\%s&quot;, sysPath, findData.cFileName);
+        HANDLE fileH = CreateFile(filePath, GENERIC_READ, 
+          FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
+        if( fileH )
+        {
+          CHAR firstBytes[4];
+          DWORD wasRead = 0;
+          if( ReadFile(fileH, firstBytes, 4, &amp;wasRead, NULL) &amp;&amp; wasRead == 4 )
+          {
+            printf(&quot;%s: %02X %02X %02X %02X\n&quot;, findData.cFileName,
+              (int) firstBytes[0], (int) firstBytes[1], 
+              (int) firstBytes[2], (int) firstBytes[3]);
+          }
+          CloseHandle(fileH);
+        }
+      }
+      while( FindNextFile(findH, &amp;findData) );
+      FindClose(findH);
+    }
+}
+</pre>
+<p>Queremos colocar um breakpoint no momento em que o arquivo shell32.dll estiver sendo aberto. Para isso, devemos nos atentar para os parâmetros passados para a função CreateFile.</p>
+
+<pre>
+   
+   windbg strcmpwindbg1.exe
+   
+   0:000&gt; bp kernel32!CreateFileA
+   
+   Breakpoint 0 hit
+   
+   eax=001bf918 ebx=7efde000 ecx=001bf7e0 edx=001bf7e0 esi=001bf824 edi=001bfd90
+   
+   eip=7663ca6e esp=001bf804 ebp=001bfd90 iopl=0         nv up ei pl zr na pe nc
+   
+   cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000246
+   
+   kernel32!CreateFileA:
+   
+   7663ca6e 8bff            mov     edi,edi
+   
+   0:000&gt; da poi(esp+4)
+   
+   001bf918  &quot;C:\Windows\system32\accessibilit&quot;
+   
+   001bf938  &quot;ycpl.dll&quot;
+   
+   0:000&gt; g
+   
+   Breakpoint 0 hit
+   
+   eax=001bf918 ebx=7efde000 ecx=001bf7e0 edx=001bf7e0 esi=001bf824 edi=001bfd90
+   
+   eip=7663ca6e esp=001bf804 ebp=001bfd90 iopl=0         nv up ei pl zr na pe nc
+   
+   cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000246
+   
+   kernel32!CreateFileA:
+   
+   7663ca6e 8bff            mov     edi,edi
+   
+   0:000&gt; da poi(esp+4)
+   
+   001bf918  &quot;C:\Windows\system32\ACCTRES.dll&quot;
+   
+</pre>
+<p>O padrão aqui é que todo path passado para o CreateFile vai começar com c:\windows\system32, o que não é uma informação que podemos usar para buscar um arquivo específico.</p>
+
+<p>Temos que nos atentar para o padrão de bits após esse path. Vamos dar uma olhada por dentro da string.</p>
+
+<pre>
+   0:000&gt; db 001bf918
+   001bf918  43 3a 5c 57 69 6e 64 6f-77 73 5c 73 79 73 74 65  C:\Windows\syste
+   001bf928  6d 33 32 5c 41 43 43 54-52 45 53 2e 64 6c 6c 00  m32\ACCTRES.dll.
+   001bf938  79 63 70 6c 2e 64 6c 6c-00 cc cc cc cc cc cc cc  ycpl.dll........
+</pre>
+<p>O nome do arquivo começa no offset 16+4 = 20, ou 14 em hexa. Dessa forma, podemos capturar o padrão de bits da seguinte maneira:</p>
+
+<pre>
+   0:000&gt; dd poi(esp+4)+14 l1
+   001bf92c  54434341
+</pre>
+<p>Para nos certificarmos que é realmente esse o padrão, e para já montarmos nosso próprio padrão para o shell32.dll, vamos alocar um pedaço de memória e verificar se a sequência de bits está correta.</p>
+
+<pre>
+   0:000&gt; dd poi(esp+4)+14 l1
+   001bf92c  54434341
+   0:000&gt; .dvalloc 100
+   Allocated 1000 bytes starting at 00030000
+   0:000&gt; ea 00030000 &quot;ACCTRES.dll&quot;
+   0:000&gt; dd 00030000 l1
+   00030000  54434341
+</pre>
+<p>Ótimo. Os padrões bateram, então podemos colocar um breakpoint condicional partindo do padrão de bits do nome do arquivo que precisamos.</p>
+
+<pre>
+   0:000&gt; bp kernel32!CreateFileA &quot;j (poi(poi(esp+4)+14)=6c656873) ''; 'g'&quot;
+   breakpoint 0 redefined
+   0:000&gt; g
+   eax=0021f48c ebx=7efde000 ecx=0021f354 edx=0021f354 esi=0021f398 edi=0021f904
+   eip=7663ca6e esp=0021f378 ebp=0021f904 iopl=0         nv up ei pl zr na pe nc
+   cs=0023  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000246
+   kernel32!CreateFileA:
+   7663ca6e 8bff            mov     edi,edi
+   0:000&gt; da poi(esp+4)
+   0021f48c  &quot;C:\Windows\system32\shell32.dll&quot;
+   
+</pre>
+<p>Com isso, economizamos alguns minutos de puro tédio, verificando os nomes um a um conforme eles são abertos. Ou, dependendo da massa de dados, algumas décadas. Quem sabe. Pode ser muito mais útil um outro dia.</p>
+
+</section><hr/>
+
+
+<span id="novo_branch_para_projetos_do_calonicombr" title="Novo branch para projetos do Caloni.com.br"/></span>
+<section id="section_novo_branch_para_projetos_do_calonicombr">
+<p class="title"><a href="2011-05.html#novo_branch_para_projetos_do_calonicombr">#</a> Novo branch para projetos do Caloni.com.br</p>
+<span class="title-heading">Caloni, 2011-05-29<a href="2011-05.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_novo_branch_para_projetos_do_calonicombr')"><sup>[copy]</sup></a></span>
+
+<p>Reestruturei meus projetos caseiros e coloquei todos em um branch no repositório do Assembla. A partir dele começarei a reestruturas os códigos de exemplo do saite, o deve facilitar o acesso. Para usuários do Bazaar, como eu, basta puxar o branch usando <a href="http://subversion.assembla.com/svn/caloni/trunk">seu endereço</a> usando o comando `bzr get`:</p>
+
+<img src="img/novo_branch_para_projetos_do_caloni_com_br_nova_branch_bazaar_assembla.png"/>
+
+<pre>
+   
+</pre>
+<p>Para os usuários do Subversion, ou qualquer outro controle de fonte que consiga ler um branch feito em SVN, google for it.</p>
+
+</section><hr/>
+
+<span style="float: left;">
+ <a href="2011-04.html">[2011-04]</a>
+ <a href="2011-06.html">[2011-06]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

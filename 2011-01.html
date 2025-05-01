@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="BlogWriter 0.2.0 MarkdownParser 0.2.0">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery-ui.css"/>
+<script src="/js/jquery-1.12.4.js"></script>
+<script src="/js/jquery-ui.js"></script>
+<script src="/js/copy_clipboard.js"></script>
+<script>
+var quick_search_posts = [ 
+ ]; 
+</script>
+<script src="/js/quick_search.js"></script>
+<script src="/js/list.js"></script>
+<link rel="icon" href="/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="months.html">
+<div class="is-4"><b>caloni::2011-01</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<ul style="list-style: none;">
+
+<li><small><a href="2011-01.html#dependencia_pedindo_carona">Dependência pedindo carona</a></small></li>
+
+<li><small><a href="2011-01.html#reuniao_de_programadores_c++_ha_5_anos">Reunião de programadores C++ (há 5 anos)</a></small></li>
+
+<li><small><a href="2011-01.html#esse_ponteiro_vai_ate_onde">Esse ponteiro vai até onde?</a></small></li>
+
+<li><small><a href="2011-01.html#atividades_extracurriculares">Atividades extracurriculares</a></small></li>
+</ul>
+
+
+<span id="dependencia_pedindo_carona" title="Dependência pedindo carona"/></span>
+<section id="section_dependencia_pedindo_carona">
+<p class="title"><a href="2011-01.html#dependencia_pedindo_carona">#</a> Dependência pedindo carona</p>
+<span class="title-heading">Caloni, 2011-01-04 <a href="2011-01.html#esse_ponteiro_vai_ate_onde">&lt;</a><a href="computer.html">computer</a><a href="2010-11.html#patch_de_emergencia_2">&gt;</a><a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_dependencia_pedindo_carona')"><sup>[copy]</sup></a></span>
+
+<p>Mesmo as vezes que você não queira, algumas dependências pedem carona e o compilador deixa entrar. Daí mesmo que você não use uma função API, ela acaba te atazanando a vida.</p>
+
+<p>Foi o caso da ToolHelp32 no Windows NT 4.</p>
+
+<h4>Como as coisas funcionam</h4>
+
+<p>Quando compilamos, cada CPP vira uma coleção de funções que serão usadas, mais tarde, pelo linker, para juntar a bagunça. Para mais detalhes dessa fascinante história, recomendo o fantástico artigo sobre <a href="http://www.caloni.com.br/os-diferentes-erros-na-linguagem-c">Os diferentes erros na linguagem C</a>, seção **Linkedição**.</p>
+
+<p>Para as dependências localizadas fora do executável final, por exemplo, as DLLs do sistema, o linker cria uma entrada no formato padrão de executável que adiciona essa dependência extra que será resolvida na hora do programa rodar, quando o loader do sistema operacional terá que fazer um linker on-the-fly, catando todas as DLLs e funções necessárias para colocar o bichinho no ar.</p>
+
+<p>Dessa forma, quando existirem unresolved externals fora do executável final, o responsável por dar o erro é o loader do sistema:</p>
+
+<img src="img/dependencia_pedindo_carona_winnt4_process32next_unresolved2.png"/>
+
+<p>Isso significa que o seu processo não poderá ser executado, pois faltam funções no ambiente que ele depende.</p>
+
+<p>Um recurso muito útil para ver essas funções é o Dependency Walker, meu amigo de infância:</p>
+
+<img src="img/dependencia_pedindo_carona_depends_process32_not_found2.png"/>
+
+<blockquote>"Mas, Caloni, eu nem uso essa função! Como ela pode ser necessária?"</blockquote>
+<p>Pois é. As coisas nem sempre acabam sendo como o esperado. Se você possuir uma LIB, por exemplo, e nela existirem duas funções, como abaixo, e você se limitar a usar em seu programa apenas a primeira, todas as dependências da segunda também irão parar no executável final.</p>
+
+<pre>
+#include &quot;LibMod.h&quot;
+#include &lt;windows.h&gt;
+#include &lt;Tlhelp32.h&gt;
+#include &lt;stdio.h&gt;
+// Essa função é usada pelo nosso App
+int UsingOldApis()
+{
+    DWORD ver = GetVersion(); // API paleozoica, OK.
+    return int( (DWORD)(LOBYTE(LOWORD(ver))) );
+}
+// Essa função NÃO é usada pelo nosso App
+void UsingNewApis()
+{
+    // Opa: função moderninha!!
+    if( HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL) )
+    {
+      PROCESSENTRY32 procEntry;
+      // Tudo bem, nosso App não vai usar essa função.
+      if( Process32First(snapshot, &amp;procEntry) )
+      {
+        printf(&quot;Process list:\n&quot;);
+        do
+        {
+          printf(&quot;%s\n&quot;, procEntry.szExeFile);
+        }
+        while( Process32Next(snapshot, &amp;procEntry) );
+      }
+      CloseHandle(snapshot);
+    }
+}
+ 
+#include &quot;LibMod.h&quot;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+int main()
+{
+    // Usando apenas funções paleozoicas, certo?
+    printf(&quot;Our Major OS version is %d\n&quot;, UsingOldApis() );
+    system(&quot;pause&quot;);
+}
+ 
+</pre>
+<h4>Por que isso ocorre?</h4>
+
+<p>Acontece que o nosso amigo linker gera uma lista de dependências por módulo (CPP), e não por função. Dessa forma, tudo que vier é lucro.</p>
+
+<p>Só que às vezes é prejuízo, também. Quando usamos um SO da época do guaraná com rolha, como o Windows NT 4, por exemplo, não conseguimos usar um programa porque este possuía uma função moderninha nunca usada, mas que estava dentro de um CPP junto de uma função comportada, usando apenas APIs documentadas no primeiro papiro da Microsoft.</p>
+
+<h4>Solução?</h4>
+
+<p>Sempre existe. Nesse caso, migrarmos as funções moderninhas para um segundo CPP, recompilarmos a LIB e a dependência milagrosamente desaparecerá!</p>
+
+<pre>
+#include &quot;LibMod.h&quot;
+#include &lt;windows.h&gt;
+#include &lt;Tlhelp32.h&gt;
+#include &lt;stdio.h&gt;
+// Essa função é usada pelo nosso App
+int UsingOldApis()
+{
+    DWORD ver = GetVersion(); // API paleozoica, OK.
+    return int( (DWORD)(LOBYTE(LOWORD(ver))) );
+}
+ 
+#include &quot;LibMod.h&quot;
+#include &lt;windows.h&gt;
+#include &lt;Tlhelp32.h&gt;
+#include &lt;stdio.h&gt;
+// Essa função NÃO é usada pelo nosso App
+void UsingNewApis()
+{
+    // Opa: função moderninha!!
+    if( HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL) )
+    {
+      PROCESSENTRY32 procEntry;
+      // Tudo bem, nosso App não vai usar essa função.
+      if( Process32First(snapshot, &amp;procEntry) )
+      {
+        printf(&quot;Process list:\n&quot;);
+        do
+        {
+          printf(&quot;%s\n&quot;, procEntry.szExeFile);
+        }
+        while( Process32Next(snapshot, &amp;procEntry) );
+      }
+      CloseHandle(snapshot);
+    }
+}
+</pre>
+<img src="img/dependencia_pedindo_carona_depends_process32_not_needed.png"/>
+
+<p>Agora a aplicação poderá rodar em paz naquele que é, como diz meu amigo, um sistema operacional de ponta... da outra ponta!</p>
+
+</section><hr/>
+
+
+<span id="reuniao_de_programadores_c++_ha_5_anos" title="Reunião de programadores C++ (há 5 anos)"/></span>
+<section id="section_reuniao_de_programadores_c++_ha_5_anos">
+<p class="title"><a href="2011-01.html#reuniao_de_programadores_c++_ha_5_anos">#</a> Reunião de programadores C++ (há 5 anos)</p>
+<span class="title-heading">Caloni, 2011-01-12 <a href="2011-09.html#oitavo_encontro_do_grupo_c/c++_brasil">&lt;</a><a href="ccppbr.html">ccppbr</a><a href="2010-12.html#posii_seminario_portabilidade_e_performance">&gt;</a><a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_reuniao_de_programadores_c++_ha_5_anos')"><sup>[copy]</sup></a></span>
+
+<p>Começo de ano, hora de fazer backup completo. Durante minha cópia anual do gmail acabei encontrando meu post-chamado para nossa primeira reunião C++. Como parte da sessão nostalgia, convido-os, novos e velhos colegas, a continuar a brincadeira de organizar uma reunião informal de pessoas que gostam tanto de programar que criam seus próprios ponteiros.</p>
+
+<p>E-mail escrito em 02/12/2005:</p>
+
+<p>Um dia desses conversando com o Rodrigo Strauss, falando sobre como é interessante trocar informações e experiências sobre C++, ele teve a brilhante e original idéia (ninguém nunca fez isso antes) de propor encontros razoavelmente regulares para fazermos isso. A idéia dele era mais ou menos essa:</p>
+
+<p>  * Peridiocidade dos encontros de X em X meses. Ainda não fechamos isso;</p>
+
+<p>  * X pautas por reunião, votadas pelos participantes. Já temos algumas sugestões como, recursos arcanos do C++ (essa, de acordo com ele, seria minha função), ferramentas, bibliotecas, organização de código etc;</p>
+
+<p>  * Troca de experiências sobre C++ em diversos sistemas operacionais. Por exemplo, nós mostraríamos para o pessoal de UNIX o Visual C++ e aprenderíamos com eles sobre emacs ou KDevelop;</p>
+
+<p>  * Começar de forma muito simples, como uma mesa redonda, e se a coisa avançar, arrumar um lugar para palestras e apresentações;</p>
+
+<p>  * Reuniões em bares ou restaurantes onde possamos conversar, levar acompanhantes e nos sentirmos seguros levando notebooks ou Pockets. Podemos até subir uma rede wifi e aumentar a diversão :-)</p>
+
+<p>  * Como eu e o Strauss somos de São Paulo (na verdade, eu sou de São Bernardo), os primeiros encontros seriam na capital;</p>
+
+<p>  * Isso é uma boa desculpa para se encontrar e tomar um chopp || guaraná || cachaça.</p>
+
+<p>Gostaríamos que as pessoas da comunidade C++ dessem sugestões sobre essa idéia. Estamos pensando em agendar o primeiro encontro para dia 17/12/2005 (sábado) durante a tarde, em um Outback (comida australiana, Shopping Center Norte ou Eldorado, tem infra para crianças e a comida é muito boa). Como pauta do primeiro encontro eu sugiro uma apresentação dos participantes (o que será desnecessário se só eu e o Strauss aparecermos) e uma discussão sobre o presente e o futuro do mercado de trabalho C++.</p>
+
+<p>Coloquem as sugestões nos comentários e quando a gente fechar alguma coisa eu escrevo um novo post com o que definimos. Até lá.</p>
+
+<p>PS: Qualquer semelhança deste post com o conteúdo de um conhecido blog brasileiro sobre programação não é mera coincidência.</p>
+
+</section><hr/>
+
+
+<span id="esse_ponteiro_vai_ate_onde" title="Esse ponteiro vai até onde?"/></span>
+<section id="section_esse_ponteiro_vai_ate_onde">
+<p class="title"><a href="2011-01.html#esse_ponteiro_vai_ate_onde">#</a> Esse ponteiro vai até onde?</p>
+<span class="title-heading">Caloni, 2011-01-17 <a href="2011-03.html#vtable">&lt;</a><a href="computer.html">computer</a><a href="2011-01.html#dependencia_pedindo_carona">&gt;</a><a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_esse_ponteiro_vai_ate_onde')"><sup>[copy]</sup></a></span>
+
+<p>Brincando com obtenções e conversões de SIDs, tive uma pequena dificuldade de usar a função ConvertStringSidToSid, de Sddl.h. Seu objetivo é receber uma string-SID no formato usado pela ferramenta PsGetSid e retornar uma sequência de bytes de tamanho arbitrário, que é o SID como o sistema o enxerga. Como ela retorna apenas o ponteiro final, do tipo PSID, o que parece fácil pode se tornar tricky se quisermos copiar o SID binário para algum buffer na pilha, já que não sabemos o número de bytes no buffer de origem. Tudo que sabemos é que, após o uso, devemos desalocar essa memória retornada pela API com outra API: LocalFree.</p>
+
+<p>Ora, mesmo que não venhamos a escrever nessa memória de tamanho obscuro, não é de bom tom ler além da conta. Não há garantias que o que estiver após o SID é seguro. Pode até ser o final de uma página de  memória, por exemplo, e o seu programa capota por causa de um singelo "Memory could not be read". Que coisa sem graça!</p>
+
+<img src="img/esse_ponteiro_vai_ate_onde_psid_e_o_buraco_negro.png"/>
+
+<p>Sempre que me vejo com problemas desse tipo procuro informações primeiro  no próprio MSDN, segundo na cabeça e terceiro no Google. Nesse caso em  específico a cabeça deu um jeito, pois imaginei que houvesse alguma  forma de pegar o tamanho da memória alocada através das funções Local (se a API precisa de LocalFree para desalocar sua memória, é óbvio que  ela usou LocalAlloc para alocá-la, mesmo que não tenhamos o código-fonte  para comprovar).</p>
+
+<p>A partir de LocalHandle posso obter o HANDLE para a memória alocada localmente. Com esse handle a API me dá outra função, LocalSize, de onde posso obter o tamanho da memória previamente alocada através do seu handle. Isso é ótimo, pois em um primeiro momento pensei não haver saída, como nas funções de alocação em C e C++, por exemplo.</p>
+
+</section><hr/>
+
+
+<span id="atividades_extracurriculares" title="Atividades extracurriculares"/></span>
+<section id="section_atividades_extracurriculares">
+<p class="title"><a href="2011-01.html#atividades_extracurriculares">#</a> Atividades extracurriculares</p>
+<span class="title-heading">Caloni, 2011-01-18<a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_atividades_extracurriculares')"><sup>[copy]</sup></a></span>
+
+<p>Essa é uma resposta a um simpático e-mail de um leitor, o Fabio, me perguntando sobre a tal da lógica (de programação?) e das atividades que um programador pode ter quando está longe do micro para não ficar com a "mente vadiando".</p>
+
+<p>Entusiasta ao máximo, ele montou uma lista baseada em estudo constante sob variadas formas, mesmo longe do micro:</p>
+
+<p>  * Contar binário e calcular hexa na cabeça;</p>
+
+<p>  * Ler livros;</p>
+
+<p>  * Programar em papel;</p>
+
+<p>  * Algo mais?</p>
+
+<p>De acordo com ele, o programador não consegue viver sem lógica, e quando tenta, se torna algo "intolerável".</p>
+
+<p>Já fiz duas dessas coisas divertidíssimas em minha tenra idade: contar binário enquanto varria o laboratório onde trabalhava, programar em papel numa noite que fiquei ao relento por ter perdido o busão. Não faço mais essas coisas. Agora eu sou fresco. "Programo em UML".</p>
+
+<p>Primeiro, de que lógica estamos falando? Existem diversas lógicas e existe a intuição, lado importante e muitas vezes renegado, mas presente no cinto de utilidades. É só saber usar. Seja um, seja outro.</p>
+
+<p>Segundo, o cérebro pode cair na vadiagem. Aliás, ele deve. Sem vadiagem, nunca conseguimos processar aquelas threads que ficam rodando em idle, no inconsciente, e que podem resolver uma série de questões que ficam ensebando em nossos conturbados egos. É como o copo cheio de água em Karate Kid (ou em "2012").</p>
+
+<p>O básico mesmo é ler livros. Tão básico que deve ser a atividade principal quando não estamos com nenhum eletrônico bonitinho na mão. Aliás, até quando estamos, com o auto-controle, conseguimos ler um ebook de vez em quando.</p>
+
+<p>Independente do método empregado, nunca visualize seus esforços com ceticismo, e muito menos com o ceticismo dos outros. Se estiver funcionando, continue a fazê-lo. Não vê resultados? Mude o método. Senão cai na velha frase de Eistein sobre o sujeito que espera resultados diferentes fazendo sempre a mesma coisa: loucura.</p>
+
+<p>O que eu adicionaria na lista?</p>
+
+<p>  * Assistir CSI. Pra entender o uso prático dos métodos indutivo e dedutivo de raciocínio; mais indutivo.</p>
+
+<p>  * Assistir House. Nunca é demais se imaginar como o médico-louco que cura todas as doenças esquisitas; doença aqui é bug.</p>
+
+<p>  * Assistir Dexter. Veja como ele faz o seu trabalho seguindo sempre o mesmo método e deixando o ambiente limpinho, sem nenhuma pista.</p>
+
+<p>Fora isso, curta o que está fazendo. Isso é o primordial. Arrebenta com qualquer dúvida que tiver sobre estar no caminho certo.</p>
+
+</section><hr/>
+
+<span style="float: left;">
+ <a href="2010-12.html">[2010-12]</a>
+ <a href="2011-02.html">[2011-02]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

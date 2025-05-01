@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="BlogWriter 0.2.0 MarkdownParser 0.2.0">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery-ui.css"/>
+<script src="/js/jquery-1.12.4.js"></script>
+<script src="/js/jquery-ui.js"></script>
+<script src="/js/copy_clipboard.js"></script>
+<script>
+var quick_search_posts = [ 
+ ]; 
+</script>
+<script src="/js/quick_search.js"></script>
+<script src="/js/list.js"></script>
+<link rel="icon" href="/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="months.html">
+<div class="is-4"><b>caloni::2010-10</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<ul style="list-style: none;">
+
+<li><small><a href="2010-10.html#tres_em_um">Três em um</a></small></li>
+
+<li><small><a href="2010-10.html#atualizando_houaissparababylon_no_saite">Atualizando HouaissParaBabylon no saite</a></small></li>
+
+<li><small><a href="2010-10.html#formatmessage_para_dumies">FormatMessage para... dumies?</a></small></li>
+</ul>
+
+
+<span id="tres_em_um" title="Três em um"/></span>
+<section id="section_tres_em_um">
+<p class="title"><a href="2010-10.html#tres_em_um">#</a> Três em um</p>
+<span class="title-heading">Caloni, 2010-10-09 <a href="2010-10.html#formatmessage_para_dumies">&lt;</a><a href="computer.html">computer</a><a href="2010-08.html#como_ofuscar_strings">&gt;</a><a href="2010-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_tres_em_um')"><sup>[copy]</sup></a></span>
+
+<p>Que vergonha passar tanto tempo sem postar nada. Parece que não fiz nada que valesse a pena comentar por aqui.</p>
+
+<p>Na verdade, não fiz tanto, mesmo. Muitas mensagens do Outlook, gráficos UML e reuniões de alinhamento depois, sobrou um tempinho pra programar. Aprendi algumas coisas que tinha o desejo de saber há tanto tempo... Agora eu sei, quem diria, criar linques suspensos nas janelas Win32! Que novidade, não? Pois é, isso exige, <a href="http://msdn.microsoft.com/en-us/library/bb760706%28v=VS.85%29.aspx">de acordo com o SDK</a>, algumas artimanhas pra fazer funcionar. Para quem está de Visual Studio 2008/2010 na mão basta seguir os passos seguintes.</p>
+
+<p>Definir que estamos programando para XP ou superior:</p>
+
+<pre>
+   #define _WIN32_WINNT 0x0600
+</pre>
+<p>Inserir suporte a linques na biblioteca de controles comuns:</p>
+
+<pre>
+   INITCOMMONCONTROLSEX icc = { sizeof(icc), ICC_LINK_CLASS }; 
+   InitCommonControlsEx(&amp;icc);
+</pre>
+<p>Usar o CreateWindow com a classe certa, fazer markup html dentro do título e cuidar das mensagens de click e enter no controle:</p>
+
+<pre>
+CreateWindowEx(0, WC_LINK, 
+    L&quot;&lt;a href=\&quot;http://www.caloni.com.br\&quot;&gt;This site rocks!&lt;/a&gt;&quot;, 
+    WS_VISIBLE | WS_CHILD | WS_TABSTOP, ...);
+//...
+    case WM_NOTIFY:
+      switch( ((LPNMHDR)lParam)-&gt;code )
+      {
+      case NM_CLICK:
+      case NM_RETURN:
+      {
+        PNMLINK pNMLink = (PNMLINK)lParam;
+        LITEM item = pNMLink-&gt;item;
+        if( (((LPNMHDR)lParam)-&gt;hwndFrom == st_linkHwnd[hWndDlg]) )
+        {
+          // codigo util
+        }
+ 
+</pre>
+<p>Você que não está fazendo subclassing de janelas existe outra técnica que você pode utilizar: arrastar-e-soltar o controle do seu ToolBox. Qual é a graça?</p>
+
+<img src="img/tres_em_um_brmIxLu.png"/>
+
+<p> Outra coisa que aprendi foi como enviar mensagens ao usuário para impedir que este reinicie a máquina em momentos importantes:</p>
+
+<img src="img/tres_em_um_0OKkJKy.png"/>
+
+<p>A partir do Vista temos uma nova API para fazer isso. E é muito simples:</p>
+
+<pre>
+   BOOL WINAPI ShutdownBlockReasonCreate( 
+     __in  HWND hWnd, 
+     __in  LPCWSTR pwszReason 
+   );   
+   
+   BOOL WINAPI ShutdownBlockReasonDestroy( 
+     __in  HWND hWnd 
+   );
+</pre>
+<p>Quando ao receber a famigerada WM_QUERYENDSESSION, basta retornar FALSE. O Windows faz o resto.</p>
+
+<p>PS: E com uma ajudinha do Windows Internals ainda fiquei sabendo que dá pra <a href="http://msdn.microsoft.com/en-us/library/ms686227%28VS.85%29.aspx">se colocar na frente da fila</a> para receber essa mensagem.</p>
+
+</section><hr/>
+
+
+<span id="atualizando_houaissparababylon_no_saite" title="Atualizando HouaissParaBabylon no saite"/></span>
+<section id="section_atualizando_houaissparababylon_no_saite">
+<p class="title"><a href="2010-10.html#atualizando_houaissparababylon_no_saite">#</a> Atualizando HouaissParaBabylon no saite</p>
+<span class="title-heading">Caloni, 2010-10-22 <a href="2011-03.html#houaiss_no_kindle">&lt;</a><a href="projects.html">projects</a><a href="2010-04.html#houaiss_para_babylon">&gt;</a><a href="2010-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_atualizando_houaissparababylon_no_saite')"><sup>[copy]</sup></a></span>
+
+<p>O último comentário no meu último artigo sobre o conversor Houaiss para Babylon me fez lembrar de algo muito importante: eu não atualizei o branch do saite com a última versão. Deve ser por isso que as pessoas estão tendo problemas com o uso do código. Resolvo isso já:</p>
+
+<p>Essa é a versão 1.2 descrita no meu último artigo sobre o projeto.</p>
+
+<p>De qualquer forma, qual não foi minha surpresa quando tentei recompilar o projeto e ocorreram erros no atlcom. Depois de uma breve pesquisa descobri que precisava rodar alguns "patches" para o include funcionar direito. Então, provavelmente, Willians, era esse o problema. Tente de novo.</p>
+
+</section><hr/>
+
+
+<span id="formatmessage_para_dumies" title="FormatMessage para... dumies?"/></span>
+<section id="section_formatmessage_para_dumies">
+<p class="title"><a href="2010-10.html#formatmessage_para_dumies">#</a> FormatMessage para... dumies?</p>
+<span class="title-heading">Caloni, 2010-10-26 <a href="2010-11.html#entao_voce_ainda_nao_usa_controle_de_fonte">&lt;</a><a href="computer.html">computer</a><a href="2010-10.html#tres_em_um">&gt;</a><a href="2010-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_formatmessage_para_dumies')"><sup>[copy]</sup></a></span>
+
+<p>Já foi comentado em alguns círculos de ótimos programadores que a função da Win32 API <a href="http://msdn.microsoft.com/en-us/library/ms679351%28VS.85%29.aspx">FormatMessage</a> é uma das criaturas mais bizarras já criadas.</p>
+
+<p>O objetivo da FormatMessage é formatar uma string, assim como sprintf, mas voltado mais a escrever uma descrição de um código de erro. Sendo assim ela é essencial para que o usuário não receba um número no lugar de uma explicação de por que a operação falhou.</p>
+
+<p>Os códigos de erro que ela se propõe a formatar podem ser os erros padrões descritos em winerror.h ou qualquer outro código cuja explicação esteja em algum módulo carregado pelo processo (DLL ou o próprio executável). Isso nos dá a liberdade de, por exemplo, criar uma DLL apenas com códigos e descrições dos erros dos nossos produtos.</p>
+
+<p>Para que seja criada a mensagem final, uma definição de mensagem é requirida como entrada, que pode vir do próprio chamador ou da já mencionada tabela de erros de algum módulo qualquer. No caso de querermos a descrição de um erro de sistema (em winerror.h, retornado por GetLastError ou similares) a definição da mensagem já está embutida no sistema, bastando para nós passarmos o código.</p>
+
+<p>É importante lembrar que, como estamos falando de uma descrição de erro, ou seja, de um texto, este pode vir em diversos idiomas, sendo que é nossa obrigação também definir para qual idioma desejamos traduzir nosso código de erro, sendo também nossa obrigação, no caso de mensagens específicas do nosso programa, fornecer o modelo da mensagem nos idiomas que formos suportar.</p>
+
+<p>O resto da função funciona mais ou menos como o sprintf, cuspindo a mensagem-modelo em uma saída formatada de acordo com os parâmetros de entrada.</p>
+
+<pre>
+   
+   DWORD WINAPI FormatMessage(
+      __in      DWORD dwFlags,
+      __in_opt  LPCVOID lpSource,
+      __in      DWORD dwMessageId,
+      __in      DWORD dwLanguageId,
+      __out     LPTSTR lpBuffer,
+      __in      DWORD nSize,
+      __in_opt  va_list *Arguments
+   );
+</pre>
+<h4>Flags</h4>
+
+<p>As flags do parâmetro dwFlags mudam radicalmente o funcionamento da rotina, o que me lembra de outra figura bizarra: o <a href="http://www.cplusplus.com/reference/clibrary/cstdlib/realloc/">realloc da biblioteca padrão</a>.</p>
+
+<p>No caso do FormatMessage, a variável dwFlags se divide em dois para especificar dois grupos de opções distintos. A parte maior contém as opções armazenadas tradicionalmente como um mapa de bits, enquanto o byte menos significativo define como será tratada a saída final, com respeito às novas linhas e qual será a largura máxima de uma linha na saída.</p>
+
+<img src="img/formatmessage_para_dumies_8nKXyBs.png"/>
+
+<h4>Source</h4>
+
+<p>O parâmetro mais polêmico é o que possui vários significados. No caso de lpSource, existem dois significados possíveis:</p>
+
+<p>  1. **FORMAT_MESSAGE_FROM_HMODULE**. Ele é um HANDLE para um módulo.</p>
+
+<p>  2. **FORMAT_MESSAGE_FROM_STRING**. Ele é um ponteiro para string.</p>
+
+<p>Isso explica por que essas duas flags são exclusivas: ou uma ou outra. Mesmo que a flag FORMAT_MESSAGE_FROM_SYSTEM seja usada, a função tentará achar a definição da mensagem no módulo especificado por lpSource primeiro, antes de ir buscar nas tabelas do sistema.</p>
+
+<h4>O código do erro</h4>
+
+<p>Chamado de dwMessageId, esse é o argumento onde podemos passar um código de GetLastError ou nossos próprios códigos de erro. Se já tivermos uma string em lpSource, no entanto, não faz sentido existir um código de erro.</p>
+
+<h4>Idioma</h4>
+
+<p>Para definir o idioma é usado o mesmo sistema de resources: monta-se uma DWORD com MAKELANGID que contém informações do idioma primário e secundário. Se quisermos usar o idioma padrão do sistema (99% dos casos) basta passarmos o retorno de MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL).</p>
+
+<h4>Buffer de saída</h4>
+
+<p>Mais um argumento polêmico. Se a flag FORMAT_MESSAGE_ALLOCATE_BUFFER, lpBuffer não é um buffer, mas um ponteiro que será preechido com um endereço de memória alocada usando a função API LocalAlloc. Isso quer dizer que, após usar a mensagem formatada, devemos desalocar essa memória com LocalFree.</p>
+
+<p>Por outro lado, se o buffer for nosso, então seu tamanho deve ser especificado no próximo argumento, nSize.</p>
+
+<h4>Tamanho do buffer</h4>
+
+<p>Só que nem o parâmetro que especifica o tamanho do buffer é simples, assim. Se for especificado a flag FORMAT_MESSAGE_ALLOCATE_BUFFER, em vez de não fazer sentido esse argumento, ele significa o número MÍNIMO de caracteres que devem ser alocados, independente do tamanho da mensagem.</p>
+
+<p>_Obs.: Lembre-se que são caracteres, e não bytes. Se estivermos programando em UNICODE o número de bytes dobra._</p>
+
+<h4>Argumentos</h4>
+
+<p>Essa seria uma lista simples de argumentos va_list que, para quem já fez funções ao estilo printf sabe muito bem usar. A lógica da função determina que os valores "%1", "%2" e assim por diante dentro da definição de mensagem sejam trocados por estes argumentos.</p>
+
+<p>Se eles são strings terminadas em nulo (interpretação padrão), inteiros ou estruturas específicas, isso vai depender da mensagem que está sendo formatada, o que é outro if a ser lembrado na hora de formatar mensagens do sistema.</p>
+
+<p>Também é importante lembrar que, uma vez chamada a função, o conteúdo de va_list não pode ser usado novamente se não for reinicializado com va_end seguido de va_start.</p>
+
+<p>Agora, se todo esse negócio de va_sbrubles é muito complicado pra você, é possível passar um array de DWORD_PTRs com o uso da flag FORMAT_MESSAGE_ARGUMENT_ARRAY.</p>
+
+<h4>Retorno</h4>
+
+<p>Se tudo der certo e você passar todos os argumentos certinhos, o retorno é o número de caracteres armazenados no buffer de saída, independente dele ter sido alocado dinamicamente ou não. Ah, sim, excluindo o nulo terminador.</p>
+
+<p>Se der errado a função retorna zero. É possível obter o erro através de GetLastError, o que muito provavelmente será 87 nas primeiras vezes que você usar essa função.</p>
+
+<h4>Escapes na definição de mensagem</h4>
+
+<p>Pensou que acabaria por aqui? E qual o significado das sequências de escape dentro da mensagem-modelo? O formato básico para inserção de um argumento segue o seguinte padrão:</p>
+
+<pre>
+%n!&lt;format-string&gt;!
+</pre>
+<p>Onde n é o número que identifica o argumento, como já vimos, e `format-string` é um espaço reservado para identificarmos o tipo do argumento e como ele aparecerá na mensagem de saída.</p>
+
+<p>Existe uma longa explicação sobre o uso de controladores de largura e precisão da saída formatada e sua localização na lista de argumentos, cujo número irá depender se estamos usando va_list ou array de DWORD_PTRs, sendo que alguns problemas podem surgir se repetirmos esses números de inserção. Em dois momentos da explicação o artigo seja a sugerir que seja usada a função StringCchPrintf, primeiro por que FormatMessage não suporta formatação de ponto flutuantes, e segundo, porque, mesmo que seja possível formatar valores de 64 bits, seria mais fácil se você usasse outra função.</p>
+
+<p>Ainda existe um uso específico para "%0", que é evitar quebra de linha durante a formatação da mensagem, inclusive no final. Esse uso entra em conflito com o nosso flag quando este determina um número máximo de caracteres por linha.</p>
+
+<p>Ainda existe "de bônus" outras strings para preencher limitações que o próprio printf possui, como %%, %t, etc.</p>
+
+<h4>Falha de segurança</h4>
+
+<p>Como os programadores habituados com ataques de stack overrun devem deduzir, uma mensagem-modelo mal intencionada pode conter sequências de inserção que não existem na formatação habitual, forçando o vazamento de bytes na string final, o que pode forçar ataques planejados. Como o próprio artigo diz, usar um código de erro arbitrário retornado por uma API qualquer e usar FormatMessage sem a flag FORMAT_MESSAGE_IGNORE_INSERTS pode levar a resultados desastrosos.</p>
+
+<h4>Exemplos</h4>
+
+<p>Esse também é um bônus da MSDN, que te presenteia com exemplos de código tão fantasiosos quanto a própria função, veja o primeiro exemplo, por exemplo:</p>
+
+<pre>
+#include windows.h
+#include stdio.h
+void main(void)
+{
+    LPWSTR pMessage = L%1!.s! %4 %5!s!;
+    DWORD_PTR pArgs[] = { (DWORD_PTR)4, (DWORD_PTR)2, (DWORD_PTR)LBill,   %1!.s! refers back to the first insertion string in pMessage
+         (DWORD_PTR)LBob,                                                 %4 refers back to the second insertion string in pMessage
+         (DWORD_PTR)6, (DWORD_PTR)LBill };                                %5!s! refers back to the third insertion string in pMessage
+    const DWORD size = 100+1;
+    WCHAR buffer[size];
+    if (!FormatMessage(FORMAT_MESSAGE_FROM_STRING  FORMAT_MESSAGE_ARGUMENT_ARRAY,
+                       pMessage, 
+                       0,
+                       buffer, 
+                       size, 
+                       (va_list)pArgs))
+    {
+        wprintf(LFormat message failed with 0x%xn, GetLastError());
+        return;
+    }
+     Buffer contains   Bi Bob   Bill.
+    wprintf(LFormatted message %sn, buffer);
+}
+ 
+</pre>
+<p>Depois ele chega a reimplementar o exemplo usando va_list, o que é muito interessante, mas... bom, deixa pra lá. Vamos fazer nosso próprio teste.</p>
+
+<h4>Uso padrão para GetLastError</h4>
+
+<p>Esse é o uso clássico: precisamos de uma descrição de um código de erro para o usuário; um código Win32. A chamada para esse tipo de uso pode ser encapsulada em uma função mais simples:</p>
+
+<pre>
+#define _CRT_SECURE_NO_WARNINGS // quanta frescura...
+#include &lt;tchar.h&gt;
+#include &lt;windows.h&gt;
+#include &lt;string&gt;
+using namespace std;
+wstring GetErrorDescription(DWORD errNumber)
+{
+    wstring ret;
+    bool msgOk = false;
+    LPVOID lpMsgBuf = NULL;
+    if( FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER // aloque pra mim (não sei o tamanho)
+      | FORMAT_MESSAGE_FROM_SYSTEM // descrição do erro está no sistema
+      | FORMAT_MESSAGE_IGNORE_INSERTS, // ignora os inserts pra não sofrer com hackerzinhos
+      NULL, // sem fonte:
+      errNumber, // a fonte é o código de erro
+      MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // idioma padrão
+      (LPTSTR)&amp;lpMsgBuf,// isso é um ponteiro para um ponteiro para um buffer que será alocado
+      0, // nada disso
+      NULL // e nem disso
+      ) &gt; 0 ) // maior que zero quer dizer &quot;beleza!&quot;
+    {
+      if( lpMsgBuf ) // só pra...
+      {
+        ret = (PCWSTR) lpMsgBuf; // ok, vamos usar essa string
+        msgOk = true;
+        LocalFree(lpMsgBuf); // não precisamos mais da memória alocada
+      }
+    }
+    if( ! msgOk ) // alguma coisa não deu certo
+    {
+      wchar_t msgBuf[100]; // o suficiente
+      _snwprintf(msgBuf, 100, L&quot;Unknown error (code %d)&quot;, errNumber);
+      ret = msgBuf;
+    }
+    return ret;
+}
+int CALLBACK wWinMain(HINSTANCE, HINSTANCE, PWSTR errNumberStr, int)
+{
+    int errNumber = _wtoi(errNumberStr);
+    wstring errDesc = GetErrorDescription(errNumber);
+    MessageBox(NULL, errDesc.c_str(), L&quot;GetLastError&quot;, MB_OK | MB_ICONINFORMATION);
+    return errNumber;
+}
+ 
+</pre>
+<img src="img/formatmessage_para_dumies_rnrw5UN.png"/>
+
+<p>Existem milhares de forma de usar essa função, como você deve ter percebido pelos parâmetros. Não seja tímido: se você conhece algum truquezinho esperto e quer compartilhar com os usuários da FormatMessage, essa é a hora!</p>
+
+</section><hr/>
+
+<span style="float: left;">
+ <a href="2010-08.html">[2010-08]</a>
+ <a href="2010-11.html">[2010-11]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>
