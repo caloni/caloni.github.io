@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery-ui.css"/>
+<script src="/js/jquery-1.12.4.js"></script>
+<script src="/js/jquery-ui.js"></script>
+<script src="/js/copy_clipboard.js"></script>
+<script>
+var quick_search_posts = [ 
+ ]; 
+</script>
+<script src="/js/quick_search.js"></script>
+<script src="/js/list.js"></script>
+<link rel="icon" href="/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="months.html">
+<div class="is-4"><b>caloni::2007-08</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<ul style="list-style: none;">
+
+<li><small><a href="2007-08.html#historia_da_linguagem_c_parte_1">História da Linguagem C: Parte 1</a></small></li>
+
+<li><small><a href="2007-08.html#historia_do_windows_parte_30">História do Windows - parte 3.0</a></small></li>
+
+<li><small><a href="2007-08.html#historia_do_windows_parte_351">História do Windows - parte 3.51</a></small></li>
+
+<li><small><a href="2007-08.html#antidebug_interpretacao_baseada_em_excecao_parte_2">Antidebug: interpretação baseada em exceção (parte 2)</a></small></li>
+
+<li><small><a href="2007-08.html#gina_x_credential_provider">GINA x Credential Provider</a></small></li>
+
+<li><small><a href="2007-08.html#historia_da_linguagem_c_parte_2">História da Linguagem C: Parte 2</a></small></li>
+
+<li><small><a href="2007-08.html#junctions">Junctions</a></small></li>
+
+<li><small><a href="2007-08.html#erro_de_compilacao_funcoes_muito_novas_na_win32_api">Erro de compilação: funções muito novas na Win32 API</a></small></li>
+
+<li><small><a href="2007-08.html#antidebug_ocupando_a_debugport">Antidebug: ocupando a DebugPort</a></small></li>
+
+<li><small><a href="2007-08.html#todolist">ToDoList</a></small></li>
+
+<li><small><a href="2007-08.html#hook_de_api_no_windbg">Hook de API no WinDbg</a></small></li>
+
+<li><small><a href="2007-08.html#barata_eletrica_e_o_hacker_de_antigamente">Barata Elétrica e o hacker de antigamente</a></small></li>
+</ul>
+
+
+<span id="historia_da_linguagem_c_parte_1" title="História da Linguagem C: Parte 1"/></span>
+<section id="section_historia_da_linguagem_c_parte_1">
+<p class="title"><a href="2007-08.html#historia_da_linguagem_c_parte_1">#</a> História da Linguagem C: Parte 1</p>
+<span class="title-heading">Caloni, 2007-08-01 <a href="2007-08.html#historia_do_windows_parte_30">&lt;</a><a href="computer.html">computer</a><a href="2007-07.html#c_and_c++_operators_precedence_table">&gt;</a> <a href="2007-08.html#historia_da_linguagem_c_parte_2">&lt;</a><a href="ccpp.html">ccpp</a><a href="2007-07.html#c_and_c++_operators_precedence_table">&gt;</a><a href="2007-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_historia_da_linguagem_c_parte_1')"><sup>[copy]</sup></a></span>
+
+<p>Confesso que adoro estudar sobre a história da linguagem C. Essa verdadeira adoração pela linguagem me fez estudar suas precursoras, como as linguagens BCPL e B. Posso dizer que todo esse conhecimento, no final das contas, valeu a pena. Hoje entendo muito melhor as decisões tomadas na criação da linguagem e, principalmente, a origem de algumas idiossincrasias e boas idéias que permaneceram até hoje.</p>
+
+<img src="img/historia_da_linguagem_c_parte_1_martin_richards.gif"/>
+
+<p>Em 21 de julho de 1967 Martin Richards libera <a href="https://archive.org/details/richards1979bcpl">o manual</a> da sua recém-criada linguagem BCLP. Na verdade, ela havia sido criada em 66 e implementada na primavera do ano seguinte no Instituto de Tecnologia de Massachusetts (vulgo MIT). Seus objetivos eram claros, como para todo criador de uma nova linguagem: melhorar uma linguagem anterior. Nesse caso, foi uma melhoria da Combined Programming Language (CPL), retirando, de acordo com Martin, "todas aquelas características da linguagem completa que tornavam a compilação difícil".</p>
+
+<p>E BCPL era de fato bem simples. Não tinha tipos, era limpa e poderosa. Porém, mais importante que tudo isso, ela era portável. E essa portabilidade, aliada ao fato que escrever compiladores para ela era bem mais simples (alguns compiladores rodavam com apenas 16 KB), a tornaram especialmente popular na época.</p>
+
+<p>Essa portabilidade era obtida com o uso de um artifício mais ou menos conhecido da comunidade C/C++ hoje em dia: a divisão entre código objeto e código final. O compilador era dividido em duas partes: a primeira parte era responsável por criar um código em estado intermediário feito para rodar em uma máquina virtual. Esse código era chamado de O-code (O de object). A segunda parte do compilador era responsável por traduzir esse O-code no código da máquina-alvo (onde iria ser rodado o programa). Essa sacada genial de 40 anos atrás permitiu que fosse mais simples fazer um compilador para uma nova plataforma e portar todo o código que já tinha sido escrito para uma plataforma anterior, driblando o grande problema daquela época: a incompatibilidade entre plataformas.</p>
+
+<img src="img/historia_da_linguagem_c_parte_1_ocode.gif"/>
+
+<p>Perceba que é possível fazer toda a parte do compilador detrás do código-objeto uma única vez e, conforme a necessidade, criar novos interpretadores BCPL para máquinas diferentes.</p>
+
+<img src="img/historia_da_linguagem_c_parte_1_portable_bcpl.gif"/>
+
+<p>O código intermediário é gerado para uma máquina virtual. O interpretador, cerca de um quinto do compilador, tem a função de traduzir o código gerado para a máquina-alvo. Qualquer semelhança com Java ou .NET não é mera coincidência. Pois é. As boas idéias têm mais idade que seus criadores.</p>
+
+<p>É inevitável também não fazer a associação entre essa forma de funcionamento do compilador BCPL e a divisão feita em C/C++ entre o pré-processador, o compilador e o ligador (linker, em inglês).</p>
+
+<img src="img/historia_da_linguagem_c_parte_1_ccpp_build_steps.gif"/>
+
+<p>O uso do pré-processador na linguagem C facilitou a portabilidade por um bom tempo, quando não existiam typedefs. Diferente do BCPL, C já tinha tipagem, o que quer dizer que era necessário escolher o espaço de armazenamento que seria utilizado para as variáveis. Com o pré-processamento, essa escolha pode ser feita de maneira seletiva, documentada e generalizada.</p>
+
+<pre>
+   #ifdef SBRUBLE_PLATFORM
+   #define UINT unsigned char /* space limitation */
+   #else
+   #define UINT unsigned int
+   #endif
+</pre>
+<p>Como é natural, o código-fonte de uma aplicação tende a crescer em muitas linhas durante sua evolução, especialmente se estamos falando de sistemas operacionais. A compilação desse código vai tomar cada vez mais tempo no processo de desenvolvimento. Por isso, manter esse código-fonte em um mesmo arquivo eventualmente torna-se inviável, tornando a compilação de módulos separados uma solução pra lá de elegante. Compila-se apenas o módulo que foi modificado e liga-se esse módulo com módulos pré-compilados.</p>
+
+<p>Para continuar lendo sobre a história da linguagem existe uma <a href="2007-08.html#historia_da_linguagem_c_parte_2">segunda parte</a>.</p>
+
+</section><hr/>
+
+
+<span id="historia_do_windows_parte_30" title="História do Windows - parte 3.0"/></span>
+<section id="section_historia_do_windows_parte_30">
+<p class="title"><a href="2007-08.html#historia_do_windows_parte_30">#</a> História do Windows - parte 3.0</p>
+<span class="title-heading">Caloni, 2007-08-03 <a href="2007-08.html#historia_do_windows_parte_351">&lt;</a><a href="computer.html">computer</a><a href="2007-08.html#historia_da_linguagem_c_parte_1">&gt;</a><a href="2007-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_historia_do_windows_parte_30')"><sup>[copy]</sup></a></span>
+
+<p>Em 22 de maio de 1990 a versão 3.0 do Windows foi lançada. Foi melhorado o gerenciador de programas e o sistema de ícones, além de um novo gerenciador de arquivos e suporte a 16 cores. Entre as mudanças internas podemos citar a velocidade e a confiabilidade. Como a partir dessa versão apareceram muitos desenvolvedores que passaram a suportar a plataforma, o número de programas disponíveis aumentou, o que conseqüentemente fez com que as vendas alavancassem. Três milhões de cópias foram vendidas apenas no primeiro ano, e assim o Windows se tornou padrão nos computadores domésticos. Quando a versão 3.1 foi lançada, em 6 de abril de 1992, mais três milhões de cópias foram vendidos em apenas dois meses.</p>
+
+<img src="img/historia_do_windows_parte_30_windows_30_workspace.png"/>
+
+<p>As fontes TrueType foram adicionadas, junto de novas capacidades multimídia. Outro grande avanço foi na área de comunicação entre aplicativos com a implementação da tecnologia OLE (Object Linking and Embedding), que permitiu documentos de diferentes fabricantes serem intercambiados.</p>
+
+<p>Em novembro de 1993 foi lançada a primeira versão que integrou o Windows e a rede de trabalho, o Windows for Workgroups 3.1. O suporte a compartilhamento de arquivos e impressoras apareceu a partir daí. Duas aplicações novas também surgiram: Microsoft Mail, cliente de mail para uso em redes, e Schedule+, uma agenda de trabalho.</p>
+
+<p>E, finalmente, agora já é hora de conversarmos sobre a figura ilustre que popularizou ainda mais o desenvolvimento para Windows.</p>
+
+<img src="img/historia_do_windows_parte_30_charles_petzold.gif"/>
+
+<p>Quem começou a programar para Windows naquela época com certeza deve ter ouvido falar do livro clássico de Charles Petzold, uma das poucas referências naquela época sem internet: Programming Windows 3.1. É um livro consideravelmente completo se considerarmos a época em que foi escrito. Vários exemplos estão disponíveis em suas páginas, mas para os que não viveram essa época (como eu) existe <a href="http://www.charlespetzold.com/books.html">a versão eletrônica disponível para download</a>. Você deve estar se perguntando se todo esse código-fonte serve para alguma coisa hoje em dia. Por incrível que pareça, serve sim. E para demonstrar o conceito de compatibilidade retroativa da Microsoft, iremos utilizar os mesmos exemplos deste livro, sem por nem tirar uma linha de código. Com o devido copyright e respeito merecidos ao autor, é claro =).</p>
+
+<p>Programar interfaces naquela época não era bem o "clicar e arrastar" de hoje em dia. Eram necessários profundos conhecimentos sobre como o sistema operacional se relacionava com o seu programa e vice-versa. Hoje em dia é possível ainda programar como antigamente, já que toda a estrutura continua a mesma. Porém, é algo extremamente contraproducente de se fazer com as IDEs modernas que existem e suas barras de controles pré-fabricados e código automático. Faremos da forma mais rústica para entender como as coisas funcionam por baixo dos panos, o que por si só será extremamente produtivo para o nosso conhecimento.</p>
+
+<p>Antes de ser criada uma janela, é necessário registrar uma classe de janela no sistema, cuja relação com uma janela é mais ou menos a mesma entre classe e objeto no paradigma de orientação a objetos. Você primeiro define uma classe para sua janela e posteriormente pode criar inúmeras janelas a partir da mesma classe.</p>
+
+<pre>
+   
+   WNDCLASS wndclass; //Dados sobre a classe de janela.
+   wndclass.style = CS_HREDRAW | CS_VREDRAW;
+   wndclass.lpfnWndProc = WndProc; // Função de janela (isso é importante!)
+   ...
+   wndclass.lpszClassName = szAppName;
+   RegisterClass (&amp;wndclass) ; // Registra a classe de janela.
+</pre>
+<p>Quando você define uma classe e a registra está dizendo para o sistema qual será sua função de janela, i. e., qual será a função responsável por receber as mensagens das janelas criadas.</p>
+
+<pre>
+   wndclass.lpfnWndProc = WndProc ; // Função de janela.
+   ...
+   long FAR PASCAL WndProc (HWND hwnd, WORD message, WORD wParam, LONG lParam)
+   {
+   switch( message ) // Manipulando as mensagens.
+   ...
+   }
+</pre>
+<p>Uma mensagem é um evento que ocorre relativo à sua janela ou o que está acontecendo ao redor dela no mundo Windows. Por exemplo, as janelas recebem eventos a respeito dos cliques do usuário, redesenho da janela, etc. Quem envia essas mensagens é o próprio Windows, e ele espera uma resposta da sua função de janela. Agora a parte esquisita: quem envia essas mensagens para o Windows é o seu próprio aplicativo!</p>
+
+<img src="img/historia_do_windows_parte_30_windows_message_loop.gif"/>
+
+<p>O aplicativo fica aguardando por eventos em um loop conhecido como loop de mensagens. A função do loop basicamente é chamar a função GetMessage e redirecionar as mensagens obtidas para as respectivas funções de janela.</p>
+
+<pre>
+   while( GetMessage (&amp;msg, NULL, 0, 0) )
+   {
+      TranslateMessage (&amp;msg);
+      DispatchMessage (&amp;msg); // Despacha a mensagem para a função de janela.
+   }
+</pre>
+<p>E aqui está o código completo:</p>
+
+<pre>
+   /*--------------------------------------------------------
+     HELLOWIN.C -- Displays &quot;Hello, Windows&quot; in client area
+     (c) Charles Petzold, 1990
+     --------------------------------------------------------*/
+   
+   #include &lt;windows.h&gt;
+   
+   long FAR PASCAL WndProc (HWND, WORD, WORD, LONG) ;
+   
+   int PASCAL WinMain (HANDLE hInstance, HANDLE hPrevInstance,
+       LPSTR lpszCmdParam, int nCmdShow)
+   {
+     static char szAppName[] = &quot;HelloWin&quot; ;
+     HWND        hwnd ;
+     MSG         msg ;
+     WNDCLASS    wndclass ;
+   
+     if (!hPrevInstance)
+     {
+       wndclass.style         = CS_HREDRAW | CS_VREDRAW ;
+       wndclass.lpfnWndProc   = WndProc ;
+       wndclass.cbClsExtra    = 0 ;
+       wndclass.cbWndExtra    = 0 ;
+       wndclass.hInstance     = hInstance ;
+       wndclass.hIcon         = LoadIcon (NULL, IDI_APPLICATION) ;
+       wndclass.hCursor       = LoadCursor (NULL, IDC_ARROW) ;
+       wndclass.hbrBackground = GetStockObject (WHITE_BRUSH) ;
+       wndclass.lpszMenuName  = NULL ;
+       wndclass.lpszClassName = szAppName ;
+   
+       RegisterClass (&amp;wndclass) ;
+     }
+   
+     hwnd = CreateWindow (
+       szAppName,           // window class name
+       &quot;The Hello Program&quot;, // window caption
+       WS_OVERLAPPEDWINDOW, // window style
+       CW_USEDEFAULT,       // initial x position
+       CW_USEDEFAULT,       // initial y position
+       CW_USEDEFAULT,       // initial x size
+       CW_USEDEFAULT,       // initial y size
+       NULL,                // parent window handle
+       NULL,                // window menu handle
+       hInstance,           // program instance handle
+       NULL) ;              // creation parameters
+   
+     ShowWindow (hwnd, nCmdShow) ;
+     UpdateWindow (hwnd) ;
+   
+     while (GetMessage (&amp;msg, NULL, 0, 0))
+     {
+       TranslateMessage (&amp;msg) ;
+       DispatchMessage (&amp;msg) ;
+     }
+     return msg.wParam ;
+   }
+   
+   long FAR PASCAL WndProc (HWND hwnd, WORD message, WORD wParam, LONG lParam)
+   {
+     HDC hdc;
+     PAINTSTRUCT ps;
+     RECT rect;
+   
+     switch (message)
+     {
+       case WM_PAINT:
+         hdc = BeginPaint (hwnd, &amp;ps) ;
+   
+         GetClientRect (hwnd, &amp;rect) ;
+   
+         DrawText (hdc, &quot;Hello, Windows!&quot;, -1, &amp;rect,
+             DT_SINGLELINE | DT_CENTER | DT_VCENTER) ;
+   
+         EndPaint (hwnd, &amp;ps) ;
+         return 0 ;
+   
+       case WM_DESTROY:
+         PostQuitMessage (0) ;
+         return 0 ;
+     }
+   
+     return DefWindowProc (hwnd, message, wParam, lParam) ;
+   } 
+</pre>
+<p>Esse exemplo é bem velho, mas compila e funciona até hoje, depois de passados 17 anos. Pode não rodar, mas esta é outra história.</p>
+
+<pre>
+   cl /c hellowin.c
+   link hellowin.obj user32.lib gdi32.lib
+   hellowin.exe
+</pre>
+<p>O Windows 3.x tinha uma particularidade nefasta: qualquer aplicativo poderia travar o sistema como um todo. Se lembrarmos que o Windows antigamente era multitarefa e não-preemptivo, podemos deduzir que enquanto é executada a função de janela de um aplicativo o sistema aguarda por esse aplicativo indefinidamente. Se o aplicativo trava, ele nunca retorna. Se ele nunca retorna, o sistema fica eternamente esperando pelo retorno da função de janela. Alguns travamentos conseguiam ser resolvidos por interrupção, mas a maioria não. No próximo capítulo <a href="2020-09.html#historia_do_windows">da série</a> veremos como os sistemas de 32 bits resolveram esse pequeno problema.</p>
+
+<p>O que o resto do código do Petzold faz? Dê uma olhada na documentação do MSDN. Ela ainda está disponível, já que todos os aplicativos precisam utilizar essas funções, seja diretamente ou através de imensos frameworks de interface com o usuário. E existem pessoas que precisam suportar código-fonte legado.</p>
+
+<p>Já que agora você sabe o que são funções de janela, mensagens e afins, por que não ver tudo isso funcionando? O Microsoft Visual Studio possui uma ferramenta muito útil para isso chamada Spy++ (spyxx.exe). Existem também aplicativos equivalentes (com fonte). Outra ferramenta muito útil, principalmente na hora de desenvolver janelas com controles comuns do Windows, é o Control Spy.</p>
+
+<p>Para saber mais dê uma passada no <a href="http://www.charlespetzold.com">sítio do Charles Petzold</a>.</p>
+
+</section><hr/>
+
+
+<span id="historia_do_windows_parte_351" title="História do Windows - parte 3.51"/></span>
+<section id="section_historia_do_windows_parte_351">
+<p class="title"><a href="2007-08.html#historia_do_windows_parte_351">#</a> História do Windows - parte 3.51</p>
+<span class="title-heading">Caloni, 2007-08-07 <a href="2007-08.html#antidebug_interpretacao_baseada_em_excecao_parte_2">&lt;</a><a href="computer.html">computer</a><a href="2007-08.html#historia_do_windows_parte_30">&gt;</a><a href="2007-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_historia_do_windows_parte_351')"><sup>[copy]</sup></a></span>
+
+<p>Bem-vindos. Esta é a série <a href="2020-09.html#historia_do_windows">História do Windows</a>. Nos anos 90, a relação IBM/Microsoft era muito próxima por causa do desenvolvimento do OS/2, o projeto de um novo sistema operacional. As empresas cooperavam entre si e tinham acesso uma ao código da outra. A Microsoft desejava avançar seu desenvolvimento no Windows, enquanto a IBM desejava que todo trabalho futuro fosse baseado em OS/2. Para resolver essa tensão as duas combinaram que a IBM iria desenvolver o OS/2 versão 2.0 para substituir o OS/2 versão 1.3 e o Windows v3.0, enquanto a Microsoft iria desenvolver um novo sistema operacional, o OS/2 versão 3.0 para depois suceder ao OS/2 anterior. Com tudo combinado entre as grandes corporações, é lógico que esse acordo foi por água abaixo.</p>
+
+<p>A relação IBM/Microsoft foi terminada. A IBM continuou a desenvolver o OS/2 v2.0 enquanto a Microsoft mudou o nome de seu ainda não lançado OS/2 v3.0 para Windows NT. O Windows NT foi tão massivamente promovido que a maioria das pessoas nem se deu conta que ele era um OS/2 redesenhado. Ambas as empresas obtiveram os direitos de utilizarem as tecnologias do OS/2 e do Windows que foram desenvolvidas até a quebra do acordo.</p>
+
+<p>A IBM lançou a versão 2.0 do OS/2 no início dos anos 90. O sistema foi uma grande melhora sobre o antigo OS/2 v1.3. Apresentava um novo sistema de janelas orientado a objetos (o Workplace Shell) para substituir o Presentation Manager, um novo sistema de arquivos (o HPFS) para substituir o sistema FAT utilizado pelo DOS e Windows e aproveitou todas as vantagens das capacidades 32 bits do processador 386 da Intel. Ele também rodava programas DOS e Windows 3.0, uma vez que a IBM tinha acesso e direito a essas duas tecnologias.</p>
+
+<p>Para concorrer com a IBM a Microsoft lançou o Windows 3.1, com pequenas melhorias à sua versão anterior, a 3.0.</p>
+
+<p>A Microsoft continuou a desenvolver o Windows NT. A empresa requeriu os serviços de Dave Cutler, um dos chefes arquitetos da VMS na Digital Equipment Corporation (hoje parte da Compaq) para desenvolver o NT dentro de um projeto de sistema operacional mais capaz. Cutler estava desenvolvendo um seguimento para o VMS na DEC chamado Mica, e quando a DEC desistiu do projeto ele acabou trazendo para a Microsoft sua especialidade nesse sistema e algum engenheiros do projeto com ele. A DEC acreditava que ele usara parte do código do Mica no Windows NT e acabou processando a Microsoft. A empresa de Gates teve que eventualmente pagar 150 milhões para a DEC, além de concordar em suportar o chip Alpha CPU da DEC na plataforma NT, e é por isso que existe uma pasta com essa arquitetura no CD de instalação do Windows NT.</p>
+
+<p>Sendo um sistema operacional completamente novo o Windows NT sofreu com questões de compatibilidade com hardware e software geralmente usados na época. Ele era também concentrado em recursos, o que o deixava aceitável apenas para máquinas maiores e mais caras. Tanto que inicialmente foi dirigido a servidores de rede, workstations e máquinas de desenvolvimento de software. Por causa disso, a maioria dos usuário foi incapaz de migrar para a plataforma NT. E o Windows NT ainda estava projetado graficamente como o Windows 3.1, o que era inferior ao OS/2 Workplace Shell. Em resposta, a Microsoft começou a desenvolver um sucessor para o Windows 3.1, um projeto de codinome Chicago. Chicago tinha por objetivo apresentar uma nova GUI que competisse com o OS/2 Workplace Shell. Ele também foi projetado para ser de 32 bits e suportar execução multitarefa, como o OS/2 e o Windows NT. Só algumas partes do Chicago, entretanto, foram convertidas para 32 bits, e o resto permaneceu em 16. A Microsoft argumentou que a conversão total iria atrasar em muito o projeto, o que acabaria por encarecê-lo além do limite.</p>
+
+<p>Para o Chicago foi desenvolvida uma nova API para substituir a de 16 bits do Windows anterior. Essa API foi chamada de Win32, e a outra renomeada para Win16. Houveram 3 ramificações: uma para o Chicago, outra para o NT e uma terceira chamada Win32s, que foi um subconjunto para o Windows 3.1 garantir a compatibilidade retroativa das versões. Também foi pensado num mínimo de compatibilidade entre o Chicago e o Windows NT, mesmo que os dois possuíssem duas arquiteturas radicalmente diferentes.</p>
+
+<p>Em setembro de 1994 é lançada o Windows NT 3.5. A versão Workstation substituiu o Windows NT 3.1 e a versão Server o Windows NT 3.1 Advanced Server.</p>
+
+<img src="img/historia_do_windows_parte_351_windows_workstation.jpg"/>
+
+<p>Como todo projeto de sucesso, a primeira coisa a ser feita é definir os objetivos principais. No caso do Windows NT não foi diferente. É importante para nós sabermos que objetivos eram esses e como eles foram mudando de acordo com o momento histórico de forma a analisarmos as conseqüências. Em outubro de 1988 os objetivos do novo sistema operacional eram os seguintes:</p>
+
+<ul><li>Compatibilidade com OS/2;</li>
+<li>Segurança;</li>
+<li>Suporte a POSIX;</li>
+<li>Multiprocessamento;</li>
+<li>Rede integrada;</li>
+<li>Confiabilidade.</li></ul>
+<p>Como o Windows 3.0 fez um sucesso enorme, a compatibilidade nativa passou a ser do próprio Windows caseiro, sendo o OS/2 sendo implementado como um mero subsistema. Subsistema no Windows basicamente quer dizer ambiente virtual de execução de processos feitos para rodar em outro sistema operacional. Essa maneira de suportar processos de outros sistemas operacionais foi usado tanto para o OS/2 quanto para o Windows 16 bits, o MS-DOS e aplicativos POSIX, o padrão utilizado para arquiteturas derivadas do UNIX.</p>
+
+<p>O tempo do projeto foi inicialmente estimado em pouco mais de dois anos. Ao final, quatro anos e meio se passaram até a chegada do primeiro release, que era grande e lento para as máquinas da época. Assim foi iniciado o projeto Daytona, que teve como novos objetivos tornar a nova versão do NT mais rápida e confiável. Foi lançada então a versão 3.51.</p>
+
+<p>O Windows NT é um sistema operacional de 32 bits. Isso quer dizer, entre outras coisas, que ele suporta duas propriedades fundamentais dos sistemas operacionais modernos: modo protegido de execução e memória virtual. O modo protegido de execução permite a divisão entre a parte confiável do sistema operacional, que roda em kernel mode, e a parte não-confiável, que não possui acesso às instruções privilegiadas; a parte não-confiável chamamos de user mode. A memória virtual abstrai a memória física e permite isolamento de memória entre aplicativos, evitando que um programa invada a memória do outro.</p>
+
+<p>Além disso, foi criada uma camada de abstração do hardware (HAL, Hardware Abstraction Layer) que livrou boa parte do código de ter sido escrito em assembly, fazendo assim que ele fosse facilmente portável.</p>
+
+</section><hr/>
+
+
+<span id="antidebug_interpretacao_baseada_em_excecao_parte_2" title="Antidebug: interpretação baseada em exceção (parte 2)"/></span>
+<section id="section_antidebug_interpretacao_baseada_em_excecao_parte_2">
+<p class="title"><a href="2007-08.html#antidebug_interpretacao_baseada_em_excecao_parte_2">#</a> Antidebug: interpretação baseada em exceção (parte 2)</p>
+<span class="title-heading">Caloni, 2007-08-09 <a href="2007-08.html#gina_x_credential_provider">&lt;</a><a href="computer.html">computer</a><a href="2007-08.html#historia_do_windows_parte_351">&gt;</a> <a href="2007-08.html#antidebug_ocupando_a_debugport">&lt;</a><a href="projects.html">projects</a><a href="2007-07.html#movendo_o_cursor_do_mouse_com_o_teclado">&gt;</a><a href="2007-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_antidebug_interpretacao_baseada_em_excecao_parte_2')"><sup>[copy]</sup></a></span>
+
+<p>No <a href="2007-07.html#antidebug_interpretacao_baseada_em_excecao_parte_1">primeiro artigo</a> vimos como é possível "enganar" o depurador através de exceções e assim fazer o atacante perder um tempo considerável tentando se desvencilhar dos breakpoints de mentira. Porém, vimos também que essa é uma solução difícil de manter no código-fonte, além de possuir o ponto fraco de ser facilmente contornada se descoberta. Agora é a hora de tornar as coisas mais fáceis de manter e ao mesmo tempo garantir maior dificuldade mesmo que o atacante descubra o que está acontecendo debaixo do seu nariz.</p>
+
+<p>O upgrade apresentado aqui continua utilizando o lançamento de exceções intrinsecamente, mas agora não depende mais da divisão do código em minifunções e chamá-las aos poucos. Em vez disso, temos apenas que pegar traços de código e colocá-los em torno de uma macro milagrosa que fará tudo o que quisermos. Isso, claro, depois de algumas marteladas que serão explicadas aqui.</p>
+
+<pre>
+   void LongJmp(restorePoint)
+   {
+     BackToStart(restorePoint);
+   }
+   
+   int Start()
+   {
+     if( RestorePoint() == Defined )
+     {
+       LongJmp(if);
+     }
+     else
+     {
+       CallFunc();
+     }
+   
+     return 0;
+   }
+</pre>
+<p>A solução acima está apresentada em pseudo-código para tornar mais claro o conceito. Note que existe uma espécie de "retorno invisível", não baseado em retorno de pilha, envolvido. Para implementá-lo, contudo, podemos nos ajeitar com o velho e bom padrão C ANSI, com as rotinas setjmp  e longjmp. Para entender a implementação dessa funções na plataforma 8086 precisamos ter primeiro uma visão básica da estrutura de chamada de funções baseada em pilha.</p>
+
+<p>Registradores são variáveis reservadas do processador que podem ser utilizadas pelo código assembly da plataforma envolvida. Stack frame (estrutura da pilha) nada mais é que a hierarquia de chamadas das funções, o "quem chamou quem" em uma execução qualquer. Call e ret são instruções em assembly para chamar uma função (call) e sair de uma função (ret), respectivamente. Ambas alteram o stack frame.</p>
+
+<p>Imagine que você tem uma função, CallFunc, e outra função, Func, e que uma chame a outra. Para analisarmos apenas a chamada de função, e apenas isso, vamos considerar que Func não recebe nenhum parâmetro e não retorna nenhum valor. O código em C fica, então, assim:</p>
+
+<pre>
+   void Func()
+   {
+     return;
+   }
+   
+   void CallFunc()
+   {
+     Func();
+   }
+</pre>
+<p>Simples, não? Por esse mesmo motivo o disassembly terá que ser igualmente simples. Em CallFunc ele deverá conter a chamada da função (call) e em Func o retorno da chamada (ret). Se você compilar o código acima e o assembly vier com mais coisas pode ser que que eventualmente apareça mais código embutido em versões Debug, ou se estiver muito diferente ou inexistente pode ser uma otimização do seu compilador.</p>
+
+<pre>
+   Func:
+   00411F73 prev_instruction ; ESP = 0012FD38 (four bytes stacked up)
+   00411F74 ret ; *ESP = 00411FA3 (return address)
+   
+   CallFunc:
+   00411F9C prev_instruction
+   00411F9E call Func (411424h) ; ESP = 0012FD3C
+   00411FA3 next_instruction
+</pre>
+<p>A partir do assembly acima podemos concluir no mínimo duas coisas:</p>
+
+<p> 1. a pilha "cresce" para baixo, pois seu valor decrementou de quadro (0012FD3C para 0012FD38 são 4 byte a menos).</p>
+
+<p> 2. o valor de retorno da função chamada é o endereço da próxima instrução após a chamada (call), no caso 00411FA3.</p>
+
+<p>Ora, da mesma forma que conseguimos acompanhar essa simples execução, o atacante também o fará. Por isso que no meio dessa chamada iremos colocar o lançamento de uma exceção e, no retorno, faremos não do modo convencional apresentado, mas por uma outra técnica que, ao invés de utilizar a instrução ret, seta "manualmente" o valor do registrador ESP (estado da pilha) e "pula" para a próxima instrução de CallFunc.</p>
+
+<pre>
+   Func:
+   00411F60 throw_exception
+   00411F61 ...
+   00411F73 catch_exception
+   00411F74 mov ESP, 0012FD3C ; ESP = 0012FD3C, como em CallFunc
+   00411F75 jmp 00411FA3 ; &quot;pula&quot; para CallFunc::next_instruction
+</pre>
+<p>Toda essa esculhambada em assembly não precisa ser necessariamente feita em linguagem de baixo nível. Foi apenas uma maneira que encontrei pra ilustrar as diferenças entre retorno baseado em pilha e alteração no fluxo do código. Como já foi dito, para a sorte e o bem-estar de todos, essa mesma técnica pode ser implementada com funções C da biblioteca ANSI:</p>
+
+<pre>
+   jmp_buf stack_state;
+   void Func()
+   {
+     longjmp(stack_state, 1);
+   }
+   
+   void CallFunc()
+   {
+     // setting returns 0
+     // returning returns not 0
+     if( setjmp(stack_state) == 0 )
+       Func();
+   
+     int x = 10;
+   }
+</pre>
+<p>Essa foi a técnica adicionada à solução do lançamento de exceções. E o código final ficou mais claro (além de rápido, por economizar o uso de uma thread para leitura dos comandos).</p>
+
+<pre>
+   /** The only purpose of 
+     this function is to 
+     generate an exception. */
+   DWORD LongJmp(jmp_buf* env)
+   {
+     __try
+     {
+       __asm int 3
+     }
+       __except( EXCEPTION_EXECUTE_HANDLER )
+     {
+       longjmp(*env, 1);
+     }
+   
+     return ERROR_SUCCESS;
+   }
+   
+   /** And God said: 
+     'int main!'
+   */
+   int main()
+   {
+     DWORD ret = ERROR_SUCCESS;
+   
+     while( cin )
+     {
+       string line;
+   
+       cout &lt;&lt; &quot;Type something\n&quot;;
+       getline(cin, line);
+   
+       jmp_buf env;
+   
+       if( setjmp(env) == 0 )
+       {
+         LongJmp(&amp;env);
+       }
+       else
+       {
+         cout &lt;&lt; line &lt;&lt; endl;
+       }
+     }
+   
+     return (int) ret;
+   } 
+</pre>
+<p>À primeira vista parece um desperdício o if estar diretamente no código (lembre-se que vamos utilizar a mesma estrutura condicional em várias e várias partes do código. Para tornar mais claro seu uso, resumir a chamada protegida e permitir que a proteção seja desabilitada em debug, vamos criar uma macro:</p>
+
+<pre>
+   /** Use this macro instead LongJmp
+   */
+   #define ANTIDEBUG(code)
+   {
+     jmp_buf env;
+   
+     if( setjmp(env) == 0 )
+     {
+       LongJmp(&amp;env);
+     }
+     else
+     {
+       code;
+     }
+   }
+   
+   /** And God said: 'int main!'
+   */
+   int main()
+   {
+     DWORD ret = ERROR_SUCCESS;
+   
+     while( cin )
+     {
+       string line;
+   
+       cout &lt;&lt; &quot;Type something\n&quot;;
+       getline(cin, line);
+   
+       ANTIDEBUG(( cout &lt;&lt; line &lt;&lt; endl ));
+     }
+   
+     return (int) ret;
+   } 
+</pre>
+<p>Veja que como agora permitimos a seleção do anti-debug por chamada, fica mais fácil escolher quais os pontos a serem protegidos e quais não devem/podem por conta de perfomance ou outro detalhe obscuro que sempre existe na vida de um programador C++.</p>
+
+</section><hr/>
+
+
+<span id="gina_x_credential_provider" title="GINA x Credential Provider"/></span>
+<section id="section_gina_x_credential_provider">
+<p class="title"><a href="2007-08.html#gina_x_credential_provider">#</a> GINA x Credential Provider</p>
+<span class="title-heading">Caloni, 2007-08-13 <a href="2007-08.html#historia_da_linguagem_c_parte_2">&lt;</a><a href="computer.html">computer</a><a href="2007-08.html#antidebug_interpretacao_baseada_em_excecao_parte_2">&gt;</a><a href="2007-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_gina_x_credential_provider')"><sup>[copy]</sup></a></span>
+
+<p>Não fui convidado a participar do tema, mas como já faz algum tempo que o rascunho deste artigo está no molho, e aproveitando que meu amigo Ferdinando resolveu escrever sobre nossa amiga em comum, darei continuidade à minha empolgação sobre o tagging e largarei aqui este pequeno adendo.</p>
+
+<p>Com a chegada do Windows Vista, uma velha conhecida minha e dos meus colegas deixou de fazer parte do sistema de autenticação do sistema operacional: a velha GINA, Graphical Identification aNd Authentication.</p>
+
+<p>Basicamente se trata de uma DLL que é chamada pelo WinLogon, o componente responsável pelo famoso Secure Attention Sequence (SAS), mais conhecido por Ctrl + Alt + Del. Ele efetua o logon do usuário, mas quem mostra as telas de autenticação, troca de senha, bloqueio da estação é a GINA. Mexi com várias GINAs há um tempo atrás: GINAs invisíveis, GINAs que autenticam smart cards, GINAs que autenticam pela impressão digital, e por aí vai a valsa.</p>
+
+<p>O Windows já vem com uma GINA padrão, a MsGina.dll, que autentica o usuário baseada em usuário e senha e/ou smart card. Teoricamente o intuito original de uma GINA fornecida por terceiros era permitir outros meios de autenticação. Para isso o fornecedor deveria trocar todas as telas de autenticação pela equivalente de acordo com o novo tipo de autenticação (por exemplo, um campo com uma impressão digital para permitir o uso de biometria em vez de senha). Porém, um outro uso pode ser controlar o login dos usuários baseado em outras regras além das que o Windows já fornece.</p>
+
+<p>Apesar de útil, o sistema baseado em GINAs tinha um pequeno problema: permitia somente a troca exclusiva, ou seja, só uma GINA pode ser ativada. Se não for a da Microsoft, que seja a do fornecedor, e apenas a de um fornecedor. Isso começa a ficar limitado diante das novas e conflitantes maneiras que um usuário possui hoje em dia de fazer logon: nome e senha, íris dos olhos, impressão digital, formato do nariz e assim por diante. Todas essas autenticações deveriam estar disponíveis ao mesmo tempo para que o usuário escolha qual deles lhe convém.</p>
+
+<p>Foi por isso que surgiu seu substituto natural no Windows Vista: o Credential Provider.</p>
+
+<p>O sistema de Credential Provider permite que inúmeras DLLs sejam registradas no sistema para receberem eventos de logon, seja para criar uma nova sessão (tela de boas vindas) ou apenas para se autenticar já em uma sessão iniciada, como, por exemplo, nos casos em que o Controle da Conta do Usuário (UAC: User Account Control) entra em ação.</p>
+
+<p>O sistema de coleta foi simplificado e modernizado: agora a interface não se baseia em funções exportadas, como a GINA, mas em interfaces COM disponíveis. O desenvolvedor também consegue escolher os cenários em que ele pretende entrar em ação:</p>
+
+<ul><li>Efetuar logon.</li>
+<li>Desbloquear estação.</li>
+<li>Mudar a senha.</li>
+<li>Efetuar conexão de rede (antes do logon).</li></ul>
+<p>Baseado no número de CPs registrados no sistema, o LogonUI (processo responsável por exibir a tela de boas vindas) irá exibir as respectivas credenciais para cada um dos CPs envolvidos no logon.</p>
+
+<p>Com <a href="posts.html?q=o exemplo de GINA stub">o exemplo de GINA stub</a> do Ferdinando desenvolvi uma versão um pouco mais perigosa, da época de laboratório da faculdade. Se trata igualmente de uma GINA que se aproveita da implementação da GINA original, porém na hora de autenticar um usuário ela captura os dados do logon (usuário e senha) e grava em uma parte do registro acessível apenas pelo sistema (lembre-se que a GINA, por fazer parte do WinLogon, roda na conta de sistema).</p>
+
+<blockquote>É claro que para utilizar essa GINA, você deve possuir direitos de administração, ou conhecer alguma brecha de segurança. Eu optei pela segunda opção, já que não tinha a primeira. Podemos dizer apenas que o artigo sobre falhas de segurança relacionadas a usuários avançados do Russinovich pôde resolver meu problema.</blockquote>
+</section><hr/>
+
+
+<span id="historia_da_linguagem_c_parte_2" title="História da Linguagem C: Parte 2"/></span>
+<section id="section_historia_da_linguagem_c_parte_2">
+<p class="title"><a href="2007-08.html#historia_da_linguagem_c_parte_2">#</a> História da Linguagem C: Parte 2</p>
+<span class="title-heading">Caloni, 2007-08-15 <a href="2007-08.html#junctions">&lt;</a><a href="computer.html">computer</a><a href="2007-08.html#gina_x_credential_provider">&gt;</a> <a href="2007-09.html#aquisicao_de_recurso_e_inicializacao">&lt;</a><a href="ccpp.html">ccpp</a><a href="2007-08.html#historia_da_linguagem_c_parte_1">&gt;</a><a href="2007-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_historia_da_linguagem_c_parte_2')"><sup>[copy]</sup></a></span>
+
+<p>No princípio... não, não, não. Antes do princípio, quando C era considerada a terceira letra do alfabeto e o que tínhamos eram linguagens experimentais para todos os lados, dois famigerados senhores dos Laboratórios Bell, K. Thompson e D. Ritchie, criaram uma linguagem chamada B. E B era bom.</p>
+
+<img src="img/historia_da_linguagem_c_parte_2_kthompson_dritchie.jpg"/>
+
+<p>O bom de B era sua rica expressividade e sua simples gramática. Tão simples que o <a href="http://cm.bell-labs.co/who/dmr/kbman.html">manual da linguagem</a> consistia de apenas 30 páginas. Isso é menos do que as 32 palavras reservadas de C. As instruções eram definidas em termos de ifs e gotos e as variáveis eram definidas em termos de um padrão de bits de tamanho fixo, geralmente a word, ou palavra, da plataforma, que utilizada em expressões definiam seu tipo. Esse padrão de bits era chamado rvalue. Imagine a linguagem C de hoje em dia com apenas um tipo: int.</p>
+
+<p>Como esse padrão de bits nunca muda de tamanho, todas as rotinas da biblioteca recebiam e retornavam sempre valores do mesmo tamanho na memória. Isso na linguagem C quer dizer que o char da época ocupava tanto quanto o int. Existia inclusive uma função que retornava o caractere de uma string na posição especificada:</p>
+
+<pre>
+   c = char(string, i); /* the i-th character of the string is returned */
+</pre>
+<p>Sim! Char era uma função, um conversor de "tipos". No entanto a própria variável que armazenava um char tinha o tamanho de qualquer objeto da linguagem. Esse é o motivo pelo qual, tradicionalmente, as seguintes funções recebem e retornam ints em C e C++:</p>
+
+<pre>
+   int getchar( void ); // read a character from stdin
+   int putchar( int c ); // writes a character to stdout
+   void *memset( void *dest, int c, size_t count ); // sets buffers to a specified character
+</pre>
+<p>Segue o exemplo de uma função na linguagem B, hoje muito famosa:</p>
+
+<pre>
+   /* The following function is a general formatting, printing, and
+      conversion subroutine.  The first argument is a format string.
+      Character sequences of the form `%x' are interpreted and cause
+      conversion of type 'x' of the next argument, other character
+      sequences are printed verbatim.   Thus
+   
+     printf(&quot;delta is %d*n&quot;, delta);
+   
+     will convert the variable delta to decimal (%d) and print the
+     string with the converted form of delta in place of %d.   The
+     conversions %d-decimal, %o-octal, *s-string and %c-character
+     are allowed.
+   
+     This program calls upon the function `printn'. (see section
+     9.1) */
+   
+   printf(fmt, x1,x2,x3,x4,x5,x6,x7,x8,x9) {
+     extrn printn, char, putchar;
+     auto adx, x, c, i, j;
+   
+     i= 0;  /* fmt index */
+     adx = &amp;x1;  /* argument pointer */
+   loop :
+     while((c=char(fmt,i++) ) != `%') {
+       if(c == `*e')
+         return;
+       putchar(c);
+     }
+     x = *adx++;
+     switch c = char(fmt,i++) {
+   
+     case `d': /* decimal */
+     case `o': /* octal */
+       if(x &lt; O) {
+         x = -x ;
+         putchar('-');
+       }
+       printn(x, c=='o'?8:1O);
+       goto loop;
+   
+     case 'c' : /* char */
+       putchar(x);
+       goto loop;
+   
+     case 's': /* string */
+       while(c=char(x, j++)) != '*e')
+         putchar(c);
+       goto loop;
+     }
+     putchar('%') ;
+     i--;
+     adx--;
+     goto loop;
+   } 
+</pre>
+<p>Como podemos ver, vários elementos (se não todos) da linguagem C já estão presentes na B.</p>
+
+</section><hr/>
+
+
+<span id="junctions" title="Junctions"/></span>
+<section id="section_junctions">
+<p class="title"><a href="2007-08.html#junctions">#</a> Junctions</p>
+<span class="title-heading">Caloni, 2007-08-17 <a href="2007-08.html#erro_de_compilacao_funcoes_muito_novas_na_win32_api">&lt;</a><a href="computer.html">computer</a><a href="2007-08.html#historia_da_linguagem_c_parte_2">&gt;</a><a href="2007-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_junctions')"><sup>[copy]</sup></a></span>
+
+<p>Semana passada baixei uma nova imagem para minha máquina de desenvolvimento. Esse esquema do pessoal da engenharia instalar as coisas para você facilita muito as coisas, mas existe o risco de algo ser instalado no lugar errado, que foram os casos do DDK e do SDK do Windows. Aqui no desenvolvimento, para efeito de padronização, utilizamos a seguinte estrutura de diretórios para esses dois aplicativos:</p>
+
+<pre>
+   Library
+   |- ddk
+   |- legacy
+   |- mssdk
+</pre>
+<p>Porém, por algum motivo desconhecido os instaladores da Microsoft não seguem o nosso padrão: o SDK é instalado em %programfiles%, Microsoft Platform SDK e o DDK em C:, WINDDK, 3790.1830. Para corrigir este pequeno ato relapso eu até poderia reinstalar ambos os aplicativos no local correto, gastanto algumas horas do dia, mas existe uma outra solução mais rápida e simpática chamada de junction.</p>
+
+<p>Um junction é um link simbólico (symbolic link) de diretório. É praticamente um atalho, com a diferença que ele se comporta exatamente como se fosse o próprio objeto para o qual aponta: qualquer arquivo criado ou apagado usando o junction cria ou apaga um arquivo real no diretório real para o qual ele aponta. Essa característica pode ser tão útil quanto perigosa, por isso devem-se utilizar junctions com cuidado.</p>
+
+<p>Para criar um junction pode-se usar uma ferramenta disponível no Windows Resource Kit chamada linkd.exe. Porém, para evitar de ter que baixar todo o pacote para usar um único arquivo, existe uma outra ferramenta desenvolvida à parte por Mark Russinovich chamada... junction. O comando para criar junctions é bem fácil e direto:</p>
+
+<pre>
+   junction c:\library\mssdk &quot;path where is microsoft platform sdk&quot;
+   junction c:\library\ddk &quot;path where is winddk&quot;
+</pre>
+<p>E é isso aí. A partir de agora tanto as pastas originais quanto os junctions criados para elas respondem como se fossem a mesma coisa, porém com paths diferentes.</p>
+
+<blockquote>"Neo, sooner or later, you're going to realize, just as I did, that there's a different between knowing the path... and walking the path..."</blockquote>
+<p>No Windows Vista os junctions também funcionam para arquivos e possuem seu próprio aplicativo nativo, o mklink.exe. Porém, ele chama os links para diretórios de junctions (em português, junções) e os links para arquivos de links mesmo. Você pode notar uma pequena gamb.. adaptação técnica ao mudarem o nome da pasta "Documents and Settings" para "Users" (ou "Usuários", na versão em português). Esse link é extremamente necessário para a compatibilidade daqueles aplicativos feitos às pressas que não se importam em perguntar para o sistema onde está a pasta de documentos do usuário, fixando o path como se ele fosse estar sempre lá.</p>
+
+</section><hr/>
+
+
+<span id="erro_de_compilacao_funcoes_muito_novas_na_win32_api" title="Erro de compilação: funções muito novas na Win32 API"/></span>
+<section id="section_erro_de_compilacao_funcoes_muito_novas_na_win32_api">
+<p class="title"><a href="2007-08.html#erro_de_compilacao_funcoes_muito_novas_na_win32_api">#</a> Erro de compilação: funções muito novas na Win32 API</p>
+<span class="title-heading">Caloni, 2007-08-21 <a href="2007-08.html#antidebug_ocupando_a_debugport">&lt;</a><a href="computer.html">computer</a><a href="2007-08.html#junctions">&gt;</a><a href="2007-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_erro_de_compilacao_funcoes_muito_novas_na_win32_api')"><sup>[copy]</sup></a></span>
+
+<p>Quando fala-se em depuração geralmente o pensamento que vem é de um código que já foi compilado e está rodando em alguma outra máquina e gerando problemas não detectados nos testes de desenvolvedor. Mas nem sempre é assim. Depuração pode envolver problemas durante a própria compilação. Afinal de contas, se não está compilando, ou foi compilado errado, é porque já existem problemas antes mesmo da execução começar.</p>
+
+<p>O fonte abaixo, por exemplo, envolve um detalhe que costuma atormentar alguns programadores, ou por falta de observação ou documentação (ou ambos).</p>
+
+<pre>
+   #include &lt;stdio.h&gt;
+   #include &lt;windows.h&gt;
+   
+   void main(void)
+   {
+     typedef enum _COMPUTER_NAME_FORMAT
+     {
+       ComputerNameNetBIOS,
+       ComputerNameDnsHostname,
+       ComputerNameDnsDomain,
+       ComputerNameDnsFullyQualified,
+       ComputerNamePhysicalNetBIOS,
+       ComputerNamePhysicalDnsHostname,
+       ComputerNamePhysicalDnsDomain,
+       ComputerNamePhysicalDnsFullyQualified,
+       ComputerNameMax
+     } COMPUTER_NAME_FORMAT;
+   
+     COMPUTER_NAME_FORMAT CF = ComputerNameDnsDomain;
+   
+     char szDomainName[MAX_COMPUTERNAME_LENGTH];
+   
+     DWORD dwSize = sizeof(szDomainName);
+   
+     //GetComputerName(szDomainName, &amp;dwSize);
+     GetComputerNameEx(CF, szDomainName, &amp;dwSize);
+   } 
+</pre>
+<p>Tirando o fato que o retorno void não é mais um protótipo padrão da função main e que a definição da enumeração COMPUTER_NAME_FORMAT dentro da função main é no mínimo suspeita, podemos testar a compilação e verificar que existe exatamente um erro grave neste fonte:</p>
+
+<pre>
+   
+   cl getcomputername.cpp
+   getcomputername.cpp(26) : error C3861: 'GetComputerNameEx': identifier not found
+</pre>
+<p>A função GetComputerNameEx parece não ter sido definida, apesar de estarmos incluindo o header windows.h, que é o pedido pela documentação do MSDN.</p>
+
+<p>Esse tipo de problema acontece na maioria das vezes por dois motivos:</p>
+
+<pre>
+   
+</pre>
+<p>  1. o header responsável não foi incluído (não é o caso, como vimos),</p>
+
+<p>  2. é necessário especificar a versão mínima do sistema operacional.</p>
+
+<p>De fato, se criarmos coragem e abrirmos o arquivo winbase.h, que é onde a função é definida de fato, e procurarmos pela função GetComputerNameEx encontramos a seguinte condição:</p>
+
+<pre>
+   #if (_WIN32_WINNT &gt;= 0x0500)
+   
+   typedef enum _COMPUTER_NAME_FORMAT {
+       ComputerNameNetBIOS,
+       ComputerNameDnsHostname,
+       ComputerNameDnsDomain,
+       ComputerNameDnsFullyQualified,
+       ComputerNamePhysicalNetBIOS,
+       ComputerNamePhysicalDnsHostname,
+       ComputerNamePhysicalDnsDomain,
+       ComputerNamePhysicalDnsFullyQualified,
+       ComputerNameMax
+   } COMPUTER_NAME_FORMAT ;
+   
+   WINBASEAPI
+   BOOL
+   WINAPI
+   GetComputerNameExA (
+       __in    COMPUTER_NAME_FORMAT NameType,
+       __out_ecount_part_opt(*nSize, *nSize + 1) LPSTR lpBuffer,
+       __inout LPDWORD nSize
+       );
+   WINBASEAPI
+   BOOL
+   WINAPI
+   GetComputerNameExW (
+       __in    COMPUTER_NAME_FORMAT NameType,
+       __out_ecount_part_opt(*nSize, *nSize + 1) LPWSTR lpBuffer,
+       __inout LPDWORD nSize
+       );
+   #ifdef UNICODE
+   #define GetComputerNameEx  GetComputerNameExW
+   #else
+   #define GetComputerNameEx  GetComputerNameExA
+   #endif // !UNICODE
+   
+   //...
+   
+   #endif // _WIN32_WINNT
+</pre>
+<p>Ou seja, para que essa função seja visível a quem inclui o windows.h, é necessário antes definir que a versão mínima do Windows será a 0x0500, ou seja, Windows 2000 (vulgo Windows 5.0). Aliás, é como aparece na documentação. Um pouco de observação nesse caso seria o suficiente para resolver o caso, já que tanto abrindo o header quanto olhando no exemplo do MSDN nos levaria a crer que é necessário definir essa macro:</p>
+
+<pre>
+   #define _WIN32_WINNT 0x0500
+   
+   #include &lt;windows.h&gt;
+   #include &lt;stdio.h&gt;
+   #include &lt;tchar.h&gt;
+   
+   void _tmain(void)
+   {
+     TCHAR buffer[256] = TEXT(&quot;&quot;);
+     TCHAR szDescription[8][32] = {TEXT(&quot;NetBIOS&quot;), 
+     TEXT(&quot;DNS hostname&quot;), 
+     TEXT(&quot;DNS domain&quot;), 
+     TEXT(&quot;DNS fully-qualified&quot;), 
+     TEXT(&quot;Physical NetBIOS&quot;), 
+     TEXT(&quot;Physical DNS hostname&quot;), 
+     TEXT(&quot;Physical DNS domain&quot;), 
+     TEXT(&quot;Physical DNS fully-qualified&quot;)};
+     int cnf = 0;
+     DWORD dwSize = sizeof(buffer);
+   
+     for( cnf = 0; cnf &lt; ComputerNameMax; cnf++ )
+     {
+       if (!GetComputerNameEx( (COMPUTER_NAME_FORMAT)cnf, buffer, &amp;dwSize) )
+       {
+         _tprintf(TEXT(&quot;GetComputerNameEx failed (%d)\n&quot;),
+         GetLastError());
+         return;
+       }
+         else _tprintf(TEXT(&quot;%s: %s\n&quot;), szDescription[cnf], buffer);
+   
+       dwSize = sizeof(buffer);
+       ZeroMemory(buffer, dwSize);
+     }
+   } 
+</pre>
+<p>Outra observação que poderia ter ajudado na hora de codificar seria dar uma olhada no que os caras escrevem na seção de advertências (remarks) da documentação:</p>
+
+<blockquote>To compile an application that uses this function, define the _WIN32_WINNT macro as 0x0500 or later. For more information, see Using the Windows Headers.</blockquote>
+<p>Podemos também notar pela definição do COMPUTER_NAME_FORMAT dentro do main que o código estava no meio do caminho de cometer um sacrilégio: declarar funções e estruturas que já estão definidas nos headers da API. Portanto, se você já encontrou algum código parecido com esse, é hora de colocar em prática algumas teorias de refactoring.</p>
+
+</section><hr/>
+
+
+<span id="antidebug_ocupando_a_debugport" title="Antidebug: ocupando a DebugPort"/></span>
+<section id="section_antidebug_ocupando_a_debugport">
+<p class="title"><a href="2007-08.html#antidebug_ocupando_a_debugport">#</a> Antidebug: ocupando a DebugPort</p>
+<span class="title-heading">Caloni, 2007-08-23 <a href="2007-08.html#hook_de_api_no_windbg">&lt;</a><a href="computer.html">computer</a><a href="2007-08.html#erro_de_compilacao_funcoes_muito_novas_na_win32_api">&gt;</a> <a href="2007-09.html#antidebug_detectando_attach">&lt;</a><a href="projects.html">projects</a><a href="2007-08.html#antidebug_interpretacao_baseada_em_excecao_parte_2">&gt;</a><a href="2007-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_antidebug_ocupando_a_debugport')"><sup>[copy]</sup></a></span>
+
+<p>Quando um depurador inicia um processo para ser depurado ou, o caso abordado por este artigo, se conecta em um processo já iniciado, as comunicações entre esses dois processos é feita através de um recurso interno do Windows chamado de LPC (Local Procedure Call). O sistema cria uma "porta mágica" de comunicação específica para a depuração e os eventos trafegam por meio dela.</p>
+
+<p>Entre esses eventos podemos citar os seguintes:</p>
+
+<pre>
+   
+</pre>
+<ul><li>Breakpoints disparados.</li>
+<li>Exceções lançadas.</li>
+<li>Criação/saída de threads.</li>
+<li>Load/unload de DLLs.</li>
+<li>Saída do processo.</li></ul>
+<p>No caso de se conectar em um processo já existente, é chamada a função da API DebugActiveProcess. A partir dessa chamada, se retornado sucesso, o processo que depura agora está liberado para ficar chamando continuamente a função API WaitForDebugEvent. E o código se resume a isto:</p>
+
+<pre>
+   void DebugLoop()
+   {
+     bool exitLoop = false;
+   
+     while( ! exitLoop )
+     {
+       DEBUG_EVENT debugEvt;
+   
+       WaitForDebugEvent(&amp;debugEvt, 
+         INFINITE);
+   
+       switch( debugEvt.dwDebugEventCode )
+       {
+         // This one...
+   
+         // That one...
+   
+         // Process is going out.
+         case EXIT_PROCESS_DEBUG_EVENT:
+           exitLoop = true;
+           break;
+       }
+   
+       // Unfreeze the thread who sent the debug event.
+       // Otherwise, it stays frozen forever!
+       ContinueDebugEvent(debugEvt.dwProcessId, 
+         debugEvt.dwThreadId, 
+         DBG_EXCEPTION_NOT_HANDLED);
+     }
+   } 
+</pre>
+<p>O detalhe interessante desse processo de comunicação depurador/depurado é que um processo só pode ser depurado por apenas UM depurador. Ou seja, enquanto houver um processo depurando outro, os outros processos só ficam na vontade.</p>
+
+<p>Partindo desse princípio, podemos imaginar uma proteção baseada nessa exclusividade, criando um processo protetor que conecta no processo protegido e o "depura". Fiz um código de exemplo que faz justamente isso: ele atacha em um processo para depurá-lo (basta passar o PID como parâmetro) e não deixa mais outro depurador ocupar a debug port. Os passos para testá-lo são:</p>
+
+<p>  1. Compilar o código.</p>
+
+<p>  2. Executar o notepad (ou qualquer outra vítima).</p>
+
+<p>  3. Obter seu PID (Process ID).</p>
+
+<p>  4. Executar o protetor passando o PID como parâmetro.</p>
+
+<p>  5. Tentar "atachar" no processo através do Visual C++.</p>
+
+<p>Após o processo de attach, a porta de debug é ocupada, e a comunicação entre depurador e depurado é feita através do LPC. Abaixo uma pequena ilustração de como as coisas ocorrem:</p>
+
+<img src="img/antidebug_ocupando_a_debugport_debugport.gif"/>
+
+<p>Basicamente o processo fica recebendo eventos de debug (através da fila de mensagens LPC) continuamente até o evento final, o de final de processo. Note que se alguém tentar derrubar o processo que depura o processo depurado cai junto.</p>
+
+<p>O ponto forte desse tipo de proteção é que não afeta a compreensão e a legibilidade do código. De fato o próprio código que "protege" está em outro processo. O fraco, eu diria, é a sua alta visibilidade. Todo mundo que tentar atacar verá dois processos serem criados; e isso já faz pensar...</p>
+
+<p>Por isso é necessário pensar bem na implementação. Particularmente uma coisa a ser bem arquitetada é a união entre depurador e depurado. Quanto melhor essas duas peças forem encaixadas, tão mais difícil será para o atacante separá-las. Uma idéia adicional é utilizar a mesma técnica na direção oposta, ou seja, o processo depurado se atachar no depurador.</p>
+
+<p>Dessa vez não vou afirmar que, uma vez entendido o problema, a solução torna-se óbvia. Isso porque ainda não pensei o suficiente para achar uma solução óbvia. Idéias?</p>
+
+</section><hr/>
+
+
+<span id="todolist" title="ToDoList"/></span>
+<section id="section_todolist">
+<p class="title"><a href="2007-08.html#todolist">#</a> ToDoList</p>
+<span class="title-heading">Caloni, 2007-08-27<a href="2007-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_todolist')"><sup>[copy]</sup></a></span>
+
+<p>Vou aproveitar que o recente blogue do meu amigo resolveu falar um pouco sobre administração de tempo e citar a ferramenta que venho utilizando há quase um ano para tentar organizar minhas idéias, minhas tarefas e minha vida. Assim como o Kabloc, eu estava em sérias dificuldades para tentar fazer e organizar todas as coisas que eu tinha em mente. Ainda continuo com dificuldades para fazer, mas o mais importante é que agora eu tenho um roadmap de para onde eu quero ir.</p>
+
+<p>Eu sempre ouvi falar nesse programa desde que freqüento o The Code Project, um sítio onde programadores publicam seus minicódigos para serem aproveitados (e avaliados) por toda a comunidade. Possuo algumas pequenas contribuições por lá.</p>
+
+<p>O fato é que por preguiça de testar e pelo seu screenshot inicial, me pareceu um programa demasiado complexo e pesado. Por isso passei vários anos sem sequer baixá-lo.</p>
+
+<p>No entanto, houve um momento em minha vida em que eu precisava definitivamente reunir e organizar todas as minhas idéias e atividades para conseguir concluí-las, tanto no trabalho quanto na vida pessoal. Houve então uma pequena pesquisa de minha parte de programas que fizessem o que eu precisava. Foi aí que eu baixei e testei o ToDoList, um programa pequeno, portátil (posso levar em meu PenDrive) e muito flexível. Eis abaixo o screenshot original do artigo do Code Project:</p>
+
+<p>Bem, me parecia mais do que eu precisava. No entanto ele é flexível, e suas colunas podem ser configuradas da maneira que lhe aprouver. Abaixo um screenshot de como utilizo o ToDoList:</p>
+
+<img src="img/todolist_todolist.png"/>
+
+<p>Entre algumas coisas legais que gosto nesse programa que me fizeram ficar com ele, consigo me lembrar da seguinte lista:</p>
+
+<ul><li>Posso levar onde quiser e salvar minhas configurações em um arquivo ini.</li>
+<li>Ele fica na área de notificação e posso ativá-lo com um atalho global.</li>
+<li>Ele conta o tempo de uma tarefa se você quiser.</li>
+<li>Ele exporta as listas em formatos como Excel, HTML e texto puro.</li>
+<li>Ele é pequeno e não precisa de instalação.</li>
+<li>O código-fonte é disponível e está sempre sendo atualizado.</li>
+<li>Posso salvar minhas listas em XML (padrão) ou encriptado.</li>
+<li>Pode ser estendido por meio de plugins.</li></ul>
+<p>Bem, ele sozinho não resolveu meus problemas. Assim como o Kabloc disse, é você, e unicamente você, o responsável por organizar a sua agenda. E eu tive que passar muito tempo junto da minha para conseguir encontrar a maneira ideal para eu trabalhar. Cada um tem a sua.</p>
+
+<p>Há um tempo atrás não acreditava muito em idéias, mas a partir de um dado momento um outro amigo meu conseguiu me convencer que idéias são os verdadeiros motores do mundo, e um mundo sem idéias seria um mundo de fazedores de coisas sem cabeça. Não adianta ser muito bom no que se faz se não se pensa no que se faz. Essa é um boa razão para explicar por que boas idéias permanecem para sempre, mesmo que seus criadores já tenham morrido há muito tempo.</p>
+
+<p>Por esse motivo que uso o ToDoList para catalogar e listar todas as idéias que tenho sobre o que pretendo fazer. Como você deve adivinhar, a lista nunca acaba e só tende a crescer. Mas tudo bem, o objetivo não é acabar, mas sim não perder a idéia que se teve, pois ela aos poucos pode ser extendida e aprimorada no próprio ToDoList, até chegar a hora de implementar. Quando for a hora de botar a mão na massa muito dos problemas já foi pensado e analisado naqueles momentos de divagação no banheiro, no ônibus, ou na sala de aula. Os momentos mais frutíferos, aliás.</p>
+
+<p>Porém, é claro que catalogar tudo também não é tudo. É preciso agir. Por esse motivo costumo dividir minhas tarefas em duas listas (fora a da empresa onde trabalho): Curto Prazo e Longo Prazo. As tarefas no curto prazo são as mais imediatas, e representam as coisas que devo fazer antes da semana, do mês ou do ano acabar. Geralmente dou uma olhada diária nessa lista. As de longo prazo não são menos importantes, mas possuem um tempo de finalização mais longo, ou porque não são interessantes atualmente, ou porque fazem parte do meu projeto de vida, algo que se deve pensar mais e agir aos poucos. Costumo dar uma olhada semanal nessa lista.</p>
+
+<p>Enfim, cada pessoa tem sua maneira de encarar problemas, catalogar idéias e fazer acontecer. Essa ferramenta, na minha opinião, pode ajudar.</p>
+
+</section><hr/>
+
+
+<span id="hook_de_api_no_windbg" title="Hook de API no WinDbg"/></span>
+<section id="section_hook_de_api_no_windbg">
+<p class="title"><a href="2007-08.html#hook_de_api_no_windbg">#</a> Hook de API no WinDbg</p>
+<span class="title-heading">Caloni, 2007-08-29 <a href="2007-09.html#historia_do_windows_parte_40">&lt;</a><a href="computer.html">computer</a><a href="2007-08.html#antidebug_ocupando_a_debugport">&gt;</a><a href="2007-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_hook_de_api_no_windbg')"><sup>[copy]</sup></a></span>
+
+<p>Basicamente existem duas maneiras de um executável obter o endereço de uma função API do Windows: ou ele usa uma lib de interface com a DLL (o chamado "link estático") ou ele chama a função GetProcAddress explicitamente <a href="posts.html?q=1">1</a>.</p>
+
+<p>Para conseguir saber as funções das quais um executável obtém o endereço através da primeira técnica podemos utilizar o mundialmente famoso Dependency Walker. Ele nos mostrará quais DLLs ele utiliza e quais funções por DLL ele quer o endereço. Ele também nos avisa sobre as DLLs que estão utilizando delay load, uma técnica inventada no Visual Studio para que os executáveis não dependam estaticamente de APIs muito novas que podem não existir em versões do Windows mais antigas. Com o (carinhosamente chamado) Depends também é possível fazer hook de chamadas de API utilizando a opção profiling (F7), mas não costuma funcionar muito bem com trojans, pois eles capotam antes que alguma coisa interessante ocorra.</p>
+
+<p>O importante do Dependency Walker para o WinDbg é que com um editor é possível copiar todas as funções exibidas em sua interface para um editor, usar um pouco de regular expressions e criar uma batelada de breakpoints:</p>
+
+<pre>
+   
+   ...
+   bp user32!GetDC &quot;.echo GetDC; g&quot;
+   bp user32!GetDesktopWindow &quot;.echo GetDesktopWindow; g&quot;
+   bp user32!GetDlgCtrlID &quot;.echo GetDlgCtrlID; g&quot;
+   bp user32!GetDlgItem &quot;.echo GetDlgItem; g&quot;
+   bp user32!GetDlgItemTextW &quot;.echo GetDlgItemTextW; g&quot;
+   bp user32!GetFocus &quot;.echo GetFocus; g&quot;
+   ...
+</pre>
+<p>O comando "bp" cria um breakpoint no endereço requisitado. O que está entre aspas são os comandos que você deseja executar quando o breakpoint for disparado. No caso, para todas as funções será impresso o seu nome (comando ".echo") e a execução irá continuar (comando "g"). Ao rodar o programa, as chamadas das funções são mostradas na saída do depurador:</p>
+
+<pre>
+   ...
+   GetDesktopWindow
+   GetDC
+   GetFocus
+   GetDlgItem
+   GetDC
+   GetDlgItem
+   GetDC
+   GetDlgItem
+   GetDC
+   GetDlgItemTextW
+   ...
+</pre>
+<p>Lindo, não? Porém ainda podem estar sendo chamadas as funções obtidas pela segunda técnica, a do GetProcAddress. Para esse caso devemos ir um pouquinho mais fundo e rodar o executável duas vezes. Na primeira, coletamos as funções que são obtidas por essa técnica através do seguinte comando:</p>
+
+<pre>
+   bp kernel32!GetProcAddress &quot;da poi(esp + 8); g&quot;
+</pre>
+<p>O comando "da" exibe o conteúdo de uma string em C (caracteres ANSI e terminada em zero) na memória. A memória no caso é o "apontado do valor contido no segundo parâmetro da pilha". Complicado? Nem tanto: lembre-se que o ESP aponta sempre pro endereço de retorno da função chamadora e os parâmetros são sempre empilhados na ordem inversa da declaração em C. Logo, se o protótipo de GetProcAddress é:</p>
+
+<pre>
+   FARPROC GetProcAddress(HMODULE hModule, LPCSTR lpProcName);
+</pre>
+<p>O último parâmetro empilhado (ESP+4) é o hModule, e o penúltimo (ESP+8) é o lpProcName, que é o lugar onde é passado o nome da função.</p>
+
+<p>Devemos lembrar de colocar esse breakpoint bem no início da execução e rodar o executável uma vez. Com isso coletamos o conjunto de nomes de funções usadas para chamar GetProcAddress:</p>
+
+<pre>
+   ...
+   746e29f8  &quot;ImmReleaseContext&quot;
+   746e2a30  &quot;ImmNotifyIME&quot;
+   746e2934  &quot;CtfImmEnterCoInitCountSkipMode&quot;
+   746e2978  &quot;CtfImmLeaveCoInitCountSkipMode&quot;
+   746e29bc  &quot;ImmGetDefaultIMEWnd&quot;
+   746e2a64  &quot;ImmSetConversionStatus&quot;
+   746e2aa0  &quot;ImmGetConversionStatus&quot;
+   746e2adc  &quot;ImmGetProperty&quot;
+   746e2b10  &quot;ImmGetOpenStatus&quot;
+   ...
+</pre>
+<p>Daí é só organizar a lista obtida em ordem alfabética, acabar com duplicidades e criar o mesmo tipo de breakpoint que foi usado para as funções estáticas (pode ser sem o nome da DLL porque, embora não recomendado, o WinDbg se vira para encontrar os símbolos). Depois de criados os comandos, rodamos novamente o executável e, logo no início, já colocamos todos os breakpoints das funções coletadas.</p>
+
+<p>Essa é uma maneira rústica, porém eficaz e rápida de obter a lista de execução da API utilizada por um programa <a href="posts.html?q=2">2</a>.</p>
+
+<p><a href="posts.html?q=1">1</a> Uma variação do método GetProcAddress é a técnica de delay load usado pelo Visual C++. Porém, como o Dependency Walker nos mostra também as DLLs que estão linkadas usando essa técnica se torna dispensável um tratamento ad hoc.</p>
+
+<p><a href="posts.html?q=2">2</a> Essa técnica nem sempre funciona com todas as chamadas API, pois o aplicativo ainda pode utilizar outras maneiras de obter o endereço de uma função e chamá-la. A solução definitiva seria escrever diretamente um assembly esperto no começo da função, o que pode gerar mais problemas que soluções. Do jeito que está, conseguimos resolver 90% dos nossos problemas com análise de chamadas API. O resto nós podemos resolver em futuros artigos.</p>
+
+</section><hr/>
+
+
+<span id="barata_eletrica_e_o_hacker_de_antigamente" title="Barata Elétrica e o hacker de antigamente"/></span>
+<section id="section_barata_eletrica_e_o_hacker_de_antigamente">
+<p class="title"><a href="2007-08.html#barata_eletrica_e_o_hacker_de_antigamente">#</a> Barata Elétrica e o hacker de antigamente</p>
+<span class="title-heading">Caloni, 2007-08-31 <a href="2018-07.html#argentina_vs_franca_e_o_fim_da_geracao_dos_autistas">&lt;</a><a href="essays.html">essays</a><a href="2007-07.html#desejo_insano_de_programar_no_kernel">&gt;</a><a href="2007-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_barata_eletrica_e_o_hacker_de_antigamente')"><sup>[copy]</sup></a></span>
+
+<p>Os artigos escritos por ele estavam em português, mas sempre em suas edições ele disponibilizava artigos de outras partes do mundo em inglês. Praticamente li todos eles, e muitos fiz questão de ler mais de uma vez. A maioria falava de um mundo que existia antes de eu ter um computador, onde existiam vírus e pirataria de programas em disquetes, BBSs e a tal reserva de mercado. Além, é claro, de dicas de como ser um nerd e não perder a sociabilidade (se é que isso é possível quando se é um nerd adolescente). Existe uma página no zine onde estão listados os melhores artigos de todos os tempos da revista.</p>
+
+<p>Além do Barata Elétrica existiam outras revistas internacionais "bem conceituadas" na época, como a CCC (Chaos Computer Club), uma comunidade de hackers e crackers (o início do Astalavista!) fundada na Alemanha, e a 2600 Quarterly, constantemente perseguida pela polícia dos Estados Unidos depois das aprontadas de Kevin Mitnick, um praticante de engenharia social famoso da época. Como ainda eu ainda engatinhava no inglês, tive que me virar com o que tinha, um dicionário na mão e muita vontade de aprender. Não entendia muito, é verdade, mas minha atitude fez com que o inglês aprendido me valesse até hoje.</p>
+
+<p>Naquela época, além de computadores, programação, muito café e coca-cola, meus interesses estavam bem mais voltados em entender como a sociedade progrediria diante dessa revolução tecnológica que estava acontecendo naquele momento. Como ficariam nossos direitos civis dentro da rede? Quem seria julgado por um crime digital e, talvez mais importante, quem seria o executor desse julgamento? O que seria direito digital? Como fica nossa privacidade? Todas essas questões me levaram a ler livros que recomendo fortemente, como 1984, Revolução dos Bichos e Admirável Mundo Novo. Todos falam de sociedades fictícias, mas cujas características estão muito mais presentes entre nós do que os estereótipos das novelas televisivas. Eles não falam muito sobre computadores nem programação, mas são muito bons para a formação crítica de um indivíduo sobre a sociedade em que ele vive.</p>
+
+<p>Enfim, acho que já deu pra perceber que esse artigo não é sobre C++, Windows, Engenharia Reversa ou computadores. É muito mais um lapso nostálgico que me ocorreu sobre o que era ser um hacker naquela época: ansiar avidamente por conhecimento, mas não um conhecimento qualquer, que termina nele mesmo, regurgitado junto das milhares de notícias diárias. É um conhecimento sadio, apreciado e mastigado lentamente, com consciência, com perseverança. Não havia aquele desânimo por falta de tempo em aprender todas as coisas, mas o contrário: o ânimo por existir mais e mais conhecimento a ser apreciado, discutido e refletido. A troca de informações entre as pessoas era muito importante. O adjetivo hacker da época não estava na capacidade em invadir sistemas, mas em sua atitude em aprender coisas novas, ampliar sua visão do mundo e ter humildade o suficiente para concluir que nessa vida só se aprende um grão de areia de uma praia gigantesca. Bons tempos em que não saber não era vergonha de nada, mas uma oportunidade a mais.</p>
+
+<p>O tempo passa, o mundo gira, e aqui estamos nós: orkut, msn, youtube, blogues, flogues e outros gues inventados a cada dia. As pessoas estão conectadas, e cada vez mais estarão. E para quê? Para trocar mensagens, emoticons, fotos, vídeos, informação. Sobre elas mesmas, sobre onde vivem, sobre onde moram. A tal da privacidade foi por água abaixo. Poucos possuem o discernimento do que podem e não podem fazer sem sofrer as conseqüências de ter sua vida inteira exposta através dos bits e bytes que nunca param de trafegar. A popularidade da rede transformou-a em um second life, literalmente. Para alguns, é até o first life mesmo. Isso é a escolha de cada um.</p>
+
+</section><hr/>
+
+<span style="float: left;">
+ <a href="2007-07.html">[2007-07]</a>
+ <a href="2007-09.html">[2007-09]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

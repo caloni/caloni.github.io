@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery-ui.css"/>
+<script src="/js/jquery-1.12.4.js"></script>
+<script src="/js/jquery-ui.js"></script>
+<script src="/js/copy_clipboard.js"></script>
+<script>
+var quick_search_posts = [ 
+ ]; 
+</script>
+<script src="/js/quick_search.js"></script>
+<script src="/js/list.js"></script>
+<link rel="icon" href="/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>caloni::debugging</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<input type="text" name="filter" value="" id="filter" placeholder="enter to select" style="width: 100%; font-size: 1.5rem; margin-top: 1em; margin-bottom: 0.5em;" title=""/></br>
+<button id="filterbutton" style="font-size: 1rem;" onclick="ApplyFilter($('#filter').val());">select</button>
+<button id="removebutton" style="font-size: 1rem;" onclick="ApplyNotFilter($('#filter').val());">remove</button>
+<button id="randombutton" style="font-size: 1rem;" onclick="window.location = randomPost;">random</button>
+<div><big><b><span style="visibility: hidden; padding: 5px;" name="results" id="results">...</span></b></big></div>
+<table class="sortable" style="width: 100%;">
+<tr><td>
+<b><a href="2024-03.html#comparando_logs_no_procmon">Comparando logs no procmon</a></b>
+<small><i>2024-03-30 computer debugging  Quando precisar comparar duas execuções distintas pelos logs do procmon primeiro você precisa eliminar as colunas que serão obviamente diferentes, como data e hora e talvez detalhes da operação. Mantenha o PID, pois com o PID é possível identificar o processo no meio de vários que precisar logar.</small></i>
+</td></tr>
+<tr><td>
+<b><a href="2023-10.html#setando_proxima_instrucao_no_windbg">Setando próxima instrução no WinDbg</a></b>
+<small><i>2023-10-04 debugging reversing windbg  Procurando onde setar a próxima instrução no WinDbg? Dica: curiosamente ela não fica no meio dos comandos de debug, mas no menu Edit. Selecione a linha desejada no assembly ou código-fonte para onde deseja alterar o fluxo de execução e use a opção "Set Current Instruction".</small></i>
+</td></tr>
+<tr><td>
+<b><a href="2023-09.html#uwp_apps_nao_funcionam_com_proxy_de_loopback_resolvido">UWP apps não funcionam com proxy de loopback (resolvido)</a></b>
+<small><i>2023-09-07 reversing debugging computer  Durante minha pesquisa para entender como funciona o login no Azure AD chegou a mim a informação muito pertinente de que proxies locais não funcionam por padrão com aplicativos UWP. Isso acontece porque além dos apps rodarem dentro de um AppContainer isolado com seu próprio SID, os privilégios desse SID por padrão são muito limitados. Talvez no futuro isso funcione, mas no momento não.</small></i>
+</td></tr>
+<tr><td>
+<b><a href="2023-09.html#traffic">TRAFFIC</a></b>
+<small><i>2023-09-07 blogging reversing debugging computer  Observei esta anotação em meu journal de muitos anos atrás (2009) e ela continua atual. Baseado em um powerpoint do cientista da computação Andreas Zeller, autor de Why Programs Fail, este acrônimo é um caminho fácil de lembrar quando precisamos encontrar um bug no sistema. Eu lembro que estava pensando até em escrever um artigo na época, mas ainda estava trabalhando a questão de como traduzir as siglas para o português.</small></i>
+</td></tr>
+<tr><td>
+<b><a href="2023-06.html#debugging_a_non_signed_driver_in_windows_10">Debugging a non signed driver in Windows 10</a></b>
+<small><i>2023-06-15 english debugging computer  Not always just to disable driver signing enforcement work in Windows. In Windows 10 when tried to start a driver after reboot with `bcdedit -set TESTSIGNING ON` I still got the `StartService FAILED 577: Windows cannot verify the digital signature for this file` message.</small></i>
+</td></tr>
+<tr><td>
+<b><a href="2023-06.html#critical_sections_and_outlook">Critical Sections and Outlook</a></b>
+<small><i>2023-06-15 reversing english debugging computer  Today was a happy crush analysis day, because I receive an Outlook memory dump the moment it frooze the main window in the beginning of the process. I asked for one because it could be useful to another analysis I was doing with Office server communication.</small></i>
+</td></tr>
+<tr><td>
+<b><a href="2023-04.html#x64_deep_dive">Como analisar assembly x64</a></b>
+<small><i>2023-04-05 blogging videos debugging  Recomendo a leitura do artigo "X64 Deep Dive" para se habituar às idiossincrasias sobre o formato assembly do x64, especialmente se você costuma depurar assembly para Windows. O artigo descreve as novas funcionalidades que suportam os 64 bits do formato do executável Windows, o Portable Executable, além de explicar em detalhes o funcionamento de mecanismos que mudaram, como o tratamento de exceção (e o unwinding no código).</small></i>
+</td></tr>
+<tr><td>
+<b><a href="2022-05.html#meditacao_e_self_debugging">Meditação é self debugging</a></b>
+<small><i>2022-05-31 debugging computer  Depois que a tempestade na cabeça chega em um nível insuportável há uma calmaria, ou deveria haver, onde o corpo percebe que está vivo, que não existe no tempo e espaço. Existe apenas agora, e tão somente agora, pois o passado é uma máquina de estado mantida pelo cérebro, e o futuro a projeção extrapolada dessa máquina.</small></i>
+</td></tr>
+<tr><td>
+<b><a href="2021-10.html#como_resolver_ownership_do_ssh">Como resolver ownership do SSH</a></b>
+<small><i>2021-10-19 debugging computer  Primeiro tente logar com o usuário enquanto roda o comando abaixo no server para ver mensagens de log:     # see logs from ssh server     journalctl -f -t sshd Se for problema de ownership então resolva dessa forma:</small></i>
+</td></tr>
+<tr><td>
+<img src="img/como_configurar_debug_de_kernel_pela_rede_hyper_v_disable_secure_boot.png"/>
+<b><a href="2021-05.html#como_configurar_debug_de_kernel_pela_rede_hyperv_edition">Como Configurar Debug de Kernel Pela Rede (Hyper-V Edition)</a></b>
+<small><i>2021-05-01 blogging videos debugging computer  Estava pensando em transformar alguns posts antigos que estou revisando em vídeos no YouTube. Acho que o esforço para fazer isso é relativamente baixo se for sem áudio, sem edição e apenas com o que eu naturalmente faria para validar as partes técnicas, e muita gente poderia aprender algumas coisas, como, por exemplo, configurar o debug de kernel.</small></i>
+</td></tr>
+<tr><td>
+<b><a href="2020-04.html#minha_palestra_sobre_windbg">Minha Palestra Sobre Windbg</a></b>
+<small><i>2020-04-18 blogging debugging computer  A MBConf@Home2020 foi um sucesso. Parabéns aos organizadores, palestrantes e apoiadores. Eu nunca fui em um evento de tecnologia em que tudo funcionou do começo ao fim. Simplesmente fantástico o nível de qualidade da organização. Fora que trezentas pessoas ficaram em casa e participaram conosco dessa troca de conhecimento =).</small></i>
+</td></tr>
+<tr><td>
+<b><a href="2014-07.html#sobre_a_bitforge">Sobre a BitForge</a></b>
+<small><i>2014-07-03 blogging debugging computer  BitForge é minha empresa principal e onde eu trabalho resolvendo os problemas mais difíceis de computação; nos contrate para resolver seu problema [pelo Linkedin] ou enviando um email para wanderleycaloni@gmail.com. Conversar sobre seu projeto e até gastar uma horinha entendendo ele faz parte do nossa forma de se aproximar de você sem precisar da burocracia de um contrato ou pagamento de consultoria. Marque um café ou uma call conosco =)</small></i>
+</td></tr>
+</table>
+<span style="float: left;">
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

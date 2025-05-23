@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery-ui.css"/>
+<script src="/js/jquery-1.12.4.js"></script>
+<script src="/js/jquery-ui.js"></script>
+<script src="/js/copy_clipboard.js"></script>
+<script>
+var quick_search_posts = [ 
+ ]; 
+</script>
+<script src="/js/quick_search.js"></script>
+<script src="/js/list.js"></script>
+<link rel="icon" href="/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="months.html">
+<div class="is-4"><b>caloni::2025-04</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<ul style="list-style: none;">
+
+<li><small><a href="2025-04.html#baixando_simbolos_e_modulos_programaticamente">Baixando símbolos e módulos programaticamente</a></small></li>
+
+<li><small><a href="2025-04.html#the_willpower_instinct_kelly_mcgonigal">The Willpower Instinct (Kelly McGonigal)</a></small></li>
+<li><small><a href="2025-04.html#o_poder_do_silencio_eckhart_tolle">O poder do silêncio (Eckhart Tolle)</a></small></li>
+<li><small><a href="2025-04.html#in_search_of_the_miraculous_pd_ouspensky">In Search of the Miraculous (P.D. Ouspensky)</a></small></li>
+
+<li><small><a href="2025-04.html#multiple_peers_wireguard_calculation">Multiple peers Wireguard calculation</a></small></li>
+<li><small><a href="2025-04.html#set_the_windows_console_to_full_screen">Set the Windows console to full screen</a></small></li>
+<li><small><a href="2025-04.html#desafio_5">Desafio 5</a></small></li>
+<li><small><a href="2025-04.html#download_pdb_symbols">Download PDB symbols</a></small></li>
+<li><small><a href="2025-04.html#hook_using_detour">Hook using detour</a></small></li>
+<li><small><a href="2025-04.html#subir_escadas">Subir escadas</a></small></li>
+<li><small><a href="2025-04.html#journaling_and_coding">Journaling and coding</a></small></li>
+<li><small><a href="2025-04.html#nao_e_o_ulisses_e_o_salto_para_se_comprometer_e_preciso_estar_tranquilo">Não é o Ulisses, é o salto (para se comprometer é preciso estar tranquilo)</a></small></li>
+</ul>
+
+
+<span id="baixando_simbolos_e_modulos_programaticamente" title="Baixando símbolos e módulos programaticamente"/></span>
+<section id="section_baixando_simbolos_e_modulos_programaticamente">
+<p class="title"><a href="2025-04.html#baixando_simbolos_e_modulos_programaticamente">#</a> Baixando símbolos e módulos programaticamente</p>
+<span class="title-heading">Caloni, 2025-04-07 <a href="2025-04.html#in_search_of_the_miraculous_pd_ouspensky">&lt;</a><a href="self.html">self</a><a href="2025-03.html#ego_ou_intuicao">&gt;</a> <a href="2025-04.html#in_search_of_the_miraculous_pd_ouspensky">&lt;</a><a href="drafts.html">drafts</a><a href="2025-03.html#glossario_com_correspondencias_de_cartas_de_taro">&gt;</a><a href="2025-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_baixando_simbolos_e_modulos_programaticamente')"><sup>[copy]</sup></a></span>
+
+<p>Essa semana descobri que é possível baixar não apenas os PDBs do symbol server da Microsoft, mas os binários também. Existem relatos de erros de download para alguns binários específicos, mas em geral é possível baixar qualquer arquivo indexado por eles. Para isso você precisa ter em mãos o timestamp do binário, que antes era um timestamp mesmo, mas após o Windows 10 virou um hash único que identifica o mesmo binário e passível de ser compilado de novo exatamente como era, e o tamanho da imagem. Ambas as informações ficam na header do arquivo PE, mas depois que você consegui-las não precisa mais do binário (teoricamente). O código abaixo demonstra isso:</p>
+
+<pre>
+#include &lt;windows.h&gt;
+#include &lt;dbghelp.h&gt;
+#include &lt;algorithm&gt;
+#include &lt;cstdint&gt;
+#include &lt;filesystem&gt;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#pragma comment(lib, &quot;dbghelp.lib&quot;)
+namespace fs = std::filesystem;
+int main()
+{
+    const fs::path RootPath = fs::path(&quot;resources&quot;);
+    auto isBinary = [](const fs::path&amp; path) { return path.extension() == &quot;.exe&quot; || path.extension() == &quot;.dll&quot; || path.extension() == &quot;.sys&quot;; };
+    ::SymInitialize(::GetCurrentProcess(), NULL, FALSE);
+    try
+    {
+        for (const auto&amp; entry : fs::directory_iterator(RootPath))
+        {
+            std::cout &lt;&lt; entry.path().string() &lt;&lt; std::endl;
+            try
+            {
+                if (entry.is_regular_file() &amp;&amp; isBinary(entry.path()))
+                {
+                    auto imageName = entry.path().string();
+                    SYMSRV_INDEX_INFO imageFileInfo = { sizeof(imageFileInfo) };
+                    ::SymSrvGetFileIndexInfo(imageName.c_str(), &amp;imageFileInfo, 0);
+                    char downloadedImagePath[MAX_PATH + 1] = { 0 };
+                    if (::SymFindFileInPath(GetCurrentProcess(), NULL, imageName.c_str(),
+                        &amp;imageFileInfo.timestamp, imageFileInfo.size, 0, SSRVOPT_DWORDPTR,
+                        downloadedImagePath, nullptr, nullptr))
+                    {
+                        std::cout &lt;&lt; &quot;Image file downloaded to &quot; &lt;&lt; downloadedImagePath &lt;&lt; std::endl;
+                    }
+                    char downloadedPdbPath[MAX_PATH + 1] = { 0 };
+                    if (::SymFindFileInPath(GetCurrentProcess(), NULL, imageFileInfo.pdbfile,
+                        &amp;imageFileInfo.guid, imageFileInfo.age, 0, SSRVOPT_GUIDPTR,
+                        downloadedPdbPath, nullptr, nullptr))
+                    {
+                        std::cout &lt;&lt; &quot;PDB file downloaded to &quot; &lt;&lt; downloadedPdbPath &lt;&lt; std::endl;
+                    }
+                }
+            }
+            catch (std::exception&amp; e)
+            {
+                std::cerr &lt;&lt; entry.path().string() &lt;&lt; &quot;: &quot; &lt;&lt; e.what() &lt;&lt; std::endl;
+            }
+        }
+    }
+    catch (std::filesystem::filesystem_error&amp; e)
+    {
+        std::cout &lt;&lt; &quot;No resources directory found; nothing to do here: &quot; &lt;&lt; e.what();
+    }
+    ::SymCleanup(::GetCurrentProcess());
+    return 0;
+}
+</pre>
+<p>= O desafio de Ulisses</p>
+
+<p>O desafio de Ulisses é sobre o que o personagem de Odisseia fez para conseguir ouvir o canto da sereia sem se render aos seus feitiços e acabar sendo devorado por estas criaturas dos mares. Ele pediu que fosse amarrado ao mastro do navio e que em hipótese alguma fosse solto enquanto passassem pelas sereias. Durante o trajeto ele tentou de todas as formas fazer a tripulação o soltar, mas eles foram fiéis ao que ele havia ordenado antes de adentrarem nas tentações do que antes nem eram mulheres com rabo (era o canto a verdadeira tentação).</p>
+
+<p>Esta história é usada por alguns educadores para demonstrar um comprometimento de alguém sobre algo que este alguém não tem controle. É uma técnica de autodisciplina que não depende da disciplina da pessoa nos momentos de tentação.</p>
+
+<p>Com base nisso proponho o seguinte desafio quando estiver para procrastinar ou devanear e precisar focar em algo naquele momento: se desafie a não se distrair por alguns minutos. Não precisam ser muitos, mas precisam ser precisos: "irei trabalhar unicamente nisso pelo menos até 10:15". Em meus testes eu diria que até menos de meia-hora é suficiente para que o momentum se construa e após este tempo você esteja mais tentado a continuar trabalhando do que se render a alguma distração frívola.</p>
+
+<p>A nossa mente é nosso principal algoz contra tendência fisiológicas e esta estratégia inevitavelmente irá sucumbir em algum momento. Quando isso acontecer o que deve ser feito é diminuir mais ainda o número de minutos até um mínimo inegociável. Não se pode abusar dessa técnica e ficar trabalhando horas a fio apenas "aumentando as apostas". Haverá dias melhores.</p>
+
+<p>A ideia do desafio é apenas dar um tempo para que a mente entre e se acostume com o flow do que deve ser feito a ponto disso ser tão ou mais interessante do que qualquer outra coisa que você quisesse fazer antes. Com isso você compromete pouco e sem precisar perder tempo argumento consigo mesmo de que isso é importante. Você está apostando contra sua própria capacidade de controle. Não é tão fácil quanto estar amarrado a um mastro do navio, impedido de se mexer. Mas é simples e tem o potencial de ser efetivo.</p>
+
+</section><hr/>
+
+
+<span id="the_willpower_instinct_kelly_mcgonigal" title="The Willpower Instinct (Kelly McGonigal)"/></span>
+<section id="section_the_willpower_instinct_kelly_mcgonigal">
+<p class="title"><a href="2025-04.html#the_willpower_instinct_kelly_mcgonigal">#</a> The Willpower Instinct (Kelly McGonigal)</p>
+<span class="title-heading">Caloni, 2025-04-29 <a href="2025-04.html#nao_e_o_ulisses_e_o_salto_para_se_comprometer_e_preciso_estar_tranquilo">&lt;</a><a href="self.html">self</a><a href="2025-04.html#o_poder_do_silencio_eckhart_tolle">&gt;</a> <a href="books.html">books</a><a href="2025-04.html#o_poder_do_silencio_eckhart_tolle">&gt;</a> <a href="drafts.html">drafts</a><a href="2025-04.html#o_poder_do_silencio_eckhart_tolle">&gt;</a><a href="2025-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_the_willpower_instinct_kelly_mcgonigal')"><sup>[copy]</sup></a></span>
+
+<p>Lendo este livro, mas bem lentamente. Seguem recortes.</p>
+
+<blockquote>I believe that the best way to improve your self-control is to see how and why you lose control.</blockquote>
+<blockquote>Self-knowledge—especially of how we find ourselves in willpower trouble—is the foundation of self-control.</blockquote>
+<blockquote>These are not individual weaknesses that reveal our personal inadequacies—they are universal experiences and part of the human condition.</blockquote>
+<blockquote>You can—and should—make yourself the subject of your own real-world study.</blockquote>
+<blockquote>Your willpower challenge could be something you’ve been avoiding (what we’ll call an “I will” power challenge) or a habit you want to break (an “I won’t” power challenge). You could also choose an important goal in your life that you’d like to give more energy and focus to (an “I want” power challenge)—</blockquote>
+<blockquote>“I will” power challenge: What is something that you would like to do more of, or stop putting off, because you know that doing it will improve the quality of your life? • “I won’t” power challenge: What is the “stickiest” habit in your life? What would you like to give up or do less of because it’s undermining your health, happiness, or success? • “I want” power challenge: What is the most important long-term goal you’d like to focus your energy on? What immediate “want” is most likely to distract you or tempt you away from this goal?</blockquote>
+<blockquote>“I will” and “I won’t” power are the two sides of self-control, but they alone don’t constitute willpower. To say no when you need to say no, and yes when you need to say yes, you need a third power: the ability to remember what you really want.</blockquote>
+<blockquote>Otherwise, what’s going to stop you from following your immediate desires?</blockquote>
+<blockquote>To exert self-control, you need to find your motivation when it matters. This is “I want” power.</blockquote>
+<blockquote>For most of evolutionary history, the prefrontal cortex mainly controlled physical movement: walking, running, reaching, pushing—a kind of proto-self-control.</blockquote>
+<blockquote>As the prefrontal cortex grew, it took on new control functions: controlling what you pay attention to, what you think about, even how you feel. This made it even better at controlling what you do.</blockquote>
+<blockquote>The prefrontal cortex is not one unified blob of gray matter; it has three key regions that divvy up the jobs of I will, I won’t, and I want.</blockquote>
+<blockquote>The third region, just a bit lower and in the middle of the prefrontal cortex, keeps track of your goals and your desires. It decides what you want. The more rapidly its cells fire, the more motivated you are to take action or resist temptation.</blockquote>
+<blockquote>our primitive brain was not replaced with some completely new model—the system of self-control was slapped on top of the old system of urges and instincts.</blockquote>
+<blockquote>There’s the version of us that acts on impulse and seeks immediate gratification, and the version of us that controls our impulses and delays gratification to protect our long-term goals.</blockquote>
+<blockquote>The part of you that wants to give in isn’t bad—it simply has a different point of view about what matters most.</blockquote>
+<blockquote>Giving a name to this version of yourself can help you recognize when it is taking over, and also help you call in your wiser self for some willpower support.</blockquote>
+<blockquote>You need to recognize when you’re making a choice that requires willpower; otherwise, the brain always defaults to what is easiest.</blockquote>
+<blockquote>When your mind is preoccupied, your impulses—not your long-term goals—will guide your choices.</blockquote>
+<blockquote>To have more self-control, you first need to develop more self-awareness. A good first step is to notice when you are making choices related to your willpower challenge.</blockquote>
+<blockquote>For at least one day, track your choices. At the end of the day, look back and try to analyze when decisions were made that either supported or undermined your goals. Trying to keep track of your choices will also reduce the number of decisions you make while distracted—a guaranteed way to boost your willpower.</blockquote>
+<blockquote>This week, commit to watching how the process of giving in to your impulses happens. You don’t even need to set a goal to improve your self-control yet. See if you can catch yourself earlier and earlier in the process, noticing what thoughts, feelings, and situations are most likely to prompt the impulse. What do you think or say to yourself that makes it more likely that you will give in?</blockquote>
+<blockquote>Regular meditators have more gray matter in the prefrontal cortex, as well as regions of the brain that support self-awareness.</blockquote>
+<blockquote>One study found that just three hours of meditation practice led to improved attention and self-control. After eleven hours, researchers could see those changes in the brain.</blockquote>
+<blockquote>It may seem incredible that our brains can reshape themselves so quickly, but meditation increases blood flow to the prefrontal cortex, in much the same way that lifting weights increases blood flow to your muscles.</blockquote>
+<blockquote>This simple act of staying still is part of what makes meditation willpower training effective. You’re learning not to automatically follow every single impulse that your brain and body produce.</blockquote>
+<blockquote>Notice how it feels to breathe, and notice how the mind wanders.</blockquote>
+<blockquote>Most new meditators make this mistake, but the truth is that being “bad” at meditation is exactly what makes the practice effective.</blockquote>
+<blockquote>Meditation is not about getting rid of all your thoughts; it’s learning not to get so lost in them that you forget what your goal is.</blockquote>
+<blockquote>Imagine yourself facing your willpower challenge, and doing the harder thing. What makes it hard?</blockquote>
+<blockquote>What does the impulsive version of you want? What does the wiser version of you want?</blockquote>
+</section><hr/>
+
+<span id="o_poder_do_silencio_eckhart_tolle" title="O poder do silêncio (Eckhart Tolle)"/></span>
+<section id="section_o_poder_do_silencio_eckhart_tolle">
+<p class="title"><a href="2025-04.html#o_poder_do_silencio_eckhart_tolle">#</a> O poder do silêncio (Eckhart Tolle)</p>
+<span class="title-heading">Caloni, 2025-04-29 <a href="2025-04.html#the_willpower_instinct_kelly_mcgonigal">&lt;</a><a href="self.html">self</a><a href="2025-04.html#in_search_of_the_miraculous_pd_ouspensky">&gt;</a> <a href="2025-04.html#the_willpower_instinct_kelly_mcgonigal">&lt;</a><a href="books.html">books</a><a href="2025-04.html#in_search_of_the_miraculous_pd_ouspensky">&gt;</a> <a href="2025-04.html#the_willpower_instinct_kelly_mcgonigal">&lt;</a><a href="drafts.html">drafts</a><a href="2025-04.html#in_search_of_the_miraculous_pd_ouspensky">&gt;</a><a href="2025-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_o_poder_do_silencio_eckhart_tolle')"><sup>[copy]</sup></a></span>
+
+<p>Mais um livro sendo relido parcialmente. Alguns recortes.</p>
+
+<blockquote>Os dogmas são prisões formadas por conceitos coletivos. O que parece estranho é que as pessoas gostam de suas prisões, pois elas lhes dão uma sensação de segurança e uma falsa impressão de que “sabem das coisas”.</blockquote>
+<blockquote>O reino da consciência é muito mais vasto do que aquilo que o pensamento é capaz de abranger.</blockquote>
+<blockquote>A mente funciona com “voracidade” e por isso está sempre querendo mais. Quando você se identifica com a sua mente, fica facilmente entediado e ansioso. O tédio demonstra que a mente deseja avidamente mais estímulo, mais o que pensar, e que essa fome não está sendo saciada.</blockquote>
+<blockquote>O tédio é simplesmente um movimento de energia condicionada dentro de você.</blockquote>
+<blockquote>Qualquer tipo de preconceito mostra que você está identificado com a mente pensante. Mostra que você não está vendo o outro ser humano, está vendo apenas seu conceito sobre aquele ser humano. Reduzir uma pessoa a um conceito já é uma forma de violência.</blockquote>
+<blockquote>Quem percebe isso? Quem compreende que sua forma física e psicológica é passageira? É o Eu Sou. Esse é o “eu” mais profundo, que não tem nada a ver com o passado e o futuro.</blockquote>
+<blockquote>Você trata o momento atual como um obstáculo que precisa ser ultrapassado? Você considera mais importante o momento futuro que quer atingir?</blockquote>
+<blockquote>Assumir responsabilidade por este momento presente é estar em harmonia com a vida.</blockquote>
+</section><hr/>
+
+<span id="in_search_of_the_miraculous_pd_ouspensky" title="In Search of the Miraculous (P.D. Ouspensky)"/></span>
+<section id="section_in_search_of_the_miraculous_pd_ouspensky">
+<p class="title"><a href="2025-04.html#in_search_of_the_miraculous_pd_ouspensky">#</a> In Search of the Miraculous (P.D. Ouspensky)</p>
+<span class="title-heading">Caloni, 2025-04-29 <a href="2025-04.html#o_poder_do_silencio_eckhart_tolle">&lt;</a><a href="self.html">self</a><a href="2025-04.html#baixando_simbolos_e_modulos_programaticamente">&gt;</a> <a href="2025-04.html#o_poder_do_silencio_eckhart_tolle">&lt;</a><a href="books.html">books</a><a href="2025-03.html#se_ligue_em_voce_gasparetto_luiz">&gt;</a> <a href="2025-04.html#o_poder_do_silencio_eckhart_tolle">&lt;</a><a href="drafts.html">drafts</a><a href="2025-04.html#baixando_simbolos_e_modulos_programaticamente">&gt;</a><a href="2025-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_in_search_of_the_miraculous_pd_ouspensky')"><sup>[copy]</sup></a></span>
+
+<blockquote>There was another type of school, with which I was unable to make contact and of which I only heard. These schools promised very much but they also demanded very much. They demanded everything at once. It would have been necessary to stay in India and give up thoughts of returning to Europe, to renounce all my own ideas, aims, and plans, and proceed along a road of which I could know nothing beforehand.</blockquote>
+</section><hr/>
+
+
+<span id="multiple_peers_wireguard_calculation" title="Multiple peers Wireguard calculation"/></span>
+<section id="section_multiple_peers_wireguard_calculation">
+<p class="title"><a href="2025-04.html#multiple_peers_wireguard_calculation">#</a> Multiple peers Wireguard calculation</p>
+<span class="title-heading">Caloni, 2025-04-30 <a href="2025-04.html#set_the_windows_console_to_full_screen">&lt;</a><a href="code.html">code</a><a href="2025-04.html#hook_using_detour">&gt;</a><a href="2025-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_multiple_peers_wireguard_calculation')"><sup>[copy]</sup></a></span>
+
+
+<pre>
+/** Multiple peers Wireguard calculation.
+Wireguard does not support overlapping allowed ips for multiple peers. To
+cover all possible ips excluding others for secondary peers some
+calculation is needed to mount the allowed ips list derived from 0.0.0.0.
+@author Wanderley Caloni &lt;wanderleycaloni@gmail.com&gt;
+@date 2024-08
+*/
+using System.Net;
+public class Program
+{
+    private static void CalculateWireguardAllowedIps(ref HashSet&lt;IPNetwork2&gt; list, IPNetwork2 ip, IPNetwork2 remove)
+    {
+        if (ip.Cidr == 32)
+        {
+            if (ip != remove)
+            {
+                list.Add(ip);
+            }
+            else
+            {
+                Console.WriteLine(&quot;CalculateWireguardAllowedIps: found and skipping&quot; + ip.ToString());
+            }
+        }
+        else
+        {
+            HashSet&lt;IPNetwork2&gt; split = ip.Subnet((byte)(ip.Cidr + 1)).ToHashSet(); // [0]=left, [1]=right
+            if (split.Count == 2)
+            {
+                List&lt;IPNetwork2&gt; splitList = split.ToList();
+                if (splitList[0].Overlap(remove))
+                {
+                    list.Add(splitList[1]);
+                    CalculateWireguardAllowedIps(ref list, splitList[0], remove);
+                }
+                else
+                {
+                    list.Add(splitList[0]);
+                    CalculateWireguardAllowedIps(ref list, splitList[1], remove);
+                }
+            }
+        }
+    }
+    private static void CalculateWireguardAllowedIps(ref HashSet&lt;IPNetwork2&gt; ipsToAdd, ref HashSet&lt;IPNetwork2&gt; ipsToRemove, ref HashSet&lt;IPNetwork2&gt; list)
+    {
+        foreach (IPNetwork2 remove in ipsToRemove)
+        {
+            var localIpsToAdd = new HashSet&lt;IPNetwork2&gt;(ipsToAdd);
+            foreach (IPNetwork2 add in localIpsToAdd)
+            {
+                if (add.Overlap(remove))
+                {
+                    CalculateWireguardAllowedIps(ref list, add, remove);
+                }
+                else
+                {
+                    list.Add(add);
+                }
+            }
+            ipsToAdd = list;
+        }
+    }
+    private static void AddAllowedIp(ref HashSet&lt;IPNetwork2&gt; allowedIps, IPNetwork2 addThisIp, ref HashSet&lt;IPNetwork2&gt; notAddTheseIps)
+    {
+        if (addThisIp.Cidr == 32)
+        {
+            if( ! notAddTheseIps.Contains(addThisIp))
+            {
+                allowedIps.Add(addThisIp);
+            }
+            else
+            {
+                Console.WriteLine(&quot;AddAllowedIp: found and skipping &quot; + addThisIp.ToString());
+            }
+        }
+        else
+        {
+            List&lt;IPNetwork2&gt; split = addThisIp.Subnet((byte)(addThisIp.Cidr + 1)).ToList(); // [0]=left, [1]=right
+            if (split.Count == 2)
+            {
+                bool overlapLeft = false, overlapRight = false;
+                foreach(IPNetwork2 notIp in notAddTheseIps)
+                {
+                    if (split[0].Overlap(notIp))
+                    {
+                        overlapLeft = true;
+                    }
+                    if (split[1].Overlap(notIp))
+                    {
+                        overlapRight = true;
+                    }
+                    if( overlapLeft &amp;&amp; overlapRight)
+                    {
+                        break;
+                    }
+                }
+                if (overlapLeft)
+                {
+                    AddAllowedIp(ref allowedIps, split[0], ref notAddTheseIps);
+                }
+                else
+                {
+                    allowedIps.Add(split[0]);
+                }
+                if (overlapRight)
+                {
+                    AddAllowedIp(ref allowedIps, split[1], ref notAddTheseIps);
+                }
+                else
+                {
+                    allowedIps.Add(split[1]);
+                }
+            }
+        }
+    }
+    public static int Main(string[] args)
+    {
+        HashSet&lt;IPNetwork2&gt; twoPeersHashSet = new HashSet&lt;IPNetwork2&gt;();
+        IPNetwork2 allAllowedIPs = new IPNetwork2(IPAddress.Parse(&quot;0.0.0.0&quot;), 0);
+        IPNetwork2 removeIP = new IPNetwork2(IPAddress.Parse(&quot;66.22.190.0&quot;), 32);
+        CalculateWireguardAllowedIps(ref twoPeersHashSet, allAllowedIPs, removeIP);
+        HashSet&lt;IPNetwork2&gt; multiplePeersHashSet = new HashSet&lt;IPNetwork2&gt;();
+        HashSet&lt;IPNetwork2&gt; ipsToRemove = new HashSet&lt;IPNetwork2&gt;();
+        //ipsToRemove.Add(new IPNetwork2(IPAddress.Parse(&quot;66.22.190.0&quot;), 32));
+        ipsToRemove.Add(new IPNetwork2(IPAddress.Parse(&quot;66.22.188.1&quot;), 32));
+        //ipsToRemove.Add(new IPNetwork2(IPAddress.Parse(&quot;66.22.190.1&quot;), 32));
+        //ipsToRemove.Add(new IPNetwork2(IPAddress.Parse(&quot;66.22.188.0&quot;), 32));
+        AddAllowedIp(ref multiplePeersHashSet, allAllowedIPs, ref ipsToRemove);
+        var inMultipleExceptTwoPeers = multiplePeersHashSet.Except(twoPeersHashSet).ToHashSet();
+        var inTwoPeersExceptMultiple = twoPeersHashSet.Except(multiplePeersHashSet).ToHashSet();
+        Console.WriteLine(&quot;In multiple peers except two peers:&quot;);
+        foreach (var ip in inMultipleExceptTwoPeers)
+        {
+            string s = &quot;ips in &quot; + ip.ToString() + &quot;: &quot;;
+            foreach(var ip2 in ip.ListIPAddress() )
+            {
+                s += ip2.ToString() + &quot; &quot;;
+            }
+            Console.WriteLine(s);
+        }
+        Console.WriteLine(&quot;In two peers except multiple peers:&quot;);
+        foreach (var ip in inTwoPeersExceptMultiple)
+        {
+            string s = &quot;ips in &quot; + ip.ToString() + &quot;: &quot;;
+            foreach(var ip2 in ip.ListIPAddress() )
+            {
+                s += ip2.ToString() + &quot; &quot;;
+            }
+            Console.WriteLine(s);
+        }
+        return 0;
+    }
+}
+</pre>
+
+</section><hr/>
+
+<span id="set_the_windows_console_to_full_screen" title="Set the Windows console to full screen"/></span>
+<section id="section_set_the_windows_console_to_full_screen">
+<p class="title"><a href="2025-04.html#set_the_windows_console_to_full_screen">#</a> Set the Windows console to full screen</p>
+<span class="title-heading">Caloni, 2025-04-30 <a href="code.html">code</a><a href="2025-04.html#multiple_peers_wireguard_calculation">&gt;</a><a href="2025-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_set_the_windows_console_to_full_screen')"><sup>[copy]</sup></a></span>
+
+
+<pre>
+#include &lt;iostream&gt;
+#include &lt;windows.h&gt;
+int main()
+{
+    if( ! SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), 
+      CONSOLE_FULLSCREEN_MODE | CONSOLE_WINDOWED_MODE, 
+      NULL) )
+    {
+        // if GetLastError 120 use this:
+        ::SendMessage(::GetConsoleWindow(), WM_SYSKEYDOWN, VK_RETURN, 0x20000000);
+    }
+    system(&quot;chcp 65001&quot;); // utf-8
+}
+</pre>
+
+</section><hr/>
+
+<span id="desafio_5" title="Desafio 5"/></span>
+<section id="section_desafio_5">
+<p class="title"><a href="2025-04.html#desafio_5">#</a> Desafio 5</p>
+<span class="title-heading">Caloni, 2025-04-30 <a href="2025-04.html#download_pdb_symbols">&lt;</a><a href="code.html">code</a><a href="2025-03.html#e_melhor_manter_binarios_de_teste_no_codigofonte">&gt;</a><a href="2025-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_desafio_5')"><sup>[copy]</sup></a></span>
+
+
+<pre>
+/** My solution to the infamous desafio05 from the
+site Os Programadores.
+@author Wanderley Caloni &lt;wanderleycaloni@gmail.com&gt;
+@date 2020-06
+@see https://osprogramadores.com/desafios/d05/
+*/
+#include &lt;boost/iostreams/device/mapped_file.hpp&gt;
+#include &lt;fstream&gt;
+#include &lt;iomanip&gt;
+#include &lt;iostream&gt;
+#include &lt;map&gt;
+#include &lt;memory&gt;
+#include &lt;set&gt;
+#include &lt;sstream&gt;
+#include &lt;string&gt;
+#include &lt;thread&gt;
+#include &lt;unordered_map&gt;
+#include &lt;vector&gt;
+using namespace std;
+typedef long long int LongInteger;
+struct Chunk 
+{
+	const char* begin;
+	const char* end;
+};
+struct Employee 
+{
+	Chunk name;
+	Chunk surname;
+	int salary;
+	Chunk area;
+	bool surname_max = false;
+};
+struct Area
+{
+	string name;
+	vector&lt;Employee&gt; area_max;
+	vector&lt;Employee&gt; area_min;
+	double avg_salary = 0.0;
+	LongInteger total_employees = 0;
+	LongInteger total_salaries = 0;
+};
+struct ParseChunk
+{
+	shared_ptr&lt;thread&gt; thread_chunk;
+	Chunk data_chunk;
+	map&lt;string, Area&gt; areas;
+	unordered_map&lt;string, vector&lt;Employee&gt;&gt; surname_max;
+};
+template&lt;typename Cmp&gt;
+inline bool compare_exchange_employees(vector&lt;const Area*&gt;&amp; lst_change, const Area&amp; area_cmp, Cmp cmp)
+{
+	if (lst_change.size())
+	{
+		if (cmp(area_cmp.total_employees, (*lst_change.begin())-&gt;total_employees))
+			lst_change = vector&lt;const Area*&gt;{ &amp;area_cmp };
+		else if (area_cmp.total_employees == (*lst_change.begin())-&gt;total_employees)
+			lst_change.push_back(&amp;area_cmp);
+		return true;
+	}
+	else lst_change = vector&lt;const Area*&gt;{ &amp;area_cmp };
+	return false;
+}
+template&lt;typename Cmp&gt;
+inline bool compare_exchange_salary(vector&lt;Employee&gt;&amp; lst_change, const Employee&amp; employee, Cmp cmp)
+{
+	if (lst_change.size())
+	{
+		if (cmp(employee.salary, lst_change.begin()-&gt;salary))
+			lst_change = vector&lt;Employee&gt;{ employee };
+		else if (employee.salary == lst_change.begin()-&gt;salary)
+			lst_change.push_back(employee);
+		return true;
+	}
+	else lst_change = vector&lt;Employee&gt;{ employee };
+	return false;
+}
+template&lt;typename Cmp&gt;
+inline bool compare_exchange_salary(vector&lt;Employee&gt;&amp; lst_change, const vector&lt;Employee&gt;&amp; lst_cmp, Cmp cmp)
+{
+	if (lst_change.size())
+	{
+		if (lst_cmp.size())
+		{
+			if (cmp(lst_cmp.begin()-&gt;salary, lst_change.begin()-&gt;salary))
+				lst_change = lst_cmp;
+			else if (lst_cmp.begin()-&gt;salary == lst_change.begin()-&gt;salary)
+				lst_change.insert(lst_change.begin(), lst_cmp.begin(), lst_cmp.end());
+			return true;
+		}
+	}
+	else lst_change = lst_cmp;
+	return false;
+}
+void parse(ParseChunk* data)
+{
+	Employee employee;
+	string surname;
+	string area_name;
+	Area* area;
+	vector&lt;Employee&gt;* employees;
+	auto mystrchr = [&amp;](const char* str, char ch) { while (*str &amp;&amp; *str != ch) ++str; return str; };
+	auto myatoi = [&amp;](const char* beg, const char* end) 
+	{ 
+		int ret = 0; 
+		while (beg &lt; end) {
+			char c = *beg++; 
+			if (c == '.') continue; 
+			ret = ret * 10 + c - '0'; } 
+		return ret;
+	};
+	const char* curr = mystrchr(data-&gt;data_chunk.begin, '&quot;');
+	const char* end;
+	while (curr &amp;&amp; curr &lt; data-&gt;data_chunk.end)
+	{
+		switch (curr[1])
+		{
+		case 'i': // employee
+			curr += 2;
+			curr = mystrchr(curr + 1, ',');
+			curr += 6;
+			curr = mystrchr(mystrchr(curr + 1, ':') + 1, '&quot;') + 1;
+			end = mystrchr(curr, '&quot;');
+			employee.name = Chunk{ curr, end };
+			curr = end + 11;
+			curr = mystrchr(mystrchr(curr + 1, ':') + 1, '&quot;') + 1;
+			end = mystrchr(curr, '&quot;');
+			employee.surname = Chunk{ curr, end };
+			curr = end + 9;
+			curr = mystrchr(curr + 1, ':') + 1;
+			end = mystrchr(curr, '.') + 3;
+			employee.salary = myatoi(curr, end);
+			curr = end + 6;
+			curr = mystrchr(mystrchr(curr + 1, ':') + 1, '&quot;') + 1;
+			end = mystrchr(curr, '&quot;');
+			employee.area = Chunk{ curr, end };
+			curr = end + 1;
+			curr = mystrchr(curr, '}');
+			area_name = string(employee.area.begin, employee.area.end);
+			area = &amp;data-&gt;areas[area_name];
+			compare_exchange_salary(area-&gt;area_max, employee, greater&lt;LongInteger&gt;());
+			compare_exchange_salary(area-&gt;area_min, employee, less&lt;LongInteger&gt;());
+			surname = string(employee.surname.begin, employee.surname.end);
+			employees = &amp;data-&gt;surname_max[surname];
+			compare_exchange_salary(*employees, employee, greater&lt;LongInteger&gt;());
+			++area-&gt;total_employees;
+			area-&gt;total_salaries += employee.salary;
+			break;
+		case 'c': // area
+			curr += 6;
+			curr = mystrchr(mystrchr(curr + 1, ':') + 1, '&quot;') + 1;
+			end = mystrchr(curr, '&quot;');
+			area_name = string(curr, end);
+			curr = end + 6;
+			curr = mystrchr(mystrchr(curr + 1, ':') + 1, '&quot;') + 1;
+			end = mystrchr(curr, '&quot;');
+			data-&gt;areas[area_name].name = string(curr, end);
+			curr = end + 1;
+			curr = mystrchr(curr, '}');
+			break;
+		}
+		curr = mystrchr(curr + 1, '&quot;');
+	}
+}
+int main(int argc, char* argv[])
+{
+	if (argc == 2)
+	{
+		const char* fileName = argv[1];
+		boost::iostreams::mapped_file_source fileMap;
+		fileMap.open(fileName);
+		if (fileMap.is_open())
+		{
+			const char* data = fileMap.data();
+			size_t cores = std::thread::hardware_concurrency();
+			size_t chunkSize = fileMap.size() / cores;
+			vector&lt;ParseChunk&gt; chunks(cores);
+			for( size_t i = 0; i &lt; cores; ++i )
+			{
+				const char* begin = data + (i * chunkSize);
+				const char* end = data + ( (i+1) * chunkSize);
+				chunks[i].data_chunk = Chunk{ begin, end };
+				chunks[i].thread_chunk = make_shared&lt;thread&gt;(parse, &amp;chunks[i]);
+			}
+			ParseChunk total;
+			Area global;
+			for (const auto&amp; chunk : chunks)
+			{
+				chunk.thread_chunk-&gt;join();
+				for (const auto&amp; area : chunk.areas)
+				{
+					Area&amp; total_area = total.areas[area.first];
+					total_area.total_employees += area.second.total_employees;
+					total_area.total_salaries += area.second.total_salaries;
+					compare_exchange_salary(total_area.area_max, area.second.area_max, greater&lt;LongInteger&gt;());
+					compare_exchange_salary(total_area.area_min, area.second.area_min, less&lt;LongInteger&gt;());
+					if( area.second.name.size() )
+						total_area.name = area.second.name;
+				}
+				for (const auto&amp; surname_max : chunk.surname_max )
+				{
+					const string&amp; surname = surname_max.first;
+					vector&lt;Employee&gt;&amp; total_surname = total.surname_max[surname];
+					bool exchange = compare_exchange_salary(total_surname, surname_max.second, greater&lt;LongInteger&gt;());
+					total_surname.begin()-&gt;surname_max = exchange;
+				}
+			}
+			vector&lt;const Area*&gt; most_employees, least_employees;
+			for (auto&amp; area : total.areas)
+			{
+				if (area.second.total_employees)
+				{
+					area.second.avg_salary = ( double(area.second.total_salaries) / 100.0 ) / double(area.second.total_employees);
+					global.total_employees += area.second.total_employees;
+					global.total_salaries += area.second.total_salaries;
+					compare_exchange_salary(global.area_max, area.second.area_max, greater&lt;LongInteger&gt;());
+					compare_exchange_salary(global.area_min, area.second.area_min, less&lt;LongInteger&gt;());
+					compare_exchange_employees(most_employees, area.second, greater&lt;LongInteger&gt;());
+					compare_exchange_employees(least_employees, area.second, less&lt;LongInteger&gt;());
+				}
+			}
+			global.avg_salary = ( double(global.total_salaries) / 100.0 ) / double(global.total_employees);
+			auto out_salary = [](LongInteger salary) -&gt; string
+			{
+				ostringstream os;
+				os &lt;&lt; (salary / 100) &lt;&lt; '.' &lt;&lt; setfill('0') &lt;&lt; setw(2) &lt;&lt; (salary % 100);
+				return os.str();
+			};
+			for (const auto&amp; emp : global.area_max)
+				cout &lt;&lt; &quot;global_max|&quot; &lt;&lt; string(emp.name.begin, emp.name.end) &lt;&lt; ' ' &lt;&lt; string(emp.surname.begin, emp.surname.end) &lt;&lt; '|' &lt;&lt; out_salary(emp.salary) &lt;&lt; '\n';
+			for (const auto&amp; emp : global.area_min)
+				cout &lt;&lt; &quot;global_min|&quot; &lt;&lt; string(emp.name.begin, emp.name.end) &lt;&lt; ' ' &lt;&lt; string(emp.surname.begin, emp.surname.end) &lt;&lt; '|' &lt;&lt; out_salary(emp.salary) &lt;&lt; '\n';
+			cout &lt;&lt; &quot;global_avg|&quot; &lt;&lt; fixed &lt;&lt; setprecision(2) &lt;&lt; global.avg_salary &lt;&lt; '\n';
+			for (const auto&amp; area : total.areas)
+			{
+				for (const auto&amp; emp : area.second.area_max)
+					cout &lt;&lt; &quot;area_max|&quot; &lt;&lt; area.second.name &lt;&lt; '|' &lt;&lt; string(emp.name.begin, emp.name.end) &lt;&lt; ' ' &lt;&lt; string(emp.surname.begin, emp.surname.end) &lt;&lt; '|' &lt;&lt; out_salary(emp.salary) &lt;&lt; '\n';
+				for (const auto&amp; emp : area.second.area_min)
+					cout &lt;&lt; &quot;area_min|&quot; &lt;&lt; area.second.name &lt;&lt; '|' &lt;&lt; string(emp.name.begin, emp.name.end) &lt;&lt; ' ' &lt;&lt; string(emp.surname.begin, emp.surname.end) &lt;&lt; '|' &lt;&lt; out_salary(emp.salary) &lt;&lt; '\n';
+				if( area.second.total_employees )
+					cout &lt;&lt; &quot;area_avg|&quot; &lt;&lt; area.second.name &lt;&lt; '|' &lt;&lt; fixed &lt;&lt; setprecision(2) &lt;&lt; area.second.avg_salary &lt;&lt; '\n';
+			}
+			for (const auto&amp; emp : most_employees)
+				cout &lt;&lt; &quot;most_employees|&quot; &lt;&lt; emp-&gt;name &lt;&lt; '|' &lt;&lt; emp-&gt;total_employees &lt;&lt; '\n';
+			for (const auto&amp; emp : least_employees)
+				cout &lt;&lt; &quot;least_employees|&quot; &lt;&lt; emp-&gt;name &lt;&lt; '|' &lt;&lt; emp-&gt;total_employees &lt;&lt; '\n';
+			for (const auto&amp; emps : total.surname_max)
+			{
+				if (emps.second.begin()-&gt;surname_max || emps.second.size() &gt; 1)
+				{
+					string surname = string(emps.second.begin()-&gt;surname.begin, emps.second.begin()-&gt;surname.end);
+					for (const auto&amp; emp : emps.second)
+						cout &lt;&lt; &quot;last_name_max|&quot; &lt;&lt; surname &lt;&lt; '|' &lt;&lt; string(emp.name.begin, emp.name.end) &lt;&lt; ' ' &lt;&lt; surname &lt;&lt; '|' &lt;&lt; out_salary(emp.salary) &lt;&lt; '\n';
+				}
+			}
+			fileMap.close();
+		}
+	}
+	else cout &lt;&lt; &quot;How to use: program &lt;input-file&gt;\n&quot;;
+}
+</pre>
+
+</section><hr/>
+
+<span id="download_pdb_symbols" title="Download PDB symbols"/></span>
+<section id="section_download_pdb_symbols">
+<p class="title"><a href="2025-04.html#download_pdb_symbols">#</a> Download PDB symbols</p>
+<span class="title-heading">Caloni, 2025-04-30 <a href="2025-04.html#hook_using_detour">&lt;</a><a href="code.html">code</a><a href="2025-04.html#desafio_5">&gt;</a><a href="2025-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_download_pdb_symbols')"><sup>[copy]</sup></a></span>
+
+
+<pre>
+#include &lt;windows.h&gt;
+#include &lt;dbghelp.h&gt;
+#include &lt;algorithm&gt;
+#include &lt;cstdint&gt;
+#include &lt;filesystem&gt;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#pragma comment(lib, &quot;dbghelp.lib&quot;)
+namespace fs = std::filesystem;
+int main()
+{
+    const fs::path RootPath = fs::path(&quot;resources&quot;);
+    auto isBinary = [](const fs::path&amp; path) { return path.extension() == &quot;.exe&quot; || path.extension() == &quot;.dll&quot; || path.extension() == &quot;.sys&quot;; };
+    ::SymInitialize(::GetCurrentProcess(), NULL, FALSE);
+    try
+    {
+        for (const auto&amp; entry : fs::directory_iterator(RootPath))
+        {
+            std::cout &lt;&lt; entry.path().string() &lt;&lt; std::endl;
+            try
+            {
+                if (entry.is_regular_file() &amp;&amp; isBinary(entry.path()))
+                {
+                    auto imageName = entry.path().string();
+                    SYMSRV_INDEX_INFO imageFileInfo = { sizeof(imageFileInfo) };
+                    ::SymSrvGetFileIndexInfo(imageName.c_str(), &amp;imageFileInfo, 0);
+                    char downloadedImagePath[MAX_PATH + 1] = { 0 };
+                    if (::SymFindFileInPath(GetCurrentProcess(), NULL, imageName.c_str(),
+                        &amp;imageFileInfo.timestamp, imageFileInfo.size, 0, SSRVOPT_DWORDPTR,
+                        downloadedImagePath, nullptr, nullptr))
+                    {
+                        std::cout &lt;&lt; &quot;Image file downloaded to &quot; &lt;&lt; downloadedImagePath &lt;&lt; std::endl;
+                    }
+                    char downloadedPdbPath[MAX_PATH + 1] = { 0 };
+                    if (::SymFindFileInPath(GetCurrentProcess(), NULL, imageFileInfo.pdbfile,
+                        &amp;imageFileInfo.guid, imageFileInfo.age, 0, SSRVOPT_GUIDPTR,
+                        downloadedPdbPath, nullptr, nullptr))
+                    {
+                        std::cout &lt;&lt; &quot;PDB file downloaded to &quot; &lt;&lt; downloadedPdbPath &lt;&lt; std::endl;
+                    }
+                }
+            }
+            catch (std::exception&amp; e)
+            {
+                std::cerr &lt;&lt; entry.path().string() &lt;&lt; &quot;: &quot; &lt;&lt; e.what() &lt;&lt; std::endl;
+            }
+        }
+    }
+    catch (std::filesystem::filesystem_error&amp; e)
+    {
+        std::cout &lt;&lt; &quot;No resources directory found; nothing to do here: &quot; &lt;&lt; e.what();
+    }
+    ::SymCleanup(::GetCurrentProcess());
+    return 0;
+}
+</pre>
+
+</section><hr/>
+
+<span id="hook_using_detour" title="Hook using detour"/></span>
+<section id="section_hook_using_detour">
+<p class="title"><a href="2025-04.html#hook_using_detour">#</a> Hook using detour</p>
+<span class="title-heading">Caloni, 2025-04-30 <a href="2025-04.html#multiple_peers_wireguard_calculation">&lt;</a><a href="code.html">code</a><a href="2025-04.html#download_pdb_symbols">&gt;</a><a href="2025-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_hook_using_detour')"><sup>[copy]</sup></a></span>
+
+
+<pre>
+#include &lt;detours.h&gt;
+#include &lt;windows.h&gt;
+using namespace std;
+decltype(SendMessageA)* Orig_SendMessageA = ::SendMessageA;
+decltype(SendMessageW)* Orig_SendMessageW = ::SendMessageW;
+LRESULT WINAPI Hook_SendMessageA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+LRESULT WINAPI Hook_SendMessageW(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+struct Hook
+{
+    PVOID&amp; original;
+    PVOID hook;
+};
+static Hook g_installedHooks[] =
+{
+    { (PVOID&amp;)Orig_SendMessageA, Hook_SendMessageA },
+    { (PVOID&amp;)Orig_SendMessageW, Hook_SendMessageW },
+};
+LRESULT WINAPI Hook_SendMessageA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
+{
+    LRESULT l = Orig_SendMessageA(hWnd, Msg, wParam, lParam);
+    printf(&quot;Hook_SendMessageA %x %d&quot;, hWnd, Msg);
+    return l;
+}
+LRESULT WINAPI Hook_SendMessageW(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
+{
+    LRESULT l = Orig_SendMessageW(hWnd, Msg, wParam, lParam);
+    printf(&quot;Hook_SendMessageW %x %d&quot;, hWnd, Msg);
+    return l;
+}
+static void InstallHooks()
+{
+    DetourRestoreAfterWith();
+    DetourTransactionBegin();
+    DetourUpdateThread(GetCurrentThread());
+    for (auto&amp; hook : g_installedHooks)
+    {
+        DetourAttach(&amp;(PVOID&amp;)hook.original, hook.hook);
+    }
+    DetourTransactionCommit();
+}
+static void UninstallHooks()
+{
+    DetourTransactionBegin();
+    DetourUpdateThread(GetCurrentThread());
+    for (auto&amp; hook : g_installedHooks)
+    {
+        DetourDetach(&amp;hook.original, hook.hook);
+    }
+    DetourTransactionCommit();
+}
+BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReserved)
+{
+    if (DetourIsHelperProcess())
+    {
+        return TRUE;
+    }
+    if (ul_reason_for_call == DLL_PROCESS_ATTACH)
+    {
+        //MessageBoxA(NULL, &quot;Ready to install hooks&quot;, &quot;Dll1&quot;, 0);
+        LogFormat(&quot;Installing hooks&quot;);
+        InstallHooks();
+        LogFormat(&quot;Hooks installed&quot;);
+    }
+    else if (ul_reason_for_call == DLL_PROCESS_DETACH)
+    {
+        LogFormat(&quot;Uninstalling hooks&quot;);
+        UninstallHooks();
+        LogFormat(&quot;Hooks uninstalled&quot;);
+    }
+    return TRUE;
+}
+</pre>
+
+</section><hr/>
+
+<span id="subir_escadas" title="Subir escadas"/></span>
+<section id="section_subir_escadas">
+<p class="title"><a href="2025-04.html#subir_escadas">#</a> Subir escadas</p>
+<span class="title-heading">Caloni, 2025-04-30 <a href="body.html">body</a><a href="2024-11.html#homemade_muscle_all_you_need_is_a_pull_up_bar_motivational_bodyweight_workout_guide_arvanitakis_anthony">&gt;</a> <a href="essays.html">essays</a><a href="2025-04.html#nao_e_o_ulisses_e_o_salto_para_se_comprometer_e_preciso_estar_tranquilo">&gt;</a><a href="2025-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_subir_escadas')"><sup>[copy]</sup></a></span>
+
+<p>Subir escadas é o exercício mais simples possível que mantém em forma as partes mais importantes do seu corpo no longo prazo: pernas e coração. Com as pernas em forma você deve conseguir chegar em uma idade avançada podendo se locomover. Com o músculo do coração em dia você deve conseguir suportar bombear sangue com eficiência e sem sobrecarga. Subir escadas é simples porque basta achar uma escada e começar a subir. O ritmo é definido pela sua capacidade física do momento. Pode ser que um dia suba mais rápido, outro dia mais lento. Você deve subir pelo tempo que achar possível para você, sem comprometer o corpo nem a agenda. Você pode alternar o ritmo ao prestar atenção ao coração batendo mais ou menos, a tontura vindo ou as pernas se cansando. Você pode forçar o corpo de vez em quando a subir o platô ouvindo podcast ou música enquanto faz o exercício, conscientemente ignorando alguns avisos do corpo para se lançar alguns degraus a mais. Você não precisa mensurar nada fora do seu corpo. O tempo gasto não importa. O ritmo não importa. A geolocalização não importa. Se mover importa. Portanto se mova e quando achar melhor pare. Repita de vez em quando. Não precisa ser todos os dias. Não exija disciplina de você. Apenas constância. E isso irá adicionar um hábito saudável e regulável por décadas a fio em seu itinerário de atividades. Irá também aos poucos te inspirar a fazer outras atividades, como caminhadas ao ar livre ou até algo mais ousado. Quem definirá serão seus gostos e sua vontade, moldada pelo pequeno degrau inicial que você ousou subir.</p>
+
+</section><hr/>
+
+<span id="journaling_and_coding" title="Journaling and coding"/></span>
+<section id="section_journaling_and_coding">
+<p class="title"><a href="2025-04.html#journaling_and_coding">#</a> Journaling and coding</p>
+<span class="title-heading">Caloni, 2025-04-30 <a href="2025-04.html#nao_e_o_ulisses_e_o_salto_para_se_comprometer_e_preciso_estar_tranquilo">&lt;</a><a href="essays.html">essays</a><a href="2024-12.html#qual_e_a_data_de_um_texto">&gt;</a><a href="2025-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_journaling_and_coding')"><sup>[copy]</sup></a></span>
+
+<p>Codar e blogar são tarefas equivalentes. Quando digo blogar estou me referindo a escrever em geral. Textos são apenas linguagens de programação naturais que usam símbolos que seres humanos conseguem decodificar. E como somos máquinas de Turing completas, nossas leituras do mundo, textuais ou outros, interferem nas nossas saídas, e assim por diante. Escrever textos em linguagem natural ou linguagens de programação são essencialmente atividades que codificam símbolos em uma certa disposição, modificam símbolos obedecendo determinadas regras da chamada gramática. Quando estou escrevendo código ou um texto para o blogue a atividade deveria seguir exatamente os mesmos passos, assim como a montagem do histórico, o que significa documentar as mudanças no controle de fonte.</p>
+
+</section><hr/>
+
+<span id="nao_e_o_ulisses_e_o_salto_para_se_comprometer_e_preciso_estar_tranquilo" title="Não é o Ulisses, é o salto (para se comprometer é preciso estar tranquilo)"/></span>
+<section id="section_nao_e_o_ulisses_e_o_salto_para_se_comprometer_e_preciso_estar_tranquilo">
+<p class="title"><a href="2025-04.html#nao_e_o_ulisses_e_o_salto_para_se_comprometer_e_preciso_estar_tranquilo">#</a> Não é o Ulisses, é o salto (para se comprometer é preciso estar tranquilo)</p>
+<span class="title-heading">Caloni, 2025-04-30 <a href="self.html">self</a><a href="2025-04.html#the_willpower_instinct_kelly_mcgonigal">&gt;</a> <a href="2025-04.html#subir_escadas">&lt;</a><a href="essays.html">essays</a><a href="2025-04.html#journaling_and_coding">&gt;</a><a href="2025-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_nao_e_o_ulisses_e_o_salto_para_se_comprometer_e_preciso_estar_tranquilo')"><sup>[copy]</sup></a></span>
+
+<p>Um dos meus últimos textos descrevi o conceito do desafio de Ulisses, uma metáfora de um livro grego que pode ser utilizado hoje em dia como dica de produtividade ou de treino de resiliência em qualquer atividade medida em um tempo mínimo de foco. No entanto, após isso descobri que não é o desafio do tempo que importa mais. O que importa mais é realizar o salto. Assim como Neo.</p>
+
+<p>O salto é que te coloca em um outro plano, onde as regras são diferentes. As regras do jogo mudam para o que a atividade se propõe. Toda a forma de pensar muda a partir daí. A transição pode demorar algum tempo, mas é um tempo pequeno o suficiente para conseguirmos focar até que a atividade se torna interessante por si só.</p>
+
+<p>Porém, para saltar e não cair você deve estar tranquilo, centrado. Precisa ser outra pessoa. Assim como Neo. Essa outra pessoa, renascida da primeira, enxerga a realidade sob a ótica das novas regras. E é utilizando essas novas regras que ela deve se movimentar neste novo mundo. O mundo antigo deixa para depois. Um salto de cada vez.</p>
+
+</section><hr/>
+
+<span style="float: left;">
+ <a href="2025-03.html">[2025-03]</a>
+ <a href="2025-05.html">[2025-05]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

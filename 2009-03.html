@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery-ui.css"/>
+<script src="/js/jquery-1.12.4.js"></script>
+<script src="/js/jquery-ui.js"></script>
+<script src="/js/copy_clipboard.js"></script>
+<script>
+var quick_search_posts = [ 
+ ]; 
+</script>
+<script src="/js/quick_search.js"></script>
+<script src="/js/list.js"></script>
+<link rel="icon" href="/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="months.html">
+<div class="is-4"><b>caloni::2009-03</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<ul style="list-style: none;">
+
+<li><small><a href="2009-03.html#os_problemas_mais_cabeludos">Os problemas mais cabeludos</a></small></li>
+
+<li><small><a href="2009-03.html#provas_de_conceito_yes">Provas de conceito... yes</a></small></li>
+
+<li><small><a href="2009-03.html#depurando_ate_o_ultimo_segundo">Depurando até o último segundo</a></small></li>
+</ul>
+
+
+<span id="os_problemas_mais_cabeludos" title="Os problemas mais cabeludos"/></span>
+<section id="section_os_problemas_mais_cabeludos">
+<p class="title"><a href="2009-03.html#os_problemas_mais_cabeludos">#</a> Os problemas mais cabeludos</p>
+<span class="title-heading">Caloni, 2009-03-05<a href="2009-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_os_problemas_mais_cabeludos')"><sup>[copy]</sup></a></span>
+
+<p>Quase todos os problemas do Universo são resolvidos depois de um belo dia de depuração, código comentado, descomentado, recomentado e umas muitas e boas doses de café. Alguns outros problemas mais cabeludos precisam de uma boa noitada na frente do computador, e mais café. E, finalmente, existem aqueles que nem tomando o estoque inteiro de café a coisa anda.</p>
+
+<p>Um exemplo: um hook global do Windows que quando ativado em determinados eventos envia mensagens para uma única janela que cataloga informações sobre diversas janelas e processos no sistema. Esse procedimento é uma subfunção do programa principal, que já possui seus próprios problemas e idiossincrasias. Em momentos aparentemente aleatórios algumas funcionalidades não parecem estar de acordo com o que se espera.</p>
+
+<p>Para esse tipo de situação que envolve 1. o sistema como um todo, 2. processos de terceiros e 3. comportamento obscuro por parte do resto do código, vale a pena seguir um checklist mais rigoroso, colocar seu bonezinho de CSI e partir para desmembrar o funcionamento do código problemático:</p>
+
+<p>  1. Como o programa deveria funcionar?</p>
+
+<p>  2. O que exatamente não funciona?</p>
+
+<p>  3. O que pode ser? O que NÃO pode ser?</p>
+
+<p>  4. Existe uma maneira de provar?</p>
+
+<p>Cada uma dessas perguntas deve ser respondida com a maior sinceridade e disciplina, custe o que custar.</p>
+
+<p>Esse deve ser o primeiro e mais importante indício do que pode estar acontecendo. Sem entender o funcionamento do programa, dificilmente conseguiremos passar para os passos seguintes. Na maioria das vezes, sem saber onde a coisa começa e termina, o problema vai ficar rindo da nossa cara até entendermos de fato que aquele if não merece estar naquela linha.</p>
+
+<p>Para facilitar esse entendimento, nada como elaborar uma pequena explicação para si mesmo no estilo How Stuff Works. Não precisa exagerar e fazer uma tese a respeito e criar vídeos explicativos. Só precisa descrever o fluxo com os detalhes aparentemente importantes para a resolução do problema.</p>
+
+<p>Continuando nosso exemplo:</p>
+
+<p>  1. O programa inicia e cria uma _thread _específica.</p>
+
+<p>  2. Essa _thread _específica cria uma janela que monitora e carrega uma DLL.</p>
+
+<p>  3. Essa DLL é chamada pela _thread _e instala um _hook _global no sistema.</p>
+
+<p>  4. O _hook _recebe eventos de todos os processos que possuem janelas.</p>
+
+<p>  5. Quando eventos específicos são disparados, o processo atual envia uma mensagem para a janela que monitora.</p>
+
+<p>  6. A janela que monitora monta uma tabela estatística dos eventos.</p>
+
+<p>  7. De tempos em tempos, essa tabela é escrita em disco em um arquivo encriptado.</p>
+
+<p>A lista acima é longa o suficiente para podermos elaborar perguntas interessantes e pequena o suficiente para podermos ter em mente o seu funcionamento como um todo, o que é vital para o sucesso das observações durante a depuração.</p>
+
+<p>Note que a pergunta nos direciona para o sintoma do problema, não o problema em si, que provavelmente ainda não é conhecido. E nunca é demais lembrar que podemos estar lidando com uma série de problemas trabalhando em conjunto para nos deixar acordados por dias a fio.</p>
+
+<p>Exemplos de respostas possíveis: a tabela estatística perde a lógica em determinado momento, o hook algumas vezes não funciona, aleatoriamente um dos processos "hookados" capota.</p>
+
+<p>Essa pergunta deve ser respondida com uma análise das respostas das duas primeiras perguntas. Batendo os sintomas do problema com o seu funcionamento macro, uma ou mais cabeças aos poucos irão elaborando teorias a respeito de onde pode estar falhando.</p>
+
+<p>Ex: talvez por algum motivo a DLL esteja sendo descarregada (que lugares podem ser estes?), alguém está desinstalando o hook (quais as partes do código que fazem isso?), alguma ferramenta de análise está atrapalhando nossos resultados (o que acontece se rodarmos sem o DebugView?).</p>
+
+<p>Ao mesmo tempo que os sintomas do problema acusam que algo está errado, existem os sintomas de que alguma coisa, afinal de contas, está funcionando nessa porcaria de código. Através dos sintomas positivos é possível chegar a algumas conclusões sobre o que está funcionando bem.</p>
+
+<p>Ex: o arquivo de log está sendo atualizado, a thread da janela que monitora recebe mensagens continuamente, algumas informações da tabela não estão corrompidas.</p>
+
+<p>Esse é o pulo do gato, a parte que diferencia meninos e meninas de homens e mulheres. Se conseguirmos, através de código de teste e/ou observação, aos poucos provar nossas conclusões a respeito do problema e conseguir elaborar, passo a passo, uma "maquete mental" de todo o código funcional, será possível aos poucos ir descartando teorias e reforçando nossa confiança sobre o caminho que estamos trilhando.</p>
+
+<p>Às vezes uma pequena mudança no código pode provar inúmeras coisas, como inocentar algumas partes e proteger-se de acusações infundadas feitas anteriormente. É uma briga contra o próprio ego, especialmente se o código foi feito por você mesmo.</p>
+
+<p>Ex: Desabilitei o tratamento dos eventos e o hook continua funcionando.</p>
+
+<p>O importante é nunca parar de pensar sobre o problema, evitando ao máximo agir mecanicamente e por impulso, a não ser que exista um bom motivo para isso. Às vezes apenas pensando de novo sobre o mesmo assunto comprova-se algo. É uma fase muito rica e próspera na resolução de problemas e deve ser aproveitada.</p>
+
+<p>Ex: Quando estava habilitado o tratamento de eventos, o hook parava de funcionar em menos de cinco minutos. Agora, rodando os testes por três horas, o hook continua ativo.</p>
+
+<p>Ex: Desabilitei um dos eventos que possui comunicação remota com o servidor. O hook continuou funcionando, apesar do resto dos eventos.</p>
+
+<p>Por fim, com uma pequena dose de sorte e muitas doses de força de vontade (e café), o problema cansa de se esconder e mostra a cara.</p>
+
+<p>Ex: Quando há falha na comunicação com o servidor com o erro 666 uma exceção é lançada, e quando capturada tenta gerar um logue, só que esse logue está mal formatado e causa com que a thread inteira vá para o espaço.</p>
+
+<p>Essa é a hora em que todos se esquecem do esforço que custou chegar até ali e não documentam nada do que foi feito. Desse jeito perde-se todo esse tempo não apenas uma vez, mas todas as vezes que alguém diferente do time mexer com a mesma situação. Por isso deve-se, com a cuca fresca, escrever algumas dicas de como reproduzir o problema e elaborar um pequeno relatório ou algo que o valha do que foi feito, como foi feito e por que funcionou. Mais uma vez, não exagere. Deixe as apresentações sofisticadas de PowerPoint para os outros departamentos da empresa.</p>
+
+<p>Como deve ter parecido, esse tipo de abordagem leva tempo e não é fácil de ser levado adiante sem disciplina e muita persistência. Por esse motivo é que só deve ser usado naqueles problemas em que já se perdeu uma imensidade de tempo e esperança, uma situação irremediável e que ainda não conseguiu vislumbrar o dia em que finalmente poderemos dedicar nossas vidas profissionais para uma outra tarefa mais interessante.</p>
+
+</section><hr/>
+
+
+<span id="provas_de_conceito_yes" title="Provas de conceito... yes"/></span>
+<section id="section_provas_de_conceito_yes">
+<p class="title"><a href="2009-03.html#provas_de_conceito_yes">#</a> Provas de conceito... yes</p>
+<span class="title-heading">Caloni, 2009-03-19<a href="2009-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_provas_de_conceito_yes')"><sup>[copy]</sup></a></span>
+
+<p>Uma prova de conceito bem feita segue todos os passos em uma forma micro para entender e provar como as coisas irão funcionar no código de produção: a forma macro.</p>
+
+<p>A consequência interessante disso é que, uma vez que a prova de conceito deva ser um miniprojeto das principais partes de um software, desenvolvê-la significa programar todas as partes que realmente importam, ou seja, centrais para o funcionamento.</p>
+
+<p>Portanto, conclui-se que desenvolver provas de conceito é a coisa mais divertida do Universo.</p>
+
+<p>Além de serem extremamente divertidas e disputadas entre os programadores, desenvolver provas de conceito gera uma gama de vantagens para o desenvolvimento "sério" do software como um todo, "rodável" e "vendável":</p>
+
+<p>  * Permite testar as ideias por trás do software antes de gastar todo o tempo desenvolvendo-o.</p>
+
+<p>  * Gera conhecimento para os programadores e para que outros produtos sejam desenvolvidos.</p>
+
+<p>  * Torna o desenvolvimento algo ainda mais divertido, pois tira a parte chata a respeito de comentar código, testar código, mensurar código, rever código, etc.</p>
+
+<p>  * Consegue tornar o milagre do cronograma realista mais perto do provável.</p>
+
+<p>Apenas essas vantagens já praticamente obrigam o profissional do software a pensar em produtos novos em termos de como pode-se testar tudo o que se está dizendo antes de realmente começar a trabalhar pra valer.</p>
+
+<p>Mas antes que se pense que fazer provas de conceito não requer nenhuma responsabilidade e que o que você quer ser quando crescer é desenvolvedor de prova de conceito, é necessário colocar alguns pingos nos is antes de continuar. Para criar provas de conceito realmente agregadoras para o projeto, deve-se sempre:</p>
+
+<p>  * Dividir o software em seus componentes tecnológicos mais críticos e vitais para o sucesso da solução.</p>
+
+<p>  * Proteger as provas de conceito contra qualquer tipo de preconceito a respeito da tecnologia em questão: pese somente os fatos!</p>
+
+<p>  * Conhecer as limitações do software antes mesmo de provar seu funcionamento (por exemplo, não vai funcionar no Windows NT nem a pau).</p>
+
+<p>  * Garantir que esse conhecimento seja sempre compartilhado entre todos do desenvolvimento, pois trata-se de um projeto vazio que formará talvez as bases de um novo produto; se todos conhecerem as bases primeiro, ficará muito mais fácil todos tomarem conta.</p>
+
+<p>Por último, deve-se pensar sempre em todos os programadores da equipe desenvolvendo provas de conceito. Um doce tão gostoso não pode ser privilégio apenas dos veteranos ou dos acadêmicos chatos, pois torna a vida dos "corregedores" de bugs chata e enfadonha. E error prone.</p>
+
+<p>Por isso, desde a estagiária até o mocinho bicentenário merecem mexer em código fresco pelo menos uma vez a cada ciclo de desenvolvimento, que terminará com uma versão nova cheia de melhorias que foram testadas em suas respectivas provas de conceito. Provas de conceito que todos tiveram a honra de brincar um pouquinho.</p>
+
+</section><hr/>
+
+
+<span id="depurando_ate_o_ultimo_segundo" title="Depurando até o último segundo"/></span>
+<section id="section_depurando_ate_o_ultimo_segundo">
+<p class="title"><a href="2009-03.html#depurando_ate_o_ultimo_segundo">#</a> Depurando até o último segundo</p>
+<span class="title-heading">Caloni, 2009-03-31 <a href="2009-04.html#a_fila_das_threads">&lt;</a><a href="computer.html">computer</a><a href="2009-01.html#as_funcoespolegar">&gt;</a><a href="2009-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_depurando_ate_o_ultimo_segundo')"><sup>[copy]</sup></a></span>
+
+<p>Como depurar um programa que dá pau logo no final do desligamento de uma máquina?</p>
+
+<p>No cenário em que isso se passa não existem usuários logados no momento, o que significa a impossibilidade de rodar qualquer programa em uma sessão prévia e mantê-lo no ar após o logoff. A não ser que se trate de um serviço.</p>
+
+<p>O nosso programa é justamente um serviço, e por isso ele continua rodando até o final, ou bem perto dele. A primeira ideia que vem à mente é instalar o Msvcmon - depurador remoto do Visual Studio - como um serviço, como aliás já foi demonstrado neste blogue.</p>
+
+<p>Essa é uma boa ideia, de fato. Contudo, não podemos esquecer que a ordem de descarregamento dos serviços pode não favorecer o nosso depurador remoto e ele ir embora antes que consigamos "atachar" nosso VC no programa faltoso. Além do mais, a própria rede, que é disponibilizada com a ajuda de serviços, pode não estar no ar, mesmo que o Msvcmon esteja.</p>
+
+<p>Tudo bem, vamos dizer que você é um expert em configuração de dependências de serviços e conseguiu fazer com que a rede, o Msvcmon e o programa faltoso sejam os últimos serviços - com exceção dos drivers - a serem descarregados. Bravo!</p>
+
+<p>Contudo, isso não vai adiantar de muita coisa se for necessário parar a execução por um breve momento e analisar a pilha por, digamos,  cinco segundos. Esse é o tempo que o sistema - que continua rodando - precisa para desligar a máquina.</p>
+
+<p>Agora o problema é outro: não há tempo para análise durante a depuração, pois o sistema continua rodando. Nesse caso, teremos que ser mais radicais e parar o próprio sistema para que possamos depurar calmamente o problema. Isso implica em termos que utilizar um depurador de kernel (WinDbg), pois só ele tem poderes de congelar o sistema inteiro.</p>
+
+<p>Mas, ainda assim, precisamos de um depurador de user para fazer análises mais profundas ou, pelo menos, mais simples, com a ajuda de símbolos e tudo mais. Nesse caso é necessário usar um depurador de user que redireciona o controle para o depurador de kernel. A transição user mode &gt;&gt; kernel mode pode ser feita com apenas algumas configurações antes do reboot.</p>
+
+<p>E, após toda essa bagunça, podemos depurar, no conforto de uma VM, o bendito programa matador.</p>
+
+</section><hr/>
+
+<span style="float: left;">
+ <a href="2009-02.html">[2009-02]</a>
+ <a href="2009-04.html">[2009-04]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

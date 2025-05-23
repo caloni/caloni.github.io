@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/css/jquery-ui.css"/>
+<script src="/js/jquery-1.12.4.js"></script>
+<script src="/js/jquery-ui.js"></script>
+<script src="/js/copy_clipboard.js"></script>
+<script>
+var quick_search_posts = [ 
+ ]; 
+</script>
+<script src="/js/quick_search.js"></script>
+<script src="/js/list.js"></script>
+<link rel="icon" href="/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="months.html">
+<div class="is-4"><b>caloni::2011-01</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<ul style="list-style: none;">
+
+<li><small><a href="2011-01.html#dependencia_pedindo_carona">Dependência pedindo carona</a></small></li>
+
+<li><small><a href="2011-01.html#reuniao_de_programadores_c++_ha_5_anos">Reunião de programadores C++ (há 5 anos)</a></small></li>
+
+<li><small><a href="2011-01.html#72_horas">72 horas</a></small></li>
+
+<li><small><a href="2011-01.html#esse_ponteiro_vai_ate_onde">Esse ponteiro vai até onde?</a></small></li>
+
+<li><small><a href="2011-01.html#atividades_extracurriculares">Atividades extracurriculares</a></small></li>
+
+<li><small><a href="2011-01.html#incontrolavel">Incontrolável (Tony Scott, 2010)</a></small></li>
+
+<li><small><a href="2011-01.html#garotas_do_calendario">Garotas do Calendário (Nigel Cole, 2003)</a></small></li>
+
+<li><small><a href="2011-01.html#enrolados">Enrolados</a></small></li>
+<li><small><a href="2011-01.html#inverno_da_alma">Inverno da Alma</a></small></li>
+<li><small><a href="2011-01.html#lixo_extraordinario">Lixo Extraordinário (Lucy Walker, Karen Harley, João Jardim, 2010)</a></small></li>
+
+<li><small><a href="2011-01.html#perfume_a_historia_de_um_assassino">Perfume: A História de um Assassino</a></small></li>
+</ul>
+
+
+<span id="dependencia_pedindo_carona" title="Dependência pedindo carona"/></span>
+<section id="section_dependencia_pedindo_carona">
+<p class="title"><a href="2011-01.html#dependencia_pedindo_carona">#</a> Dependência pedindo carona</p>
+<span class="title-heading">Caloni, 2011-01-04 <a href="2011-01.html#esse_ponteiro_vai_ate_onde">&lt;</a><a href="computer.html">computer</a><a href="2010-11.html#patch_de_emergencia_2">&gt;</a><a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_dependencia_pedindo_carona')"><sup>[copy]</sup></a></span>
+
+<p>Mesmo as vezes que você não queira, algumas dependências pedem carona e o compilador deixa entrar. Daí mesmo que você não use uma função API, ela acaba te atazanando a vida.</p>
+
+<p>Foi o caso da ToolHelp32 no Windows NT 4.</p>
+
+<h4>Como as coisas funcionam</h4>
+
+<p>Quando compilamos, cada CPP vira uma coleção de funções que serão usadas, mais tarde, pelo linker, para juntar a bagunça. Para mais detalhes dessa fascinante história, recomendo o fantástico artigo sobre <a href="http://www.caloni.com.br/os-diferentes-erros-na-linguagem-c">Os diferentes erros na linguagem C</a>, seção **Linkedição**.</p>
+
+<p>Para as dependências localizadas fora do executável final, por exemplo, as DLLs do sistema, o linker cria uma entrada no formato padrão de executável que adiciona essa dependência extra que será resolvida na hora do programa rodar, quando o loader do sistema operacional terá que fazer um linker on-the-fly, catando todas as DLLs e funções necessárias para colocar o bichinho no ar.</p>
+
+<p>Dessa forma, quando existirem unresolved externals fora do executável final, o responsável por dar o erro é o loader do sistema:</p>
+
+<img src="img/dependencia_pedindo_carona_winnt4_process32next_unresolved2.png"/>
+
+<p>Isso significa que o seu processo não poderá ser executado, pois faltam funções no ambiente que ele depende.</p>
+
+<p>Um recurso muito útil para ver essas funções é o Dependency Walker, meu amigo de infância:</p>
+
+<img src="img/dependencia_pedindo_carona_depends_process32_not_found2.png"/>
+
+<blockquote>"Mas, Caloni, eu nem uso essa função! Como ela pode ser necessária?"</blockquote>
+<p>Pois é. As coisas nem sempre acabam sendo como o esperado. Se você possuir uma LIB, por exemplo, e nela existirem duas funções, como abaixo, e você se limitar a usar em seu programa apenas a primeira, todas as dependências da segunda também irão parar no executável final.</p>
+
+<pre>
+#include &quot;LibMod.h&quot;
+#include &lt;windows.h&gt;
+#include &lt;Tlhelp32.h&gt;
+#include &lt;stdio.h&gt;
+// Essa função é usada pelo nosso App
+int UsingOldApis()
+{
+    DWORD ver = GetVersion(); // API paleozoica, OK.
+    return int( (DWORD)(LOBYTE(LOWORD(ver))) );
+}
+// Essa função NÃO é usada pelo nosso App
+void UsingNewApis()
+{
+    // Opa: função moderninha!!
+    if( HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL) )
+    {
+      PROCESSENTRY32 procEntry;
+      // Tudo bem, nosso App não vai usar essa função.
+      if( Process32First(snapshot, &amp;procEntry) )
+      {
+        printf(&quot;Process list:\n&quot;);
+        do
+        {
+          printf(&quot;%s\n&quot;, procEntry.szExeFile);
+        }
+        while( Process32Next(snapshot, &amp;procEntry) );
+      }
+      CloseHandle(snapshot);
+    }
+}
+ 
+#include &quot;LibMod.h&quot;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+int main()
+{
+    // Usando apenas funções paleozoicas, certo?
+    printf(&quot;Our Major OS version is %d\n&quot;, UsingOldApis() );
+    system(&quot;pause&quot;);
+}
+ 
+</pre>
+<h4>Por que isso ocorre?</h4>
+
+<p>Acontece que o nosso amigo linker gera uma lista de dependências por módulo (CPP), e não por função. Dessa forma, tudo que vier é lucro.</p>
+
+<p>Só que às vezes é prejuízo, também. Quando usamos um SO da época do guaraná com rolha, como o Windows NT 4, por exemplo, não conseguimos usar um programa porque este possuía uma função moderninha nunca usada, mas que estava dentro de um CPP junto de uma função comportada, usando apenas APIs documentadas no primeiro papiro da Microsoft.</p>
+
+<h4>Solução?</h4>
+
+<p>Sempre existe. Nesse caso, migrarmos as funções moderninhas para um segundo CPP, recompilarmos a LIB e a dependência milagrosamente desaparecerá!</p>
+
+<pre>
+#include &quot;LibMod.h&quot;
+#include &lt;windows.h&gt;
+#include &lt;Tlhelp32.h&gt;
+#include &lt;stdio.h&gt;
+// Essa função é usada pelo nosso App
+int UsingOldApis()
+{
+    DWORD ver = GetVersion(); // API paleozoica, OK.
+    return int( (DWORD)(LOBYTE(LOWORD(ver))) );
+}
+ 
+#include &quot;LibMod.h&quot;
+#include &lt;windows.h&gt;
+#include &lt;Tlhelp32.h&gt;
+#include &lt;stdio.h&gt;
+// Essa função NÃO é usada pelo nosso App
+void UsingNewApis()
+{
+    // Opa: função moderninha!!
+    if( HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL) )
+    {
+      PROCESSENTRY32 procEntry;
+      // Tudo bem, nosso App não vai usar essa função.
+      if( Process32First(snapshot, &amp;procEntry) )
+      {
+        printf(&quot;Process list:\n&quot;);
+        do
+        {
+          printf(&quot;%s\n&quot;, procEntry.szExeFile);
+        }
+        while( Process32Next(snapshot, &amp;procEntry) );
+      }
+      CloseHandle(snapshot);
+    }
+}
+</pre>
+<img src="img/dependencia_pedindo_carona_depends_process32_not_needed.png"/>
+
+<p>Agora a aplicação poderá rodar em paz naquele que é, como diz meu amigo, um sistema operacional de ponta... da outra ponta!</p>
+
+</section><hr/>
+
+
+<span id="reuniao_de_programadores_c++_ha_5_anos" title="Reunião de programadores C++ (há 5 anos)"/></span>
+<section id="section_reuniao_de_programadores_c++_ha_5_anos">
+<p class="title"><a href="2011-01.html#reuniao_de_programadores_c++_ha_5_anos">#</a> Reunião de programadores C++ (há 5 anos)</p>
+<span class="title-heading">Caloni, 2011-01-12 <a href="2011-09.html#oitavo_encontro_do_grupo_c/c++_brasil">&lt;</a><a href="ccppbr.html">ccppbr</a><a href="2010-12.html#pos_ii_seminario_portabilidade_e_performance">&gt;</a><a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_reuniao_de_programadores_c++_ha_5_anos')"><sup>[copy]</sup></a></span>
+
+<p>Começo de ano, hora de fazer backup completo. Durante minha cópia anual do gmail acabei encontrando meu post-chamado para nossa primeira reunião C++. Como parte da sessão nostalgia, convido-os, novos e velhos colegas, a continuar a brincadeira de organizar uma reunião informal de pessoas que gostam tanto de programar que criam seus próprios ponteiros.</p>
+
+<p>E-mail escrito em 02/12/2005:</p>
+
+<p>Um dia desses conversando com o Rodrigo Strauss, falando sobre como é interessante trocar informações e experiências sobre C++, ele teve a brilhante e original idéia (ninguém nunca fez isso antes) de propor encontros razoavelmente regulares para fazermos isso. A idéia dele era mais ou menos essa:</p>
+
+<p>  * Peridiocidade dos encontros de X em X meses. Ainda não fechamos isso;</p>
+
+<p>  * X pautas por reunião, votadas pelos participantes. Já temos algumas sugestões como, recursos arcanos do C++ (essa, de acordo com ele, seria minha função), ferramentas, bibliotecas, organização de código etc;</p>
+
+<p>  * Troca de experiências sobre C++ em diversos sistemas operacionais. Por exemplo, nós mostraríamos para o pessoal de UNIX o Visual C++ e aprenderíamos com eles sobre emacs ou KDevelop;</p>
+
+<p>  * Começar de forma muito simples, como uma mesa redonda, e se a coisa avançar, arrumar um lugar para palestras e apresentações;</p>
+
+<p>  * Reuniões em bares ou restaurantes onde possamos conversar, levar acompanhantes e nos sentirmos seguros levando notebooks ou Pockets. Podemos até subir uma rede wifi e aumentar a diversão :-)</p>
+
+<p>  * Como eu e o Strauss somos de São Paulo (na verdade, eu sou de São Bernardo), os primeiros encontros seriam na capital;</p>
+
+<p>  * Isso é uma boa desculpa para se encontrar e tomar um chopp || guaraná || cachaça.</p>
+
+<p>Gostaríamos que as pessoas da comunidade C++ dessem sugestões sobre essa idéia. Estamos pensando em agendar o primeiro encontro para dia 17/12/2005 (sábado) durante a tarde, em um Outback (comida australiana, Shopping Center Norte ou Eldorado, tem infra para crianças e a comida é muito boa). Como pauta do primeiro encontro eu sugiro uma apresentação dos participantes (o que será desnecessário se só eu e o Strauss aparecermos) e uma discussão sobre o presente e o futuro do mercado de trabalho C++.</p>
+
+<p>Coloquem as sugestões nos comentários e quando a gente fechar alguma coisa eu escrevo um novo post com o que definimos. Até lá.</p>
+
+<p>PS: Qualquer semelhança deste post com o conteúdo de um conhecido blog brasileiro sobre programação não é mera coincidência.</p>
+
+</section><hr/>
+
+
+<span id="72_horas" title="72 horas"/></span>
+<section id="section_72_horas">
+<p class="title"><a href="2011-01.html#72_horas">#</a> 72 horas</p>
+<span class="title-heading">Caloni, 2011-01-14 <a href="2011-01.html#incontrolavel">&lt;</a><a href="cinema.html">cinema</a><a href="2010-12.html#elsa_e_fred">&gt;</a> <a href="2011-01.html#incontrolavel">&lt;</a><a href="movies.html">movies</a><a href="2010-12.html#elsa_e_fred">&gt;</a><a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_72_horas')"><sup>[copy]</sup></a></span>
+
+<p>Um drama contado em um ritmo adequado, que consegue avançar para um filme de ação em seu terceiro ato de forma surpreendentemente competente, visto que o filme consegue uma identificação com o drama de seus personagens, mesmo que perifericamente, e extrai disso uma emoção maior da perseguição final, pois não estamos assistindo mais um filme de perseguição qualquer.</p>
+
+<p>O uso de câmeras subjetivas, tremidas e visões a la Ultimato Bourne (aéreas dos helicópteros, sons de sirene, trilha crescente) é igualmente competente, especialmente a trilha, que consegue mesclar momentos dramáticos com ação onde quase não percebemos a mudança.</p>
+
+<p>Todas as minhas anotações foi do terceiro, pois é lá que se estabelece como um filme digno de nota. No primeiro e segundo ato, mais morosos, serve exatamente para estabelecer essa identificação com o drama, e pode ser moroso, mas não medíocre, pois nos faz acompanhar com interesse cada momento do plano sendo arquitetado.</p>
+
+<p>O momento mais dramático, quando decidem se irão levar ou não o filho, quando a esposa se joga do carro em movimento, é o mais bem arquitetado nesse sentido de mesclar ação e drama, e prova disso é a trilha sonora, que, quando o casal para no meio da estrada, simplesmente o som que ouvimos é o do ambiente, numa prova irrefutável que a trilha conduz maravilhosamente bem a transição.</p>
+
+<p>Ao mesmo tempo que torcemos pelo protagonista, por termos acompanhado seu plano, este parece verossímil justamente por não ser perfeito, mas por ter tido percalços razoavelmente transpassáveis, como a luta para conseguir um passaporte e dinheiro, ou o fato do plano ter sido jogado no lixo de propósito, em momento de tensão perfeitamente crível, porém, nesse último caso, previsível.</p>
+
+<p>Já não é tão importante no final se ela é culpada ou não, pois sequer nos importamos com isso. Porém, para efeito de conclusão, a última visita ao local do crime tem um caráter simbólico, pois o botão que comprovaria a inocência do réu fica preso na tampa do bueiro, e escapa aos olhos atentos do investigador, igualzinho, da mesma forma com que os fugitivos conseguiram a escapada que parecia impossível.</p>
+
+<p>E se o beijo do filho no final do filme soa piegas, é por pura necessidade de fechar os arcos lançados no decorrer do filme.</p>
+
+</section><hr/>
+
+
+<span id="esse_ponteiro_vai_ate_onde" title="Esse ponteiro vai até onde?"/></span>
+<section id="section_esse_ponteiro_vai_ate_onde">
+<p class="title"><a href="2011-01.html#esse_ponteiro_vai_ate_onde">#</a> Esse ponteiro vai até onde?</p>
+<span class="title-heading">Caloni, 2011-01-17 <a href="2011-03.html#vtable">&lt;</a><a href="computer.html">computer</a><a href="2011-01.html#dependencia_pedindo_carona">&gt;</a><a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_esse_ponteiro_vai_ate_onde')"><sup>[copy]</sup></a></span>
+
+<p>Brincando com obtenções e conversões de SIDs, tive uma pequena dificuldade de usar a função ConvertStringSidToSid, de Sddl.h. Seu objetivo é receber uma string-SID no formato usado pela ferramenta PsGetSid e retornar uma sequência de bytes de tamanho arbitrário, que é o SID como o sistema o enxerga. Como ela retorna apenas o ponteiro final, do tipo PSID, o que parece fácil pode se tornar tricky se quisermos copiar o SID binário para algum buffer na pilha, já que não sabemos o número de bytes no buffer de origem. Tudo que sabemos é que, após o uso, devemos desalocar essa memória retornada pela API com outra API: LocalFree.</p>
+
+<p>Ora, mesmo que não venhamos a escrever nessa memória de tamanho obscuro, não é de bom tom ler além da conta. Não há garantias que o que estiver após o SID é seguro. Pode até ser o final de uma página de  memória, por exemplo, e o seu programa capota por causa de um singelo "Memory could not be read". Que coisa sem graça!</p>
+
+<img src="img/esse_ponteiro_vai_ate_onde_psid_e_o_buraco_negro.png"/>
+
+<p>Sempre que me vejo com problemas desse tipo procuro informações primeiro  no próprio MSDN, segundo na cabeça e terceiro no Google. Nesse caso em  específico a cabeça deu um jeito, pois imaginei que houvesse alguma  forma de pegar o tamanho da memória alocada através das funções Local (se a API precisa de LocalFree para desalocar sua memória, é óbvio que  ela usou LocalAlloc para alocá-la, mesmo que não tenhamos o código-fonte  para comprovar).</p>
+
+<p>A partir de LocalHandle posso obter o HANDLE para a memória alocada localmente. Com esse handle a API me dá outra função, LocalSize, de onde posso obter o tamanho da memória previamente alocada através do seu handle. Isso é ótimo, pois em um primeiro momento pensei não haver saída, como nas funções de alocação em C e C++, por exemplo.</p>
+
+</section><hr/>
+
+
+<span id="atividades_extracurriculares" title="Atividades extracurriculares"/></span>
+<section id="section_atividades_extracurriculares">
+<p class="title"><a href="2011-01.html#atividades_extracurriculares">#</a> Atividades extracurriculares</p>
+<span class="title-heading">Caloni, 2011-01-18<a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_atividades_extracurriculares')"><sup>[copy]</sup></a></span>
+
+<p>Essa é uma resposta a um simpático e-mail de um leitor, o Fabio, me perguntando sobre a tal da lógica (de programação?) e das atividades que um programador pode ter quando está longe do micro para não ficar com a "mente vadiando".</p>
+
+<p>Entusiasta ao máximo, ele montou uma lista baseada em estudo constante sob variadas formas, mesmo longe do micro:</p>
+
+<p>  * Contar binário e calcular hexa na cabeça;</p>
+
+<p>  * Ler livros;</p>
+
+<p>  * Programar em papel;</p>
+
+<p>  * Algo mais?</p>
+
+<p>De acordo com ele, o programador não consegue viver sem lógica, e quando tenta, se torna algo "intolerável".</p>
+
+<p>Já fiz duas dessas coisas divertidíssimas em minha tenra idade: contar binário enquanto varria o laboratório onde trabalhava, programar em papel numa noite que fiquei ao relento por ter perdido o busão. Não faço mais essas coisas. Agora eu sou fresco. "Programo em UML".</p>
+
+<p>Primeiro, de que lógica estamos falando? Existem diversas lógicas e existe a intuição, lado importante e muitas vezes renegado, mas presente no cinto de utilidades. É só saber usar. Seja um, seja outro.</p>
+
+<p>Segundo, o cérebro pode cair na vadiagem. Aliás, ele deve. Sem vadiagem, nunca conseguimos processar aquelas threads que ficam rodando em idle, no inconsciente, e que podem resolver uma série de questões que ficam ensebando em nossos conturbados egos. É como o copo cheio de água em Karate Kid (ou em "2012").</p>
+
+<p>O básico mesmo é ler livros. Tão básico que deve ser a atividade principal quando não estamos com nenhum eletrônico bonitinho na mão. Aliás, até quando estamos, com o auto-controle, conseguimos ler um ebook de vez em quando.</p>
+
+<p>Independente do método empregado, nunca visualize seus esforços com ceticismo, e muito menos com o ceticismo dos outros. Se estiver funcionando, continue a fazê-lo. Não vê resultados? Mude o método. Senão cai na velha frase de Eistein sobre o sujeito que espera resultados diferentes fazendo sempre a mesma coisa: loucura.</p>
+
+<p>O que eu adicionaria na lista?</p>
+
+<p>  * Assistir CSI. Pra entender o uso prático dos métodos indutivo e dedutivo de raciocínio; mais indutivo.</p>
+
+<p>  * Assistir House. Nunca é demais se imaginar como o médico-louco que cura todas as doenças esquisitas; doença aqui é bug.</p>
+
+<p>  * Assistir Dexter. Veja como ele faz o seu trabalho seguindo sempre o mesmo método e deixando o ambiente limpinho, sem nenhuma pista.</p>
+
+<p>Fora isso, curta o que está fazendo. Isso é o primordial. Arrebenta com qualquer dúvida que tiver sobre estar no caminho certo.</p>
+
+</section><hr/>
+
+
+<span id="incontrolavel" title="Incontrolável (Tony Scott, 2010)"/></span>
+<section id="section_incontrolavel">
+<p class="title"><a href="2011-01.html#incontrolavel">#</a> Incontrolável (Tony Scott, 2010)</p>
+<span class="title-heading">Caloni, 2011-01-19 <a href="2011-01.html#garotas_do_calendario">&lt;</a><a href="cinema.html">cinema</a><a href="2011-01.html#72_horas">&gt;</a> <a href="2011-01.html#garotas_do_calendario">&lt;</a><a href="movies.html">movies</a><a href="2011-01.html#72_horas">&gt;</a><a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_incontrolavel')"><sup>[copy]</sup></a></span>
+
+<p>Ontem fui ver o novo filme de ação de Denzel Washington. É sobre um trem desgovernado e os esforços para segurar o bicho antes que ele destrua alguma coisa. Confesso que fiquei impressionado com a atuação acima de Denzel no papel de Frank, um condutor de trens de carga que trabalhou a vida toda nisso. Seu sotaque e seus gestos condizem de alguma forma com o personagem, enquanto seu companheiro de viagem Will (Chris Pine) fica com seus dramazinhos de família tão bobinhos que passam despercebidos.</p>
+
+<p>Dirigido por Tony Scott, com um currículo considerável (Top Gun, Inimigo do Estado, Deja Vu), o filme logo anuncia ser uma história baseada em fatos reais, e isso parece de alguma forma influenciar a maneira de enfocar a dupla de heróis, com rápidos movimentos de zoom e uma câmera dançante, como que para destacar o clima de urgência, mas por ser exaustivamente repetida, essa técnica torna-se apenas um objeto de distração.</p>
+
+<p>Já o que realmente faz o filme funcionar são as cenas de ação do último ato. Vemos cortes rápidos, mas sincronizados o suficiente para que fiquemos tensos na cadeira a cada movimento novo dos personagens, e, diferente de Transformers 2, aqui conseguimos enxergá-los.</p>
+
+<p>Uma experiência interessante, se você não se importar em esquecer do enredo assim que sair da cadeira do cinema.</p>
+
+</section><hr/>
+
+
+<span id="garotas_do_calendario" title="Garotas do Calendário (Nigel Cole, 2003)"/></span>
+<section id="section_garotas_do_calendario">
+<p class="title"><a href="2011-01.html#garotas_do_calendario">#</a> Garotas do Calendário (Nigel Cole, 2003)</p>
+<span class="title-heading">Caloni, 2011-01-27 <a href="2011-01.html#enrolados">&lt;</a><a href="cinema.html">cinema</a><a href="2011-01.html#incontrolavel">&gt;</a> <a href="2011-01.html#enrolados">&lt;</a><a href="movies.html">movies</a><a href="2011-01.html#incontrolavel">&gt;</a><a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_garotas_do_calendario')"><sup>[copy]</sup></a></span>
+
+<p>Chegando em casa, a Net Movies pegou o denso Munique e deixou no lugar Garotas do Calendário. Triste troca. Uma história que tem como centro um vilarejo na inglaterra em que senhoras de meia-idade posam nus artísticos para um calendário a fim de angariar fundos de caridade mereceria um pano de fundo mais bem tratado. No entanto, o que vemos é uma sucessão de pequenos conflitos que são logo resolvidos e nunca ocupam muito espaço na tela, impossibilitando até mesmo a caracterização das personagens. Onde fica até difícil reconhecer um pouco de ação (como a briga no Conselho das Mulheres que acaba sendo resolvido de forma tão insossa quanto começara) também é difícil reconhecer seu desenlace e a consequente satisfação. Infelizmente, o filme parece realmente ter um ano de duração.</p>
+
+</section><hr/>
+
+
+<span id="enrolados" title="Enrolados"/></span>
+<section id="section_enrolados">
+<p class="title"><a href="2011-01.html#enrolados">#</a> Enrolados</p>
+<span class="title-heading">Caloni, 2011-01-30 <a href="2011-01.html#inverno_da_alma">&lt;</a><a href="cinema.html">cinema</a><a href="2011-01.html#garotas_do_calendario">&gt;</a> <a href="2011-01.html#inverno_da_alma">&lt;</a><a href="movies.html">movies</a><a href="2011-01.html#garotas_do_calendario">&gt;</a><a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_enrolados')"><sup>[copy]</sup></a></span>
+
+<p>A história clássica de Rapunzel é recriada com o novo senso se humor Disney/Pixar, em que o príncipe é um ladrão procurado, e a frágil princesa não é tão frágil assim. Temos aí os mesmos elementos que tornaram a Disney tão amada pelas crianças e adultos: números de música inspirados (com destaque para o bar do patinho) e uma história sem muitos conflitos e um final feliz.</p>
+
+<p>Uma fotografia aprimorada, que dá a iluminação adequada em todas as cenas (claras e escuras). Uma dublagem duvidosa do príncipe -- versão brasileira --, mas competente dos outros personagens, com destaque para a madrasta da princesa.</p>
+
+<p>Algumas cenas forçadas, que tentam livrar a cara do roteirista que chegou em situações um tanto difíceis de sair: a princesa precisa se lembrar dos seus pais para se livrar de sua madrasta, e as gotas de lágrima dela são curadoras tanto quanto os cabelos.</p>
+
+<p>Destaque para a movimentação dos personagens e suas expressões, uma marca Disney, mas ainda cada vez melhor. A cena dos balões é a mais emocionante, e tem uma equiparação com a da morte do vagalume no trabalho anterior (A Princesa e o Sapo), embora Enrolados seja muito superior em termos de narrativa.</p>
+
+</section><hr/>
+
+<span id="inverno_da_alma" title="Inverno da Alma"/></span>
+<section id="section_inverno_da_alma">
+<p class="title"><a href="2011-01.html#inverno_da_alma">#</a> Inverno da Alma</p>
+<span class="title-heading">Caloni, 2011-01-30 <a href="2011-01.html#lixo_extraordinario">&lt;</a><a href="cinema.html">cinema</a><a href="2011-01.html#enrolados">&gt;</a> <a href="2011-01.html#lixo_extraordinario">&lt;</a><a href="movies.html">movies</a><a href="2011-01.html#enrolados">&gt;</a><a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_inverno_da_alma')"><sup>[copy]</sup></a></span>
+
+<p>O filme todo gira em torno da história da filha mais velha de uma família problemática que ainda por cima precisa encontrar o pai, pois este afiançou a casa onde moram e, se não comparecer ao tribunal no dia estabelecido, eles serão despejados.</p>
+
+<p>As duas primeiras coisas que sobressaem é a determinação da protagonista e a fotografia sombria, de um azul obscuro, que retrata o clima sem esperanças da jovem batalhadora.</p>
+
+<p>Com muitos diálogos e pouco movimento, a história se desenvolve em cima das descobertas que fazemos a cada nova visita que Ree faz em cada casa vizinha.</p>
+
+<p>Com dois momentos de tensão não muito arrebatadores, somos levados à conclusão da história sob o mesmo clima de desilusão, sendo que, no final das contas, o filme é deprimente do começo ao fim.</p>
+
+</section><hr/>
+
+<span id="lixo_extraordinario" title="Lixo Extraordinário (Lucy Walker, Karen Harley, João Jardim, 2010)"/></span>
+<section id="section_lixo_extraordinario">
+<p class="title"><a href="2011-01.html#lixo_extraordinario">#</a> Lixo Extraordinário (Lucy Walker, Karen Harley, João Jardim, 2010)</p>
+<span class="title-heading">Caloni, 2011-01-30 <a href="2011-01.html#perfume_a_historia_de_um_assassino">&lt;</a><a href="cinema.html">cinema</a><a href="2011-01.html#inverno_da_alma">&gt;</a> <a href="2011-01.html#perfume_a_historia_de_um_assassino">&lt;</a><a href="movies.html">movies</a><a href="2011-01.html#inverno_da_alma">&gt;</a><a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_lixo_extraordinario')"><sup>[copy]</sup></a></span>
+
+<p>O início e no programa do Jô possui um sentido maior por causa da mensagem de que, no final, o lixo de todas as pessoas que assistem a televisão vai parar no mesmo lugar?</p>
+
+<p>A história é sobre um artista plástico famoso por transformar lixo reciclável em obras de arte.</p>
+
+<p>Seu próximo desafio é transformar as pessoas responsáveis por catar esse lixo.</p>
+
+<p>Todo o processo é mostrado desde o início: a primeira visita ao local, o funcionamento da associação de catadores, a vida e o passado dos personagens escolhidos no meio da multidão de pessoas.</p>
+
+<p>Dono de uma visão peculiar sobre toda aquela pobreza, ele próprio nasceu pobre, e aprendeu a manter a lição de que é possível se transformar.</p>
+
+<p>O mais revelador é que assistimos a tudo ainda imaginando o que deverá sair ao final de todo aquele processo, sem entender ainda o efeito artístico sobre aquela vida sem perspectiva das pessoas.</p>
+
+<p>O impacto inicial, da transformação do lixo reciclável em arte usando como modelo as pessoas e a criação de riqueza nesse processo (um dos quadros criados é vendido por cem mil reais).</p>
+
+<p>O impacto final, quando os quadros criados são entregues aos seus respectivos "donos", e a mensagem que fica é imensamente maior que todo o processo: que é possível reciclar pessoas, por piores as condições que elas estejam ou pareçam estar.</p>
+
+</section><hr/>
+
+
+<span id="perfume_a_historia_de_um_assassino" title="Perfume: A História de um Assassino"/></span>
+<section id="section_perfume_a_historia_de_um_assassino">
+<p class="title"><a href="2011-01.html#perfume_a_historia_de_um_assassino">#</a> Perfume: A História de um Assassino</p>
+<span class="title-heading">Caloni, 2011-01-31 <a href="2011-02.html#amor_e_outras_drogas">&lt;</a><a href="cinema.html">cinema</a><a href="2011-01.html#lixo_extraordinario">&gt;</a> <a href="2011-02.html#amor_e_outras_drogas">&lt;</a><a href="movies.html">movies</a><a href="2011-01.html#lixo_extraordinario">&gt;</a><a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_perfume_a_historia_de_um_assassino')"><sup>[copy]</sup></a></span>
+
+<p>Jean-Baptiste Grenouille é um personagem atípico. Abandonado pela mãe logo após o parto, sua maior (única?) destreza são suas capacidades olfativas: capaz de sentir o cheiro até mesmo de elementos normalmente inodoros como vidro e cobre, e isso nos submete imediatamente ao conceito de fábula, ele segue seu destino tendo como única obsessão na vida criar o perfume perfeito.</p>
+
+<p>Sua trajetória, porém, carrega uma nuvem tenebrosa que paira sobre quem quer que atravesse o seu caminho. Para as pessoas e para o espectador, ele aparece sempre pelos cantos e na penumbra, sorrateiramente, exatamente como os odores que persegue. A fotografia, de pouco contrastre, facilita sua "identificação" nos cenários esquivos construídos para suas principais aparições.</p>
+
+<p>Dotado de pouca sorte, mas ao mesmo tempo de uma persistência inabalável em se manter vivo, Jean-Baptiste não chega a ser um heroi, nem um anti-heroi. Entretanto, se não torcemos por ele, pelo menos, assistindo a seus inescrupulosos atos, encontramos em sua história os motivos que o fazem agir, o que são por si só suficientes para estabelecer uma conexão com o personagem. </p>
+
+<p>Apenas essa "empatia" já seria um feito notável. Entretanto, em seu final catártico, chegamos a visualizar uma nova dimensão criada, aumentando como em uma lupa o significado daquela sociedade histérica e moralmente reprimida. A sensação que fica é que ele é a cura nascida a partir da própria necessidade de se libertar.</p>
+
+<p>Com uma narrativa surreal do começo ao fim, mas que se sustenta em sua coesão interna, ainda que aparentemente a história não chegue a uma conclusão palpável (mas é isso mesmo o que a torna mais notável ainda), percebemos Jean-Baptiste não só como cura daquela sociedade, mas como seu sintoma, e nada mais lógico que o filme volte por onde começou, escancarando a personificação de uma lenda que se foi, mas que uma vez existiu na imaginação das pessoas de uma sinistra época.</p>
+
+</section><hr/>
+
+<span style="float: left;">
+ <a href="2010-12.html">[2010-12]</a>
+ <a href="2011-02.html">[2011-02]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>
