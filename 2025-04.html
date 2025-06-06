@@ -43,7 +43,7 @@ role="navigation" aria-label="main navigation">
 <div style="padding-bottom: 1em;"></div>
 <ul style="list-style: none;">
 
-<li><small><a href="2025-04.html#baixando_simbolos_e_modulos_programaticamente">Baixando símbolos e módulos programaticamente</a></small></li>
+<li><small><a href="2025-04.html#o_desafio_de_ulisses">O desafio de Ulisses</a></small></li>
 
 <li><small><a href="2025-04.html#the_willpower_instinct_kelly_mcgonigal">The Willpower Instinct (Kelly McGonigal)</a></small></li>
 <li><small><a href="2025-04.html#o_poder_do_silencio_eckhart_tolle">O poder do silêncio (Eckhart Tolle)</a></small></li>
@@ -60,72 +60,10 @@ role="navigation" aria-label="main navigation">
 </ul>
 
 
-<span id="baixando_simbolos_e_modulos_programaticamente" title="Baixando símbolos e módulos programaticamente"/></span>
-<section id="section_baixando_simbolos_e_modulos_programaticamente">
-<p class="title"><a href="2025-04.html#baixando_simbolos_e_modulos_programaticamente">#</a> Baixando símbolos e módulos programaticamente</p>
-<span class="title-heading">Caloni, 2025-04-07 <a href="2025-04.html#in_search_of_the_miraculous_pd_ouspensky">&lt;</a><a href="self.html">self</a><a href="2025-03.html#ego_ou_intuicao">&gt;</a> <a href="2025-04.html#in_search_of_the_miraculous_pd_ouspensky">&lt;</a><a href="drafts.html">drafts</a><a href="2025-03.html#glossario_com_correspondencias_de_cartas_de_taro">&gt;</a><a href="2025-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_baixando_simbolos_e_modulos_programaticamente')"><sup>[copy]</sup></a></span>
-
-<p>Essa semana descobri que é possível baixar não apenas os PDBs do symbol server da Microsoft, mas os binários também. Existem relatos de erros de download para alguns binários específicos, mas em geral é possível baixar qualquer arquivo indexado por eles. Para isso você precisa ter em mãos o timestamp do binário, que antes era um timestamp mesmo, mas após o Windows 10 virou um hash único que identifica o mesmo binário e passível de ser compilado de novo exatamente como era, e o tamanho da imagem. Ambas as informações ficam na header do arquivo PE, mas depois que você consegui-las não precisa mais do binário (teoricamente). O código abaixo demonstra isso:</p>
-
-<pre>
-#include &lt;windows.h&gt;
-#include &lt;dbghelp.h&gt;
-#include &lt;algorithm&gt;
-#include &lt;cstdint&gt;
-#include &lt;filesystem&gt;
-#include &lt;iostream&gt;
-#include &lt;string&gt;
-#include &lt;vector&gt;
-#pragma comment(lib, &quot;dbghelp.lib&quot;)
-namespace fs = std::filesystem;
-int main()
-{
-    const fs::path RootPath = fs::path(&quot;resources&quot;);
-    auto isBinary = [](const fs::path&amp; path) { return path.extension() == &quot;.exe&quot; || path.extension() == &quot;.dll&quot; || path.extension() == &quot;.sys&quot;; };
-    ::SymInitialize(::GetCurrentProcess(), NULL, FALSE);
-    try
-    {
-        for (const auto&amp; entry : fs::directory_iterator(RootPath))
-        {
-            std::cout &lt;&lt; entry.path().string() &lt;&lt; std::endl;
-            try
-            {
-                if (entry.is_regular_file() &amp;&amp; isBinary(entry.path()))
-                {
-                    auto imageName = entry.path().string();
-                    SYMSRV_INDEX_INFO imageFileInfo = { sizeof(imageFileInfo) };
-                    ::SymSrvGetFileIndexInfo(imageName.c_str(), &amp;imageFileInfo, 0);
-                    char downloadedImagePath[MAX_PATH + 1] = { 0 };
-                    if (::SymFindFileInPath(GetCurrentProcess(), NULL, imageName.c_str(),
-                        &amp;imageFileInfo.timestamp, imageFileInfo.size, 0, SSRVOPT_DWORDPTR,
-                        downloadedImagePath, nullptr, nullptr))
-                    {
-                        std::cout &lt;&lt; &quot;Image file downloaded to &quot; &lt;&lt; downloadedImagePath &lt;&lt; std::endl;
-                    }
-                    char downloadedPdbPath[MAX_PATH + 1] = { 0 };
-                    if (::SymFindFileInPath(GetCurrentProcess(), NULL, imageFileInfo.pdbfile,
-                        &amp;imageFileInfo.guid, imageFileInfo.age, 0, SSRVOPT_GUIDPTR,
-                        downloadedPdbPath, nullptr, nullptr))
-                    {
-                        std::cout &lt;&lt; &quot;PDB file downloaded to &quot; &lt;&lt; downloadedPdbPath &lt;&lt; std::endl;
-                    }
-                }
-            }
-            catch (std::exception&amp; e)
-            {
-                std::cerr &lt;&lt; entry.path().string() &lt;&lt; &quot;: &quot; &lt;&lt; e.what() &lt;&lt; std::endl;
-            }
-        }
-    }
-    catch (std::filesystem::filesystem_error&amp; e)
-    {
-        std::cout &lt;&lt; &quot;No resources directory found; nothing to do here: &quot; &lt;&lt; e.what();
-    }
-    ::SymCleanup(::GetCurrentProcess());
-    return 0;
-}
-</pre>
-<p>= O desafio de Ulisses</p>
+<span id="o_desafio_de_ulisses" title="O desafio de Ulisses"/></span>
+<section id="section_o_desafio_de_ulisses">
+<p class="title"><a href="2025-04.html#o_desafio_de_ulisses">#</a> O desafio de Ulisses</p>
+<span class="title-heading">Caloni, 2025-04-07 <a href="2025-04.html#in_search_of_the_miraculous_pd_ouspensky">&lt;</a><a href="self.html">self</a><a href="2025-03.html#ego_ou_intuicao">&gt;</a> <a href="2025-04.html#in_search_of_the_miraculous_pd_ouspensky">&lt;</a><a href="drafts.html">drafts</a><a href="2025-03.html#se_ligue_em_voce_gasparetto_luiz">&gt;</a><a href="2025-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_o_desafio_de_ulisses')"><sup>[copy]</sup></a></span>
 
 <p>O desafio de Ulisses é sobre o que o personagem de Odisseia fez para conseguir ouvir o canto da sereia sem se render aos seus feitiços e acabar sendo devorado por estas criaturas dos mares. Ele pediu que fosse amarrado ao mastro do navio e que em hipótese alguma fosse solto enquanto passassem pelas sereias. Durante o trajeto ele tentou de todas as formas fazer a tripulação o soltar, mas eles foram fiéis ao que ele havia ordenado antes de adentrarem nas tentações do que antes nem eram mulheres com rabo (era o canto a verdadeira tentação).</p>
 
@@ -147,37 +85,11 @@ int main()
 
 <p>Lendo este livro, mas bem lentamente. Seguem recortes.</p>
 
-<blockquote>I believe that the best way to improve your self-control is to see how and why you lose control.</blockquote>
-<blockquote>Self-knowledge—especially of how we find ourselves in willpower trouble—is the foundation of self-control.</blockquote>
-<blockquote>These are not individual weaknesses that reveal our personal inadequacies—they are universal experiences and part of the human condition.</blockquote>
-<blockquote>You can—and should—make yourself the subject of your own real-world study.</blockquote>
-<blockquote>Your willpower challenge could be something you’ve been avoiding (what we’ll call an “I will” power challenge) or a habit you want to break (an “I won’t” power challenge). You could also choose an important goal in your life that you’d like to give more energy and focus to (an “I want” power challenge)—</blockquote>
-<blockquote>“I will” power challenge: What is something that you would like to do more of, or stop putting off, because you know that doing it will improve the quality of your life? • “I won’t” power challenge: What is the “stickiest” habit in your life? What would you like to give up or do less of because it’s undermining your health, happiness, or success? • “I want” power challenge: What is the most important long-term goal you’d like to focus your energy on? What immediate “want” is most likely to distract you or tempt you away from this goal?</blockquote>
-<blockquote>“I will” and “I won’t” power are the two sides of self-control, but they alone don’t constitute willpower. To say no when you need to say no, and yes when you need to say yes, you need a third power: the ability to remember what you really want.</blockquote>
-<blockquote>Otherwise, what’s going to stop you from following your immediate desires?</blockquote>
-<blockquote>To exert self-control, you need to find your motivation when it matters. This is “I want” power.</blockquote>
-<blockquote>For most of evolutionary history, the prefrontal cortex mainly controlled physical movement: walking, running, reaching, pushing—a kind of proto-self-control.</blockquote>
-<blockquote>As the prefrontal cortex grew, it took on new control functions: controlling what you pay attention to, what you think about, even how you feel. This made it even better at controlling what you do.</blockquote>
-<blockquote>The prefrontal cortex is not one unified blob of gray matter; it has three key regions that divvy up the jobs of I will, I won’t, and I want.</blockquote>
-<blockquote>The third region, just a bit lower and in the middle of the prefrontal cortex, keeps track of your goals and your desires. It decides what you want. The more rapidly its cells fire, the more motivated you are to take action or resist temptation.</blockquote>
-<blockquote>our primitive brain was not replaced with some completely new model—the system of self-control was slapped on top of the old system of urges and instincts.</blockquote>
-<blockquote>There’s the version of us that acts on impulse and seeks immediate gratification, and the version of us that controls our impulses and delays gratification to protect our long-term goals.</blockquote>
-<blockquote>The part of you that wants to give in isn’t bad—it simply has a different point of view about what matters most.</blockquote>
-<blockquote>Giving a name to this version of yourself can help you recognize when it is taking over, and also help you call in your wiser self for some willpower support.</blockquote>
-<blockquote>You need to recognize when you’re making a choice that requires willpower; otherwise, the brain always defaults to what is easiest.</blockquote>
-<blockquote>When your mind is preoccupied, your impulses—not your long-term goals—will guide your choices.</blockquote>
-<blockquote>To have more self-control, you first need to develop more self-awareness. A good first step is to notice when you are making choices related to your willpower challenge.</blockquote>
-<blockquote>For at least one day, track your choices. At the end of the day, look back and try to analyze when decisions were made that either supported or undermined your goals. Trying to keep track of your choices will also reduce the number of decisions you make while distracted—a guaranteed way to boost your willpower.</blockquote>
-<blockquote>This week, commit to watching how the process of giving in to your impulses happens. You don’t even need to set a goal to improve your self-control yet. See if you can catch yourself earlier and earlier in the process, noticing what thoughts, feelings, and situations are most likely to prompt the impulse. What do you think or say to yourself that makes it more likely that you will give in?</blockquote>
-<blockquote>Regular meditators have more gray matter in the prefrontal cortex, as well as regions of the brain that support self-awareness.</blockquote>
-<blockquote>One study found that just three hours of meditation practice led to improved attention and self-control. After eleven hours, researchers could see those changes in the brain.</blockquote>
-<blockquote>It may seem incredible that our brains can reshape themselves so quickly, but meditation increases blood flow to the prefrontal cortex, in much the same way that lifting weights increases blood flow to your muscles.</blockquote>
-<blockquote>This simple act of staying still is part of what makes meditation willpower training effective. You’re learning not to automatically follow every single impulse that your brain and body produce.</blockquote>
-<blockquote>Notice how it feels to breathe, and notice how the mind wanders.</blockquote>
-<blockquote>Most new meditators make this mistake, but the truth is that being “bad” at meditation is exactly what makes the practice effective.</blockquote>
-<blockquote>Meditation is not about getting rid of all your thoughts; it’s learning not to get so lost in them that you forget what your goal is.</blockquote>
-<blockquote>Imagine yourself facing your willpower challenge, and doing the harder thing. What makes it hard?</blockquote>
-<blockquote>What does the impulsive version of you want? What does the wiser version of you want?</blockquote>
+<blockquote>I believe that the best way to improve your self-control is to see how and why you lose control. (...) Self-knowledge—especially of how we find ourselves in willpower trouble—is the foundation of self-control. (...) You can—and should—make yourself the subject of your own real-world study.</blockquote>
+<blockquote>Your willpower challenge could be something you’ve been avoiding (“I will”) or a habit you want to break (“I won’t”) or an important goal in your life that you’d like to give more energy and focus to (“I want”). (...) To exert self-control, you need to find your motivation when it matters. This is “I want” power.</blockquote>
+<blockquote>As the prefrontal cortex (walking, running, reaching, pushing) grew, it took on new control functions: controlling what you pay attention to, what you think about, even how you feel. (...) It has three key regions that divide up the jobs of I will, I won’t, and I want. (...) The more rapidly the “I want” region cells fire, the more motivated you are to take action or resist temptation. (...) The part of you that wants to give in isn’t bad—it simply has a different point of view about what matters most.</blockquote>
+<blockquote>You need to recognize when you’re making a choice that requires willpower; otherwise, the brain always defaults to what is easiest. (...) When your mind is preoccupied, your impulses—not your long-term goals—will guide your choices. (...) To have more self-control, you first need to develop more self-awareness. (...) Trying to keep track of your choices reduces the number of decisions you make while distracted.</blockquote>
+<blockquote>Regular meditators have more gray matter in the prefrontal cortex, as well as regions of the brain that support self-awareness. (...) One study found that just three hours of meditation practice led to improved attention and self-control. After eleven hours, researchers could see those changes in the brain. (...) It may seem incredible that our brains can reshape themselves so quickly, but meditation increases blood flow to the prefrontal cortex, in much the same way that lifting weights increases blood flow to your muscles. (...) This simple act of staying still is part of what makes meditation willpower training effective. You’re learning not to automatically follow every single impulse that your brain and body produce. (...) Notice how it feels to breathe, and notice how the mind wanders. (...) Most new meditators make this mistake, but the truth is that being “bad” at meditation is exactly what makes the practice effective. (...) Meditation is not about getting rid of all your thoughts; it’s learning not to get so lost in them that you forget what your goal is.</blockquote>
 </section><hr/>
 
 <span id="o_poder_do_silencio_eckhart_tolle" title="O poder do silêncio (Eckhart Tolle)"/></span>
@@ -187,22 +99,18 @@ int main()
 
 <p>Mais um livro sendo relido parcialmente. Alguns recortes.</p>
 
-<blockquote>Os dogmas são prisões formadas por conceitos coletivos. O que parece estranho é que as pessoas gostam de suas prisões, pois elas lhes dão uma sensação de segurança e uma falsa impressão de que “sabem das coisas”.</blockquote>
 <blockquote>O reino da consciência é muito mais vasto do que aquilo que o pensamento é capaz de abranger.</blockquote>
-<blockquote>A mente funciona com “voracidade” e por isso está sempre querendo mais. Quando você se identifica com a sua mente, fica facilmente entediado e ansioso. O tédio demonstra que a mente deseja avidamente mais estímulo, mais o que pensar, e que essa fome não está sendo saciada.</blockquote>
-<blockquote>O tédio é simplesmente um movimento de energia condicionada dentro de você.</blockquote>
-<blockquote>Qualquer tipo de preconceito mostra que você está identificado com a mente pensante. Mostra que você não está vendo o outro ser humano, está vendo apenas seu conceito sobre aquele ser humano. Reduzir uma pessoa a um conceito já é uma forma de violência.</blockquote>
-<blockquote>Quem percebe isso? Quem compreende que sua forma física e psicológica é passageira? É o Eu Sou. Esse é o “eu” mais profundo, que não tem nada a ver com o passado e o futuro.</blockquote>
-<blockquote>Você trata o momento atual como um obstáculo que precisa ser ultrapassado? Você considera mais importante o momento futuro que quer atingir?</blockquote>
-<blockquote>Assumir responsabilidade por este momento presente é estar em harmonia com a vida.</blockquote>
+<blockquote>Os dogmas são prisões formadas por conceitos coletivos. O que parece estranho é que as pessoas gostam de suas prisões, pois elas lhes dão uma sensação de segurança e uma falsa impressão de que “sabem das coisas”. (...) Qualquer tipo de preconceito mostra que você está identificado com a mente pensante. Mostra que você não está vendo o outro ser humano, está vendo apenas seu conceito sobre aquele ser humano. Reduzir uma pessoa a um conceito já é uma forma de violência.</blockquote>
+<blockquote>A mente funciona com “voracidade” e por isso está sempre querendo mais. Quando você se identifica com a sua mente, fica facilmente entediado e ansioso. O tédio demonstra que a mente deseja avidamente mais estímulo, mais o que pensar, e que essa fome não está sendo saciada. (...) O tédio é simplesmente um movimento de energia condicionada dentro de você. (...) Você trata o momento atual como um obstáculo que precisa ser ultrapassado? Você considera mais importante o momento futuro que quer atingir? (...) Assumir responsabilidade por este momento presente é estar em harmonia com a vida.</blockquote>
 </section><hr/>
 
 <span id="in_search_of_the_miraculous_pd_ouspensky" title="In Search of the Miraculous (P.D. Ouspensky)"/></span>
 <section id="section_in_search_of_the_miraculous_pd_ouspensky">
 <p class="title"><a href="2025-04.html#in_search_of_the_miraculous_pd_ouspensky">#</a> In Search of the Miraculous (P.D. Ouspensky)</p>
-<span class="title-heading">Caloni, 2025-04-29 <a href="2025-04.html#o_poder_do_silencio_eckhart_tolle">&lt;</a><a href="self.html">self</a><a href="2025-04.html#baixando_simbolos_e_modulos_programaticamente">&gt;</a> <a href="2025-04.html#o_poder_do_silencio_eckhart_tolle">&lt;</a><a href="books.html">books</a><a href="2025-03.html#se_ligue_em_voce_gasparetto_luiz">&gt;</a> <a href="2025-04.html#o_poder_do_silencio_eckhart_tolle">&lt;</a><a href="drafts.html">drafts</a><a href="2025-04.html#baixando_simbolos_e_modulos_programaticamente">&gt;</a><a href="2025-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_in_search_of_the_miraculous_pd_ouspensky')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2025-04-29 <a href="2025-04.html#o_poder_do_silencio_eckhart_tolle">&lt;</a><a href="self.html">self</a><a href="2025-04.html#o_desafio_de_ulisses">&gt;</a> <a href="2025-04.html#o_poder_do_silencio_eckhart_tolle">&lt;</a><a href="books.html">books</a><a href="2025-03.html#se_ligue_em_voce_gasparetto_luiz">&gt;</a> <a href="2025-04.html#o_poder_do_silencio_eckhart_tolle">&lt;</a><a href="drafts.html">drafts</a><a href="2025-04.html#o_desafio_de_ulisses">&gt;</a><a href="2025-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_in_search_of_the_miraculous_pd_ouspensky')"><sup>[copy]</sup></a></span>
 
 <blockquote>There was another type of school, with which I was unable to make contact and of which I only heard. These schools promised very much but they also demanded very much. They demanded everything at once. It would have been necessary to stay in India and give up thoughts of returning to Europe, to renounce all my own ideas, aims, and plans, and proceed along a road of which I could know nothing beforehand.</blockquote>
+<blockquote>Our starting point is that man does not know himself, that he is not" (he emphasized these words), "that is, he is not what he can and what he should be. For this reason he cannot make any agreements or assume any obligations. He can decide nothing in regard to the future.</blockquote>
 </section><hr/>
 
 
@@ -396,7 +304,7 @@ int main()
 <span id="desafio_5" title="Desafio 5"/></span>
 <section id="section_desafio_5">
 <p class="title"><a href="2025-04.html#desafio_5">#</a> Desafio 5</p>
-<span class="title-heading">Caloni, 2025-04-30 <a href="2025-04.html#download_pdb_symbols">&lt;</a><a href="code.html">code</a><a href="2025-03.html#e_melhor_manter_binarios_de_teste_no_codigofonte">&gt;</a><a href="2025-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_desafio_5')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2025-04-30 <a href="2025-04.html#download_pdb_symbols">&lt;</a><a href="code.html">code</a><a href="2025-03.html#baixando_simbolos_e_modulos_programaticamente">&gt;</a><a href="2025-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_desafio_5')"><sup>[copy]</sup></a></span>
 
 
 <pre>
