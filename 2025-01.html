@@ -113,85 +113,32 @@ role="navigation" aria-label="main navigation">
 <span id="clean_architecture_a_craftsmans_guide_to_software_structure_and_design_robert_c_martin_aka_uncle_bob" title="Clean Architecture: A Craftsman's Guide to Software Structure and Design (Robert C. Martin aka Uncle Bob)"/></span>
 <section id="section_clean_architecture_a_craftsmans_guide_to_software_structure_and_design_robert_c_martin_aka_uncle_bob">
 <p class="title"><a href="2025-01.html#clean_architecture_a_craftsmans_guide_to_software_structure_and_design_robert_c_martin_aka_uncle_bob">#</a> Clean Architecture: A Craftsman's Guide to Software Structure and Design (Robert C. Martin aka Uncle Bob)</p>
-<span class="title-heading">Caloni, 2025-01-09 <a href="2025-01.html#anotacoes_de_head_first_software_architecture_raju_gandhi_mark_richardsneal_ford">&lt;</a><a href="computer.html">computer</a><a href="2025-01.html#colinha_que_todos_usamos_para_esperar_o_debugger_quando_o_notepad_inicia">&gt;</a> <a href="2025-01.html#anotacoes_de_head_first_software_architecture_raju_gandhi_mark_richardsneal_ford">&lt;</a><a href="books.html">books</a><a href="2025-01.html#um_quimico_na_cozinha">&gt;</a> <a href="2021-03.html#a_terceira_geracao">&lt;</a><a href="drafts.html">drafts</a><a href="2025-02.html#prometheus_rising">&gt;</a><a href="2025-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_clean_architecture_a_craftsmans_guide_to_software_structure_and_design_robert_c_martin_aka_uncle_bob')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2025-01-09 <a href="2025-01.html#anotacoes_de_head_first_software_architecture_raju_gandhi_mark_richardsneal_ford">&lt;</a><a href="computer.html">computer</a><a href="2025-01.html#colinha_que_todos_usamos_para_esperar_o_debugger_quando_o_notepad_inicia">&gt;</a> <a href="2025-01.html#anotacoes_de_head_first_software_architecture_raju_gandhi_mark_richardsneal_ford">&lt;</a><a href="books.html">books</a><a href="2025-01.html#um_quimico_na_cozinha">&gt;</a><a href="2025-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_clean_architecture_a_craftsmans_guide_to_software_structure_and_design_robert_c_martin_aka_uncle_bob')"><sup>[copy]</sup></a></span>
 
-<p>Este livro é muito bom em reagrupar princípios consagrados de arquitetura de software e relacionar com o desenvolvimento de software e seus paradigmas. Ele é um pouco tedioso em entender a vida útil de um sistema, mas brilha com algumas máximas e dicas de como tomar decisões ou organizar blocos de código para manutenção de longo prazo.</p>
+<blockquote>A good architecture comes from understanding it more as a journey than as a destination.</blockquote>
+<p>Este livro é bom em reagrupar princípios consagrados de arquitetura de software e relacionar com o desenvolvimento de software e seus paradigmas. Ele é um pouco tedioso em entender a vida útil de um sistema, mas brilha com algumas máximas e dicas de como tomar decisões ou organizar blocos de código para manutenção de longo prazo.</p>
 
-<p>A única crítica ao programador comum é ter que decorar muitas siglas de princípios que apenas pelo nome já fica difícil de associar, imagine as suas abreviações. Por esse motivo traduzi pelo menos as siglas dos recortes abaixo.</p>
+<blockquote>The primary purpose of architecture is to support the life cycle of the system: easy to understand, easy to develop, easy to maintain, and easy to deploy.</blockquote>
+<p>Abaixo recortes de um passeio pelas abstrações e pelas diferentes camadas que melhoram nossa visibilidade das milhares ou às vezes milhões de linhas de código de um sistema.</p>
 
-<blockquote>A good architecture comes from understanding it more as a journey than as a destination,</blockquote>
-<blockquote>(...) to push as much processing as possible into the immutable components, and to drive as much code as possible out of those components that must allow mutation.</blockquote>
 <blockquote>Software—the stuff of computer programs—is composed of sequence, selection, iteration, and indirection. Nothing more. Nothing less.</blockquote>
-<blockquote>(...) each software module has one, and only one, reason to change.</blockquote>
-<blockquote>(...) software systems to be easy to change, they must be designed to allow the behavior of those systems to be changed by adding new code, rather than changing existing code.</blockquote>
-<blockquote>(...) to build software systems from interchangeable parts, those parts must adhere to a contract that allows those parts to be substituted one for another.</blockquote>
-<blockquote>(...) avoid depending on things that they don’t use.</blockquote>
-<blockquote>The code that implements high-level policy should not depend on the code that implements low-level details. Rather, details should depend on policies.</blockquote>
-<blockquote>A module should have one, and only one, reason to change. A module should be responsible to one, and only one, user or stakeholder. A module should be responsible to one, and only one, actor.</blockquote>
-<blockquote>A software artifact should be open for extension but closed for modification.</blockquote>
-<blockquote>We want to protect the Controller from changes in the Presenters. We want to protect the Presenters from changes in the Views. We want to protect the Interactor from changes in... well, anything.</blockquote>
-<blockquote>(...) creates a hierarchy of protection based on the notion of “level.” Interactors are the highest-level concept, so they are the most protected. Views are among the lowest-level concepts, so they are the least protected.</blockquote>
-<blockquote>(...) partitioning the system into components, and arranging those components into a dependency hierarchy that protects higher-level components from changes in lower-level components.</blockquote>
-<blockquote>The Dependency Inversion Principle tells us that the most flexible systems are those in which source code dependencies refer only to abstractions, not to concretions.</blockquote>
-<blockquote>Components are the units of deployment. They are the smallest entities that can be deployed as part of a system.</blockquote>
-<blockquote>People who want to reuse software components cannot, and will not, do so unless those components are tracked through a release process and are given release numbers.</blockquote>
-<blockquote>Gather into components those classes that change for the same reasons and at the same times. Separate into different components those classes that change at different times and for different reasons.</blockquote>
-<blockquote>Don’t force users of a component to depend on things they don’t need.</blockquote>
-<blockquote>Don’t depend on things you don’t need.</blockquote>
-<blockquote>The Common Reuse Principle says that classes that are not tightly bound to each other should not be in the same component.</blockquote>
-<blockquote>Allow no cycles in the component dependency graph.</blockquote>
-<blockquote>Regardless of which component you begin at, it is impossible to follow the dependency relationships and wind up back at that component.</blockquote>
-<blockquote>By conforming to the Stable Dependencies Principle (Stable Dependencies Principle), we ensure that modules that are intended to be easy to change are not depended on by modules that are harder to change.</blockquote>
-<blockquote>One sure way to make a software component difficult to change, is to make lots of other software components depend on it.</blockquote>
-<blockquote>The Stable Dependencies Principle says that the I metric of a component should be larger than the I metrics of the components that it depends on. That is, I metrics should decrease in the direction of dependency.</blockquote>
-<blockquote>A component should be as abstract as it is stable.</blockquote>
-<blockquote>Stable Dependencies Principle says that dependencies should run in the direction of stability, and the Stable Abstractions Principle says that stability implies abstraction. Thus dependencies run in the direction of abstraction.</blockquote>
-<blockquote>The primary purpose of architecture is to support the life cycle of the system.</blockquote>
-<blockquote>easy to understand, easy to develop, easy to maintain, and easy to deploy.</blockquote>
-<blockquote>The primary cost of maintenance is in spelunking and risk. Spelunking is the cost of digging through the existing software, trying to determine the best place and the best strategy to add a new feature or to repair a defect. While making such changes, the likelihood of creating inadvertent defects is always there, adding to the cost of risk.</blockquote>
+<blockquote>The primary cost of maintenance is in spelunking and risk. Spelunking is the cost of digging through the existing software, trying to determine the best place and the best strategy to add a new feature or to repair a defect.</blockquote>
 <blockquote>The way you keep software soft is to leave as many options open as possible, for as long as possible. What are the options that we need to leave open? They are the details that don’t matter.</blockquote>
-<blockquote>The goal of the architect is to create a shape for the system that recognizes policy as the most essential element of the system while making the details irrelevant to that policy.</blockquote>
-<blockquote>If you can develop the high-level policy without committing to the details that surround it, you can delay and defer decisions about those details for a long time. And the longer you wait to make those decisions, the more information you have with which to make them properly.</blockquote>
-<blockquote>A good architect pretends that the decision has not been made, and shapes the system such that those decisions can still be deferred or changed for as long as possible.</blockquote>
-<blockquote>A good architect maximizes the number of decisions not made.</blockquote>
-<blockquote>(...) we find the system divided into decoupled horizontal layers—</blockquote>
-<blockquote>(...) use cases are narrow vertical slices that cut through the horizontal layers of the system.</blockquote>
-<blockquote>If two apparently duplicated sections of code evolve along different paths—if they change at different rates, and for different reasons—then they are not true duplicates.</blockquote>
+<blockquote>Gather into components those classes that change for the same reasons and at the same times. Separate into different components those classes that change at different times and for different reasons.</blockquote>
+<blockquote>A software artifact should be open for extension but closed for modification.</blockquote>
+<blockquote>Build from interchangeable parts that must adhere to a contract that allows them to be substituted one for another.</blockquote>
+<blockquote>Details should depend on policies, not the opposite.</blockquote>
+<blockquote>The Dependency Inversion Principle tells us that the most flexible systems are those in which source code dependencies refer only to abstractions, not to concretions. Allow no cycles in the component dependency graph. Regardless of which component you begin at, it is impossible to follow the dependency relationships and wind up back at that component.</blockquote>
+<blockquote>Modules that are easy to change are not depended on by modules that are harder to change. The goal of the architect is to create a shape for the system that recognizes policy as the most essential element of the system while making the details irrelevant to that policy.</blockquote>
+<blockquote>If you can develop the high-level policy without committing to the details that surround it, you can delay and defer decisions about those details for a long time. And the longer you wait to make those decisions, the more information you have with which to make them properly. A good architect pretends that the decision has not been made, and shapes the system such that those decisions can still be deferred or changed for as long as possible. A good architect maximizes the number of decisions not made.</blockquote>
+<blockquote>The IO is a detail. The web (an IO device) is a detail. The database is a detail. The framework is a detail.</blockquote>
+<blockquote>Software systems are statements of policy. Indeed, at its core, that’s all a computer program actually is. A computer program is a detailed description of the policy by which inputs are transformed into outputs. Part of the art of developing a software architecture is carefully separating those policies from one another, and regrouping them based on the ways that they change.</blockquote>
 <blockquote>A good architecture will allow a system to be born as a monolith, deployed in a single file, but then to grow into a set of independently deployable units, and then all the way to independent services and/or micro-services. Later, as things change, it should allow for reversing that progression and sliding all the way back down into a monolith.</blockquote>
-<blockquote>You draw lines between things that matter and things that don’t.</blockquote>
-<blockquote>The IO is irrelevant.</blockquote>
-<blockquote>(...) behind that interface there is a model—a sophisticated set of data structures and functions—driving it. More importantly, that model does not need the interface.</blockquote>
-<blockquote>The interface does not matter to the model—the business rules.</blockquote>
-<blockquote>The core business rules are kept separate from, and independent of, those components that are either optional or that can be implemented in many different forms</blockquote>
-<blockquote>The Single Responsibility Principle tells us where to draw our boundaries.</blockquote>
-<blockquote>Dependency arrows are arranged to point from lower-level details to higher-level abstractions.</blockquote>
-<blockquote>Software systems are statements of policy. Indeed, at its core, that’s all a computer program actually is. A computer program is a detailed description of the policy by which inputs are transformed into outputs.</blockquote>
-<blockquote>Part of the art of developing a software architecture is carefully separating those policies from one another, and regrouping them based on the ways that they change.</blockquote>
-<blockquote>A strict definition of “level” is “the distance from the inputs and outputs.”</blockquote>
-<blockquote>The art of architecture often involves forming the regrouped components into a directed acyclic graph.</blockquote>
-<blockquote>Strictly speaking, business rules are rules or procedures that make or save the business money. Very strictly speaking, these rules would make or save the business money, irrespective of whether they were implemented on a computer. They would make or save money even if they were executed manually.</blockquote>
-<blockquote>An Entity is an object within our computer system that embodies a small set of critical business rules operating on Critical Business Data.</blockquote>
-<blockquote>The interface of the Entity consists of the functions that implement the Critical Business Rules that operate on that data.</blockquote>
-<blockquote>A use case is a description of the way that an automated system is used. It specifies the input to be provided by the user, the output to be returned to the user, and the processing steps involved in producing that output. A use case describes application-specific business rules as opposed to the Critical Business Rules within the Entities.</blockquote>
-<blockquote>Use cases contain the rules that specify how and when the Critical Business Rules within the Entities are invoked.</blockquote>
-<blockquote>Use cases control the dance of the Entities.</blockquote>
-<blockquote>High-level concepts, such as Entities, know nothing of lower-level concepts, such as use cases.</blockquote>
-<blockquote>Develop a strategy that prevents the framework from taking over that architecture.</blockquote>
-<blockquote>If your system architecture is all about the use cases, and if you have kept your frameworks at arm’s length, then you should be able to unit-test all those use cases without any of the frameworks in place.</blockquote>
-<blockquote>The presenters, views, and controllers all belong in the interface adapters layer.</blockquote>
-<blockquote>The models are likely just data structures that are passed from the controllers to the use cases, and then back</blockquote>
-<blockquote>The web is a detail. The database is a detail.</blockquote>
-<blockquote>the data that crosses the boundaries consists of simple data structures.</blockquote>
-<blockquote>The View is the humble object that is hard to test.</blockquote>
-<blockquote>Presenter is the testable object.</blockquote>
-<blockquote>At each architectural boundary, we are likely to find the Humble Object pattern lurking somewhere nearby.</blockquote>
-<blockquote>Your goal is to implement the boundaries right at the inflection point where the cost of implementing becomes less than the cost of ignoring.</blockquote>
-<blockquote>Think of Main as the dirtiest of all the dirty components.</blockquote>
-<blockquote>You non-embedded developers essentially write firmware whenever you bury SQL in your code or when you spread platform dependencies throughout your code.</blockquote>
-<blockquote>There is much more to programming than just getting an app to work.</blockquote>
-<blockquote>The WEB is an IO device.</blockquote>
-<blockquote>Input occurs at the controllers, and that input is processed into a result by the interactors. The presenters then format the results, and the views display those presentations.</blockquote>
-<blockquote>You can’t make a reusable framework until you first make a usable framework.</blockquote>
+<blockquote>Business rules are rules or procedures that make or save the business money. Very strictly speaking, these rules would make or save the business money, irrespective of whether they were implemented on a computer. They would make or save money even if they were executed manually. An Entity is an object within our computer system that embodies a small set of critical business rules operating on Critical Business Data. The interface of the Entity consists of the functions that implement the Critical Business Rules that operate on that data.</blockquote>
+<blockquote>A use case is a description of the way that an automated system is used. It specifies the input to be provided by the user, the output to be returned to the user, and the processing steps involved in producing that output. A use case describes application-specific business rules as opposed to the Critical Business Rules within the Entities. Use cases contain the rules that specify how and when the Critical Business Rules within the Entities are invoked. Use cases control the dance of the Entities. High-level concepts, such as Entities, know nothing of lower-level concepts, such as use cases.</blockquote>
+<blockquote>Input occurs at the controllers, and that input is processed into a result by the interactors. The presenters then format the results, and the views display those presentations. The presenters, views, and controllers all belong in the interface adapters layer. The models are likely just data structures that are passed from the controllers to the use cases, and then back. The data that crosses the boundaries consists of simple data structures.</blockquote>
+<blockquote>The View is the humble object that is hard to test. Presenter is the testable object. At each architectural boundary, we are likely to find the Humble Object pattern lurking somewhere nearby. Your goal is to implement the boundaries right at the inflection point where the cost of implementing becomes less than the cost of ignoring.</blockquote>
+<blockquote>Think of Main as the dirtiest of all the dirty components. Develop a strategy that prevents the framework from taking over that architecture. If your system is all about the use cases, and if you have kept your frameworks at arm’s length, then you should be able to unit-test all those use cases without any of the frameworks in place. You non-embedded developers essentially write firmware whenever you bury SQL in your code or when you spread platform dependencies throughout your code.</blockquote>
 </section><hr/>
 
 <span id="14_habitos_de_desenvolvedores_altamente_produtivos_rocha_zeno" title="14 Hábitos de Desenvolvedores Altamente Produtivos (Rocha, Zeno)"/></span>
