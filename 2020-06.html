@@ -145,14 +145,14 @@ role="navigation" aria-label="main navigation">
 
 <span id="awk" title="Awk"/></span>
 <section id="section_awk">
-<p class="title"><a href="2020-06.html#awk">#</a> <a class="external" href="https://github.com/Caloni/lectures/blob/master/awk.pdf">Awk</a></p>
-<span class="title-heading">Caloni, 2020-06-07 <a href="2020-06.html#azure_missing_lines_submodules_no_git_ssh_version">&lt;</a><a href="computer.html">computer</a><a href="2020-06.html#leak_de_memoria">&gt;</a> <a href="2020-05.html#bode_caloni_cast_live">&lt;</a><a href="blogging.html">blogging</a><a href="2020-06.html#historical_price">&gt;</a><a href="2020-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_awk')"><sup>[copy]</sup></a></span>
+<p class="title"><a href="2020-06.html#awk">#</a> Awk</p>
+<span class="title-heading">Caloni, 2020-06-07 <a href="2020-06.html#azure_missing_lines_submodules_no_git_ssh_version">&lt;</a><a href="computer.html">computer</a><a href="2020-06.html#leak_de_memoria">&gt;</a><a href="2020-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_awk')"><sup>[copy]</sup></a></span>
 
 <h2>Introduction</h2>
 
 <p>Meu amigo sugeriu que aprender awk poderia ser útil de várias maneiras. Uma delas para organizar finanças pessoais. Dei uma lida em alguns tutoriais, sendo que o melhor custo benefício foi o <a href="https://ferd.ca/awk-in-20-minutes.html">Awk in 20 Minutes</a>, de Fred Hebert (ele é o mesmo autor de um livro sobre erlang). Gostei. É sobre tratamento de texto como sed, mas em uma versão estendida e criada na época com a mesma sintaxe de C.</p>
 
-<p>Agora que vou palestrar sobre no Native Floripa de 2022 eu dei uma olhada em outro tutorial muito bom que eu vou chamar de <a href="https://www.grymoire.com/Unix/Awk.html">Tutorial from an Experient Mind</a>, de Bruce Barnett. Ele vai um pouco além porque é de alguém interessado em contar alguns macetes que dão uma visão mais interna da linguagem. E para referência eu considero o <a href="https://www.gnu.org/software/gawk/manual/gawk.html">Gawk Guide</a> como um ótimo compilado.</p>
+<p>Agora que vou <a href="https://github.com/Caloni/lectures/blob/master/awk.pdf">palestrar sobre</a> no Native Floripa de 2022 eu dei uma olhada em outro tutorial muito bom que eu vou chamar de <a href="https://www.grymoire.com/Unix/Awk.html">Tutorial from an Experient Mind</a>, de Bruce Barnett. Ele vai um pouco além porque é de alguém interessado em contar alguns macetes que dão uma visão mais interna da linguagem. E para referência eu considero o <a href="https://www.gnu.org/software/gawk/manual/gawk.html">Gawk Guide</a> como um ótimo compilado.</p>
 
 <h2>1977</h2>
 
@@ -304,10 +304,12 @@ END { print &quot; - DONE -&quot; }
 
 <span id="historical_price" title="Historical Price"/></span>
 <section id="section_historical_price">
-<p class="title"><a href="2020-06.html#historical_price">#</a> <a class="external" href="https://gist.github.com/Caloni/368a8ce88206c13aac6ca27a56975af2">Historical Price</a></p>
-<span class="title-heading">Caloni, 2020-06-13 <a href="2020-06.html#leak_de_memoria">&lt;</a><a href="computer.html">computer</a><a href="2020-06.html#printf">&gt;</a> <a href="2020-06.html#awk">&lt;</a><a href="blogging.html">blogging</a><a href="2020-06.html#printf">&gt;</a><a href="2020-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_historical_price')"><sup>[copy]</sup></a></span>
+<p class="title"><a href="2020-06.html#historical_price">#</a> Historical Price</p>
+<span class="title-heading">Caloni, 2020-06-13 <a href="2020-06.html#leak_de_memoria">&lt;</a><a href="computer.html">computer</a><a href="2020-06.html#printf">&gt;</a><a href="2020-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_historical_price')"><sup>[copy]</sup></a></span>
 
 <p>Havia um job esta semana de um assunto que me encanta desde a época de investidor: base histórica de cotações. Estamos falando de ações da Bovespa. Na época que era investidor frequente mantinha uma base que era atualizada por um programinha em Java (esqueci o nome), mas nunca tive certeza se os ajustes feitos pelo programa eram os corretos. Surgiu agora a possibilidade de eu realizar código que converte uma base histórica recebida com um minuto por linha em campos divididos por ponto-e-vírgula (o CSV do Windows) para candles de várias periodicidades. E isso justo agora que ando estudando awk. Então não deu outra: usei esta linguagem clássica como ferramenta para esta conversão.</p>
+
+<p>&lt;https://gist.github.com/Caloni/368a8ce88206c13aac6ca27a56975af2&gt;</p>
 
 <p>O código ficou, em minha humilde opinião, elegante e pequeno, pois se aproveita da composição das periodicidades. Ou seja, o período de cinco minutos é a consolidação de cinco linhas de um minuto, mas a de quinze minutos não são quinze linhas de um minuto, mas três de cinco minutos, que já estão sendo calculados a cada cinco linha. E assim por diante. Usando os arrays associativos do awk é possível manter o estado de cada candle até o momento de gerar a saída desejada, que no exemplo que codifiquei ficou como um comando SQL de insert em um banco fictício que grava cada tipo de candle em uma tabela.</p>
 
@@ -327,10 +329,12 @@ END { print &quot; - DONE -&quot; }
 
 <span id="printf" title="Printf"/></span>
 <section id="section_printf">
-<p class="title"><a href="2020-06.html#printf">#</a> <a class="external" href="https://gist.github.com/Caloni/dd1429495c835a27ece61523e939ec7f">Printf</a></p>
-<span class="title-heading">Caloni, 2020-06-18 <a href="2020-06.html#historical_price">&lt;</a><a href="computer.html">computer</a><a href="2020-06.html#c++_co_routines">&gt;</a> <a href="2020-04.html#cast_operator">&lt;</a><a href="ccpp.html">ccpp</a><a href="2020-06.html#c++_co_routines">&gt;</a> <a href="2020-06.html#historical_price">&lt;</a><a href="blogging.html">blogging</a><a href="2020-06.html#c++_co_routines">&gt;</a><a href="2020-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_printf')"><sup>[copy]</sup></a></span>
+<p class="title"><a href="2020-06.html#printf">#</a> Printf</p>
+<span class="title-heading">Caloni, 2020-06-18 <a href="2020-06.html#historical_price">&lt;</a><a href="computer.html">computer</a><a href="2020-06.html#c++_co_routines">&gt;</a> <a href="2020-04.html#cast_operator">&lt;</a><a href="ccpp.html">ccpp</a><a href="2020-06.html#c++_co_routines">&gt;</a><a href="2020-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_printf')"><sup>[copy]</sup></a></span>
 
 <p>Entre os segredos escondidos das funções básicas da lib padrão da linguagem C o printf e o scanf lideram o ranking. O printf possui a capacidade de alinhamento de colunas das string impressas com tamanho variável. Sabia disso? Pois é, isso não se ensina nas escolas.</p>
+
+<p>&lt;https://gist.github.com/Caloni/dd1429495c835a27ece61523e939ec7f&gt;</p>
 
 <p>A impressão básica de uma string passada como argumento com printf deve ser feita usando na string de formatação os caracteres "%s". Agora, se você colocar um sinal de menos entre esses dois caracteres essa string será alinhada à esquerda. Mas o que é direita e esquerda se o tamanho usado pela impressão vai ser exatamente o tamanho da string? Aí é que entra o especificador de tamanho, logo após o opcional sinal de menos e antes do s que determina o tipo string. Dessa forma a string de formatação final para uma string variável alinhada à esquerda em uma coluna de trinta caracteres de tamanho seria "%-30s".</p>
 
@@ -359,7 +363,7 @@ END { print &quot; - DONE -&quot; }
 <span id="c++_co_routines" title="C++ Co Routines"/></span>
 <section id="section_c++_co_routines">
 <p class="title"><a href="2020-06.html#c++_co_routines">#</a> <a class="external" href="https://en.cppreference.com/w/cpp/language/coroutines">C++ Co Routines</a></p>
-<span class="title-heading">Caloni, 2020-06-21 <a href="2020-06.html#printf">&lt;</a><a href="computer.html">computer</a><a href="2020-06.html#pgn2art">&gt;</a> <a href="2020-06.html#printf">&lt;</a><a href="ccpp.html">ccpp</a><a href="2020-08.html#getargs_v_array">&gt;</a> <a href="2020-06.html#printf">&lt;</a><a href="blogging.html">blogging</a><a href="2020-06.html#pgn2art">&gt;</a><a href="2020-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_c++_co_routines')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2020-06-21 <a href="2020-06.html#printf">&lt;</a><a href="computer.html">computer</a><a href="2020-06.html#pgn2art">&gt;</a> <a href="2020-06.html#printf">&lt;</a><a href="ccpp.html">ccpp</a><a href="2020-08.html#getargs_v_array">&gt;</a> <a href="2019-12.html#fermento_mais_ou_menos_azedo_how_to_make_sourdough_more_or_less_sour">&lt;</a><a href="blogging.html">blogging</a><a href="2020-07.html#find_path_ou_por_que_o_vcpkg_nao_colocou_o_path_da_minha_biblioteca">&gt;</a><a href="2020-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_c++_co_routines')"><sup>[copy]</sup></a></span>
 
 <p>Entre os gêneros mais famosos do cinema e da programação está o terror, esse estado mental que se caracteriza pelo medo ou pela aversão a uma situação que envolve a perda de controle. Nesse quesito se encaixam as novas corrotinas que serão adotadas pelo padrão C++.</p>
 
@@ -516,44 +520,15 @@ END { print &quot; - DONE -&quot; }
 
 <span id="pgn2art" title="Pgn2art"/></span>
 <section id="section_pgn2art">
-<p class="title"><a href="2020-06.html#pgn2art">#</a> <a class="external" href="https://gist.github.com/Caloni/4d5f81365a01ef9567d5d4e077403d70">Pgn2art</a></p>
-<span class="title-heading">Caloni, 2020-06-27 <a href="2020-06.html#c++_co_routines">&lt;</a><a href="computer.html">computer</a><a href="2020-07.html#find_path_ou_por_que_o_vcpkg_nao_colocou_o_path_da_minha_biblioteca">&gt;</a> <a href="2020-06.html#c++_co_routines">&lt;</a><a href="blogging.html">blogging</a><a href="2020-07.html#find_path_ou_por_que_o_vcpkg_nao_colocou_o_path_da_minha_biblioteca">&gt;</a><a href="2020-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_pgn2art')"><sup>[copy]</sup></a></span>
+<p class="title"><a href="2020-06.html#pgn2art">#</a> Pgn2art</p>
+<span class="title-heading">Caloni, 2020-06-27 <a href="2020-06.html#c++_co_routines">&lt;</a><a href="computer.html">computer</a><a href="2020-07.html#find_path_ou_por_que_o_vcpkg_nao_colocou_o_path_da_minha_biblioteca">&gt;</a><a href="2020-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_pgn2art')"><sup>[copy]</sup></a></span>
 
 <p>Meu sonho de consumo para acompanhar partidas de xadrez é às cegas, apenas lendo ou ouvindo o próximo lance e imaginando em minha cabeça o tabuleiro. Porém, enquanto não tenho essa habilidade, um meio-termo aceitável é ver um tabuleiro em ascii art se modificando a cada lance. É possível acompanhar uma partida dessa forma como se estivesse lendo um livro, e por isso esse formato é prático, também, pois posso jogar esse ascii art no meu Kindle.</p>
 
 <p>Usando a biblioteca python-chess fiz um pequeno script que recebe o endereço de PGNs (o formato com que se grava partidas de xadrez) por URL ou path local e cospe esses tabuleiros em ascii art. Com isso pode redirecionar para um arquivo texto e enviar para o Kindle ou ler de qualquer lugar, em formato estático, a tradução da partida.</p>
 
-<pre>
-# Print the screenshots from a pgn game.
-# author Wanderley Caloni &lt;wanderleycaloni@gmail.com&gt;
-# date 2020-08
-import chess.pgn
-import io
-import sys
-import urllib.request
-def getpgn(path):
-    if path.find(&quot;http&quot;) == 0:
-        response = urllib.request.urlopen(path)
-        data = response.read()
-        text = data.decode('utf-8')
-        return io.StringIO(text)
-    else:
-        return open(path)
-def printpgn(pgn):
-    game = chess.pgn.read_game(pgn)
-    while game:
-        board = game.board()
-        print(game, '\n')
-        print(board, '\n')
-        for move in game.mainline_moves():
-            board.push(move)
-            print(move, '\n')
-            print(board, '\n')
-        game = chess.pgn.read_game(pgn)
-for arg in sys.argv[1:]:
-    pgn = getpgn(arg)
-    printpgn(pgn)
-</pre>
+<p>&lt;https://gist.github.com/Caloni/4d5f81365a01ef9567d5d4e077403d70&gt;</p>
+
 <p>O próximo passo, antes de ler às cegas, é transformar a leitura do tabuleiro bidimensional para a leitura do formato FEN, que é o formato usado para gravar posições de um tabuleiro.</p>
 
 </section><hr/>
