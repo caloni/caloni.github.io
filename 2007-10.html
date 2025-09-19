@@ -102,7 +102,7 @@ role="navigation" aria-label="main navigation">
 
 <p>  11. Digite p ret e em seguida F10 ou T e seja feliz.</p>
 
-<p>Pelo softice 16 bits conseguimos parar a execução nas interrupções da BIOS e ainda especificar qual das funções será executada, definida no registrador AH; mais detalhes sobre layout de memória do 8086 no artigo do DQ <a href="posts.html?q=1">1</a>.</p>
+<p>Pelo softice 16 bits conseguimos parar a execução nas interrupções da BIOS e ainda especificar qual das funções será executada, definida no registrador AH; mais detalhes sobre layout de memória do 8086 no artigo do DQ (1).</p>
 
 <p>Quando o código da BIOS é executado, ele precisa, entre outras coisas, fazer três:</p>
 
@@ -119,15 +119,15 @@ role="navigation" aria-label="main navigation">
 
 <img src="img/debug_da_bios_com_o_softice_16_bits_bpint_boot.png"/>
 
-<p>A referência para saber quais as funções para cada interrupção na hora de depurar a BIOS pode ser encontrada em listas como a Ralf Brown's Interrupt List <a href="posts.html?q=2">2</a></p>
+<p>A referência para saber quais as funções para cada interrupção na hora de depurar a BIOS pode ser encontrada em listas como a Ralf Brown's Interrupt List (2)</p>
 
 <p>A partir dessa leitura se usa o comando p ret do depurador, que é mais ou menos o step out do SoftIce 32. Ou seja, ele avança a execução até a função retornar. No caso do SoftIce 16 ele irá avançar até o próximo ret/iret. Por isso que também precisamos executar a próxima instrução (o próprio ret) para cair onde queremos. É nesse ponto que o "nosso" código começa a executar e onde conseguimos colocar breakpoints "de verdade", ou seja, escrevendo no parte do código que deve ser interrompida a chamada da interrupção de breakpoint (int 3). Lembre-se que não é isso o que é feito para parar no código da BIOS, uma vez que esta reside em memória de somente leitura (pelo menos durante a execução).</p>
 
 <img src="img/debug_da_bios_com_o_softice_16_bits_myos_start.png"/>
 
-<p><a href="posts.html?q=1">1</a> <a href="https://dqsoft.blogspot.com/2006/10/gerenciamento-de-memria-386.html">Gerenciamento de memória 386</a> - Daniel Quadros</p>
+<p>(1) <a href="https://dqsoft.blogspot.com/2006/10/gerenciamento-de-memria-386.html">Gerenciamento de memória 386</a> - Daniel Quadros</p>
 
-<p><a href="posts.html?q=2">2</a> <a href="https://en.wikipedia.org/wiki/Ralf_Brown%27s_Interrupt_List">Ralf Brown's Interrupt List na Wikipedia</a></p>
+<p>(2) <a href="https://en.wikipedia.org/wiki/Ralf_Brown%27s_Interrupt_List">Ralf Brown's Interrupt List na Wikipedia</a></p>
 
 </section><hr/>
 
@@ -143,7 +143,7 @@ role="navigation" aria-label="main navigation">
 
 <p>O primeiro grande passo é admitir que acertar cronogramas é como acertar na loteria: milhões de pessoas tentam toda semana e uns poucos gatos pingados conseguem de vez em quando. E ainda assim por acaso. O importante nessa analogia é perceber que, independente de ser difícil de acertar, isso não impede as pessoas de tentar. Veja você, elas (normalmente) não jogam 1, 2, 3, 4, 5, 6. Por quê? Porque elas tentam jogar no que acreditam ser uma combinação mais provável. E antes que um sábio chinês diga que a chance de sair a seqüência 1, 2, 3, 4, 5, 6 é tão provável quanto qualquer outra, explico que a analogia aqui é psicológica, não matemática. As pessoas tentam acertar, por mais irracional que isso pareça. A mesma filosofia deve ser seguida para cronogramas. Não chute valores que estão dentro da sua zona de conforto, mas tente de fato chegar o mais próximo possível da realidade. E, quem sabe um dia, você não é sorteado.</p>
 
-<p>A segunda regra reza que o tempo estimado vira tempo mínimo. Você fará uma tarefa em uma hora. Mas, diabos, você não sabe disso antes de fazer e coloca no cronograma três horas. Quanto tempo você vai levar agora? Três horas. Não que você não consiga em menos tempo, mas, ao "alargar" a janela de tempo para três horas, seu ritmo irá seguir essa premissa e será mais lento. Há uma explicação psicológica para isso chamada Lei de Parkinson <a href="posts.html?q=1">1</a>. Obviamente que o inverso não é verdadeiro. Quer dizer, você não vai terminar uma tarefa de uma hora em dez minutos se colocar dez minutos na sua tabela mágica. Isso, mais uma vez, não é matemática: é psicologia.</p>
+<p>A segunda regra reza que o tempo estimado vira tempo mínimo. Você fará uma tarefa em uma hora. Mas, diabos, você não sabe disso antes de fazer e coloca no cronograma três horas. Quanto tempo você vai levar agora? Três horas. Não que você não consiga em menos tempo, mas, ao "alargar" a janela de tempo para três horas, seu ritmo irá seguir essa premissa e será mais lento. Há uma explicação psicológica para isso chamada Lei de Parkinson (1). Obviamente que o inverso não é verdadeiro. Quer dizer, você não vai terminar uma tarefa de uma hora em dez minutos se colocar dez minutos na sua tabela mágica. Isso, mais uma vez, não é matemática: é psicologia.</p>
 
 <blockquote>A mesma analogia absurda serve para valores muito altos. Se estimar três meses para uma tarefa de uma hora, terá três meses para procurar um emprego novo, e não para terminar a tarefa.</blockquote>
 <p>A terceira regra diz sobre o tamanho das tarefas: as menores são mais exatas. Este é o velho ditado de dividir para conquistar. Afinal, é muito melhor estimar o tempo para fazer uma nova função do que estimar o tempo total para a nova versão do produto. Portanto, trate de dividir o seu elefante. O limite é a partir do momento em que se sentir confortável para prever o tempo necessário a ser gasto em uma subtarefa. É muito simples ilustrar e entender esse conceito com código. Voltando ao caso da função, digamos que você consiga terminar a bendita função em exata uma hora. Você é bom, hein?</p>

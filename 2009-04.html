@@ -127,7 +127,7 @@ role="navigation" aria-label="main navigation">
 </pre>
 <p>Peraí, o mesmo contador? Isso pode gerar problemas. Se duas threads tentarem incrementar o mesmo contador ao mesmo tempo, quem garante que elas não irão incrementar o mesmo valor? Bom, se você é bom observador já deve ter reparado que na execução acima ocorreu exatamente isso, com mais de uma thread incrementando o contador com o mesmo valor.</p>
 
-<p>Para forçar isso acontecer mais rápido e de maneira mais gritante podemos fazer a thread ir para o final da fila antes de incrementarmos e após pegarmos o valor atual do contador. Note que nesses testes a saída muda completamente dependendo de quantos processadores sua máquina tem. O resultado às vezes pode ser bem bizarro do que o visto nesse artigo. <a href="posts.html?q=1">1</a></p>
+<p>Para forçar isso acontecer mais rápido e de maneira mais gritante podemos fazer a thread ir para o final da fila antes de incrementarmos e após pegarmos o valor atual do contador. Note que nesses testes a saída muda completamente dependendo de quantos processadores sua máquina tem. O resultado às vezes pode ser bem bizarro do que o visto nesse artigo. (1)</p>
 
 <pre>
    increment() {
@@ -212,7 +212,7 @@ role="navigation" aria-label="main navigation">
 </pre>
 <p>Esse wait do fluxo, ou seja, deixar a próxima thread aguardando a que chegou primeiro incrementar, pode ser obtido se utilizarmos um mecanismo de acesso exclusivo fornecido pelo sistema operacional. Uma outra história para contar, que chamarei de "A sala da fila das threads".</p>
 
-<p><a href="posts.html?q=1">1</a> Eu mesmo em meus testes não pude usar sleep passando zero como o tempo para dormir porque meu número de processadores não permite que eu faça esse experimento, já que sempre vão existir processadores dispostos a reprocessar a thread que acabou de ir para o final de sua fila.</p>
+<p>(1) Eu mesmo em meus testes não pude usar sleep passando zero como o tempo para dormir porque meu número de processadores não permite que eu faça esse experimento, já que sempre vão existir processadores dispostos a reprocessar a thread que acabou de ir para o final de sua fila.</p>
 
 </section><hr/>
 
