@@ -199,7 +199,7 @@ role="navigation" aria-label="main navigation">
 <pre>
    
 </pre>
-<p>  * Explicando a sopa de letrinhas da programação C/C++ para Windows: WTL</p>
+<p>  * [Explicando a sopa de letrinhas da programação C/C++ para Windows: WTL]</p>
 
 <p>  * <a href="http://www.codeproject.com/KB/wtl/wtl4mfc1.aspx">WTL for MFC Programmers</a></p>
 
@@ -237,7 +237,7 @@ role="navigation" aria-label="main navigation">
 <p class="title"><a href="2008-10.html#como_funciona_o_psexec">#</a> Como funciona o PsExec</p>
 <span class="title-heading">Caloni, 2008-10-29 <a href="2008-10.html#a_alca_dentro_do_fio_gerou_um_bloqueio_da_morte">&lt;</a><a href="computer.html">computer</a><a href="2008-12.html#basico_do_basico_ponteiros">&gt;</a><a href="2008-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_como_funciona_o_psexec')"><sup>[copy]</sup></a></span>
 
-<p>Semana passada precisei reproduzir o comportamento da ferramenta PsExec em um projeto, o que me fez sentir alguma nostalgia dos tempos em que eu fazia engenharia reversa todo dia. Este breve relato (espero) reproduz os passos que segui para descobrir o que esse programa tão útil quanto perigoso faz.</p>
+<p>Semana passada precisei reproduzir o comportamento da ferramenta PsExec em um projeto, o que me fez sentir alguma nostalgia dos tempos em que eu fazia [engenharia reversa] todo dia. Este breve relato (espero) reproduz os passos que segui para descobrir o que esse programa tão útil quanto perigoso faz.</p>
 
 <h4>Dados conhecidos</h4>
 
@@ -262,7 +262,7 @@ role="navigation" aria-label="main navigation">
 
 <h4>Primeiro passo: reproduzir o comportamento analisado e coletar pistas</h4>
 
-<p>Já fizemos isso logo acima. Se trata apenas de observar o programa funcionando. Ao mesmo tempo em que entendemos seu _modus operandi_ coletamos pistas sobre suas entranhas. No caso do PsExec, que faz coisas além-mar, como redirecionar os _pipes_ de entrada/saída de um programa console, iremos checar a existência de algum serviço novo na máquina-alvo e arquivos novos que foram copiados, além de opcionalmente dar uma olhada no registro. Ferramentas da própria SysInternals como Process Explorer e Process Monitor também são úteis nessa análise inicial.</p>
+<p>Já fizemos isso logo acima. Se trata apenas de observar o programa funcionando. Ao mesmo tempo em que entendemos seu _modus operandi_ coletamos pistas sobre suas entranhas. No caso do PsExec, que faz coisas além-mar, como redirecionar os _pipes_ de entrada/saída de um programa console, iremos checar a existência de algum serviço novo na máquina-alvo e arquivos novos que foram copiados, além de opcionalmente dar uma olhada no registro. Ferramentas da própria SysInternals como [Process Explorer] e [Process Monitor] também são úteis nessa análise inicial.</p>
 
 <img src="img/como_funciona_o_psexec_lCf4KiT.png"/>
 
@@ -276,7 +276,7 @@ role="navigation" aria-label="main navigation">
 
 <h4>Segundo passo: acompanhar o processo lentamente</h4>
 
-<p>Nessa segunda fase, podemos refazer o comportamento esperado inúmeras vezes, coletando dados e pensando a partir dos dados obtidos. Para esse caso,  como quase todos que analiso, vou usar o nosso amigo WinDbg. Para isso, como tenho sempre minhas ferramentas disponíveis no ambiente onde trabalho, basta digitar "windbg" antes do comando anterior e **dar uma olhada em algumas APIs-chave**, como a criação/abertura de arquivos e a criação de serviços. Note que é importante fazer isso em um **escopo limitado** para não perdermos horas de análise. Descobrir coisas como, por exemplo, que as ações do PsExec só começam a ser executadas após a digitação da senha do usuário, pode ajudar, pois daí só começo minha análise a partir desse ponto.</p>
+<p>Nessa segunda fase, podemos refazer o comportamento esperado inúmeras vezes, coletando dados e pensando a partir dos dados obtidos. Para esse caso,  como quase todos que analiso, vou usar o nosso amigo [WinDbg]. Para isso, como tenho sempre minhas ferramentas disponíveis no ambiente onde trabalho, basta digitar "windbg" antes do comando anterior e **dar uma olhada em algumas APIs-chave**, como a criação/abertura de arquivos e a criação de serviços. Note que é importante fazer isso em um **escopo limitado** para não perdermos horas de análise. Descobrir coisas como, por exemplo, que as ações do PsExec só começam a ser executadas após a digitação da senha do usuário, pode ajudar, pois daí só começo minha análise a partir desse ponto.</p>
 
 <pre>
    
