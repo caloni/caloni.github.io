@@ -78,7 +78,7 @@ role="navigation" aria-label="main navigation">
 
 <p>Mas a vida pode ser complicada às vezes. O WinDbg em versões antigas até rodava em plataforma 9x (95/98/ME), mas agora já não roda mais. Felizmente eu mantenho uma versão das antigonas, só para garantir. Só que ele rodava apenas para depurar em user mode, o que de qualquer forma não seria útil nesse caso.</p>
 
-<p>Existe uma ferramenta de depuração no DDK do Windows 98 chamada WDEB386. Sua existência está documentada no próprio DKK. Funciona similarmente ao WinDbg, ou seja, o depurador em parte roda na máquina depurada e em parte na máquina que depura, e ambas são conectadas por um cabo serial. Teoricamente essa ferramenta serviria para depurar o kernel dos sistemas 9x, mas na maioria das vezes tive problemas com ela. Não que nunca tenha funcionado. Até já consegui essa proeza uma vez depois de muito ler a documentação e resolver uma série de problemas que não estavam documentados. Se você leitor quiser tentar a sorte, vá em frente.</p>
+<p>Existe uma ferramenta de depuração no DDK do Windows 98 chamada WDEB386. Sua existência está documentada no próprio DDK. Funciona similarmente ao WinDbg, ou seja, o depurador em parte roda na máquina depurada e em parte na máquina que depura, e ambas são conectadas por um cabo serial. Teoricamente essa ferramenta serviria para depurar o kernel dos sistemas 9x, mas na maioria das vezes tive problemas com ela. Não que nunca tenha funcionado. Até já consegui essa proeza uma vez depois de muito ler a documentação e resolver uma série de problemas que não estavam documentados. Se você leitor quiser tentar a sorte, vá em frente.</p>
 
 <p>Para piorar as coisas, existe mais um último problema: a máquina não está ao alcance de um cabo serial. Para esse último caso talvez fosse a hora de chamar um produto não-Microsoft que dá conta do recado muito bem: o SoftICE.</p>
 
@@ -305,7 +305,7 @@ role="navigation" aria-label="main navigation">
    sz = sizeof( (new FEEDER_RECORD_HEADER)-&gt;MessageID ); // this...
    mov dword ptr [sz], 0Fh ; ... is translated into this
 </pre>
-<p>Another way to do the same thing (for those who can't bear the use of operator new delete, seeing the code as a memory leak):</p>
+<p>Another way to do the same thing (for those who can't bear the use of operator new without a delete, seeing the code as a memory leak):</p>
 
 <pre>
    sz = sizeof( ((FEEDER_RECORD_HEADER*)0)-&gt;MessageID ); // this...
@@ -419,7 +419,7 @@ role="navigation" aria-label="main navigation">
 
 <p>O preço pago por essa proteção fica na visibilidade e compreensão do código-fonte comprometidos pelo uso da técnica. A programação fica baseada em uma máquina de estados e as funções ficam limitadas a algum tipo de padronização no comportamento. Quando mais granular for o pseudoscript, ou seja, quanto menores forem os blocos de código contido nas minifunções, mais difícil de entender o código será.</p>
 
-<p>Fiz um código de exemplo que recebe entrada por um prompt de comandos e mapeia a primeira palavra digitada para o índice de uma função que deve ser chamada. O resto da linha digitada é passado como parâmetro para essa função. A thread de interpretação lê a entrada do usuário e escreve em uma variável-string global, ao mesmo tempo que a thread de execução espera essa string ser preenchida para executar a ação. </p>
+<p>Fiz um código de exemplo que recebe entrada por um prompt de comandos (update: perdi esse código) e mapeia a primeira palavra digitada para o índice de uma função que deve ser chamada. O resto da linha digitada é passado como parâmetro para essa função. A thread de interpretação lê a entrada do usuário e escreve em uma variável-string global, ao mesmo tempo que a thread de execução espera essa string ser preenchida para executar a ação. </p>
 
 <p>Foi usado o pool dessa variável para o código ficar mais simples, mas o ideal seria algum tipo de sincronismo, como eventos, por exemplo.</p>
 
@@ -437,7 +437,7 @@ role="navigation" aria-label="main navigation">
 
 <p>A <a href="http://gcc.gnu.org/gcc-4.3/cxx0x_status.html">nova versão do GCC</a> implementa em caráter de teste algumas novas características da nova versão da linguagem C++, que será lançada ainda nesta década (provavelmente em 2009). As novas funcionalidades são empolgantes e já fazem parte do imaginário dos programadores C++ já há algum tempo.</p>
 
-<p>Atualmente temos duas maneiras de fazer asserções: usando a função assert (assert.h) ou utilizando a diretiva do pré-processador #error. Nenhum desses dois serve para emplates Para eles deverá ser definida a nova palavra-chave static_assert, que irá ser composta de dois parâmetros:</p>
+<p>Atualmente temos duas maneiras de fazer asserções: usando a função assert (assert.h) ou utilizando a diretiva do pré-processador #error. Nenhum desses dois serve para templates Para eles deverá ser definida a nova palavra-chave static_assert, que irá ser composta de dois parâmetros:</p>
 
 <pre>
    static_assert( expressão-constante, literal-em-cadeia );
