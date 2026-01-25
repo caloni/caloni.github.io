@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Jornal do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Jornal do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/journal/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/journal/index.xml" rel="feed" type="application/rss+xml" title="Jornal do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/journal/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/journal/css/jquery-ui.css"/>
+<script src="/journal/js/jquery-1.12.4.js"></script>
+<script src="/journal/js/jquery-ui.js"></script>
+<script src="/journal/js/copy_clipboard.js"></script>
+<script>
+var quick_search_posts = [ 
+ ]; 
+</script>
+<script src="/journal/js/quick_search.js"></script>
+<script src="/journal/js/list.js"></script>
+<link rel="icon" href="/journal/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="months.html">
+<div class="is-4"><b>Jornal do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<ul style="list-style: none;">
+
+<li><small><a href="2008-08.html#antidebugging_using_the_debugport">Antidebugging using the DebugPort</a></small></li>
+<li><small><a href="2008-08.html#perdao">Perdão</a></small></li>
+
+<li><small><a href="2008-08.html#antidebugging_during_the_process_attach">Antidebugging during the process attach</a></small></li>
+
+<li><small><a href="2008-08.html#aprendizado_em_kernel_mode">Aprendizado em kernel mode</a></small></li>
+
+<li><small><a href="2008-08.html#guia_para_iniciantes_no_driverentry">Guia para iniciantes no DriverEntry</a></small></li>
+
+<li><small><a href="2008-08.html#quando_o_navegador_nao_quer_largar_um_arquivo">Quando o navegador não quer largar um arquivo</a></small></li>
+
+<li><small><a href="2008-08.html#duas_pequenas_dicas_para_programar_no_caos">Duas pequenas dicas para programar no caos</a></small></li>
+
+<li><small><a href="2008-08.html#os_processosfantasma">Os processos-fantasma</a></small></li>
+
+<li><small><a href="2008-08.html#processleaker">ProcessLeaker</a></small></li>
+</ul>
+
+
+<span id="antidebugging_using_the_debugport" title="Antidebugging using the DebugPort"/></span>
+<section id="section_antidebugging_using_the_debugport">
+<p class="title"><a href="2008-08.html#antidebugging_using_the_debugport">#</a> Antidebugging using the DebugPort</p>
+<span class="title-heading">Caloni, 2008-08-01 <a href="2008-07.html#antidebugging_using_exceptions_part_two">&lt;</a><a href="computer.html">computer</a><a href="2008-08.html#antidebugging_during_the_process_attach">&gt;</a> <a href="2008-07.html#antidebugging_using_exceptions_part_two">&lt;</a><a href="projects.html">projects</a><a href="2008-08.html#antidebugging_during_the_process_attach">&gt;</a> <a href="2008-07.html#antidebugging_using_exceptions_part_two">&lt;</a><a href="english.html">english</a><a href="2008-08.html#antidebugging_during_the_process_attach">&gt;</a> <a href="2008-07.html#antidebugging_using_exceptions_part_two">&lt;</a><a href="antidebug.html">antidebug</a><a href="2008-08.html#antidebugging_during_the_process_attach">&gt;</a> <a href="2008-07.html#antidebugging_using_exceptions_part_two">&lt;</a><a href="draft.html">draft</a><a href="2008-08.html#antidebugging_during_the_process_attach">&gt;</a><a href="2008-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_antidebugging_using_the_debugport')"><sup>[copy]</sup></a></span>
+
+<p>When a debugger starts a process to be debugged or, the article case, connects to a already created process, the communication between these processes is made through an internal resource inside Windows called LPC (Local Procedure Call). The system creates a "magic" communication port for debugging and the debugging events pass throw it.</p>
+
+<p>Among these events we can tell the most frequent:</p>
+
+<ul><li>Activated breakpoints</li>
+<li>Thrown exceptions</li>
+<li>Threads creation/termination</li>
+<li>DLLs load/unload</li>
+<li>Process exit</li></ul>
+<p>In the case of connecting into a existent process, the API DebugActiveProcess is called. Since this call, if successful, the caller program is free now to call the API DebugActiveProcess, looking for debugging events. The main loop for a debugger is, so, pretty simple:</p>
+
+<pre>
+void DebugLoop()
+{
+    bool exitLoop = false;
+    while( ! exitLoop )
+    {
+      DEBUG_EVENT debugEvt;
+      // Wait for some debug event.
+      WaitForDebugEvent(&amp;debugEvt, INFINITE);
+      // Let us see what it is about.
+      switch( debugEvt.dwDebugEventCode )
+      {
+        // This one...
+        // That one...
+        // Process is going out. We get out the loop and go away.
+        case EXIT_PROCESS_DEBUG_EVENT:
+        exitLoop = true;
+        break;
+      }
+      // We need to unfreeze the thread who sent the debug event.
+      // Otherwise, it stays frozen forever!
+      ContinueDebugEvent(debugEvt.dwProcessId, debugEvt.dwThreadId, DBG_EXCEPTION_NOT_HANDLED);
+    }
+} 
+</pre>
+<p>The interesting detail about this communication process is that a program can be debugged actively only for ONE debugger. In other words, while there's a process A debugging process B, no one besides A can debug and break B.Using this principle, we can imagine a debugging protection based on this exclusivity, creating a protector process that connects to the protected process and "debugs" it:</p>
+
+<pre>
+/** @brief Antidebug protection based on DebugPort aquisition.
+* @author Wanderley Caloni (wanderley@caloni.com.br)
+* @date 2007-08
+*/
+#include &lt;windows.h&gt;
+/* Every debugger needs a debugging loop. In this loop it catches
+debugging events sent by the operating system.
+*/
+DWORD DebugLoop()
+{
+    DWORD ret = ERROR_SUCCESS;
+    bool exitLoop = false;
+    while( ! exitLoop )
+    {
+      DEBUG_EVENT debugEvt;
+      WaitForDebugEvent(&amp;debugEvt, INFINITE);
+      switch( debugEvt.dwDebugEventCode )
+      {
+        // Process going out. We get out the loop and leave.
+        case EXIT_PROCESS_DEBUG_EVENT:
+        exitLoop = true;
+        break;
+      }
+      // Necessary, since the current thread is frozen.
+      ContinueDebugEvent(debugEvt.dwProcessId, debugEvt.dwThreadId, DBG_EXCEPTION_NOT_HANDLED);
+    }
+    return ret;
+}
+/* Attachs to the protected process againt debugging. Actually, we protect it
+againt debugging being its debugger.
+*/
+DWORD AntiAttach(DWORD pid)
+{
+    DWORD ret = ERROR_SUCCESS;
+    if( pid )
+    {
+      BOOL dbgActProc;
+      dbgActProc = DebugActiveProcess(pid);
+      if( dbgActProc )
+        DebugLoop();
+      else
+        ret = GetLastError();
+    }
+    else
+      ret = ERROR_INVALID_HANDLE;
+    return ret;
+}
+/* In the beginning, God said: 'int main!'
+*/
+int main(int argc, char* argv[])
+{
+    DWORD ret = ERROR_SUCCESS;
+    if( argc &gt; 1 )
+    {
+      DWORD pid = atoi(argv[1]);
+      ret = AntiAttach(pid);
+    }
+    return (int) ret;
+} 
+</pre>
+<p>The needed steps to test the code above are:</p>
+
+<p>  1. Compile the code</p>
+
+<p>  2. Run notepad (or another victim)</p>
+
+<p>  3. Get its PID (Process ID)</p>
+
+<p>  4. Run the protector process passing the notepad PID as the argument</p>
+
+<p>  5. Try to attach to the notepad using a debugger (e.g. Visual C++)</p>
+
+<p>After the attach process, the debug port is occupied, and the communication between the debugger and debuggee is made throug LPC. Bellow we can see a little illustration of how things work:</p>
+
+<img src="/journal/img/antidebugging_using_the_debugport_debug_port2.gif"/>
+
+<p>Basically the process stay receiving debugging events (through the LPC message queue) until the final event, the process exit. Notice that if someone try to terminate the protector process the debuggee process will be terminated, too.</p>
+
+<h4>Flawless? OK...</h4>
+
+<p>The strength in this protection is that it doesn't affect the code understanding and readability. In fact the code that protects is in another process. The weakness, I would say, it is your visibility. Everyone that will try to attack the solution will se two processes being created, what gives him/her something to think about...</p>
+
+<p>That's why thinking about the implementation is vital. Particularly the main point to be thought is the debugger/debuggee union. As much as better these two pieces were packed, harder to the attacker will be to separate them. An additional idea is to use the same technique in the opposite way, in other words, the debuggee process to attach into the debugger.</p>
+
+<p>This time I'm not going to say that there's a easy solution. Maybe because I haven't though enough about the problem. Ideas?</p>
+
+</section><hr/>
+
+<span id="perdao" title="Perdão"/></span>
+<section id="section_perdao">
+<p class="title"><a href="2008-08.html#perdao">#</a> Perdão</p>
+<span class="title-heading">Caloni, 2008-08-01 <a href="2008-07.html#corpo">&lt;</a><a href="quotes.html">quotes</a><a href="2008-09.html#serenidade">&gt;</a> <a href="2008-07.html#corpo">&lt;</a><a href="self.html">self</a><a href="2008-09.html#serenidade">&gt;</a> <a href="2008-07.html#corpo">&lt;</a><a href="now.html">now</a><a href="2008-09.html#serenidade">&gt;</a><a href="2008-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_perdao')"><sup>[copy]</sup></a></span>
+
+<blockquote>No momento em que você perdoar, terá retomado o poder que estava na mente.</blockquote>
+<blockquote>Perdoe a si mesmo por não estar em paz.</blockquote>
+<blockquote>Tolle, Eckhart (O Poder do Agora, 1997)</blockquote>
+</section><hr/>
+
+
+<span id="antidebugging_during_the_process_attach" title="Antidebugging during the process attach"/></span>
+<section id="section_antidebugging_during_the_process_attach">
+<p class="title"><a href="2008-08.html#antidebugging_during_the_process_attach">#</a> Antidebugging during the process attach</p>
+<span class="title-heading">Caloni, 2008-08-05 <a href="2008-08.html#antidebugging_using_the_debugport">&lt;</a><a href="computer.html">computer</a><a href="2008-08.html#guia_para_iniciantes_no_driverentry">&gt;</a> <a href="2008-08.html#antidebugging_using_the_debugport">&lt;</a><a href="projects.html">projects</a><a href="2008-11.html#houaissparababylon_versao_beta">&gt;</a> <a href="2008-08.html#antidebugging_using_the_debugport">&lt;</a><a href="english.html">english</a><a href="2009-07.html#static_polymorphism">&gt;</a> <a href="2008-08.html#antidebugging_using_the_debugport">&lt;</a><a href="antidebug.html">antidebug</a><a href="2015-07.html#tecnicas_antidebugging_no_tdc_2015">&gt;</a> <a href="2008-08.html#antidebugging_using_the_debugport">&lt;</a><a href="draft.html">draft</a><a href="2008-08.html#quando_o_navegador_nao_quer_largar_um_arquivo">&gt;</a><a href="2008-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_antidebugging_during_the_process_attach')"><sup>[copy]</sup></a></span>
+
+<p>Today was a great day for reverse engineering and protection analysis. I've found two great programs to to these things: a API call monitor (update: does not exist anymore) and a COM call monitor (update: either). Besides that, in the first program site - from a enthusiastic of the good for all Win32 Assembly - I've found the source code for one more antidebugging technique, what bring us back to our series of antidebugging techniques.</p>
+
+<h4>The antiattaching technique</h4>
+
+<p>The purpose of this protection is to detect if some debugger tries to attach into our running process. The attach to process operation is pretty common in all known debugger, as WinDbg and Visual Studio. Different from the DebugPort protection, this solution avoids the attach action from the debuggee program. In this case the protection can make choices about what to do on the event of attach (terminate the process, send an e-mail, etc).</p>
+
+<p>The code I've found does nothing more than to make use of the attach process function that's always called: the ntdll!DbgUiRemoteBreakin. Being always called, we can just to put our code there, what is relatively easy to do:</p>
+
+<pre>
+#include &lt;windows.h&gt;
+#include &lt;iostream&gt;
+#include &lt;assert.h&gt;
+using namespace std;
+/** This function is triggered when a debugger try to attach into our process.
+*/
+void AntiAttachAbort()
+{
+    // this is a test application, remember?
+    MessageBox(NULL, &quot;Espertinho, hein?&quot;, &quot;AntiAttachDetector&quot;, MB_OK | MB_ICONERROR);
+    // this is the end
+    TerminateProcess(GetCurrentProcess(), -1);
+}
+/** This function installs  a trigger that is activated when a debugger try to attach.
+@see AntiAttachAbort.
+*/
+void InstallAntiAttach()
+{
+    PVOID attachBreak = GetProcAddress(
+      GetModuleHandle(&quot;ntdll&quot;), // this dll is ALWAYS loaded
+      &quot;DbgUiRemoteBreakin&quot;); // this function is ALWAYS called on the attach event
+    assert(attachBreak); // attachBreak NEVER can be null
+    // opcodes to run a jump to the function AntiAttachAbort
+    BYTE jmpToAntiAttachAbort[] =
+    { 0xB8, 0xCC, 0xCC, 0xCC, 0xCC,   // mov eax, 0xCCCCCCCC
+    0xFF, 0xE0 };                     // jmp eax
+    // we change 0xCCCCCCCC using a more useful address
+    *reinterpret_cast&lt;PVOID*&gt;(&amp;jmpToAntiAttachAbort[1]) = AntiAttachAbort;
+    DWORD oldProtect = 0;
+    if( VirtualProtect(attachBreak, sizeof(jmpToAntiAttachAbort), 
+      PAGE_EXECUTE_READWRITE, &amp;oldProtect) )
+    {
+      // if we can change the code page protection we put a jump to our code
+      CopyMemory(attachBreak, 
+        jmpToAntiAttachAbort, sizeof(jmpToAntiAttachAbort));
+      // restore old protection
+      VirtualProtect(attachBreak, sizeof(jmpToAntiAttachAbort), 
+        oldProtect, &amp;oldProtect);
+    }
+}
+/** In the beginning, God said: 'int main!'
+*/
+int main()
+{
+    InstallAntiAttach();
+    cout &lt;&lt; &quot;Try to attach, if you can...&quot;;
+    cin.get();
+} 
+</pre>
+<p>To compile the code above, just call the compiler and linker normally. Obs.: We need the user32.lib in order to call MessageBox API:</p>
+
+<pre>
+   cl /c antiattach.cpp
+   link antiattach.obj user32.lib
+   
+   antiattach.exe
+   Try to attach, if you can...
+</pre>
+<p>After the program has been running, every try to attach will show a detection message and program termination.</p>
+
+<pre>
+   windbg -pn antiattach.exe
+</pre>
+<img src="/journal/img/antidebugging_during_the_process_attach_espertinho.png"/>
+
+<h4>Code peculiarities</h4>
+
+<p>Yes, I know. Sometimes we have to use "brute force codding" and make obscure codes, like this:</p>
+
+<pre>
+// opcodes to run a jump to the function AntiAttachAbort
+BYTE jmpToAntiAttachAbort[] =
+{ 0xB8, 0xCC, 0xCC, 0xCC, 0xCC,   // mov eax, 0xCCCCCCCC
+0xFF, 0xE0 };                     // jmp eax
+// we change 0xCCCCCCCC using a more useful address
+*reinterpret_cast&lt;PVOID*&gt;(&amp;jmpToAntiAttachAbort[1]) = AntiAttachAbort; 
+</pre>
+<p>There are a lot of ways to do the same thing. The example above is what is normally called in the crackers community as a shellcode, what is a pretty name for "byte array that is really the assembly code that does interesting things". Shellcode for short =).</p>
+
+<p>Alternative ways to do this are:</p>
+
+<p>  1. To declare a naked function in Visual Studio, to create an empty function just after, do some math to calculate the size of the function to be copied into another place (aware of Edit and Continue option).</p>
+
+<p>  2. To create a structure whose members are masked opcodes. This way, is possible in the constructor to receive the values and use it as a "mobile function".</p>
+
+<p>Both have pros and cons. The cons are related with the environment dependency. In the first alternative is necessary to configure the project to disable "Edit and Continue" option, whilst in the second one is necessary to align 1 byte the structure.</p>
+
+<p>Anyway, given the implementation, the main advantage is to isolate the code in only two functions - AntiAttachAbort and InstallAntiAttach - an API local hook (in the same process) that should never be called in production code. Besides, there are C++ ways to do such thing like "live assembly". But this is matter for other future and exciting articles.</p>
+
+</section><hr/>
+
+
+<span id="aprendizado_em_kernel_mode" title="Aprendizado em kernel mode"/></span>
+<section id="section_aprendizado_em_kernel_mode">
+<p class="title"><a href="2008-08.html#aprendizado_em_kernel_mode">#</a> Aprendizado em kernel mode</p>
+<span class="title-heading">Caloni, 2008-08-07<a href="2008-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_aprendizado_em_kernel_mode')"><sup>[copy]</sup></a></span>
+
+<p>Hoje terminei minha primeira leitura de Memory Dump Analysis Vol. 1, e qual não foi a minha surpresa ao encontrar entre os últimos posts justamente o que eu estava precisando: um guia de livros que se deve ler para começar a programar em kernel mode.</p>
+
+<p>O melhor de tudo nem é a lista de livros, cujos títulos já estão batidos na minha cabeça de tanto meu amigo Ferdinando comentar a respeito. A grande sacada foi ele ter feito um roteiro no estilo "leia esse livro primeiro, depois comece com esse e ao mesmo tempo acompanhe aquele, sempre atento ao Windows Internals". As coisas não ficam mais fáceis (ler 8 livros, todos com média de 700 páginas), mas pelo menos ficam mais organizadas, tem começo, meio e fim (será?).</p>
+
+<p>Claro, esse é o método Dmitry Vostokov, o que não quer dizer que funciona com qualquer um. No entanto, gosto de suas buscas de padrão, analogias de dumps com o mundo real, abstrações filosóficas e, principalmente, as explicações das telas azuis em UML. Se entendo facilmente essa forma de explicar, é possível que esse método facilite um poucos as coisas não-tão-fáceis de fazer para mim.</p>
+
+<p>Agora só falta começar =).</p>
+
+</section><hr/>
+
+
+<span id="guia_para_iniciantes_no_driverentry" title="Guia para iniciantes no DriverEntry"/></span>
+<section id="section_guia_para_iniciantes_no_driverentry">
+<p class="title"><a href="2008-08.html#guia_para_iniciantes_no_driverentry">#</a> Guia para iniciantes no DriverEntry</p>
+<span class="title-heading">Caloni, 2008-08-11 <a href="2008-08.html#antidebugging_during_the_process_attach">&lt;</a><a href="computer.html">computer</a><a href="2008-08.html#os_processosfantasma">&gt;</a><a href="2008-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_guia_para_iniciantes_no_driverentry')"><sup>[copy]</sup></a></span>
+
+<p>A mensagem anterior deixou bem claro que tenho um roteiro de leituras bem hardcore a fazer nos próximos 20 anos. Pretendo, enquanto isso, programar alguma coisinha rodando em ring0, porque nem só de teoria vive o programador-escovador-de-bits. Pensando nisso, esse fim-de-semana comecei a me aventurar nos ótimos exemplos e explicações do www.driverentry.com.br, nossa referência kernel mode tupiniquim.</p>
+
+<p>A exemplo do que Dmitry fez com os livros de drivers, acredito que a mesma coisa pode ser feita com os blogues. A maneira de esmiuçá-los vai depender, principalmente, da quantidade de material a ser estudado e das práticas necessárias para que o conhecimento entre na cabeça de uma vez por todas.</p>
+
+<p>No momento, minha prática se resume a isso:</p>
+
+<ul><li>Debug or not debug. Aqui resolvi dar uma olhada de perto nas macros e funções usadas para tracing no DDK, e descobri que, assim como a runtime do C, podemos ter mensagens formatadas no estilo do printf e vprintf, o que economiza uma porção de código repetitivo. Dessa forma pude usar minha estratégia de ter a macro LOG usada para mandar linhas de depuração na saída padrão. Ainda tenho que estudar, contudo, o uso da variável va_list em kernel.</li>
+<li>ExAllocatePool (WithoutTag). Precisei fazer alguns testes no Dependency Walker e anexar o fonte que faz a vez do GetProcAddress para drivers em meu miniprojeto do Bazaar para aprendizado de programação em kernel.</li>
+<li>Getting Started. Esse foi o artigo mais interessante de todos, pois foi a base de todo o código que ando repetindo em meus exercícios. Além desse, é vital o uso do Visual Studio no processo de desenvolvimento, pois muitas (quase todas) das funções do DDK são alienígenas para mim, assim como os seus 497 parâmetros cada.</li>
+<li>Driver plus plus. Tive que perder algum tempo codificando uma segunda versão do Useless e baixando o framework da Hollis para testar as peculiaridades do C++ em kernel mode. Não que eu vá usar alguma coisa avançada nesse estágio, mas preciso conhecer algumas limitações e alguns macetes que farão uma grande diferença no futuro, quando as linhas de código ultrapassarem 10.000.</li>
+<li>Pulei alguns tópicos que pretendo explorar quando estiver mais à vontade com alguns conceitos básicos, como a explicação de como obter o processo dono de uma IRP, a explicação do que é uma IRP (apesar de eu ter baixado e brincado com o monitor da OSR) e a aparentemente simples explanação sobre como funcionam as listas ligadas do DDK. Tudo isso virá com o tempo, e algumas coisas estarão sempre martelando na cabeça. É só dar tempo ao tempo e codificar.</li>
+<li>Nós queremos exemplos. Esse foi o artigo que mais me deu trabalho, mas que mais valeu a pena. Codifiquei tudo do zero, olhando aos poucos no código do Fernando para pegar o jeito de usar funções com nomes enormes e auto-explicativas e parâmetros com os nomes a, b, c. Também dediquei um tempinho considerável com a aplicação de user mode, para (re)aprender a depurar dos dois lados da moeda.</li></ul>
+<p>Próximos passos?</p>
+
+<p>Pelo que eu vi, no geral, acredito que aos poucos irei voltar para os tópicos que pulei, além de olhar em outros artigos que chamaram minha atenção:</p>
+
+<ul><li>Como criar um driver de boot</li>
+<li>Usando o DSF para interagir com dispositivos USB de mentirinha</li>
+<li>A continuação emocionante de nosso driver que recebe reads e writes</li>
+<li>Usar o que existe de bom e melhor para garantir a qualidade de um driver</li>
+<li>Mais alguns detalhes que começam a fazer sentido em nosso KernelEcho</li>
+<li>Criando e usando IOCTLs. Essa vai ser ótima!</li>
+<li>A necessidade inevitável de mexer com o registro do sistema</li></ul>
+<p>Tudo isso aliado aos exemplos e à teoria latente do Windows 2000 Device Driver Book (minha primeira leitura) irá dar um upgrade forçado aos meus neurônios. Espero sobreviver para contar o final da história.</p>
+
+</section><hr/>
+
+
+<span id="quando_o_navegador_nao_quer_largar_um_arquivo" title="Quando o navegador não quer largar um arquivo"/></span>
+<section id="section_quando_o_navegador_nao_quer_largar_um_arquivo">
+<p class="title"><a href="2008-08.html#quando_o_navegador_nao_quer_largar_um_arquivo">#</a> Quando o navegador não quer largar um arquivo</p>
+<span class="title-heading">Caloni, 2008-08-13 <a href="2008-08.html#antidebugging_during_the_process_attach">&lt;</a><a href="draft.html">draft</a><a href="2008-08.html#os_processosfantasma">&gt;</a><a href="2008-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_quando_o_navegador_nao_quer_largar_um_arquivo')"><sup>[copy]</sup></a></span>
+
+<p>De vez em quando gosto muito de um vídeo que estou assistindo. Gosto tanto que faço questão de guardar para assistir mais vezes depois. O problema é que o meu Firefox ou, para ser mais técnico, o plugin de vídeo que roda em cima do meu navegador, não permite isso. Ele simplesmente cria um arquivo temporário para exibir o vídeo e logo depois o apaga, utilizando uma técnica muito útil da função CreateFile, que bloqueia o acesso do arquivo temporário e apaga-o logo após o uso:</p>
+
+<pre>
+   HANDLE WINAPI CreateFile(
+     __in      LPCTSTR lpFileName,
+     __in      DWORD dwDesiredAccess,
+     __in      DWORD dwShareMode,
+     __in_opt  LPSECURITY_ATTRIBUTES lpSecurityAttributes,
+     __in      DWORD dwCreationDisposition,
+     __in      DWORD dwFlagsAndAttributes,
+     __in_opt  HANDLE hTemplateFile
+   );
+</pre>
+<h4>dwShareMode</h4>
+
+<pre>
+   Value                        Meaning
+   0                            Disables subsequent open operations on a file or device
+   0x00000000                   to request any type of access to that file or device.
+</pre>
+<h4>dwFlagsAndAttributes</h4>
+
+<pre>
+   Value                        Meaning
+   FILE_FLAG_DELETE_ON_CLOSE    The file is to be deleted immediately after all of its
+                                handles are closed, which includes the specified handle
+                                and any other open or duplicated handles.
+</pre>
+<p>Muito bem. Isso quer dizer que é possível abrir um arquivo que mais ninguém pode abrir (nem para copiar para outro arquivo), e ao mesmo tempo garante que quando ele for fechado será apagado. Isso parece uma ótima proteção de cópia não-autorizada para a maioria das pessoas.</p>
+
+<p>Infelizmente, tudo isso roda sob limites muito restritos: um navegador, rodando em user mode, usando APIs bem definidas e facilmente depuráveis.</p>
+
+<h4>De volta ao WinDbg</h4>
+
+<p>Antes de iniciar a reprodução do vídeo, e conseqüentemente a criação do arquivo temporário, podemos atachar uma instância do nosso depurador do coração e colocar um breakpoint onde interessa:</p>
+
+<pre>
+   windbg -pn firefox.exe
+   Microsoft (R) Windows Debugger Version 6.8.0004.0 X86
+   Copyright (c) Microsoft Corporation. All rights reserved.
+   
+   *** wait with pending attach
+   Symbol search path is: SRV*C:\Symbols*http://msdl.microsoft.com/download/symbols;K:\Docs\Projects
+   Executable search path is:
+   ModLoad: 00400000 00b64000   L:\FirefoxPortable\App\firefox\firefox.exe
+   ModLoad: 7c900000 7c9b4000   C:\WINDOWS\system32\ntdll.dll
+   ModLoad: 7c800000 7c8ff000   C:\WINDOWS\system32\kernel32.dll
+   ...
+   ModLoad: 77a00000 77a55000   C:\WINDOWS\System32\cscui.dll
+   ModLoad: 765d0000 765ed000   C:\WINDOWS\System32\CSCDLL.dll
+   (b58.ba8): Break instruction exception - code 80000003 (first chance)
+   eax=7ffdb000 ebx=00000001 ecx=00000002 edx=00000003 esi=00000004 edi=00000005
+   eip=7c901230 esp=021bffcc ebp=021bfff4 iopl=0         nv up ei pl zr na pe nc
+   cs=001b  ss=0023  ds=0023  es=0023  fs=0038  gs=0000             efl=00000246
+   ntdll!DbgBreakPoint:
+   7c901230 cc              int     3
+   0:017&gt; bp kernel32!CreateFileA
+   0:017&gt; bp kernel32!CreateFileW
+   0:017&gt; g
+   Breakpoint 2 hit
+   eax=00000001 ebx=00000000 ecx=05432c10 edx=0000003e esi=0532ea00 edi=00000000
+   eip=7c831f31 esp=0317fdc4 ebp=0317fde8 iopl=0         nv up ei pl nz na po nc
+   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000202
+   kernel32!CreateFileW:
+   7c810760 8bff            mov     edi,edi
+</pre>
+<p>Nesse momento podemos dar uma boa olhada nos parâmetros 4 e 6 da função para ver se trata-se realmente da proteção prevista (na verdade, prevista, nada; esse é um artigo baseado em uma experiência passada; vamos imaginar, contudo, que estamos descobrindo essas coisas como na primeira vez).</p>
+
+<pre>
+   0:000&gt; dd esp
+   0012f30c  300afc06 03f91920 c0000000 00000000
+   0012f31c  00000000 00000002 14000000 00000000
+</pre>
+<p>Como podemos ver, o modo de compartilhamento do arquivo é nenhum. Entre os flags definidos no sexto parâmetro, está o de apagar o arquivo ao fechar o handle, como pude constatar no header do SDK.</p>
+
+<p>Nesse caso, a solução mais óbvia e simples foi deixar esse bit desabilitado, não importando se o modo de compartilhamento está desativado. Tudo que temos que fazer é assistir o vídeo mais uma vez e fechar a aba do navegador. O arquivo será fechado, o compartilhamento aberto, e o arquivo, não apagado.</p>
+
+<pre>
+   0:012&gt; bp kernel32!CreateFileW &quot;ed @esp+4*6 poi(@esp+4*6) &amp; 0xfbffffff&quot;
+   breakpoint 1 redefined
+   0:012&gt; bp kernel32!CreateFileA &quot;ed @esp+4*6 poi(@esp+4*6) &amp; 0xfbffffff&quot;
+   breakpoint 0 redefined
+   0:012&gt; g
+</pre>
+<p>E agora posso voltar a armazenar meus vídeos favoritos.</p>
+
+</section><hr/>
+
+
+<span id="duas_pequenas_dicas_para_programar_no_caos" title="Duas pequenas dicas para programar no caos"/></span>
+<section id="section_duas_pequenas_dicas_para_programar_no_caos">
+<p class="title"><a href="2008-08.html#duas_pequenas_dicas_para_programar_no_caos">#</a> Duas pequenas dicas para programar no caos</p>
+<span class="title-heading">Caloni, 2008-08-15<a href="2008-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_duas_pequenas_dicas_para_programar_no_caos')"><sup>[copy]</sup></a></span>
+
+<p>Ultimamente não tenho acertado muito bem meus cronogramas, com erros que variam de um dia a uma semana. A causa desse problema, pelo que eu tenho conseguido detectar, está em dois problemas que acredito acontecer de maneira muito freqüente em um ambiente de desenvolvimento que ainda está no caos:</p>
+
+<ul><li>Mudança constante de prioridade</li>
+<li>Falta de testes básicos no software antes de mexer</li></ul>
+<p>Portanto, aí vão algumas dicas empíricas para lidar com esses detalhezinhos que são "faceizinhos de serem esquecidinhos" (by Rafael).</p>
+
+<p>Simples de dizer, não? No entanto, se o que você está fazendo é tão pequeno quanto duas horas passa a ficar um pouco mais fácil. E isso é possível se você souber fazer direito um cronograma, dividindo suas tarefas em tarefas menores, mais paupáveis e "pausáveis".</p>
+
+<p>Um exemplo real serial o de uma mudança em um projeto que envolva três componentes: uma LIB estática, um componente COM e um driver. No caso de ser necessário parar no meio do projeto, é importante que essas três partes estejam bem separadas em tarefas que alteram o código-fonte um a um, sendo a última tarefa a integração entre todos. É interessante notar que, se for bem estruturado o projeto, é possível fazer testes individuais por componente antes da integração de fato, o que torna as coisa bem menos dolorosas. A divisão seria algo incremental e possivelmente paralelizável:</p>
+
+<p>Você tem certeza que o programa está rodando como deveria, que não existem problemas paralelos e relacionados que podem prejudicar seu desempenho cronogrametal? A última versão funciona realmente como deveria funcionar? Não? Nesse caso, esqueça sua estimativa inicial: ela foi pro espaço. Quer dizer, do ponto de vista otimista, adiada para depois de serem resolvidos os problemas atuais.</p>
+
+<p>Mais uma vez, os testes individuais (chamados de unit tests) são importantes para a consistência do projeto no decorrer de sua vida. Isso aliado a um processo de build automatizado que detecte erros de funcionamento e compilação pode economizar um tempo enorme na hora de fazer uma "pequena modificaçãozinha" naquele fonte escroto.</p>
+
+<p>Em empresas onde a qualidade de software é piada, essas duas atitudes podem salvar algumas vidas e projetos no meio do caminho, apesar de parar no meio das tarefas não ser uma das melhores práticas de um desenvolvimento sério.</p>
+
+</section><hr/>
+
+
+<span id="os_processosfantasma" title="Os processos-fantasma"/></span>
+<section id="section_os_processosfantasma">
+<p class="title"><a href="2008-08.html#os_processosfantasma">#</a> Os processos-fantasma</p>
+<span class="title-heading">Caloni, 2008-08-20 <a href="2008-08.html#guia_para_iniciantes_no_driverentry">&lt;</a><a href="computer.html">computer</a><a href="2008-08.html#processleaker">&gt;</a> <a href="2008-08.html#quando_o_navegador_nao_quer_largar_um_arquivo">&lt;</a><a href="draft.html">draft</a><a href="2008-08.html#processleaker">&gt;</a><a href="2008-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_os_processosfantasma')"><sup>[copy]</sup></a></span>
+
+<p>Estava eu outro belo dia tentando achar um problema em um driver que controla criação de processos quando, por acaso, listo os processos na máquina pelo depurador de kernel, após ter dado alguns logons e logoffs, quando me vem a seguinte lista de processos do Windows Explorer:</p>
+
+<pre>
+   PROCESS 815f0da0  SessionId: 0  Cid: 0694    Peb: 7ffd8000  ParentCid: 0100
+       DirBase: 0d6e9000  ObjectTable: 00000000  HandleCount:   0.
+       Image: explorer.exe
+   
+   PROCESS 8164bda0  SessionId: 0  Cid: 03b0    Peb: 7ffdf000  ParentCid: 0100
+       DirBase: 02673000  ObjectTable: 00000000  HandleCount:   0.
+       Image: explorer.exe
+   
+   PROCESS 815f7d50  SessionId: 0  Cid: 020c    Peb: 7ffd9000  ParentCid: 0100
+       DirBase: 0bc7f000  ObjectTable: 00000000  HandleCount:   0.
+       Image: explorer.exe
+   
+   PROCESS 8164c698  SessionId: 0  Cid: 0794    Peb: 7ffde000  ParentCid: 0100
+       DirBase: 0cb08000  ObjectTable: e1a40f20  HandleCount: 279.
+       Image: explorer.exe
+</pre>
+<p>Analisando pelo Gerenciador de Tarefas, podemos detectar que o único processo de pé possui o PID (Process ID) do último elemento de nossa lista, curiosamente o único com um contador de handles diferente de zero.</p>
+
+<p>Lembrando que 1940 em hexadecimal é 0x794, exatamente o valor deixado em destaque na lista acima, e reproduzido abaixo:</p>
+
+<pre>
+   PROCESS 8164c698  SessionId: 0  Cid: 0794    Peb: 7ffde000  ParentCid: 0100
+       DirBase: 0cb08000  ObjectTable: e1a40f20  HandleCount: 279.
+       Image: explorer.exe
+</pre>
+<p>Sendo ele o único processo a rodar, a única explicação válida para as outras instâncias do explorer.exe estarem de pé seria o fato de haver algum outro processo (inclusive o sistema operacional) com um handle aberto para ele. Felizmente isso pode ser facilmente verificado pelo uso do comando !object do WinDbg, no caso abaixo com o primeiro explorer.exe da lista, utilizando-se a sua estrutura EPROCESS (em vermelho na lista acima).</p>
+
+<pre>
+   kd&gt; !object 815f0da0
+   Object: 815f0da0  Type: (817cce70) Process
+       ObjectHeader: 815f0d88 (old version)
+       HandleCount: 2  PointerCount: 3
+</pre>
+<p>Muito bem. Temos dois handles e dois ponteiros ainda abertos para o objeto processo-fantasma explorer.exe. O fato de haver um handle aberto indica que é muito provável que se trate de um outro processo rodando em user mode, já que normalmente as referências para objetos dentro do kernel são feitas com o uso de ponteiros.</p>
+
+<p>Para descobrirmos quem detém esse handle, existe o comando !handle, que pode exibir informações sobre todos os handles de um determinado tipo no processo atual. Como queremos procurar por todos os handles do tipo Process em todos os processos existentes, é necessário usá-lo em conjunto com o comando mais esperto for_each_process, que pode fazer coisas incríveis para o programador de user/kernel:</p>
+
+<pre>
+   kd&gt; !for_each_process &quot;!handle 0 1 @#Process Process&quot;
+   processor number 0, process 817cc830
+   Searching for handles of type Process
+   PROCESS 817cc830  SessionId: none  Cid: 0004    Peb: 00000000  ParentCid: 0000
+       DirBase: 00039000  ObjectTable: e1000cc0  HandleCount: 286.
+       Image: System
+   
+   Handle table at e1002000 with 286 Entries in use
+   0004: Object: 817cc830  GrantedAccess: 001f0fff
+   
+   0298: Object: 8169a958  GrantedAccess: 001f03ff
+   
+   0308: Object: 8156c880  GrantedAccess: 00000438
+   
+   067c: Object: 816744e8  GrantedAccess: 001f03ff
+   
+   processor number 0, process 81589020
+   Searching for handles of type Process
+   PROCESS 81589020  SessionId: none  Cid: 016c    Peb: 7ffd7000  ParentCid: 0004
+       DirBase: 06978000  ObjectTable: e130d688  HandleCount:  21.
+       Image: smss.exe
+   
+   Handle table at e12a5000 with 21 Entries in use
+   0038: Object: 81561128  GrantedAccess: 001f0fff
+   
+   003c: Object: 81561128  GrantedAccess: 00000400
+   
+   0050: Object: 815b2128  GrantedAccess: 001f0fff
+   
+   0054: Object: 81668020  GrantedAccess: 00000400
+   
+   processor number 0, process 81561128
+   Searching for handles of type Process
+   PROCESS 81561128  SessionId: 0  Cid: 0234    Peb: 7ffde000  ParentCid: 016c
+       DirBase: 0742d000  ObjectTable: e13e0418  HandleCount: 342.
+       Image: csrss.exe
+   
+   Handle table at e14f3000 with 342 Entries in use
+   0014: Object: 815b2128  GrantedAccess: 001f0fff
+   
+   00ec: Object: 8154e880  GrantedAccess: 001f0fff
+   
+   0100: Object: 8156c880  GrantedAccess: 001f0fff
+   
+   0130: Object: 815dc798  GrantedAccess: 001f0fff
+   
+   processor number 0, process 815b2128
+   Searching for handles of type Process
+   PROCESS 815b2128  SessionId: 0  Cid: 024c    Peb: 7ffde000  ParentCid: 016c
+       DirBase: 075b2000  ObjectTable: e13d5790  HandleCount: 448.
+       Image: winlogon.exe
+   
+   Handle table at e102b000 with 448 Entries in use
+   018c: Object: 8154e880  GrantedAccess: 001f0fff
+   
+   019c: Object: 8156c880  GrantedAccess: 001f0fff
+   
+   processor number 0, process 8154e880
+   Searching for handles of type Process
+   PROCESS 8154e880  SessionId: 0  Cid: 0290    Peb: 7ffda000  ParentCid: 024c
+       DirBase: 07908000  ObjectTable: e15fea78  HandleCount: 261.
+       Image: services.exe
+   
+   Handle table at e15cf000 with 261 Entries in use
+   029c: Object: 81668020  GrantedAccess: 001f0fff
+   
+   0330: Object: 815dc798  GrantedAccess: 001f0fff
+   ... continua por muuuuuuuito mais tempo
+</pre>
+<p>Uma simples busca pelo EPROCESS do processo-fantasma nos retorna dois processos que o estão referenciando: um svchost.exe e um outro processo com um nome muito suspeito, provavelmente feito sob encomenda para a confecção desse artigo:</p>
+
+<pre>
+   Handle table at e167b000 with 247 Entries in use
+   processor number 0, process 8169a958
+   Searching for handles of type Process
+   PROCESS 8169a958  SessionId: 0  Cid: 03f4    Peb: 7ffdb000  ParentCid: 0290
+       DirBase: 08437000  ObjectTable: e156bc38  HandleCount: 1302.
+       Image: svchost.exe
+   
+   Handle table at e19fe000 with 1302 Entries in use
+   0108: Object: 815b2128  GrantedAccess: 00000478
+   
+   0128: Object: 815b2128  GrantedAccess: 00000478
+   
+   012c: Object: 815b2128  GrantedAccess: 00100000
+   
+   015c: Object: 815b2128  GrantedAccess: 0000047a
+   
+   01f4: Object: 81615928  GrantedAccess: 00000478
+   
+   02f0: Object: 815f7d50  GrantedAccess: 00100068
+   
+   035c: Object: 8169a958  GrantedAccess: 001f0fff
+   
+   0dbc: Object: 8156c880  GrantedAccess: 00100000
+   
+   0f44: Object: 8169a958  GrantedAccess: 00000068
+   
+   1020: Object: 815f0da0  GrantedAccess: 00100068
+   
+   10dc: Object: 8169a958  GrantedAccess: 00100000
+   
+   1118: Object: 815f42f0  GrantedAccess: 00100068
+   ...
+   processor number 0, process 8164c220
+   Searching for handles of type Process
+   PROCESS 8164c220  SessionId: 0  Cid: 044c    Peb: 7ffdf000  ParentCid: 02a4
+       DirBase: 0db16000  ObjectTable: e15c66b8  HandleCount:  12.
+       Image: ProcessLeaker.exe
+   
+   Handle table at e103a000 with 12 Entries in use
+   0010: Object: 815f0da0  GrantedAccess: 00100000
+   
+   001c: Object: 815f42f0  GrantedAccess: 00100000
+   
+   0028: Object: 8164bda0  GrantedAccess: 00100000
+   
+   002c: Object: 815f7d50  GrantedAccess: 00100000
+   
+   0030: Object: 8164c698  GrantedAccess: 00100000
+</pre>
+<p>Se lembrarmos o ponteiro dos outros processos, podemos notar que ele está bloqueando todas as outras instâncias dos antigos explorer.exe, executados em outras sessões do usuário:</p>
+
+<pre>
+   PROCESS 815f0da0  SessionId: 0  Cid: 0694    Peb: 7ffd8000  ParentCid: 0100
+       DirBase: 0d6e9000  ObjectTable: 00000000  HandleCount:   0.
+       Image: explorer.exe
+   
+   PROCESS 8164bda0  SessionId: 0  Cid: 03b0    Peb: 7ffdf000  ParentCid: 0100
+       DirBase: 02673000  ObjectTable: 00000000  HandleCount:   0.
+       Image: explorer.exe
+   
+   PROCESS 815f7d50  SessionId: 0  Cid: 020c    Peb: 7ffd9000  ParentCid: 0100
+       DirBase: 0bc7f000  ObjectTable: 00000000  HandleCount:   0.
+       Image: explorer.exe
+   
+   PROCESS 8164c698  SessionId: 0  Cid: 0794    Peb: 7ffde000  ParentCid: 0100
+       DirBase: 0cb08000  ObjectTable: e1a40f20  HandleCount: 279.
+       Image: explorer.exe
+</pre>
+<p>Esse ProcessLeaker se tratava de um serviço do mesmo produto que contém de fato um leak de recurso: em um dado momento ele abre um handle para o processo explorer.exe, só que por alguns motivos obscuros ele não é fechado nunca, gerando uma lista interminável de processos-fantasma. E é lógico que ele originalmente não chama ProcessLeaker.exe =)</p>
+
+<p>Essa análise mostra duas coisas: que com um pouco de conhecimento e atitude é possível encontrar bugs em outras partes do programa, mesmo quando resolvendo outros problemas e que, nem sempre o problema está onde parece estar, que seria no nosso querido driver de controle de processos do começo da história.</p>
+
+</section><hr/>
+
+
+<span id="processleaker" title="ProcessLeaker"/></span>
+<section id="section_processleaker">
+<p class="title"><a href="2008-08.html#processleaker">#</a> ProcessLeaker</p>
+<span class="title-heading">Caloni, 2008-08-21 <a href="2008-08.html#os_processosfantasma">&lt;</a><a href="computer.html">computer</a><a href="2008-09.html#reuna_seus_comandos_mais_usados_no_windbg_com_cmdtree">&gt;</a> <a href="2008-08.html#os_processosfantasma">&lt;</a><a href="draft.html">draft</a><a href="2008-09.html#todo_programador_e_um_filosofo_em_potencial">&gt;</a><a href="2008-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_processleaker')"><sup>[copy]</sup></a></span>
+
+<p>O artigo anterior mostrava como detectar o leak de um processo gerado pela retenção e não-liberação de handles para o Windows Explorer. O problema fora causado por um serviço malcriado. No entanto, a título de demonstração, criei um pequeno programinha sem-vergonha para fazer as coisas parecerem difíceis. No entanto o programa é bem fácil:</p>
+
+<pre>
+#include &lt;windows.h&gt;
+#include &lt;stdio.h&gt;
+int main()
+{
+    DWORD pid;
+    while( scanf(&quot;%d&quot;, &amp;pid) == 1 )
+    {
+      HANDLE proc = OpenProcess(SYNCHRONIZE, FALSE, pid);
+    }
+}
+</pre>
+<p>Para usá-lo, basta abrir um Gerenciador de Tarefas com opção de exibir o PID dos processos.</p>
+
+<p>A partir daí, é só criar e matar várias instâncias do explorer.exe. Antes de matar um, digite o PID do novo processo no ProcessLeaker.</p>
+
+<p>Para listar os processos perdidos, basta usar o comando "!process 0 0" no WinDbg depurando em kernel. O resto você já sabe.</p>
+
+</section><hr/>
+
+<span style="float: left;">
+ <a href="2008-07.html">[2008-07]</a>
+ <a href="2008-09.html">[2008-09]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

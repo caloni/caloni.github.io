@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Jornal do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Jornal do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/journal/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/journal/index.xml" rel="feed" type="application/rss+xml" title="Jornal do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/journal/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/journal/css/jquery-ui.css"/>
+<script src="/journal/js/jquery-1.12.4.js"></script>
+<script src="/journal/js/jquery-ui.js"></script>
+<script src="/journal/js/copy_clipboard.js"></script>
+<script>
+var quick_search_posts = [ 
+ ]; 
+</script>
+<script src="/journal/js/quick_search.js"></script>
+<script src="/journal/js/list.js"></script>
+<link rel="icon" href="/journal/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="months.html">
+<div class="is-4"><b>Jornal do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<ul style="list-style: none;">
+
+<li><small><a href="2009-08.html#irritacao">Irritação</a></small></li>
+
+<li><small><a href="2009-08.html#adplus_no_cliente_nao_voce">AdPlus no cliente, não você!</a></small></li>
+
+<li><small><a href="2009-08.html#what_ive_been_doing_in_the_last_10_years">What I've been doing in the last 10 years</a></small></li>
+
+<li><small><a href="2009-08.html#o_boot_no_windows_sem_windows">O boot no Windows: sem Windows</a></small></li>
+</ul>
+
+
+<span id="irritacao" title="Irritação"/></span>
+<section id="section_irritacao">
+<p class="title"><a href="2009-08.html#irritacao">#</a> Irritação</p>
+<span class="title-heading">Caloni, 2009-08-01 <a href="2009-07.html#estado">&lt;</a><a href="quotes.html">quotes</a><a href="2009-09.html#transparente">&gt;</a> <a href="2009-07.html#estado">&lt;</a><a href="self.html">self</a><a href="2009-09.html#transparente">&gt;</a> <a href="2009-07.html#estado">&lt;</a><a href="now.html">now</a><a href="2009-09.html#transparente">&gt;</a><a href="2009-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_irritacao')"><sup>[copy]</sup></a></span>
+
+<blockquote>A mais leve irritação é significativa e precisa ser conhecida e observada.</blockquote>
+<blockquote>Tolle, Eckhart (O Poder do Agora, 1997)</blockquote>
+</section><hr/>
+
+
+<span id="adplus_no_cliente_nao_voce" title="AdPlus no cliente, não você!"/></span>
+<section id="section_adplus_no_cliente_nao_voce">
+<p class="title"><a href="2009-08.html#adplus_no_cliente_nao_voce">#</a> AdPlus no cliente, não você!</p>
+<span class="title-heading">Caloni, 2009-08-10 <a href="2009-07.html#name_mangling">&lt;</a><a href="computer.html">computer</a><a href="2009-08.html#o_boot_no_windows_sem_windows">&gt;</a><a href="2009-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_adplus_no_cliente_nao_voce')"><sup>[copy]</sup></a></span>
+
+<p>O AdPlus é uma das poderosas ferramentas do pacote Debugging Tools for Windows. Se trata basicamente de um script que serve para realizar múltiplas fotografias no estado de um programa em execução usando para isso os depuradores do próprio pacote. Quando alguma coisa estiver errada, principalmente um crash ou travamento, ele paralisa a execução e gera um dump final com toda a história contada desde o começo.</p>
+
+<p>Ele pode ser usado na situação mais comum: o programa trava/quebra em um cliente específico e/ou em um momento específico que pode acontecer em cinco segundos ou daqui a quinze horas. Como você não pode ficar monitorando o tempo todo a execução do programa (haja indexadores no PerfMon!) então você precisa de alguém que monitore por você. Como seres humanos costumam ter deficit de atenção muito facilmente você vai lá no cliente (ou pede para alguém ir) e executa o AdPlus, que dá conta do recado:</p>
+
+<pre>
+   AdPlus.vbs -crash -sc notepad.exe
+</pre>
+<p>Esse notepad, viu! Sempre ele!</p>
+
+<p>Bom, vamos fazer alguma brincadeira de desmontar para ver seu funcionamento. Com o notepad recém-aberto por esse comando, vamos abrir outro depurador em modo de visualização e alterar alguma chamada-chave para quebrar propositadamente. Isso deve fazer o truque:</p>
+
+<pre>
+   windbg -pv -pn notepad.exe
+   a user32!MessageBoxW
+   jmp 0
+   .detach
+   q
+</pre>
+<p>Após isso só precisamos abrir um arquivo qualquer que não existe e o notepad deve explodir. Depois desse lapso de memória o AdPlus irá gerar dois "dumpões" e um "dumpinho" para você com o primeiro comando deste post. O dumpinho é a exceção de first chance, que ele iria gerar de qualquer forma se houvesse uma exceção capturada pelo programa. É apenas um minidump. Os outros dois dumpões são o momento da exceção second chance, o que quer dizer que é antes da casa cair, e o segundo é quando a casa já caiu e o processo pegou suas coisas e já tá indo embora. A partir do second chance podemos visualizar a cagada feita pelo nosso WinDbg de passagem.</p>
+
+<p>Se você não é desenvolvedor apenas empacote essa pasta com os dumps e envie para o culpado (ou quem você gostar menos).</p>
+
+<p>Existem alguns outros parâmetros bem comuns e que podem ser muito úteis para outras situações:</p>
+
+<ul><li>Quando o programa já está rodando e não pode ser parado senão tudo está perdido (adplus -crash -pn processo.exe).</li>
+<li>Quando o programa não vai capotar, mas vai travar/parar de responder (adplus -hang -sc processo.exe).</li>
+<li>Quando existem muitos outros processos com o mesmo nome (adplus -crash -p [PID]).</li></ul>
+<p>Existem outros mais, mas apenas decorando esses e guardando a pasta do Debugging Tools no PenDrive já garante sucesso em 90% dos casos em que o cliente xingar o suporte.</p>
+
+</section><hr/>
+
+
+<span id="what_ive_been_doing_in_the_last_10_years" title="What I've been doing in the last 10 years"/></span>
+<section id="section_what_ive_been_doing_in_the_last_10_years">
+<p class="title"><a href="2009-08.html#what_ive_been_doing_in_the_last_10_years">#</a> What I've been doing in the last 10 years</p>
+<span class="title-heading">Caloni, 2009-08-17 <a href="2009-07.html#static_polymorphism">&lt;</a><a href="english.html">english</a><a href="2010-04.html#using_todolist_and_microsoft_project_together">&gt;</a><a href="2009-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_what_ive_been_doing_in_the_last_10_years')"><sup>[copy]</sup></a></span>
+
+<p>This week I dedicate myself to update my resumè and I have the brilliant idea of put into it my technical historical, what resuming is a list of things I did or was involved with during my brief ten years stay in the programming world.</p>
+
+<p>So I thought: "this could be useful to the people read me". Why not? Perhaps you got some doubt waiting to be solved and is unable to find a guy who knows something about this. Perhaps this fork guy even exists and has a blog where he could share some knowledge that is stuck in that empty programmer head.</p>
+
+<p>In this case, it follows bellow a brief description of my professional life, with the things I could remember I did since December 2000. What I haven't remember probably is not worth of.</p>
+
+<ul><li>Software and hardware inventory</li>
+<li>Clipboard and PrintScreen protection using windows hooks and global messages manipulation</li>
+<li>Driver writing system event log</li>
+<li>DeviceIoControl user/kernel communication</li>
+<li>Desktop remote control using VNC technique</li>
+<li>Remote execution tool PsExec (SysInternals) like</li>
+<li>Print control using regex (Boost) and shell hook</li>
+<li>Access policies management during user logon/logoff (register and hooks)</li>
+<li>Database migration CTree -> SQL (OLE classes)</li>
+<li>Windows authentication using custom GINA and DCOM; Credential Provider (Vista)</li>
+<li>CTree database synchronism using custom DCOM service</li>
+<li>Bootable Linux CD with bash scripts and disk cryptography tools using C language</li>
+<li>Hard disk encryption and PenDrive (USB) storage control</li>
+<li>Blue Screen analysis using memory dumps and WinDbg live (Gflags)</li>
+<li>System account execution using custom COM service</li>
+<li>MBR (Master Boot Record) customization library</li>
+<li>Blowfish/SHA-1 encryption library using C++ and 16 bits Assembly</li>
+<li>Log access driver using shared memory between user and kernel mode</li>
+<li>Kernel mode API hook for 9X and NT platforms</li>
+<li>16 bits Assembly loader; debugging using debug.com tool</li>
+<li>Executable protection using embedded domain authentication recorded inside files resources</li>
+<li>Internet Explorer 6/7 and Firefox 1/2 browsing protection using Assembly 32 bits code injection</li>
+<li>Code, strings and execution protection library (using Win32 interruptions)</li>
+<li>Centralized log generation library using shared memory and global events</li>
+<li>Internet Explorer 6/7 BHO (Broser Helper Object) and ActiveX; Mozilla/Firefox XPI plugin</li>
+<li>Projects management using Source Safe, Bazaar and Batch (Win) scripts</li>
+<li>Kernel mode debugging using SoftIce and WinDbg for NT platform, SoftIce and WDeb98 for 9X platform</li>
+<li>Trojans reverse engineering (C++, Visual Basic, Delphi) using WinDbg and IDA</li>
+<li>Diagnostic tool listing files, services, drivers, register, disk partitions, processes, etc</li>
+<li>Jobs monitoring in Win2000+ to installation and update control</li>
+<li>Application use monitoring using noninvasive and invasive windows hooks</li>
+<li>Houaiss reverse engineering and Babylon importation (dictionaries)</li>
+<li>Build control with Cruise Control .NET, symbol server with Debugging Tools</li>
+<li>Projects documentation using Doxygen and Wiki (Trac)</li>
+<li>Management interfaces using C++ Builder 5/6 and Visual C++ custom libraries</li>
+<li>E-mails analyzer using regular expressions (ATL classes)</li>
+<li>Configuration interfaces using Visual C++ (MFC /ATL/WTL)</li>
+<li>Project and tracing analysis using regular expressions (Vim and Grep)</li>
+<li>Articles development using technical blog and Code Project community.</li></ul>
+<p>Perhaps I update this list frequently. Although I guess the rightest choice would be to update the list with articles about my every day "brushing bits" life . After all, I got a technical blog already!</p>
+
+</section><hr/>
+
+
+<span id="o_boot_no_windows_sem_windows" title="O boot no Windows: sem Windows"/></span>
+<section id="section_o_boot_no_windows_sem_windows">
+<p class="title"><a href="2009-08.html#o_boot_no_windows_sem_windows">#</a> O boot no Windows: sem Windows</p>
+<span class="title-heading">Caloni, 2009-08-18 <a href="2009-08.html#adplus_no_cliente_nao_voce">&lt;</a><a href="computer.html">computer</a><a href="2009-09.html#o_boot_no_windows_prentldr">&gt;</a> <a href="2009-07.html#static_polymorphism">&lt;</a><a href="draft.html">draft</a><a href="2009-09.html#o_boot_no_windows_prentldr">&gt;</a><a href="2009-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_o_boot_no_windows_sem_windows')"><sup>[copy]</sup></a></span>
+
+<p>Desde quando o usuário liga o computador até o momento em que ele vê a barra de tarefas e aqueles fundos lindos de papel de parede existem diversas coisas sendo feitas por debaixo do pano. Essa série de artigos irá explicar essas diversas coisas, ou seja, como funciona e quais as fases do boot de uma máquina que possui Windows instalado (plataforma NT).</p>
+
+<p>O que esses artigos não vão fazer muito bem é explicar o lado do kernel mode funcionando, até porque temos artigos melhores explicando esse ponto de vista. Essa é uma abordagem mais "high level", apesar de "low enough". No entanto, espero que seja divertido. É esse o mais importante requisito em qualquer aprendizado, certo? Let's go!</p>
+
+<p>Tudo começa no hardware, que recebe um lampejo de energia que o põe em funcionamento ("levanta-te e anda!"). Isso faz com que um pequeno pedaço de software comece a rodar. Esse pedaço inicial de código é chamado de firmware, que é um meio termo entre hardware e software.</p>
+
+<p>O firmware fica gravado na placa-mãe e normalmente nós ouvimos falar dele pelo nome de BIOS, Basic Input Output System (Sistema Básico de Entrada e Saída). É nele que estão gravadas as rotinas mais básicas para fazer o hardware mais básico funcionar: CPU, memória, vídeo e teclado.</p>
+
+<p>Quando o computador é ligado, o código da BIOS realiza duas operações vitais antes de continuar:</p>
+
+<p>  1. Ver se todos os componentes de hardware estão bem;</p>
+
+<p>  2. Ver quem é o dispositivo que inicia o sistema operacional.</p>
+
+<p>Esse segundo item é o que veremos agora.</p>
+
+<p>Dependendo do computador, podemos iniciá-lo por um disco rígido (HD), por um CD-ROM, por um PenDrive USB e até pela rede. Isso está subordinado ao firmware da máquina, pois é ele que comanda, até segunda ordem, todo o hardware acoplado ao sistema.</p>
+
+<p>Vamos supor que um HD foi configurado para ser o inicializador do sistema operacional. Então será lido um pequeno espaço de 512 bytes, mais conhecido como setor, bem no início desse HD. Esse setor inicial possui código de inicialização (chamado de bootstrapping). Por isso, ele é colocado na memória inicial da máquina e executado. O lugar onde ele fica é fixo e conhecido por todos (lembre-se que estamos rodando em modo real!): 0x7C00.</p>
+
+<p>Agora o próximo passo é com esse setor inicial do disco, que chamamos de MBR: Master Boot Record (ou Registro de Boot Mestre, em tradução livre).  Ele contém código 16 bits que não pode depender de runtime nenhuma e faz o que quiser com a memória. Também possui no seu final uma tabela de quatro entradas de partições; é nessa tabela que deve estar a partição ativa, onde está o sistema operacional.</p>
+
+<p>Uma MBR padrão procura por essa partição e lê seu primeiro setor, fazendo um processo bem parecido com o que a BIOS faz inicialmente: carrega na memória o primeiro setor da partição e executa.</p>
+
+<p>Vamos supor que você tenha algum Windows moderno na partição ativa. A MBR irá carregar o primeiro pedaço de código desse sistema operacional moderno, que, até então, estará rodando em modo real desprotegido como o bom e velho MS-DOS.</p>
+
+<p>(Note que, mesmo que se trate de uma MBR escrita por terceiros, se ela se comportar como manda o figurino, irá carregar o primeiro setor da partição ativa descrita na tabela de partições. Isso é o que faz com que MBRs escritas pelo pessoal do Linux (e.g. Lilo) consiga fazer o boot de uma partição Microsoft.)</p>
+
+<p>Agora chegamos em todos os passos iniciais realizados antes de entrar em cena o S.O.:</p>
+
+<p>  1. O firmware da placa-mãe, conhecida como BIOS, verifica se o hardware básico está funcionando;</p>
+
+<p>  2. Em seguida, o mesmo código procura pelo dispositivo iniciável que irá dar início ao processo de boot;</p>
+
+<p>  3. Se for um HD, então o primeiro setor físico desse HD será carregado em memória e executado;</p>
+
+<p>  4. Esse primeiro setor se chama MBR e contém uma tabela com até quatro entradas de partições no disco;</p>
+
+<p>  5. O código da MBR procura pela partição ativa onde deve estar o sistema operacional;</p>
+
+<p>  6. Assim como a BIOS, a MBR carrega na memória o primeiro setor da partição ativa e executa;</p>
+
+<p>  7. A partir daí temos o código de um possível sistema operacional rodando.</p>
+
+<p>Todos os componentes principais desse boot podem ser visualizados de uma forma bem macro na figura abaixo.</p>
+
+<p>Alguns detalhes sórdidos que podem fazer alguma diferença para você, desenvolvedor de sistemas operacionais, um dia desses:</p>
+
+<p>  * Os setores de que estamos falando (MBR, partição ativa) normalmente devem terminar com uma assinatura de dois bytes (0x55 0xAA), o que "garante" que o código contido nesse setor é válido e pode ser executado.</p>
+
+<p>  * No caso do loader do Windows (pré-Vista), existia um arquivo no diretório-raiz da partição ativa chamado boot.ini que continha uma lista de possíveis modos de inicializar o sistema operacional, inclusive com múltiplas versões do Windows, cada um localizado em uma partição/pasta distinta (e.g., multiboot com Windows 98 e XP).</p>
+
+<p>  * O limite de quatro partições da MBR pode ser aumentado com o uso de partições estendidas; as partições estendidas apontam para um bloco de setores no HD que inicia com um setor que contém outra tabela de partições exatamente onde fica a tabela da MBR, também com quatro entradas.</p>
+
+<p>  * O endereçamento da localização das partições na MBR pode ser feito de duas maneiras distintas: por CHS ou por LBA. A versão CHS é bem antiga, mas ainda usada, e especifica uma localização no HD através de um posicionamento físico de três dimensões, com cilindro/trilha (C - Cylinder), cabeça (H - Head) e setor (S - Sector). Sim, isso é bem _old-fashionable_. Também existe o LBA (Logical Block Addressing), que é uma forma lógica de endereçar setores no disco, através de deslocamentos (_offsets_).</p>
+
+<p>Para detectar problemas de hardware, a BIOS pode ajudar com seus beeps significativos. Isso aparentemente parece ser o fim da picada, mas não é. O DQ sabe muito bem que podemos ter problemas no hardware que exigem análises mais sofisticadas (como comprimento de onda dos sinais).</p>
+
+<p>Se for detectar algum problema no sistema de boot baseado em MBR, então você tem dois caminhos:</p>
+
+<p>  * Usar o SoftICE 16 bits e depurar o carregamento da MBR pela BIOS</p>
+
+<p>  * Usar o Debug 16 bits do MS-DOS (ou similar) e depurar diretamente o código de boot da MBR, reproduzindo os passos anteriores da BIOS.</p>
+
+<p>Se o problema for durante o carregamento do próprio sistema operacional, as mensagens de erro do loader são significativas. No entanto, pode-se usar o Debug mais uma vez e depurar essa parte, logo antes, é claro, do sistema entrar em modo protegido de 32 bits, o que daí já é outra história (que pretendo contar em breve).</p>
+
+<p>  * Artigo sobre o boot no Linux</p>
+
+<p>  * <a href="http://www.csl.mtu.edu/~machoudh/blog/?p=258">Artigo sobre o boot no Linux</a></p>
+
+</section><hr/>
+
+<span style="float: left;">
+ <a href="2009-07.html">[2009-07]</a>
+ <a href="2009-09.html">[2009-09]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

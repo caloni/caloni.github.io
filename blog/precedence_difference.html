@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script>
+var quick_search_posts = [ 
+ ]; 
+</script>
+<script src="/blog/js/quick_search.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="precedence_difference" title="Precedence difference"/></span>
+<section id="section_precedence_difference">
+<p class="title">Precedence difference</p>
+<span class="title-heading">Caloni, 2007-07-10 computer ccpp english blog</span>
+
+<p>Once upon a time my old friend Kabloc wrote this little and "harmless" function in order to print the multiplication table:</p>
+
+<pre>
+   #include &lt;stdio.h&gt;
+   
+   int main()
+   {
+     int f1,f2,s=0;
+        for( f1 = 1; (f1 == 11 &amp;&amp; s != 5) ? s=5, f1=0, putchar(10) : ( f1 &lt;= 10 ) ? f1 = f1 : f1 = 12, f1 &lt;= 11 ; f1++ )
+         for( f2 = 1 + s; f2 &lt;= 5+s; f2++ ) printf(&quot;%dx%d=%d%c&quot;, f2, f1, f1 * f2, ( f2 == 5 + s ) ? 10 : 9);
+     return 0;
+   } 
+</pre>
+<p>Despite the fact the result is a strong candidate to <a href="http://www.ioccc.org">The International Obfuscated C Code Contest</a> the Linux guys told him the code was not successful on GCC, and somewhere inside those four lines there was a non-standard piece of code.</p>
+
+<p>Asked to solve the problem, given my congenital inclination to <a href="2007-06.html#disassembling_the_array_operator">random subjects</a> involving C++, I decided to fix the things up in my old-n-good Visual Studio 2003. Nonetheless, it compiles C source code as well. We just need to rename the file from .cpp to .c. It was doing this that I found the following compiler error:</p>
+
+<pre>
+   error C2106: '=' : left operand must be l-value
+</pre>
+<p>That happens in the line 6, the first for line. In other words, a C source that compiles as C++ but gives us a lack of l-value error since compiled as pure C.</p>
+
+<p>Thinking about the problem rather intuitively than rationally I imagined that could be some little difference in the precedence table. Keeping that in mind, wrested the standard papers for both languages and took a look at this reduced C++ table and C ANSI standard from 1989:</p>
+
+<pre>
+   | C              C++  |
+   | ------------------- |
+   | [R2L] ?:  =   [R2L] |
+   | [R2L] =   ?:  [L2R] |
+   | [L2R] ,   ,   [L2R] |
+</pre>
+<p>We can notice a inversion between the ternary operator and the attribution operator and, more importantly, the inversion of the evaluation order. In C, the ternary operator is evaluated from right to left (R2L), whilst in C++ from left to right (L2R), like the rest. This is going to shows us that, in line 6, the same expression has two different interpretations in each language.</p>
+
+<p>In order to understand bit by bit the problem, let's disassemble the second part of that for:</p>
+
+<pre>
+   ( f1 == 11 &amp;&amp; s != 5 ) ?
+     s = 5, f1 = 0, putchar(10)
+     :
+     ( f1 &lt;= 10 ) ?
+       f1 = f1
+       :
+       f1 = 12, f1 &lt;= 11; 
+</pre>
+<p>We have two ternary operators nestled. In accordance with C++ standard, the ternary operators have less precedence than the attribution operators and are evaluated from left to right. In other words, in first place all the atributions inside the expression are made before any ternary operator. After that, the first ternary operator is executed, followed by the second:</p>
+
+<pre>
+   // C++ understanding
+   (
+     ( f1 == 11 &amp;&amp; s != 5 ) ?
+       (s = 5), (f1 = 0), putchar(10)
+       :
+       ( f1 &lt;= 10 )
+   ) ?
+     (f1 = f1)
+     :
+     (f1 = 12), f1 &lt;= 11; 
+</pre>
+<p>Now let't take a look in C. In this language, different from C++, the ternary operators have more precedence than the attribution operators, and are executed from right to left. That means the first and last ternary operators are executed, ignoring the right attribution, and after that the first ternary operator is executed. Only after these two events the right attribution is evaluated:</p>
+
+<pre>
+   // C understanding
+   (
+     ( f1 == 11 &amp;&amp; s != 5 ) ?
+       s = 5, f1 = 0, putchar(10)
+       :
+       (
+         ( f1 &lt;= 10 ) ?
+           f1 = f1
+           :
+           f1
+       )
+   ) = 12, f1 &lt;= 11;
+</pre>
+<p>All this make us to see the attribution to 12 will be done on the first ternary operator result, which possible values could be from the putchar return or f1. Remember that the comma operator purpose outside function calls is to chain expressions, execute them and return the value from the rightmost expression:</p>
+
+<pre>
+   // makes s equals 5, f1 equals 0
+   // and returns the putchar call value.
+   s = 5, f1 = 0, putchar(10)
+   
+   // in both cases the returned value
+   // is the f1 variable
+   f1 = f1 : f1
+</pre>
+<p>Well, the f1 variable is an integer. And putchar return as well. This is not going to break any type rule. However, breaks the attribution gold rule: "put an lvalue in the left side of an attribution".</p>
+
+<pre>
+   // right; nothing to say
+   f1 = 12;
+   
+   // woops! what's that? putchar
+   // returns a variable
+   // but not a l-value
+   putchar(10) = 12;
+</pre>
+<p>This finishes the long explanation about why that little insignificant error at the beginning of this article happened only in the C language. This is a perfect example of the little differences between these two languages. Perhaps do you use parenthesis like a crazy, and are not going to find this kind of problems inside your source code. Perhaps not.</p>
+
+<pre>
+   // Update (2026-01-25): I asked Copilot to fix the C code
+   // and it generated this formated code that fixes the
+   // program and removes all the fun.
+   
+   #include &lt;stdio.h&gt;
+   int main()
+   {
+       int f1, f2, s = 0;
+       for (; s &lt; 2; s++)
+       {
+           for (f1 = 1; f1 &lt;= 10; f1++)
+           {
+               for (f2 = 1 + s * 5; f2 &lt;= 5 + s * 5; f2++)
+               {
+                   printf(&quot;%dx%d=%d%c&quot;, f2, f1, f1 * f2, (f2 == 5 + s * 5) ? 10 : 9);
+               }
+           }
+           putchar(10);
+       }
+       return 0;
+   }
+</pre>
+
+</section>
+
+<span style="float: left;">
+ <a href="introducao_ao_softice.html">[introducao_ao_softice]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>
