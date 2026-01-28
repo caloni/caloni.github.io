@@ -124,7 +124,7 @@ role="navigation" aria-label="main navigation">
 <span id="historia_do_windows_parte_30" title="História do Windows - parte 3.0"/></span>
 <section id="section_historia_do_windows_parte_30">
 <p class="title"><a href="2007-08.html#historia_do_windows_parte_30">#</a> História do Windows - parte 3.0</p>
-<span class="title-heading">Caloni, 2007-08-03 <a href="2007-08.html#historia_da_linguagem_c_parte_1">&lt;</a><a href="computer.html">computer</a><a href="2007-08.html#historia_do_windows_parte_351">&gt;</a> <a href="2007-08.html#historia_da_linguagem_c_parte_1">&lt;</a><a href="blog.html">blog</a><a href="2007-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_historia_do_windows_parte_30')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2007-08-03 <a href="2007-08.html#historia_da_linguagem_c_parte_1">&lt;</a><a href="computer.html">computer</a><a href="2007-08.html#historia_do_windows_parte_351">&gt;</a> <a href="2007-08.html#historia_da_linguagem_c_parte_1">&lt;</a><a href="blog.html">blog</a><a href="2007-08.html#antidebug_interpretacao_baseada_em_excecao_parte_2">&gt;</a><a href="2007-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_historia_do_windows_parte_30')"><sup>[copy]</sup></a></span>
 
 <p>Em 22 de maio de 1990 a versão 3.0 do Windows foi lançada. Foi melhorado o gerenciador de programas e o sistema de ícones, além de um novo gerenciador de arquivos e suporte a 16 cores. Entre as mudanças internas podemos citar a velocidade e a confiabilidade. Como a partir dessa versão apareceram muitos desenvolvedores que passaram a suportar a plataforma, o número de programas disponíveis aumentou, o que conseqüentemente fez com que as vendas alavancassem. Três milhões de cópias foram vendidas apenas no primeiro ano, e assim o Windows se tornou padrão nos computadores domésticos. Quando a versão 3.1 foi lançada, em 6 de abril de 1992, mais três milhões de cópias foram vendidos em apenas dois meses.</p>
 
@@ -327,7 +327,7 @@ role="navigation" aria-label="main navigation">
 <span id="antidebug_interpretacao_baseada_em_excecao_parte_2" title="Antidebug: interpretação baseada em exceção (parte 2)"/></span>
 <section id="section_antidebug_interpretacao_baseada_em_excecao_parte_2">
 <p class="title"><a href="2007-08.html#antidebug_interpretacao_baseada_em_excecao_parte_2">#</a> Antidebug: interpretação baseada em exceção (parte 2)</p>
-<span class="title-heading">Caloni, 2007-08-09 <a href="2007-08.html#historia_do_windows_parte_351">&lt;</a><a href="computer.html">computer</a><a href="2007-08.html#gina_x_credential_provider">&gt;</a> <a href="2007-07.html#movendo_o_cursor_do_mouse_com_o_teclado">&lt;</a><a href="projects.html">projects</a><a href="2007-08.html#antidebug_ocupando_a_debugport">&gt;</a><a href="2007-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_antidebug_interpretacao_baseada_em_excecao_parte_2')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2007-08-09 <a href="2007-08.html#historia_do_windows_parte_351">&lt;</a><a href="computer.html">computer</a><a href="2007-08.html#gina_x_credential_provider">&gt;</a> <a href="2007-07.html#movendo_o_cursor_do_mouse_com_o_teclado">&lt;</a><a href="projects.html">projects</a><a href="2007-08.html#antidebug_ocupando_a_debugport">&gt;</a> <a href="2007-08.html#historia_do_windows_parte_30">&lt;</a><a href="blog.html">blog</a><a href="2007-08.html#historia_da_linguagem_c_parte_2">&gt;</a><a href="2007-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_antidebug_interpretacao_baseada_em_excecao_parte_2')"><sup>[copy]</sup></a></span>
 
 <p>No <a href="2007-07.html#antidebug_interpretacao_baseada_em_excecao_parte_1">primeiro artigo</a> vimos como é possível "enganar" o depurador através de exceções e assim fazer o atacante perder um tempo considerável tentando se desvencilhar dos breakpoints de mentira. Porém, vimos também que essa é uma solução difícil de manter no código-fonte, além de possuir o ponto fraco de ser facilmente contornada se descoberta. Agora é a hora de tornar as coisas mais fáceis de manter e ao mesmo tempo garantir maior dificuldade mesmo que o atacante descubra o que está acontecendo debaixo do seu nariz.</p>
 
@@ -353,7 +353,7 @@ role="navigation" aria-label="main navigation">
      return 0;
    }
 </pre>
-<p>A solução acima está apresentada em pseudo-código para tornar mais claro o conceito. Note que existe uma espécie de "retorno invisível", não baseado em retorno de pilha, envolvido. Para implementá-lo, contudo, podemos nos ajeitar com o velho e bom padrão C ANSI, com as rotinas setjmp  e longjmp. Para entender a implementação dessa funções na plataforma 8086 precisamos ter primeiro uma visão básica da estrutura de chamada de funções baseada em pilha.</p>
+<p>A solução acima está apresentada em pseudo-código para tornar mais claro o conceito. Note que existe uma espécie de "retorno invisível", não baseado em retorno de pilha, envolvido. Para implementá-lo, contudo, podemos nos ajeitar com o velho e bom padrão C ANSI, com as rotinas setjmp  e longjmp. Para entender a implementação dessa funções na plataforma 8086 precisamos ter primeiro uma visão básica da estrutura de pilha na chamada de funções.</p>
 
 <p>Registradores são variáveis reservadas do processador que podem ser utilizadas pelo código assembly da plataforma envolvida. Stack frame (estrutura da pilha) nada mais é que a hierarquia de chamadas das funções, o "quem chamou quem" em uma execução qualquer. Call e ret são instruções em assembly para chamar uma função (call) e sair de uma função (ret), respectivamente. Ambas alteram o stack frame.</p>
 
@@ -469,7 +469,7 @@ role="navigation" aria-label="main navigation">
 <p>À primeira vista parece um desperdício o if estar diretamente no código (lembre-se que vamos utilizar a mesma estrutura condicional em várias e várias partes do código. Para tornar mais claro seu uso, resumir a chamada protegida e permitir que a proteção seja desabilitada em debug, vamos criar uma macro:</p>
 
 <pre>
-   /** Use this macro instead LongJmp
+   /** Use this macro instead of LongJmp
    */
    #define ANTIDEBUG(code)
    {
@@ -545,7 +545,7 @@ role="navigation" aria-label="main navigation">
 <span id="historia_da_linguagem_c_parte_2" title="História da Linguagem C: Parte 2"/></span>
 <section id="section_historia_da_linguagem_c_parte_2">
 <p class="title"><a href="2007-08.html#historia_da_linguagem_c_parte_2">#</a> História da Linguagem C: Parte 2</p>
-<span class="title-heading">Caloni, 2007-08-15 <a href="2007-08.html#gina_x_credential_provider">&lt;</a><a href="computer.html">computer</a><a href="2007-08.html#junctions">&gt;</a> <a href="2007-08.html#historia_da_linguagem_c_parte_1">&lt;</a><a href="ccpp.html">ccpp</a><a href="2007-09.html#aquisicao_de_recurso_e_inicializacao">&gt;</a><a href="2007-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_historia_da_linguagem_c_parte_2')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2007-08-15 <a href="2007-08.html#gina_x_credential_provider">&lt;</a><a href="computer.html">computer</a><a href="2007-08.html#junctions">&gt;</a> <a href="2007-08.html#historia_da_linguagem_c_parte_1">&lt;</a><a href="ccpp.html">ccpp</a><a href="2007-09.html#aquisicao_de_recurso_e_inicializacao">&gt;</a> <a href="2007-08.html#antidebug_interpretacao_baseada_em_excecao_parte_2">&lt;</a><a href="blog.html">blog</a><a href="2007-08.html#antidebug_ocupando_a_debugport">&gt;</a><a href="2007-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_historia_da_linguagem_c_parte_2')"><sup>[copy]</sup></a></span>
 
 <p>No princípio... não, não, não. Antes do princípio, quando C era considerada a terceira letra do alfabeto e o que tínhamos eram linguagens experimentais para todos os lados, dois famigerados senhores dos Laboratórios Bell, K. Thompson e D. Ritchie, criaram uma linguagem chamada B. E B era bom.</p>
 
@@ -807,7 +807,7 @@ role="navigation" aria-label="main navigation">
 <span id="antidebug_ocupando_a_debugport" title="Antidebug: ocupando a DebugPort"/></span>
 <section id="section_antidebug_ocupando_a_debugport">
 <p class="title"><a href="2007-08.html#antidebug_ocupando_a_debugport">#</a> Antidebug: ocupando a DebugPort</p>
-<span class="title-heading">Caloni, 2007-08-23 <a href="2007-08.html#erro_de_compilacao_funcoes_muito_novas_na_win32_api">&lt;</a><a href="computer.html">computer</a><a href="2007-08.html#hook_de_api_no_windbg">&gt;</a> <a href="2007-08.html#antidebug_interpretacao_baseada_em_excecao_parte_2">&lt;</a><a href="projects.html">projects</a><a href="2007-09.html#antidebug_detectando_attach">&gt;</a><a href="2007-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_antidebug_ocupando_a_debugport')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2007-08-23 <a href="2007-08.html#erro_de_compilacao_funcoes_muito_novas_na_win32_api">&lt;</a><a href="computer.html">computer</a><a href="2007-08.html#hook_de_api_no_windbg">&gt;</a> <a href="2007-08.html#antidebug_interpretacao_baseada_em_excecao_parte_2">&lt;</a><a href="projects.html">projects</a><a href="2007-09.html#antidebug_detectando_attach">&gt;</a> <a href="2007-08.html#historia_da_linguagem_c_parte_2">&lt;</a><a href="blog.html">blog</a><a href="2007-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_antidebug_ocupando_a_debugport')"><sup>[copy]</sup></a></span>
 
 <p>Quando um depurador inicia um processo para ser depurado ou, o caso abordado por este artigo, se conecta em um processo já iniciado, as comunicações entre esses dois processos é feita através de um recurso interno do Windows chamado de LPC (Local Procedure Call). O sistema cria uma "porta mágica" de comunicação específica para a depuração e os eventos trafegam por meio dela.</p>
 
