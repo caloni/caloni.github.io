@@ -531,15 +531,15 @@ int main()
       ...
       12 0040107d 5d              pop     ebp
       12 0040107e c3              ret
-   0:000&gt; .writemem &lt;font color=&quot;#008000&quot;&gt;DoProcess.func&lt;/font&gt; 00401020 0040107e
-   Writing &lt;font color=&quot;#0000ff&quot;&gt;5f bytes&lt;/font&gt;.
+   0:000&gt; .writemem DoProcess.func 00401020 0040107e
+   Writing 5f bytes.
    
    windbg -pvr -pn criticalservice2.exe
    
    0:000&gt; .dvalloc 0x5f
    Allocated 1000 bytes starting at 00030000
-   0:000&gt; .readmem &lt;font color=&quot;#008000&quot;&gt;DoProcess.func&lt;/font&gt; 00030000 &lt;font color=&quot;#0000ff&quot;&gt;L5f&lt;/font&gt;
-   Reading &lt;font color=&quot;#0000ff&quot;&gt;5f bytes&lt;/font&gt;.
+   0:000&gt; .readmem DoProcess.func 00030000 L5f
+   Reading 5f bytes.
    0:000&gt; uf 00030000
    00030000 55              push    ebp
    ...

@@ -341,7 +341,7 @@ void WINAPI AntiAttachAbort(void)
 <span id="aquisicao_de_recurso_e_inicializacao" title="Aquisição de recurso é inicialização"/></span>
 <section id="section_aquisicao_de_recurso_e_inicializacao">
 <p class="title"><a href="2007-09.html#aquisicao_de_recurso_e_inicializacao">#</a> Aquisição de recurso é inicialização</p>
-<span class="title-heading">Caloni, 2007-09-14 <a href="2007-09.html#guia_basico_de_controle_de_codigo_source_safe">&lt;</a><a href="computer.html">computer</a><a href="2007-09.html#hook_de_com_no_windbg">&gt;</a> <a href="2007-08.html#historia_da_linguagem_c_parte_2">&lt;</a><a href="ccpp.html">ccpp</a><a href="2007-09.html#a_mobilidade_das_variaveis_no_printf">&gt;</a> <a href="2007-09.html#antidebug_detectando_attach">&lt;</a><a href="blog.html">blog</a><a href="2007-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_aquisicao_de_recurso_e_inicializacao')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2007-09-14 <a href="2007-09.html#guia_basico_de_controle_de_codigo_source_safe">&lt;</a><a href="computer.html">computer</a><a href="2007-09.html#hook_de_com_no_windbg">&gt;</a> <a href="2007-08.html#historia_da_linguagem_c_parte_2">&lt;</a><a href="ccpp.html">ccpp</a><a href="2007-09.html#a_mobilidade_das_variaveis_no_printf">&gt;</a> <a href="2007-09.html#antidebug_detectando_attach">&lt;</a><a href="blog.html">blog</a><a href="2007-09.html#hook_de_com_no_windbg">&gt;</a><a href="2007-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_aquisicao_de_recurso_e_inicializacao')"><sup>[copy]</sup></a></span>
 
 <p>O título desse artigo é uma técnica presente no paradigma da programação em C++, razão pela qual não temos o operador finally. A idéia por trás dessa técnica é conseguirmos usar recursos representados por objetos locais de maneira que ao final da função esses objetos sejam destruídos e, junto com eles, os recursos que foram alocados. Podemos chamar de recursos aquele arquivo que necessita ser aberto para escrita, o bitmap que é exibido na tela, o ponteiro de uma interface COM, etc. O nosso exemplo é sobre arquivos:</p>
 
@@ -443,7 +443,7 @@ void WINAPI AntiAttachAbort(void)
 <span id="hook_de_com_no_windbg" title="Hook de COM no WinDbg"/></span>
 <section id="section_hook_de_com_no_windbg">
 <p class="title"><a href="2007-09.html#hook_de_com_no_windbg">#</a> Hook de COM no WinDbg</p>
-<span class="title-heading">Caloni, 2007-09-18 <a href="2007-09.html#aquisicao_de_recurso_e_inicializacao">&lt;</a><a href="computer.html">computer</a><a href="2007-09.html#a_mobilidade_das_variaveis_no_printf">&gt;</a><a href="2007-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_hook_de_com_no_windbg')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2007-09-18 <a href="2007-09.html#aquisicao_de_recurso_e_inicializacao">&lt;</a><a href="computer.html">computer</a><a href="2007-09.html#a_mobilidade_das_variaveis_no_printf">&gt;</a> <a href="2007-09.html#aquisicao_de_recurso_e_inicializacao">&lt;</a><a href="blog.html">blog</a><a href="2007-09.html#why_is_my_dll_locked">&gt;</a><a href="2007-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_hook_de_com_no_windbg')"><sup>[copy]</sup></a></span>
 
 <p>Continuando com o tema hooks no WinDbg vamos aqui "hookear" e analisar as chamadas de métodos de um objeto COM. O que será feito aqui é o mesmo experimento feito para uma palestra de engenharia reversa que apresentei há um tempo atrás, mas com as opções de pause, rewind, replay e câmera lenta habilitadas.</p>
 
@@ -536,9 +536,9 @@ void WINAPI AntiAttachAbort(void)
    0 e 774ddcf8 0001 (0001) 0:**** ole32!CoGetMalloc
    0:000&gt; g
    Breakpoint 0 hit
-   ModLoad: 76360000 7637d000 C:WINDOWSsystem32IMM32.DLL
+   ModLoad: 76360000 7637d000 C:\WINDOWS\system32\IMM32.DLL
    ...
-   ModLoad: 746e0000 7472b000 C:WINDOWSsystem32MSCTF.dll
+   ModLoad: 746e0000 7472b000 C:\WINDOWS\system32\MSCTF.dll
    eax=0012ff7c ebx=00000000 ecx=775e67f0 edx=775e67f0 esi=00000001 edi=00403374
    eip=774ddcf8 esp=0012ff70 ebp=0012ffc0 iopl=0 nv up ei pl zr na pe nc
    cs=001b ss=0023 ds=0023 es=0023 fs=003b gs=0000 efl=00000246
@@ -591,7 +591,7 @@ void WINAPI AntiAttachAbort(void)
    ole32!IsValidIid+0xe4:
    774dd00d 8bff            mov     edi,edi
    0:000&gt; dd esp L3
-   0012ff70  &lt;strong&gt;00401031 775e6034 00001000&lt;/strong&gt; ; o this é nosso, e foi pedido para alocar 4KB (0x1000)
+   0012ff70  00401031 775e6034 00001000 ; o this é nosso, e foi pedido para alocar 4KB (0x1000)
    0:000&gt; bp /1 /c @$csp @$ra;g ; Step Out para pegar o retorno
    Breakpoint 3 hit
    eax=001597f0 ebx=00000000 ecx=7c9106eb edx=00150608 esi=00000001 edi=00403374
@@ -609,7 +609,7 @@ void WINAPI AntiAttachAbort(void)
    ole32!IsValidIid+0xbf:
    774dcfe8 8bff            mov     edi,edi
    0:000&gt; dd esp L3
-   0012ff70  &lt;strong&gt;00401041 775e6034 001597f0&lt;/strong&gt; ; nosso this e endereço alocado (pedindo pra desalocar)
+   0012ff70  00401041 775e6034 001597f0 ; nosso this e endereço alocado (pedindo pra desalocar)
    g ; é isso aí
 </pre>
 <p>Note que a função pode eventualmente ser chamada internamente (pelo próprio objeto) ou até por outro objeto que não estamos interessados em interceptar (lembre-se que os métodos de uma classe são compartilhados por todos os objetos). Por isso é importante sempre dar uma olhada no primeiro parâmetro, que é o this que obtemos primeiramente.</p>
@@ -662,12 +662,59 @@ void WINAPI AntiAttachAbort(void)
 <span id="why_is_my_dll_locked" title="Why is my DLL locked?"/></span>
 <section id="section_why_is_my_dll_locked">
 <p class="title"><a href="2007-09.html#why_is_my_dll_locked">#</a> Why is my DLL locked?</p>
-<span class="title-heading">Caloni, 2007-09-24 <a href="2007-09.html#a_mobilidade_das_variaveis_no_printf">&lt;</a><a href="computer.html">computer</a><a href="2007-09.html#introducao_ao_c_builderturbo_c">&gt;</a> <a href="2007-07.html#c_and_c++_operators_precedence_table">&lt;</a><a href="english.html">english</a><a href="2007-11.html#mousetool">&gt;</a><a href="2007-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_why_is_my_dll_locked')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2007-09-24 <a href="2007-09.html#a_mobilidade_das_variaveis_no_printf">&lt;</a><a href="computer.html">computer</a><a href="2007-09.html#introducao_ao_c_builderturbo_c">&gt;</a> <a href="2007-07.html#c_and_c++_operators_precedence_table">&lt;</a><a href="english.html">english</a><a href="2007-11.html#mousetool">&gt;</a> <a href="2007-09.html#hook_de_com_no_windbg">&lt;</a><a href="blog.html">blog</a><a href="2007-10.html#debug_da_bios_com_o_softice_16_bits">&gt;</a><a href="2007-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_why_is_my_dll_locked')"><sup>[copy]</sup></a></span>
 
 <p>The Windows code responsible to call DllMain for each loaded and unloaded DLLs uses an exclusive access object, the so-called mutex, to synchronize its calls. The result is that inside a process just one DllMain can be called at a given moment. This object-mutex is called "loader lock" into the Microsoft documentation.</p>
 
 <p>I wrote a silly code that represents quite well what I've seen in lots of production code. For many times I was unable to realize what was going on (whether because I didn't know about the loader lock or the code readability was too bad). The code say by itself: calling CreateThread inside DllMain must lock your execution forever.</p>
 
+<p>Update 2026-01-31. I lost the code quote above, so I asked Chat-GPT to give me a didatic sample:</p>
+
+<pre>
+#include &lt;windows.h&gt;
+#include &lt;stdio.h&gt;
+DWORD WINAPI WorkerThread(LPVOID lpParam)
+{
+    // Simulate some work
+    Sleep(1000);
+    // Anything that might touch loader state is deadly here
+    // Even something innocent-looking like LoadLibrary
+    LoadLibraryA(&quot;user32.dll&quot;);
+    return 0;
+}
+BOOL WINAPI DllMain(HINSTANCE hinstDLL,
+                    DWORD fdwReason,
+                    LPVOID lpvReserved)
+{
+    switch (fdwReason)
+    {
+    case DLL_PROCESS_ATTACH:
+    {
+        HANDLE hThread;
+        DWORD threadId;
+        hThread = CreateThread(
+            NULL,
+            0,
+            WorkerThread,
+            NULL,
+            0,
+            &amp;threadId
+        );
+        if (hThread)
+        {
+            // 🚨 DEADLOCK HERE 🚨
+            // Loader lock is held, thread cannot safely execute
+            WaitForSingleObject(hThread, INFINITE);
+            CloseHandle(hThread);
+        }
+        break;
+    }
+    case DLL_PROCESS_DETACH:
+        break;
+    }
+    return TRUE;
+}
+</pre>
 <p>A simple victim of all this can be an executable using a poorly written DLL, just like the code above:</p>
 
 <pre>

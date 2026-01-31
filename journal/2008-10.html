@@ -148,7 +148,7 @@ role="navigation" aria-label="main navigation">
    Microsoft (R) Windows (R) Resource Compiler Version 6.0.5724.0
    Copyright (C) Microsoft Corporation.  All rights reserved.
    Linking...
-   CVTRES : fatal error CVT1100: &lt;font color=&quot;#ff0000&quot;&gt;duplicate resource&lt;/font&gt;.  type:MANIFEST, name:1, language:0x0409
+   CVTRES : fatal error CVT1100: duplicate resource.  type:MANIFEST, name:1, language:0x0409
    LINK : fatal error LNK1123: failure during conversion to COFF: file invalid or corrupt
    Build log was saved at &quot;file://c:\Lng\WTL\Samples\MTPad\Debug\BuildLog.htm&quot;
    MTPad - 2 error(s), 0 warning(s)
@@ -164,11 +164,11 @@ role="navigation" aria-label="main navigation">
        &quot;\0&quot;
    END
    
-   &lt;font color=&quot;#ff0000&quot;&gt;3 TEXTINCLUDE DISCARDABLE
+   3 TEXTINCLUDE DISCARDABLE
    BEGIN
        &quot;CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST &quot;&quot;res\\\\MTPad.exe.manifest&quot;&quot;\r\n&quot;
        &quot;\0&quot;
-   END&lt;/font&gt;
+   END
    
    #endif    // APSTUDIO_INVOKED
    
@@ -179,7 +179,7 @@ role="navigation" aria-label="main navigation">
    //
    // Generated from the TEXTINCLUDE 3 resource.
    //
-   &lt;font color=&quot;#ff0000&quot;&gt;CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST &quot;res\\MTPad.exe.manifest&quot;&lt;/font&gt;
+   CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST &quot;res\\MTPad.exe.manifest&quot;
    
    /////////////////////////////////////////////////////////////////////////////
    #endif    // not APSTUDIO_INVOKED
@@ -193,11 +193,11 @@ role="navigation" aria-label="main navigation">
    Microsoft (R) Windows (R) Resource Compiler Version 6.0.5724.0
    Copyright (C) Microsoft Corporation.  All rights reserved.
    Linking...
-   &lt;font color=&quot;#ff0000&quot;&gt;mtpad.obj : error LNK2019: unresolved external symbol
+   mtpad.obj : error LNK2019: unresolved external symbol
       &quot;void * __stdcall ATL::__AllocStdCallThunk(void)&quot; (bla bla bla)
    mtpad.obj : error LNK2019: unresolved external symbol
       &quot;void __stdcall ATL::__FreeStdCallThunk(void *)&quot; (bla bla bla)
-   &lt;/font&gt;.\Debug/MTPad.exe : fatal error LNK1120: 2 unresolved externals
+   .\Debug/MTPad.exe : fatal error LNK1120: 2 unresolved externals
    Build log was saved at &quot;file://c:\Lng\WTL\Samples\MTPad\Debug\BuildLog.htm&quot;
    MTPad - 3 error(s), 0 warning(s)
    ========== Build: 0 succeeded, 1 failed, 0 up-to-date, 0 skipped ==========
@@ -206,7 +206,7 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    
-   #pragma comment(lib, &quot;&lt;strong&gt;atlthunk.lib&lt;/strong&gt;&quot;)
+   #pragma comment(lib, &quot;atlthunk.lib&quot;)
 </pre>
 <p>E pronto! Agora temos todo o poder das 500 milhões de classes da ATL aliadas à ilimitada flexibilidade das classes de janelas da WTL.</p>
 
@@ -319,7 +319,7 @@ role="navigation" aria-label="main navigation">
    kernel32!CreateFileW:
    7c8107f0 8bff            mov     edi,edi
    0:000&gt; du poi(@esp+4)
-   0011ee90  &lt;font color=&quot;#0000ff&quot;&gt;&quot;\\.\PIPE\wkssvc&quot;&lt;/font&gt;
+   0011ee90  &quot;\\.\PIPE\wkssvc&quot;
    0:000&gt; k 50 // pilha muito grande!
    ChildEBP RetAddr
    0011ee6c 77dc4b92 kernel32!CreateFileW
@@ -350,7 +350,7 @@ role="navigation" aria-label="main navigation">
    00121e98 71ae50f0 MPR!WNetUseConnectionW+0x58
    *** WARNING: Unable to verify checksum for image00400000
    *** ERROR: Module load completed but symbols could not be loaded for image00400000
-   00121ec0 00401796 &lt;font color=&quot;#0000ff&quot;&gt;MPR!WNetAddConnection2W&lt;/font&gt;+0x1c
+   00121ec0 00401796 MPR!WNetAddConnection2W+0x1c
    WARNING: Stack unwind information not available. Following frames may be wrong.
    001225d0 0032002e image00400000+0x1796
    001225d4 0030002e 0x32002e
@@ -371,17 +371,17 @@ role="navigation" aria-label="main navigation">
    00121e98 71ae50f0 00000000 00121ee4 004182a0 MPR!WNetUseConnectionW+0x58 (FPO: [Non-Fpo])
    *** WARNING: Unable to verify checksum for image00400000
    *** ERROR: Module load completed but symbols could not be loaded for image00400000
-   00121ec0 00401796 &lt;font color=&quot;#0000ff&quot;&gt;00121ee4 &lt;/font&gt;&lt;font color=&quot;#000000&quot;&gt;004182a0 004139e0&lt;/font&gt;&lt;font color=&quot;#000000&quot;&gt; &lt;/font&gt;MPR!WNetAddConnection2W+0x1c (FPO: [Non-Fpo])
+   00121ec0 00401796 00121ee4 004182a0 004139e0 MPR!WNetAddConnection2W+0x1c (FPO: [Non-Fpo])
    WARNING: Stack unwind information not available. Following frames may be wrong.
    001225d0 0032002e 0030002e 0034002e 00000030 image00400000+0x1796
    001225d4 0030002e 0034002e 00000030 00000000 0x32002e
    001225d8 0034002e 00000030 00000000 00000000 0x30002e
    001225dc 00000000 00000000 00000000 00000000 0x34002e
-   0:000&gt; db &lt;font color=&quot;#0000ff&quot;&gt;00121ee4&lt;/font&gt;
+   0:000&gt; db 00121ee4
    00121ee4  00 00 00 00 00 00 00 00-00 00 00 00 03 00 00 00  ................
    00121ef4  e2 1e 12 00 04 1f 12 00-00 00 00 00 00 00 00 00  ................
-   00121f04  5c 00 5c 00 31 00 30 00-2e 00 32 00 2e 00 30 00  &lt;font color=&quot;#0000ff&quot;&gt;\.\.1.0...2...0.&lt;/font&gt;
-   00121f14  2e 00 34 00 30 00 5c 00-49 00 50 00 43 00 24 00  &lt;font color=&quot;#0000ff&quot;&gt;..4.0.\.I.P.C.$.&lt;/font&gt;
+   00121f04  5c 00 5c 00 31 00 30 00-2e 00 32 00 2e 00 30 00  \.\.1.0...2...0.
+   00121f14  2e 00 34 00 30 00 5c 00-49 00 50 00 43 00 24 00  ..4.0.\.I.P.C.$.
    00121f24  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................
    00121f34  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................
    00121f44  cc da 90 7c c8 2d 91 7c-ec 07 00 00 88 1f 12 00  ...|.-.|........
@@ -393,7 +393,7 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    
-   0:000&gt; bp kernel32!CreateFileW &quot;&lt;font color=&quot;#0000ff&quot;&gt;du poi(@esp+4)&lt;/font&gt;&quot;
+   0:000&gt; bp kernel32!CreateFileW &quot;du poi(@esp+4)&quot;
    breakpoint 0 redefined
    0:000&gt; g
    0011ee90  &quot;\\.\PIPE\wkssvc&quot;
@@ -417,7 +417,7 @@ role="navigation" aria-label="main navigation">
    kernel32!CreateFileW:
    7c8107f0 8bff            mov     edi,edi
    0:000&gt; g
-   0012213c  &lt;font color=&quot;#0000ff&quot;&gt;&quot;\\10.2.0.40\ADMIN$\PSEXESVC.EXE&quot;&lt;/font&gt;
+   0012213c  &quot;\\10.2.0.40\ADMIN$\PSEXESVC.EXE&quot;
    eax=00122090 ebx=00000003 ecx=00000000 edx=009300d0 esi=00000080 edi=ffffffff
    eip=7c8107f0 esp=00122064 ebp=001220ac iopl=0         nv up ei pl nz ac po cy
    cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000213
@@ -434,7 +434,7 @@ role="navigation" aria-label="main navigation">
    Status       Local     Remoto                    Rede
    
    -------------------------------------------------------------------------------
-   OK                     &lt;font color=&quot;#0000ff&quot;&gt;\\10.2.0.40\IPC$&lt;/font&gt;          Rede Microsoft Windows
+   OK                     \\10.2.0.40\IPC$          Rede Microsoft Windows
    Comando concluído com êxito.
    
    &gt;
