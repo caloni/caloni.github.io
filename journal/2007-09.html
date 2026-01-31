@@ -212,15 +212,68 @@ role="navigation" aria-label="main navigation">
 <span id="antidebug_detectando_attach" title="Antidebug: Detectando Attach"/></span>
 <section id="section_antidebug_detectando_attach">
 <p class="title"><a href="2007-09.html#antidebug_detectando_attach">#</a> Antidebug: Detectando Attach</p>
-<span class="title-heading">Caloni, 2007-09-10 <a href="2007-09.html#historia_do_windows_parte_40">&lt;</a><a href="computer.html">computer</a><a href="2007-09.html#guia_basico_de_controle_de_codigo_source_safe">&gt;</a> <a href="2007-08.html#antidebug_ocupando_a_debugport">&lt;</a><a href="projects.html">projects</a><a href="2007-11.html#mousetool">&gt;</a> <a href="antidebug.html">antidebug</a><a href="2008-07.html#antidebugging_using_exceptions_part_one">&gt;</a><a href="2007-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_antidebug_detectando_attach')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2007-09-10 <a href="2007-09.html#historia_do_windows_parte_40">&lt;</a><a href="computer.html">computer</a><a href="2007-09.html#guia_basico_de_controle_de_codigo_source_safe">&gt;</a> <a href="2007-08.html#antidebug_ocupando_a_debugport">&lt;</a><a href="projects.html">projects</a><a href="2007-11.html#mousetool">&gt;</a> <a href="antidebug.html">antidebug</a><a href="2008-07.html#antidebugging_using_exceptions_part_one">&gt;</a> <a href="2007-08.html#barata_eletrica_e_o_hacker_de_antigamente">&lt;</a><a href="blog.html">blog</a><a href="2007-09.html#aquisicao_de_recurso_e_inicializacao">&gt;</a><a href="2007-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_antidebug_detectando_attach')"><sup>[copy]</sup></a></span>
 
-<p>Hoje foi um belo dia para engenharia reversa e análise de proteções. Dois ótimos programas vieram ao meu conhecimento: um <a href="http://www.kakeeware.com">monitor de chamadas de API</a> e um <a href="http://www.blunck.info/comtrace.html">monitor de chamadas de COM</a> (complementando o primeiro, que não monitora funções depois que CoCreateInstance foi chamado). Além de que no site do primeiro programa - de algum entusiasta do bom e velho Assembly Win32, diga-se de passagem - encontrei o código-fonte para mais uma técnica antidebugging, o que nos leva de volta para a já consagrada série de técnicas antidepuração.</p>
+<p>Hoje foi um belo dia para engenharia reversa e análise de proteções. Dois ótimos programas vieram ao meu conhecimento: um monitor de chamadas de API e um monitor de chamadas de COM (complementando o primeiro, que não monitora funções depois que CoCreateInstance foi chamado). Além de que no site do primeiro programa - de algum entusiasta do bom e velho Assembly Win32, diga-se de passagem - encontrei o código-fonte para mais uma técnica antidebugging, o que nos leva de volta para a já consagrada série de técnicas antidepuração.</p>
 
+<blockquote>Update 2026-01-31: estes sites já não existe mais, então removi os links.</blockquote>
 <p>O objetivo dessa proteção é detectar se, após o executável ter sido iniciado, algum depurador metido a besta tentou atachar-se no processo criado, ou seja, tentou iniciar o processo de depuração após o aplicativo já ter iniciada a execução. Isso é possível - de certa forma trivial - na maioria dos depuradores (se não todos), como o Visual Studio e o WinDbg. Diferente da técnica de ocupar a DebugPort, que impede a ação de attach, a proteção nesse caso não protege diretamente; apenas permite que o processo saiba do suposto ataque antes de entregar o controle ao processo depurador.</p>
 
-<p>O código que eu encontrei nada mais faz do que se aproveitar de uma peculiaridade do processo de attach: ao disparar o evento, a função ntdll!DbgUiRemoteBreakin é chamada. Ora, se é chamada, é lá que devemos estar, certo? O código, então, insere um breakpoint hardcoded no início dessa função para capturar esse evento. Para compilar o código basta chamar o compilador seguido do linker, lembrando que precisamos da user32.lib linkada para chamar a função API MessageBox. Após o programa ter sido executado qualquer tentativa de attach irá exibir uma mensagem de detecção seguida pelo capotamento do programa.</p>
+<p>O código que eu encontrei nada mais faz do que se aproveitar de uma peculiaridade do processo de attach: ao disparar o evento, a função ntdll!DbgUiRemoteBreakin é chamada. Ora, se é chamada, é lá que devemos estar, certo? O código, então, insere um breakpoint hardcoded no início dessa função para capturar esse evento. Update 2026-01-31: este código não está mais disponível, mas graças ao Chat-GPT foi fácil reconstruí-lo. Optei por uma versão em C puro:</p>
 
-<p>Existem inúmeras maneiras de fazer a mesma coisa. O exemplo citado é o que é chamado comumente nas rodinhas de crackers de shellcode, que é um nome bonitinho para "array de bytes que na verdade é um assembly de um código que faz coisas interessantes". Shellcode for short =).</p>
+<pre>
+void InstallAntiAttach(void)
+{
+    HMODULE hNtdll;
+    BYTE *pBreakin;
+    DWORD oldProtect;
+    DWORD rel;
+    hNtdll = GetModuleHandleA(&quot;ntdll.dll&quot;);
+    if (!hNtdll)
+        return;
+    pBreakin = (BYTE *)GetProcAddress(
+        hNtdll,
+        &quot;DbgUiRemoteBreakin&quot;
+    );
+    if (!pBreakin)
+        return;
+    // make memory executable and writable
+    VirtualProtect(
+        pBreakin,
+        5,
+        PAGE_EXECUTE_READWRITE,
+        &amp;oldProtect
+    );
+    // JMP rel32
+    pBreakin[0] = 0xE9;
+    // relative offset
+    rel = (DWORD)AntiAttachAbort -
+          (DWORD)pBreakin - 5;
+    *(DWORD *)(pBreakin + 1) = rel;
+    // restore protection
+    VirtualProtect(
+        pBreakin,
+        5,
+        oldProtect,
+        &amp;oldProtect
+    );
+}
+</pre>
+<p>O AntiAttachAbort pode ser uma função singela:</p>
+
+<pre>
+void WINAPI AntiAttachAbort(void)
+{
+    MessageBoxA(
+        NULL,
+        &quot;Debugger detectado via attach!&quot;,
+        &quot;AntiAttach&quot;,
+        MB_ICONERROR | MB_OK
+    );
+    ExitProcess(0);
+}
+</pre>
+<p>Existem inúmeras maneiras de fazer a mesma coisa. A alternativa original é o que era chamado comumente nas rodinhas de crackers de shellcode, que é um nome bonitinho para "array de bytes que na verdade é um assembly de um código que faz coisas interessantes". Shellcode for short =).</p>
 
 <p>Maneiras alternativas de fazer isso são:</p>
 
@@ -288,7 +341,7 @@ role="navigation" aria-label="main navigation">
 <span id="aquisicao_de_recurso_e_inicializacao" title="Aquisição de recurso é inicialização"/></span>
 <section id="section_aquisicao_de_recurso_e_inicializacao">
 <p class="title"><a href="2007-09.html#aquisicao_de_recurso_e_inicializacao">#</a> Aquisição de recurso é inicialização</p>
-<span class="title-heading">Caloni, 2007-09-14 <a href="2007-09.html#guia_basico_de_controle_de_codigo_source_safe">&lt;</a><a href="computer.html">computer</a><a href="2007-09.html#hook_de_com_no_windbg">&gt;</a> <a href="2007-08.html#historia_da_linguagem_c_parte_2">&lt;</a><a href="ccpp.html">ccpp</a><a href="2007-09.html#a_mobilidade_das_variaveis_no_printf">&gt;</a><a href="2007-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_aquisicao_de_recurso_e_inicializacao')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2007-09-14 <a href="2007-09.html#guia_basico_de_controle_de_codigo_source_safe">&lt;</a><a href="computer.html">computer</a><a href="2007-09.html#hook_de_com_no_windbg">&gt;</a> <a href="2007-08.html#historia_da_linguagem_c_parte_2">&lt;</a><a href="ccpp.html">ccpp</a><a href="2007-09.html#a_mobilidade_das_variaveis_no_printf">&gt;</a> <a href="2007-09.html#antidebug_detectando_attach">&lt;</a><a href="blog.html">blog</a><a href="2007-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_aquisicao_de_recurso_e_inicializacao')"><sup>[copy]</sup></a></span>
 
 <p>O título desse artigo é uma técnica presente no paradigma da programação em C++, razão pela qual não temos o operador finally. A idéia por trás dessa técnica é conseguirmos usar recursos representados por objetos locais de maneira que ao final da função esses objetos sejam destruídos e, junto com eles, os recursos que foram alocados. Podemos chamar de recursos aquele arquivo que necessita ser aberto para escrita, o bitmap que é exibido na tela, o ponteiro de uma interface COM, etc. O nosso exemplo é sobre arquivos:</p>
 
@@ -376,7 +429,7 @@ role="navigation" aria-label="main navigation">
      return 0;
    } 
 </pre>
-<p>Nesse caso o código de UseFile2 acaba deixando um recurso alocado por conta de uma exceção que ocorreu em uma função secundária chamada lá pelas tantas em um momento delicado demais para ocorrerem exceções. Note que o destrutor de File2 é chamado assim como o de File, só que este não libera os recursos do objeto. Ele não usa a técnica RAII (Resource Acquisition Is Initialization, ou o título do artigo em inglês).</p>
+<p>Nesse caso o código de UseFile2 acaba deixando um recurso alocado por conta de uma exceção que ocorreu em uma função secundária chamada lá pelas tantas em um momento delicado demais para ocorrerem exceções. Note que o destrutor de File2 é chamado assim como o de File, só que este não libera os recursos do objeto. Ele não usa a técnica RAII (Resource Acquisition Is Initialization, ou como seria o título deste artigo em inglês).</p>
 
 <p>Nesse tipo de classe o convívio com exceções gera um dilema: onde está o erro? Como consertá-lo? Se o problema é encontrado numa hora apertada e temos cinco minutos para revolver isso, capturar a exceção causada por BlowUpFunction é uma boa idéia. Só que nem sempre as soluções de cinco minutos são as mais maduras. Podemos não saber muito bem o que fazer com esse tipo de exceção, por exemplo. Isso geraria um tratamento de erro ou redundante se tratarmos ali mesmo o Scatadush, já tratado em um escopo mais externo, ou fragmentado se apenas desalocarmos o recurso de File2 e relançarmos a exceção. Eu nem diria fragmentado, pois estamos tratando um erro inventado, se considerarmos que é função dos objetos desalocarem os recursos que foram por eles mesmos alocados.</p>
 

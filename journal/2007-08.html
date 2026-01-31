@@ -807,7 +807,7 @@ role="navigation" aria-label="main navigation">
 <span id="antidebug_ocupando_a_debugport" title="Antidebug: ocupando a DebugPort"/></span>
 <section id="section_antidebug_ocupando_a_debugport">
 <p class="title"><a href="2007-08.html#antidebug_ocupando_a_debugport">#</a> Antidebug: ocupando a DebugPort</p>
-<span class="title-heading">Caloni, 2007-08-23 <a href="2007-08.html#erro_de_compilacao_funcoes_muito_novas_na_win32_api">&lt;</a><a href="computer.html">computer</a><a href="2007-08.html#hook_de_api_no_windbg">&gt;</a> <a href="2007-08.html#antidebug_interpretacao_baseada_em_excecao_parte_2">&lt;</a><a href="projects.html">projects</a><a href="2007-09.html#antidebug_detectando_attach">&gt;</a> <a href="2007-08.html#historia_da_linguagem_c_parte_2">&lt;</a><a href="blog.html">blog</a><a href="2007-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_antidebug_ocupando_a_debugport')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2007-08-23 <a href="2007-08.html#erro_de_compilacao_funcoes_muito_novas_na_win32_api">&lt;</a><a href="computer.html">computer</a><a href="2007-08.html#hook_de_api_no_windbg">&gt;</a> <a href="2007-08.html#antidebug_interpretacao_baseada_em_excecao_parte_2">&lt;</a><a href="projects.html">projects</a><a href="2007-09.html#antidebug_detectando_attach">&gt;</a> <a href="2007-08.html#historia_da_linguagem_c_parte_2">&lt;</a><a href="blog.html">blog</a><a href="2007-08.html#hook_de_api_no_windbg">&gt;</a><a href="2007-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_antidebug_ocupando_a_debugport')"><sup>[copy]</sup></a></span>
 
 <p>Quando um depurador inicia um processo para ser depurado ou, o caso abordado por este artigo, se conecta em um processo já iniciado, as comunicações entre esses dois processos é feita através de um recurso interno do Windows chamado de LPC (Local Procedure Call). O sistema cria uma "porta mágica" de comunicação específica para a depuração e os eventos trafegam por meio dela.</p>
 
@@ -927,12 +927,13 @@ role="navigation" aria-label="main navigation">
 <span id="hook_de_api_no_windbg" title="Hook de API no WinDbg"/></span>
 <section id="section_hook_de_api_no_windbg">
 <p class="title"><a href="2007-08.html#hook_de_api_no_windbg">#</a> Hook de API no WinDbg</p>
-<span class="title-heading">Caloni, 2007-08-29 <a href="2007-08.html#antidebug_ocupando_a_debugport">&lt;</a><a href="computer.html">computer</a><a href="2007-09.html#historia_do_windows_parte_40">&gt;</a><a href="2007-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_hook_de_api_no_windbg')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2007-08-29 <a href="2007-08.html#antidebug_ocupando_a_debugport">&lt;</a><a href="computer.html">computer</a><a href="2007-09.html#historia_do_windows_parte_40">&gt;</a> <a href="2007-08.html#antidebug_ocupando_a_debugport">&lt;</a><a href="blog.html">blog</a><a href="2007-08.html#barata_eletrica_e_o_hacker_de_antigamente">&gt;</a><a href="2007-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_hook_de_api_no_windbg')"><sup>[copy]</sup></a></span>
 
 <p>Basicamente existem duas maneiras de um executável obter o endereço de uma função API do Windows: ou ele usa uma lib de interface com a DLL (o chamado "link estático") ou ele chama a função GetProcAddress explicitamente (1).</p>
 
 <p>Para conseguir saber as funções das quais um executável obtém o endereço através da primeira técnica podemos utilizar o mundialmente famoso Dependency Walker. Ele nos mostrará quais DLLs ele utiliza e quais funções por DLL ele quer o endereço. Ele também nos avisa sobre as DLLs que estão utilizando delay load, uma técnica inventada no Visual Studio para que os executáveis não dependam estaticamente de APIs muito novas que podem não existir em versões do Windows mais antigas. Com o (carinhosamente chamado) Depends também é possível fazer hook de chamadas de API utilizando a opção profiling (F7), mas não costuma funcionar muito bem com trojans, pois eles capotam antes que alguma coisa interessante ocorra.</p>
 
+<blockquote>Update 2026-01-29: a última versão disponível é de 2006, então talvez não seja uma boa ideia usá-lo agora; prefira o dumpbin das ferramentas do Visual Studio.</blockquote>
 <p>O importante do Dependency Walker para o WinDbg é que com um editor é possível copiar todas as funções exibidas em sua interface para um editor, usar um pouco de regular expressions e criar uma batelada de breakpoints:</p>
 
 <pre>
@@ -1003,7 +1004,7 @@ role="navigation" aria-label="main navigation">
 <span id="barata_eletrica_e_o_hacker_de_antigamente" title="Barata Elétrica e o hacker de antigamente"/></span>
 <section id="section_barata_eletrica_e_o_hacker_de_antigamente">
 <p class="title"><a href="2007-08.html#barata_eletrica_e_o_hacker_de_antigamente">#</a> Barata Elétrica e o hacker de antigamente</p>
-<span class="title-heading">Caloni, 2007-08-31 <a href="2007-07.html#desejo_insano_de_programar_no_kernel">&lt;</a><a href="essays.html">essays</a><a href="2008-04.html#csi_crashed_server_investigation">&gt;</a><a href="2007-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_barata_eletrica_e_o_hacker_de_antigamente')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2007-08-31 <a href="2007-07.html#desejo_insano_de_programar_no_kernel">&lt;</a><a href="essays.html">essays</a><a href="2008-04.html#csi_crashed_server_investigation">&gt;</a> <a href="2007-08.html#hook_de_api_no_windbg">&lt;</a><a href="blog.html">blog</a><a href="2007-09.html#antidebug_detectando_attach">&gt;</a><a href="2007-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_barata_eletrica_e_o_hacker_de_antigamente')"><sup>[copy]</sup></a></span>
 
 <p>Os artigos escritos por ele estavam em português, mas sempre em suas edições ele disponibilizava artigos de outras partes do mundo em inglês. Praticamente li todos eles, e muitos fiz questão de ler mais de uma vez. A maioria falava de um mundo que existia antes de eu ter um computador, onde existiam vírus e pirataria de programas em disquetes, BBSs e a tal reserva de mercado. Além, é claro, de dicas de como ser um nerd e não perder a sociabilidade (se é que isso é possível quando se é um nerd adolescente). Existe uma página no zine onde estão listados os melhores artigos de todos os tempos da revista.</p>
 
