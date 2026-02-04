@@ -48,6 +48,48 @@ role="navigation" aria-label="main navigation">
 <div><big><b><span style="visibility: hidden; padding: 5px;" name="results" id="results">...</span></b></big></div>
 <table class="sortable" style="width: 100%;">
 <tr><td>
+<img src="/journal/img/detectando_hooks_globais_no_windbg_codigo_malicioso.gif"/>
+<b><a href="2007-11.html#detectando_hooks_globais_no_windbg">Detectando hooks globais no WinDbg (SetWindowsHookEx)</a></b>
+<small><i>2007-11-09 blog computer  Nada como um comando prático para aprender rapidamente uma técnica. Nesse caso, tive que usar o seguinte comando para localizar o momento em que um executável instala um hook global: bp user32!SetWindowsHookExA "j poi(esp+4*4) 'g' ; '.echo *** GLOBAL HOOK ***; g'".</small></i>
+</td></tr>
+<tr><td>
+<img src="/journal/img/ponteiro_de_metodo_qual_this_e_usado_fuzzycall.gif"/>
+<b><a href="2007-11.html#ponteiro_de_metodo_qual_this_e_usado">Ponteiro de método: qual this é usado?</a></b>
+<small><i>2007-11-07 blog computer  Depois de publicado o artigo anterior sobre ponteiros de métodos surgiu uma dúvida muito pertinente do autor do blogue [CodeBehind], um escovador de bits disfarçado de programador .NET: qual objeto que vale na hora de chamar um método pelo ponteiro?</small></i>
+</td></tr>
+<tr><td>
+<b><a href="2007-11.html#ponteiros_de_metodo_conceito_fundamental">Ponteiros de método: conceito fundamental</a></b>
+<small><i>2007-11-05 blog computer  Diferente de ponteiros de função globais ou estáticas, que são a grosso modo ponteiros como qualquer um, os ponteiros de método possuem uma semântica toda especial que costuma intimidar até quem está acostumado com a aritmética de ponteiros avançada. Não é pra menos: é praticamente uma definição à parte, com algumas limitações e que deixa a desejar os quase sempre criativos programadores da linguagem, que vira e mexe estão pedindo mudanças no C++0x.</small></i>
+</td></tr>
+<tr><td>
+<img src="/journal/img/brincando_com_o_windbg_notepad_wonderful_file.png"/>
+<b><a href="2007-10.html#alterando_mensagem_de_erro_no_notepad">Alterando mensagem de erro no Notepad</a></b>
+<small><i>2007-10-30 blog windbg computer  Existem duas maneiras de depurar um programa localmente usando o WinDbg: iniciá-lo pelo próprio WinDbg ou conectar o depurador (attach) em um programa já em execução. Podemos especificar o que faremos direto na linha de comando ou pela sua interface. Pela linha de comando podemos usar os comandos windbg notepad.exe, windbg -pn notepad.exe e windbg -p pid. Pela interface são os conhecidos itens do menu File: Open Executable e Attach to a Process.</small></i>
+</td></tr>
+<tr><td>
+<b><a href="2007-10.html#protecao_dos_membros_protected">Proteção dos membros protected</a></b>
+<small><i>2007-10-26 blog ccpp computer  Quando queremos que um membro de nossa classe seja visível apenas dentro dos métodos da classe e dentro dos métodos das classes derivadas dessa classe usamos o nível de proteção protected. Isso, é claro, não quer dizer que uma classe derivada vá ter acesso aos membros protegidos de outra:</small></i>
+</td></tr>
+<tr><td>
+<b><a href="2007-10.html#typeid_e_os_perigos_do_nao_polimorfismo">Typeid e os perigos do não-polimorfismo</a></b>
+<small><i>2007-10-24 blog ccpp computer  Quando usamos o operador typeid geralmente desejamos conhecer informações sobre o tipo exato do objeto que temos em mãos, independente da hierarquia de herança a qual seu tipo pertença. Só que por ignorar, assim como o [sizeof], que esse operador possui duas caras, às vezes damos com os burros n'água e compramos gato por lebre. Não é pra menos. Uma sutil diferença entre classes polimórficas e estáticas pode dar aquele susto que só C++ pode proporcionar.</small></i>
+</td></tr>
+<tr><td>
+<img src="/journal/img/guia_basico_para_programadores_de_primeiro_breakpoint_debug.png"/>
+<b><a href="2007-10.html#guia_basico_para_programadores_de_primeiro_breakpoint">Guia básico para programadores de primeiro breakpoint</a></b>
+<small><i>2007-10-22 blog computer  Aproveitando um dos últimos artigos que fala sobre [conceitos básicos de programação], lembro que, tão importante quanto programar é possuir habilidades básicas de depuração, uma arte por muitos programadores ignorada.</small></i>
+</td></tr>
+<tr><td>
+<img src="/journal/img/por_que_minha_dll_travou_loader_lock.gif"/>
+<b><a href="2007-10.html#por_que_minha_dll_travou">Por que minha DLL travou?</a></b>
+<small><i>2007-10-18 blog computer  O resumo da ópera é que o código do Windows chamador do DllMain das DLLs carregadas/descarregadas utiliza um objeto de acesso exclusivo (leia "mutex") para sincronizar as chamadas. O resultado é que, em um processo, apenas um DllMain é chamado em um dado momento. Esse objeto é chamado de loader lock na documentação da Microsoft.</small></i>
+</td></tr>
+<tr><td>
+<img src="/journal/img/guia_basico_para_programadores_de_primeiro_int_main_for.gif"/>
+<b><a href="2007-10.html#guia_basico_para_programadores_de_primeiro_int_main">Guia básico para programadores de primeiro int main</a></b>
+<small><i>2007-10-16 blog computer  > Vou aproveitar que meu amigo DQ publicou um artigo muito bom sobre [como fazer programas fáceis de manter] (merece ser lido!) e vou republicar um artigo do blogue antigo sobre o básico do básico para quem deseja entender como os programas funcionam. Não é nada sofisticado, apenas alguns conceitos comuns que, se você deseja ser programador, deveria procurar saber.</small></i>
+</td></tr>
+<tr><td>
 <img src="/journal/img/the_c_programming_language_binary_tree.gif"/>
 <b><a href="2007-10.html#the_c_programming_language">A Linguagem de Programação C: O Livro</a></b>
 <small><i>2007-10-12 blog computer books ccpp  O clássico de Ritchie e Kernighan, criadores da linguagem C, não foi meu primeiro livro de programação. E nem deveria ser. Não o recomendo para iniciantes, pois é necessário possuir algum conhecimento e prática para realmente aproveitar os conceitos desse livro.</small></i>

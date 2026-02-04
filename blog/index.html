@@ -22,6 +22,7 @@ var quick_search_posts = [
 "a_inteligencia_do_if_parte_1.html",
 "a_inteligencia_do_if_parte_2.html",
 "about.html",
+"alterando_mensagem_de_erro_no_notepad.html",
 "antidebug_detectando_attach.html",
 "antidebug_interpretacao_baseada_em_excecao_parte_1.html",
 "antidebug_interpretacao_baseada_em_excecao_parte_2.html",
@@ -30,7 +31,10 @@ var quick_search_posts = [
 "barata_eletrica_e_o_hacker_de_antigamente.html",
 "c_and_c++_operators_precedence_table.html",
 "debug_da_bios_com_o_softice_16_bits.html",
+"detectando_hooks_globais_no_windbg.html",
 "disassembling_the_array_operator.html",
+"guia_basico_para_programadores_de_primeiro_breakpoint.html",
+"guia_basico_para_programadores_de_primeiro_int_main.html",
 "hello_world.html",
 "historia_da_linguagem_c_parte_1.html",
 "historia_da_linguagem_c_parte_2.html",
@@ -40,8 +44,13 @@ var quick_search_posts = [
 "hook_de_com_no_windbg.html",
 "introducao_ao_softice.html",
 "movendo_o_cursor_do_mouse_com_o_teclado.html",
+"ponteiro_de_metodo_qual_this_e_usado.html",
+"ponteiros_de_metodo_conceito_fundamental.html",
+"por_que_minha_dll_travou.html",
 "precedence_difference.html",
+"protecao_dos_membros_protected.html",
 "the_c_programming_language.html",
+"typeid_e_os_perigos_do_nao_polimorfismo.html",
 "what_happens_inside_the_sizeof_operator.html",
 "why_is_my_dll_locked.html",
  ]; 
@@ -73,6 +82,48 @@ role="navigation" aria-label="main navigation">
 <div><big><b><span style="visibility: hidden; padding: 5px;" name="results" id="results">...</span></b></big></div>
 <table class="sortable" style="width: 100%;">
 <table class="sortable" style="width: 100%;">
+<tr><td>
+<img src="/blog/img/detectando_hooks_globais_no_windbg_codigo_malicioso.gif"/>
+<b><a href="detectando_hooks_globais_no_windbg.html">Detectando hooks globais no WinDbg (SetWindowsHookEx)</a></b>
+<small><i>2007-11-09 blog computer  Nada como um comando prático para aprender rapidamente uma técnica. Nesse caso, tive que usar o seguinte comando para localizar o momento em que um executável instala um hook global: bp user32!SetWindowsHookExA "j poi(esp+4*4) 'g' ; '.echo *** GLOBAL HOOK ***; g'".</small></i>
+</td></tr>
+<tr><td>
+<img src="/blog/img/ponteiro_de_metodo_qual_this_e_usado_fuzzycall.gif"/>
+<b><a href="ponteiro_de_metodo_qual_this_e_usado.html">Ponteiro de método: qual this é usado?</a></b>
+<small><i>2007-11-07 blog computer  Depois de publicado o artigo anterior sobre ponteiros de métodos surgiu uma dúvida muito pertinente do autor do blogue [CodeBehind], um escovador de bits disfarçado de programador .NET: qual objeto que vale na hora de chamar um método pelo ponteiro?</small></i>
+</td></tr>
+<tr><td>
+<b><a href="ponteiros_de_metodo_conceito_fundamental.html">Ponteiros de método: conceito fundamental</a></b>
+<small><i>2007-11-05 blog computer  Diferente de ponteiros de função globais ou estáticas, que são a grosso modo ponteiros como qualquer um, os ponteiros de método possuem uma semântica toda especial que costuma intimidar até quem está acostumado com a aritmética de ponteiros avançada. Não é pra menos: é praticamente uma definição à parte, com algumas limitações e que deixa a desejar os quase sempre criativos programadores da linguagem, que vira e mexe estão pedindo mudanças no C++0x.</small></i>
+</td></tr>
+<tr><td>
+<img src="/blog/img/brincando_com_o_windbg_notepad_wonderful_file.png"/>
+<b><a href="alterando_mensagem_de_erro_no_notepad.html">Alterando mensagem de erro no Notepad</a></b>
+<small><i>2007-10-30 blog windbg computer  Existem duas maneiras de depurar um programa localmente usando o WinDbg: iniciá-lo pelo próprio WinDbg ou conectar o depurador (attach) em um programa já em execução. Podemos especificar o que faremos direto na linha de comando ou pela sua interface. Pela linha de comando podemos usar os comandos windbg notepad.exe, windbg -pn notepad.exe e windbg -p pid. Pela interface são os conhecidos itens do menu File: Open Executable e Attach to a Process.</small></i>
+</td></tr>
+<tr><td>
+<b><a href="protecao_dos_membros_protected.html">Proteção dos membros protected</a></b>
+<small><i>2007-10-26 blog ccpp computer  Quando queremos que um membro de nossa classe seja visível apenas dentro dos métodos da classe e dentro dos métodos das classes derivadas dessa classe usamos o nível de proteção protected. Isso, é claro, não quer dizer que uma classe derivada vá ter acesso aos membros protegidos de outra:</small></i>
+</td></tr>
+<tr><td>
+<b><a href="typeid_e_os_perigos_do_nao_polimorfismo.html">Typeid e os perigos do não-polimorfismo</a></b>
+<small><i>2007-10-24 blog ccpp computer  Quando usamos o operador typeid geralmente desejamos conhecer informações sobre o tipo exato do objeto que temos em mãos, independente da hierarquia de herança a qual seu tipo pertença. Só que por ignorar, assim como o [sizeof], que esse operador possui duas caras, às vezes damos com os burros n'água e compramos gato por lebre. Não é pra menos. Uma sutil diferença entre classes polimórficas e estáticas pode dar aquele susto que só C++ pode proporcionar.</small></i>
+</td></tr>
+<tr><td>
+<img src="/blog/img/guia_basico_para_programadores_de_primeiro_breakpoint_debug.png"/>
+<b><a href="guia_basico_para_programadores_de_primeiro_breakpoint.html">Guia básico para programadores de primeiro breakpoint</a></b>
+<small><i>2007-10-22 blog computer  Aproveitando um dos últimos artigos que fala sobre [conceitos básicos de programação], lembro que, tão importante quanto programar é possuir habilidades básicas de depuração, uma arte por muitos programadores ignorada.</small></i>
+</td></tr>
+<tr><td>
+<img src="/blog/img/por_que_minha_dll_travou_loader_lock.gif"/>
+<b><a href="por_que_minha_dll_travou.html">Por que minha DLL travou?</a></b>
+<small><i>2007-10-18 blog computer  O resumo da ópera é que o código do Windows chamador do DllMain das DLLs carregadas/descarregadas utiliza um objeto de acesso exclusivo (leia "mutex") para sincronizar as chamadas. O resultado é que, em um processo, apenas um DllMain é chamado em um dado momento. Esse objeto é chamado de loader lock na documentação da Microsoft.</small></i>
+</td></tr>
+<tr><td>
+<img src="/blog/img/guia_basico_para_programadores_de_primeiro_int_main_for.gif"/>
+<b><a href="guia_basico_para_programadores_de_primeiro_int_main.html">Guia básico para programadores de primeiro int main</a></b>
+<small><i>2007-10-16 blog computer  > Vou aproveitar que meu amigo DQ publicou um artigo muito bom sobre [como fazer programas fáceis de manter] (merece ser lido!) e vou republicar um artigo do blogue antigo sobre o básico do básico para quem deseja entender como os programas funcionam. Não é nada sofisticado, apenas alguns conceitos comuns que, se você deseja ser programador, deveria procurar saber.</small></i>
+</td></tr>
 <tr><td>
 <img src="/blog/img/the_c_programming_language_binary_tree.gif"/>
 <b><a href="the_c_programming_language.html">A Linguagem de Programação C: O Livro</a></b>
