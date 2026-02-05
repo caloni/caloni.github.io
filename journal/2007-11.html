@@ -330,7 +330,7 @@ role="navigation" aria-label="main navigation">
 <span id="detectando_hooks_globais_no_windbg" title="Detectando hooks globais no WinDbg (SetWindowsHookEx)"/></span>
 <section id="section_detectando_hooks_globais_no_windbg">
 <p class="title"><a href="2007-11.html#detectando_hooks_globais_no_windbg">#</a> Detectando hooks globais no WinDbg (SetWindowsHookEx)</p>
-<span class="title-heading">Caloni, 2007-11-09 <a href="2007-11.html#ponteiro_de_metodo_qual_this_e_usado">&lt;</a><a href="computer.html">computer</a><a href="2007-11.html#sdelete">&gt;</a> <a href="2007-11.html#ponteiro_de_metodo_qual_this_e_usado">&lt;</a><a href="blog.html">blog</a><a href="2007-11.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_detectando_hooks_globais_no_windbg')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2007-11-09 <a href="2007-11.html#ponteiro_de_metodo_qual_this_e_usado">&lt;</a><a href="computer.html">computer</a><a href="2007-11.html#sdelete">&gt;</a> <a href="2007-11.html#ponteiro_de_metodo_qual_this_e_usado">&lt;</a><a href="blog.html">blog</a><a href="2007-11.html#carregando_dlls_arbitrarias_pelo_windbg">&gt;</a><a href="2007-11.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_detectando_hooks_globais_no_windbg')"><sup>[copy]</sup></a></span>
 
 <p>Nada como um comando prático para aprender rapidamente uma técnica. Nesse caso, tive que usar o seguinte comando para localizar o momento em que um executável instala um hook global: bp user32!SetWindowsHookExA "j poi(esp+4*4) 'g' ; '.echo *** GLOBAL HOOK ***; g'".</p>
 
@@ -542,16 +542,13 @@ role="navigation" aria-label="main navigation">
 <span id="carregando_dlls_arbitrarias_pelo_windbg" title="Carregando DLLs arbitrárias pelo WinDbg"/></span>
 <section id="section_carregando_dlls_arbitrarias_pelo_windbg">
 <p class="title"><a href="2007-11.html#carregando_dlls_arbitrarias_pelo_windbg">#</a> Carregando DLLs arbitrárias pelo WinDbg</p>
-<span class="title-heading">Caloni, 2007-11-23 <a href="2007-11.html#usando_a_libc_nativa_do_windows">&lt;</a><a href="computer.html">computer</a><a href="2007-11.html#carregando_dlls_arbitrarias_pelo_windbg_parte_2">&gt;</a><a href="2007-11.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_carregando_dlls_arbitrarias_pelo_windbg')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2007-11-23 <a href="2007-11.html#usando_a_libc_nativa_do_windows">&lt;</a><a href="computer.html">computer</a><a href="2007-11.html#carregando_dlls_arbitrarias_pelo_windbg_parte_2">&gt;</a> <a href="2007-11.html#detectando_hooks_globais_no_windbg">&lt;</a><a href="blog.html">blog</a><a href="2007-11.html#carregando_dlls_arbitrarias_pelo_windbg_parte_2">&gt;</a><a href="2007-11.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_carregando_dlls_arbitrarias_pelo_windbg')"><sup>[copy]</sup></a></span>
 
-<p>Durante meus testes para a correção de um bug me deparei com a necessidade de carregar uma DLL desenvolvida por mim no processo depurado. O detalhe é que o processo depurado é de terceiros e não possuo o fonte. Portanto, as opções para mim mais simples são:</p>
+<p>Durante meus testes para a correção de um bug me deparei com a necessidade de carregar uma DLL desenvolvida por mim no processo depurado. O detalhe é que o processo depurado é de terceiros e não possuo o fonte. Portanto, as opções para mim mais simples são: 1) Usar o projeto <a href="http://www.codeproject.com/threads/RmThread.asp">RmThread</a> para injetar a DLL (nesse caso iniciando o processo através dele), 2) Fazer um módulo wrapper para uma DLL qualquer e ser carregado de brinde, 3) Usar o WinDbg e brincar um pouco.</p>
 
-<ul><li>Usar o projeto <a href="http://www.codeproject.com/threads/RmThread.asp">RmThread</a> para injetar a DLL (nesse caso iniciando o processo através dele).</li>
-<li>Fazer um módulo wrapper para uma DLL qualquer e ser carregado de brinde.</li>
-<li>Usar o WinDbg e brincar um pouco.</li></ul>
 <p>Por um motivo desconhecido a terceira opção me pareceu mais interessante =).</p>
 
-<p>A seqüência mais simples para carregar uma DLL através do WinDbg na época que escrevi este post era chamar kernel32!LoadLibrary através de um código digitado na hora, o que podemos chamar de live assembly (algo como "assembly ao vivo"). Porém, essa simples seqüência que contém um pouco mais que uma dúzia de passos hoje teria que ser feito em assembly 64 bits e é um pouco mais complicado. Para quem ainda quer se divertir dessa forma por esse caminho irei deixar as instruções para 32 bits.</p>
+<p>A sequência mais simples para carregar uma DLL através do WinDbg na época que escrevi este post era chamar kernel32!LoadLibrary através de um código digitado na hora, o que podemos chamar de live assembly (algo como "assembly ao vivo"). Porém, essa simples seqüência que contém um pouco mais que uma dúzia de passos hoje teria que ser feito em assembly 64 bits e é um pouco mais complicado. Para quem ainda quer se divertir dessa forma por esse caminho irei deixar as instruções para 32 bits.</p>
 
 <p>Devemos parar a execução, voltar para um ponto seguro do código com o comando gu (que volta para a função chamadora e evita perda de estado dos registradores) e armazenar o local seguro em um registrador temporário (o WinDbg tem 20 deles, $t0 até $t19).</p>
 
@@ -590,7 +587,7 @@ role="navigation" aria-label="main navigation">
    cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
    0028010a cc int     3
    0:000&gt; r$ip = $t0
-   *** WARNING: Unable to verify checksum for C:tempMinhaDllInvasora.dll
+   *** WARNING: Unable to verify checksum for C:\temp\MinhaDllInvasora.dll
    0:000&gt; g
    ModLoad: 5cb70000 5cb96000   C:\WINDOWS\system32\ShimEng.dll
    ModLoad: 6f880000 6fa4a000   C:WINDOWS\AppPatch\AcGenral.DLL
@@ -606,9 +603,7 @@ role="navigation" aria-label="main navigation">
 <span id="carregando_dlls_arbitrarias_pelo_windbg_parte_2" title="Carregando DLLs arbitrárias pelo WinDbg ou como escrever script para WinDbg"/></span>
 <section id="section_carregando_dlls_arbitrarias_pelo_windbg_parte_2">
 <p class="title"><a href="2007-11.html#carregando_dlls_arbitrarias_pelo_windbg_parte_2">#</a> Carregando DLLs arbitrárias pelo WinDbg ou como escrever script para WinDbg</p>
-<span class="title-heading">Caloni, 2007-11-27 <a href="2007-11.html#carregando_dlls_arbitrarias_pelo_windbg">&lt;</a><a href="computer.html">computer</a><a href="2007-11.html#desenhando_em_c++_builder">&gt;</a><a href="2007-11.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_carregando_dlls_arbitrarias_pelo_windbg_parte_2')"><sup>[copy]</sup></a></span>
-
-<p>Como pudemos ver no <a href="2007-11.html#carregando_dlls_arbitrarias_pelo_windbg">artigo anterior</a> o processo para carregar uma DLL pelo WinDbg é muito extenso, enfadonho e sujeito a erros. Além de desatualizado (com comandos de assembly 32 bits). Por esse motivo, e para tornar as coisas mais divertidas, resolvi transformar tudo aquilo em um simples script que pode ser executado digitando apenas uma linha. Tenha em mente que este artigo continua desatualizado usando assembly 32 bits e hoje é uma mera curiosidade para aprendizado do passado. E se trata do meu primeiro script grande para o WinDbg, por isso, peço que tenham dó de mim =).</p>
+<span class="title-heading">Caloni, 2007-11-27 <a href="2007-11.html#carregando_dlls_arbitrarias_pelo_windbg">&lt;</a><a href="computer.html">computer</a><a href="2007-11.html#desenhando_em_c++_builder">&gt;</a> <a href="2007-11.html#carregando_dlls_arbitrarias_pelo_windbg">&lt;</a><a href="blog.html">blog</a><a href="2007-11.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_carregando_dlls_arbitrarias_pelo_windbg_parte_2')"><sup>[copy]</sup></a></span>
 
 <p>Um script no WinDbg nada mais é que uma execução em batch: um arquivo texto cheio de comandos que poderíamos digitar manualmente, mas que preferimos guardar para poupar nossos dedos. Existem quatro maneiras diferentes de chamar um script no WinDbg, todas muito parecidas, variando apenas se são permitidos espaços antes do nome do arquivo e se os comandos são condensados, isto é, as quebras de linhas substituídas por ponto-e-vírgula para executar tudo em uma linha só.</p>
 
@@ -654,7 +649,7 @@ role="navigation" aria-label="main navigation">
    cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000202
    ntdll!DbgBreakPoint:
    7c901230 cc              int     3
-   0:000&gt; $$&gt;addraw.dll
+   0:000&gt; $$&gt;a&lt;scripts\LoadLibrary.txt ddraw.dll
    ModLoad: 73bc0000 73bc6000   C:\WINDOWS\system32\DCIMAN32.dll
    ModLoad: 76390000 763ad000   C:\WINDOWS\system32\IMM32.DLL
    ModLoad: 629c0000 629c9000   C:\WINDOWS\system32\LPK.DLL
@@ -671,7 +666,7 @@ role="navigation" aria-label="main navigation">
 <pre>
    $$
    $$ @brief Loads a module inside the debuggee process.
-   $$ @author Wanderley Caloni &lt;wanderley@caloni.com.br&gt;
+   $$ @author Wanderley Caloni &lt;wanderley.caloni@gmail.com&gt;
    $$ @date 2007-11
    $$
    .if( ${/d:$arg1} )
