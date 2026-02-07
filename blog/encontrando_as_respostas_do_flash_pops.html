@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script>
+var quick_search_posts = [ 
+ ]; 
+</script>
+<script src="/blog/js/quick_search.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="encontrando_as_respostas_do_flash_pops" title="Encontrando as respostas do Flash Pops"/></span>
+<section id="section_encontrando_as_respostas_do_flash_pops">
+<p class="title">Encontrando as respostas do Flash Pops</p>
+<span class="title-heading">Caloni, 2008-01-16 computer blog</span>
+
+<p>Existia uma série de jogos no sítio da UOL chamado Flash Pops onde você deve acertar o nome de filmes, programas de televisão, entre outros, que vão da década de 40 até a atualidade. É divertido e viciante fazer pesquisa na internet para encontrar os resultados, ainda mais quando já se é viciado em cinema. Ficamos jogando, eu e minha namorada, por semanas a fio. Quase chegamos a preencher tudo, e por um bom tempo ficamos travados para terminar. Então começamos a apelar para o Google e o IMDB até os limites do razoável. Nesse fim de semana, por exemplo, chegamos a assistir um filme de madrugada onde tocou rapidamente um trecho de uma das músicas que faltava no jogo sobre televisão. No dia seguinte procuramos a trilha sonora do filme, ouvimos faixa a faixa e procuramos o nome da música no Google, para finalmente encontrar o resultado.</p>
+
+<p>Essa foi a última resposta "honesta". Depois resolvi apelar para o WinDbg =)</p>
+
+<p>A primeira coisa que pensei a respeito desse jogo foi que ele não seria tão ingênuo a ponto de colocar as respostas em texto aberto, do contrário, qual seria a graça, certo? Errado! Bom, no final das contas, um passo-a-passo bem simples me levou a encontrar a lista de respostas.</p>
+
+<p>A primeira coisa a fazer é carregar o jogo na memória do navegador. Em seguida, seguindo meu raciocínio inicial, digitei a primeira resposta do jogo.</p>
+
+<img src="/blog/img/encontrando_as_respostas_do_flash_pops_flash_pops_jogo.png"/>
+
+<p>A partir daí, podemos "atachar" o WinDbg no processo do navegador e rastrear a memória do processo.</p>
+
+<pre>
+   windbg -pn firefox.exe
+</pre>
+<img src="/blog/img/encontrando_as_respostas_do_flash_pops_gpfnow.gif"/>
+
+<p>Então, como eu dizia, não faça isso em casa enquanto estiver digitando um artigo de seu blogue dentro do navegador. Ele vai travar!</p>
+
+<pre>
+   windbg %programfiles%\Mozilla Firefox\firefox.exe
+</pre>
+<p>OK. A primeira coisa é procurar pela string digitada, na esperança de achar a estrutura que escreve as respostas de acordo com a digitação. Isso pode ser feito facilmente graças ao WinDbg e ao <a href="http://voneinem-windbg.blogspot.com/2007/06/scan-full-process-memory-for-pattern.html">artigo de Volker von Einem</a> que ensina como procurar strings por toda a memória de um processo (mais tarde iremos também usar o comando-bônus do comentário de Roberto Farah no mesmo artigo).</p>
+
+<pre>
+   0:017&gt; s -a 0 0fffffff &quot;caca fantasmas&quot;
+   0575f458  63 61 63 61 20 66 61 6e-74 61 73 6d 61 73 00 63  caca fantasmas.c
+   057fb950  63 61 63 61 20 66 61 6e-74 61 73 6d 61 73 00 00  caca fantasmas..
+</pre>
+<p>Interessante. Dois resultados. Olhando o primeiro deles, vemos que encontramos o que queríamos sem nem  mesmo tentar quebrar alguma chave de criptografia.</p>
+
+<pre>
+   0:017&gt; db 0575f458
+   0575f458  63 61 63 61 20 66 61 6e-74 61 73 6d 61 73 00 63  caca fantasmas.c
+   0575f468  61 63 61 2d 66 61 6e 74-61 73 6d 61 73 00 63 61  aca-fantasmas.ca
+   0575f478  c3 a7 61 20 66 61 6e 74-61 73 6d 61 73 00 63 61  ..a fantasmas.ca
+   0575f488  c3 a7 61 2d 66 61 6e 74-61 73 6d 61 73 00 67 68  ..a-fantasmas.gh
+   0575f498  6f 73 74 62 75 73 74 65-72 73 00 41 72 72 61 79  ostbusters.Array
+   0575f4a8  00 6d 75 73 31 00 6a 61-6d 65 73 20 62 6f 6e 64  .mus1.james bond
+   0575f4b8  00 30 30 37 00 6d 75 73-32 00 6d 69 73 73 69 6f  .007.mus2.missio
+   0575f4c8  6e 20 69 6d 70 6f 73 73-69 62 6c 65 00 6d 69 73  n impossible.mis
+</pre>
+<p>O segundo, porém, não parece uma lista de respostas, mas sim a resposta que acabamos de digitar no navegador.</p>
+
+<pre>
+   0:017&gt; db 057fb950
+   057fb950  63 61 63 61 20 66 61 6e-74 61 73 6d 61 73 00 00  caca fantasmas..
+   057fb960  5f 6c 65 76 65 6c 30 2f-6d 75 73 36 32 3a 6d 00  _level0/mus62:m.
+   057fb970  00 00 00 00 24 44 82 05-20 40 82 05 32 3a 6d 00  ....$D.. @..2:m.
+   057fb980  00 00 00 00 6c 49 82 05-68 45 82 05 00 00 00 00  ....lI..hE......
+   057fb990  00 00 00 00 b4 4e 82 05-b0 4a 82 05 00 00 00 00  .....N...J......
+   057fb9a0  00 00 00 00 24 74 85 05-20 70 85 05 00 00 00 00  ....$t.. p......
+   057fb9b0  00 00 00 00 6c 79 85 05-68 75 85 05 00 00 00 00  ....ly..hu......
+   057fb9c0  70 6f 72 63 65 6e 74 6f-00 63 65 72 74 61 73 00  porcento.certas.
+</pre>
+<p>Para se certificar, rodamos novamente o navegador, apagamos a resposta e refazemos a busca.</p>
+
+<pre>
+   0:017&gt; g
+   (864.dc0): Break instruction exception - code 80000003 (first chance)
+   eax=7ffda000 ebx=00000001 ecx=00000002 edx=00000003 esi=00000004 edi=00000005
+   eip=7c901230 esp=03c3ffcc ebp=03c3fff4 iopl=0         nv up ei pl zr na pe nc
+   cs=001b  ss=0023  ds=0023  es=0023  fs=0038  gs=0000             efl=00000246
+   ntdll!DbgBreakPoint:
+   7c901230 cc              int     3
+   0:017&gt; s -a 0 0fffffff &quot;caca fantasmas&quot;
+   0575f458  63 61 63 61 20 66 61 6e-74 61 73 6d 61 73 00 63  caca fantasmas.c
+</pre>
+<p>De fato, a lista de respostas é tudo que encontramos.</p>
+
+<p>Assim como no <a href="2007-11.html#carregando_dlls_arbitrarias_pelo_windbg_parte_2">artigo sobre carregamento de DLLs arbitrárias</a>,  vamos usar o muito útil comando .foreach, que caminha em uma lista de resultados de um comando para executar uma lista secundária de comandos. Apenas para relembrar, a sintaxe do foreach é a seguinte:</p>
+
+<pre>
+   .foreach [Options] ( Variable  { InCommands } ) { OutCommands }
+</pre>
+<p>  * Variable. Um nome que usamos no OutCommands. Representa cada token do resultado de InCommands.</p>
+
+<p>  * InCommands. Um ou mais comandos que executamos para gerar uma saída na tela. Essa saída será usada em OutCommands, onde Variable é substituído por cada token da saída.</p>
+
+<p>  * OutCommands. Um ou mais comandos executados usando a saída na tela de InCommands.</p>
+
+<p>Para o .foreach, um token é uma string separada por espaço(s). A saída dos comandos do WinDbg nem sempre vai gerar algo que podemos usar diretamente, como no caso da busca que fizemos inicialmente. Apenas para demonstração, vamos imprimir todos os tokens da saída de nosso comando.</p>
+
+<pre>
+   .foreach ( answerList { s -a 0 0fffffff &quot;caca fantasmas&quot; } ) { .echo answerList }
+   
+   0575f458
+   63
+   61
+   63
+   61
+   20
+   66
+   61
+   6e-74
+   61
+   73
+   6d
+   61
+   73
+   00
+   63
+   caca
+   fantasmas.c
+</pre>
+<p>Isso acontece porque ele utilizada cada palavra separada por espaços da saída da busca.</p>
+
+<pre>
+   0575f458 63 61 63 61 20 66 61 6e-74 61 73 6d 61 73 00 63 caca fantasmas.c
+</pre>
+<p>Por isso usamos a flag `-[1]`, que faz com que o comando imprima apenas o endereço onde ele encontrou a string.</p>
+
+<pre>
+   0:017&gt; s -[1]a 0 0fffffff &quot;caca fantasmas&quot;
+   0x0575f458
+</pre>
+<p>Enfim, vamos ao que interessa. Para imprimir todas as strings que representam as respostas, podemos simplesmente, no OutCommands, fazer uma nova busca por string, só que dessa vez genérica, dentro de uma faixa razoável (digamos, 4KB).</p>
+
+<pre>
+   0:006&gt; .foreach ( answerList { s -[1]a 0 0fffffff &quot;caca fantasmas&quot; } ) { s -sa answerList L1000 }
+   059ff458  &quot;caca fantasmas&quot;
+   059ff467  &quot;caca-fantasmas&quot;
+   059ff47a  &quot;a fantasmas&quot;
+   059ff48a  &quot;a-fantasmas&quot;
+   059ff496  &quot;ghostbusters&quot;
+   059ff4a3  &quot;Array&quot;
+   059ff4a9  &quot;mus1&quot;
+   059ff4ae  &quot;james bond&quot;
+   059ff4b9  &quot;007&quot;
+   059ff4bd  &quot;mus2&quot;
+   059ff4c2  &quot;mission impossible&quot;
+   059ff4d5  &quot;missao impossivel&quot;
+   059ff4e7  &quot;miss&quot;
+   059ff4ed  &quot;o impossivel&quot;
+   059ff4fa  &quot;missao imposs&quot;
+   059ff509  &quot;vel&quot;
+   059ff50d  &quot;miss&quot;
+   059ff513  &quot;o imposs&quot;
+   059ff51d  &quot;vel&quot;
+   059ff521  &quot;mus3&quot;
+   059ff526  &quot;carruagens de fogo&quot;
+   059ff539  &quot;charriots of fire&quot;
+   059ff54b  &quot;chariots of fire&quot;
+   ...
+</pre>
+<p>Bom, vou parar o dump por aqui, já que, entre os leitores, pode haver quem queria se divertir primeiro do jeito certo =)</p>
+
+<p>Vimos que o jogo é facilmente quebrável porque armazena as respostas em texto claro. Uma solução alternativa seria utilizar um hash com colisão próxima de zero. Com isso bastaria trocar as respostas possíveis por hashs possíveis e armazená-los no lugar. Quando o usuário digitasse, tudo que o programa precisaria mudar era gerar um hash a partir da resposta do usuário e comparar com o hashs das respostas válidas.</p>
+
+<img src="/blog/img/encontrando_as_respostas_do_flash_pops_flash_pops.gif"/>
+
+<p>Por uma incrível coincidência, esse truquezinho eu aprendi com meu amigo <a href="http://codebehind.wordpress.com/">Thiago</a> há poucos dias, que está lendo o livro Reversing. Simples, porém funcional.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="otimizacao_em_funcoes_recursivas.html">[otimizacao_em_funcoes_recursivas]</a>
+ <a href="analisando_dumps_com_windbg_e_ida.html">[analisando_dumps_com_windbg_e_ida]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>
