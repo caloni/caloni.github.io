@@ -46,7 +46,7 @@ role="navigation" aria-label="main navigation">
 <p class="title">Antidebug: interpretação baseada em exceção (parte 2)</p>
 <span class="title-heading">Caloni, 2007-08-09 computer projects blog</span>
 
-<p>No <a href="2007-07.html#antidebug_interpretacao_baseada_em_excecao_parte_1">primeiro artigo</a> vimos como é possível "enganar" o depurador através de exceções e assim fazer o atacante perder um tempo considerável tentando se desvencilhar dos breakpoints de mentira. Porém, vimos também que essa é uma solução difícil de manter no código-fonte, além de possuir o ponto fraco de ser facilmente contornada se descoberta. Agora é a hora de tornar as coisas mais fáceis de manter e ao mesmo tempo garantir maior dificuldade mesmo que o atacante descubra o que está acontecendo debaixo do seu nariz.</p>
+<p>No <a href="antidebug_interpretacao_baseada_em_excecao_parte_1.html">primeiro artigo</a> vimos como é possível "enganar" o depurador através de exceções e assim fazer o atacante perder um tempo considerável tentando se desvencilhar dos breakpoints de mentira. Porém, vimos também que essa é uma solução difícil de manter no código-fonte, além de possuir o ponto fraco de ser facilmente contornada se descoberta. Agora é a hora de tornar as coisas mais fáceis de manter e ao mesmo tempo garantir maior dificuldade mesmo que o atacante descubra o que está acontecendo debaixo do seu nariz.</p>
 
 <p>O upgrade apresentado aqui continua utilizando o lançamento de exceções intrinsecamente, mas agora não depende mais da divisão do código em minifunções e chamá-las aos poucos. Em vez disso, temos apenas que pegar traços de código e colocá-los em torno de uma macro milagrosa que fará tudo o que quisermos. Isso, claro, depois de algumas marteladas que serão explicadas aqui.</p>
 
@@ -55,7 +55,6 @@ role="navigation" aria-label="main navigation">
    {
      BackToStart(restorePoint);
    }
-   
    int Start()
    {
      if( RestorePoint() == Defined )
@@ -66,7 +65,6 @@ role="navigation" aria-label="main navigation">
      {
        CallFunc();
      }
-   
      return 0;
    }
 </pre>
@@ -81,7 +79,6 @@ role="navigation" aria-label="main navigation">
    {
      return;
    }
-   
    void CallFunc()
    {
      Func();
@@ -93,7 +90,6 @@ role="navigation" aria-label="main navigation">
    Func:
    00411F73 prev_instruction ; ESP = 0012FD38 (four bytes stacked up)
    00411F74 ret ; *ESP = 00411FA3 (return address)
-   
    CallFunc:
    00411F9C prev_instruction
    00411F9E call Func (411424h) ; ESP = 0012FD3C
@@ -123,14 +119,12 @@ role="navigation" aria-label="main navigation">
    {
      longjmp(stack_state, 1);
    }
-   
    void CallFunc()
    {
      // setting returns 0
      // returning returns not 0
      if( setjmp(stack_state) == 0 )
        Func();
-   
      int x = 10;
    }
 </pre>
@@ -150,26 +144,20 @@ role="navigation" aria-label="main navigation">
      {
        longjmp(*env, 1);
      }
-   
      return ERROR_SUCCESS;
    }
-   
    /** And God said: 
      'int main!'
    */
    int main()
    {
      DWORD ret = ERROR_SUCCESS;
-   
      while( cin )
      {
        string line;
-   
        cout &lt;&lt; &quot;Type something\n&quot;;
        getline(cin, line);
-   
        jmp_buf env;
-   
        if( setjmp(env) == 0 )
        {
          LongJmp(&amp;env);
@@ -179,7 +167,6 @@ role="navigation" aria-label="main navigation">
          cout &lt;&lt; line &lt;&lt; endl;
        }
      }
-   
      return (int) ret;
    } 
 </pre>
@@ -191,7 +178,6 @@ role="navigation" aria-label="main navigation">
    #define ANTIDEBUG(code)
    {
      jmp_buf env;
-   
      if( setjmp(env) == 0 )
      {
        LongJmp(&amp;env);
@@ -201,23 +187,18 @@ role="navigation" aria-label="main navigation">
        code;
      }
    }
-   
    /** And God said: 'int main!'
    */
    int main()
    {
      DWORD ret = ERROR_SUCCESS;
-   
      while( cin )
      {
        string line;
-   
        cout &lt;&lt; &quot;Type something\n&quot;;
        getline(cin, line);
-   
        ANTIDEBUG(( cout &lt;&lt; line &lt;&lt; endl ));
      }
-   
      return (int) ret;
    } 
 </pre>

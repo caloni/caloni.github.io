@@ -71,20 +71,15 @@ role="navigation" aria-label="main navigation">
      public:
      virtual void *STDMETHODCALLTYPE Alloc( 
        /* [in] */ SIZE_T cb) = 0;
-   
      virtual void *STDMETHODCALLTYPE Realloc( 
        /* [in] */ void *pv,
        /* [in] */ SIZE_T cb) = 0;
-   
      virtual void STDMETHODCALLTYPE Free( 
        /* [in] */ void *pv) = 0;
-   
      virtual SIZE_T STDMETHODCALLTYPE GetSize( 
        /* [in] */ void *pv) = 0;
-   
      virtual int STDMETHODCALLTYPE DidAlloc( 
        void *pv) = 0;
-   
      virtual void STDMETHODCALLTYPE HeapMinimize(void) = 0;
    };
 </pre>
@@ -100,12 +95,10 @@ role="navigation" aria-label="main navigation">
    #include &lt;windows.h&gt;
    #include &lt;objbase.h&gt;
    #include &lt;objidl.h&gt;
-    
    int main()
    {
      CoInitialize(NULL);
      IMalloc* malloc = 0;
-   
      if( CoGetMalloc(1, &amp;malloc) == 0 )
      {
        if( void* pAlloc 
@@ -113,17 +106,14 @@ role="navigation" aria-label="main navigation">
        {
          malloc-&gt;Free(pAlloc);
        }
-   
        malloc-&gt;Release();
      }
-   
      CoUninitialize();
    } 
 </pre>
 <p>Vamos fazer de conta que é desnecessário dizer como se compila o fonte acima.</p>
 
 <pre>
-   
    cl /c imalloc-hook.cpp
    link imalloc-hook.obj ole32.lib
 </pre>
@@ -149,7 +139,6 @@ role="navigation" aria-label="main navigation">
 <p>Maravilha. Alguém chamou a função que queríamos (quem será?). Agora podemos dar uma olhada na pilha e no protótipo da CoGetMalloc:</p>
 
 <pre>
-   
    HRESULT CoGetMalloc(DWORD dwMemContext, LPMALLOC *ppMalloc);
    0:000&gt; dd esp L3
    0012ff70 0040101d 00000001 0012ff7c
@@ -159,7 +148,6 @@ role="navigation" aria-label="main navigation">
 <p>Como podemos ver nos parâmetros da pilha o nosso chamador passou certinho o valor 1 no campo reservado e um ponteiro no segundo parâmetro para uma área onde, se der tudo certo, será escrito o endereço de um IMalloc, que podemos chamar carinhosamente de this. De início vemos que a variável está zerada. Agora vamos executar a função até a saída e examinar os resultados.</p>
 
 <pre>
-   
    0:000&gt; bp /1 /c @$csp @$ra;g
    Breakpoint 1 hit
    eax=00000000 ebx=00000000 ecx=775e6034 edx=775e67f0 esi=00000001 edi=00403374

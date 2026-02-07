@@ -48,14 +48,16 @@ role="navigation" aria-label="main navigation">
 
 <p>Um script no WinDbg nada mais é que uma execução em batch: um arquivo texto cheio de comandos que poderíamos digitar manualmente, mas que preferimos guardar para poupar nossos dedos. Existem quatro maneiras diferentes de chamar um script no WinDbg, todas muito parecidas, variando apenas se são permitidos espaços antes do nome do arquivo e se os comandos são condensados, isto é, as quebras de linhas substituídas por ponto-e-vírgula para executar tudo em uma linha só.</p>
 
-<pre>
-   
-</pre>
 <ul><li>$<nome-do-arquivo - não permite espaços e condensa comandos.</li>
+
 <li>$><nome-do-arquivo - não permite espaços e não condensa comandos.</li>
+
 <li>$$<nome-do-arquivo - permite espaços e condensa comandos.</li>
+
 <li>$$><nome-do-arquivo - permite espaços e não condensa comandos.</li>
+
 <li>$$>a<nome-do-arquivo - igual ao anterior, e ainda permite passar argumentos.</li></ul>
+
 <p>A ajuda do WinDbg descreve as diferenças dos comandos acima de forma adversa, afirmando que os comandos '&lt;'  não condensam as linhas e os '&gt;&lt;' o fazem, quando na realidade é o contrário. Não se deixe enganar por esse detalhe. No caso do script desse artigo, utilizaremos a última forma, pois precisamos de um argumento para funcionar: o nome da DLL. Caso você não digite esse argumento, a ajuda do script será impressa:</p>
 
 <pre>
@@ -67,7 +69,6 @@ role="navigation" aria-label="main navigation">
 <p>Não há qualquer dificuldade. Tudo que você tem que fazer é baixar o script que carrega DLLs e salvá-lo em um lugar de sua preferência. Depois é só digitar o comando que carrega scripts, o path de nosso script e o nome da DLL a ser carregada em uma das três formas exibidas. Eu costumo criar uma pasta chamada "scripts" dentro do diretório de instalação do Debugging Tools, o que quer dizer que posso simplesmente chamar todos meus scripts (ou seja, 1) dessa maneira:</p>
 
 <pre>
-   
    $$&gt;a&lt;scripts\LoadLibrary.txt mydll.dll
 </pre>
 <p>Abaixo um pequeno teste que fiz carregando a DLL do Direct Draw (ddraw.dll) na nossa vítima de plantão:</p>
@@ -152,7 +153,6 @@ role="navigation" aria-label="main navigation">
 <p>Como podemos ver, ele é um pouco grandinho. Por isso mesmo que ele é um script, já que não precisamos, sempre que formos usar este comando, ficar olhando para o fonte. Por falar em olhar, uma primeira olhada revela a seguinte estrutura:</p>
 
 <pre>
-   
    .if( ${/d:$arg1} )
    {
       ...
@@ -167,13 +167,11 @@ role="navigation" aria-label="main navigation">
 <p>Da mesma forma, o que não deve ser nenhuma surpresa, o WinDbg suporta comentários. Todas as linhas que contêm '$$' isoladamente são comentários, e seu conteúdo da direita é ignorado, salvo se for encontrado um ponto-e-vírgula. A primeira coisa que fazemos para carregar a DLL é salvar o estado do registrador IP, que indica onde está a próxima instrução:</p>
 
 <pre>
-   
        r $t2 = @$ip
 </pre>
 <p>Feito isso, usamos um comando não tão comum, mas que pode ser muito útil nos casos em que precisamos capturar algum dado da saída de um comando do WinDbg e usá-lo em outro comando. A estrutura do .foreach deixa o usuário especificar dois grupos de comandos: o primeiro grupo irá gerar uma saída que pode ser aproveitada no segundo grupo.</p>
 
 <pre>
-   
    .foreach /pS 5 $$pula; ( addr $$alias; { .dvalloc 0x1000 $$saída; } ) { r$t0 = addr }
 </pre>
 <p>A opção "/pS 5" diz ao comando para pular 5 posições antes de capturar o token que será usado no próximo comando. Os tokens são divididos por espaço. Sendo a saída de ".dvalloc 0x1000" o "Allocated 1000 bytes starting at 00280000". Pulando 5 posições iremos capturar o endereço onde a memória foi alocada. E é isso mesmo que queremos!</p>
@@ -185,19 +183,16 @@ role="navigation" aria-label="main navigation">
 <p>O sinônimo do endereço (alias) se torna "addr", apelido que usamos ao executar o segundo comando, que armazena o endereço no registrador temporário $t0:</p>
 
 <pre>
-   
    r$t0 = addr
 </pre>
 <p>Após alocada a memória, gravamos o parâmetro de LoadLibrary, o path da DLL a ser carregada, em seu início.</p>
 
 <pre>
-   
    eza @$t0 &quot;${$arg1}&quot;
 </pre>
 <p>O código assembly que irá chamar fica um ponto à frente, mas na mesma memória alocada.</p>
 
 <pre>
-   
    r $t1 = @$t0 + 0x100
 </pre>
 <p>Conforme as técnicas vão cada vez ficando mais "não-usuais", mais difícil fica achar um nome para a coisa. Essa técnica de escrever o assembly de um código através de escritas em hexadecimal dentro de um script do WinDbg eu chamei de "script assembly". Se tiver um nome melhor, não se acanhe em usá-lo. E me deixe saber =).</p>

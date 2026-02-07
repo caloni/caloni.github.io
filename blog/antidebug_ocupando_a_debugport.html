@@ -50,40 +50,36 @@ role="navigation" aria-label="main navigation">
 
 <p>Entre esses eventos podemos citar os seguintes:</p>
 
-<pre>
-   
-</pre>
 <ul><li>Breakpoints disparados.</li>
+
 <li>Exceções lançadas.</li>
+
 <li>Criação/saída de threads.</li>
+
 <li>Load/unload de DLLs.</li>
+
 <li>Saída do processo.</li></ul>
+
 <p>No caso de se conectar em um processo já existente, é chamada a função da API DebugActiveProcess. A partir dessa chamada, se retornado sucesso, o processo que depura agora está liberado para ficar chamando continuamente a função API WaitForDebugEvent. E o código se resume a isto:</p>
 
 <pre>
    void DebugLoop()
    {
      bool exitLoop = false;
-   
      while( ! exitLoop )
      {
        DEBUG_EVENT debugEvt;
-   
        WaitForDebugEvent(&amp;debugEvt, 
          INFINITE);
-   
        switch( debugEvt.dwDebugEventCode )
        {
          // This one...
-   
          // That one...
-   
          // Process is going out.
          case EXIT_PROCESS_DEBUG_EVENT:
            exitLoop = true;
            break;
        }
-   
        // Unfreeze the thread who sent the debug event.
        // Otherwise, it stays frozen forever!
        ContinueDebugEvent(debugEvt.dwProcessId, 

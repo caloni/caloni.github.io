@@ -55,7 +55,6 @@ role="navigation" aria-label="main navigation">
 <p>Devemos parar a execução, voltar para um ponto seguro do código com o comando gu (que volta para a função chamadora e evita perda de estado dos registradores) e armazenar o local seguro em um registrador temporário (o WinDbg tem 20 deles, $t0 até $t19).</p>
 
 <pre>
-   
    gu
    r$t0 = @$ip
 </pre>
@@ -64,12 +63,9 @@ role="navigation" aria-label="main navigation">
 <p>Parada a execução em um local seguro e armazenado o IP, em seguida podemos alocar memória para entrar o código em assembly da chamada, além do seu parâmetro, no caso o path da DLL a ser carregada. Para a alocação usamos o comando .dvalloc, para a escrita de uma string o comando eza (ANSI) ou ezu (UNICODE). Em seguida usamos o comando a para escrever o código assembly da chamada à função kernel32!LoadLibrary e uma interrupção 3 (breakpoint) para termos uma maneira conveniente de parada.</p>
 
 <pre>
-   
    .dvalloc 0x1000
    Allocated 1000 bytes starting at 000001d9`abd20000
-   
    eza 000001d9`abd20000 &quot;c:\\tools\\tioclient.dll&quot;
-   
    0:000&gt; a 000001d9`abd20000+0x100
    000001d9`abd20100 call KERNEL32!LoadLibraryA
    000001d9`abd20105 int 3
