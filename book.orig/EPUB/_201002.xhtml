@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
+<head><meta http-equiv="default-style" content="text/html; charset=utf-8"/>
+<title>2010-02</title>
+<link rel="stylesheet" href="css/stylesheet.css" type="text/css" />
+<link rel="stylesheet" href="css/page-template.xpgt" type="application/adobe-page-template+xml" />
+</head>
+<body>
+<div class="body">
+<span epub:type="pagebreak" id="_201002" title="2010-02"/>
+<h1 class="chapter-title"><strong>2010-02</strong></h1>
+<span epub:type="pagebreak" id="_correcao_de_bugs_instantanea" title="Correção de bugs instantânea"/>
+<section title="Correção de bugs instantânea" epub:type="bodymatter chapter">
+<h1 class="chapter-subtitle"><strong>Correção de bugs instantânea</strong></h1>
+<p class="note-title">2010-02-01</p>
+
+<p>Um programador tarimbado sabe que a melhor situação da vida dele para corrigir um bug é quando esse bug acontece em sua máquina de desenvolvimento, na versão Debug e ainda passo-a-passo. Como nessa situação a correção é um verdadeiro "passeio no parque" (ou na mesa do café) ela tende a quase nunca acontecer. Isso é Murphy Aplicado.</p>
+<p>Para quem programa para sistemas, então, só o fato de acontecer no mesmo processo toda vez que ele for executado já é o máximo (quem já programou serviços, plugins, GINAs e afins sabe do que eu estou falando).</p>
+<p>Porém, saber que uma determinada situação é mel na chupeta (by Thiago) por si só não adianta de muita coisa. É preciso conhecer as verdadeiras técnicas ninjas que conseguem resolver um bug escabroso num instante, coisa de deixar seu gerente de projetos tão feliz ao ponto dele não botar nenhum defeito na solução.</p>
+<p>Dentre as mais conhecidas entre os malloqueiros, temos:</p>
+<p>  * Comenta-descomenta-comenta</p>
+<p>  * Faz do zero</p>
+<p>Essas duas técnicas são tão úteis e tão fáceis de usar que merecem um artigo a respeito.</p>
+<p>Essa técnica milenar corresponde em tirar pedaços do código-fonte que poderiam estar causando o problema até que seja possível criar uma versão em que o problema não ocorra mais. Quando chega-se nesse nível, então volta-se a descomentar o código retirado até que o problema ocorra novamente. O processo é um fluxo de tira-código com volta-código, sendo que é necessário o bom conhecimento do projeto para não gerar outros problemas com a mutilação temporária do projeto.</p>
+<p>Se o código começa a ser tão mutilado que chegamos quase em uma versão vazia (sem código), então talvez a melhor forma de atacar o problema seja criar um esqueleto que contenha apenas o código necessário para que ele não faça nada. Isso mesmo. Não fazendo nada, mas instalado. Com isso prova-se que é possível estar lá sem fazer cagadas. A partir daí vai colocando-se o código do projeto real aos poucos no projeto-esqueleto, até que ele apresente o problema. Ou não. Já vi casos em que todo o código foi migrado e o problema sumiu. Ce la vie.</p>
+</section>
+<span epub:type="pagebreak" id="_restaurando_o_registro" title="Restaurando o registro"/>
+<section title="Restaurando o registro" epub:type="bodymatter chapter">
+<h1 class="chapter-subtitle"><strong>Restaurando o registro</strong></h1>
+<p class="note-title">2010-02-08 <a href="_201001.xhtml#_passagem_por_valor_e_emails_com_anexo">&lt;</a><a href="toc_computer.xhtml">computer</a><a href="_201003.xhtml#_convivendo_entre_todolist_e_microsoft_project">&gt;</a></p>
+
+<p>Algumas ferramentas viram essenciais quando o importante é tempo. As minhas favoritas são: <a href="http://www.microsoft.com/exPress/">Visual Studio</a> e [batch]. Com esses dois eu faço virtualmente qualquer coisa que preciso em pouquíssimo tempo. É lógico que, na ausência dessas, alternativas são bem-vindas, como [Notepad++], [viM], [grep], [cygwin].</p>
+<p>Ontem tive que resolver uma "situação" no cliente, e graças ao bom Deus (ele também é programador) existia um Notepad++ na bagagem que levávamos. Além, é claro, do Excel e do sistema batch do Windows.</p>
+<p>O problema consistia basicamente em usar a saída do <a href="http://technet.microsoft.com/en-us/sysinternals/bb896652.aspx">RegMon</a> para identificar e restaurar algumas modificações que danificavam a instalação do Internet Explorer. O sistema de reparo do IE não existia no cliente, pois ele estava sem Service Pack (bem-vindo ao mundo real), mas podíamos nos guiar através dele na nossa máquina virtual para saber o que faríamos. O estrago era feito durante o registro e/ou desregistro de um componente COM.</p>
+<p>&gt; Aliás, não, eu não preciso usar o onipresente e onipotente Process Monitor para resolver um detalhezinho no registro. Você talvez precise, já que a Microsoft já tirou o Reg e o File de circulação.</p>
+<p>Para iniciar, filtramos os resultados do RegMon para apenas capturar escritas no registro, não importando se falharam ou deram resultado.</p>
+<img src="img/restauranto_o_registro_Fz9QRP1.png"/>
+<p>A partir disso executamos o registro e desregistro do componente, além da restauração do IE6, responsável por limpar a bagunça. O processo responsável por registrar componentes é o **regsvr32** e o responsável por limpar a bagunça, **rundll32**.</p>
+<img src="img/restauranto_o_registro_Ps7V57G.png"/>
+<p>Tendo a saída do RegMon exportada para formato texto, abrimos no Excel e filtramos o conteúdo pelo nome do processo. Note que existem duas instâncias de regsvr32 para usar, pois não sabemos em qual delas é danificado o registro.</p>
+<img src="img/restauranto_o_registro_iEB0YQJ.png"/>
+<p>Para cada um dos filtros copiamos apenas o endereço da chave alterada para dois arquivos texto: regsvr32.txt e ierestore.txt. Usaremos esse primeiro para encontrar ocorrências no segundo, provando que um modifica o que o outro consertou.</p>
+<p>Existe um comando muito simplório em batch Windows que é o aplicativo **find**. Através dele podemos encontrar a ocorrência de uma string em um arquivo. Para transformar todas aquelas linhas do registro do arquivo regsvr32 em comandos find poderíamos elaborar algumas colunas no Excel ou usar o Notepad++ e suas macros, mais rápidas.</p>
+<p>Para quem não conhece macros, saiba que elas são muito úteis. Às vezes até mais úteis que "regexes", pois não é necessário pensar muito na expressão a ser usada. Macros apenas repetem os movimentos do teclado que fazemos enquanto as estamos gravando. Por exemplo, eu tenho o meu monte de linhas de registro assim:</p>
+<pre>
+   
+   HKLM\SOFTWARE\Microsoft\Cryptography\RNG
+   HKLM\SOFTWARE\Microsoft\Cryptography\RNG\Seed
+   HKCR\AppID\{EE62DE09-3A23-46DB-8FA2-266088F329CD}
+   HKCR\AppID\{EE62DE09-3A23-46DB-8FA2-266088F329CD}\(Default)
+   HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Browser Helper Objects\{C322BA70-E3E7-4737-821C-D25378A3F830}
+   HKCR\CLSID\{684E2452-19E1-42CC-9C93-A83044BA1AF2}
+   HKCR\CLSID\{684E2452-19E1-42CC-9C93-A83044BA1AF2}\Programmable
+   ...
+</pre>
+<p>Quero transformar cada linha em um comando find. Iniciou a gravação da macro no início da primeira linha e digito o seguinte (em pseudo-alguma-coisa):</p>
+<p>find, espaço, abre aspas, end, fecha aspas, espaço, ierestore.txt, linha abaixo, home</p>
+<pre>
+   
+   find &quot;HKLM\SOFTWARE\Microsoft\Cryptography\RNG&quot; ierestore.txt
+   HKLM\SOFTWARE\Microsoft\Cryptography\RNG\Seed
+   HKCR\AppID\{EE62DE09-3A23-46DB-8FA2-266088F329CD}
+</pre>
+<p>Pronto. Parar macro. Terei que repetir isso dois milhões de vezes até o final do arquivo. Ora, então mando o Notepad++ repetir a minha macro até o final do arquivo e adio minha tendinite para os próximos anos.</p>
+<img src="img/restauranto_o_registro_XOUfV9L.png"/>
+<p>Só preciso agora renomear meu arquivo para .bat e executar. Posso redirecionar a saída da tela para um terceiro arquivo, de onde irei formatar minha lista de entradas no registro que foram adulteradas por ambos os programas (o registro do componente COM e a restauração do Internet Explorer).</p>
+<p>Nesse momento podemos ir tomar café. Bem melhor do que ficar horas e horas dando localizar, copiar, colar em todas as entradas do regsvr.</p>
+<img src="img/restauranto_o_registro_jBRCDmf.jpg"/>
+<p>Terminada a operação, abrimos o terceiro arquivo, retiramos as entradas insignificantes (por exemplo, o gerador de sementes de números randômicos) e os cabeçalhos do comando, algo bem fácil já que se trata do mesmo arquivo.</p>
+<pre>
+   
+   ---------- IERESTORE.TXT
+   ...
+</pre>
+<p>A próxima tarefa seria analisar cada entrada e ver se ela é relevante. Essa parte foi manual, mas, encontrado um padrão, listamos rapidamente o que poderia estar dando errado e criamos uma lista de entradas para exportar do registro "sadio" a fim de gerar um .REG que corrigiria sistemas danificados.</p>
+<p>Algumas passadas no Notepad++ para eliminar linhas duplicadas e algumas passadas pelo cérebro para eliminar chaves redundantes (chave dentro de chave) e tcharam!</p>
+<pre>
+   
+   ...
+   HKCR\Interface\{3050F2E3-98B5-11CF-BB82-00AA00BDCE0B}
+   HKCR\Interface\{3050F2E5-98B5-11CF-BB82-00AA00BDCE0B}
+   HKCR\Interface\{3050F32D-98B5-11CF-BB82-00AA00BDCE0B}
+   HKCR\Interface\{3050F357-98B5-11CF-BB82-00AA00BDCE0B}
+   HKCR\Interface\{3050F35C-98B5-11CF-BB82-00AA00BDCE0B}
+   HKCR\Interface\{3050F37E-98B5-11CF-BB82-00AA00BDCE0B}
+   HKCR\Interface\{3050F38C-98B5-11CF-BB82-00AA00BDCE0B}
+   ...
+</pre>
+<p>O próximo passo para nossa obra-prima é outra macro que irá reproduzir o comando reg, que pode realizar operações no registro do Windows.</p>
+<pre>
+   
+   ...
+   reg export HKCR\Interface\{3050F240-98B5-11CF-BB82-00AA00BDCE0B} 3050F240-98B5-11CF-BB82-00AA00BDCE0B.reg
+   reg export HKCR\Interface\{3050F25A-98B5-11CF-BB82-00AA00BDCE0B} 3050F25A-98B5-11CF-BB82-00AA00BDCE0B.reg
+   reg export HKCR\Interface\{3050F25E-98B5-11CF-BB82-00AA00BDCE0B} 3050F25E-98B5-11CF-BB82-00AA00BDCE0B.reg
+   reg export HKCR\Interface\{3050F2E3-98B5-11CF-BB82-00AA00BDCE0B} 3050F2E3-98B5-11CF-BB82-00AA00BDCE0B.reg
+   reg export HKCR\Interface\{3050F2E5-98B5-11CF-BB82-00AA00BDCE0B} 3050F2E5-98B5-11CF-BB82-00AA00BDCE0B.reg
+   reg export HKCR\Interface\{3050F32D-98B5-11CF-BB82-00AA00BDCE0B} 3050F32D-98B5-11CF-BB82-00AA00BDCE0B.reg
+   ...
+</pre>
+<p>E o último passo é juntar toda essa galera em um arquivo só.</p>
+<pre>
+   
+   copy *.reg ierestore.reg
+</pre>
+<p>Claro, não se esqueça de retirar os cabeçalhos duplicados (Windows Registry Editor Version X.XX). E Voilà! Fácil, não? Não?! Bom, então é por isso que eu sou bem pago =)</p>
+<p><a href="http://www.microsoft.com/exPress/">Visual Studio</a> e [batch]: http://www.microsoft.com/WINDOWS/</p>
+<p><a href="http://www.microsoft.com/exPress/">Visual Studio</a> e [batch]. Com esses dois eu faço virtualmente qualquer coisa que preciso em pouquíssimo tempo. É lógico que, na ausência dessas, alternativas são bem-vindas, como [Notepad++]: http://notepad-plus.sourceforge.net/uk/site.htm</p>
+<p><a href="http://www.microsoft.com/exPress/">Visual Studio</a> e [batch]. Com esses dois eu faço virtualmente qualquer coisa que preciso em pouquíssimo tempo. É lógico que, na ausência dessas, alternativas são bem-vindas, como [Notepad++], [viM]: http://www.vim.org/</p>
+<p><a href="http://www.microsoft.com/exPress/">Visual Studio</a> e [batch]. Com esses dois eu faço virtualmente qualquer coisa que preciso em pouquíssimo tempo. É lógico que, na ausência dessas, alternativas são bem-vindas, como [Notepad++], [viM], [grep]: http://gnuwin32.sourceforge.net/</p>
+<p><a href="http://www.microsoft.com/exPress/">Visual Studio</a> e [batch]. Com esses dois eu faço virtualmente qualquer coisa que preciso em pouquíssimo tempo. É lógico que, na ausência dessas, alternativas são bem-vindas, como [Notepad++], [viM], [grep], [cygwin]: http://www.cygwin.com/</p>
+</section>
+<span epub:type="pagebreak" id="_bazaar_grafico" title="Bazaar gráfico"/>
+<section title="Bazaar gráfico" epub:type="bodymatter chapter">
+<h1 class="chapter-subtitle"><strong>Bazaar gráfico</strong></h1>
+<p class="note-title">2010-02-25</p>
+
+<p>Bom, já que por enquanto os assuntos de macho estão em falta (acabei de voltar de férias), apresento-lhes o maravilhoso mundo do <a href="http://www.caloni.com.br/guia-basico-de-repositorios-no-bazaar">Bazaar</a> ~~para boiolas~~ _user-friendly_!</p>
+<p>Ele é leve, vem ~~enrustido~~ embutido na última versão e pode economizar alguns _page ups/downs_ no _prompt_ do DOS. Ah, sim, antes que comentem, eu não uso o <a href="http://wiki.bazaar.canonical.com/TortoiseBzr">Tortoise for Bazaar</a> porque instalar [_shell extensions_], só os muito bem feitos. (Do contrário, bem-feito para quem instalou.)</p>
+<p>Para exibir a lista de comandos "amigáveis", digite no _prompt_ os comandos do Bazaar filtrando-os para os que começam com "**q**":</p>
+<pre>
+   
+   bzr help commands | grep ^q.*
+   
+   qadd                 GUI for adding files or directories. [qbzr]
+   qannotate            Show the origin of each line in a file. [qbzr]
+   qbranch              Create a new copy of a branch. [qbzr]
+   qbrowse              Show inventory. [qbzr]
+   qcat                 View the contents of a file as of a given revision. [qbzr]
+   qcommit              GUI for committing revisions. [qbzr]
+   qconfig              Configure Bazaar. [qbzr]
+   qdiff                Show differences in working tree in a GUI window. [qbzr]
+   qgetnew              Creates a new working tree (either a checkout or full branch) [qbzr]
+   qgetupdates          Fetches external changes into the working tree [qbzr]
+   qinfo                 [qbzr]
+   qinit                Initializes a new (possibly shared) repository. [qbzr]
+   qlog                 Show log of a repository, branch, file, or directory in a Qt window. [qbzr]
+   qmerge               Perform a three-way merge. [qbzr]
+   qpull                Turn this branch into a mirror of another branch. [qbzr]
+   qpush                Update a mirror of this branch. [qbzr]
+   qrevert              Revert changes files. [qbzr]
+   qtag                 Edit tags. [qbzr]
+</pre>
+<p>Os que eu mais uso no dia-a-dia são:</p>
+<h4>qlog e qbrowse</h4>
+<img src="img/bazaar_grafico_kskAIzb.png"/>
+<p>Diversão garantida. Por meio destes simples comandos podemos ver o histórico de commits e navegar pela árvore de pastas e arquivos com a anotação do último commit para cada elemento. Só para ter uma ideia de quanto uso isso, transformei-os em opções do Explorer.</p>
+<img src="img/bazaar_grafico_UoeYg7V.png"/>
+<p>Além da utilidade básica, de quebra, o qbrowse pode te levar para um qlog filtrado, e o qlog pode te levar a um diff gráfico, que é o próximo comando que eu iria mostrar.</p>
+<img src="img/bazaar_grafico_ejnlqLn.png"/>
+<h4>qdiff</h4>
+<p>Coisa linda de Deus. Existem dois modos de exibição, mas o padrão já é show de bola, mostrando as mudanças em todos os arquivos de um commit de uma só vez ou do arquivo/pasta especificado pelo comando. É lógico que é possível especificar qualquer faixa de commits que você quiser ver.</p>
+<img src="img/bazaar_grafico_PZW0KOr.png"/>
+<p>Uma desvantagem desse comando é que ele oculta o resto das linhas do fonte e não mostra de jeito nenhum (pelo menos não descobri ainda como fazer isso). Sendo assim, para uma análise mais detalhada das diferenças no código-fonte sempre use um editor externo que consiga comparar arquivos inteiros (eu uso o WinMerge). Você pode colocar esse comando na forma de um diff personalizado, com o uso do qconfig.</p>
+<img src="img/bazaar_grafico_TyYMS4s.png"/>
+<h4> Bônus</h4>
+<p>Para quem não sabe fazer comandos de contexto no Explorer sem instalar Shell Extensions, deem uma olhada no <a href="https://caloni.com.br/text/bzr.txt">REG exportado</a>.  Bom proveito.</p>
+<p><a href="http://wiki.bazaar.canonical.com/TortoiseBzr">Tortoise for Bazaar</a> porque instalar [_shell extensions_]: http://en.wikipedia.org/wiki/Shell_extension#Extensibility</p>
+</section>
+<span epub:type="pagebreak" id="_arvore" title="Árvore"/>
+<section title="Árvore" epub:type="bodymatter chapter">
+<h1 class="chapter-subtitle"><strong>Árvore</strong></h1>
+<p class="note-title">2010-02-01 <a href="_201001.xhtml#_rotina">&lt;</a><a href="toc_quotes.xhtml">quotes</a><a href="_201003.xhtml#_aceite">&gt;</a> <a href="_201001.xhtml#_rotina">&lt;</a><a href="toc_self.xhtml">self</a><a href="_201004.xhtml#_a_voz">&gt;</a> <a href="_201001.xhtml#_rotina">&lt;</a><a href="toc_now.xhtml">now</a><a href="_201004.xhtml#_a_voz">&gt;</a></p>
+
+<p>&gt; Ao se concentrar no presente, pôde perceber uma árvore sem o enquadramento da mente. A mente não pode conhecer a árvore. Só o Ser conhece diretamente.</p>
+<p>&gt; Tolle, Eckhart (O Poder do Agora, 1997)</p>
+</section>
+</div>
+</body>
+</html>

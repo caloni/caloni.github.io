@@ -1,0 +1,655 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
+<head><meta http-equiv="default-style" content="text/html; charset=utf-8"/>
+<title>2025-04</title>
+<link rel="stylesheet" href="css/stylesheet.css" type="text/css" />
+<link rel="stylesheet" href="css/page-template.xpgt" type="application/adobe-page-template+xml" />
+</head>
+<body>
+<div class="body">
+<span epub:type="pagebreak" id="_202504" title="2025-04"/>
+<h1 class="chapter-title"><strong>2025-04</strong></h1>
+<span epub:type="pagebreak" id="_multiple_peers_wireguard_calculation" title="Multiple peers Wireguard calculation"/>
+<section title="Multiple peers Wireguard calculation" epub:type="bodymatter chapter">
+<h1 class="chapter-subtitle"><strong>Multiple peers Wireguard calculation</strong></h1>
+<p class="note-title">2025-04-30 <a href="_202504.xhtml#_hook_using_detour">&lt;</a><a href="toc_code.xhtml">code</a><a href="_202504.xhtml#_set_the_windows_console_to_full_screen">&gt;</a></p>
+
+<pre>
+/** Multiple peers Wireguard calculation.
+Wireguard does not support overlapping allowed ips for multiple peers. To
+cover all possible ips excluding others for secondary peers some
+calculation is needed to mount the allowed ips list derived from 0.0.0.0.
+@author Wanderley Caloni &lt;wanderleycaloni@gmail.com&gt;
+@date 2024-08
+*/
+using System.Net;
+public class Program
+{
+    private static void CalculateWireguardAllowedIps(ref HashSet&lt;IPNetwork2&gt; list, IPNetwork2 ip, IPNetwork2 remove)
+    {
+        if (ip.Cidr == 32)
+        {
+            if (ip != remove)
+            {
+                list.Add(ip);
+            }
+            else
+            {
+                Console.WriteLine(&quot;CalculateWireguardAllowedIps: found and skipping&quot; + ip.ToString());
+            }
+        }
+        else
+        {
+            HashSet&lt;IPNetwork2&gt; split = ip.Subnet((byte)(ip.Cidr + 1)).ToHashSet(); // [0]=left, [1]=right
+            if (split.Count == 2)
+            {
+                List&lt;IPNetwork2&gt; splitList = split.ToList();
+                if (splitList[0].Overlap(remove))
+                {
+                    list.Add(splitList[1]);
+                    CalculateWireguardAllowedIps(ref list, splitList[0], remove);
+                }
+                else
+                {
+                    list.Add(splitList[0]);
+                    CalculateWireguardAllowedIps(ref list, splitList[1], remove);
+                }
+            }
+        }
+    }
+    private static void CalculateWireguardAllowedIps(ref HashSet&lt;IPNetwork2&gt; ipsToAdd, ref HashSet&lt;IPNetwork2&gt; ipsToRemove, ref HashSet&lt;IPNetwork2&gt; list)
+    {
+        foreach (IPNetwork2 remove in ipsToRemove)
+        {
+            var localIpsToAdd = new HashSet&lt;IPNetwork2&gt;(ipsToAdd);
+            foreach (IPNetwork2 add in localIpsToAdd)
+            {
+                if (add.Overlap(remove))
+                {
+                    CalculateWireguardAllowedIps(ref list, add, remove);
+                }
+                else
+                {
+                    list.Add(add);
+                }
+            }
+            ipsToAdd = list;
+        }
+    }
+    private static void AddAllowedIp(ref HashSet&lt;IPNetwork2&gt; allowedIps, IPNetwork2 addThisIp, ref HashSet&lt;IPNetwork2&gt; notAddTheseIps)
+    {
+        if (addThisIp.Cidr == 32)
+        {
+            if( ! notAddTheseIps.Contains(addThisIp))
+            {
+                allowedIps.Add(addThisIp);
+            }
+            else
+            {
+                Console.WriteLine(&quot;AddAllowedIp: found and skipping &quot; + addThisIp.ToString());
+            }
+        }
+        else
+        {
+            List&lt;IPNetwork2&gt; split = addThisIp.Subnet((byte)(addThisIp.Cidr + 1)).ToList(); // [0]=left, [1]=right
+            if (split.Count == 2)
+            {
+                bool overlapLeft = false, overlapRight = false;
+                foreach(IPNetwork2 notIp in notAddTheseIps)
+                {
+                    if (split[0].Overlap(notIp))
+                    {
+                        overlapLeft = true;
+                    }
+                    if (split[1].Overlap(notIp))
+                    {
+                        overlapRight = true;
+                    }
+                    if( overlapLeft &amp;&amp; overlapRight)
+                    {
+                        break;
+                    }
+                }
+                if (overlapLeft)
+                {
+                    AddAllowedIp(ref allowedIps, split[0], ref notAddTheseIps);
+                }
+                else
+                {
+                    allowedIps.Add(split[0]);
+                }
+                if (overlapRight)
+                {
+                    AddAllowedIp(ref allowedIps, split[1], ref notAddTheseIps);
+                }
+                else
+                {
+                    allowedIps.Add(split[1]);
+                }
+            }
+        }
+    }
+    public static int Main(string[] args)
+    {
+        HashSet&lt;IPNetwork2&gt; twoPeersHashSet = new HashSet&lt;IPNetwork2&gt;();
+        IPNetwork2 allAllowedIPs = new IPNetwork2(IPAddress.Parse(&quot;0.0.0.0&quot;), 0);
+        IPNetwork2 removeIP = new IPNetwork2(IPAddress.Parse(&quot;66.22.190.0&quot;), 32);
+        CalculateWireguardAllowedIps(ref twoPeersHashSet, allAllowedIPs, removeIP);
+        HashSet&lt;IPNetwork2&gt; multiplePeersHashSet = new HashSet&lt;IPNetwork2&gt;();
+        HashSet&lt;IPNetwork2&gt; ipsToRemove = new HashSet&lt;IPNetwork2&gt;();
+        //ipsToRemove.Add(new IPNetwork2(IPAddress.Parse(&quot;66.22.190.0&quot;), 32));
+        ipsToRemove.Add(new IPNetwork2(IPAddress.Parse(&quot;66.22.188.1&quot;), 32));
+        //ipsToRemove.Add(new IPNetwork2(IPAddress.Parse(&quot;66.22.190.1&quot;), 32));
+        //ipsToRemove.Add(new IPNetwork2(IPAddress.Parse(&quot;66.22.188.0&quot;), 32));
+        AddAllowedIp(ref multiplePeersHashSet, allAllowedIPs, ref ipsToRemove);
+        var inMultipleExceptTwoPeers = multiplePeersHashSet.Except(twoPeersHashSet).ToHashSet();
+        var inTwoPeersExceptMultiple = twoPeersHashSet.Except(multiplePeersHashSet).ToHashSet();
+        Console.WriteLine(&quot;In multiple peers except two peers:&quot;);
+        foreach (var ip in inMultipleExceptTwoPeers)
+        {
+            string s = &quot;ips in &quot; + ip.ToString() + &quot;: &quot;;
+            foreach(var ip2 in ip.ListIPAddress() )
+            {
+                s += ip2.ToString() + &quot; &quot;;
+            }
+            Console.WriteLine(s);
+        }
+        Console.WriteLine(&quot;In two peers except multiple peers:&quot;);
+        foreach (var ip in inTwoPeersExceptMultiple)
+        {
+            string s = &quot;ips in &quot; + ip.ToString() + &quot;: &quot;;
+            foreach(var ip2 in ip.ListIPAddress() )
+            {
+                s += ip2.ToString() + &quot; &quot;;
+            }
+            Console.WriteLine(s);
+        }
+        return 0;
+    }
+}
+</pre>
+</section>
+<span epub:type="pagebreak" id="_the_willpower_instinct_kelly_mcgonigal_2013" title="The Willpower Instinct (Kelly McGonigal, 2013)"/>
+<section title="The Willpower Instinct (Kelly McGonigal, 2013)" epub:type="bodymatter chapter">
+<h1 class="chapter-subtitle"><strong>The Willpower Instinct (Kelly McGonigal, 2013)</strong></h1>
+<p class="note-title">2025-04-29 <a href="_202504.xhtml#_in_search_of_the_miraculous_pd_ouspensky_1949">&lt;</a><a href="toc_self.xhtml">self</a><a href="_202505.xhtml#_apanhado_sobre_o_flow_de_cada_dia">&gt;</a> <a href="_202504.xhtml#_in_search_of_the_miraculous_pd_ouspensky_1949">&lt;</a><a href="toc_books.xhtml">books</a><a href="_202506.xhtml#_a_hora_da_estrela_clarice_lispector_1977">&gt;</a> <a href="_202504.xhtml#_in_search_of_the_miraculous_pd_ouspensky_1949">&lt;</a><a href="toc_reading.xhtml">reading</a><a href="_202506.xhtml#_a_origem_das_especies_darwin_charles">&gt;</a></p>
+
+<p>Lendo este livro, mas bem lentamente. Seguem recortes.</p>
+<p>&gt; I believe that the best way to improve your self-control is to see how and why you lose control. (...) Self-knowledge—especially of how we find ourselves in willpower trouble—is the foundation of self-control. (...) You can—and should—make yourself the subject of your own real-world study.</p>
+<p>&gt; Your willpower challenge could be something you’ve been avoiding (“I will”) or a habit you want to break (“I won’t”) or an important goal in your life that you’d like to give more energy and focus to (“I want”). (...) To exert self-control, you need to find your motivation when it matters. This is “I want” power.</p>
+<p>&gt; As the prefrontal cortex (walking, running, reaching, pushing) grew, it took on new control functions: controlling what you pay attention to, what you think about, even how you feel. (...) It has three key regions that divide up the jobs of I will, I won’t, and I want. (...) The more rapidly the “I want” region cells fire, the more motivated you are to take action or resist temptation. (...) The part of you that wants to give in isn’t bad—it simply has a different point of view about what matters most.</p>
+<p>&gt; You need to recognize when you’re making a choice that requires willpower; otherwise, the brain always defaults to what is easiest. (...) When your mind is preoccupied, your impulses—not your long-term goals—will guide your choices. (...) To have more self-control, you first need to develop more self-awareness. (...) Trying to keep track of your choices reduces the number of decisions you make while distracted.</p>
+<p>&gt; Regular meditators have more gray matter in the prefrontal cortex, as well as regions of the brain that support self-awareness. (...) One study found that just three hours of meditation practice led to improved attention and self-control. After eleven hours, researchers could see those changes in the brain. (...) It may seem incredible that our brains can reshape themselves so quickly, but meditation increases blood flow to the prefrontal cortex, in much the same way that lifting weights increases blood flow to your muscles. (...) This simple act of staying still is part of what makes meditation willpower training effective. You’re learning not to automatically follow every single impulse that your brain and body produce. (...) Notice how it feels to breathe, and notice how the mind wanders. (...) Most new meditators make this mistake, but the truth is that being “bad” at meditation is exactly what makes the practice effective. (...) Meditation is not about getting rid of all your thoughts; it’s learning not to get so lost in them that you forget what your goal is.</p>
+</section>
+<span epub:type="pagebreak" id="_in_search_of_the_miraculous_pd_ouspensky_1949" title="In Search of the Miraculous (P.D. Ouspensky, 1949)"/>
+<section title="In Search of the Miraculous (P.D. Ouspensky, 1949)" epub:type="bodymatter chapter">
+<h1 class="chapter-subtitle"><strong>In Search of the Miraculous (P.D. Ouspensky, 1949)</strong></h1>
+<p class="note-title">2025-04-29 <a href="_202503.xhtml#_ego_ou_intuicao">&lt;</a><a href="toc_self.xhtml">self</a><a href="_202504.xhtml#_the_willpower_instinct_kelly_mcgonigal_2013">&gt;</a> <a href="_202503.xhtml#_se_ligue_em_voce_gasparetto_luiz">&lt;</a><a href="toc_books.xhtml">books</a><a href="_202504.xhtml#_the_willpower_instinct_kelly_mcgonigal_2013">&gt;</a> <a href="_202502.xhtml#_prometheus_rising">&lt;</a><a href="toc_reading.xhtml">reading</a><a href="_202504.xhtml#_the_willpower_instinct_kelly_mcgonigal_2013">&gt;</a></p>
+
+<p>&gt; There was another type of school, with which I was unable to make contact and of which I only heard. These schools promised very much but they also demanded very much. They demanded everything at once. It would have been necessary to stay in India and give up thoughts of returning to Europe, to renounce all my own ideas, aims, and plans, and proceed along a road of which I could know nothing beforehand.</p>
+<p>&gt; Our starting point is that man does not know himself, that he is not&quot; (he emphasized these words), &quot;that is, he is not what he can and what he should be. For this reason he cannot make any agreements or assume any obligations. He can decide nothing in regard to the future.</p>
+<ul><li>In such a moment, you face a choice: follow the craving, or find the inner strength to control yourself. This is the moment you need to say “I won’t” when every cell in your body is saying “I want.”</li>
+<li>You might ask yourself, “What was I thinking!” But a better question might be, “What was my body doing?”</li>
+<li>While all this is happening, your blood sugar drops. As soon as your brain anticipates your mouth’s first creamy bite, it releases a neurochemical that tells the body to take up whatever energy is circulating in the bloodstream. The body’s logic is this: A slice of cheesecake, high in sugar and fat, is going to produce a major spike in blood sugar. To prevent an unsightly sugar coma and the rare (but never pretty) death by cheesecake, you need to lower the sugar currently in the bloodstream. How kind of the body to look out for you in this way! But this drop in blood sugar can leave you feeling a little shaky and cranky, making you crave the cheesecake even more.</li>
+<li>a fight-or-flight stress response starts when you recognize an external threat.</li>
+<li>The pause-and-plan response puts your body into a calmer state, but not too sedate. The goal is not to paralyze you in the face of internal conflict, but to give you freedom.</li>
+<li>Heart rate variability is such a good index of willpower that you can use it to predict who will resist temptation, and who will give in.</li>
+<li>Studies also show that people with higher heart rate variability are better at ignoring distractions, delaying gratification, and dealing with stressful situations. They are also less likely to give up on difficult tasks, even when they initially fail or receive critical feedback.</li>
+<li>These findings have led psychologists to call heart rate variability the body’s “reserve” of willpower—a physiological measure of your capacity for self-control.</li>
+<li>(poor air quality decreases heart rate variability—</li>
+<li>Anything that puts a stress on your mind or body can interfere with the physiology of self-control, and by extension, sabotage your willpower.</li>
+<li>When you’re tired, your cells have trouble absorbing glucose from the bloodstream. This leaves them underfueled, and you exhausted.</li>
+<li>When you are chronically stressed, your body continues to divert energy from long-term needs such as digestion, reproduction, healing injuries, and fighting off illnesses to respond to the constant stream of apparent emergencies. This is how chronic stress can lead to cardiovascular disease, diabetes, chronic back pain, infertility, or getting every cold and flu that come around.</li>
+<li>To preserve both your health and happiness, you need to give up the pursuit of willpower perfection.</li>
+<li>Learning how to better manage your stress is one of the most important things you can do to improve your willpower.</li>
+<li>When neuroscientists have peered inside the brains of new exercisers, they have seen increases in both gray matter—brain cells—and white matter, the insulation on brain cells that helps them communicate quickly and efficiently with each other.</li></ul>
+</section>
+<span epub:type="pagebreak" id="_set_the_windows_console_to_full_screen" title="Set the Windows console to full screen"/>
+<section title="Set the Windows console to full screen" epub:type="bodymatter chapter">
+<h1 class="chapter-subtitle"><strong>Set the Windows console to full screen</strong></h1>
+<p class="note-title">2025-04-30 <a href="_202504.xhtml#_multiple_peers_wireguard_calculation">&lt;</a><a href="toc_code.xhtml">code</a></p>
+
+<pre>
+#include &lt;iostream&gt;
+#include &lt;windows.h&gt;
+int main()
+{
+    if( ! SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), 
+      CONSOLE_FULLSCREEN_MODE | CONSOLE_WINDOWED_MODE, 
+      NULL) )
+    {
+        // if GetLastError 120 use this:
+        ::SendMessage(::GetConsoleWindow(), WM_SYSKEYDOWN, VK_RETURN, 0x20000000);
+    }
+    system(&quot;chcp 65001&quot;); // utf-8
+}
+</pre>
+</section>
+<span epub:type="pagebreak" id="_desafio_5" title="Desafio 5"/>
+<section title="Desafio 5" epub:type="bodymatter chapter">
+<h1 class="chapter-subtitle"><strong>Desafio 5</strong></h1>
+<p class="note-title">2025-04-30 <a href="_202503.xhtml#_baixando_simbolos_e_modulos_programaticamente">&lt;</a><a href="toc_code.xhtml">code</a><a href="_202504.xhtml#_download_pdb_symbols">&gt;</a></p>
+
+<pre>
+/** My solution to the infamous desafio05 from the
+site Os Programadores.
+@author Wanderley Caloni &lt;wanderleycaloni@gmail.com&gt;
+@date 2020-06
+@see https://osprogramadores.com/desafios/d05/
+*/
+#include &lt;boost/iostreams/device/mapped_file.hpp&gt;
+#include &lt;fstream&gt;
+#include &lt;iomanip&gt;
+#include &lt;iostream&gt;
+#include &lt;map&gt;
+#include &lt;memory&gt;
+#include &lt;set&gt;
+#include &lt;sstream&gt;
+#include &lt;string&gt;
+#include &lt;thread&gt;
+#include &lt;unordered_map&gt;
+#include &lt;vector&gt;
+using namespace std;
+typedef long long int LongInteger;
+struct Chunk 
+{
+	const char* begin;
+	const char* end;
+};
+struct Employee 
+{
+	Chunk name;
+	Chunk surname;
+	int salary;
+	Chunk area;
+	bool surname_max = false;
+};
+struct Area
+{
+	string name;
+	vector&lt;Employee&gt; area_max;
+	vector&lt;Employee&gt; area_min;
+	double avg_salary = 0.0;
+	LongInteger total_employees = 0;
+	LongInteger total_salaries = 0;
+};
+struct ParseChunk
+{
+	shared_ptr&lt;thread&gt; thread_chunk;
+	Chunk data_chunk;
+	map&lt;string, Area&gt; areas;
+	unordered_map&lt;string, vector&lt;Employee&gt;&gt; surname_max;
+};
+template&lt;typename Cmp&gt;
+inline bool compare_exchange_employees(vector&lt;const Area*&gt;&amp; lst_change, const Area&amp; area_cmp, Cmp cmp)
+{
+	if (lst_change.size())
+	{
+		if (cmp(area_cmp.total_employees, (*lst_change.begin())-&gt;total_employees))
+			lst_change = vector&lt;const Area*&gt;{ &amp;area_cmp };
+		else if (area_cmp.total_employees == (*lst_change.begin())-&gt;total_employees)
+			lst_change.push_back(&amp;area_cmp);
+		return true;
+	}
+	else lst_change = vector&lt;const Area*&gt;{ &amp;area_cmp };
+	return false;
+}
+template&lt;typename Cmp&gt;
+inline bool compare_exchange_salary(vector&lt;Employee&gt;&amp; lst_change, const Employee&amp; employee, Cmp cmp)
+{
+	if (lst_change.size())
+	{
+		if (cmp(employee.salary, lst_change.begin()-&gt;salary))
+			lst_change = vector&lt;Employee&gt;{ employee };
+		else if (employee.salary == lst_change.begin()-&gt;salary)
+			lst_change.push_back(employee);
+		return true;
+	}
+	else lst_change = vector&lt;Employee&gt;{ employee };
+	return false;
+}
+template&lt;typename Cmp&gt;
+inline bool compare_exchange_salary(vector&lt;Employee&gt;&amp; lst_change, const vector&lt;Employee&gt;&amp; lst_cmp, Cmp cmp)
+{
+	if (lst_change.size())
+	{
+		if (lst_cmp.size())
+		{
+			if (cmp(lst_cmp.begin()-&gt;salary, lst_change.begin()-&gt;salary))
+				lst_change = lst_cmp;
+			else if (lst_cmp.begin()-&gt;salary == lst_change.begin()-&gt;salary)
+				lst_change.insert(lst_change.begin(), lst_cmp.begin(), lst_cmp.end());
+			return true;
+		}
+	}
+	else lst_change = lst_cmp;
+	return false;
+}
+void parse(ParseChunk* data)
+{
+	Employee employee;
+	string surname;
+	string area_name;
+	Area* area;
+	vector&lt;Employee&gt;* employees;
+	auto mystrchr = [&amp;](const char* str, char ch) { while (*str &amp;&amp; *str != ch) ++str; return str; };
+	auto myatoi = [&amp;](const char* beg, const char* end) 
+	{ 
+		int ret = 0; 
+		while (beg &lt; end) {
+			char c = *beg++; 
+			if (c == '.') continue; 
+			ret = ret * 10 + c - '0'; } 
+		return ret;
+	};
+	const char* curr = mystrchr(data-&gt;data_chunk.begin, '&quot;');
+	const char* end;
+	while (curr &amp;&amp; curr &lt; data-&gt;data_chunk.end)
+	{
+		switch (curr[1])
+		{
+		case 'i': // employee
+			curr += 2;
+			curr = mystrchr(curr + 1, ',');
+			curr += 6;
+			curr = mystrchr(mystrchr(curr + 1, ':') + 1, '&quot;') + 1;
+			end = mystrchr(curr, '&quot;');
+			employee.name = Chunk{ curr, end };
+			curr = end + 11;
+			curr = mystrchr(mystrchr(curr + 1, ':') + 1, '&quot;') + 1;
+			end = mystrchr(curr, '&quot;');
+			employee.surname = Chunk{ curr, end };
+			curr = end + 9;
+			curr = mystrchr(curr + 1, ':') + 1;
+			end = mystrchr(curr, '.') + 3;
+			employee.salary = myatoi(curr, end);
+			curr = end + 6;
+			curr = mystrchr(mystrchr(curr + 1, ':') + 1, '&quot;') + 1;
+			end = mystrchr(curr, '&quot;');
+			employee.area = Chunk{ curr, end };
+			curr = end + 1;
+			curr = mystrchr(curr, '}');
+			area_name = string(employee.area.begin, employee.area.end);
+			area = &amp;data-&gt;areas[area_name];
+			compare_exchange_salary(area-&gt;area_max, employee, greater&lt;LongInteger&gt;());
+			compare_exchange_salary(area-&gt;area_min, employee, less&lt;LongInteger&gt;());
+			surname = string(employee.surname.begin, employee.surname.end);
+			employees = &amp;data-&gt;surname_max[surname];
+			compare_exchange_salary(*employees, employee, greater&lt;LongInteger&gt;());
+			++area-&gt;total_employees;
+			area-&gt;total_salaries += employee.salary;
+			break;
+		case 'c': // area
+			curr += 6;
+			curr = mystrchr(mystrchr(curr + 1, ':') + 1, '&quot;') + 1;
+			end = mystrchr(curr, '&quot;');
+			area_name = string(curr, end);
+			curr = end + 6;
+			curr = mystrchr(mystrchr(curr + 1, ':') + 1, '&quot;') + 1;
+			end = mystrchr(curr, '&quot;');
+			data-&gt;areas[area_name].name = string(curr, end);
+			curr = end + 1;
+			curr = mystrchr(curr, '}');
+			break;
+		}
+		curr = mystrchr(curr + 1, '&quot;');
+	}
+}
+int main(int argc, char* argv[])
+{
+	if (argc == 2)
+	{
+		const char* fileName = argv[1];
+		boost::iostreams::mapped_file_source fileMap;
+		fileMap.open(fileName);
+		if (fileMap.is_open())
+		{
+			const char* data = fileMap.data();
+			size_t cores = std::thread::hardware_concurrency();
+			size_t chunkSize = fileMap.size() / cores;
+			vector&lt;ParseChunk&gt; chunks(cores);
+			for( size_t i = 0; i &lt; cores; ++i )
+			{
+				const char* begin = data + (i * chunkSize);
+				const char* end = data + ( (i+1) * chunkSize);
+				chunks[i].data_chunk = Chunk{ begin, end };
+				chunks[i].thread_chunk = make_shared&lt;thread&gt;(parse, &amp;chunks[i]);
+			}
+			ParseChunk total;
+			Area global;
+			for (const auto&amp; chunk : chunks)
+			{
+				chunk.thread_chunk-&gt;join();
+				for (const auto&amp; area : chunk.areas)
+				{
+					Area&amp; total_area = total.areas[area.first];
+					total_area.total_employees += area.second.total_employees;
+					total_area.total_salaries += area.second.total_salaries;
+					compare_exchange_salary(total_area.area_max, area.second.area_max, greater&lt;LongInteger&gt;());
+					compare_exchange_salary(total_area.area_min, area.second.area_min, less&lt;LongInteger&gt;());
+					if( area.second.name.size() )
+						total_area.name = area.second.name;
+				}
+				for (const auto&amp; surname_max : chunk.surname_max )
+				{
+					const string&amp; surname = surname_max.first;
+					vector&lt;Employee&gt;&amp; total_surname = total.surname_max[surname];
+					bool exchange = compare_exchange_salary(total_surname, surname_max.second, greater&lt;LongInteger&gt;());
+					total_surname.begin()-&gt;surname_max = exchange;
+				}
+			}
+			vector&lt;const Area*&gt; most_employees, least_employees;
+			for (auto&amp; area : total.areas)
+			{
+				if (area.second.total_employees)
+				{
+					area.second.avg_salary = ( double(area.second.total_salaries) / 100.0 ) / double(area.second.total_employees);
+					global.total_employees += area.second.total_employees;
+					global.total_salaries += area.second.total_salaries;
+					compare_exchange_salary(global.area_max, area.second.area_max, greater&lt;LongInteger&gt;());
+					compare_exchange_salary(global.area_min, area.second.area_min, less&lt;LongInteger&gt;());
+					compare_exchange_employees(most_employees, area.second, greater&lt;LongInteger&gt;());
+					compare_exchange_employees(least_employees, area.second, less&lt;LongInteger&gt;());
+				}
+			}
+			global.avg_salary = ( double(global.total_salaries) / 100.0 ) / double(global.total_employees);
+			auto out_salary = [](LongInteger salary) -&gt; string
+			{
+				ostringstream os;
+				os &lt;&lt; (salary / 100) &lt;&lt; '.' &lt;&lt; setfill('0') &lt;&lt; setw(2) &lt;&lt; (salary % 100);
+				return os.str();
+			};
+			for (const auto&amp; emp : global.area_max)
+				cout &lt;&lt; &quot;global_max|&quot; &lt;&lt; string(emp.name.begin, emp.name.end) &lt;&lt; ' ' &lt;&lt; string(emp.surname.begin, emp.surname.end) &lt;&lt; '|' &lt;&lt; out_salary(emp.salary) &lt;&lt; '\n';
+			for (const auto&amp; emp : global.area_min)
+				cout &lt;&lt; &quot;global_min|&quot; &lt;&lt; string(emp.name.begin, emp.name.end) &lt;&lt; ' ' &lt;&lt; string(emp.surname.begin, emp.surname.end) &lt;&lt; '|' &lt;&lt; out_salary(emp.salary) &lt;&lt; '\n';
+			cout &lt;&lt; &quot;global_avg|&quot; &lt;&lt; fixed &lt;&lt; setprecision(2) &lt;&lt; global.avg_salary &lt;&lt; '\n';
+			for (const auto&amp; area : total.areas)
+			{
+				for (const auto&amp; emp : area.second.area_max)
+					cout &lt;&lt; &quot;area_max|&quot; &lt;&lt; area.second.name &lt;&lt; '|' &lt;&lt; string(emp.name.begin, emp.name.end) &lt;&lt; ' ' &lt;&lt; string(emp.surname.begin, emp.surname.end) &lt;&lt; '|' &lt;&lt; out_salary(emp.salary) &lt;&lt; '\n';
+				for (const auto&amp; emp : area.second.area_min)
+					cout &lt;&lt; &quot;area_min|&quot; &lt;&lt; area.second.name &lt;&lt; '|' &lt;&lt; string(emp.name.begin, emp.name.end) &lt;&lt; ' ' &lt;&lt; string(emp.surname.begin, emp.surname.end) &lt;&lt; '|' &lt;&lt; out_salary(emp.salary) &lt;&lt; '\n';
+				if( area.second.total_employees )
+					cout &lt;&lt; &quot;area_avg|&quot; &lt;&lt; area.second.name &lt;&lt; '|' &lt;&lt; fixed &lt;&lt; setprecision(2) &lt;&lt; area.second.avg_salary &lt;&lt; '\n';
+			}
+			for (const auto&amp; emp : most_employees)
+				cout &lt;&lt; &quot;most_employees|&quot; &lt;&lt; emp-&gt;name &lt;&lt; '|' &lt;&lt; emp-&gt;total_employees &lt;&lt; '\n';
+			for (const auto&amp; emp : least_employees)
+				cout &lt;&lt; &quot;least_employees|&quot; &lt;&lt; emp-&gt;name &lt;&lt; '|' &lt;&lt; emp-&gt;total_employees &lt;&lt; '\n';
+			for (const auto&amp; emps : total.surname_max)
+			{
+				if (emps.second.begin()-&gt;surname_max || emps.second.size() &gt; 1)
+				{
+					string surname = string(emps.second.begin()-&gt;surname.begin, emps.second.begin()-&gt;surname.end);
+					for (const auto&amp; emp : emps.second)
+						cout &lt;&lt; &quot;last_name_max|&quot; &lt;&lt; surname &lt;&lt; '|' &lt;&lt; string(emp.name.begin, emp.name.end) &lt;&lt; ' ' &lt;&lt; surname &lt;&lt; '|' &lt;&lt; out_salary(emp.salary) &lt;&lt; '\n';
+				}
+			}
+			fileMap.close();
+		}
+	}
+	else cout &lt;&lt; &quot;How to use: program &lt;input-file&gt;\n&quot;;
+}
+</pre>
+</section>
+<span epub:type="pagebreak" id="_download_pdb_symbols" title="Download PDB symbols"/>
+<section title="Download PDB symbols" epub:type="bodymatter chapter">
+<h1 class="chapter-subtitle"><strong>Download PDB symbols</strong></h1>
+<p class="note-title">2025-04-30 <a href="_202504.xhtml#_desafio_5">&lt;</a><a href="toc_code.xhtml">code</a><a href="_202504.xhtml#_hook_using_detour">&gt;</a></p>
+
+<pre>
+#include &lt;windows.h&gt;
+#include &lt;dbghelp.h&gt;
+#include &lt;algorithm&gt;
+#include &lt;cstdint&gt;
+#include &lt;filesystem&gt;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#pragma comment(lib, &quot;dbghelp.lib&quot;)
+namespace fs = std::filesystem;
+int main()
+{
+    const fs::path RootPath = fs::path(&quot;resources&quot;);
+    auto isBinary = [](const fs::path&amp; path) { return path.extension() == &quot;.exe&quot; || path.extension() == &quot;.dll&quot; || path.extension() == &quot;.sys&quot;; };
+    ::SymInitialize(::GetCurrentProcess(), NULL, FALSE);
+    try
+    {
+        for (const auto&amp; entry : fs::directory_iterator(RootPath))
+        {
+            std::cout &lt;&lt; entry.path().string() &lt;&lt; std::endl;
+            try
+            {
+                if (entry.is_regular_file() &amp;&amp; isBinary(entry.path()))
+                {
+                    auto imageName = entry.path().string();
+                    SYMSRV_INDEX_INFO imageFileInfo = { sizeof(imageFileInfo) };
+                    ::SymSrvGetFileIndexInfo(imageName.c_str(), &amp;imageFileInfo, 0);
+                    char downloadedImagePath[MAX_PATH + 1] = { 0 };
+                    if (::SymFindFileInPath(GetCurrentProcess(), NULL, imageName.c_str(),
+                        &amp;imageFileInfo.timestamp, imageFileInfo.size, 0, SSRVOPT_DWORDPTR,
+                        downloadedImagePath, nullptr, nullptr))
+                    {
+                        std::cout &lt;&lt; &quot;Image file downloaded to &quot; &lt;&lt; downloadedImagePath &lt;&lt; std::endl;
+                    }
+                    char downloadedPdbPath[MAX_PATH + 1] = { 0 };
+                    if (::SymFindFileInPath(GetCurrentProcess(), NULL, imageFileInfo.pdbfile,
+                        &amp;imageFileInfo.guid, imageFileInfo.age, 0, SSRVOPT_GUIDPTR,
+                        downloadedPdbPath, nullptr, nullptr))
+                    {
+                        std::cout &lt;&lt; &quot;PDB file downloaded to &quot; &lt;&lt; downloadedPdbPath &lt;&lt; std::endl;
+                    }
+                }
+            }
+            catch (std::exception&amp; e)
+            {
+                std::cerr &lt;&lt; entry.path().string() &lt;&lt; &quot;: &quot; &lt;&lt; e.what() &lt;&lt; std::endl;
+            }
+        }
+    }
+    catch (std::filesystem::filesystem_error&amp; e)
+    {
+        std::cout &lt;&lt; &quot;No resources directory found; nothing to do here: &quot; &lt;&lt; e.what();
+    }
+    ::SymCleanup(::GetCurrentProcess());
+    return 0;
+}
+</pre>
+</section>
+<span epub:type="pagebreak" id="_hook_using_detour" title="Hook using detour"/>
+<section title="Hook using detour" epub:type="bodymatter chapter">
+<h1 class="chapter-subtitle"><strong>Hook using detour</strong></h1>
+<p class="note-title">2025-04-30 <a href="_202504.xhtml#_download_pdb_symbols">&lt;</a><a href="toc_code.xhtml">code</a><a href="_202504.xhtml#_multiple_peers_wireguard_calculation">&gt;</a></p>
+
+<pre>
+#include &lt;detours.h&gt;
+#include &lt;windows.h&gt;
+using namespace std;
+decltype(SendMessageA)* Orig_SendMessageA = ::SendMessageA;
+decltype(SendMessageW)* Orig_SendMessageW = ::SendMessageW;
+LRESULT WINAPI Hook_SendMessageA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+LRESULT WINAPI Hook_SendMessageW(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+struct Hook
+{
+    PVOID&amp; original;
+    PVOID hook;
+};
+static Hook g_installedHooks[] =
+{
+    { (PVOID&amp;)Orig_SendMessageA, Hook_SendMessageA },
+    { (PVOID&amp;)Orig_SendMessageW, Hook_SendMessageW },
+};
+LRESULT WINAPI Hook_SendMessageA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
+{
+    LRESULT l = Orig_SendMessageA(hWnd, Msg, wParam, lParam);
+    printf(&quot;Hook_SendMessageA %x %d&quot;, hWnd, Msg);
+    return l;
+}
+LRESULT WINAPI Hook_SendMessageW(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
+{
+    LRESULT l = Orig_SendMessageW(hWnd, Msg, wParam, lParam);
+    printf(&quot;Hook_SendMessageW %x %d&quot;, hWnd, Msg);
+    return l;
+}
+static void InstallHooks()
+{
+    DetourRestoreAfterWith();
+    DetourTransactionBegin();
+    DetourUpdateThread(GetCurrentThread());
+    for (auto&amp; hook : g_installedHooks)
+    {
+        DetourAttach(&amp;(PVOID&amp;)hook.original, hook.hook);
+    }
+    DetourTransactionCommit();
+}
+static void UninstallHooks()
+{
+    DetourTransactionBegin();
+    DetourUpdateThread(GetCurrentThread());
+    for (auto&amp; hook : g_installedHooks)
+    {
+        DetourDetach(&amp;hook.original, hook.hook);
+    }
+    DetourTransactionCommit();
+}
+BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReserved)
+{
+    if (DetourIsHelperProcess())
+    {
+        return TRUE;
+    }
+    if (ul_reason_for_call == DLL_PROCESS_ATTACH)
+    {
+        //MessageBoxA(NULL, &quot;Ready to install hooks&quot;, &quot;Dll1&quot;, 0);
+        LogFormat(&quot;Installing hooks&quot;);
+        InstallHooks();
+        LogFormat(&quot;Hooks installed&quot;);
+    }
+    else if (ul_reason_for_call == DLL_PROCESS_DETACH)
+    {
+        LogFormat(&quot;Uninstalling hooks&quot;);
+        UninstallHooks();
+        LogFormat(&quot;Hooks uninstalled&quot;);
+    }
+    return TRUE;
+}
+</pre>
+</section>
+<span epub:type="pagebreak" id="_subir_escadas" title="Subir escadas"/>
+<section title="Subir escadas" epub:type="bodymatter chapter">
+<h1 class="chapter-subtitle"><strong>Subir escadas</strong></h1>
+<p class="note-title">2025-04-30 <a href="_202411.xhtml#_uma_dieta_alem_da_moda_jose_carlos_souto">&lt;</a><a href="toc_body.xhtml">body</a><a href="_202505.xhtml#_o_segundo_cerebro">&gt;</a> <a href="_202504.xhtml#_journaling_and_coding">&lt;</a><a href="toc_essays.xhtml">essays</a><a href="_202510.xhtml#_sobre_flow">&gt;</a></p>
+
+<p>Subir escadas é o exercício mais simples possível que mantém em forma as partes mais importantes do seu corpo no longo prazo: pernas e coração. Com as pernas em forma você deve conseguir chegar em uma idade avançada podendo se locomover. Com o músculo do coração em dia você deve conseguir suportar bombear sangue com eficiência e sem sobrecarga. Subir escadas é simples porque basta achar uma escada e começar a subir. O ritmo é definido pela sua capacidade física do momento. Pode ser que um dia suba mais rápido, outro dia mais lento. Você deve subir pelo tempo que achar possível para você, sem comprometer o corpo nem a agenda. Você pode alternar o ritmo ao prestar atenção ao coração batendo mais ou menos, a tontura vindo ou as pernas se cansando. Você pode forçar o corpo de vez em quando a subir o platô ouvindo podcast ou música enquanto faz o exercício, conscientemente ignorando alguns avisos do corpo para se lançar alguns degraus a mais. Você não precisa mensurar nada fora do seu corpo. O tempo gasto não importa. O ritmo não importa. A geolocalização não importa. Se mover importa. Portanto se mova e quando achar melhor pare. Repita de vez em quando. Não precisa ser todos os dias. Não exija disciplina de você. Apenas constância. E isso irá adicionar um hábito saudável e regulável por décadas a fio em seu itinerário de atividades. Irá também aos poucos te inspirar a fazer outras atividades, como caminhadas ao ar livre ou até algo mais ousado. Quem definirá serão seus gostos e sua vontade, moldada pelo pequeno degrau inicial que você ousou subir.</p>
+</section>
+<span epub:type="pagebreak" id="_journaling_and_coding" title="Journaling and coding"/>
+<section title="Journaling and coding" epub:type="bodymatter chapter">
+<h1 class="chapter-subtitle"><strong>Journaling and coding</strong></h1>
+<p class="note-title">2025-04-30 <a href="_202412.xhtml#_qual_e_a_data_de_um_texto">&lt;</a><a href="toc_essays.xhtml">essays</a><a href="_202504.xhtml#_subir_escadas">&gt;</a></p>
+
+<p>Codar e blogar são tarefas equivalentes. Quando digo blogar estou me referindo a escrever em geral. Textos são apenas linguagens de programação naturais que usam símbolos que seres humanos conseguem decodificar. E como somos máquinas de Turing completas, nossas leituras do mundo, textuais ou outros, interferem nas nossas saídas, e assim por diante. Escrever textos em linguagem natural ou linguagens de programação são essencialmente atividades que codificam símbolos em uma certa disposição, modificam símbolos obedecendo determinadas regras da chamada gramática. Quando estou escrevendo código ou um texto para o blogue a atividade deveria seguir exatamente os mesmos passos, assim como a montagem do histórico, o que significa documentar as mudanças no controle de fonte.</p>
+</section>
+</div>
+</body>
+</html>

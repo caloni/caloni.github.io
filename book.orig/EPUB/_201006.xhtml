@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
+<head><meta http-equiv="default-style" content="text/html; charset=utf-8"/>
+<title>2010-06</title>
+<link rel="stylesheet" href="css/stylesheet.css" type="text/css" />
+<link rel="stylesheet" href="css/page-template.xpgt" type="application/adobe-page-template+xml" />
+</head>
+<body>
+<div class="body">
+<span epub:type="pagebreak" id="_201006" title="2010-06"/>
+<h1 class="chapter-title"><strong>2010-06</strong></h1>
+<span epub:type="pagebreak" id="_const_e_volatile" title="Const e Volatile"/>
+<section title="Const e Volatile" epub:type="bodymatter chapter">
+<h1 class="chapter-subtitle"><strong>Const e Volatile</strong></h1>
+<p class="note-title">2010-06-04 <a href="_201005.xhtml#_enum">&lt;</a><a href="toc_computer.xhtml">computer</a><a href="_201008.xhtml#_como_achar_o_codigofonte_sem_simbolos">&gt;</a></p>
+
+<p>Padrão C (ISO/IEC 9899:1990)</p>
+<pre>
+   
+   6.5.3 type-qualifier
+    const
+    volatile
+   Padrão C++ (ISO/IEC 14882:1998)
+   
+   cv-qualifier
+    const
+    volatile
+</pre>
+<h4>Qualificadores de tipo</h4>
+<p>Chamamos de qualificador de tipo as palavrinhas mágicas **const** e **volatile**. Na prática elas definem como uma determinada variável será usada e se comportará durante a vida do programa.</p>
+<h4>Const</h4>
+<p>Uma variável const não pode ser alterada pelo programa durante sua execução, apenas durante sua inicialização:</p>
+<pre>
+   const float pi = 3.14; // até onde sabemos, pi não irá mudar neste Universo
+</pre>
+<p>No exemplo acima, o valor de pi não pode mais ser alterado. Só que repare que ele foi, em determinado momento, alterado com um valor constante: na sua inicialização. Isso quer dizer que:</p>
+<p>  * pi é uma variável no programa representada por um local na memória **endereçável **pelo programa</p>
+<p>  * pi não é um define do pré-processador que irá virar uma constante literal (3.14, por exemplo)</p>
+<pre>
+   // eu posso endereçar uma constante,
+   // desde que qualifique corretamente meu ponteiro
+   const float* ppi = &amp; pi;
+</pre>
+<img src="img/const_e_volatile_V6eR9ln.png"/>
+<p>Teoricamente a região da memória que contiver uma variável const pode ser qualificada pelo sistema operacional como somente-leitura, mas isso não é uma obrigação. É obrigação do compilador avisar sobre tentativas de alteração da variável no meio do programa, mas nem sempre é possível enxergar que a memória não é alterável. Dessa forma, resultados imprevisíveis podem ocorrer.</p>
+<img src="img/const_e_volatile_d51bAIH.png"/>
+<h4>Uso prático</h4>
+<p>Eu costumo usar variáveis const no lugar de defines. Além de ganhar na tipagem as constantes não precisam ser necessariamente globais, nem acessíveis por outros módulos. Um outro uso muito comum é criar variáveis locais que você sabe que não devem ser alteráveis por ninguém, como o tamanho de matrizes primitivas.</p>
+<pre>
+   namespace Math
+   {
+       const float Pi = 3.14;
+   }
+   
+   //...
+   
+   int func1(int x)
+   {
+       float calc = x * Math::Pi;
+       return calc;
+   }
+   
+   //...
+   
+   int func2(int y)
+   {
+       const size_t PathSize = MAX_PATH * 2;
+       //...
+       char path[PathSize];
+       //...
+   }
+</pre>
+<h4>Volatile</h4>
+<p>O significado do volatile teoricamente muda de implementação para implementação, mas na prática é uma forma de definir uma variável que está sendo acessada por outros programas/threads/entidades espíritas que podem alterar o seu valor sem seu programa notar quando.</p>
+<img src="img/const_e_volatile_carbzjo.jpg"/>
+<p>O exemplo clássico da API Win32 é o <a href="http://msdn.microsoft.com/en-us/library/ms683614%28VS.85%29.aspx">InterlockedIncrement</a>, que realiza operações atômicas em valores inteiros. Para fazer isso é necessário usar um recurso interno disponível pelo processador que irá modificar a memória sem intrusão de outras threads/processadores.</p>
+<img src="img/const_e_volatile_3mqVrqA.png"/>
+<h4>Uso prático</h4>
+<p>Variáveis volatile geralmente interagem de alguma forma com o sistema em que rodam, e são representadas por ponteiros para memória retornada por esse sistema ou documentada como sendo de uso específico.</p>
+<h4>Const e Volatile</h4>
+<p>É possível que exista uma variável que não pode ser modificada pelo seu programa, mas é modificada pelo sistema, de forma que ela é uma mutante!</p>
+<pre>
+   
+   /// endereça o relógio do sistema, atualizado a cada 1/100 milissegundos
+   const volatile int* g_systemClock = (const volatile int*) 0x7689B9D4;
+</pre>
+<img src="img/const_e_volatile_4zUSxmJ.jpg"/>
+<p>A definição de *g_systemClock é de uma memória que não pode ser alterada; só que ela é, pelo sistema. Então a variável também é volatile. No entanto, independente de ser const ou volatile, o tipo nunca será **alterado**, apenas **qualificado**. São duas coisas diferentes na linguagem.</p>
+</section>
+<span epub:type="pagebreak" id="_o_golpista_do_ano" title="O Golpista do Ano (Glenn Ficarra, John Requa, 2009)"/>
+<section title="O Golpista do Ano (Glenn Ficarra, John Requa, 2009)" epub:type="bodymatter chapter">
+<h1 class="chapter-subtitle"><strong>O Golpista do Ano (Glenn Ficarra, John Requa, 2009)</strong></h1>
+<p class="note-title">2010-06-04 <a href="_201005.xhtml#_o_escritor_fantasma">&lt;</a><a href="toc_cinema.xhtml">cinema</a><a href="_201006.xhtml#_almas_a_venda">&gt;</a> <a href="_201005.xhtml#_o_escritor_fantasma">&lt;</a><a href="toc_movies.xhtml">movies</a><a href="_201006.xhtml#_almas_a_venda">&gt;</a> <a href="_201005.xhtml#_o_escritor_fantasma">&lt;</a><a href="toc_miniviews.xhtml">miniviews</a><a href="_201012.xhtml#_a_rede_social">&gt;</a> <a href="_201005.xhtml#_o_escritor_fantasma">&lt;</a><a href="toc_fragments.xhtml">fragments</a><a href="_201012.xhtml#_a_rede_social">&gt;</a></p>
+
+<p>Personagens que acompanham as personas dos atores, mas desafiam a realidade dos eventos. A vida real desses três sujeitos é uma comédia, mas definitivamente eles possuíam poucos momentos para rir de si mesmos.</p>
+</section>
+<span epub:type="pagebreak" id="_almas_a_venda" title="Almas à Venda (Sophie Barthes, 2009)"/>
+<section title="Almas à Venda (Sophie Barthes, 2009)" epub:type="bodymatter chapter">
+<h1 class="chapter-subtitle"><strong>Almas à Venda (Sophie Barthes, 2009)</strong></h1>
+<p class="note-title">2010-06-09 <a href="_201006.xhtml#_o_golpista_do_ano">&lt;</a><a href="toc_cinema.xhtml">cinema</a><a href="_201008.xhtml#_a_origem">&gt;</a> <a href="_201006.xhtml#_o_golpista_do_ano">&lt;</a><a href="toc_movies.xhtml">movies</a><a href="_201008.xhtml#_a_origem">&gt;</a></p>
+
+<p>Esse filme escrito e dirigido pela estreante Sophie Barthes tenta usar o conceito de alma mais ou menos como um órgão transplantado, mas muito mais flexível, já que é possível usar a alma de outras pessoas para potencializar áreas na vida em que se é um zero à esquerda. Aí é que entra Paul Giamatti que interpreta... Paul Giamatti! Ele está com problemas com uma nova peça e resolve trocar de alma por uma que seja compatível com o personagem que tenta interpretar.</p>
+<p>Sendo filmado como um thriller cômico, o filme ganha ritmo apenas ao tentar explicar como funciona a extração e o transplante de almas, e nem isso consegue fazer com propriedade. Não deixa de ser contraditório saber que, ainda que não se saiba exatamente como o mecanismo de almas funciona, já existem comparações entre elas (tanto que a suposta alma de Al Pacino é extremamente valiosa). De qualquer forma isso pode ser visto como uma crítica a respeito de como damos valor a coisas que simplesmente não sabemos o valor (e o fato do filme nunca se preocupar em explicar o que é alma). Há uma referência óbvia também à privacidade que temos hoje em dia. No anúncio da extração de almas por telefone fala-se sobre a privacidade total, mas quando o ator vai à consulta fica em uma sala de espera com um monte de pessoas e é chamado pelo nome.</p>
+<p>Outro aspecto interessante é que as almas possuem cores e formas diferentes, e é óbvia a piada das celebridades terem almas "maiores" fisicamente, enquanto a do protagonista é minúscula e possui um formato pouco lisonjeador. A forma como a alma é tratada implica em como tratamos coisas de hoje em dia de maneira completamente banal. Se antes, no senso geral, a alma é algo inviolável, sagrado, na conversa com o Dr. fica bem óbvio que passa a ser mais um simples órgão, ou o que o valha. (O ator exclama "até que ponto chegamos", no que o Dr. responde "é a tecnologia, seu avanço", como se esse fosse o único empecilho para a agora possível extração de almas).</p>
+<p>Ao ver a técnica de extrair almas é inevitável a comparação com o apagar de memória em <a href="_201808.xhtml#_brilho_eterno_de_uma_mente_sem_lembrancas">Brilho Eterno de uma Mente sem Lembranças</a>, e é notável como pode-se comparar ambos os filmes, principalmente na superioridade do roteiro de Brilho Eterno, que não se deixa intimidar pela ideia original e poderosa. Infelizmente, Almas à Venda sucumbe à sua própria ideia de ser original e em seu segundo e terceiro atos parte para um thriller clichê. É triste ver um tema tão bom não ser expandido em suas potencialidades, se bastando em uma historinha besta que poderia muito bem estar em outro contexto (tráfico de qualquer outro órgão, por exemplo).</p>
+</section>
+<span epub:type="pagebreak" id="_transformacao" title="Transformação"/>
+<section title="Transformação" epub:type="bodymatter chapter">
+<h1 class="chapter-subtitle"><strong>Transformação</strong></h1>
+<p class="note-title">2010-06-01 <a href="_201005.xhtml#_momento_seguinte">&lt;</a><a href="toc_quotes.xhtml">quotes</a><a href="_201007.xhtml#_religiao">&gt;</a> <a href="_201005.xhtml#_momento_seguinte">&lt;</a><a href="toc_self.xhtml">self</a><a href="_201007.xhtml#_religiao">&gt;</a> <a href="_201005.xhtml#_momento_seguinte">&lt;</a><a href="toc_now.xhtml">now</a><a href="_201007.xhtml#_religiao">&gt;</a></p>
+
+<p>&gt; Apenas testemunhe seu estado interior: a transformação e a liberdade virão.</p>
+<p>&gt; Eckhart Tolle (O Poder do Silêncio, 2004)</p>
+</section>
+</div>
+</body>
+</html>
