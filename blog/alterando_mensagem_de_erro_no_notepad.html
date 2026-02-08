@@ -51,8 +51,10 @@ role="navigation" aria-label="main navigation">
 <p>Para variar, iremos depurar o Bloco de Notas, o maravilhoso editor de textos da Microsoft e plataforma de testes para serviços, GINAs e drivers. Para começar, poderemos usar quaisquer das opções anteriores, o que nos levará para uma saída poluída como a seguinte:</p>
 
 <pre>
+   
    Microsoft (R) Windows Debugger  Version 6.7.0005.1
    Copyright (c) Microsoft Corporation. All rights reserved.
+   
    CommandLine: notepad.exe
    Symbol search path is: SRV*C:Symbols*http://msdl.microsoft.com/downloads/symbols
    Executable search path is:
@@ -79,13 +81,9 @@ role="navigation" aria-label="main navigation">
 <p>Não se preocupe, nada aconteceu de errado. Essa é apenas a maneira do WinDbg de dizer "oi, estou aqui, positivo e operando". Vamos destrinchar as informações iniciais para evitar confusão:</p>
 
 <ul><li>Version: versão que está sendo executada do WinDbg (duh).</li>
-
 <li>CommandLine: linha de comando que foi usada ao executar o depurador.</li>
-
 <li>ModLoad: sempre que um módulo é carregado no processo (DLLs ou o próprio executável) o WinDbg informa os endereços inicial e final de carregamente e o nome do módulo. Para rever a lista de módulos carregados usa-se o comando lm.</li>
-
 <li>(`<pid>.<tid>`): Break instruction exception - code 8000003 (first chance). Qualquer informação específica de uma thread é informada dessa maneira no WinDbg. No caso, foi a exceção de breakpoint (parada na execução) acionada no começo da depuração (e é por isso que o notepad ainda não está aparecendo).</li></ul>
-
 <p>Explicado o começo o resto é fácil. Para continuar a execução do bloco de notas basta usarmos o comando g (Go), ou pressionar F5, ou ir no menu "Debug, Go", ou ainda apertar um dos botões de fluxo do depurador listado no seu toolbar:</p>
 
 <img src="/blog/img/brincando_com_o_windbg_debug_windbg.png"/>
@@ -110,6 +108,7 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    0:003&gt; ~* kvn
+   
       0  Id: 2b14.30f8 Suspend: 1 Teb: 000000b7`5be5b000 Unfrozen
     # Child-SP          RetAddr               : Args to Child                                                           : Call Site
    00 000000b7`5bdbd6f8 00007ff9`c74e078e     : 00000000`ffffffff 00007ff9`ae84cd4c 000000b7`00000000 00000000`00000001 : win32u!NtUserMsgWaitForMultipleObjectsEx+0x14
@@ -154,6 +153,7 @@ role="navigation" aria-label="main navigation">
    cs=0033  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000246
    shlwapi!ShellMessageBoxW:
    00007ff9`c7479410 4055            push    rbp
+   
 </pre>
 <p>Analisando pela convenção de chamada x64 sabemos que o terceiro parâmetro, lpcText, está em r8 e é um ID do resource. O que valida essa análise é também o primeiro parâmetro, a instância do módulo que contém os resources que serão usados para carregar a mensagem, que fica em rcx e não está zerado (ele aponta para o módulo commdlg32.dll). Dessa forma nossa tarefa se torna particularmente mais difícil, pois para encontrar a string usada na mensagem de erro seria necessário buscar no meio dos resources dessa DLL.</p>
 
@@ -165,6 +165,7 @@ role="navigation" aria-label="main navigation">
    0:000&gt; ezu 00000211`43d60000 &quot;Obrigado por utilizar o maravilhoso Bloco de Notas!&quot;
    0:000&gt; rr8 = 00000211`43d60000
    0:000&gt; g
+   
 </pre>
 <p>Note que se estivéssemos tentando exibir uma string Ansi iríamos usar o comando eza (edit zero terminated ansi string). O WinDbg possui inúmeros comandos parecidos que começam com e, cuja lista pode ser consultada pelo comando .hh e. O equivalente para leitura é o comando d (de dump).</p>
 

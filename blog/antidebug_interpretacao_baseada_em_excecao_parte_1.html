@@ -56,6 +56,7 @@ role="navigation" aria-label="main navigation">
    void Function3();
    //...
    void FunctionN();
+   
    void ExecThread()
    {
      while( true )
@@ -63,16 +64,20 @@ role="navigation" aria-label="main navigation">
        ExecFunction(funcNumber);
      }
    }
+   
    int Functions[] = { 
      3, 4, 1, 2, 34, 66, 982
    };
+   
    int Start()
    {
      CreateThread(ExecThread);
+   
      for( 0 to size(Functions) )
      {
        ExecThreadToExecFunc(Function[i]);
      }
+   
      return 0;
    } 
 </pre>
@@ -85,6 +90,7 @@ role="navigation" aria-label="main navigation">
      // goes to except code
      return EXCEPTION_EXECUTE_HANDLER;
    }
+   
    void ExecThread()
    {
      while( true )
@@ -93,6 +99,7 @@ role="navigation" aria-label="main navigation">
        {
          // breakpoint exception
          __asm int 3
+   
          // it stops the debugger 
          // if we have an attached 
          // debugger in the process
@@ -103,6 +110,7 @@ role="navigation" aria-label="main navigation">
        {
          // does nothing
        }
+   
        Sleep(someTime);
      }
    } 

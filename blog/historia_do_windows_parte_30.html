@@ -65,6 +65,7 @@ role="navigation" aria-label="main navigation">
 <p>Antes de ser criada uma janela, é necessário registrar uma classe de janela no sistema, cuja relação com uma janela é mais ou menos a mesma entre classe e objeto no paradigma de orientação a objetos. Você primeiro define uma classe para sua janela e posteriormente pode criar inúmeras janelas a partir da mesma classe.</p>
 
 <pre>
+   
    WNDCLASS wndclass; //Dados sobre a classe de janela.
    wndclass.style = CS_HREDRAW | CS_VREDRAW;
    wndclass.lpfnWndProc = WndProc; // Função de janela (isso é importante!)
@@ -103,8 +104,11 @@ role="navigation" aria-label="main navigation">
      HELLOWIN.C -- Displays &quot;Hello, Windows&quot; in client area
      (c) Charles Petzold, 1990
      --------------------------------------------------------*/
+   
    #include &lt;windows.h&gt;
+   
    long FAR PASCAL WndProc (HWND, WORD, WORD, LONG) ;
+   
    int PASCAL WinMain (HANDLE hInstance, HANDLE hPrevInstance,
        LPSTR lpszCmdParam, int nCmdShow)
    {
@@ -112,6 +116,7 @@ role="navigation" aria-label="main navigation">
      HWND        hwnd ;
      MSG         msg ;
      WNDCLASS    wndclass ;
+   
      if (!hPrevInstance)
      {
        wndclass.style         = CS_HREDRAW | CS_VREDRAW ;
@@ -124,8 +129,10 @@ role="navigation" aria-label="main navigation">
        wndclass.hbrBackground = GetStockObject (WHITE_BRUSH) ;
        wndclass.lpszMenuName  = NULL ;
        wndclass.lpszClassName = szAppName ;
+   
        RegisterClass (&amp;wndclass) ;
      }
+   
      hwnd = CreateWindow (
        szAppName,           // window class name
        &quot;The Hello Program&quot;, // window caption
@@ -138,8 +145,10 @@ role="navigation" aria-label="main navigation">
        NULL,                // window menu handle
        hInstance,           // program instance handle
        NULL) ;              // creation parameters
+   
      ShowWindow (hwnd, nCmdShow) ;
      UpdateWindow (hwnd) ;
+   
      while (GetMessage (&amp;msg, NULL, 0, 0))
      {
        TranslateMessage (&amp;msg) ;
@@ -147,24 +156,31 @@ role="navigation" aria-label="main navigation">
      }
      return msg.wParam ;
    }
+   
    long FAR PASCAL WndProc (HWND hwnd, WORD message, WORD wParam, LONG lParam)
    {
      HDC hdc;
      PAINTSTRUCT ps;
      RECT rect;
+   
      switch (message)
      {
        case WM_PAINT:
          hdc = BeginPaint (hwnd, &amp;ps) ;
+   
          GetClientRect (hwnd, &amp;rect) ;
+   
          DrawText (hdc, &quot;Hello, Windows!&quot;, -1, &amp;rect,
              DT_SINGLELINE | DT_CENTER | DT_VCENTER) ;
+   
          EndPaint (hwnd, &amp;ps) ;
          return 0 ;
+   
        case WM_DESTROY:
          PostQuitMessage (0) ;
          return 0 ;
      }
+   
      return DefWindowProc (hwnd, message, wParam, lParam) ;
    } 
 </pre>
@@ -175,7 +191,7 @@ role="navigation" aria-label="main navigation">
    link hellowin.obj user32.lib gdi32.lib
    hellowin.exe
 </pre>
-<p>O Windows 3.x tinha uma particularidade nefasta: qualquer aplicativo poderia travar o sistema como um todo. Se lembrarmos que o Windows antigamente era multitarefa e não-preemptivo, podemos deduzir que enquanto é executada a função de janela de um aplicativo o sistema aguarda por esse aplicativo indefinidamente. Se o aplicativo trava, ele nunca retorna. Se ele nunca retorna, o sistema fica eternamente esperando pelo retorno da função de janela. Alguns travamentos conseguiam ser resolvidos por interrupção, mas a maioria não. No próximo capítulo <a href="historia_do_windows.html">da série</a> veremos como os sistemas de 32 bits resolveram esse pequeno problema.</p>
+<p>O Windows 3.x tinha uma particularidade nefasta: qualquer aplicativo poderia travar o sistema como um todo. Se lembrarmos que o Windows antigamente era multitarefa e não-preemptivo, podemos deduzir que enquanto é executada a função de janela de um aplicativo o sistema aguarda por esse aplicativo indefinidamente. Se o aplicativo trava, ele nunca retorna. Se ele nunca retorna, o sistema fica eternamente esperando pelo retorno da função de janela. Alguns travamentos conseguiam ser resolvidos por interrupção, mas a maioria não. No próximo capítulo <a href="2020-09.html#historia_do_windows">da série</a> veremos como os sistemas de 32 bits resolveram esse pequeno problema.</p>
 
 <p>O que o resto do código do Petzold faz? Dê uma olhada na documentação do MSDN. Ela ainda está disponível, já que todos os aplicativos precisam utilizar essas funções, seja diretamente ou através de imensos frameworks de interface com o usuário. E existem pessoas que precisam suportar código-fonte legado.</p>
 

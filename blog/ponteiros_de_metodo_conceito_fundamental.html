@@ -51,18 +51,18 @@ role="navigation" aria-label="main navigation">
 <p>Três regras iniciais que devem ser consideradas para usarmos ponteiros para métodos são:</p>
 
 <ul><li>A semântica para lidar com ponteiros de método é totalmente diferente de ponteiros de função.</li>
-
 <li>Ponteiros de método de classes distintas nunca se misturam.</li>
-
 <li>Para chamarmos um ponteiro de método precisamos sempre de um objeto da classe para a qual ele aponta.</li></ul>
-
 <p>Visto isso, passemos a um exemplo simples, um chamador de métodos aleatórios, que ilustra o princípio básico de utilização:</p>
 
 <pre>
    #include &lt;iostream&gt;
    #include &lt;time.h&gt;
+   
    class Rand;
+   
    typedef void (Rand::*FP)();
+   
    class Rand
    {
      public:
@@ -70,22 +70,28 @@ role="navigation" aria-label="main navigation">
        {
          srand(time(NULL));
        }
+   
        FP GiveMeFunc()
        {
          return m_funcs[rand() % 3];
        }
+   
      private:
        void FuncOne()   { std::cout &lt;&lt; &quot;One!\n&quot;; }
        void FuncTwo()   { std::cout &lt;&lt; &quot;Two!\n&quot;; }
        void FuncThree() { std::cout &lt;&lt; &quot;Three!\n&quot;; }
+   
        static FP m_funcs[3];
    };
+   
    FP Rand::m_funcs[3] = { &amp;FuncOne, &amp;FuncTwo, &amp;FuncThree };
+   
    void passThrough(FP fp)
    {
      Rand r;
      ( r.*fp )(); // &lt;&lt;-- this
    }
+   
    /** No princípio Deus disse:
      'int main!'
     */
@@ -93,6 +99,7 @@ role="navigation" aria-label="main navigation">
    {
      Rand r;
      FP fp;
+   
      fp = r.GiveMeFunc();
      passThrough(fp);
    }
@@ -100,6 +107,7 @@ role="navigation" aria-label="main navigation">
 <p>Como podemos ver, para o typedef de ponteiros de método é necessário especificar o escopo da classe. Com isso o compilador já sabe que só poderá aceitar endereços de métodos pertencentes à mesma classe com o mesmo protótipo. Na hora de atribuir, usamos o operador de endereço e o nome do método (com escopo, se estivermos fora da classe). É importante notar que, diferente de ponteiros de função, o operador de endereço é obrigatório. Do contrário:</p>
 
 <pre>
+   
    error C4867: 'Rand::FuncOne': function call 
    missing argument list; use '&amp;Rand::FuncOne' 
    to create a pointer to member

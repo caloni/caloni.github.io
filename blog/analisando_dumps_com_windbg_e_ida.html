@@ -147,11 +147,8 @@ Followup: MachineOwner
 <p>A partir daí podemos extrair algumas informações úteis, que eu sublinhei na saída do WinDbg. Na ordem de chegada:</p>
 
 <ul><li>O código do Bug Check. Esse é talvez o mais importante, pois pode resolver rapidamente o nosso problema. Procurando na ajuda do WinDbg pelo código do erro (obs: execute o link pelo explorer) conseguimos ter algumas dicas de como evitar esse erro: "The MAXIMUMWAITOBJECTSEXCEEDED bug check has a value of 0x0000000C. This indicates that the current thread exceeded the permitted number of wait objects". Mais sobre isso pra depois.</li>
-
 <li>Os dados da pilha. Pela pilha de chamadas, podemos não apenas saber se nosso driver está no meio com cara de culpado, como, através dos _offsets_, descobrir em que função ele se enfiou para dar no que deu.</li>
-
 <li>A última chamada do kernel antes do nosso driver pode indicar-nos que evento foi o responsável por iniciar todo o processo de cabum. Nesse caso, IopLoadDriver nos dá uma ótima dica: foi na hora de carregar o nosso driver.</li></ul>
-
 <p>Com isso em mãos, mesmo sem símbolos e nomes de funções no código, conseguiríamos achar o código responsável pelo BSOD. Porém, vamos imaginar por um momento que não foi tão fácil assim e fazer entrar em cena outra ferramenta indispensável nessas horas: o Interactive Disassembler.</p>
 
 <h4>A primeira noite com IDA</h4>
@@ -198,12 +195,15 @@ mov     eax, [esp+30h+var_14]
    count = 0; // processors
    mask = KeQueryActiveProcessors();
    maskAux = mask;
+   
    while( maskAux )
    {
      if( maskAux &amp; 1 )
        count++;
+   
      maskAux &gt;&gt;= 1;
    }
+   
    //...
    KeWaitForMultipleObjects(count,
      waitObjects, 
@@ -213,6 +213,7 @@ mov     eax, [esp+30h+var_14]
      TRUE,
      NULL,
      NULL);
+   
    ExFreePool(...);
    ExFreePool(...);
    ExFreePool(...);
