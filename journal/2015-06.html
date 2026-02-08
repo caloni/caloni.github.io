@@ -180,8 +180,11 @@ void Log(Rest...parm)
 <p>Por que eu acho a minha versão mais legal (não valendo falar que foi porque eu fiz):</p>
 
 <ul><li>É mais simples ainda, tem poucas linhas e pode ser copiada sem peso na consciência. Pode até estar em um header que o overhead é mínimo.</li>
+
 <li>Não requer configuração de arquivo, debug output, named pipe, etc. Isso tem a ver com o uso de cada um. O próximo motivo explica melhor isso.</li>
+
 <li>Se for executado em um prompt já exibe as informações para serem filtradas; se for executado como um serviço encapsulo a saída.</li></ul>
+
 <p>Encapsular a saída e o comportamento de um serviço hoje em dia é algo banal. Há diversos programas que fazem isso para você, sendo desnecessário programar toda aquela parte de comunicação com o Windows. O <a href="http://driverentry.com.br/blog/?p=461">cara do DriverEntry</a>  fez um aplicativo que faz isso, que é simples de usar e continua funcionando no Windows 8.1. Atualmente uso um outro encontrado pelo igualmente fodástico [Rodrigo Strauss]: o Non Sucking Service Manager (seu nome já explica por que defendo utilizar o mínimo possível das firulas da Microsoft).</p>
 
 <p>Além de ser extremamente flexível e não ter falhado nas vezes que o utilizei, o NSSM consegue redirecionar a saída do aplicativo que encapsula como um serviço para um arquivo e rotacionar o arquivo por tamanho ou data (ou reexecução do serviço):</p>
@@ -203,10 +206,13 @@ nssm set MyService AppRotateBytes 10485760
 <p>Com essa forma de fazer serviços, há uma dupla vantagem:</p>
 
 <ul><li>Retirar todo o código para lidar com o Service Manager do Windows das suas mãos.</li>
+
 <li>Continuar tendo um aplicativo que roda pelo prompt e já imprime seu comportamento (e pode ser redirecionado também).</li></ul>
+
 <p>E ainda uma vantagem-bônus:</p>
 
 <ul><li>Você pode executar programas-filho que o redirect para o log vai funcionar do mesmo jeito.</li></ul>
+
 <h3>Bônus final</h3>
 
 <p>Acho que cada um deve escrever no seu header o que achar melhor para depurar seus programas. No entanto, acho válido compartilhar quais são as informações que tem sido úteis para mim:</p>
@@ -303,8 +309,11 @@ inline void LogHeader(std::ostringstream&amp; os)
 <p>Peço que os palestrantes que não tiveram a oportunidade de apresentar seu trabalho colaborem com o evento, já que nosso próximo encontro será no Rio, cujo público, acredito eu, deverá mudar em sua maioria.</p>
 
 <ul><li>Submissão de palestras até 15 de junho às 18h</li>
+
 <li>Notificação de palestras aprovadas ou não entre 16 e 22 de junho</li>
+
 <li>Evento acontecerá de 21 a 25 de Julho</li></ul>
+
 
 </section><hr/>
 

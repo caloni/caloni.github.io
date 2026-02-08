@@ -74,19 +74,33 @@ role="navigation" aria-label="main navigation">
 <p>De memória (ou buscando no meu blogue) consigo lembrar alguns tópicos e a forma como os expliquei. Em alguns até fiz um artigo sobre o assunto:</p>
 
 <ul><li>Ponteiros 16 bits: rua e número de uma casa.</li>
+
 <li>Typedefs: apelidos para nomes de pessoas.</li>
+
 <li>Depuração: a ciência médica de House.</li>
+
 <li>Passagem de argumentos por valor e por referência: e-mails com anexo e com linques.</li>
+
 <li>Ponteiros: armário de gavetas.</li>
+
 <li>Programadores: programadores de verdade não usam Java (brincadeira).</li>
+
 <li>Agendamento de threads: guichê de CPUs.</li>
+
 <li>Seções críticas: fila de threads dentro de uma sala.</li>
+
 <li>Funções com retorno booleano: o dedo polegar dos romanos.</li>
+
 <li>Pilha: uma pilha, só que de pratos e não bytes.</li>
+
 <li>Binário: bichos-preguiça contando com seus únicos dois dedos.</li>
+
 <li>Tipos: uma forma de bolo que só faz bolos com um único formato.</li>
+
 <li>Definições x declarações de variáveis: hardware e software; OK, podemos chamar esse de meta-analogia =)</li>
+
 <li>Depuração 2: séries de investigação forense como CSI.</li></ul>
+
 <p>Acredito ser essa a melhor forma de desmistificar esse pequeno mundinho que parece incompreensível aos outros mortais. Até porque tudo que é criado no mundo dos computadores são abstrações do mundo real, que por sua vez são abstrações da mente humana.</p>
 
 <p>É por isso que sempre digo que ciência da computação é uma arte-ciência da área de humanas.</p>
@@ -211,70 +225,76 @@ role="navigation" aria-label="main navigation">
 <p>Como funciona: definimos uma lista com cada elemento tendo um valor inteiro, geralmente único. Todos os nomes usados na lista passam a fazer parte do espaço de nomes atual e funcionam como constantes com o seu valor definido no início.</p>
 
 <pre>
-enum FileType // criamos o novo tipo inteiro FileType
-{
-   Binary = 1, // Binary é uma constante com valor igual a 1
-   Text = 2, // Text é uma constante com seu sizeof igual a sizeof(FileType)
-   Mixed = 3 // Todas as constantes da enumeração são do mesmo tipo
-};
+   enum FileType // criamos o novo tipo inteiro FileType
+   {
+      Binary = 1, // Binary é uma constante com valor igual a 1
+      Text = 2, // Text é uma constante com seu sizeof igual a sizeof(FileType)
+      Mixed = 3 // Todas as constantes da enumeração são do mesmo tipo
+   };
 </pre>
 <p>Obs.: Os elementos que não possuem valor definido são definidos automaticamente como o valor do elemento anterior acrescidos de um. Se for o primeiro elemento, seu valor padrão é zero.</p>
 
 <pre>
-enum Numbers
-{
-   zero,  // igual a zero
-   one,   // igual a um
-   two,   // igual a dois
-   three  // igual a tres
-};
-enum Hexa
-{
-   JulioCesar = 1,
-   Lucio = 3,
-   Juan,                // Juan = 3 + 1 = 4
-   Gilberto Silva = 6,
-   Felipe Melo          // 6 + 1 = 7
-}; 
+   enum Numbers
+   {
+      zero,  // igual a zero
+      one,   // igual a um
+      two,   // igual a dois
+      three  // igual a tres
+   };
+   
+   enum Hexa
+   {
+      JulioCesar = 1,
+      Lucio = 3,
+      Juan,                // Juan = 3 + 1 = 4
+      Gilberto Silva = 6,
+      Felipe Melo          // 6 + 1 = 7
+   }; 
 </pre>
-<p>_Detalhe bizarro_: você sabia que, apesar da vírgula ser usada para separar valores de enumeração, ela pode também terminar uma listagem? Por algum motivo exdrúxulo (se alguém quiser explicar), um valor de enumeração foi definido de tal forma que sempre poderá existir uma vírgula terminando ele:</p>
+<p>Detalhe bizarro: você sabia que, apesar da vírgula ser usada para separar valores de enumeração, ela pode também terminar uma listagem? Por algum motivo exdrúxulo (se alguém quiser explicar), um valor de enumeração foi definido de tal forma que sempre poderá existir uma vírgula terminando ele:</p>
 
 <pre>
-enum VirgulaSafada { 
-   um = 1, 
-   dois, 
-   tres, // o que essa vírgula no final tá fazendo aqui?
-}; 
+   enum VirgulaSafada { 
+      um = 1, 
+      dois, 
+      tres, // o que essa vírgula no final tá fazendo aqui?
+   }; 
 </pre>
 <h4>Uso prático</h4>
 
 <p>Geralmente usamos enumerações para definir valores únicos (tag) em um argumento de função, ou, mais moderno, como substituto daqueles antigos defines em C para mapas de bits. Nesse último caso não usamos o tipo da enumeração, pois ele pode conter apenas um valor único definido, e não um conjunto deles:</p>
 
 <pre>
-enum ModoDeServir
-{
-   assado,
-   cozido,
-   frito,
-   cru
-};
-void Cook(Prato p, ModoDeServir ms);
-main()
-{
-   Cook(frango, cozido);
-}
-enum FileOpenMode
-{
-   fomRead   = 0x0001,
-   fomWrite  = 0x0002,
-   fomOver   = 0x0004,
-   fomDel    = 0x0008,
-};
-void OpenFile(DWORD fileOpenMode);
-main()
-{
-   OpenFile(fomRead | fomWrite);
-} 
+   enum ModoDeServir
+   {
+      assado,
+      cozido,
+      frito,
+      cru
+   };
+   
+   void Cook(Prato p, ModoDeServir ms);
+   
+   main()
+   {
+      Cook(frango, cozido);
+   }
+   
+   enum FileOpenMode
+   {
+      fomRead   = 0x0001,
+      fomWrite  = 0x0002,
+      fomOver   = 0x0004,
+      fomDel    = 0x0008,
+   };
+   
+   void OpenFile(DWORD fileOpenMode);
+   
+   main()
+   {
+      OpenFile(fomRead | fomWrite);
+   } 
 </pre>
 <p>Note que usamos uma enumeração nesse último caso para termos um nome significativo para uma flag, além desse nome fazer de fato parte dos nomes do programa, e não um define que, para o compilador, não existe.</p>
 
@@ -287,35 +307,38 @@ main()
 <p>O surgimento do enum veio como evolução de uma prática já consagrada pelo uso na linguagem C, que eram as listas de valores constantes criados através de defines com algum prefixo em comum (FILE_SHARE_*, SW_SHOW_*, etc). Portanto, sempre que se encontrar em uma situação para criar esse tipo de lista, a enumeração é o caminho atualmente ideal.</p>
 
 <pre>
-// A listagem abaixo pode virar um enum...
-#define FOM_READ   0x0001
-#define FOM_WRITE  0x0002
-#define FOM_OVER   0x0004
-#define FOM_DEL    0x0008
-// ... como este aqui!
-enum FileOpenMode
-{
-   FOM_READ   = 0x0001,
-   FOM_WRITE  = 0x0002,
-   FOM_OVER   = 0x0004,
-   FOM_DEL    = 0x0008,
-};
-// esse pedaço de código abaixo...
-int main()
-{
-   OpenFile(path, FOM_WRITE);
-}
-// ... vira isso após ser pré-processado...
-int main()
-{
-   OpenFile(path, 0x0002);
-}
-// ... mas isso se fossem usados enums...
-int main()
-{
-   OpenFile(path, FOM_WRITE); // FOM_WRITE faz parte da linguagem
-}
- 
+   // A listagem abaixo pode virar um enum...
+   #define FOM_READ   0x0001
+   #define FOM_WRITE  0x0002
+   #define FOM_OVER   0x0004
+   #define FOM_DEL    0x0008
+   
+   // ... como este aqui!
+   enum FileOpenMode
+   {
+      FOM_READ   = 0x0001,
+      FOM_WRITE  = 0x0002,
+      FOM_OVER   = 0x0004,
+      FOM_DEL    = 0x0008,
+   };
+   
+   // esse pedaço de código abaixo...
+   int main()
+   {
+      OpenFile(path, FOM_WRITE);
+   }
+   
+   // ... vira isso após ser pré-processado...
+   int main()
+   {
+      OpenFile(path, 0x0002);
+   }
+   
+   // ... mas isso se fossem usados enums...
+   int main()
+   {
+      OpenFile(path, FOM_WRITE); // FOM_WRITE faz parte da linguagem
+   }
 </pre>
 <h4>Atualização: e qual a diferença?</h4>
 
@@ -324,38 +347,44 @@ int main()
 <p>Para ilustrar melhor fiz um mais elaborado. Aqui, estamos lendo pedaços de dados que tiveram que ser alinhados com alguma "gordura".</p>
 
 <pre>
-// alinhamento obrigatório pelo leiaute dos dados
-#define CHUNKSZ_BASE 0x5000
-#define CHUNKSZ_TINY   0x1000 + CHUNKSZ_BASE
-#define CHUNKSZ_SMALL  0x2000 + CHUNKSZ_BASE
-#define CHUNKSZ_MEDIUM 0x4000 + CHUNKSZ_BASE
-#define CHUNKSZ_HUGE   0x8000 + CHUNKSZ_BASE
-// alinhamento obrigatório pelo leiaute dos dados
-static const int chunkSizeBase = 0x5000;
-enum ChunkSize
-{
-   chunkszTiny   = 0x1000 + chunkSizeBase,
-   chunkszSmall  = 0x2000 + chunkSizeBase,
-   chunkszMedium = 0x4000 + chunkSizeBase,
-   chunkszHuge   = 0x8000 + chunkSizeBase,
-};
-// Fonte original
-int main()
-{
-    // lendo quadro pedaços de dados (tamanho médio)
-   ReadChunkFromFile(file, CHUNKSZ_MEDIUM * 4);
-    // lendo quadro pedaços de dados (tamanho médio)
-   ReadChunkFromFile(file, chunkszMedium * 4);
-}
-// Pós-processado
-int main()
-{
-    // lendo sei lá o que (perde alinhamento)
-   ReadChunkFromFile(file, 0x4000 + CHUNKSZ_BASE * 4);
-    // lendo quadro pedaços de dados (tamanho médio)
-   ReadChunkFromFile(file, chunkszMedium * 4);
-}
- 
+   // alinhamento obrigatório pelo leiaute dos dados
+   #define CHUNKSZ_BASE 0x5000
+   
+   #define CHUNKSZ_TINY   0x1000 + CHUNKSZ_BASE
+   #define CHUNKSZ_SMALL  0x2000 + CHUNKSZ_BASE
+   #define CHUNKSZ_MEDIUM 0x4000 + CHUNKSZ_BASE
+   #define CHUNKSZ_HUGE   0x8000 + CHUNKSZ_BASE
+   
+   // alinhamento obrigatório pelo leiaute dos dados
+   static const int chunkSizeBase = 0x5000;
+   
+   enum ChunkSize
+   {
+      chunkszTiny   = 0x1000 + chunkSizeBase,
+      chunkszSmall  = 0x2000 + chunkSizeBase,
+      chunkszMedium = 0x4000 + chunkSizeBase,
+      chunkszHuge   = 0x8000 + chunkSizeBase,
+   };
+   
+   // Fonte original
+   int main()
+   {
+       // lendo quadro pedaços de dados (tamanho médio)
+      ReadChunkFromFile(file, CHUNKSZ_MEDIUM * 4);
+   
+       // lendo quadro pedaços de dados (tamanho médio)
+      ReadChunkFromFile(file, chunkszMedium * 4);
+   }
+   
+   // Pós-processado
+   int main()
+   {
+       // lendo sei lá o que (perde alinhamento)
+      ReadChunkFromFile(file, 0x4000 + CHUNKSZ_BASE * 4);
+   
+       // lendo quadro pedaços de dados (tamanho médio)
+      ReadChunkFromFile(file, chunkszMedium * 4);
+   }
 </pre>
 <p>_Aviso para os programadores mais calejados, eu omiti propositalmente os parênteses obrigatórios para qualquer define que tenha cálculos matemáticos, para ilustrar que muitas vezes o que vemos **antes** não é o que aparece **depois.**_</p>
 

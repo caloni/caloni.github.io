@@ -72,10 +72,15 @@ role="navigation" aria-label="main navigation">
 <p>Among these events we can tell the most frequent:</p>
 
 <ul><li>Activated breakpoints</li>
+
 <li>Thrown exceptions</li>
+
 <li>Threads creation/termination</li>
+
 <li>DLLs load/unload</li>
+
 <li>Process exit</li></ul>
+
 <p>In the case of connecting into a existent process, the API DebugActiveProcess is called. Since this call, if successful, the caller program is free now to call the API DebugActiveProcess, looking for debugging events. The main loop for a debugger is, so, pretty simple:</p>
 
 <pre>
@@ -339,22 +344,35 @@ BYTE jmpToAntiAttachAbort[] =
 <p>No momento, minha prática se resume a isso:</p>
 
 <ul><li>Debug or not debug. Aqui resolvi dar uma olhada de perto nas macros e funções usadas para tracing no DDK, e descobri que, assim como a runtime do C, podemos ter mensagens formatadas no estilo do printf e vprintf, o que economiza uma porção de código repetitivo. Dessa forma pude usar minha estratégia de ter a macro LOG usada para mandar linhas de depuração na saída padrão. Ainda tenho que estudar, contudo, o uso da variável va_list em kernel.</li>
+
 <li>ExAllocatePool (WithoutTag). Precisei fazer alguns testes no Dependency Walker e anexar o fonte que faz a vez do GetProcAddress para drivers em meu miniprojeto do Bazaar para aprendizado de programação em kernel.</li>
+
 <li>Getting Started. Esse foi o artigo mais interessante de todos, pois foi a base de todo o código que ando repetindo em meus exercícios. Além desse, é vital o uso do Visual Studio no processo de desenvolvimento, pois muitas (quase todas) das funções do DDK são alienígenas para mim, assim como os seus 497 parâmetros cada.</li>
+
 <li>Driver plus plus. Tive que perder algum tempo codificando uma segunda versão do Useless e baixando o framework da Hollis para testar as peculiaridades do C++ em kernel mode. Não que eu vá usar alguma coisa avançada nesse estágio, mas preciso conhecer algumas limitações e alguns macetes que farão uma grande diferença no futuro, quando as linhas de código ultrapassarem 10.000.</li>
+
 <li>Pulei alguns tópicos que pretendo explorar quando estiver mais à vontade com alguns conceitos básicos, como a explicação de como obter o processo dono de uma IRP, a explicação do que é uma IRP (apesar de eu ter baixado e brincado com o monitor da OSR) e a aparentemente simples explanação sobre como funcionam as listas ligadas do DDK. Tudo isso virá com o tempo, e algumas coisas estarão sempre martelando na cabeça. É só dar tempo ao tempo e codificar.</li>
+
 <li>Nós queremos exemplos. Esse foi o artigo que mais me deu trabalho, mas que mais valeu a pena. Codifiquei tudo do zero, olhando aos poucos no código do Fernando para pegar o jeito de usar funções com nomes enormes e auto-explicativas e parâmetros com os nomes a, b, c. Também dediquei um tempinho considerável com a aplicação de user mode, para (re)aprender a depurar dos dois lados da moeda.</li></ul>
+
 <p>Próximos passos?</p>
 
 <p>Pelo que eu vi, no geral, acredito que aos poucos irei voltar para os tópicos que pulei, além de olhar em outros artigos que chamaram minha atenção:</p>
 
 <ul><li>Como criar um driver de boot</li>
+
 <li>Usando o DSF para interagir com dispositivos USB de mentirinha</li>
+
 <li>A continuação emocionante de nosso driver que recebe reads e writes</li>
+
 <li>Usar o que existe de bom e melhor para garantir a qualidade de um driver</li>
+
 <li>Mais alguns detalhes que começam a fazer sentido em nosso KernelEcho</li>
+
 <li>Criando e usando IOCTLs. Essa vai ser ótima!</li>
+
 <li>A necessidade inevitável de mexer com o registro do sistema</li></ul>
+
 <p>Tudo isso aliado aos exemplos e à teoria latente do Windows 2000 Device Driver Book (minha primeira leitura) irá dar um upgrade forçado aos meus neurônios. Espero sobreviver para contar o final da história.</p>
 
 </section><hr/>
@@ -464,7 +482,9 @@ BYTE jmpToAntiAttachAbort[] =
 <p>Ultimamente não tenho acertado muito bem meus cronogramas, com erros que variam de um dia a uma semana. A causa desse problema, pelo que eu tenho conseguido detectar, está em dois problemas que acredito acontecer de maneira muito freqüente em um ambiente de desenvolvimento que ainda está no caos:</p>
 
 <ul><li>Mudança constante de prioridade</li>
+
 <li>Falta de testes básicos no software antes de mexer</li></ul>
+
 <p>Portanto, aí vão algumas dicas empíricas para lidar com esses detalhezinhos que são "faceizinhos de serem esquecidinhos" (by Rafael).</p>
 
 <p>Simples de dizer, não? No entanto, se o que você está fazendo é tão pequeno quanto duas horas passa a ficar um pouco mais fácil. E isso é possível se você souber fazer direito um cronograma, dividindo suas tarefas em tarefas menores, mais paupáveis e "pausáveis".</p>

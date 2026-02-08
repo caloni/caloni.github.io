@@ -157,8 +157,11 @@ role="navigation" aria-label="main navigation">
 <p>Para essa proeza precisaremos de:</p>
 
 <ul><li>Dois TButtons</li>
+
 <li>Um TEdit</li>
+
 <li>Um TListBox</li></ul>
+
 <p>Bom, sabemos já como colocar esses caras no form principal. Apenas espalhe-os de maneira que eles não fiquem uns em cima dos outros (essa técnica de espalhamento chama-se design).</p>
 
 <p>Agora no evento default do Button1 (duplo-clique nele) colocaremos o seguinte código:</p>
@@ -521,7 +524,9 @@ role="navigation" aria-label="main navigation">
 <p>E mais uma vez voilà! Pouquíssimas linhas de código e um movimentador e empilhador de controles. Dois detalhes merecem ser destacados:</p>
 
 <ul><li>O uso de dynamic_cast em cima dos ponteiros da VCL é uma maneira saudável de checar a integridade dos tipos recebidos - particularmente do Sender. O uso do primeiro parâmetro dos tratadores de eventos também torna o código menos preso à componentes específicos do formulário;</li>
+
 <li>O método FindChildControl é deveras útil quando não temos certeza da existência de um controle. Geralmente é uma boa idéia confiar no sistema de gerenciamento de componentes da VCL. Não é à toa que existe um framework por baixo do ambiente RAD.</li></ul>
+
 
 </section><hr/>
 
@@ -557,8 +562,11 @@ role="navigation" aria-label="main navigation">
 <p>Criado o banco e testado (experimente conectar pelo próprio BDE) podemos agora criar um novo projeto VCL e colocar alguns componentes interessantes feitos especialmente para banco de dados. São eles:</p>
 
 <ul><li>TDatabase: representa a própria base da dados, onde especificamos o nome da base de dados que vamos utilizar.</li>
+
 <li>TTable: representa uma tabela de uma base de dados.</li>
+
 <li>TDataSource: a origem dos dados que serão usados para popular seja lá o que quisermos popular.</li></ul>
+
 <p>Abaixo segue a configuração de cada um deles, ou seja, as propriedades que você deve mudar para que tudo funcione.</p>
 
 <pre>
@@ -591,6 +599,7 @@ role="navigation" aria-label="main navigation">
 <p>E é isso! Se chegamos até aqui, já sabemos o arroz com feijão de usar banco de dados com o C++ Builder. Mais para a frente podemos nos aventurar em tópicos um pouco mais avançados, como fazer buscas, navegar item a item e essas coisas que as pessoas costumam fazer com um MDB.</p>
 
 <ul><li>2021-03-27. Durante a revisão deste post eu tentei rodar a aplicação sem sucesso. Existem erros na abertura e configuração do arquivo mdb que não perdi mais tempo tentando resolver.</li></ul>
+
 
 </section><hr/>
 
@@ -725,14 +734,13 @@ role="navigation" aria-label="main navigation">
    
      cout &lt;&lt; &quot;first: &quot; &lt;&lt; first 
        &lt;&lt; &quot;, second: &quot; &lt;&lt; second &lt;&lt; endl;
+   
      normalSwap(first, second);
+   
      cout &lt;&lt; &quot;first: &quot; &lt;&lt; first 
        &lt;&lt; &quot;, second: &quot; &lt;&lt; second &lt;&lt; endl;
    } 
-</pre>
-<p>  </p>
-
-<pre>
+   
    Saída:
    first: 13, second: 42
    first: 42, second: 13

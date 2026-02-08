@@ -111,8 +111,11 @@ role="navigation" aria-label="main navigation">
 <p>Três regras iniciais que devem ser consideradas para usarmos ponteiros para métodos são:</p>
 
 <ul><li>A semântica para lidar com ponteiros de método é totalmente diferente de ponteiros de função.</li>
+
 <li>Ponteiros de método de classes distintas nunca se misturam.</li>
+
 <li>Para chamarmos um ponteiro de método precisamos sempre de um objeto da classe para a qual ele aponta.</li></ul>
+
 <p>Visto isso, passemos a um exemplo simples, um chamador de métodos aleatórios, que ilustra o princípio básico de utilização:</p>
 
 <pre>
@@ -531,9 +534,6 @@ role="navigation" aria-label="main navigation">
 </pre>
 <p>Depois desse último passo geramos a LIB que precisávamos e agora só falta integrar com o projeto. Copie o msvcrt.lib para o diretório do projeto e configure no projeto esse arquivo na lista de LIBs a serem incluídas (Properties, Linker, Input, Additional Dependencies). Lembre-se de ignorar todas as LIBs padrão (Linker, Input, Ignore All Default Libraries). Para evitar unresolved external em frescuras de segurança ignore as firulas de checagem (C/C++, Code Generation, Buffer Security Check, e Basic Runtime Checks em Debug). Antes de mais nada deixe explícito o nome da função de entrada de seu programa para main, pois do contrário ele irá usar um bootstrap que inicia a libc (Linker, Advanced, Entry Point), compile e linke. E voilà!</p>
 
-<pre>
-   
-</pre>
 <p>E agora o tamanho final de nosso executável passou para espantosos 3 KB! Isso a princípio parece ótimo e dá vontade de usar em todos os projetos, mas existe um porém ainda não resolvido: as limitações da falta de um runtime. Essa é uma solução bem bobinha que não tem nada a ver com uma solução profissional 100% garantida e com suporte técnico 24 horas. Algumas coisas não vão funcionar, como inicialização de variáveis estáticas, exceções, redirecionamento de entrada/saída, etc. Contudo, para projetos simples e pequenos, isso não deverá ser um problema. No entanto, eu não garanto qualquer coisa que advier de compilações inspiradas neste artigo.</p>
 
 </section><hr/>
@@ -607,14 +607,16 @@ role="navigation" aria-label="main navigation">
 
 <p>Um script no WinDbg nada mais é que uma execução em batch: um arquivo texto cheio de comandos que poderíamos digitar manualmente, mas que preferimos guardar para poupar nossos dedos. Existem quatro maneiras diferentes de chamar um script no WinDbg, todas muito parecidas, variando apenas se são permitidos espaços antes do nome do arquivo e se os comandos são condensados, isto é, as quebras de linhas substituídas por ponto-e-vírgula para executar tudo em uma linha só.</p>
 
-<pre>
-   
-</pre>
 <ul><li>$<nome-do-arquivo - não permite espaços e condensa comandos.</li>
+
 <li>$><nome-do-arquivo - não permite espaços e não condensa comandos.</li>
+
 <li>$$<nome-do-arquivo - permite espaços e condensa comandos.</li>
+
 <li>$$><nome-do-arquivo - permite espaços e não condensa comandos.</li>
+
 <li>$$>a<nome-do-arquivo - igual ao anterior, e ainda permite passar argumentos.</li></ul>
+
 <p>A ajuda do WinDbg descreve as diferenças dos comandos acima de forma adversa, afirmando que os comandos '&lt;'  não condensam as linhas e os '&gt;&lt;' o fazem, quando na realidade é o contrário. Não se deixe enganar por esse detalhe. No caso do script desse artigo, utilizaremos a última forma, pois precisamos de um argumento para funcionar: o nome da DLL. Caso você não digite esse argumento, a ajuda do script será impressa:</p>
 
 <pre>

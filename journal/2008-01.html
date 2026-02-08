@@ -112,9 +112,13 @@ role="navigation" aria-label="main navigation">
 <p>Sem estar na lista previamente concebida comecei a fazer outras coisas de maneira mais eficiente, relacionado ao trabalho ou não:</p>
 
 <ul><li>Aprender o leiaute do teclado Dvorak. Treino todo dia cinco minutos há três meses a digitação usando esse leiaute, porque é mais simples, mais rápido e dói menos os dedos.</li>
+
 <li>Anotar todas as coisas importantes. Seja uma idéia nova, uma idéia sobre uma idéia, ou até mesmo melhoramentos em algum software que dou manutenção, é importante manter tudo anotado, porque sabe-se lá quando isso vai ser usado. Mas, quando for, quem vai se lembrar?</li>
+
 <li>Bloguear constantemente. Apesar dos sacrifícios que isso às vezes causa, é edificante nunca "deixar a bola cair". Minha regra é sempre publicar um artigo dia sim, dia não durante a semana. Em uma semana começo na segunda, em outra na terça, e assim sucessivamente. Tem funcionado desde que reiniciei o blogue há seis meses, e espero que continue assim.</li>
+
 <li>Usar novo controle de versão em casa. Há um mês mais ou menos conheci o Mercurial, que é um sistema de controle de versão muito leve e não-centralizado, duas coisas que fazem uns sininhos soarem em minha cabeça. Ele é baseado conjunto de modificações e merge, duas coisas a que não estou acostumado e me forcei a aprender.</li></ul>
+
 <p>Não é muito difícil definir essa lista, pois ela na verdade são as mesmas duas listas que citei anteriormente. Comecei a fazer essas coisas seis meses atrás. Para um fumante de fato parar, uns cinco anos de abstinência é um bom indicador. Acredito que, para um hábito se enraizar, um ano e meio pode ser de bom tamanho.</p>
 
 </section><hr/>
@@ -172,33 +176,43 @@ role="navigation" aria-label="main navigation">
 <p>  1. Um blog verdadeiro é um log de todos os sítios que você gostaria de salvar ou dividir.</p>
 
 <ul><li>Então, hoje, o del.icio.us é melhor para os bloggers do que o próprio Blogger. Isso seria como se os blogues fossem sítios de pesquisadores do google, o que não deixa de ser meia-verdade.</li></ul>
+
 <p>  2. Você pode, é claro, colocar links sobre você fora do seu blog, mas se o blog tem mais posts originais do que links, recomendo aprender um pouco de humildade.</p>
 
 <ul><li>É um golpe bem dado ao Caloni.com.br. Bom, espero ser mais humilde em 2008 =).</li></ul>
+
 <p>  3. Se fizer uma pequena procura antes de postar, vai descobrir que alguém já falou do seu assunto e melhor do que você.</p>
 
 <ul><li>Isso eu faço, mas, como já disse, conteúdo em português é mais escasso, o que compensa a publicação de artigos sobre assuntos já tratados em outras línguas.</li></ul>
+
 <p>  4. Seja você mesmo, sem suprimir links que não o tratem favoravelmente. Seus leitores querem saber quem efetivamente você é.</p>
 
 <ul><li>Essa dica é particularmente difícil para blogues técnicos, como o meu e de muita gente. No entanto, nós tentamos não parecer bots, acredite!</li></ul>
+
 <p>  5. Você pode melhorar o título das páginas que sugere quando as descrever e dar o link. Assegure-se de sua descrição fará os leitores se lembrarem dela, reconhecendo páginas que já visitaram ou quando a visitarem novamente.</p>
 
 <ul><li>Essa é mais fácil de fazer.</li></ul>
+
 <p>  6. Use sempre algum adjetivo para descrever sua própria reação à página que recomenda (ótima, imaginativa, clara, útil).</p>
 
 <ul><li>Essa dica foi clara e útil. Além de imaginativa e ótima, claro.</li></ul>
+
 <p>  7. Dê os créditos à fonte que você usou. Assim, seus leitores podem conferi-la e "moverem-se para cima".</p>
 
 <ul><li>Essencial, especialmente, mais uma vez, se tratando de blogues técnicos.</li></ul>
+
 <p>  8. Cuidado com os problemas de formatação estranha, múltiplas páginas com histórias, textos muito longos, etc. Não esconda o link principal entre outros auxiliares, mal identificados ou pobres.</p>
 
 <ul><li>Essa dica é mais para weblogs de fato. Eu passo.</li></ul>
+
 <p>  9. Escolha alguns autores favoritos ou celebridades e crie um feed no Google News, acompanhando novas menções a eles. Assim, outros fãs podem segui-los através do seu blog.</p>
 
 <ul><li>Você pode seguir os que sigo através da minha Home Page (update 2021-04-18: hoje em dia não sigo mais nada, mas links específicos existem nos posts; quem diria, acabei ficando mais blogger com o passar do tempo). Eventualmente compartilho posts através do Google Reader. Update 2021-04-18: não mais =(</li></ul>
+
 <p>  10. Reindique seus links favoritos de tempos em tempos para quem os perdeu, esquece ou o está lendo pela primeira vez.</p>
 
 <ul><li>Essa é uma coisa que está faltando aqui no Caloni.com.br, que é a manutenção dos artigos antigos. Prometo me esforçar mais em 2008. Promessa de ano-novo =).</li></ul>
+
 <p>É isso. Concorda, discorda, sem corda? Imagino que a dica que mais me afetou foi aquela sobre humildade, lá no começo. Digo isso porque ainda está martelando na minha cabeça, pronta para transformar este blogue em algo mais democrático e transparente.</p>
 
 </section><hr/>
@@ -310,8 +324,11 @@ Followup: MachineOwner
 <p>A partir daí podemos extrair algumas informações úteis, que eu sublinhei na saída do WinDbg. Na ordem de chegada:</p>
 
 <ul><li>O código do Bug Check. Esse é talvez o mais importante, pois pode resolver rapidamente o nosso problema. Procurando na ajuda do WinDbg pelo código do erro (obs: execute o link pelo explorer) conseguimos ter algumas dicas de como evitar esse erro: "The MAXIMUMWAITOBJECTSEXCEEDED bug check has a value of 0x0000000C. This indicates that the current thread exceeded the permitted number of wait objects". Mais sobre isso pra depois.</li>
+
 <li>Os dados da pilha. Pela pilha de chamadas, podemos não apenas saber se nosso driver está no meio com cara de culpado, como, através dos _offsets_, descobrir em que função ele se enfiou para dar no que deu.</li>
+
 <li>A última chamada do kernel antes do nosso driver pode indicar-nos que evento foi o responsável por iniciar todo o processo de cabum. Nesse caso, IopLoadDriver nos dá uma ótima dica: foi na hora de carregar o nosso driver.</li></ul>
+
 <p>Com isso em mãos, mesmo sem símbolos e nomes de funções no código, conseguiríamos achar o código responsável pelo BSOD. Porém, vamos imaginar por um momento que não foi tão fácil assim e fazer entrar em cena outra ferramenta indispensável nessas horas: o Interactive Disassembler.</p>
 
 <h4>A primeira noite com IDA</h4>
@@ -408,8 +425,11 @@ mov     eax, [esp+30h+var_14]
 <p>Nas depurações do dia-a-dia algumas configurações devem estar sempre muito bem configuradas, para que torne seus momentos de desespero porque nada está funcionando mais agradáveis. Por isso, assim que escolher seu tema preferido trate de configurar os seguintes itens:</p>
 
 <ul><li>Diretórios de símbolos. Você pode começar com .symfix, que vai montar uma string padrão, e adicionar mais diretórios com .sympath+.</li>
+
 <li>Diretórios de código-fonte. Coloque a raiz dos seus projetos principais. Com o tempo, se você mexe muito nos seus diretórios, é necessário fazer uma manutenção desse valor.</li>
+
 <li>Diretórios de executáveis. Basicamente é o mesmo do diretório de símbolos.</li></ul>
+
 <p>Depois de configurar tudo isso, ajuste as janelas na melhor maneira e proporção que achar mais agradável. Esse será o último passo, pois depois você irá fechar o WinDbg e salvar o workspace, que a partir daí será o padrão sempre que abrir o depurador.</p>
 
 <p>Para que os arquivos fonte caiam no lugar que você escolheu, durante a configuração, abra um código-fonte e coloque no lugar que gostaria de ver todos os fontes listados, junto com um placeholder (um arquivo C usado como localizador, existem 5 dentro da pasta themes). Após isso, feche o código-fonte, mas mantenha o placeholder. Depois é só fechar o WinDbg salvando as configurações. Tudo deve funcionar como previsto (ou você esqueceu alguma coisa).</p>
@@ -775,7 +795,9 @@ mov     eax, [esp+30h+var_14]
 <p>Isso acontece porque o compilador é obrigado a montar um novo stack frame para cada chamada da mesma função, já que os valores locais precisam manter-se intactos até o retorno recursivo da função. Porém, existe uma otimização chamada de tail recursion, que ocorre se, e somente se (de acordo com o livro):</p>
 
 <ul><li>A chamada recursiva é a última instrução que será executada no corpo da função.</li>
+
 <li>O valor de retorno da chamada não é parte de uma expressão.</li></ul>
+
 <p>Note que ser a última instrução não implica em ser a última linha da função, o importante é que seja a última linha executada. No nosso exemplo, isso já é fato, só que usamos o retorno em uma expressão.</p>
 
 <pre>
@@ -1063,16 +1085,23 @@ mov     eax, [esp+30h+var_14]
 <p>Para quem se interessou pelo tema e pretende estudar um pouco mais sobre as novidades na linguagem, aqui vão algumas expressões-chave para pesquisa:</p>
 
 <ul><li>Proposed Wording for Variadic Templates</li>
+
 <li>Proposed Wording for RValue Reference</li>
+
 <li>Specifying C++ Concepts</li></ul>
+
 <p>Threads em C++, por Wanderley Caloni. O foco principal desse tema foi dividido entre a interface, óbvia, para suportar programas multithreading em C++, incluindo abstrações de sincronismo e variáveis de condição, e a mudança significativa no padrão para definir um modelo de memória consistente com programas multithreading, a grande vantagem dessa biblioteca ter sido votada, pois tendo as bases para o que eles estão chamando de "execução consistente", a interface é mera conseqüência.</p>
 
 <p>Durante a apresentação foi mostrado um exemplo de uso das classes thread e mutex. O código foi melhorado (mas não completado). Ao final da palestra, fiquei devendo os links. Bem, aqui estão algumas expressões-chave também:</p>
 
 <ul><li>ISO C++ Strategic Plan for Multithreading</li>
+
 <li>Thoughts on a Thread Library for C++</li>
+
 <li>A Memory Model for C++: Strawman Proposal</li>
+
 <li>Multi-threading Library for Standard C++</li></ul>
+
 <p>Para finalizar, segue o álbum de fotos (não tenho mais Facebook) disponibilizado pelo <a href="http://techberto.wordpress.com/">Alberto Fabiano</a>, organizador-mor do evento.</p>
 
 </section><hr/>
@@ -1285,8 +1314,11 @@ mov     eax, [esp+30h+var_14]
 <p>Algumas desvantagens dessa técnica são:</p>
 
 <ul><li>Não permite compartilhamento entre executáveis diferentes, salvo se tratar-se de uma DLL carregada por ambos.</li>
+
 <li>É um compartilhamento estático, que permanece do início do primeiro processo ao fim do último.</li>
+
 <li>Não possui proteção, ou seja, se for uma DLL, qualquer executável que a carregar tem acesso à área de memória.</li></ul>
+
 <p>Muitas vezes essa abordagem é suficiente, como em hooks globais, que precisam apenas de uma ou duas variáveis compartilhadas. Também pode ser útil como contador de instâncias, do mesmo jeito que usamos as variáveis estáticas de uma classe em C++ (vide shared_ptr do boost, ou a CString do ATL, que usa o mesmo princípio).</p>
 
 <p>Houve uma vez em que tive que fazer hooks direcionados a threads específicas no sistema, onde eu não sabia nem qual o processo host nem quantos hooks seriam feitos. Essa é uma situação onde fica muito difícil usar a técnica milenar.</p>

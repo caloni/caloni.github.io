@@ -155,15 +155,23 @@ role="navigation" aria-label="main navigation">
 <p>Comece com esses ingredientes:</p>
 
 <ul><li>2 xícaras de farinha de trigo (peneirada),</li>
+
 <li>1 e 1/2 xícara de açúcar,</li>
+
 <li>1 xícara de cacau em pó,</li>
+
 <li>1 colher de sopa de fermento em pó,</li>
+
 <li>1 colher de bicarbonato de sódio.</li></ul>
+
 <p>Mexa todos os ingredientes em pó (peneirei o açúcar e o cacau em pó tbm). Depois de mistura-los, acrescente:</p>
 
 <ul><li>2 ovos,</li>
+
 <li>1 xícara de óleo,</li>
+
 <li>2 xícaras de água morna (mas vá acrescentando aos poucos e sempre mexendo).</li></ul>
+
 <p>Depois de mexer todos os ingredientes, unte uma forma com manteiga e farinha e leve ao forno pre aquecido 180 graus por mais ou menos uns 35 minutos (ou fure o meio com palito e se sair limpo, está pronto).</p>
 
 </section><hr/>
@@ -350,7 +358,9 @@ if [ $i -le $menor ]; then
 <p>Há algumas dicas úteis para explicar para todos que mexem com bash script:</p>
 
 <ul><li>Sempre setar antes de rodar um script a flag de executável (diferente do Windows, nem todos os arquivos possuem esse direito no Linux);</li>
+
 <li>Scripts podem/devem conter comentários; o padrão de comentários para tudo no Linux é a cerquilha (#) no início das linhas.</li></ul>
+
 <p>No começo dos scripts em geral você irá notar a seguinte linha:</p>
 
 <pre>
@@ -461,8 +471,11 @@ fi
 <h3>Dicas sobre uso do if</h3>
 
 <ul><li>Sempre mantenha espaços entre os colchetes e a checagem/comparação; e.g. erro: “missing `]'“;</li>
+
 <li>Palavras-chave não podem compartilhar a mesma linha (mesmo comando); solução: ou coloque um ponto-e-vírgula entre as palavras-chave ou quebra uma nova linha; e.g. erro: “syntax error near unexpected token `fi”;</li>
+
 <li>Variáveis do tipo strings podem conter espaços e isso é um problema para o comparador; solução: coloque sempre aspas entre variáveis do tipo string.</li></ul>
+
 <h4>Exemplo</h4>
 
 <pre>
@@ -474,8 +487,11 @@ fi
 <h3>Brinde</h3>
 
 <ul><li>Você pode inverter uma condição colocando um “!” na frente; `if [ ! -f regularfile ]; then`</li>
+
 <li>Você pode combinar condições usando certos operadores como -a (AND) e -o (OR); `if [ $foo -ge 3 -a $foo -lt 10 ]; then`</li>
+
 <li>As mesmas condições e regras podem ser usadas em outros comandos como while e until.</li></ul>
+
 <h3>Condições com colchetes-duplos</h3>
 
 <pre>
@@ -487,13 +503,19 @@ if [[ $num -eq 3 &amp;&amp; &quot;$stringvar&quot; == foo ]]; then
 if [[ &quot;$title&quot; =~ [^a-zA-Z0-9\ ] ]]; then
 </pre>
 <ul><li>Duplos-colchetes expandem variáveis como shell globbing (exemplo acima com asteriscos retorna verdade se houver string em qualquer parte de $stringvar;</li>
+
 <li>Por outro lado não há file globbing (e por isso a condição -a acima funciona para um arquivo chamado *.sh);</li>
+
 <li>Não é preciso usar aspas para strings que contém espaços (não há divisão da variável);</li>
+
 <li>Syntax sugar: você pode usar operadores && e ||.</li></ul>
+
 <h3>Considerações importantíssimas sobre ifs</h3>
 
 <ul><li>Operadores AND e OR são short-circuit;</li>
+
 <li>0 = true, >0 = false (C-like); por isso há comandos como `if ! tar etc; then "Error"; fi`.</li></ul>
+
 <h3>Brinde: switch-case</h3>
 
 <p>Sim, ele existe. E é até bonitinho:</p>
@@ -759,7 +781,9 @@ maior=3, menor=1, media=2.00
 <h2>Referências</h2>
 
 <ul><li><a href="https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html">Bash Reference Manual</a></li>
+
 <li><a href="https://tldp.org/LDP/abs/html/index.html">Advanced Bash-Scripting Guide</a></li></ul>
+
 <p><a href="https://acloudguru.com/blog/engineering/conditions-in-bash-scripting-if-statements">sendo inventada</a> para adicionar mais formas de expressar condições. É importante ter sempre em mãos também as [diferentes checagens]: https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Bash-Conditional-Expressions</p>
 
 </section><hr/>

@@ -87,23 +87,24 @@ role="navigation" aria-label="main navigation">
 <p>Usar o CreateWindow com a classe certa, fazer markup html dentro do título e cuidar das mensagens de click e enter no controle:</p>
 
 <pre>
-CreateWindowEx(0, WC_LINK, 
-    L&quot;&lt;a href=\&quot;http://www.caloni.com.br\&quot;&gt;This site rocks!&lt;/a&gt;&quot;, 
-    WS_VISIBLE | WS_CHILD | WS_TABSTOP, ...);
-//...
-    case WM_NOTIFY:
-      switch( ((LPNMHDR)lParam)-&gt;code )
-      {
-      case NM_CLICK:
-      case NM_RETURN:
-      {
-        PNMLINK pNMLink = (PNMLINK)lParam;
-        LITEM item = pNMLink-&gt;item;
-        if( (((LPNMHDR)lParam)-&gt;hwndFrom == st_linkHwnd[hWndDlg]) )
-        {
-          // codigo util
-        }
- 
+   CreateWindowEx(0, WC_LINK, 
+       L&quot;&lt;a href=\&quot;http://www.caloni.com.br\&quot;&gt;This site rocks!&lt;/a&gt;&quot;, 
+       WS_VISIBLE | WS_CHILD | WS_TABSTOP, ...);
+   
+   //...
+   
+   case WM_NOTIFY:
+     switch( ((LPNMHDR)lParam)-&gt;code )
+     {
+     case NM_CLICK:
+     case NM_RETURN:
+     {
+       PNMLINK pNMLink = (PNMLINK)lParam;
+       LITEM item = pNMLink-&gt;item;
+       if( (((LPNMHDR)lParam)-&gt;hwndFrom == st_linkHwnd[hWndDlg]) )
+       {
+         // codigo util
+       }
 </pre>
 <p>Você que não está fazendo subclassing de janelas existe outra técnica que você pode utilizar: arrastar-e-soltar o controle do seu ToolBox. Qual é a graça?</p>
 
@@ -333,7 +334,7 @@ CreateWindowEx(0, WC_LINK,
 <p>Pensou que acabaria por aqui? E qual o significado das sequências de escape dentro da mensagem-modelo? O formato básico para inserção de um argumento segue o seguinte padrão:</p>
 
 <pre>
-%n!&lt;format-string&gt;!
+   %n!&lt;format-string&gt;!
 </pre>
 <p>Onde n é o número que identifica o argumento, como já vimos, e `format-string` é um espaço reservado para identificarmos o tipo do argumento e como ele aparecerá na mensagem de saída.</p>
 
@@ -352,30 +353,38 @@ CreateWindowEx(0, WC_LINK,
 <p>Esse também é um bônus da MSDN, que te presenteia com exemplos de código tão fantasiosos quanto a própria função, veja o primeiro exemplo, por exemplo:</p>
 
 <pre>
-#include windows.h
-#include stdio.h
-void main(void)
-{
-    LPWSTR pMessage = L%1!.s! %4 %5!s!;
-    DWORD_PTR pArgs[] = { (DWORD_PTR)4, (DWORD_PTR)2, (DWORD_PTR)LBill,   %1!.s! refers back to the first insertion string in pMessage
-         (DWORD_PTR)LBob,                                                 %4 refers back to the second insertion string in pMessage
-         (DWORD_PTR)6, (DWORD_PTR)LBill };                                %5!s! refers back to the third insertion string in pMessage
-    const DWORD size = 100+1;
-    WCHAR buffer[size];
-    if (!FormatMessage(FORMAT_MESSAGE_FROM_STRING  FORMAT_MESSAGE_ARGUMENT_ARRAY,
-                       pMessage, 
-                       0,
-                       buffer, 
-                       size, 
-                       (va_list)pArgs))
-    {
-        wprintf(LFormat message failed with 0x%xn, GetLastError());
-        return;
-    }
-     Buffer contains   Bi Bob   Bill.
-    wprintf(LFormatted message %sn, buffer);
-}
- 
+   #include windows.h
+   #include stdio.h
+   
+   void main(void)
+   {
+       // %1!.s! refers back to the first insertion string in pMessage
+       // %4 refers back to the second insertion string in pMessage
+       // %5!s! refers back to the third insertion string in pMessage
+       LPWSTR pMessage = L%1!.s! %4 %5!s!;
+       DWORD_PTR pArgs[] = { (DWORD_PTR)4,
+         (DWORD_PTR)2,
+         (DWORD_PTR)LBill,
+         (DWORD_PTR)LBob,
+         (DWORD_PTR)6, (DWORD_PTR)LBill
+         };
+       const DWORD size = 100+1;
+       WCHAR buffer[size];
+   
+       if (!FormatMessage(FORMAT_MESSAGE_FROM_STRING | FORMAT_MESSAGE_ARGUMENT_ARRAY,
+         pMessage, 
+         0,
+         buffer, 
+         size, 
+         (va_list)pArgs))
+       {
+           wprintf(LFormat message failed with 0x%xn, GetLastError());
+           return;
+       }
+   
+        Buffer contains   Bi Bob   Bill.
+       wprintf(LFormatted message %sn, buffer);
+   }
 </pre>
 <p>Depois ele chega a reimplementar o exemplo usando va_list, o que é muito interessante, mas... bom, deixa pra lá. Vamos fazer nosso próprio teste.</p>
 

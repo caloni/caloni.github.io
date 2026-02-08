@@ -116,9 +116,6 @@ role="navigation" aria-label="main navigation">
 
 <p>Quando o código da BIOS é executado, ele precisa, entre outras coisas, fazer três:</p>
 
-<pre>
-   
-</pre>
 <p>  1. Encontrar o dispositivo padrão de boot.</p>
 
 <p>  2. Ler o primeiro setor desse dispositivo para o endereço 0x7C00.</p>
@@ -160,12 +157,12 @@ role="navigation" aria-label="main navigation">
 
 <p>Porém, essa função ainda:</p>
 
-<pre>
-   
-</pre>
 <ul><li>não foi comentada,</li>
+
 <li>não foi testada,</li>
+
 <li>não foi testada em release.</li></ul>
+
 <p>Logo, essa é uma tarefa em que você termina o mais importante em uma hora... mas não termina tudo. Deve-se sempre considerar a tarefa por completo, pois no final de quinze tarefas vai faltar comentar e testar tudo isso, o que aumentará consideravelmente a imprevisiblidade no seu cronograma.</p>
 
 <p>Seja honesto consigo mesmo e com seu chefe: você realmente trabalha 8 horas por dia? É lógico que não! E não é nenhuma vergonha admitir isso. Todos nós temos emails para ler e responder, reuniões para presenciar e blogues importantes para acompanhar. Portanto, ignore essa conversa fiada de 8 horas e admita: não se deve contar os dias como se eles tivessem 8 horas. Ninguém é produtivo programando 8 horas seguidas. Essa pessoa está te enganando ou usando cocaína (que não pode ser usada todos os dias).</p>
@@ -207,17 +204,29 @@ role="navigation" aria-label="main navigation">
 <p>Vamos aproveitar que a versão NT foi melhorada para dar uma recapitulada geral de como as coisas funcionam internamente no sistema operacional. Em um desenho da arquitetura veremos diferentes módulos que fazem parte do sistema operacional que dividem funções específicas e que possuem métodos específicos de comunicação interna e externa. Importante notar que a divisão entre os componentes que descreverei abaixo já existia desde a primeira versão do NT, sendo que apenas alguns itens foram adicionados, como o Gerenciador de Plug &amp; Play e o Gerenciador de Energia. Os elementos principais do Windows, visto sob camadas de abstração, são:</p>
 
 <ul><li>Aplicações Win32, POSIX, OS/2;</li>
+
 <li>Subsistemas Win32, POSIX, OS/2;</li>
+
 <li>Subsistemas de integridade;</li>
+
 <li>Serviços do Executivo (em inglês Executive Services);</li>
+
 <li>Gerenciador de I/O ou I/O Manager;</li>
+
 <li>Gerenciador de Memória Virtual ou VMM, o Virtual Memory Manager;</li>
+
 <li>Process Manager, PnP Manager e Power Manager;</li>
+
 <li>Object Manager;</li>
+
 <li>Microkernel;</li>
+
 <li>Kernel mode drivers;</li>
+
 <li>Hardware Abstraction Layer (aka HAL);</li>
+
 <li>Por fim, o hardware.</li></ul>
+
 <img src="/journal/img/historia_do_windows_parte_50_windows_architecture.png"/>
 
 <blockquote>Um outro item importantíssimo que foi movido da versão 3.51 para a 4.0 é a GDI, responsável pelos gráficos. Inicialmente ela estava no modo de usuário, mas a necessidade de aumentar o desempenho do sistema fez com que ela fosse incorporada ao núcleo do sistema.  Agora vamos dissecar as partes interessantes.</blockquote>
@@ -344,16 +353,20 @@ role="navigation" aria-label="main navigation">
 
 <p>Vamos analisar essas abstrações em exemplos da vida real:</p>
 
-<pre>
-   
-</pre>
 <ul><li>Programa, Dados de entrada, Processamento, Dados de saída.</li>
+
 <li>Bloco de Notas, Digitação do usuário, Leitura do teclado, Texto exibido na tela.</li>
+
 <li>Chat Online, Envio de mensagem, Conexão com a internet, Seu amigo recebe a mensagem.</li>
+
 <li>Editor de imagem, Movimento do mouse, Interpretação de movimento, Retângulo desenhado.</li>
+
 <li>Browser, Clique do mouse em uma URL, Conexão com o site, Exibição da nova página.</li>
+
 <li>Jogo de Tiro, Clique no botão de tiro, Cálculo do projétil, Inimigo acertado.</li>
+
 <li>Compilador, Código do programador, Interpretação das instruções, Código de máquina (seu programa!).</li></ul>
+
 <p>Como podemos ver, podemos abstrair esse lance de "dados de entrada + processamento = dados de saída" com qualquer tipo de programa que usarmos. Basta relacionar o que fazemos (digitar algo, arrastar o mouse, apertar um botão, etc) para obtermos a saída desejada (texto/gráfico na tela, no arquivo, na impressora, etc). O programa é o elemento que fica no meio fazendo essa "mágica".</p>
 
 <h2>Dados do programa</h2>
@@ -404,15 +417,18 @@ role="navigation" aria-label="main navigation">
 
 <p>Bem, até aqui você já aprendeu um montão de coisas:</p>
 
-<pre>
-   
-</pre>
 <ul><li>Programas podem ser armazenados em arquivos.</li>
+
 <li>Quando executados, o computador interpreta suas instruções.</li>
+
 <li>Um programa usa dados de entrada para gerar dados de saída.</li>
+
 <li>Para tomar decisões, ele utiliza variáveis internas.</li>
+
 <li>A ordem das instruções é chamado fluxo de execução.</li>
+
 <li>A tomada de decisões altera o fluxo de execução de um programa.</li></ul>
+
 <p>Para concluir, vamos dar uma espiada nas estruturas de comparação de um programa em C e suas conseqüentes mudanças de fluxo. Note também que as comparações são feitas com variáveis internas.</p>
 
 <p>If significa "se", ou seja, faz uma comparação, e retorna se a comparação é verdadeira (sim!) ou não (não!). Porém, o if apenas faz alguma coisa se o resultado for sim.</p>
@@ -438,11 +454,15 @@ role="navigation" aria-label="main navigation">
 <h4>Para saber mais</h4>
 
 <ul><li>Arquitetura de von Neumann</li>
+
 <li>Máquina de Turing</li></ul>
+
 <h4>Se ainda está difícil compreender</h4>
 
 <ul><li>Resolva exercícios de lógica.</li>
+
 <li>Leia livros bem introdutórios (até para criança vale) como Introdução Ilustrada à Computação.</li></ul>
+
 
 </section><hr/>
 
@@ -790,9 +810,13 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL,
 <p>Não se preocupe, nada aconteceu de errado. Essa é apenas a maneira do WinDbg de dizer "oi, estou aqui, positivo e operando". Vamos destrinchar as informações iniciais para evitar confusão:</p>
 
 <ul><li>Version: versão que está sendo executada do WinDbg (duh).</li>
+
 <li>CommandLine: linha de comando que foi usada ao executar o depurador.</li>
+
 <li>ModLoad: sempre que um módulo é carregado no processo (DLLs ou o próprio executável) o WinDbg informa os endereços inicial e final de carregamente e o nome do módulo. Para rever a lista de módulos carregados usa-se o comando lm.</li>
+
 <li>(`<pid>.<tid>`): Break instruction exception - code 8000003 (first chance). Qualquer informação específica de uma thread é informada dessa maneira no WinDbg. No caso, foi a exceção de breakpoint (parada na execução) acionada no começo da depuração (e é por isso que o notepad ainda não está aparecendo).</li></ul>
+
 <p>Explicado o começo o resto é fácil. Para continuar a execução do bloco de notas basta usarmos o comando g (Go), ou pressionar F5, ou ir no menu "Debug, Go", ou ainda apertar um dos botões de fluxo do depurador listado no seu toolbar:</p>
 
 <img src="/journal/img/brincando_com_o_windbg_debug_windbg.png"/>

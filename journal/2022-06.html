@@ -155,60 +155,95 @@ role="navigation" aria-label="main navigation">
 <p>Com essa premissa me vem à mente os seguintes cenários:</p>
 
 <ul><li>Não é possível instalar Visual Studio</li>
+
 <li>Só copiar a pasta onde está rodando o windbg.exe.</li>
+
 <li>Arquivos de dump muito grandes</li>
+
 <li>Processo que capota consumindo o mundo de memória.</li>
+
 <li>Cópia de arquivos em alguns ambientes demoraria séculos.</li>
+
 <li>Processos que não podem parar</li>
+
 <li>Bug raro de acontecer e se parar o processo já era.</li>
+
 <li>Manter processo em observação até reprodução (memory leaks macabros).</li>
+
 <li>Único lugar que acontece o bug</li>
+
 <li>É raro, mas acontece sempre.</li></ul>
+
 <h2>Colinha de todo dia</h2>
 
 <ul><li>!analyze -v</li>
+
 <li>!sym noisy, .symfix, .sympath</li>
+
 <li>.reload /f, x</li>
+
 <li>bp, bl, bu, g</li>
+
 <li>db, dd, dv, da, du</li>
+
 <li>~, k, kv, kvn</li></ul>
+
 <h2>Leak de memória</h2>
 
 <ul><li>!address -summary</li>
+
 <li>!heap -stat, -srch AllocSize</li></ul>
+
 <h2><a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/process-servers--user-mode-">Máquina com rede e com firewall</a></h2>
 
 <ul><li>WinDbg é de hackudos, então <a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/two-firewalls">firewall não funciona</a> com ele graças ao proxy reverso.</li></ul>
+
 <h2>Preciso do kernel</h2>
 
 <ul><li>Começa a parte divertida: <a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/forcing-a-system-crash-from-the-keyboard">gerar tela azul</a>.</li></ul>
+
 <h2>Boot da máquina</h2>
 
 <ul><li>bcdedit /dbgsettings, /copy {current}, set debug on</li>
+
 <li>VM: \\.\pipe\kd</li>
+
 <li>windbg.exe -k com:pipe,port=\\.\pipe\kd,resets=0,reconnect -b</li>
+
 <li>Para bem no <a href="https://systemroot.gitee.io/pages/apiexplorer/d6/d5/4_2kdinit_8c-source.html">código-fonte de David Cutler</a> para um debugger portável do kernel.</li>
+
 <li>!process 0 0</li></ul>
+
 <h2><a href="https://www.infoq.com/br/presentations/depurando-ate-o-fim-do-mundo/">Serviços no limite da existência</a></h2>
 
 <ul><li>I get by with a <a href="2008-05.html#kernel_mode_user_mode">little help</a> [from my kernel].</li></ul>
+
 <h2>Profiling</h2>
 
 <ul><li>Para ver <a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/wt--trace-and-watch-data-">quanto tempo leva</a> chamar uma função.</li></ul>
+
 <h2>Engenharia reversa</h2>
 
 <ul><li><a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/setting-a-conditional-breakpoint">Breakpoints condicionais</a>.</li>
+
 <li><a href="2008-02.html#conversor_de_houaiss_para_babylon_parte_1">Quebrando Houaiss</a>.</li></ul>
+
 <h2><a href="https://docs.microsoft.com/en-us/windows/win32/debug/using-symstore">Servidor de símbolos</a></h2>
 
 <ul><li>Use o <a href="https://docs.microsoft.com/en-us/windows/win32/debug/using-symstore">symstore</a> para montar uma fazenda de símbolos.</li>
+
 <li>Use o <a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/symproxy">SymProxy</a> para [publicar].</li>
+
 <li>O SymProxy também é útil como um... proxy =).</li></ul>
+
 <h2><a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/gflags">GFlags</a></h2>
 
 <ul><li>Heap tagging e stack trace database para caçar leaks de memória.</li>
+
 <li>Coleta silenciosa de dumps.</li>
+
 <li>Chamar kernel debugger ao iniciar processo (parâmetro `-d` do ntsd.exe).</li></ul>
+
 <p><a href="2008-05.html#kernel_mode_user_mode">little help</a> [from my kernel]: https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/controlling-the-user-mode-debugger-from-the-kernel-debugger</p>
 
 <p><a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/symproxy">SymProxy</a> para [publicar]: https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/http-symbol-stores</p>
@@ -324,12 +359,19 @@ select * from intensityData where snp = 'rs123456';
 <h2>Lessons Learned</h2>
 
 <ul><li>There's no cheap way to parse 25tb of data at once.</li>
+
 <li>Sorting is hard, especially when data is distributed.</li>
+
 <li>Never, ever, try and make 2.5 million partitions. (cost: $1k+ USD)</li>
+
 <li>Sometimes bespoke data needs bespoke solutions.</li>
+
 <li>Don't sleep on the basics. Someone probably solved your problem in the 80s.</li>
+
 <li><a href="https://www.gnu.org/software/parallel/">gnu parallel</a> is magic and everyone should use it.</li>
+
 <li>Associative arrays in AWK are super powerful.</li></ul>
+
 <h3>Example</h3>
 
 <pre>
@@ -403,9 +445,13 @@ time gawk '/Hahaha/{if($4==&quot;Hahaha&quot;)print(&quot;a&quot;)}' bigsample.t
 <h2>Preliminary conclusions</h2>
 
 <ul><li>It seems that parsing and splitting into fields is faster when there is one simple delimiter, instead of several delimiters.</li>
+
 <li>Usually getting $N is faster than getting $M, where N < M</li>
+
 <li>In some cases, searching for /pattern/ in the whole line is faster than comparing $N == "pattern", especially if N is not one of the first fields of the line</li>
+
 <li>Getting NF can be slow because the line has to be parsed and fields calculated, and more so if there are several delimiters</li></ul>
+
 <h2>Final test</h2>
 
 <pre>
@@ -444,7 +490,9 @@ time gawk '/:SubNetwork/{a++}END{print a}' bigsample.txt
 <blockquote>Show that if you use your :SubNetwork as field separator, it's the fastest.</blockquote>
 
 <ul><li>Regex as filter is much faster than run the action.</li>
+
 <li>Mawk is fast as hell.</li></ul>
+
 
 </section><hr/>
 

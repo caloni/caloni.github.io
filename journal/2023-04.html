@@ -212,15 +212,25 @@ role="navigation" aria-label="main navigation">
 <h2>Cliques sugeridos</h2>
 
 <ul><li>Espresso: 7-10 clicks</li>
+
 <li>Moka Pot: 9-11 clicks</li>
+
 <li>**Aeropress**: 13-14 clicks (testando com sucesso 11)</li>
+
 <li>Siphon (cloth): 13-15 clicks</li>
+
 <li>**Pour Over (cloth)**: 13-15 clicks</li>
+
 <li>Siphon (metal, glass filter): 15-16 clicks</li>
+
 <li>**Pour Over (paper)**: 15-17 clicks</li>
+
 <li>Chemex: 17-19 clicks</li>
+
 <li>Pour Over (metal filter): 18-20 clicks</li>
+
 <li>**Press Pot**: 25-29 clicks</li></ul>
+
 
 </section><hr/>
 
@@ -234,12 +244,19 @@ role="navigation" aria-label="main navigation">
 <p>Criei <a href="https://github.com/Caloni/x64-deep-dive">um repositório</a> para praticar alguns desses assuntos e recriar algum código-fonte para mostrar como o Visual Studio gera código em x64 e como depurar este código. Através deste repo e do <a href="https://youtu.be/wp7-BD9pOOc">vídeo que pretendo gravar</a> a respeito caminharemos pelas mudanças desde o x86 para aumentarmos nossas habilidades em debugging de código x64. Entre algumas mudanças segue uma lista do que considerei mais importante:</p>
 
 <ul><li>Fastcall é a convenção de chamada default para x64.</li>
+
 <li>RBP não é mais usado como frame pointer.</li>
+
 <li>A última chamada da função pode ser otimizada com tail elimination.</li>
+
 <li>Com isso o FPO (Frame Pointer Omission) pode comer solto.</li>
+
 <li>RSP se mantém inalterado no corpo da função, entre o prólogo e o epílogo (gostei disso).</li>
+
 <li>A técnica de homing space (opcional na compilação) salva os 4 primeiros parâmetros passados na pilha para a memória.</li>
+
 <li>O Child-SP (RSP) é usado para caminhar tanto pelos parâmetros quanto pelas variáveis locais.</li></ul>
+
 <h2>Testes</h2>
 
 <h2>FastCall</h2>
@@ -632,16 +649,25 @@ ret
 <p>Uma string mutuamente rotativa é uma string que se rotacionarmos para a direita ou para a esquerda, com os caracteres "indo parar" do outro lado, é comparável com a string original. Exemplos:</p>
 
 <ul><li>"abacate" é mutuamente rotativa com "cateaba";</li>
+
 <li>"roma" é mutuamente rotativa com "maro";</li>
+
 <li>"ab" é mutuamente rotativa com "ba";</li>
+
 <li>"123456" é mutuamente rotativa com "456123".</li></ul>
+
 <p>Há alguns passos simples e um código esperto que consegue verificar isso. Os passos são os seguinte:</p>
 
 <ul><li>Inicialize as duas strings em duas variáveis;</li>
+
 <li>Veja se o tamanho das duas é similar (se não retorne false);</li>
+
 <li>Junte a primeira string com ela mesma (s = s + s);</li>
+
 <li>Verifica se a segunda string existe na string duplicada;</li>
+
 <li>Se existir quer dizer que uma é rotação da outra.</li></ul>
+
 <p>Ficou confuso? Vai ficar mais simples ao ver a implementação em C++:</p>
 
 <pre>
@@ -780,16 +806,25 @@ vector&lt;int&gt; InsertionSort(vector&lt;int&gt; array)
 <p>O passo a passo parece simples:</p>
 
 <ul><li>Declare três nodes: anterior, atual e seguinte;</li>
+
 <li>Enquanto no node atual o node anterior será nulo;</li>
+
 <li>Deixe o próximo do atual ser o anterior para inverter a lista;</li>
+
 <li>Em cada iteração do loop os nodes atual e anterior são incrementados por 1.</li></ul>
+
 <p>Esse desafio tem seus truques. O importante na lógica abaixo é atravessar a lista mantendo o tracking dos elementos seguinte e anterior. Tendo o elemento atual, anterior e próximo a troca de posições se torna simples, mas não tão simples quanto você deve estar imaginando porque:</p>
 
 <ul><li>o node seguinte se torna o próximo do atual;</li>
+
 <li>o próximo do atual se torna o anterior (aqui é a invertida);</li>
+
 <li>o anterior se torna o atual (aqui é o passado);</li>
+
 <li>o atual se torna o próximo;</li>
+
 <li>continue até que o antigo final da lista se torne o novo head, apontando para o último anterior.</li></ul>
+
 <h2>Código</h2>
 
 <pre>
@@ -835,11 +870,17 @@ shared_ptr&lt;LinkedList&gt; LinkedListReverse(shared_ptr&lt;LinkedList&gt; head
 <p>Vamos começar pela resposta. O algoritmo que deve ser seguido é:</p>
 
 <ul><li>Declare a string que você quer inverter;</li>
+
 <li>Obtenha o tamanho dessa string;</li>
+
 <li>Faça um loop do começo ao fim ou do fim ao começo;</li>
+
 <li>No loop atualize a posição inicial e final da string;</li>
+
 <li>Troque de posição os elementos final e inicial;</li>
+
 <li>Pronto.</li></ul>
+
 <p>Simples, não? Em C++:</p>
 
 <pre>
@@ -872,9 +913,13 @@ string ReverseString(string s)
 <p>Com hash tables você consegue através de uma chave agrupar qualquer tipo de informação. No caso de caracteres repetidos em uma string a chave é o próprio caractere. Os passos para conseguir isso são os seguintes:</p>
 
 <ul><li>Declare um map entre char e int (como contador);</li>
+
 <li>Faça um loop caractere por caractere da string;</li>
+
 <li>Incremente o contador para cada caractere que passar;</li>
+
 <li>O contador está pronto, imprima o map.</li></ul>
+
 <p>Em C++ um código que faz isso seria como o abaixo:</p>
 
 <pre>
@@ -900,11 +945,17 @@ void MatchingCharacters(string s)
 <p>Nesse caso é necessário dar uma de esperto:</p>
 
 <ul><li>Declare dois ponteiros: primeiro e segundo;</li>
+
 <li>Ambos são inicializados para o início da lista;</li>
+
 <li>Faça um loop que percorra a lista até o final;</li>
+
 <li>A cada iteração incremente o primeiro ponteiro em dois nodes;</li>
+
 <li>A cada iteração incremente o segundo ponteiro em um node;</li>
+
 <li>Quando o primeiro ponteiro atingir o final o segundo estará no meio.</li></ul>
+
 <p>O princípio de contador de lista ligada é a contagem de iterações do começo até o final da lista, mas para manter o tracking de uma posição relativa como o meio dessa lista é necessário manter um segundo contador.</p>
 
 <p>Através dessa mesma lógica você poderia encontrar posições arbitrárias no meio da lista, como o terceiro elemento onde seu valor começa com a letra 'p', etc.</p>
@@ -1010,9 +1061,13 @@ int ReverseNumberStringVersion(int number)
 <p>Contudo, a maneira bonita de se fazer isso é mantendo o domínio do problema na matemática. E dessa forma:</p>
 
 <ul><li>Pegue o dígito mais à direita do número;</li>
+
 <li>Some o dígito com o novo número invertido;</li>
+
 <li>Multiplique o resultado por 10;</li>
+
 <li>Divida o número por 10.</li></ul>
+
 <h2>Código</h2>
 
 <pre>
@@ -1039,8 +1094,11 @@ int ReverseNumberNumberVersion(int number)
 <p>Apesar de existir matemáticos ao redor do mundo tentando responder esta pergunta da maneira computacionalmente mais rápida possível, existe uma forma ingênua e eficiente para números baixos:</p>
 
 <ul><li>Faça um loop entre 2 e a metade do número;</li>
+
 <li>Se algum desses números dividir sem resto retorne false;</li>
+
 <li>Se acabar o loop retorne true: o número é primo.</li></ul>
+
 <p>Note que a mesma lógica pode ser aplicada para obter os fatores de um número, seus divisores, etc.</p>
 
 <p>O código em C++:</p>
@@ -1070,9 +1128,13 @@ bool PrimeNumber(int number)
 <p>Zero e um são os primeiros números Fibonacci e todos os outros que se seguem são a soma dos dois números anteriores. Ou seja, para implementar isto em código basta:</p>
 
 <ul><li>Usar duas variáveis para os dois números anteriores;</li>
+
 <li>Os primeiros valores dessas variáveis são 0 e 1;</li>
+
 <li>Vá somando até obter a quantidade desejada;</li>
+
 <li>Por exemplo, 0+1=1, 1+1=2 (exceto em 1984), etc.</li></ul>
+
 <p>Um codigozinho que imprime os cinco primeiros números para deixar mais claro:</p>
 
 <pre>
@@ -1104,15 +1166,25 @@ void Fibonacci()
 <p>Este filme foi apresentado pela Petrobrás e ganhou o prêmio Petrobrás, o que já diz quase tudo sobre ele. Mas dê uma olhada nos títulos dos textos acadêmicos sobre o filme:</p>
 
 <ul><li>A (auto) representação da mulher negra no cinema brasileiro contemporâneo;</li>
+
 <li>O corpo múltiplo negro feminino à luz de um cinema da negrura em Café com Canela;</li>
+
 <li>Café, canela e transgressão: descolonizando narrativas feministas;</li>
+
 <li>Políticas Públicas e a Inclusão da Mulher Negra no Cinema;</li>
+
 <li>Feminilidades e Negritudes nas Telas: Diálogos entre a Psicologia e o Cinema;</li>
+
 <li>O que o cinema quer da gente é coragem: negridade e dissidência sexual & de gênero nas produções da Rosza Filmes;</li>
+
 <li>Direções do olhar: um estudo sobre as poéticas e técnicas de diretoras negras do cinema brasileiro;</li>
+
 <li>Por um cinema negro no feminino: dororidade e pretagonismo das mulheres no filme Café com Canela;</li>
+
 <li>Café com canela e a edificação do afeto no Cinema Negro Feminino;</li>
+
 <li>"Café com Canela" contribui para maior representatividade no cinema.</li></ul>
+
 <p>Os textos acima poderão lhe proporcionar diversas formas de xerocar a opinião diversa que existe na imprensa; tão diversa que um é a cópia de outro que é a cópia de outro que é a cópia...</p>
 
 <p>Porém, se você está curioso para entender como perdeu duas horas de sua vida, talvez este texto esclareça um pouco. Compartilho do seu tédio, caro leitor.</p>
@@ -1303,11 +1375,17 @@ int main() {
 <p>Algumas informações relevantes sobre esses parâmetros:</p>
 
 <ul><li>node é a localização do ramo atual;</li>
+
 <li>left é o início do intervalo que estamos;</li>
+
 <li>right é o final do intervalo que estamos;</li>
+
 <li>pos é o número do ramo que pretendemos trocar;</li>
+
 <li>value é o valor que pretendemos colocar no ramo;</li>
+
 <li>tree é a árvore de segmentos.</li></ul>
+
 <p>Todos esses parâmetros existem porque a função update é recursiva e ela precisa passar a localização dentro do array no formato de um mapa para uma árvore binária. A busca também segue o mesmo princípio, de O(log N), ou seja, para encontrar a posição desejada (variável pos) a função irá seguir limitando o intervalo entre left e right até que ambos tenham o mesmo valor, situação em que estaremos em uma folha.</p>
 
 <p>Depois da atualização vem a parte interessante: os ramos acima da folha são atualizados com a soma entre seus ramos esquerdo e direito, recursivamente. Isso quer dizer que o valor 42 irá ecoar por todos os ramos de cima até chegar na raiz, que também irá conter 42, já que este é o primeiro valor diferente de zero de toda a árvore.</p>
@@ -1326,10 +1404,15 @@ int main() {
 <p>Com isso a soma dos seguintes intervalos deve contar os seguintes totais:</p>
 
 <ul><li>o intervalo [666,666] deve conter o valor 42, da única folha selecionada;</li>
+
 <li>o intervalo [600,700] deve conter o valor 145, da soma de 666, 600 e 700;</li>
+
 <li>o intervalo [600,999] deve conter o valor 200, da soma adiciona de 999;</li>
+
 <li>a raiz, ou o intervalo [1,999] deve conter o mesmo valor;</li>
+
 <li>intervalos abaixo de [1,599] devem conter 0.</li></ul>
+
 <p>Vamos implementar a função de soma e descobrir.</p>
 
 <pre>
@@ -1363,11 +1446,17 @@ int main() {
 <p>Mais uma vez, existem muitos parâmetros porque a função é recursiva e precisa se localizar, e o princípio é o mesmo da função update, de usar as variáveis como um mapas para navegar por uma array.</p>
 
 <ul><li>node é a localização do ramo atual;</li>
+
 <li>left é o início do intervalo que estamos;</li>
+
 <li>right é o final do intervalo que estamos;</li>
+
 <li>posLeft é o início do intervalo que queremos a soma;</li>
+
 <li>posRight é o final do intervalo que queremos a soma;</li>
+
 <li>tree é a árvore de segmentos.</li></ul>
+
 <p>Note que a única variável que de fato indexa o array é a variável node. Porém, qual vai ser o índice de node é determinado pelos cálculos que giram em torno de ir para a direita ou para a esquerda pela árvore. Se for pela esquerda o próximo índice é o índice em node vezes 2, pois existem node ramos no nível em que estamos, e se for pela direita o próximo índice é node vezes 2 mais um, que é o próximo após o ramo da esquerda.</p>
 
 <p>Se ficou difícil de entender, lembre-se que a busca em uma árvore binária segue a mesma lógica daquele jogo de adivinhação, em que você chuta um número de X a Y e a pessoa que sabe qual o número irá dizer se o número é maior ou menor do que você chutou. Como você é muito esperto irá sempre dividir a faixa de onde está para acertar o número o mais rápido possível.</p>
@@ -1375,17 +1464,29 @@ int main() {
 <p>Por exemplo, vamos supor que você deve chutar qual número é de 1 a 100. O número é 64.</p>
 
 <ul><li>seu chute inicial é 50;</li>
+
 <li>a resposta: mais alto;</li>
+
 <li>seu próximo chute é 75 (entre 50 e 100);</li>
+
 <li>a resposta: mais baixo;</li>
+
 <li>seu próximo chute é 63;</li>
+
 <li>a resposta: mais alto;</li>
+
 <li>seu próximo chute é 67;</li>
+
 <li>mais baixo;</li>
+
 <li>65;</li>
+
 <li>mais baixo;</li>
+
 <li>64;</li>
+
 <li>acertou!</li></ul>
+
 <p>Entre 100 possíveis chutes foram feitos 6, ou cerca de log 100 chutes. Exatamente como é feita a busca na árvore binária, seja de segmentos ou não. Essa é a grande vantagem de usar o mapa para se localizar no array como uma árvore binária, pois a busca não será linear.</p>
 
 <p>O fato da árvore ser de segmentos é apenas um detalhe que incorre em mantermos atualizados os nodes com a soma de todos os ramos abaixo, algo custoso a princípio, mas que na hora de obter a soma de intervalos faz valer a pena.</p>
@@ -1729,10 +1830,15 @@ void TestCase005() {
 <h2>Próximas leituras</h2>
 
 <ul><li>Stein Introduction to Algorithms (Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest Clifford)</li>
+
 <li>Data Structures and Algorithms in C++ (Lee Wittenberg)</li>
+
 <li>How to Think About Algorithms (Jeff Edmonds)</li>
+
 <li>Course in Algorithms Through Puzzles (Ryuhei Uehara First )</li>
+
 <li>Guide to Competitive Programming Learning and Improving Algorithms Through Contests (Antti Laaksonen)</li></ul>
+
 
 </section><hr/>
 

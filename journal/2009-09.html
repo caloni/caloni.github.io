@@ -91,14 +91,19 @@ role="navigation" aria-label="main navigation">
 <p>Se bem que, como esse é um quase-tutorial, vão abaixo apenas algumas dicas:</p>
 
 <ul><li>no primeiro setor do disco de boot, podemos encontrar a tabela de partições;</li>
+
 <li>nessa tabela, a partição ativa é a que começa com 0x80;</li>
+
 <li>existe um campo onde é possível obter o offset de onde está o primeiro setor dessa partição (em setores);</li></ul>
+
 <img src="/journal/img/o_boot_no_windows_pre_ntldr_EfbrmZd.png"/>
 
 <ul><li>uma simples conversão de Little Endian e de hexadecimal para decimal nos retorna o número do setor que precisamos;</li></ul>
+
 <img src="/journal/img/o_boot_no_windows_pre_ntldr_qSx2aLD.png"/>
 
 <ul><li>o próprio HxD nos consegue levar para esse setor, de onde podemos selecioná-lo e salvá-lo em um arquivo!</li></ul>
+
 <img src="/journal/img/o_boot_no_windows_pre_ntldr_mZoLCyZ.png"/>
 
 <p>Isso é tudo o que você precisa para fazer engenharia reversa do setor de boot. Bom divertimento!</p>
@@ -110,17 +115,20 @@ role="navigation" aria-label="main navigation">
 <p>A segunda forma de análise que exixte é para os preguiçosos que não conseguem fazer tudo no mesmo dia e optam por salvar o dump do disasssembly em um segundo arquivo. Para realizar essa proeza usando o Debug não é preciso mais que três neurônios:</p>
 
 <ul><li>digite em um arquivo chamado u.bat o seguinte conteúdo:</li></ul>
+
 <pre>
    
    u 100 400
    q
 </pre>
 <ul><li>rode o debug como a linha abaixo:</li></ul>
+
 <pre>
    
    debug &lt; u.bat &gt; a.asm
 </pre>
 <ul><li>Pronto! Temos um a.asm com toda a saída do setor de boot. Agora podemos analisá-la e editá-la:</li></ul>
+
 <pre>
    
    ; Salto inicial

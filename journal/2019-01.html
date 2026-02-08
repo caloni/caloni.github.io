@@ -200,14 +200,23 @@ ClientSocket = socket(result-&gt;ai_family, result-&gt;ai_socktype, result-&gt;a
 <p>É uma situação complexa, que depende de várias variáveis, mas ela ocorre, se todas as variáveis ocorrerem ao mesmo tempo. Um resumo:</p>
 
 <ul><li>Criação do socket cliente com a função socket.</li>
+
 <li>Uso do AcceptEx para aceitar conexões.</li>
+
 <li>Criação de process-filho com flag de herança de handles habilitada.</li>
+
 <li>Processo-filho do primeiro request ainda em execução.</li>
+
 <li>Recebimento do segundo request e criação do segundo processo-filho.</li>
+
 <li>Escrita no socket cliente do segundo request enquanto o primeiro request ainda não foi finalizado.</li>
+
 <li>**BUG**: Cliente do segundo request não recebe sua resposta.</li>
+
 <li>**RESULTADO ESPERADO**: Que o cliente do primeiro request não interferisse no segundo.</li>
+
 <li>Detalhe: Cliente do segundo requeste recebe eventualmente sua resposta após o primeiro request terminar.</li></ul>
+
 <h2>Solução #1 (Windows Vista ou superior): InitializeProcThreadAttributeList e UpdateProcThreadAttribute</h2>
 
 <p>A solução para evitar handles herdáveis que não são desejáveis é proposta pelo Raymond Chen <a href="https://blogs.msdn.microsoft.com/oldnewthing/20111216-00/?p=8873/">em seu blog</a>: usar as API InitializeProcThreadAttributeList e UpdateProcThreadAttribute. Com isso é possível especificar quais handles podem ser herdados pelo processo_filho, e obviamente iremos colocar na lista apenas os arquivos de entrada e saída padrão (obs: não duplicar saída_padrão com erro_padrão quando ambos são o mesmo arquivo/handle).</p>
