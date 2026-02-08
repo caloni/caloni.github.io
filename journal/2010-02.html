@@ -17,11 +17,6 @@
 <script src="/journal/js/jquery-1.12.4.js"></script>
 <script src="/journal/js/jquery-ui.js"></script>
 <script src="/journal/js/copy_clipboard.js"></script>
-<script>
-var quick_search_posts = [ 
- ]; 
-</script>
-<script src="/journal/js/quick_search.js"></script>
 <script src="/journal/js/list.js"></script>
 <link rel="icon" href="/journal/img/favicon.ico"/>
 </head>
@@ -45,12 +40,8 @@ role="navigation" aria-label="main navigation">
 
 <li><small><a href="2010-02.html#correcao_de_bugs_instantanea">Correção de bugs instantânea</a></small></li>
 <li><small><a href="2010-02.html#arvore">Árvore</a></small></li>
-
 <li><small><a href="2010-02.html#restaurando_o_registro">Restaurando o registro</a></small></li>
-
-<li><small><a href="2010-02.html#bazaar_grafico">Bazaar gráfico</a></small></li>
-</ul>
-
+<li><small><a href="2010-02.html#bazaar_grafico">Bazaar gráfico</a></small></li></ul>
 
 <span id="correcao_de_bugs_instantanea" title="Correção de bugs instantânea"/></span>
 <section id="section_correcao_de_bugs_instantanea">
@@ -76,6 +67,7 @@ role="navigation" aria-label="main navigation">
 <p>Se o código começa a ser tão mutilado que chegamos quase em uma versão vazia (sem código), então talvez a melhor forma de atacar o problema seja criar um esqueleto que contenha apenas o código necessário para que ele não faça nada. Isso mesmo. Não fazendo nada, mas instalado. Com isso prova-se que é possível estar lá sem fazer cagadas. A partir daí vai colocando-se o código do projeto real aos poucos no projeto-esqueleto, até que ele apresente o problema. Ou não. Já vi casos em que todo o código foi migrado e o problema sumiu. Ce la vie.</p>
 
 </section><hr/>
+
 
 <span id="arvore" title="Árvore"/></span>
 <section id="section_arvore">
@@ -118,7 +110,6 @@ role="navigation" aria-label="main navigation">
 <p>Para quem não conhece macros, saiba que elas são muito úteis. Às vezes até mais úteis que "regexes", pois não é necessário pensar muito na expressão a ser usada. Macros apenas repetem os movimentos do teclado que fazemos enquanto as estamos gravando. Por exemplo, eu tenho o meu monte de linhas de registro assim:</p>
 
 <pre>
-   
    HKLM\SOFTWARE\Microsoft\Cryptography\RNG
    HKLM\SOFTWARE\Microsoft\Cryptography\RNG\Seed
    HKCR\AppID\{EE62DE09-3A23-46DB-8FA2-266088F329CD}
@@ -133,7 +124,6 @@ role="navigation" aria-label="main navigation">
 <p>find, espaço, abre aspas, end, fecha aspas, espaço, ierestore.txt, linha abaixo, home</p>
 
 <pre>
-   
    find &quot;HKLM\SOFTWARE\Microsoft\Cryptography\RNG&quot; ierestore.txt
    HKLM\SOFTWARE\Microsoft\Cryptography\RNG\Seed
    HKCR\AppID\{EE62DE09-3A23-46DB-8FA2-266088F329CD}
@@ -151,7 +141,6 @@ role="navigation" aria-label="main navigation">
 <p>Terminada a operação, abrimos o terceiro arquivo, retiramos as entradas insignificantes (por exemplo, o gerador de sementes de números randômicos) e os cabeçalhos do comando, algo bem fácil já que se trata do mesmo arquivo.</p>
 
 <pre>
-   
    ---------- IERESTORE.TXT
    ...
 </pre>
@@ -160,7 +149,6 @@ role="navigation" aria-label="main navigation">
 <p>Algumas passadas no Notepad++ para eliminar linhas duplicadas e algumas passadas pelo cérebro para eliminar chaves redundantes (chave dentro de chave) e tcharam!</p>
 
 <pre>
-   
    ...
    HKCR\Interface\{3050F2E3-98B5-11CF-BB82-00AA00BDCE0B}
    HKCR\Interface\{3050F2E5-98B5-11CF-BB82-00AA00BDCE0B}
@@ -174,7 +162,6 @@ role="navigation" aria-label="main navigation">
 <p>O próximo passo para nossa obra-prima é outra macro que irá reproduzir o comando reg, que pode realizar operações no registro do Windows.</p>
 
 <pre>
-   
    ...
    reg export HKCR\Interface\{3050F240-98B5-11CF-BB82-00AA00BDCE0B} 3050F240-98B5-11CF-BB82-00AA00BDCE0B.reg
    reg export HKCR\Interface\{3050F25A-98B5-11CF-BB82-00AA00BDCE0B} 3050F25A-98B5-11CF-BB82-00AA00BDCE0B.reg
@@ -187,7 +174,6 @@ role="navigation" aria-label="main navigation">
 <p>E o último passo é juntar toda essa galera em um arquivo só.</p>
 
 <pre>
-   
    copy *.reg ierestore.reg
 </pre>
 <p>Claro, não se esqueça de retirar os cabeçalhos duplicados (Windows Registry Editor Version X.XX). E Voilà! Fácil, não? Não?! Bom, então é por isso que eu sou bem pago =)</p>
@@ -217,9 +203,7 @@ role="navigation" aria-label="main navigation">
 <p>Para exibir a lista de comandos "amigáveis", digite no _prompt_ os comandos do Bazaar filtrando-os para os que começam com "**q**":</p>
 
 <pre>
-   
    bzr help commands | grep ^q.*
-   
    qadd                 GUI for adding files or directories. [qbzr]
    qannotate            Show the origin of each line in a file. [qbzr]
    qbranch              Create a new copy of a branch. [qbzr]

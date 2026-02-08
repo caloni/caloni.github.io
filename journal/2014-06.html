@@ -17,11 +17,6 @@
 <script src="/journal/js/jquery-1.12.4.js"></script>
 <script src="/journal/js/jquery-ui.js"></script>
 <script src="/journal/js/copy_clipboard.js"></script>
-<script>
-var quick_search_posts = [ 
- ]; 
-</script>
-<script src="/journal/js/quick_search.js"></script>
 <script src="/journal/js/list.js"></script>
 <link rel="icon" href="/journal/img/favicon.ico"/>
 </head>
@@ -44,41 +39,26 @@ role="navigation" aria-label="main navigation">
 <ul style="list-style: none;">
 
 <li><small><a href="2014-06.html#ss">SS</a></small></li>
-
 <li><small><a href="2014-06.html#computer_chess">Computer Chess</a></small></li>
 <li><small><a href="2014-06.html#metropolis">Metrópolis</a></small></li>
 <li><small><a href="2014-06.html#bancando_o_aguia_aka_sherlock_jr">Bancando o Águia (aka Sherlock Jr.)</a></small></li>
-
 <li><small><a href="2014-06.html#saida_pela_loja_de_presentes">Saída pela Loja de Presentes</a></small></li>
-
 <li><small><a href="2014-06.html#no_limite_do_amanha">No Limite do Amanhã</a></small></li>
-
 <li><small><a href="2014-06.html#eles_querem_que_a_gina_va_embora_tres_posts_sobre_evolucao_windows">Eles querem que a GINA vá embora: três posts sobre evolução Windows</a></small></li>
 <li><small><a href="2014-06.html#malevola">Malévola</a></small></li>
-
 <li><small><a href="2014-06.html#armacoes_do_amor">Armações do Amor</a></small></li>
 <li><small><a href="2014-06.html#evocando_espiritos">Evocando Espíritos</a></small></li>
-
 <li><small><a href="2014-06.html#american_pie_o_livro_do_amor">American Pie: O Livro do Amor</a></small></li>
 <li><small><a href="2014-06.html#amor_sem_fim">Amor Sem Fim</a></small></li>
-
 <li><small><a href="2014-06.html#a_culpa_e_das_estrelas">A Culpa é das Estrelas</a></small></li>
-
 <li><small><a href="2014-06.html#a_face_do_mal">A Face do Mal</a></small></li>
-
 <li><small><a href="2014-06.html#dando_cabo_do_windbg">Dando cabo do WinDbg</a></small></li>
-
 <li><small><a href="2014-06.html#como_treinar_o_seu_dragao_2">Como Treinar o Seu Dragão 2</a></small></li>
 <li><small><a href="2014-06.html#orange_is_the_new_black_segunda_temporada">Orange is the New Black - Segunda Temporada</a></small></li>
 <li><small><a href="2014-06.html#orange_is_the_new_black_terceira_temporada">Orange is the New Black - Terceira Temporada</a></small></li>
-
 <li><small><a href="2014-06.html#enders_game_o_jogo_do_exterminador">Ender''s Game: O Jogo do Exterminador</a></small></li>
-
 <li><small><a href="2014-06.html#contos_da_noite">Contos da Noite</a></small></li>
-
-<li><small><a href="2014-06.html#se_iterando_com_os_pseudo_ponteiros_uma_breve_introducao">Se iterando com os pseudo-ponteiros: uma breve introdução</a></small></li>
-</ul>
-
+<li><small><a href="2014-06.html#se_iterando_com_os_pseudo_ponteiros_uma_breve_introducao">Se iterando com os pseudo-ponteiros: uma breve introdução</a></small></li></ul>
 
 <span id="ss" title="SS"/></span>
 <section id="section_ss">
@@ -97,7 +77,6 @@ int main()
     std::cout &lt;&lt; z // WHAT??
         &lt;&lt; &quot;\nestranho...&quot; &lt;&lt; std::endl; // WHAT^^2!?!?!?!??!?!
 }
-</pre>
 <img src="/journal/img/ss_tnVztzy.png"/>
 
 <p>A resposta é, pra variar, depende. Se você combinar com seu cérebro que o operador de shift que você aprendeu em C para cout não tem a mesma semântica, OK. No fundo eu acredito que os criadores dessa sobrecarga de operador pensaram sinceramente que hoje em dia quase ninguém conhece os operadores de shift binário, então tudo bem reaproveitá-lo de uma maneira mais miguxa.</p>
@@ -113,7 +92,6 @@ int main()
     printf(&quot;int x = 0x%08X;\n&quot;, x); // nao eh tao legivel, mas da conta do recado
     std::cout &lt;&lt; &quot;int x = 0x&quot; &lt;&lt; std::hex &lt;&lt; x &lt;&lt; &quot;;&quot; &lt;&lt; std::endl; // pois eh, parece que melhoramos mesmo com streams...
 }
-</pre>
 <img src="/journal/img/ss_7hFREwa.png"/>
 
 <h2>A coisa mais fácil do jeito mais difícil</h2>
@@ -134,7 +112,6 @@ int main()
 {
     std::cout &lt;&lt; FuncaoCorriqueira(20, 42);
 }
-</pre>
 <p>Já pensou termos que criar uma função dessas sempre que quisermos converter números em string? Ou pior, ter que fazer o que fizemos dentro dessa função: declarar um ostringstream (um cout com buffer interno de string), usá-lo como cout e obter seu buffer interno através do método str. Tudo isso para converter um número para string.</p>
 
 <p>Quando uma tarefa muito comum exige mais de dois passos para ser realizada é de bom tom criarmos algum código reutilizável, certo? Um código que trará de uma vez por todas a solução final!</p>
@@ -158,7 +135,6 @@ struct ss
     }
     std::ostringstream _ss;
 };
-</pre>
 <p>O código acima serve bem ao nosso propósito de formatar strings em uma linha como um cout, mas retornar uma string no lugar. Ele é simples, ele é direto, ele tem defeitos que não vem ao caso (como não suportar endl), mas pode ser usado de maneira... simples e direta!</p>
 
 <pre>
@@ -172,7 +148,6 @@ int main()
         std::cout &lt;&lt; s &lt;&lt; std::endl;
     }
 }
-</pre>
 <p>OK, o código de exemplo foi idiota, mas você pegou a ideia. Tudo que precisamos fazer para reutilizar essa pequena classe é definí-la (ss() resolve) e usá-la. Seu conversor de string retorna o buffer interno de ostringstream para nós como num passe de mágica.</p>
 
 <p>_Obs.: Com certeza deve existir uma centena de bibliotecas que implementam algo do gênero, só que melhor. Essa é a típica fica isolante para continuar trabalhando._</p>
@@ -183,7 +158,7 @@ int main()
 <span id="computer_chess" title="Computer Chess"/></span>
 <section id="section_computer_chess">
 <p class="title"><a href="2014-06.html#computer_chess">#</a> Computer Chess</p>
-<span class="title-heading">Caloni, 2014-06-06 <a href="2014-06.html#bancando_o_aguia_aka_sherlock_jr">&lt;</a><a href="cinema.html">cinema</a><a href="2014-06.html#metropolis">&gt;</a> <a href="2014-06.html#bancando_o_aguia_aka_sherlock_jr">&lt;</a><a href="movies.html">movies</a><a href="2014-06.html#metropolis">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_computer_chess')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2014-06-06 <a href="2014-06.html#metropolis">&lt;</a><a href="cinema.html">cinema</a><a href="2014-06.html#saida_pela_loja_de_presentes">&gt;</a> <a href="2014-06.html#metropolis">&lt;</a><a href="movies.html">movies</a><a href="2014-06.html#saida_pela_loja_de_presentes">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_computer_chess')"><sup>[copy]</sup></a></span>
 
 <p>Já virou um clichê cinematográfico: se vai fazer filme de xadrez, sua história tem que ser complexa. No caso de Computer Chess, essa complexidade nos personagens e em suas relações é complementada pelo fato de um filme de 2013 emular os anos 80 através de filmagens em preto e branco, com razão de aspecto quadrada e erros de edição. Um possível encontro de programadores entusiastas em um torneio disputado entre suas máquinas de fazer cálculo. A ideia é parecer um documentário, mas sua estrutura possui o tom ficcional, com cortes definidos e diálogos obviamente vindos de um roteiro. Vemos a câmera e o cameraman diversas vezes, o que obviamente já nos revela aquele ser um filme amador sobre um documentário sendo feito em um campeonato de programas de xadrez, o que com certeza dá o tom da complexidade que comentei.</p>
 
@@ -193,10 +168,11 @@ int main()
 
 </section><hr/>
 
+
 <span id="metropolis" title="Metrópolis"/></span>
 <section id="section_metropolis">
 <p class="title"><a href="2014-06.html#metropolis">#</a> Metrópolis</p>
-<span class="title-heading">Caloni, 2014-06-06 <a href="2014-06.html#computer_chess">&lt;</a><a href="cinema.html">cinema</a><a href="2014-06.html#saida_pela_loja_de_presentes">&gt;</a> <a href="2014-06.html#computer_chess">&lt;</a><a href="movies.html">movies</a><a href="2014-06.html#saida_pela_loja_de_presentes">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_metropolis')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2014-06-06 <a href="2014-06.html#bancando_o_aguia_aka_sherlock_jr">&lt;</a><a href="cinema.html">cinema</a><a href="2014-06.html#computer_chess">&gt;</a> <a href="2014-06.html#bancando_o_aguia_aka_sherlock_jr">&lt;</a><a href="movies.html">movies</a><a href="2014-06.html#computer_chess">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_metropolis')"><sup>[copy]</sup></a></span>
 
 <p>Se algumas pessoas torcem o nariz ao ver filmes como "O Gabinete do Dr. Caligari" e Nosferatu, pois hoje soam caricatos, nada se pode dizer a respeito de Metrópolis, um épico da ficção científica dirigido e escrito por Fritz Lang e sua esposa em 1927. Os três são representantes clássicos do expressionismo alemão, um movimento artístico cujos movimentos dos personagens são exatamente o que vemos na tela: caricatos, exagerados, quase simbólicos. Para filmes mudos da época, um prato cheio para entreter e ainda capturar a essência das palavras que não saem da boca dos atores.</p>
 
@@ -210,10 +186,11 @@ int main()
 
 </section><hr/>
 
+
 <span id="bancando_o_aguia_aka_sherlock_jr" title="Bancando o Águia (aka Sherlock Jr.)"/></span>
 <section id="section_bancando_o_aguia_aka_sherlock_jr">
 <p class="title"><a href="2014-06.html#bancando_o_aguia_aka_sherlock_jr">#</a> Bancando o Águia (aka Sherlock Jr.)</p>
-<span class="title-heading">Caloni, 2014-06-06 <a href="2014-05.html#o_cheiro_do_ralo">&lt;</a><a href="cinema.html">cinema</a><a href="2014-06.html#computer_chess">&gt;</a> <a href="2014-05.html#o_cheiro_do_ralo">&lt;</a><a href="movies.html">movies</a><a href="2014-06.html#computer_chess">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_bancando_o_aguia_aka_sherlock_jr')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2014-06-06 <a href="2014-05.html#o_cheiro_do_ralo">&lt;</a><a href="cinema.html">cinema</a><a href="2014-06.html#metropolis">&gt;</a> <a href="2014-05.html#o_cheiro_do_ralo">&lt;</a><a href="movies.html">movies</a><a href="2014-06.html#metropolis">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_bancando_o_aguia_aka_sherlock_jr')"><sup>[copy]</sup></a></span>
 
 <p>Sherlock Jr., ou "Bancando o Águia", como quer o IMDB do Brasil, é uma obra de arte de 1924 em diversos sentidos, mas principalmente nas invencionices do seu diretor e ator, Buster Keaton. Tentando associar suas trapalhadas pelo fato de tentar fazer duas coisas: ser projecionista de um Cinema e aprender a profissão de detetive, o protagonista sem nome é obviamente relacionado com o próprio Keaton, que dirige e atua cenas mirabolantes que usam e abusam de efeitos visuais criados na época, brincando com metalinguagem e sketches físicos a todo momento. Nunca deixando de entreter, Sherlock Jr. ao mesmo tempo que é uma bela homenagem ao Cinema recém-nascido, um prenúncio do que viria pela frente, além de conseguir contar sua história sob diversas camadas de metalinguagem. Tudo isso em apenas 44 minutos.</p>
 
@@ -225,7 +202,7 @@ int main()
 <span id="saida_pela_loja_de_presentes" title="Saída pela Loja de Presentes"/></span>
 <section id="section_saida_pela_loja_de_presentes">
 <p class="title"><a href="2014-06.html#saida_pela_loja_de_presentes">#</a> Saída pela Loja de Presentes</p>
-<span class="title-heading">Caloni, 2014-06-07 <a href="2014-06.html#metropolis">&lt;</a><a href="cinema.html">cinema</a><a href="2014-06.html#no_limite_do_amanha">&gt;</a> <a href="2014-06.html#metropolis">&lt;</a><a href="movies.html">movies</a><a href="2014-06.html#no_limite_do_amanha">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_saida_pela_loja_de_presentes')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2014-06-07 <a href="2014-06.html#computer_chess">&lt;</a><a href="cinema.html">cinema</a><a href="2014-06.html#no_limite_do_amanha">&gt;</a> <a href="2014-06.html#computer_chess">&lt;</a><a href="movies.html">movies</a><a href="2014-06.html#no_limite_do_amanha">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_saida_pela_loja_de_presentes')"><sup>[copy]</sup></a></span>
 
 <p>Exit Through the Gift Shop, ou "Saia Pela Loja de Souvenires" (alguém viu isso lançado no Brasil?), um dos indicados ao Oscar 2011 de melhor documentário, parece um documentário, e se assume como um. No entanto, seu terceiro ato é tão surreal, mas tão surreal, que surgiu a especulação de que o personagem cuja vida serviu de base para a história na realidade nunca existiu. Mais do que isso, a estrutura criada (supostamente) pelo diretor e artista de rua "Banksy", que no próprio filme dá um depoimento com seu rosto censurado e sua voz transformada, é incrivelmente bem arquitetada, pois não faz o espectador se perder ao acompanhar o filme que conta a história do homem que queria fazer um filme sobre artistas de rua, incluindo o próprio Bansky.</p>
 
@@ -306,7 +283,6 @@ My_WlxLoggedOutSAS
    }
    return ret;
 }
-</pre>
 <p>Com a vinda do Windows Vista, o WINLOGON continuou gerenciando as sessões e autenticações dos usuários, mas para evitar que a GINA monopolizasse novamente os métodos de autenticação, e com a vinda de métodos concorrentes -- como retina e impressão digital -- a Microsoft desevolveu uma nova interface chamada de _Credential Provider_. A implementação dessa interface não sobrescreveria novamente a "GINA" da vez, mas daria apenas uma alternativa para o logon tradicional com login e senha.</p>
 
 <p>O problema que nossa equipe enfrentou era que toda a autenticação do sistema dependia da manipulação dos eventos da GINA através da nossa GINA. Com ela colocada de escanteio, os logins parariam de funcionar.</p>
@@ -321,10 +297,11 @@ My_WlxLoggedOutSAS
 
 </section><hr/>
 
+
 <span id="malevola" title="Malévola"/></span>
 <section id="section_malevola">
 <p class="title"><a href="2014-06.html#malevola">#</a> Malévola</p>
-<span class="title-heading">Caloni, 2014-06-11 <a href="cinemaqui.html">cinemaqui</a><a href="2014-12.html#as_ferias_do_pequeno_nicolau">&gt;</a> <a href="2014-06.html#no_limite_do_amanha">&lt;</a><a href="cinema.html">cinema</a><a href="2014-06.html#armacoes_do_amor">&gt;</a> <a href="2014-06.html#no_limite_do_amanha">&lt;</a><a href="movies.html">movies</a><a href="2014-06.html#armacoes_do_amor">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_malevola')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2014-06-11 <a href="cinemaqui.html">cinemaqui</a><a href="2014-12.html#as_ferias_do_pequeno_nicolau">&gt;</a> <a href="2014-06.html#no_limite_do_amanha">&lt;</a><a href="cinema.html">cinema</a><a href="2014-06.html#evocando_espiritos">&gt;</a> <a href="2014-06.html#no_limite_do_amanha">&lt;</a><a href="movies.html">movies</a><a href="2014-06.html#evocando_espiritos">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_malevola')"><sup>[copy]</sup></a></span>
 
 <p>Olhando para Angeline Jolie, com suas curvas de beleza grega, seus lábios que já fizeram muitos marmanjos -- desde Hackers -- suspirarem, fica difícil imaginá-la como uma das vilãs mais macabras de uma história Disney. Porém, lembrando dos recentes sucessos de Espelho, Espelho Meu (Julia Roberts) e o mais enigmático Branca de Neve e o Caçador -- onde Charlize Teron rouba praticamente o filme inteiro -- a ideia já não parece tão absurda. E no caso da relação entre a bruxa que dá título ao filme e a Bela Adormecida há algo de novo que a Disney vem tentando fazer, cujo melhor exemplo hoje em dia é a animação Frozen: a mulher não é mais o lado mais fraco, mas o lado que decide. E qual melhor atriz para esse papel do que a bela "Angeline ativista Jolie", um ser humano que não discursa em vão, mas que de fato ajuda os mais necessitados?</p>
 
@@ -340,7 +317,7 @@ My_WlxLoggedOutSAS
 <span id="armacoes_do_amor" title="Armações do Amor"/></span>
 <section id="section_armacoes_do_amor">
 <p class="title"><a href="2014-06.html#armacoes_do_amor">#</a> Armações do Amor</p>
-<span class="title-heading">Caloni, 2014-06-12 <a href="2014-06.html#malevola">&lt;</a><a href="cinema.html">cinema</a><a href="2014-06.html#evocando_espiritos">&gt;</a> <a href="2014-06.html#malevola">&lt;</a><a href="movies.html">movies</a><a href="2014-06.html#evocando_espiritos">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_armacoes_do_amor')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2014-06-12 <a href="2014-06.html#evocando_espiritos">&lt;</a><a href="cinema.html">cinema</a><a href="2014-06.html#amor_sem_fim">&gt;</a> <a href="2014-06.html#evocando_espiritos">&lt;</a><a href="movies.html">movies</a><a href="2014-06.html#amor_sem_fim">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_armacoes_do_amor')"><sup>[copy]</sup></a></span>
 
 <p>Mais uma comédia romântica desperdiçando o talento de Matthew McConaughey e empregando figuras como Sarah Jessica Parker e Zooey Deschanel. A história: ele não quer deixar de viver com seus pais, onde tem uma existência cômoda. Também não quer compromissos, então para se livrar deles leva as mulheres que se relaciona para a casa da família. Até que seu pai decide contratar Paula (Jessica Parker), uma namorada profissional que faz seus parceiros largar o ninho familiar e "seguir adiante" com suas vidas (ambas as partes).</p>
 
@@ -348,10 +325,11 @@ My_WlxLoggedOutSAS
 
 </section><hr/>
 
+
 <span id="evocando_espiritos" title="Evocando Espíritos"/></span>
 <section id="section_evocando_espiritos">
 <p class="title"><a href="2014-06.html#evocando_espiritos">#</a> Evocando Espíritos</p>
-<span class="title-heading">Caloni, 2014-06-12 <a href="2014-06.html#armacoes_do_amor">&lt;</a><a href="cinema.html">cinema</a><a href="2014-06.html#american_pie_o_livro_do_amor">&gt;</a> <a href="2014-06.html#armacoes_do_amor">&lt;</a><a href="movies.html">movies</a><a href="2014-06.html#american_pie_o_livro_do_amor">&gt;</a> <a href="2014-05.html#o_espetacular_homemaranha_2_a_ameaca_de_electro">&lt;</a><a href="miniviews.html">miniviews</a><a href="2014-09.html#carrie_a_estranha_2013">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_evocando_espiritos')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2014-06-12 <a href="2014-06.html#malevola">&lt;</a><a href="cinema.html">cinema</a><a href="2014-06.html#armacoes_do_amor">&gt;</a> <a href="2014-06.html#malevola">&lt;</a><a href="movies.html">movies</a><a href="2014-06.html#armacoes_do_amor">&gt;</a> <a href="2014-05.html#o_espetacular_homemaranha_2_a_ameaca_de_electro">&lt;</a><a href="miniviews.html">miniviews</a><a href="2014-09.html#carrie_a_estranha_2013">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_evocando_espiritos')"><sup>[copy]</sup></a></span>
 
 <p>Evocando espíritos é uma história de terror que consegue unir espiritismo com câncer, além de no processo conseguir boas sequências que unem a história de um garoto sensitivo nos tempos atuais com um garoto ainda mais sensitivo que participou de um experimento além-vida que causou muita dor e sofrimento represada na casa que a família acabou de se mudar.</p>
 
@@ -365,7 +343,7 @@ My_WlxLoggedOutSAS
 <span id="american_pie_o_livro_do_amor" title="American Pie: O Livro do Amor"/></span>
 <section id="section_american_pie_o_livro_do_amor">
 <p class="title"><a href="2014-06.html#american_pie_o_livro_do_amor">#</a> American Pie: O Livro do Amor</p>
-<span class="title-heading">Caloni, 2014-06-13 <a href="2014-06.html#evocando_espiritos">&lt;</a><a href="cinema.html">cinema</a><a href="2014-06.html#amor_sem_fim">&gt;</a> <a href="2014-06.html#evocando_espiritos">&lt;</a><a href="movies.html">movies</a><a href="2014-06.html#amor_sem_fim">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_american_pie_o_livro_do_amor')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2014-06-13 <a href="2014-06.html#amor_sem_fim">&lt;</a><a href="cinema.html">cinema</a><a href="2014-06.html#a_culpa_e_das_estrelas">&gt;</a> <a href="2014-06.html#amor_sem_fim">&lt;</a><a href="movies.html">movies</a><a href="2014-06.html#a_culpa_e_das_estrelas">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_american_pie_o_livro_do_amor')"><sup>[copy]</sup></a></span>
 
 <p>Ótimas piadas, uma história batida, mas que segue a lógica e até meio que homenageia os filmes sobre nerds dos anos 80. E por falar em anos 80, a melhor surpresa é Brandon Hardesty, que faz o gordo desajeitado que fantasia mulheres se entregando para ele a todo o momento. Além de ser a melhor surpresa é praticamente a única, pois seus dois amigos, apesar de socialmente desajeitados, não podem ser rotulados como incapazes de se relacionar com mulheres.</p>
 
@@ -375,10 +353,11 @@ My_WlxLoggedOutSAS
 
 </section><hr/>
 
+
 <span id="amor_sem_fim" title="Amor Sem Fim"/></span>
 <section id="section_amor_sem_fim">
 <p class="title"><a href="2014-06.html#amor_sem_fim">#</a> Amor Sem Fim</p>
-<span class="title-heading">Caloni, 2014-06-13 <a href="2014-06.html#american_pie_o_livro_do_amor">&lt;</a><a href="cinema.html">cinema</a><a href="2014-06.html#a_culpa_e_das_estrelas">&gt;</a> <a href="2014-06.html#american_pie_o_livro_do_amor">&lt;</a><a href="movies.html">movies</a><a href="2014-06.html#a_culpa_e_das_estrelas">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_amor_sem_fim')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2014-06-13 <a href="2014-06.html#armacoes_do_amor">&lt;</a><a href="cinema.html">cinema</a><a href="2014-06.html#american_pie_o_livro_do_amor">&gt;</a> <a href="2014-06.html#armacoes_do_amor">&lt;</a><a href="movies.html">movies</a><a href="2014-06.html#american_pie_o_livro_do_amor">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_amor_sem_fim')"><sup>[copy]</sup></a></span>
 
 <p>Filme que revisita os clichês estilo Diário de uma Paixão sob a ótica contemporânea. Foca principalmente no jogo de forças entre pai e filha, mas se estende desnecessariamente ao final repetindo a mesma dinâmica já vista durante o filme.</p>
 
@@ -392,7 +371,7 @@ My_WlxLoggedOutSAS
 <span id="a_culpa_e_das_estrelas" title="A Culpa é das Estrelas"/></span>
 <section id="section_a_culpa_e_das_estrelas">
 <p class="title"><a href="2014-06.html#a_culpa_e_das_estrelas">#</a> A Culpa é das Estrelas</p>
-<span class="title-heading">Caloni, 2014-06-14 <a href="2014-06.html#amor_sem_fim">&lt;</a><a href="cinema.html">cinema</a><a href="2014-06.html#a_face_do_mal">&gt;</a> <a href="2014-06.html#amor_sem_fim">&lt;</a><a href="movies.html">movies</a><a href="2014-06.html#a_face_do_mal">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_a_culpa_e_das_estrelas')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2014-06-14 <a href="2014-06.html#american_pie_o_livro_do_amor">&lt;</a><a href="cinema.html">cinema</a><a href="2014-06.html#a_face_do_mal">&gt;</a> <a href="2014-06.html#american_pie_o_livro_do_amor">&lt;</a><a href="movies.html">movies</a><a href="2014-06.html#a_face_do_mal">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_a_culpa_e_das_estrelas')"><sup>[copy]</sup></a></span>
 
 <p>O que torna A Culpa das Estrelas tão fascinante como romance é sua despreocupação em soar "cinematográfico", ou seja, com seus diálogos inesquecíveis, interpretações profundas e momentos chorosos, mesmo que ele tenha tudo isso. A diferença é que ele assume suas próprias fraquezas e limites ao criar uma história cheia de filosofia pop/adolescente que nos faz sentir como seus personagens, mesmo sem a necessária profundidade para os temas que aborda. Quem se importa em soar original ou explorar o âmago de questões universais quando se está com câncer, ou quando se tem apenas 80 anos de vida (com sorte) nesse planeta? Melhor do que tentar soar importante é ser acessível, e isso é possível dizer dessas pessoas.</p>
 
@@ -408,7 +387,7 @@ My_WlxLoggedOutSAS
 <span id="a_face_do_mal" title="A Face do Mal"/></span>
 <section id="section_a_face_do_mal">
 <p class="title"><a href="2014-06.html#a_face_do_mal">#</a> A Face do Mal</p>
-<span class="title-heading">Caloni, 2014-06-15 <a href="2014-06.html#a_culpa_e_das_estrelas">&lt;</a><a href="cinema.html">cinema</a><a href="2014-06.html#como_treinar_o_seu_dragao_2">&gt;</a> <a href="2014-06.html#a_culpa_e_das_estrelas">&lt;</a><a href="movies.html">movies</a><a href="2014-06.html#como_treinar_o_seu_dragao_2">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_a_face_do_mal')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2014-06-15 <a href="2014-06.html#a_culpa_e_das_estrelas">&lt;</a><a href="cinema.html">cinema</a><a href="2014-06.html#orange_is_the_new_black_terceira_temporada">&gt;</a> <a href="2014-06.html#a_culpa_e_das_estrelas">&lt;</a><a href="movies.html">movies</a><a href="2014-06.html#como_treinar_o_seu_dragao_2">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_a_face_do_mal')"><sup>[copy]</sup></a></span>
 
 <p>O que faz um terror eficiente? Uma história convincente ou sustos convincentes? No caso de A Face do Mal, seus sustos pré-adolescentes com cortes bruscos e o volume do som aumentado é tão descartável quanto qualquer outro filmeco de terror do nosso tempo, assim como os efeitos digitais tão bonitos que perdem sua razão de existir. Porém, sua história nos convida a olhar para o sobrenatural como uma possibilidade mais aterrorizante do que os próprios fantasmas que rondam uma casa recém-habitada por uma família (e lá vamos nós para o clichê).</p>
 
@@ -442,7 +421,7 @@ My_WlxLoggedOutSAS
 <span id="como_treinar_o_seu_dragao_2" title="Como Treinar o Seu Dragão 2"/></span>
 <section id="section_como_treinar_o_seu_dragao_2">
 <p class="title"><a href="2014-06.html#como_treinar_o_seu_dragao_2">#</a> Como Treinar o Seu Dragão 2</p>
-<span class="title-heading">Caloni, 2014-06-19 <a href="2014-06.html#a_face_do_mal">&lt;</a><a href="cinema.html">cinema</a><a href="2014-06.html#orange_is_the_new_black_segunda_temporada">&gt;</a> <a href="2014-06.html#a_face_do_mal">&lt;</a><a href="movies.html">movies</a><a href="2014-06.html#enders_game_o_jogo_do_exterminador">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_como_treinar_o_seu_dragao_2')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2014-06-19 <a href="2014-06.html#orange_is_the_new_black_segunda_temporada">&lt;</a><a href="cinema.html">cinema</a><a href="2014-06.html#enders_game_o_jogo_do_exterminador">&gt;</a> <a href="2014-06.html#a_face_do_mal">&lt;</a><a href="movies.html">movies</a><a href="2014-06.html#enders_game_o_jogo_do_exterminador">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_como_treinar_o_seu_dragao_2')"><sup>[copy]</sup></a></span>
 
 <p>A continuação de uma das melhores animações produzidas pela Dreamworks não foge do seu desafio de contar uma história que seja tão divertida quanto dramática. Nesse caso, direção de arte e fotografia mais sombrias, enquadramentos e efeitos mais grandiosos. Chega a pensar que estão utilizando a cartilha de trabalhos como Senhor dos Aneis e Star Wars (trilogia original ou O Retorno de Sith). Quando lembramos que ambas as sagas prenunciam acontecimentos grandiosos que irão mudar a vida dos envolvidos para sempre, Como Treinar Seu Dragão 2 começa a ser percebido como uma história milimetricamente pensada e executada, principalmente em sua primeira metade, quando termina em um encontro inesperado, emocionante e literalmente um divisor de eras.</p>
 
@@ -450,10 +429,11 @@ My_WlxLoggedOutSAS
 
 </section><hr/>
 
+
 <span id="orange_is_the_new_black_segunda_temporada" title="Orange is the New Black - Segunda Temporada"/></span>
 <section id="section_orange_is_the_new_black_segunda_temporada">
 <p class="title"><a href="2014-06.html#orange_is_the_new_black_segunda_temporada">#</a> Orange is the New Black - Segunda Temporada</p>
-<span class="title-heading">Caloni, 2014-06-19 <a href="2014-06.html#como_treinar_o_seu_dragao_2">&lt;</a><a href="cinema.html">cinema</a><a href="2014-06.html#orange_is_the_new_black_terceira_temporada">&gt;</a> <a href="2014-02.html#saco_de_ossos">&lt;</a><a href="series.html">series</a><a href="2014-06.html#orange_is_the_new_black_terceira_temporada">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_orange_is_the_new_black_segunda_temporada')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2014-06-19 <a href="2014-06.html#orange_is_the_new_black_terceira_temporada">&lt;</a><a href="cinema.html">cinema</a><a href="2014-06.html#como_treinar_o_seu_dragao_2">&gt;</a> <a href="2014-06.html#orange_is_the_new_black_terceira_temporada">&lt;</a><a href="series.html">series</a><a href="2014-09.html#cosmos_uma_odisseia_do_espacotempo">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_orange_is_the_new_black_segunda_temporada')"><sup>[copy]</sup></a></span>
 
 <p>Criado por Jenji Kohan, de Weeds e The Stones, com base nas memórias da detenta Piper Kerman, Orange Is the New Black começou em sua primeira temporada como a história de uma nova detenta (Piper Chapman, Taylor Schilling) condenada por tráfico de drogas junto com sua amante, Alex Vause (Laura Prepon). A série se focou mais nas diferenças entre a vida livre e o cárcere privado no meio de mulheres mais ou menos perigosas e carentes. Se transformando agora na segunda temporada em um "Oz de Calcinha", Chapman já está integrada ao sistema, então resta à série revisitar como o sistema funciona, pelo menos com cenas mais leves e mais sentimentais. Afinal de contas, elas são mulheres!</p>
 
@@ -463,10 +443,11 @@ My_WlxLoggedOutSAS
 
 </section><hr/>
 
+
 <span id="orange_is_the_new_black_terceira_temporada" title="Orange is the New Black - Terceira Temporada"/></span>
 <section id="section_orange_is_the_new_black_terceira_temporada">
 <p class="title"><a href="2014-06.html#orange_is_the_new_black_terceira_temporada">#</a> Orange is the New Black - Terceira Temporada</p>
-<span class="title-heading">Caloni, 2014-06-19 <a href="2014-06.html#orange_is_the_new_black_segunda_temporada">&lt;</a><a href="cinema.html">cinema</a><a href="2014-06.html#enders_game_o_jogo_do_exterminador">&gt;</a> <a href="2014-06.html#orange_is_the_new_black_segunda_temporada">&lt;</a><a href="series.html">series</a><a href="2014-09.html#cosmos_uma_odisseia_do_espacotempo">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_orange_is_the_new_black_terceira_temporada')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2014-06-19 <a href="2014-06.html#a_face_do_mal">&lt;</a><a href="cinema.html">cinema</a><a href="2014-06.html#orange_is_the_new_black_segunda_temporada">&gt;</a> <a href="2014-02.html#saco_de_ossos">&lt;</a><a href="series.html">series</a><a href="2014-06.html#orange_is_the_new_black_segunda_temporada">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_orange_is_the_new_black_terceira_temporada')"><sup>[copy]</sup></a></span>
 
 <p>Orange is the New Black, apesar do título ultrapassado, ainda se mantém acima de sua irregular média. Digo irregular porque a série, apesar de possuir picos dramáticos e temáticos bem definidos, também possui os seus valores. Ou seja: se quiser aproveitar o que a série tem de bom, vai ter que aguentar muito lenga-lenga de mulher.</p>
 
@@ -486,7 +467,7 @@ My_WlxLoggedOutSAS
 <span id="enders_game_o_jogo_do_exterminador" title="Ender''s Game: O Jogo do Exterminador"/></span>
 <section id="section_enders_game_o_jogo_do_exterminador">
 <p class="title"><a href="2014-06.html#enders_game_o_jogo_do_exterminador">#</a> Ender''s Game: O Jogo do Exterminador</p>
-<span class="title-heading">Caloni, 2014-06-21 <a href="2014-06.html#orange_is_the_new_black_terceira_temporada">&lt;</a><a href="cinema.html">cinema</a><a href="2014-06.html#contos_da_noite">&gt;</a> <a href="2014-06.html#como_treinar_o_seu_dragao_2">&lt;</a><a href="movies.html">movies</a><a href="2014-06.html#contos_da_noite">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_enders_game_o_jogo_do_exterminador')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2014-06-21 <a href="2014-06.html#como_treinar_o_seu_dragao_2">&lt;</a><a href="cinema.html">cinema</a><a href="2014-06.html#contos_da_noite">&gt;</a> <a href="2014-06.html#como_treinar_o_seu_dragao_2">&lt;</a><a href="movies.html">movies</a><a href="2014-06.html#contos_da_noite">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_enders_game_o_jogo_do_exterminador')"><sup>[copy]</sup></a></span>
 
 <p>Por que estão treinando crianças para guerrear contra um povo alienígena? Se já se passaram 50 anos, onde estão os jovens dessa geração? A função de Ender é explicada em mais da metade do filme, mas qual a função de todos os outros da equipe, e por que foram escolhidos? Todas essas perguntas podem permanecer sem resposta, pois "Ender's Game" é praticamente um folclore que tenta ensinar -- ou ao menos fazer pensar -- a respeito de nossa posição no mundo entre as diferentes espécies que ajudamos a ameaçar de extinção, o que gera uma última e fatal pergunta: onde está a ética que define a sobrevivência de qual espécie é a mais importante?</p>
 
@@ -534,7 +515,6 @@ My_WlxLoggedOutSAS
 
 <p>  * Dois ponteiros podem ser subtraídos para sabermos a distância entre dois elementos.</p>
 
-<pre>
 template&lt;typename T&gt;
 T VaiSomandoVaiSomando(T begin, T end)
 {
@@ -559,7 +539,6 @@ int main()
     std::cout &lt;&lt; *VaiSomandoVaiSomando(&amp;aInts[0], &amp;aInts[10]) &lt;&lt; std::endl;
     std::cout &lt;&lt; *VaiSomandoVaiSomando(vInts.begin(), vInts.end()) &lt;&lt; std::endl;
 }
-</pre>
 <img src="/journal/img/se_iterando_com_os_pseudo_ponteiros_uma_breve_introducao_GmNutkz.jpg"/>
 
 <p>Da mesma forma, operações como cópia, movimentação, ordenação, caotização, pode ser feito usando dois ponteiros/iteradores de dois contêiners distintos, desde que algumas regras básicas sejam seguidas, como _um iterador deve sempre apontar para algo válido_ (ou disponibilizar alguma abstração que insira novos elementos em um contêiner menor). Veremos essas regras em um próximo post sobre o tema. Apontarei para ele _aqui_.</p>

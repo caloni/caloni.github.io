@@ -17,11 +17,6 @@
 <script src="/blog/js/jquery-1.12.4.js"></script>
 <script src="/blog/js/jquery-ui.js"></script>
 <script src="/blog/js/copy_clipboard.js"></script>
-<script>
-var quick_search_posts = [ 
- ]; 
-</script>
-<script src="/blog/js/quick_search.js"></script>
 <script src="/blog/js/list.js"></script>
 <link rel="icon" href="/blog/img/favicon.ico"/>
 </head>
@@ -55,7 +50,6 @@ role="navigation" aria-label="main navigation">
    {
      BackToStart(restorePoint);
    }
-   
    int Start()
    {
      if( RestorePoint() == Defined )
@@ -66,7 +60,6 @@ role="navigation" aria-label="main navigation">
      {
        CallFunc();
      }
-   
      return 0;
    }
 </pre>
@@ -81,7 +74,6 @@ role="navigation" aria-label="main navigation">
    {
      return;
    }
-   
    void CallFunc()
    {
      Func();
@@ -93,7 +85,6 @@ role="navigation" aria-label="main navigation">
    Func:
    00411F73 prev_instruction ; ESP = 0012FD38 (four bytes stacked up)
    00411F74 ret ; *ESP = 00411FA3 (return address)
-   
    CallFunc:
    00411F9C prev_instruction
    00411F9E call Func (411424h) ; ESP = 0012FD3C
@@ -123,14 +114,12 @@ role="navigation" aria-label="main navigation">
    {
      longjmp(stack_state, 1);
    }
-   
    void CallFunc()
    {
      // setting returns 0
      // returning returns not 0
      if( setjmp(stack_state) == 0 )
        Func();
-   
      int x = 10;
    }
 </pre>
@@ -150,26 +139,20 @@ role="navigation" aria-label="main navigation">
      {
        longjmp(*env, 1);
      }
-   
      return ERROR_SUCCESS;
    }
-   
    /** And God said: 
      'int main!'
    */
    int main()
    {
      DWORD ret = ERROR_SUCCESS;
-   
      while( cin )
      {
        string line;
-   
        cout &lt;&lt; &quot;Type something\n&quot;;
        getline(cin, line);
-   
        jmp_buf env;
-   
        if( setjmp(env) == 0 )
        {
          LongJmp(&amp;env);
@@ -179,7 +162,6 @@ role="navigation" aria-label="main navigation">
          cout &lt;&lt; line &lt;&lt; endl;
        }
      }
-   
      return (int) ret;
    } 
 </pre>
@@ -191,7 +173,6 @@ role="navigation" aria-label="main navigation">
    #define ANTIDEBUG(code)
    {
      jmp_buf env;
-   
      if( setjmp(env) == 0 )
      {
        LongJmp(&amp;env);
@@ -201,23 +182,18 @@ role="navigation" aria-label="main navigation">
        code;
      }
    }
-   
    /** And God said: 'int main!'
    */
    int main()
    {
      DWORD ret = ERROR_SUCCESS;
-   
      while( cin )
      {
        string line;
-   
        cout &lt;&lt; &quot;Type something\n&quot;;
        getline(cin, line);
-   
        ANTIDEBUG(( cout &lt;&lt; line &lt;&lt; endl ));
      }
-   
      return (int) ret;
    } 
 </pre>

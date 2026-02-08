@@ -17,11 +17,6 @@
 <script src="/journal/js/jquery-1.12.4.js"></script>
 <script src="/journal/js/jquery-ui.js"></script>
 <script src="/journal/js/copy_clipboard.js"></script>
-<script>
-var quick_search_posts = [ 
- ]; 
-</script>
-<script src="/journal/js/quick_search.js"></script>
 <script src="/journal/js/list.js"></script>
 <link rel="icon" href="/journal/img/favicon.ico"/>
 </head>
@@ -44,30 +39,17 @@ role="navigation" aria-label="main navigation">
 <ul style="list-style: none;">
 
 <li><small><a href="2008-06.html#nada_importa">Nada importa</a></small></li>
-
 <li><small><a href="2008-06.html#resultado_do_seminario_ccpp">Resultado do Seminário CCPP</a></small></li>
-
 <li><small><a href="2008-06.html#launchpad_e_a_democracia_do_codigofonte">Launchpad e a democracia do código-fonte</a></small></li>
-
 <li><small><a href="2008-06.html#declaracao_x_definicao">Declaração x definição</a></small></li>
-
 <li><small><a href="2008-06.html#guia_basico_de_repositorios_no_bazaar">Guia básico de repositórios no Bazaar</a></small></li>
-
 <li><small><a href="2008-06.html#primeiro_ano_do_novo_calonicombr">Primeiro ano do novo Caloni.com.br</a></small></li>
-
 <li><small><a href="2008-06.html#como_fazer_merge_de_projetos_distintos_no_bazaar">Como fazer merge de projetos distintos no Bazaar</a></small></li>
-
 <li><small><a href="2008-06.html#alinhamento_de_memoria_portavel">Alinhamento de Memória Portável</a></small></li>
-
 <li><small><a href="2008-06.html#e_possivel_carregar_duas_dlls_gemeas_no_mesmo_processo">É possível carregar duas DLLs gêmeas no mesmo processo?</a></small></li>
-
 <li><small><a href="2008-06.html#como_estou_trabalhando_com_o_bazaar">Como estou trabalhando com o Bazaar</a></small></li>
-
 <li><small><a href="2008-06.html#primeiros_passos_na_documentacao_de_codigofonte_usando_doxygen">Primeiros passos na documentação de código-fonte usando Doxygen</a></small></li>
-
-<li><small><a href="2008-06.html#reflexao_em_c">Reflexão em C++</a></small></li>
-</ul>
-
+<li><small><a href="2008-06.html#reflexao_em_c">Reflexão em C++</a></small></li></ul>
 
 <span id="nada_importa" title="Nada importa"/></span>
 <section id="section_nada_importa">
@@ -134,7 +116,7 @@ role="navigation" aria-label="main navigation">
 
 <p>Enfim, para quem pôde ver, a palestra focou nos princípios que farão hoje em dia um programador C++ completo, profissional e que, como seus colegas de outras linguagens, se preocupa igualmente com a produtividade de seu código. Ah, sim, e não gosta nem um pouco de reinventar a roda.</p>
 
-<h2>Técnicas de Otimização de Código, por Rodrigo Kumpera &amp; André Tupinambá</h2>
+<h2>Técnicas de Otimização de Código, por Rodrigo Kumpera & André Tupinambá</h2>
 
 <img src="/journal/img/resultado_do_seminario_ccpp_seminario_otimizacao1.jpg"/>
 
@@ -237,7 +219,6 @@ role="navigation" aria-label="main navigation">
 <pre>
    /* tamanho em memória: zero bytes */
    int func(int x, int y, int z);
-   
    struct Teste
    {
      /* tamanho em memória: zero bytes */
@@ -245,7 +226,6 @@ role="navigation" aria-label="main navigation">
      /* tamanho em memória: zero bytes */
      int intao[0xffffff];
    };
-   
    /* tamanho em memória: adivinha! */
    extern int x;
 </pre>
@@ -322,9 +302,7 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    C:\Tests&gt;cd project1
-   
    C:\Tests\project1&gt;bzr init
-   
    C:\Tests\project1&gt;bzr add
    added AUTHORS
    added COPYING
@@ -336,7 +314,6 @@ role="navigation" aria-label="main navigation">
    added winboard/extends/infboard/main.c
    added winboard/extends/infboard/msvc.mak
    added winboard/extends/infboard/support.c
-   
    C:\Tests\project1&gt;bzr commit -m &quot;Comentario sobre a revisao&quot;
    Committing to: C:/Tests/project1/
    added AUTHORS
@@ -350,7 +327,6 @@ role="navigation" aria-label="main navigation">
    added winboard/extends/infboard/msvc.mak
    added winboard/extends/infboard/support.c
    Committed revision 1.
-   
    C:\Tests\project1&gt;
 </pre>
 <p>Feito. A partir daí temos um repositório onde podemos realizar o comando commit sempre que quisermos marcar um snapshot em nosso código-fonte.</p>
@@ -359,21 +335,16 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    C:\Tests\project1&gt;cd ..
-   
    C:\Tests&gt;bzr branch project1 project1-changing
    Branched 1 revision(s).
-   
    C:\Tests&gt;cd project1-changing
-   
    C:\Tests\project1-changing&gt;
 </pre>
 <p>Criar um novo branch totalmente duplicado pode se tornar um desperdício enorme de espaço em disco (e tempo). Para isso foi criado o conceito de Shared Repository, que basicamente é um diretório acima dos branchs que trata de organizar as revisões em apenas um só lugar, com a vantagem de otimizar o espaço. Nesse caso, antes de criar o projeto, poderíamos usar o comando init-repo na pasta mãe de nosso projeto, e depois continuar com o processo de init dentro da pasta do projeto.</p>
 
 <pre>
    C:\&gt;bzr init-repo Tests
-   
    C:\&gt;cd Tests
-   
    C:\Tests&gt;bzr init project1
    C:\Tests&gt;cd project1
    C:\Tests\project1&gt;bzr add
@@ -387,7 +358,6 @@ role="navigation" aria-label="main navigation">
    added winboard/extends/infboard/main.c
    added winboard/extends/infboard/msvc.mak
    added winboard/extends/infboard/support.c
-   
    C:\Tests\project1&gt;bzr commit -m &quot;Comentario sobre a revisao&quot;
    Committing to: C:/Tests/project1/
    added AUTHORS
@@ -409,13 +379,10 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    C:\Tests&gt;bzr init-repo project1-repo
-   
    C:\Tests&gt;bzr branch project1 project1-repo\project1
    Branched 1 revision(s).
-   
    C:\Tests&gt;bzr branch project1-changing project1-repo\project-changing
    Branched 1 revision(s).
-   
    C:\Tests&gt;
 </pre>
 <p>Isso irá recriar esses dois branches como os originais, mas com a metade do espaço em disco, pois seus históricos estarão compartilhados na pasta project1-repo.</p>
@@ -426,16 +393,12 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    C:\Tests\client&gt;bzr checkout ..\server\project1
-   
    C:\Tests\client&gt;cd project1
-   
    C:\Tests\client\project1&gt;echo &quot;New changes&quot; &gt;&gt; FAQ
-   
    C:\Tests\client\project1&gt;bzr commit -m &quot;New changes comment&quot;
    Committing to: C:/Tests/server/project1/
    modified FAQ
    Committed revision 2.
-   
    C:\Tests\client\project1&gt;bzr log -l 1 ..\..\server\project1
    ------------------------------------------------------------
    revno: 2
@@ -444,7 +407,6 @@ role="navigation" aria-label="main navigation">
    timestamp: Sun 2008-06-08 19:52:17 -0300
    message:
      New changes comment
-   
    C:\Tests\client\project1&gt;
 </pre>
 <p>Na verdade, o Bazaar vai além, e permite que um branch/checkout específico seja conectado e desconectado em qualquer repositório válido. Para isso são usados os comandos bind e unbind. Um branch conectado faz commits remotos e locais, enquanto um branch unbinded faz commits apenas locais. É possível mudar esse comportamento com o parâmetro --local, e atualizar o branch local com o comando update.</p>
@@ -548,70 +510,52 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    C:\Tests&gt;bzr init linux
-   
    C:\Tests&gt;cd linux
-   
    C:\Tests\linux&gt;copy con lnx
    linux
    ^Z
            1 arquivo(s) copiado(s).
-   
    C:\Tests\linux&gt;bzr add
    added lnx
-   
    C:\Tests\linux&gt;bzr commit -m &quot;Linux 1&quot;
    Committing to: C:/Tests/linux/
    added lnx
    Committed revision 1.
-   
    C:\Tests\linux&gt;copy con lnx2
    linux2
    ^Z
            1 arquivo(s) copiado(s).
-   
    C:\Tests\linux&gt;bzr add
    added lnx2
-   
    C:\Tests\linux&gt;bzr commit -m &quot;Linux 2&quot;
    Committing to: C:/Tests/linux/
    added lnx2
    Committed revision 2.
-   
    C:\Tests\linux&gt;cd ..
-   
    C:\Tests&gt;bzr init windows
-   
    C:\Tests&gt;cd windows
-   
    C:\Tests\windows&gt;copy con win1
    windows
    ^Z
            1 arquivo(s) copiado(s).
-   
    C:\Tests\windows&gt;bzr add
    added win1
-   
    C:\Tests\windows&gt;bzr commit -m &quot;Windows 1&quot;
    Committing to: C:/Tests/windows/
    added win1
    Committed revision 1.
-   
    C:\Tests\windows&gt;copy con win2
    windows2
    ^Z
            1 arquivo(s) copiado(s).
    C:\Tests\windows&gt;bzr add
    added win2
-   
    C:\Tests\windows&gt;bzr commit -m &quot;Windows 2&quot;
    Committing to: C:/Tests/windows/
    added win2
    Committed revision 2.
-   
    C:\Tests\linux&gt;cd ..
-   
    C:\Tests&gt;cd linux
-   
    C:\Tests\linux&gt;bzr replay ..\windows -r1..2
    All changes applied successfully.
    Committing to: C:/Tests/linux/
@@ -650,10 +594,8 @@ role="navigation" aria-label="main navigation">
    timestamp: Mon 2008-06-16 07:16:01 -0300
    message:
      Linux 1
-   
    C:\Tests\linux&gt;ls
    lnx  lnx2  win1  win2
-   
    C:\Tests\linux&gt;
 </pre>
 <p>O resultado:</p>
@@ -690,7 +632,6 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    #include &lt;stdio.h&gt;
-   
    union Align
    {
      struct S
@@ -699,7 +640,6 @@ role="navigation" aria-label="main navigation">
        int x;
      }
      t;
-   
      unsigned char align[
        sizeof(struct S) % 8 
        ?
@@ -733,7 +673,6 @@ role="navigation" aria-label="main navigation">
    union UAlign
    {
      T t;
-   
      unsigned char align[
        sizeof(T) % A
        ?
@@ -1121,10 +1060,8 @@ int main()
    C:\Tests&gt;cl typeid.cpp
    Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 15.00.21022.08 for 80x86
    Copyright (C) Microsoft Corporation.  All rights reserved.
-   
    /out:typeid.exe
    typeid.obj
-   
    C:\Tests&gt;typeid.exe
    int
 </pre>
@@ -1149,10 +1086,8 @@ int main()
    C:\Tests&gt;cl typeid-class.cpp
    Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 15.00.21022.08 for 80x86
    Copyright (C) Microsoft Corporation.  All rights reserved.
-   
    /out:typeid-class.exe
    typeid-class.obj
-   
    C:\Tests&gt;typeid-class.exe
    class MyClass::MyMethod
 </pre>
@@ -1181,10 +1116,8 @@ int main()
    C:\Tests&gt;cl typeid-class2.cpp
    Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 15.00.21022.08 for 80x86
    Copyright (C) Microsoft Corporation.  All rights reserved.
-   
    /out:typeid-class2.exe
    typeid-class2.obj
-   
    C:\Tests&gt;typeid-class2.exe
    class MyDerivatedClass1::MyMethod class MyDerivatedClass2::MyMethod
 </pre>

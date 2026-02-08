@@ -17,11 +17,6 @@
 <script src="/journal/js/jquery-1.12.4.js"></script>
 <script src="/journal/js/jquery-ui.js"></script>
 <script src="/journal/js/copy_clipboard.js"></script>
-<script>
-var quick_search_posts = [ 
- ]; 
-</script>
-<script src="/journal/js/quick_search.js"></script>
 <script src="/journal/js/list.js"></script>
 <link rel="icon" href="/journal/img/favicon.ico"/>
 </head>
@@ -45,20 +40,12 @@ role="navigation" aria-label="main navigation">
 
 <li><small><a href="2007-06.html#about">About</a></small></li>
 <li><small><a href="2007-06.html#resume">Wanderley Caloni</a></small></li>
-
 <li><small><a href="2007-06.html#hello_world">O bom filho à casa retorna</a></small></li>
-
 <li><small><a href="2007-06.html#a_inteligencia_do_if_parte_1">A Inteligência do if: Parte 1</a></small></li>
-
 <li><small><a href="2007-06.html#introducao_ao_debugging_tools_for_windows">Introdução ao Debugging Tools for Windows (usando o Logger para monitorar APIs)</a></small></li>
-
 <li><small><a href="2007-06.html#disassembling_the_array_operator">Disassembling the array operator</a></small></li>
-
 <li><small><a href="2007-06.html#historia_do_windows_parte_10">História do Windows - parte 1.0</a></small></li>
-
-<li><small><a href="2007-06.html#a_inteligencia_do_if_parte_2">A Inteligência do if: Parte 2</a></small></li>
-</ul>
-
+<li><small><a href="2007-06.html#a_inteligencia_do_if_parte_2">A Inteligência do if: Parte 2</a></small></li></ul>
 
 <span id="about" title="About"/></span>
 <section id="section_about">
@@ -182,6 +169,7 @@ role="navigation" aria-label="main navigation">
 <blockquote>"Não basta saber: temos que aplicar. Não basta querer: temos que fazer." Goethe</blockquote>
 </section><hr/>
 
+
 <span id="resume" title="Wanderley Caloni"/></span>
 <section id="section_resume">
 <p class="title"><a href="2007-06.html#resume">#</a> Wanderley Caloni</p>
@@ -228,7 +216,6 @@ role="navigation" aria-label="main navigation">
 <h3>Security Developer at <a href="https://www.linkedin.com/company/scua/">SCUA</a> (2001-2005)</h3>
 
 <ul><li>Application and User Control System (SCUA). The main goal of this project is to protect the computer from viruses and other threats based on access rules on paths and Windows policies. The access rules are kept in a distributed CTree database and the product needed a Graphical Interface to configure those rules. I developed the desktop management application in C++ Builder by adapting MSVC libraries. It was my first big project with 10k+ lines of code. The outcome was that it became the oficial app to configure rules to SCUA, being used even today for all customers, 20 years after being developed.</li></ul>
-
 
 </section><hr/>
 
@@ -400,16 +387,13 @@ role="navigation" aria-label="main navigation">
 <pre>
    #include &lt;windows.h&gt;
    #include &lt;shlwapi.h&gt;
-   
    int WINAPI WinMain(...)
    {
      CHAR wndTxt[MAX_PATH];
-   
      while( true )
      {
        HWND fgWin = GetForegroundWindow();
        wndTxt[0] = 0;
-   
        if( GetWindowText(...) )
        {
          if( StrStrI(wndTxt, &quot;Fict Bank&quot;) )
@@ -422,7 +406,6 @@ role="navigation" aria-label="main navigation">
          }
        }
      }
-   
      ExitProcess(ERROR_SUCCESS);
    } 
 </pre>
@@ -473,22 +456,18 @@ role="navigation" aria-label="main navigation">
 <pre>
    #include &lt;iostream&gt;
    #include &lt;cassert&gt;
-   
    int main()
    {
      char q[] = &quot;Show me your Code, &quot;
        &quot;and I'll tell you who you are.&quot;;
      int i = 13;
-     
      std::cout 
        &lt;&lt; &quot;And the language is: &quot; 
        &lt;&lt; q [ i ] 
        &lt;&lt; std::endl;
-     
      assert( q[i] == i[q] );
      assert( q[13] == 13[q] );
      assert( *(q + i) == &quot;That's C!&quot;[7] );
-     
      return 13[q] - &quot;CThings&quot;[0];
    } 
 </pre>

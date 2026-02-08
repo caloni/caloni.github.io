@@ -17,11 +17,6 @@
 <script src="/blog/js/jquery-1.12.4.js"></script>
 <script src="/blog/js/jquery-ui.js"></script>
 <script src="/blog/js/copy_clipboard.js"></script>
-<script>
-var quick_search_posts = [ 
- ]; 
-</script>
-<script src="/blog/js/quick_search.js"></script>
 <script src="/blog/js/list.js"></script>
 <link rel="icon" href="/blog/img/favicon.ico"/>
 </head>
@@ -50,7 +45,6 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    #include &lt;stdio.h&gt;
-   
    class File
    {
      public:
@@ -58,15 +52,12 @@ role="navigation" aria-label="main navigation">
      {
        m_file = fopen(name, &quot;r&quot;);
      }
-   
      ~File()
      {
        fclose(m_file);
      }
-   
      FILE* m_file;
    };
-   
    int UseFile()
    {
      File config(&quot;config.txt&quot;);
@@ -86,7 +77,6 @@ role="navigation" aria-label="main navigation">
      // things aren't that good, so...
      throw Scatadush();
    }
-   
    int UseFileEx()
    {
      File config(&quot;config.txt&quot;);
@@ -104,31 +94,24 @@ role="navigation" aria-label="main navigation">
    class File2
    {
    public:
-   
      void Open(char* name)
      {
        m_file = fopen(name, &quot;r&quot;);
      }
-   
      void Close()
      {
        fclose(m_file);
      }
-   
      FILE* m_file;
    };
-   
    int UseFile2()
    {
      File2 config;
      config.Open(&quot;config.txt&quot;);
-   
      BlowUpFunction(); // exception thrown:
                        // the resource was 
                        // NOT released
-   
      config.Close(); // resource released
-   
      return 0;
    } 
 </pre>

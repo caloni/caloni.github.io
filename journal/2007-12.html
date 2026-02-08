@@ -17,11 +17,6 @@
 <script src="/journal/js/jquery-1.12.4.js"></script>
 <script src="/journal/js/jquery-ui.js"></script>
 <script src="/journal/js/copy_clipboard.js"></script>
-<script>
-var quick_search_posts = [ 
- ]; 
-</script>
-<script src="/journal/js/quick_search.js"></script>
 <script src="/journal/js/list.js"></script>
 <link rel="icon" href="/journal/img/favicon.ico"/>
 </head>
@@ -44,28 +39,16 @@ role="navigation" aria-label="main navigation">
 <ul style="list-style: none;">
 
 <li><small><a href="2007-12.html#fazer">Fazer</a></small></li>
-
 <li><small><a href="2007-12.html#conceitos_basicos_na_programacao_com_c++_builder">Conceitos básicos na programação com C++ Builder</a></small></li>
-
 <li><small><a href="2007-12.html#interacao_entre_controles_no_c++_builder">Interação entre controles no C++ Builder</a></small></li>
-
 <li><small><a href="2007-12.html#gerenciamento_de_janelas_em_c++_builder">Gerenciamento de janelas em C++ Builder</a></small></li>
-
 <li><small><a href="2007-12.html#debug_remoto_no_c_builder">Debug remoto no C++ Builder</a></small></li>
-
 <li><small><a href="2007-12.html#sizeof_de_novo">Sizeof (de novo)</a></small></li>
-
 <li><small><a href="2007-12.html#drag_and_drop_no_c++_builder">Drag and drop no C++ Builder</a></small></li>
-
 <li><small><a href="2007-12.html#banco_de_dados_no_c++_builder">Banco de dados no C++ Builder</a></small></li>
-
 <li><small><a href="2007-12.html#o_que_acontece_quando_o_contador_estoura">O que acontece quando o contador estoura</a></small></li>
-
 <li><small><a href="2007-12.html#curiosidades_inuteis_o_operador_de_subscrito_em_c">Curiosidades inúteis: o operador de subscrito em C++</a></small></li>
-
-<li><small><a href="2007-12.html#gambi_do_dia_swap_com_apenas_duas_variaveis">Gambi do dia: swap com apenas duas variáveis</a></small></li>
-</ul>
-
+<li><small><a href="2007-12.html#gambi_do_dia_swap_com_apenas_duas_variaveis">Gambi do dia: swap com apenas duas variáveis</a></small></li></ul>
 
 <span id="fazer" title="Fazer"/></span>
 <section id="section_fazer">
@@ -86,7 +69,6 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    #include &lt;vcl.h&gt;
-   
    WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
    {
      try
@@ -96,7 +78,6 @@ role="navigation" aria-label="main navigation">
        Application-&gt;Run();
      }
      //...
-   
      return 0;
    } 
 </pre>
@@ -116,7 +97,6 @@ role="navigation" aria-label="main navigation">
    public:  // User declarations
      __fastcall TForm1(TComponent* Owner);
    };
-   
    extern PACKAGE TForm1 *Form1; 
 </pre>
 <p>A classe deriva de TForm, que é uma classe da VCL que representa uma janela padrão do Windows. Como se nota, um objeto da classe é criado automaticamente, exatamente o utilizado no WinMain para a criação da janela principal.</p>
@@ -133,7 +113,6 @@ role="navigation" aria-label="main navigation">
    void __fastcall TForm1::Button1Click(TObject *Sender)
    {
      TButton* btn2 = new TButton(this); // this é o meu form
-   
      btn2-&gt;Parent = this; // será o owner e o parent do novo botão
      btn2-&gt;SetBounds(10, 10, 150, 25); // definindo as fronteiras dentro do form
      btn2-&gt;Caption = &quot;Prazer! Sou dinâmico!&quot;;
@@ -219,7 +198,6 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    #include &quot;Unit2.h&quot; // extern PACKAGE TForm2 *Form2;
-   
    void __fastcall TForm1::Button1Click(TObject *Sender)
    {
      Form2-&gt;Show();
@@ -345,7 +323,6 @@ role="navigation" aria-label="main navigation">
    ntdll!KiFastSystemCallRet:
    7c90eb94 c3              ret
 </pre>
-
 </section><hr/>
 
 
@@ -466,7 +443,6 @@ role="navigation" aria-label="main navigation">
    {
      Accept = true;
    }
-   
    void __fastcall TMain::ListBoxDragOver(TObject *Sender, TObject *Source,
          int X, int Y, TDragState State, bool &amp;Accept)
    {
@@ -482,7 +458,6 @@ role="navigation" aria-label="main navigation">
      if( TListBox* listBox = dynamic_cast&lt;TListBox*&gt;(Sender) )
      {
        TWinControl* winCtrl = static_cast&lt;TWinControl*&gt;(Source);
-   
        if( listBox != winCtrl )
        {
          listBox-&gt;Items-&gt;Add(winCtrl-&gt;Name);
@@ -496,7 +471,6 @@ role="navigation" aria-label="main navigation">
      if( TForm* form = dynamic_cast&lt;TForm*&gt;(Sender) )
      {
        TControl* ctrl = 0;
-   
        if( TListBox* listBox = dynamic_cast&lt;TListBox*&gt;( Source ) )
        {
          for( int i = 0; i &lt; listBox-&gt;Count; ++i )
@@ -511,7 +485,6 @@ role="navigation" aria-label="main navigation">
        }
        else
          ctrl = dynamic_cast&lt;TControl*&gt;(Source);
-   
        if( ctrl )
        {
          ctrl-&gt;Top = Y;
@@ -526,7 +499,6 @@ role="navigation" aria-label="main navigation">
 <ul><li>O uso de dynamic_cast em cima dos ponteiros da VCL é uma maneira saudável de checar a integridade dos tipos recebidos - particularmente do Sender. O uso do primeiro parâmetro dos tratadores de eventos também torna o código menos preso à componentes específicos do formulário;</li>
 
 <li>O método FindChildControl é deveras útil quando não temos certeza da existência de um controle. Geralmente é uma boa idéia confiar no sistema de gerenciamento de componentes da VCL. Não é à toa que existe um framework por baixo do ambiente RAD.</li></ul>
-
 
 </section><hr/>
 
@@ -600,7 +572,6 @@ role="navigation" aria-label="main navigation">
 
 <ul><li>2021-03-27. Durante a revisão deste post eu tentei rodar a aplicação sem sucesso. Existem erros na abertura e configuração do arquivo mdb que não perdi mais tempo tentando resolver.</li></ul>
 
-
 </section><hr/>
 
 
@@ -616,11 +587,9 @@ role="navigation" aria-label="main navigation">
 <pre>
    #include &lt;limits.h&gt;
    #include &lt;iostream&gt;
-   
    int main()
    {
      int x = INT_MAX;
-   
      std::cout &lt;&lt; x &lt;&lt; std::endl;
      x = x + 1;
      std::cout &lt;&lt; x &lt;&lt; std::endl;
@@ -681,12 +650,10 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    #include &lt;iostream&gt;
-   
    int main()
    {
      char ditado[] = &quot;Diga-me com que programas e eu te direi quem és.&quot;;
      int indice = 8;
-   
      std::cout &lt;&lt; &quot;E a linguagem é: &quot; &lt;&lt; ditado[indice] &lt;&lt; std::endl;
    } 
 </pre>
@@ -726,21 +693,16 @@ role="navigation" aria-label="main navigation">
      first = second;
      second = third;
    }
-   
    int main()
    {
      int first = 13;
      int second = 42;
-   
      cout &lt;&lt; &quot;first: &quot; &lt;&lt; first 
        &lt;&lt; &quot;, second: &quot; &lt;&lt; second &lt;&lt; endl;
-   
      normalSwap(first, second);
-   
      cout &lt;&lt; &quot;first: &quot; &lt;&lt; first 
        &lt;&lt; &quot;, second: &quot; &lt;&lt; second &lt;&lt; endl;
    } 
-   
    Saída:
    first: 13, second: 42
    first: 42, second: 13
@@ -760,7 +722,6 @@ role="navigation" aria-label="main navigation">
        &lt;&lt; &quot;1 XOR 1 = &quot; &lt;&lt; ( 1 ^ 1 ) &lt;&lt; '\n'
      ;
    } 
-   
    -----------
     XOR Table
    -----------
@@ -799,18 +760,15 @@ role="navigation" aria-label="main navigation">
    )
    {
      typedef unsigned char byte;
-   
      const byte* pFirst = 
        reinterpret_cast&lt;const byte*&gt;
        (&amp;first);
      const byte* pSecond = 
        reinterpret_cast&lt;const byte*&gt;
        (&amp;second);
-   
      byte* pResult = 
        reinterpret_cast&lt;byte*&gt;
        (&amp;result);
-   
      for( size_t i = 0; 
        i &lt; sizeof(first) 
          &amp;&amp; i &lt; sizeof(second);
@@ -819,11 +777,9 @@ role="navigation" aria-label="main navigation">
        pResult[i] = pFirst[i] ^ pSecond[i];
      }
    }
-   
    int main()
    {
      int x = 13, y = 42;
-   
      cout &lt;&lt; &quot;x: &quot; &lt;&lt; x 
        &lt;&lt; &quot;, y: &quot; &lt;&lt; y &lt;&lt; '\n';
      universalXor(x, y, x);
@@ -831,10 +787,8 @@ role="navigation" aria-label="main navigation">
      universalXor(x, y, x);
      cout &lt;&lt; &quot;x: &quot; &lt;&lt; x 
        &lt;&lt; &quot;, y: &quot; &lt;&lt; y &lt;&lt; &quot;\n\n&quot;;
-   
      char str1[50] = &quot;teste de xor&quot;;
      char str2[50] = &quot;aceita strings!&quot;;
-   
      cout &lt;&lt; &quot;str1: &quot; &lt;&lt; str1 
        &lt;&lt; &quot;, str2: &quot; &lt;&lt; str2 &lt;&lt; '\n';
      universalXor(str1, str2, str1);
@@ -842,13 +796,11 @@ role="navigation" aria-label="main navigation">
      universalXor(str1, str2, str1);
      cout &lt;&lt; &quot;str1: &quot; &lt;&lt; str1 
        &lt;&lt; &quot;, str2: &quot; &lt;&lt; str2 &lt;&lt; '\n';
-   
      return 0;
    } 
    Saída:
    x: 13, y: 42
    x: 42, y: 13
-   
    str1: teste de xor, str2: aceita strings!
    str1: aceita strings!, str2: teste de xor
 </pre>
@@ -859,7 +811,6 @@ role="navigation" aria-label="main navigation">
 <pre>
    #include &lt;iostream&gt;
    using namespace std;
-   
    void anormalSwap(int &amp;first, 
      int&amp; second)
    {
@@ -867,12 +818,10 @@ role="navigation" aria-label="main navigation">
      second = first ^ second;
      first = first ^ second;
    }
-   
    int main()
    {
      int first = 13;
      int second = 42;
-   
      cout &lt;&lt; &quot;first: &quot; &lt;&lt; first 
        &lt;&lt; &quot;, second: &quot; &lt;&lt; second &lt;&lt; endl;
      anormalSwap(first, second);

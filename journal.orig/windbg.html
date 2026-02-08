@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Jornal do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Jornal do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/journal/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/journal/index.xml" rel="feed" type="application/rss+xml" title="Jornal do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/journal/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/journal/css/jquery-ui.css"/>
+<script src="/journal/js/jquery-1.12.4.js"></script>
+<script src="/journal/js/jquery-ui.js"></script>
+<script src="/journal/js/copy_clipboard.js"></script>
+<script>
+var quick_search_posts = [ 
+ ]; 
+</script>
+<script src="/journal/js/quick_search.js"></script>
+<script src="/journal/js/list.js"></script>
+<link rel="icon" href="/journal/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Jornal do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<input type="text" name="filter" value="" id="filter" placeholder="enter to select" style="width: 100%; font-size: 1.5rem; margin-top: 1em; margin-bottom: 0.5em;" title=""/></br>
+<button id="filterbutton" style="font-size: 1rem;" onclick="ApplyFilter($('#filter').val());">select</button>
+<button id="removebutton" style="font-size: 1rem;" onclick="ApplyNotFilter($('#filter').val());">remove</button>
+<button id="randombutton" style="font-size: 1rem;" onclick="window.location = randomPost;">random</button>
+<div><big><b><span style="visibility: hidden; padding: 5px;" name="results" id="results">...</span></b></big></div>
+<table class="sortable" style="width: 100%;">
+<tr><td>
+<b><a href="2024-03.html#windbg_travado">WinDbg travado</a></b>
+<small><i>2024-03-14 windbg  Uma das coisas mais irritantes no WinDbg é quando ele trava sem motivo aparente. Isso pode acontecer porque ele está baixando símbolos de módulos necessários para mostrar o resultado do comando enviado ou procurando por eles. O comando !sym noisy ajuda a manter alguma saída na tela para entender esse cenário. Entre esses cenários o mais irritante é quando colocamos um breakpoint em um ponto no código fonte e ele precisa encontrar qual o módulo correspondente se ele ainda não souber. Para fazer isso ele sai baixando os símbolos de todos os módulos até encontrar. E ele não para facilmente nesse caso, então os comandos de break não irão funcionar. A janela do WinDbg parecerá travada e não há nada o que fazer.</small></i>
+</td></tr>
+<tr><td>
+<b><a href="2023-11.html#encontrando_o_hive_de_aps_uwp">Encontrando o hive de aps UWP</a></b>
+<small><i>2023-11-04 windbg reversing  Aplicativos UWP não possuem direitos de administração. Por isso eles não conseguem carregar um hive de registro como especificado pela API do Windows. A solução, portanto, é mudar o sistema operacional.</small></i>
+</td></tr>
+<tr><td>
+<b><a href="2023-10.html#como_saber_quais_classes_winrt_estao_sendo_ativadas">Como saber quais classes winrt estão sendo ativadas</a></b>
+<small><i>2023-10-05 windbg reversing  Quando analisando o comportamento de programas Windows que usam winrt é sempre útil dar uma olhada nas classes sendo ativadas. Uma função-chave para isso é a [RoGetActivationFactory]: // Gets the activation factory for the specified runtime class.</small></i>
+</td></tr>
+<tr><td>
+<b><a href="2023-10.html#setando_proxima_instrucao_no_windbg">Setando próxima instrução no WinDbg</a></b>
+<small><i>2023-10-04 debugging reversing windbg  Procurando onde setar a próxima instrução no WinDbg? Dica: curiosamente ela não fica no meio dos comandos de debug, mas no menu Edit. Selecione a linha desejada no assembly ou código-fonte para onde deseja alterar o fluxo de execução e use a opção "Set Current Instruction".</small></i>
+</td></tr>
+<tr><td>
+<b><a href="2023-10.html#como_investigar_a_vtable_de_uma_interface_ou_objeto_com">Como investigar a vtable de uma interface ou objeto COM</a></b>
+<small><i>2023-10-03 windbg reversing  Uma vez que você encontre onde está a `vtable` -- por exemplo, como o primeiro parâmetro da chamada em um método, vide [convenção de chamadas do x64] -- liste no WinDbg os endereços contidos neste endereço (o parâmetro `L` é a quantidade de bytes para mostrar):</small></i>
+</td></tr>
+<tr><td>
+<b><a href="2023-10.html#como_inspecionar_chamadas_com_remotas_olhando_a_informacao_de_marshaling">Como inspecionar chamadas COM remotas olhando a informação de marshaling</a></b>
+<small><i>2023-10-03 windbg reversing  Esta dica é para começar uma análise de reversa quando você deseja entender quais informações estão sendo trafegadas por uma chamada COM remota, ou seja, entre processos distintos. Isso vale para WinRT e para o COM tradicional. De uma forma ou de outra a chamada irá passar por `combase!NdrExtpProxySendReceive` e outras funções de RPC relacionadas, além das novas funções de ALPC, em especial `ntdll!NtAlpcSendWaitReceivePort`. Existem várias de marshaling e unmarshaling, mas o mais importante é centralizar na função que envia e recebe bytes e analisar estes bytes. Eles são a versão serializada dos parâmetro sendo trafegados.</small></i>
+</td></tr>
+<tr><td>
+<b><a href="2023-10.html#como_colocar_breakpoint_nas_chamadas_a_outputdebugstring">Como colocar breakpoint nas chamadas a OutputDebugString</a></b>
+<small><i>2023-10-03 windbg reversing  Usando `sxe out` é possível parar a execução de um programa sendo depurado pelo WinDbg sempre que ele disparar alguma saída para o depurador através da função OutputDebugString. Isso permite em nossa sessão de debug descobrir de onde vem a chamada, pois o depurador para e podemos usar o comando `k` para dar uma espiada.</small></i>
+</td></tr>
+<tr><td>
+<b><a href="2022-06.html#windbg_everywhere">Windbg Everywhere</a></b>
+<small><i>2022-06-09 windbg computer  ## Usando WinDbg em situações onde não há Visual Studio Com essa premissa me vem à mente os seguintes cenários:  - Não é possível instalar Visual Studio    - Só copiar a pasta onde está rodando o windbg.exe.</small></i>
+</td></tr>
+<tr><td>
+<b><a href="2008-05.html#aprendendo_rapidamente_conceitos_essenciais_do_windbg">Aprendendo rapidamente conceitos essenciais do WinDbg</a></b>
+<small><i>2008-05-23 windbg computer  Todo o poder e flexibilidade do pacote Debugging Tools da Microsoft pode ser ofuscado pela sua complexidade e curva de aprendizagem. Afinal de contas, usar o depurador do Visual Studio é muito fácil, quando se começa a usar, mas mesmo assim conheço muitos programadores que relutam em depurar passo-a-passo, preferindo a depuração por meio de "MessageBoxes" ou saídas na tela. Imagine, então, a dificuldade que não é para quem conseguiu às duras penas aprender a tornar um hábito a primeira passada do código novo em folha através do F10 começar a fazer coisas como configurar símbolos e digitar comandos esdrúxulos em uma tela em modo texto. Para piorar a questão, existem aqueles que defendem o uso unificado de uma ferramenta que faça tudo, como um telefone celular. Eu discordo. Quando a vantagem competitiva de uma ferramenta sobre outra é notável, nada pior que ficar preso em um ambiente legalzinho que faz o mínimo para você, mas não resolve o seu problema de deadlock.</small></i>
+</td></tr>
+<tr><td>
+<img src="/journal/img/kernel_mode_user_mode_windbg_user_kernel2.png"/>
+<b><a href="2008-05.html#kernel_mode_user_mode">Kernel Mode &gt;&gt; User Mode, ou Como Fazer Debug de User Mode pelo Kernel Mode</a></b>
+<small><i>2008-05-13 blogging windbg computer  Existem algumas situações onde um depurador WYSIWYG é artigo de luxo. Imagine o seguinte: temos um serviço que inicia automagicamente antes do login do Windows, e possivelmente antes mesmo do ambiente gráfico. Esse serviço tem algum problema que impede que ele funcione sob as circunstâncias de inicialização do sistema. O que fazer?  Atachar o WinDbg no processo?</small></i>
+</td></tr>
+<tr><td>
+<img src="/journal/img/brincando_com_o_windbg_notepad_wonderful_file.png"/>
+<b><a href="2007-10.html#alterando_mensagem_de_erro_no_notepad">Alterando mensagem de erro no Notepad</a></b>
+<small><i>2007-10-30 blog windbg computer  Existem duas maneiras de depurar um programa localmente usando o WinDbg: iniciá-lo pelo próprio WinDbg ou conectar o depurador (attach) em um programa já em execução. Podemos especificar o que faremos direto na linha de comando ou pela sua interface. Pela linha de comando podemos usar os comandos windbg notepad.exe, windbg -pn notepad.exe e windbg -p pid. Pela interface são os conhecidos itens do menu File: Open Executable e Attach to a Process.</small></i>
+</td></tr>
+<tr><td>
+<img src="/journal/img/introducao_ao_debugging_tools_for_windows_windbg.png"/>
+<b><a href="2007-06.html#introducao_ao_debugging_tools_for_windows">Introdução ao Debugging Tools for Windows (usando o Logger para monitorar APIs)</a></b>
+<small><i>2007-06-20 windbg debugging computer  2025-10-05: Hoje o Logger está desatualizado e não recomendo mais seu uso. Há ferramentas melhores, como API Monitor, além de ser possível você mesmo desenvolver com a lib Detours. O WinDbg é uma ferramenta obrigatória em uma das minhas mais divertidas tarefas aqui na Open: engenharia reversa de cavalos de tróia. Não tenho o código-fonte desses programas, não posso executá-los em minha própria máquina e não consigo fazer tudo que preciso usando apenas o depurador integrado do Visual Studio (como remontar o assembly do programa, por exemplo). Tudo isso faz do WinDbg a alternativa perfeita (senão uma das únicas). É um depurador que permite ser usado tanto através de janelas quanto através de comandos, o que permite um aprendizado em doses homeopáticas: comece com as janelas e aos poucos ganhe o controle total. Conseqüentemente cada dia aprendo um comando novo ou um novo uso para um comando que já conheço.</small></i>
+</td></tr>
+</table>
+<span style="float: left;">
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

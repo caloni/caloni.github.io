@@ -17,11 +17,6 @@
 <script src="/journal/js/jquery-1.12.4.js"></script>
 <script src="/journal/js/jquery-ui.js"></script>
 <script src="/journal/js/copy_clipboard.js"></script>
-<script>
-var quick_search_posts = [ 
- ]; 
-</script>
-<script src="/journal/js/quick_search.js"></script>
 <script src="/journal/js/list.js"></script>
 <link rel="icon" href="/journal/img/favicon.ico"/>
 </head>
@@ -44,14 +39,9 @@ role="navigation" aria-label="main navigation">
 <ul style="list-style: none;">
 
 <li><small><a href="2010-01.html#rotina">Rotina</a></small></li>
-
 <li><small><a href="2010-01.html#importando_tipos_de_outros_projetos">Importando tipos de outros projetos</a></small></li>
-
 <li><small><a href="2010-01.html#passagem_por_valor_e_emails_com_anexo">Passagem por valor e emails com anexo</a></small></li>
-
-<li><small><a href="2010-01.html#house">House</a></small></li>
-</ul>
-
+<li><small><a href="2010-01.html#house">House</a></small></li></ul>
 
 <span id="rotina" title="Rotina"/></span>
 <section id="section_rotina">
@@ -73,10 +63,8 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    windbg -kl
-   
    Microsoft (R) Windows Debugger Version 6.9.0003.113 X86
    Copyright (c) Microsoft Corporation. All rights reserved.
-   
    Connected to Windows XP 2600 x86 compatible target, ptr64 FALSE
    Symbol search path is: SRV*c:\tools\symbols*http://msdl.microsoft.com/download/symbols
    Executable search path is:
@@ -90,10 +78,8 @@ role="navigation" aria-label="main navigation">
    Kernel base = 0x804d7000 PsLoadedModuleList = 0x8055d720
    Debug session time: Mon Jan 11 10:36:50.061 2010 (GMT-2)
    System Uptime: 5 days 1:05:24.958
-   
    Microsoft (R) Windows Debugger Version 6.9.0003.113 X86
    Copyright (c) Microsoft Corporation. All rights reserved.
-   
    lkd&gt; !process 0 0 notepad.exe
    PROCESS 89068700  SessionId: 0  Cid: 0ec4    Peb: 7ffda000  ParentCid: 0b0c
        DirBase: 0ac80a80  ObjectTable: e143a7d8  HandleCount: 152.
@@ -112,11 +98,9 @@ role="navigation" aria-label="main navigation">
 <p>É claro que nosso executável não vai existir na sessão de kernel local, mas isso não importa. Podemos usar qualquer módulo carregado e usá-lo como _host _de nosso conjunto de símbolos:</p>
 
 <pre>
-   
    lkd&gt; lm
    start    end        module name
    804d7000 806e5000   nt         (pdb symbols)          c:\tools\symbols\ntkrpamp.pdb\D8743252F83B4F59985D6E19F33BFCAF1\ntkrpamp.pdb
-   
    Unloaded modules:
    a5513000 a553e000   kmixer.sys
    bac50000 bac57000   USBSTOR.SYS
@@ -131,7 +115,6 @@ role="navigation" aria-label="main navigation">
    ba489000 ba48c000   Sfloppy.SYS
    babe8000 babed000   Flpydisk.SYS
    babe0000 babe7000   Fdc.SYS 
-   
    ------ Build started: Project: KernelTypes, Configuration: Debug Win32 ------
    Compiling...
    KernelTypes.cpp
@@ -141,12 +124,9 @@ role="navigation" aria-label="main navigation">
    Build log was saved at &quot;file://c:\Tests\KernelTypes\Debug\BuildLog.htm&quot;
    KernelTypes - 0 error(s), 0 warning(s)
    ========== Build: 1 succeeded, 0 failed, 0 up-to-date, 0 skipped ==========
-   
    Microsoft Windows XP [versÎáÎ÷Îýo 5.1.2600]
    (C) Copyright 1985-2001 Microsoft Corp.
-   
    C:\Tests\KernelTypes\Debug&gt;ren KernelTypes.pdb usbstor.pdb
-   
    lkd&gt; .sympath C:\Tests\KernelTypes\Debug
    Symbol search path is: C:\Tests\KernelTypes\Debug
    lkd&gt; .reload /i /f usbstor.sys
@@ -157,7 +137,6 @@ role="navigation" aria-label="main navigation">
 <p>Depois que o símbolo foi carregado em nosso módulo de mentirinha, tudo que temos a fazer é alterar o contexto do processo atual (para que os endereços de user mode façam sentido) e moldar nossa memória com o comando <a href="http://windbg.info/doc/1-common-cmds.html#12_thread">dt</a>, usando o tipo importado do símbolo carregado.</p>
 
 <pre>
-   
    lkd&gt; .process 89068700
    Implicit process is now 89068700
    lkd&gt; dt usbstor!_peb 7ffda000

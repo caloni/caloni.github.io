@@ -17,11 +17,6 @@
 <script src="/journal/js/jquery-1.12.4.js"></script>
 <script src="/journal/js/jquery-ui.js"></script>
 <script src="/journal/js/copy_clipboard.js"></script>
-<script>
-var quick_search_posts = [ 
- ]; 
-</script>
-<script src="/journal/js/quick_search.js"></script>
 <script src="/journal/js/list.js"></script>
 <link rel="icon" href="/journal/img/favicon.ico"/>
 </head>
@@ -44,15 +39,10 @@ role="navigation" aria-label="main navigation">
 <ul style="list-style: none;">
 
 <li><small><a href="2010-05.html#momento_seguinte">Momento seguinte</a></small></li>
-
 <li><small><a href="2010-05.html#analogicamente_perfeito">Analogicamente perfeito</a></small></li>
-
 <li><small><a href="2010-05.html#modificadores_e_qualificadores_de_tipo">Modificadores e qualificadores de tipo</a></small></li>
 <li><small><a href="2010-05.html#o_escritor_fantasma">O Escritor Fantasma (Roman Polanski, 2010)</a></small></li>
-
-<li><small><a href="2010-05.html#enum">Enum</a></small></li>
-</ul>
-
+<li><small><a href="2010-05.html#enum">Enum</a></small></li></ul>
 
 <span id="momento_seguinte" title="Momento seguinte"/></span>
 <section id="section_momento_seguinte">
@@ -122,15 +112,12 @@ role="navigation" aria-label="main navigation">
 <pre>
    6.5.2.2 enum-specifier
     enum
-   
    6.5.3 type-qualifier
     const
     volatile
-   
    6.5.2.1 struct-or-union
     struct
     union
-   
    6.5.1 storage-class-specifier
     typedef
     extern
@@ -143,26 +130,21 @@ role="navigation" aria-label="main navigation">
 <pre>
    type-specifier
     enum-specifier
-   
    enum-specifier
     enum
-   
    cv-qualifier
     const
     volatile
-   
    class-key
     class
     struct
     union
-   
    storage-class-specifier
     auto
     register
     static
     extern
     mutable
-   
    decl-specifier
     storage-class-specifier
     typedef
@@ -191,6 +173,7 @@ role="navigation" aria-label="main navigation">
 
 </section><hr/>
 
+
 <span id="o_escritor_fantasma" title="O Escritor Fantasma (Roman Polanski, 2010)"/></span>
 <section id="section_o_escritor_fantasma">
 <p class="title"><a href="2010-05.html#o_escritor_fantasma">#</a> O Escritor Fantasma (Roman Polanski, 2010)</p>
@@ -209,14 +192,11 @@ role="navigation" aria-label="main navigation">
 <p>Padrão C (ISO/IEC 9899:1990)</p>
 
 <pre>
-   
    6.5.2.2 enum-specifier
     enum
    Padrão C++ (ISO/IEC 14882:1998)
-   
    type-specifier
     enum-specifier
-   
    enum-specifier
     enum
 </pre>
@@ -242,7 +222,6 @@ role="navigation" aria-label="main navigation">
       two,   // igual a dois
       three  // igual a tres
    };
-   
    enum Hexa
    {
       JulioCesar = 1,
@@ -273,14 +252,11 @@ role="navigation" aria-label="main navigation">
       frito,
       cru
    };
-   
    void Cook(Prato p, ModoDeServir ms);
-   
    main()
    {
       Cook(frango, cozido);
    }
-   
    enum FileOpenMode
    {
       fomRead   = 0x0001,
@@ -288,9 +264,7 @@ role="navigation" aria-label="main navigation">
       fomOver   = 0x0004,
       fomDel    = 0x0008,
    };
-   
    void OpenFile(DWORD fileOpenMode);
-   
    main()
    {
       OpenFile(fomRead | fomWrite);
@@ -312,7 +286,6 @@ role="navigation" aria-label="main navigation">
    #define FOM_WRITE  0x0002
    #define FOM_OVER   0x0004
    #define FOM_DEL    0x0008
-   
    // ... como este aqui!
    enum FileOpenMode
    {
@@ -321,19 +294,16 @@ role="navigation" aria-label="main navigation">
       FOM_OVER   = 0x0004,
       FOM_DEL    = 0x0008,
    };
-   
    // esse pedaço de código abaixo...
    int main()
    {
       OpenFile(path, FOM_WRITE);
    }
-   
    // ... vira isso após ser pré-processado...
    int main()
    {
       OpenFile(path, 0x0002);
    }
-   
    // ... mas isso se fossem usados enums...
    int main()
    {
@@ -349,15 +319,12 @@ role="navigation" aria-label="main navigation">
 <pre>
    // alinhamento obrigatório pelo leiaute dos dados
    #define CHUNKSZ_BASE 0x5000
-   
    #define CHUNKSZ_TINY   0x1000 + CHUNKSZ_BASE
    #define CHUNKSZ_SMALL  0x2000 + CHUNKSZ_BASE
    #define CHUNKSZ_MEDIUM 0x4000 + CHUNKSZ_BASE
    #define CHUNKSZ_HUGE   0x8000 + CHUNKSZ_BASE
-   
    // alinhamento obrigatório pelo leiaute dos dados
    static const int chunkSizeBase = 0x5000;
-   
    enum ChunkSize
    {
       chunkszTiny   = 0x1000 + chunkSizeBase,
@@ -365,23 +332,19 @@ role="navigation" aria-label="main navigation">
       chunkszMedium = 0x4000 + chunkSizeBase,
       chunkszHuge   = 0x8000 + chunkSizeBase,
    };
-   
    // Fonte original
    int main()
    {
        // lendo quadro pedaços de dados (tamanho médio)
       ReadChunkFromFile(file, CHUNKSZ_MEDIUM * 4);
-   
        // lendo quadro pedaços de dados (tamanho médio)
       ReadChunkFromFile(file, chunkszMedium * 4);
    }
-   
    // Pós-processado
    int main()
    {
        // lendo sei lá o que (perde alinhamento)
       ReadChunkFromFile(file, 0x4000 + CHUNKSZ_BASE * 4);
-   
        // lendo quadro pedaços de dados (tamanho médio)
       ReadChunkFromFile(file, chunkszMedium * 4);
    }

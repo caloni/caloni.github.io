@@ -17,11 +17,6 @@
 <script src="/journal/js/jquery-1.12.4.js"></script>
 <script src="/journal/js/jquery-ui.js"></script>
 <script src="/journal/js/copy_clipboard.js"></script>
-<script>
-var quick_search_posts = [ 
- ]; 
-</script>
-<script src="/journal/js/quick_search.js"></script>
 <script src="/journal/js/list.js"></script>
 <link rel="icon" href="/journal/img/favicon.ico"/>
 </head>
@@ -44,16 +39,10 @@ role="navigation" aria-label="main navigation">
 <ul style="list-style: none;">
 
 <li><small><a href="2009-12.html#fazer_nada">Fazer nada</a></small></li>
-
 <li><small><a href="2009-12.html#o_boot_no_windows_kernel">O boot no Windows: Kernel</a></small></li>
-
 <li><small><a href="2009-12.html#aprendendo_um_terceiro_idioma">Aprendendo um terceiro idioma</a></small></li>
-
 <li><small><a href="2009-12.html#devaneio_nerd_rapido_sobre_aniversarios">Devaneio nerd rápido sobre aniversários</a></small></li>
-
-<li><small><a href="2009-12.html#devaneio_nerd_rapido_sobre_profecias">Devaneio nerd rápido sobre profecias</a></small></li>
-</ul>
-
+<li><small><a href="2009-12.html#devaneio_nerd_rapido_sobre_profecias">Devaneio nerd rápido sobre profecias</a></small></li></ul>
 
 <span id="fazer_nada" title="Fazer nada"/></span>
 <section id="section_fazer_nada">
@@ -75,12 +64,9 @@ role="navigation" aria-label="main navigation">
 <p>Podemos espetar o depurador e fazê-lo parar assim que conectado. Se estiver rodando antes do próprio sistema operacional, teremos um sistema sem processos e sem threads, pois ele irá parar assim que o executivo puder enviar o sinal de início pela porta serial, após carregar na memória os módulos básicos.</p>
 
 <pre>
-   
    windbg -k com:pipe,port=\\.\pipe\com_1 -b
-   
    Microsoft (R) Windows Debugger Version 6.11.0001.404 AMD64
    Copyright (c) Microsoft Corporation. All rights reserved.
-   
    Opened \\.\pipe\com_1
    Waiting to reconnect...
    Connected to Windows XP 2600 x86 compatible target at (Tue Sep  8 22:33:27.267 2009 (GMT-3)), ptr64 FALSE
@@ -169,7 +155,6 @@ role="navigation" aria-label="main navigation">
    Loading Kernel Symbols
    ...........................
    Loading User Symbols
-   
    kd&gt; !process 0 0
    **** NT ACTIVE PROCESS DUMP ****
    NULL value in PsActiveProcess List  &lt;-- Nenhum processo por aqui
@@ -205,11 +190,9 @@ role="navigation" aria-label="main navigation">
 <p>Para depurar a criação de qualquer thread: coloque um breakpoint na função **PsCreateSystemThread**.</p>
 
 <pre>
-   
    kd&gt; bp PsCreateSystemThread
    kd&gt; bl
     0 e 805c732e     0001 (0001) nt!PsCreateSystemThread
-   
    kd&gt; g
    Breakpoint 0 hit
    nt!PsCreateSystemThread:
@@ -226,11 +209,9 @@ role="navigation" aria-label="main navigation">
 <p>Para depurar a criação de qualquer processo: coloque um breakpoint na função **PspCreateProcess**, logo no começo. Será possível capturar a criação do processo System, o processo onde roda a primeira thread do kernel, que inicializa o resto dos componentes.</p>
 
 <pre>
-   
    kd&gt; bp PspCreateProcess
    kd&gt; bl
     0 e 805c6a8c     0001 (0001) nt!PspCreateProcess
-   
    kd&gt; g
    Breakpoint 0 hit
    nt!PspCreateProcess:
@@ -247,7 +228,6 @@ role="navigation" aria-label="main navigation">
 <p>E não é lindo ver que, após a chamada ao Process Manager o processo REALMENTE foi criado e está na lista de processos?</p>
 
 <pre>
-   
    kd&gt; !process 0 0
    **** NT ACTIVE PROCESS DUMP ****
    TYPE mismatch for process object at 8055a0d0
@@ -266,7 +246,6 @@ role="navigation" aria-label="main navigation">
 
 <blockquote>Nota: Apesar de parecer contraditório, algumas partes do kernel são de fato implementadas em user mode. Os motivos podem variar, mas geralmente são maior segurança (código que não precisa rodar em um ring privilegiado) e desempenho (código que não precisa de muita prioridade).</blockquote>
 <pre>
-   
    Breakpoint 0 hit
    nt!PspCreateProcess:
    805c6a8c 681c010000      push    11Ch
@@ -283,14 +262,12 @@ role="navigation" aria-label="main navigation">
    00000000 00000000 00000000 00000000 00000000 nt!KiThreadStartup+0x16
    kd&gt; !ustr f9dc38b0
    String(58,520) at f9dc38b0: \SystemRoot\System32\smss.exe
-   
    kd&gt; gu
    kd&gt; !process 0 0
    **** NT ACTIVE PROCESS DUMP ****
    PROCESS 81bcc830  SessionId: none  Cid: 0004    Peb: 00000000  ParentCid: 0000
        DirBase: 00319000  ObjectTable: e1000cc0  HandleCount:  52.
        Image: System
-   
    PROCESS 81a2a430  SessionId: none  Cid: 0218    Peb: 7ffd6000  ParentCid: 0004
        DirBase: 08500020  ObjectTable: e1584818  HandleCount:   0.
        Image: smss.exe
@@ -301,10 +278,8 @@ role="navigation" aria-label="main navigation">
 <p>Então até lá. Com licença que eu preciso ver a criação do System mais uma vez.</p>
 
 <pre>
-   
    .reboot
 </pre>
-
 </section><hr/>
 
 
@@ -380,7 +355,6 @@ role="navigation" aria-label="main navigation">
 <p>O comando .formats do WinDbg nos consegue trazer desse número a hora exata em que determinado componente foi compilado. Se, por exemplo, um driver faltoso apresentou um DateStamp igual a 49EE9758, podemos concluir que ele foi compilado no dia 22 de abril de 2009, uma linda quarta-feira.</p>
 
 <pre>
-   
    0:000&gt; .formats 49EE9758
    Evaluate expression:
      Hex:     00000000`49ee9758
@@ -397,7 +371,6 @@ role="navigation" aria-label="main navigation">
 <p>Isso aos poucos - entre uma tela azul e outra - me deixou curioso a respeito de quando seria o dia fatídico em que teríamos o DateStamp 50000000, um número cabalístico em nosso sistema decimal. E, imaginem só:</p>
 
 <pre>
-   
    0:000&gt; .formats 50000000
    Evaluate expression:
      Hex:     00000000`50000000

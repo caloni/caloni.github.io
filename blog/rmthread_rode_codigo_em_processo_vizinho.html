@@ -17,11 +17,6 @@
 <script src="/blog/js/jquery-1.12.4.js"></script>
 <script src="/blog/js/jquery-ui.js"></script>
 <script src="/blog/js/copy_clipboard.js"></script>
-<script>
-var quick_search_posts = [ 
- ]; 
-</script>
-<script src="/blog/js/quick_search.js"></script>
 <script src="/blog/js/list.js"></script>
 <link rel="icon" href="/blog/img/favicon.ico"/>
 </head>
@@ -59,10 +54,8 @@ role="navigation" aria-label="main navigation">
 <pre>
    /** Run process and get rights for running remote threads. */
    HANDLE CreateAndGetProcessGodHandle(LPCTSTR lpApplicationName, LPTSTR lpCommandLine);
-   
    /** Load DLL in another process. */
    HMODULE RemoteLoadLibrary(HANDLE hProcess, LPCTSTR lpFileName);
-   
    /** Free DLL in another process. */
    BOOL RemoteFreeLibrary(HANDLE hProcess, HMODULE hModule); 
 </pre>
@@ -72,15 +65,12 @@ role="navigation" aria-label="main navigation">
    //...
    // Start process and get handle with powers.
    hProc = CreateAndGetProcessGodHandle(tzProgPath, tzProgArgs);
-   
    if( hProc != NULL )
    {
      // Load DLL in the create process context.
      HMODULE hDll = RemoteLoadLibrary(hProc, tzDllPath);
-   
      if( hDll != NULL )
        RemoteFreeLibrary(hProc, hDll);
-   
      CloseHandle(hProc);
    }
    //... 
@@ -95,9 +85,7 @@ role="navigation" aria-label="main navigation">
        case DLL_PROCESS_ATTACH:
        {
          DWORD dwThrId;
-   
          // Fill global variable with handle copy of this thread.
-   
          BOOL bRes =
          DuplicateHandle(GetCurrentProcess(),
            GetCurrentThread(),
@@ -106,10 +94,8 @@ role="navigation" aria-label="main navigation">
            0,
            FALSE,
            0);
-   
          if( bRes == FALSE )
            break;
-   
          // Call function that do the useful stuff with its DLL handle.
          CloseHandle(CreateThread(NULL,
            0,
@@ -131,16 +117,13 @@ role="navigation" aria-label="main navigation">
    {
      HMODULE hDll = (HMODULE) lpParameter;
      LPCTSTR ptzMsg = _T(&quot;Congratulations! You called RmThread.dll successfully!&quot;);
-   
      // Wait DllMain termination.
      WaitForSingleObject(g_hThrDllMain, INFINITE);
-   
      //TODO: Put your remote code here.
      MessageBox(NULL,
        ptzMsg,
        g_tzModuleName,
        MB_OK : MB_ICONINFORMATION);
-   
      // Do what the function name says.
      FreeLibraryAndExitThread(hDll, 0);
    } 

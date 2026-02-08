@@ -17,11 +17,6 @@
 <script src="/journal/js/jquery-1.12.4.js"></script>
 <script src="/journal/js/jquery-ui.js"></script>
 <script src="/journal/js/copy_clipboard.js"></script>
-<script>
-var quick_search_posts = [ 
- ]; 
-</script>
-<script src="/journal/js/quick_search.js"></script>
 <script src="/journal/js/list.js"></script>
 <link rel="icon" href="/journal/img/favicon.ico"/>
 </head>
@@ -44,19 +39,12 @@ role="navigation" aria-label="main navigation">
 <ul style="list-style: none;">
 
 <li><small><a href="2009-07.html#estado">Estado</a></small></li>
-
 <li><small><a href="2009-07.html#strings">Strings</a></small></li>
-
 <li><small><a href="2009-07.html#polimorfismo_estatico">Polimorfismo estático</a></small></li>
 <li><small><a href="2009-07.html#static_polymorphism">Static Polymorphism</a></small></li>
-
 <li><small><a href="2009-07.html#name_mangling">Name mangling</a></small></li>
-
 <li><small><a href="2009-07.html#a_procura_de_vida_extraterrestre">À procura de vida extraterrestre</a></small></li>
-
-<li><small><a href="2009-07.html#cuidado_com_a_copia_de_arquivos_na_vmware">Cuidado com a cópia de arquivos na VMWare</a></small></li>
-</ul>
-
+<li><small><a href="2009-07.html#cuidado_com_a_copia_de_arquivos_na_vmware">Cuidado com a cópia de arquivos na VMWare</a></small></li></ul>
 
 <span id="estado" title="Estado"/></span>
 <section id="section_estado">
@@ -71,7 +59,7 @@ role="navigation" aria-label="main navigation">
 <span id="strings" title="Strings"/></span>
 <section id="section_strings">
 <p class="title"><a href="2009-07.html#strings">#</a> Strings</p>
-<span class="title-heading">Caloni, 2009-07-07 <a href="2009-06.html#bugs_dificeis_de_achar">&lt;</a><a href="computer.html">computer</a><a href="2009-07.html#polimorfismo_estatico">&gt;</a><a href="2009-07.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_strings')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2009-07-07 <a href="2009-06.html#bugs_dificeis_de_achar">&lt;</a><a href="computer.html">computer</a><a href="2009-07.html#static_polymorphism">&gt;</a><a href="2009-07.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_strings')"><sup>[copy]</sup></a></span>
 
 <p>Como já vimos centenas e centenas de vezes, memória é apenas memória até que alguém diga que isso vale alguma coisa. Em seu estado latente é o que chamamos formalmente de dados. E dados são bytes armazenados na memória.</p>
 
@@ -95,7 +83,7 @@ role="navigation" aria-label="main navigation">
 <span id="polimorfismo_estatico" title="Polimorfismo estático"/></span>
 <section id="section_polimorfismo_estatico">
 <p class="title"><a href="2009-07.html#polimorfismo_estatico">#</a> Polimorfismo estático</p>
-<span class="title-heading">Caloni, 2009-07-10 <a href="2009-07.html#strings">&lt;</a><a href="computer.html">computer</a><a href="2009-07.html#static_polymorphism">&gt;</a><a href="2009-07.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_polimorfismo_estatico')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2009-07-10 <a href="2009-07.html#static_polymorphism">&lt;</a><a href="computer.html">computer</a><a href="2009-07.html#name_mangling">&gt;</a><a href="2009-07.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_polimorfismo_estatico')"><sup>[copy]</sup></a></span>
 
 <p>Para explicar polimorfismo, nada como ver as coisas como elas eram. Se você fosse um programador C de vinte anos atrás e criasse as seguintes funções:</p>
 
@@ -113,7 +101,6 @@ int main()
 
 <pre>
    overload.c
-   
    overload.c(2) : warning C4028: formal parameter 1 different from declaration
    overload.c(2) : warning C4028: formal parameter 2 different from declaration
    overload.c(2) : error C2371: 'soma' : redefinition; different basic types
@@ -148,9 +135,7 @@ int main()
    C:\Tests&gt;cl /c overload.cpp
    Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 13.10.6030 for 80x86
    Copyright (C) Microsoft Corporation 1984-2002. All rights reserved.
-   
    overload.cpp
-   
    C:\Tests&gt;
 </pre>
 <p>Isso permitiu que em C++ fosse criada a sobrecarga estática, que é exatamente isso: chamar a função não apenas de acordo com seu nome, mas também de acordo com sua assinatura, ou seja, o número e o tipo dos parâmetros recebidos. Chamamos de sobrecarga estática porque isso é feito apenas pelo compilador, não pesando em nada durante a execução do programa.</p>
@@ -180,10 +165,11 @@ int main()
 
 </section><hr/>
 
+
 <span id="static_polymorphism" title="Static Polymorphism"/></span>
 <section id="section_static_polymorphism">
 <p class="title"><a href="2009-07.html#static_polymorphism">#</a> Static Polymorphism</p>
-<span class="title-heading">Caloni, 2009-07-10 <a href="2009-07.html#polimorfismo_estatico">&lt;</a><a href="computer.html">computer</a><a href="2009-07.html#name_mangling">&gt;</a> <a href="2008-08.html#antidebugging_during_the_process_attach">&lt;</a><a href="english.html">english</a><a href="2009-08.html#what_ive_been_doing_in_the_last_10_years">&gt;</a><a href="2009-07.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_static_polymorphism')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2009-07-10 <a href="2009-07.html#strings">&lt;</a><a href="computer.html">computer</a><a href="2009-07.html#polimorfismo_estatico">&gt;</a> <a href="2008-08.html#antidebugging_during_the_process_attach">&lt;</a><a href="english.html">english</a><a href="2009-08.html#what_ive_been_doing_in_the_last_10_years">&gt;</a><a href="2009-07.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_static_polymorphism')"><sup>[copy]</sup></a></span>
 
 <p>To explain the polymorphism nothing is better than see how stuff used to be. If you were a twenty old C programmer in the past and created the following functions:</p>
 
@@ -200,9 +186,7 @@ int main()
 <p>Immediately the compiler would blame you about the following errors:</p>
 
 <pre>
-   
    overload.c
-   
    overload.c(2) : warning C4028: formal parameter 1 different from declaration
    overload.c(2) : warning C4028: formal parameter 2 different from declaration
    overload.c(2) : error C2371: 'sum' : redefinition; different basic types
@@ -237,9 +221,7 @@ int main()
    C:Tests&gt;cl /c overload.cpp
    Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 13.10.6030 for 80x86
    Copyright (C) Microsoft Corporation 1984-2002. All rights reserved.
-   
    overload.cpp
-   
    C:Tests&gt;
 </pre>
 <p>This allowed in C++ the creation of static overload, that is exactly this: to call a function not just by its name, but also to match its signature, the number and the type of the received parameters. We call static because this is done just by the compiler, not creating any overhead during the execution.</p>
@@ -273,7 +255,7 @@ int main()
 <span id="name_mangling" title="Name mangling"/></span>
 <section id="section_name_mangling">
 <p class="title"><a href="2009-07.html#name_mangling">#</a> Name mangling</p>
-<span class="title-heading">Caloni, 2009-07-13 <a href="2009-07.html#static_polymorphism">&lt;</a><a href="computer.html">computer</a><a href="2009-08.html#adplus_no_cliente_nao_voce">&gt;</a><a href="2009-07.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_name_mangling')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2009-07-13 <a href="2009-07.html#polimorfismo_estatico">&lt;</a><a href="computer.html">computer</a><a href="2009-08.html#adplus_no_cliente_nao_voce">&gt;</a><a href="2009-07.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_name_mangling')"><sup>[copy]</sup></a></span>
 
 <p>A sobrecarga estática possui algumas desvantagens em relação ao sistema de nomes da boa e velha linguagem C: ela não foi padronizada entre compiladores. O que isso quer dizer na prática é que funções exportadas de bibliotecas dinâmicas (DLLs) vão possuir nomes diferentes dependendo do compilador utilizado (e sua versão). Isso é o que chamamos name mangling.</p>
 

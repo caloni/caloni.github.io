@@ -17,11 +17,6 @@
 <script src="/journal/js/jquery-1.12.4.js"></script>
 <script src="/journal/js/jquery-ui.js"></script>
 <script src="/journal/js/copy_clipboard.js"></script>
-<script>
-var quick_search_posts = [ 
- ]; 
-</script>
-<script src="/journal/js/quick_search.js"></script>
 <script src="/journal/js/list.js"></script>
 <link rel="icon" href="/journal/img/favicon.ico"/>
 </head>
@@ -51,25 +46,17 @@ role="navigation" aria-label="main navigation">
 <li><small><a href="2023-10.html#como_investigar_a_vtable_de_uma_interface_ou_objeto_com">Como investigar a vtable de uma interface ou objeto COM</a></small></li>
 <li><small><a href="2023-10.html#flow_com_enfase_na_teoria_de_sistemas">Flow com ênfase na teoria de sistemas</a></small></li>
 <li><small><a href="2023-10.html#meninas_malvadas">Meninas Malvadas</a></small></li>
-
 <li><small><a href="2023-10.html#setando_proxima_instrucao_no_windbg">Setando próxima instrução no WinDbg</a></small></li>
-
 <li><small><a href="2023-10.html#como_saber_quais_classes_winrt_estao_sendo_ativadas">Como saber quais classes winrt estão sendo ativadas</a></small></li>
-
 <li><small><a href="2023-10.html#uma_fada_veio_me_visitar">Uma Fada Veio me Visitar</a></small></li>
-
 <li><small><a href="2023-10.html#cafe_do_japones">Café do japonês</a></small></li>
 <li><small><a href="2023-10.html#o_que_vem_ai_na_mostra_2023_47a">O que vem aí na Mostra 2023 (47a.)</a></small></li>
-
 <li><small><a href="2023-10.html#windowsapplib">WindowsApp.lib</a></small></li>
 <li><small><a href="2023-10.html#presente_de_deus">Presente de Deus</a></small></li>
 <li><small><a href="2023-10.html#os_croods_2">Os Croods 2</a></small></li>
 <li><small><a href="2023-10.html#cidade_perdida">Cidade Perdida</a></small></li>
 <li><small><a href="2023-10.html#um_romance_do_alem">Um Romance do Além</a></small></li>
-
-<li><small><a href="2023-10.html#trolls_2_world_tour">Trolls 2 (World Tour)</a></small></li>
-</ul>
-
+<li><small><a href="2023-10.html#trolls_2_world_tour">Trolls 2 (World Tour)</a></small></li></ul>
 
 <span id="forte_de_s_sebastiao" title="Forte de S. Sebastião"/></span>
 <section id="section_forte_de_s_sebastiao">
@@ -80,10 +67,11 @@ role="navigation" aria-label="main navigation">
 
 </section><hr/>
 
+
 <span id="como_inspecionar_chamadas_com_remotas_olhando_a_informacao_de_marshaling" title="Como inspecionar chamadas COM remotas olhando a informação de marshaling"/></span>
 <section id="section_como_inspecionar_chamadas_com_remotas_olhando_a_informacao_de_marshaling">
 <p class="title"><a href="2023-10.html#como_inspecionar_chamadas_com_remotas_olhando_a_informacao_de_marshaling">#</a> Como inspecionar chamadas COM remotas olhando a informação de marshaling</p>
-<span class="title-heading">Caloni, 2023-10-03 <a href="2023-10.html#como_colocar_breakpoint_nas_chamadas_a_outputdebugstring">&lt;</a><a href="reversing.html">reversing</a><a href="2023-10.html#como_investigar_a_vtable_de_uma_interface_ou_objeto_com">&gt;</a> <a href="2023-10.html#como_colocar_breakpoint_nas_chamadas_a_outputdebugstring">&lt;</a><a href="windbg.html">windbg</a><a href="2023-10.html#como_investigar_a_vtable_de_uma_interface_ou_objeto_com">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_como_inspecionar_chamadas_com_remotas_olhando_a_informacao_de_marshaling')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2023-10-03 <a href="2023-10.html#como_colocar_breakpoint_nas_chamadas_a_outputdebugstring">&lt;</a><a href="reversing.html">reversing</a><a href="2023-10.html#setando_proxima_instrucao_no_windbg">&gt;</a> <a href="2023-10.html#como_colocar_breakpoint_nas_chamadas_a_outputdebugstring">&lt;</a><a href="windbg.html">windbg</a><a href="2023-10.html#setando_proxima_instrucao_no_windbg">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_como_inspecionar_chamadas_com_remotas_olhando_a_informacao_de_marshaling')"><sup>[copy]</sup></a></span>
 
 <p>Esta dica é para começar uma análise de reversa quando você deseja entender quais informações estão sendo trafegadas por uma chamada COM remota, ou seja, entre processos distintos. Isso vale para WinRT e para o COM tradicional. De uma forma ou de outra a chamada irá passar por `combase!NdrExtpProxySendReceive` e outras funções de RPC relacionadas, além das novas funções de ALPC, em especial `ntdll!NtAlpcSendWaitReceivePort`. Existem várias de marshaling e unmarshaling, mas o mais importante é centralizar na função que envia e recebe bytes e analisar estes bytes. Eles são a versão serializada dos parâmetro sendo trafegados.</p>
 
@@ -91,25 +79,28 @@ role="navigation" aria-label="main navigation">
 
 </section><hr/>
 
+
 <span id="beginning_mathematical_logic_a_study_guide_de_peter_smith" title="Beginning Mathematical Logic: A Study Guide, de Peter Smith"/></span>
 <section id="section_beginning_mathematical_logic_a_study_guide_de_peter_smith">
 <p class="title"><a href="2023-10.html#beginning_mathematical_logic_a_study_guide_de_peter_smith">#</a> Beginning Mathematical Logic: A Study Guide, de Peter Smith</p>
-<span class="title-heading">Caloni, 2023-10-03 <a href="2023-09.html#biblia_sagrada_levitico">&lt;</a><a href="books.html">books</a><a href="2023-10.html#flow_com_enfase_na_teoria_de_sistemas">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_beginning_mathematical_logic_a_study_guide_de_peter_smith')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2023-10-03 <a href="2023-10.html#flow_com_enfase_na_teoria_de_sistemas">&lt;</a><a href="books.html">books</a><a href="2023-11.html#biblia_sagrada_numeros">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_beginning_mathematical_logic_a_study_guide_de_peter_smith')"><sup>[copy]</sup></a></span>
 
 <p>Este parece desses longos compêndios na questão de uma matéria específica -- nesse caso matemática -- que todo aluno deveria ter contato antes de se aprofundar. Este livro caiu no meu colo sem querer, eu salvei ele nos ebooks e pretendo dar uma olhada mais tarde (ou não) depois de zerar minha lista de leitura.</p>
 
 </section><hr/>
 
+
 <span id="como_colocar_breakpoint_nas_chamadas_a_outputdebugstring" title="Como colocar breakpoint nas chamadas a OutputDebugString"/></span>
 <section id="section_como_colocar_breakpoint_nas_chamadas_a_outputdebugstring">
 <p class="title"><a href="2023-10.html#como_colocar_breakpoint_nas_chamadas_a_outputdebugstring">#</a> Como colocar breakpoint nas chamadas a OutputDebugString</p>
-<span class="title-heading">Caloni, 2023-10-03 <a href="2023-09.html#uwp_apps_nao_funcionam_com_proxy_de_loopback_resolvido">&lt;</a><a href="reversing.html">reversing</a><a href="2023-10.html#como_inspecionar_chamadas_com_remotas_olhando_a_informacao_de_marshaling">&gt;</a> <a href="2022-06.html#windbg_everywhere">&lt;</a><a href="windbg.html">windbg</a><a href="2023-10.html#como_inspecionar_chamadas_com_remotas_olhando_a_informacao_de_marshaling">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_como_colocar_breakpoint_nas_chamadas_a_outputdebugstring')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2023-10-03 <a href="2023-10.html#como_investigar_a_vtable_de_uma_interface_ou_objeto_com">&lt;</a><a href="reversing.html">reversing</a><a href="2023-10.html#como_inspecionar_chamadas_com_remotas_olhando_a_informacao_de_marshaling">&gt;</a> <a href="2023-10.html#como_investigar_a_vtable_de_uma_interface_ou_objeto_com">&lt;</a><a href="windbg.html">windbg</a><a href="2023-10.html#como_inspecionar_chamadas_com_remotas_olhando_a_informacao_de_marshaling">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_como_colocar_breakpoint_nas_chamadas_a_outputdebugstring')"><sup>[copy]</sup></a></span>
 
 <p>Usando `sxe out` é possível parar a execução de um programa sendo depurado pelo WinDbg sempre que ele disparar alguma saída para o depurador através da função OutputDebugString. Isso permite em nossa sessão de debug descobrir de onde vem a chamada, pois o depurador para e podemos usar o comando `k` para dar uma espiada.</p>
 
 <p>Usei isso analisando o comportamento do AAD Broker Plugin, um componente do sistema usado para logar no Azure Active Directory. Ele é um UWP app, então para depurá-lo usando WinDbg é necessário usar a ferramenta do Debugging Tools plmdebug.</p>
 
 </section><hr/>
+
 
 <span id="na_mira_do_juri" title="Na Mira do Júri"/></span>
 <section id="section_na_mira_do_juri">
@@ -120,10 +111,11 @@ role="navigation" aria-label="main navigation">
 
 </section><hr/>
 
+
 <span id="como_investigar_a_vtable_de_uma_interface_ou_objeto_com" title="Como investigar a vtable de uma interface ou objeto COM"/></span>
 <section id="section_como_investigar_a_vtable_de_uma_interface_ou_objeto_com">
 <p class="title"><a href="2023-10.html#como_investigar_a_vtable_de_uma_interface_ou_objeto_com">#</a> Como investigar a vtable de uma interface ou objeto COM</p>
-<span class="title-heading">Caloni, 2023-10-03 <a href="2023-10.html#como_inspecionar_chamadas_com_remotas_olhando_a_informacao_de_marshaling">&lt;</a><a href="reversing.html">reversing</a><a href="2023-10.html#setando_proxima_instrucao_no_windbg">&gt;</a> <a href="2023-10.html#como_inspecionar_chamadas_com_remotas_olhando_a_informacao_de_marshaling">&lt;</a><a href="windbg.html">windbg</a><a href="2023-10.html#setando_proxima_instrucao_no_windbg">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_como_investigar_a_vtable_de_uma_interface_ou_objeto_com')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2023-10-03 <a href="2023-09.html#traffic">&lt;</a><a href="reversing.html">reversing</a><a href="2023-10.html#como_colocar_breakpoint_nas_chamadas_a_outputdebugstring">&gt;</a> <a href="2022-06.html#windbg_everywhere">&lt;</a><a href="windbg.html">windbg</a><a href="2023-10.html#como_colocar_breakpoint_nas_chamadas_a_outputdebugstring">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_como_investigar_a_vtable_de_uma_interface_ou_objeto_com')"><sup>[copy]</sup></a></span>
 
 <p>Uma vez que você encontre onde está a `vtable` -- por exemplo, como o primeiro parâmetro da chamada em um método, vide <a href="2023-04.html#x64_deep_dive">convenção de chamadas do x64</a> -- liste no WinDbg os endereços contidos neste endereço (o parâmetro `L` é a quantidade de bytes para mostrar):</p>
 
@@ -150,13 +142,13 @@ Windows_Security_Authentication_Web_Core!Windows::Security::Authentication::Web:
 00007ff8`5058cbc4 4889442448      mov     qword ptr [rsp+48h],rax
 ...
 </pre>
-
 </section><hr/>
+
 
 <span id="flow_com_enfase_na_teoria_de_sistemas" title="Flow com ênfase na teoria de sistemas"/></span>
 <section id="section_flow_com_enfase_na_teoria_de_sistemas">
 <p class="title"><a href="2023-10.html#flow_com_enfase_na_teoria_de_sistemas">#</a> Flow com ênfase na teoria de sistemas</p>
-<span class="title-heading">Caloni, 2023-10-03 <a href="2023-10.html#beginning_mathematical_logic_a_study_guide_de_peter_smith">&lt;</a><a href="books.html">books</a><a href="2023-11.html#biblia_sagrada_numeros">&gt;</a> <a href="2023-08.html#flow_pragmatico">&lt;</a><a href="self.html">self</a><a href="2024-01.html#multiplas_leituras_a_respeito_do_self">&gt;</a> <a href="2023-08.html#flow_pragmatico">&lt;</a><a href="flow.html">flow</a><a href="2025-05.html#apanhado_sobre_o_flow_de_cada_dia">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_flow_com_enfase_na_teoria_de_sistemas')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2023-10-03 <a href="2023-09.html#biblia_sagrada_levitico">&lt;</a><a href="books.html">books</a><a href="2023-10.html#beginning_mathematical_logic_a_study_guide_de_peter_smith">&gt;</a> <a href="2023-08.html#flow_pragmatico">&lt;</a><a href="self.html">self</a><a href="2024-01.html#multiplas_leituras_a_respeito_do_self">&gt;</a> <a href="2023-08.html#flow_pragmatico">&lt;</a><a href="flow.html">flow</a><a href="2025-05.html#apanhado_sobre_o_flow_de_cada_dia">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_flow_com_enfase_na_teoria_de_sistemas')"><sup>[copy]</sup></a></span>
 
 <p>Reli pela enésima vez minhas anotações sobre Flow, aquele <a href="2020-09.html#flow">livro do Mihaly Csikszentmihalyi</a>, e venho dessa vez com anotações das anotações com ênfase na teoria de sistemas. O resumo é que o self, esse sistema dinâmico que reconhecemos como nós, pode ser expandido ao se acoplar a qualquer outro sistema onde invistamos energia psíquica. Porém, para isso funcionar, devemos reorientar nossa atenção e focar, ou seja, empreender nossa energia psíquica, muito mais no sistema que está sendo a atividade do momento e muito menos em nós mesmos ou em outros inputs externos que não faz parte do sistema e que é apenas entropia. É quando o self vira o sistema que nós podemos resgatar novas informações que irão ser adicionadas ao sistema original. A isso chamamos aprendizado do mundo. Nosso ser se expande e nosso organismo ressoa em harmonia.</p>
 
@@ -191,10 +183,11 @@ Windows_Security_Authentication_Web_Core!Windows::Security::Authentication::Web:
 <blockquote>Goals justify the effort they demand at the outset, but later it is the effort that justifies the goal." </blockquote>
 </section><hr/>
 
+
 <span id="meninas_malvadas" title="Meninas Malvadas"/></span>
 <section id="section_meninas_malvadas">
 <p class="title"><a href="2023-10.html#meninas_malvadas">#</a> Meninas Malvadas</p>
-<span class="title-heading">Caloni, 2023-10-03 <a href="2023-09.html#kamikatsu_working_for_god_in_a_godless_world">&lt;</a><a href="cinema.html">cinema</a><a href="2023-10.html#na_mira_do_juri">&gt;</a> <a href="2023-09.html#como_falar_com_garotas_em_festas">&lt;</a><a href="movies.html">movies</a><a href="2023-10.html#uma_fada_veio_me_visitar">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_meninas_malvadas')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2023-10-03 <a href="2023-09.html#kamikatsu_working_for_god_in_a_godless_world">&lt;</a><a href="cinema.html">cinema</a><a href="2023-10.html#na_mira_do_juri">&gt;</a> <a href="2023-09.html#amores_canibais_the_bad_batch">&lt;</a><a href="movies.html">movies</a><a href="2023-10.html#uma_fada_veio_me_visitar">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_meninas_malvadas')"><sup>[copy]</sup></a></span>
 
 <p>Tem quase 20 anos esta comédia adolescente apresentando Lindsay Lohan e Rachel McAdams, entre outras. Escrito por Tina Fey, que faz a professora de matemática, esta é uma prova viva de que comédias de colégio podem ser engraçadas e inteligentes ao mesmo tempo. E envelheceram muito bem, obrigado.</p>
 
@@ -216,7 +209,7 @@ Windows_Security_Authentication_Web_Core!Windows::Security::Authentication::Web:
 <span id="setando_proxima_instrucao_no_windbg" title="Setando próxima instrução no WinDbg"/></span>
 <section id="section_setando_proxima_instrucao_no_windbg">
 <p class="title"><a href="2023-10.html#setando_proxima_instrucao_no_windbg">#</a> Setando próxima instrução no WinDbg</p>
-<span class="title-heading">Caloni, 2023-10-04 <a href="2023-10.html#como_investigar_a_vtable_de_uma_interface_ou_objeto_com">&lt;</a><a href="windbg.html">windbg</a><a href="2023-10.html#como_saber_quais_classes_winrt_estao_sendo_ativadas">&gt;</a> <a href="2023-10.html#como_investigar_a_vtable_de_uma_interface_ou_objeto_com">&lt;</a><a href="reversing.html">reversing</a><a href="2023-10.html#como_saber_quais_classes_winrt_estao_sendo_ativadas">&gt;</a> <a href="2023-09.html#uwp_apps_nao_funcionam_com_proxy_de_loopback_resolvido">&lt;</a><a href="debugging.html">debugging</a><a href="2024-03.html#comparando_logs_no_procmon">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_setando_proxima_instrucao_no_windbg')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2023-10-04 <a href="2023-10.html#como_inspecionar_chamadas_com_remotas_olhando_a_informacao_de_marshaling">&lt;</a><a href="windbg.html">windbg</a><a href="2023-10.html#como_saber_quais_classes_winrt_estao_sendo_ativadas">&gt;</a> <a href="2023-10.html#como_inspecionar_chamadas_com_remotas_olhando_a_informacao_de_marshaling">&lt;</a><a href="reversing.html">reversing</a><a href="2023-10.html#como_saber_quais_classes_winrt_estao_sendo_ativadas">&gt;</a> <a href="2023-09.html#traffic">&lt;</a><a href="debugging.html">debugging</a><a href="2024-03.html#comparando_logs_no_procmon">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_setando_proxima_instrucao_no_windbg')"><sup>[copy]</sup></a></span>
 
 <p>Procurando onde setar a próxima instrução no WinDbg? Dica: curiosamente ela não fica no meio dos comandos de debug, mas no menu Edit. Selecione a linha desejada no assembly ou código-fonte para onde deseja alterar o fluxo de execução e use a opção "Set Current Instruction".</p>
 
@@ -298,7 +291,7 @@ Windows.Storage.Streams.DataReader
 <span id="uma_fada_veio_me_visitar" title="Uma Fada Veio me Visitar"/></span>
 <section id="section_uma_fada_veio_me_visitar">
 <p class="title"><a href="2023-10.html#uma_fada_veio_me_visitar">#</a> Uma Fada Veio me Visitar</p>
-<span class="title-heading">Caloni, 2023-10-06 <a href="2023-09.html#os_mercenarios_4">&lt;</a><a href="cinemaqui.html">cinemaqui</a><a href="2023-10.html#presente_de_deus">&gt;</a> <a href="2023-10.html#na_mira_do_juri">&lt;</a><a href="cinema.html">cinema</a><a href="2023-10.html#o_que_vem_ai_na_mostra_2023_47a">&gt;</a> <a href="2023-10.html#meninas_malvadas">&lt;</a><a href="movies.html">movies</a><a href="2023-10.html#cidade_perdida">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_uma_fada_veio_me_visitar')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2023-10-06 <a href="2023-09.html#os_mercenarios_4">&lt;</a><a href="cinemaqui.html">cinemaqui</a><a href="2023-10.html#presente_de_deus">&gt;</a> <a href="2023-10.html#na_mira_do_juri">&lt;</a><a href="cinema.html">cinema</a><a href="2023-10.html#o_que_vem_ai_na_mostra_2023_47a">&gt;</a> <a href="2023-10.html#meninas_malvadas">&lt;</a><a href="movies.html">movies</a><a href="2023-10.html#um_romance_do_alem">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_uma_fada_veio_me_visitar')"><sup>[copy]</sup></a></span>
 
 <p>Estou em uma fase bem estranha, talvez inevitável para todo cinéfilo que já viu filmes demais: eu não gosto mais de filmes bons. E como tudo é uma fada de dois gumes, essa é uma boa... não, ótima notícia para este texto sobre o retorno de Xuxa Meneghel aos cinemas: eu adorei Uma Fada Veio me Visitar!</p>
 
@@ -358,10 +351,11 @@ Windows.Storage.Streams.DataReader
 
 </section><hr/>
 
+
 <span id="o_que_vem_ai_na_mostra_2023_47a" title="O que vem aí na Mostra 2023 (47a.)"/></span>
 <section id="section_o_que_vem_ai_na_mostra_2023_47a">
 <p class="title"><a href="2023-10.html#o_que_vem_ai_na_mostra_2023_47a">#</a> O que vem aí na Mostra 2023 (47a.)</p>
-<span class="title-heading">Caloni, 2023-10-10 <a href="2023-10.html#uma_fada_veio_me_visitar">&lt;</a><a href="cinema.html">cinema</a><a href="2023-10.html#cidade_perdida">&gt;</a> <a href="2022-12.html#natalia_bocanera">&lt;</a><a href="mostrasp.html">mostrasp</a><a href="2023-10.html#presente_de_deus">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_o_que_vem_ai_na_mostra_2023_47a')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2023-10-10 <a href="2023-10.html#uma_fada_veio_me_visitar">&lt;</a><a href="cinema.html">cinema</a><a href="2023-10.html#um_romance_do_alem">&gt;</a> <a href="2022-12.html#natalia_bocanera">&lt;</a><a href="mostrasp.html">mostrasp</a><a href="2023-10.html#presente_de_deus">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_o_que_vem_ai_na_mostra_2023_47a')"><sup>[copy]</sup></a></span>
 
 <p>Não vou poder participar da Mostra desse ano, pois estarei muito ocupado bebendo vinho no Chile. Porém, para os que ficam, fora novos diretores achei uns repetidos que pode ser interessante dar uma olhada ou escapar da sessão.</p>
 
@@ -409,16 +403,17 @@ Windows.Storage.Streams.DataReader
 <span id="windowsapplib" title="WindowsApp.lib"/></span>
 <section id="section_windowsapplib">
 <p class="title"><a href="2023-10.html#windowsapplib">#</a> WindowsApp.lib</p>
-<span class="title-heading">Caloni, 2023-10-17 <a href="2023-09.html#uwp_apps_nao_funcionam_com_proxy_de_loopback_resolvido">&lt;</a><a href="computer.html">computer</a><a href="2024-01.html#merge_de_backups">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_windowsapplib')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2023-10-17 <a href="2023-09.html#traffic">&lt;</a><a href="computer.html">computer</a><a href="2024-01.html#merge_de_backups">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_windowsapplib')"><sup>[copy]</sup></a></span>
 
 <p>Este é o nome da lib que você precisa usar para conseguir linkar com funções da biblioteca de apps do Windows, incluindo as funções de suporte ao HSTRING, a nova string usada pelo framework. Andei caçando esta lib por algumas horas, já que nenhuma documentação da Microsoft dizia sobre ela e apenas ao criar um projeto do tipo WinRT ela foi linkada (de qualquer forma, não sei de onde veio a configuração para linkar). Só colocando a saída do build no modo diagnostic foi possível encontrar a lib usada. Note que ela define qual é a DLL onde estará a implementação necessária. Dependendo da versão do SDK isso deve mudar com o tempo.</p>
 
 </section><hr/>
 
+
 <span id="presente_de_deus" title="Presente de Deus"/></span>
 <section id="section_presente_de_deus">
 <p class="title"><a href="2023-10.html#presente_de_deus">#</a> Presente de Deus</p>
-<span class="title-heading">Caloni, 2023-10-17 <a href="2023-10.html#os_croods_2">&lt;</a><a href="cinema.html">cinema</a><a href="2023-10.html#um_romance_do_alem">&gt;</a> <a href="2023-10.html#os_croods_2">&lt;</a><a href="movies.html">movies</a><a href="2023-10.html#um_romance_do_alem">&gt;</a> <a href="2023-10.html#uma_fada_veio_me_visitar">&lt;</a><a href="cinemaqui.html">cinemaqui</a><a href="2024-03.html#zona_de_risco">&gt;</a> <a href="2023-10.html#o_que_vem_ai_na_mostra_2023_47a">&lt;</a><a href="mostrasp.html">mostrasp</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_presente_de_deus')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2023-10-17 <a href="2023-10.html#os_croods_2">&lt;</a><a href="cinema.html">cinema</a><a href="2023-10.html#trolls_2_world_tour">&gt;</a> <a href="2023-10.html#os_croods_2">&lt;</a><a href="movies.html">movies</a><a href="2023-10.html#trolls_2_world_tour">&gt;</a> <a href="2023-10.html#uma_fada_veio_me_visitar">&lt;</a><a href="cinemaqui.html">cinemaqui</a><a href="2024-03.html#zona_de_risco">&gt;</a> <a href="2023-10.html#o_que_vem_ai_na_mostra_2023_47a">&lt;</a><a href="mostrasp.html">mostrasp</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_presente_de_deus')"><sup>[copy]</sup></a></span>
 
 <p>Você já assistiu a um filme do Quirguistão? Nem sabia que esse país existia, né? Não lhe culpo. Esta milenar rota entre Oriente e Ocidente apenas adquiriu soberania algumas décadas atrás, com a dissolução da União Soviética. Antes era um agrupado de clãs e culturas, muitas das quais se mantiveram relativamente intactas pelo isolamento geográfico.</p>
 
@@ -429,6 +424,7 @@ Windows.Storage.Streams.DataReader
 <p>Asel Zhuraeva, que já foi assistente de direção, agora estreia com um filme minimalista, autocontido e admirável do começo ao fim. Seu estilo narrativo é simples, mas este rápido conto guarda algumas pérolas para o público em geral.</p>
 
 </section><hr/>
+
 
 <span id="os_croods_2" title="Os Croods 2"/></span>
 <section id="section_os_croods_2">
@@ -447,19 +443,21 @@ Windows.Storage.Streams.DataReader
 
 </section><hr/>
 
+
 <span id="cidade_perdida" title="Cidade Perdida"/></span>
 <section id="section_cidade_perdida">
 <p class="title"><a href="2023-10.html#cidade_perdida">#</a> Cidade Perdida</p>
-<span class="title-heading">Caloni, 2023-10-17 <a href="2023-10.html#o_que_vem_ai_na_mostra_2023_47a">&lt;</a><a href="cinema.html">cinema</a><a href="2023-10.html#os_croods_2">&gt;</a> <a href="2023-10.html#uma_fada_veio_me_visitar">&lt;</a><a href="movies.html">movies</a><a href="2023-10.html#os_croods_2">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_cidade_perdida')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2023-10-17 <a href="2023-10.html#um_romance_do_alem">&lt;</a><a href="cinema.html">cinema</a><a href="2023-10.html#os_croods_2">&gt;</a> <a href="2023-10.html#um_romance_do_alem">&lt;</a><a href="movies.html">movies</a><a href="2023-10.html#os_croods_2">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_cidade_perdida')"><sup>[copy]</sup></a></span>
 
 <p>Channing Tatum e Sandra Bullock criam um dueto inesperado neste conto na selva envolvendo as fantasias de uma escritora viúva reclusa e seu modelo de capa dos romances eróticos que escreve. Quando suas fantasias mais molhadas se tornam realidade em uma ilha pulsante latejando lava quente os dois ganham a chance de contracenar com charme sem direção. É engraçado em momentos. Harry potter faz um vilão e uma atriz negra é a agente editora que comanda o arco sem importância. Com uma participação inusitada de Brad Pitt ajudando a criar contraste com o personagem de Tatum, que se revela um bonitão forte sem qualquer tino aventureiro. Bullock passa quase todo o filme em um vestido rosa chocante que é o máximo, mostra todas suas inexistentes curvas e prova o quão boa atriz ela é. Com invejáveis 59 anos, além de inteirona, ela não tem medo de protagonizar trabalhos menores após ganhar o Oscar por um drama intimista. Por mais atrizes como ela.</p>
 
 </section><hr/>
 
+
 <span id="um_romance_do_alem" title="Um Romance do Além"/></span>
 <section id="section_um_romance_do_alem">
 <p class="title"><a href="2023-10.html#um_romance_do_alem">#</a> Um Romance do Além</p>
-<span class="title-heading">Caloni, 2023-10-17 <a href="2023-10.html#presente_de_deus">&lt;</a><a href="cinema.html">cinema</a><a href="2023-10.html#trolls_2_world_tour">&gt;</a> <a href="2023-10.html#presente_de_deus">&lt;</a><a href="movies.html">movies</a><a href="2023-10.html#trolls_2_world_tour">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_um_romance_do_alem')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2023-10-17 <a href="2023-10.html#o_que_vem_ai_na_mostra_2023_47a">&lt;</a><a href="cinema.html">cinema</a><a href="2023-10.html#cidade_perdida">&gt;</a> <a href="2023-10.html#uma_fada_veio_me_visitar">&lt;</a><a href="movies.html">movies</a><a href="2023-10.html#cidade_perdida">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_um_romance_do_alem')"><sup>[copy]</sup></a></span>
 
 <p>Um terror tailandês com toques de humor? Nada disso. Este é um drama gay com toques de ação e pano de fundo policial. Estar morto é o menor dos detalhes e um obrigatório traço cultural. Já a personalidade eco gay do projeto é passe livre para ser vendido no streaming ocidental. A perseguição no começo do filme lembra o de Fúrias Femininas pela trasheira da computação, mas o diretor Wei-Hao Cheng toma cuidado com cada plano para atingir o nível de qualidade mínima para não destoar demais do resto do filme. O drama é piegas e a comédia bacana. Há química gay entre os dois atores principais e a policial bonitinha é uma gracinha esquecível.</p>
 
@@ -469,7 +467,7 @@ Windows.Storage.Streams.DataReader
 <span id="trolls_2_world_tour" title="Trolls 2 (World Tour)"/></span>
 <section id="section_trolls_2_world_tour">
 <p class="title"><a href="2023-10.html#trolls_2_world_tour">#</a> Trolls 2 (World Tour)</p>
-<span class="title-heading">Caloni, 2023-10-22 <a href="2023-10.html#um_romance_do_alem">&lt;</a><a href="cinema.html">cinema</a><a href="2023-11.html#a_era_da_estupidez">&gt;</a> <a href="2023-10.html#um_romance_do_alem">&lt;</a><a href="movies.html">movies</a><a href="2023-11.html#a_era_da_estupidez">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_trolls_2_world_tour')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2023-10-22 <a href="2023-10.html#presente_de_deus">&lt;</a><a href="cinema.html">cinema</a><a href="2023-11.html#vozes_distantes">&gt;</a> <a href="2023-10.html#presente_de_deus">&lt;</a><a href="movies.html">movies</a><a href="2023-11.html#vozes_distantes">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_trolls_2_world_tour')"><sup>[copy]</sup></a></span>
 
 <p>Assistindo a continuação do ótimo original para ver se assistimos o terceiro no cinema. Este foi lançado na época do isolamento, 2020, e foi influenciado por duas coisas: pressa e movimentos tipo BLM. Ele é bem feitinho, mas as músicas não embalam, fora os hits conhecidos. E mesmo eles não possuem coreografia afiada. A história é requentada e utiliza uma expansão no mundo dos trolls baseado em estilos musicais. O final "estava tudo dentro de nós o tempo todo", blá blá blá. Sim, é preguiçoso do começo ao fim. A parte woke é deprimente mesmo para quem é woke. A única virtude desta continuação é a direção de arte. Bem feita, mas sem alma. Faltou acordar o que está dentro de todos nós.</p>
 

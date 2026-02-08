@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script>
+var quick_search_posts = [ 
+ ]; 
+</script>
+<script src="/blog/js/quick_search.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="c_and_c++_operators_precedence_table" title="C and C++ Operators Precedence Table"/></span>
+<section id="section_c_and_c++_operators_precedence_table">
+<p class="title">C and C++ Operators Precedence Table</p>
+<span class="title-heading">Caloni, 2007-07-30 computer ccpp english blog</span>
+
+<blockquote>Wanderley, your explanation about [why a program compiles in C++ and not in C] seems to me logic and correct, but gave me some doubts, because I always learned that the C and C++ operator precedence are the same thing. I checked out the Appendix A in the "C ++ - How To Program" (sixth edition) and the book table is equal to the C operators precedence table and it is different from the C++ precedence table presented by you in the article. I went to the internet and found out in two websites the table and both are equal to the book table.</blockquote>
+
+<blockquote>From where did you get the presented C++ table?</blockquote>
+
+<blockquote>[Márcio Andrey Oliveira]</blockquote>
+<p>These are the two websites where Márcio found the new tables:</p>
+
+<ul><li><a href="http://en.wikipedia.org/wiki/Operators_in_C_and_C">Wikipedia</a></li>
+<li><a href="http://www.cppreference.com/operator_precedence.html">CppPreference</a> (it was out the last time I checked, 2026-01-27)</li></ul>
+<p>Dear Márcio,</p>
+
+<p>You have been my most productive reader ever. Besides having found the portability fail using static variables inside ifs, now you put in check the precedence table comparison between these two languages. In fact, some things were not so clear in that post. Let's clarify everything now (or at least try) using trustworthy sources, including the Wikipedia link sent to me.</p>
+
+<p>The first doubt it's about the most basic principle: what is a precedence table? Well, it is what defines, amount a set of concurrent operations in a language, which will be the evaluation order. In other words, what cames first, what cames next, etc. Through this table is possible to know all the language facts, as the fact that the multiplication operators are evaluated before the addition operators.</p>
+
+<p>This way, the table can resolve 99% of the evaluation order issues in a language, but it is not perfect.</p>
+
+<p>Let's see, by example, the conditional operator, most of the times known by ternary operator. Given its peculiar format, even having the precedence higher than the comma operator, the language doesn't allow a misinterpretation. If so,</p>
+
+<pre>
+   a ? b , c : d
+</pre>
+<p>will be interpreted as</p>
+
+<pre>
+   a ? ( b , c ) : d
+</pre>
+<p>and not as</p>
+
+<pre>
+   ( a ? b ) , ( c : d )
+</pre>
+<p>that would be the logic result if we followed the precedence table, since the comma operator has lower precedence than the ternary operator. But that doesn't make any sense in the language, and that's why the first form is understood by the compiler, even contradicting the precedence table. This is corroborated by the following quote from Wikipedia in the page you shared:</p>
+
+<blockquote>A precedence table, while mostly adequate, cannot resolve a few details. In particular, note that the ternary operator allows any arbitrary expression as its middle operand, despite being listed as having higher precedence than the assignment and comma operators.</blockquote>
+<p>That is one of the reasons why the precedence table is just a way to express the grammar rules of a language in a simple and resumed manner. It is not the grammar neither ought to be. Let's see one more quotation, this time from the Stroustrup himself, just after presented the C++ precedence table (by the way, that was the source used by me to get the table for my post):</p>
+
+<blockquote>A few grammar rules cannot be expressed in terms of precedence (also known as binding strength) and associativity.</blockquote>
+<p>We can see from my example, the Wikipedia example and the Stroustrup example that the ternary operator is the main victim. Not for less. Talking about the grammar, the C ternary operator definition is different from the C++ ternary operator definition. While in C this operator is defined like this:</p>
+
+<pre>
+   conditional-expression:
+     logical-OR-expression
+     logical-OR-expression ? expression : conditional-expression
+</pre>
+<p>In C++ language it is defined like this:</p>
+
+<pre>
+   conditional-expression:
+     logical-OR-expression
+     logical-OR-expression ? expression : assignment-expression
+</pre>
+<p>This little difference can give us some (rare) situations where we can get a syntax error in C. As in a Wikipedia example, the following expression:</p>
+
+<pre>
+   e = a ? b : c = d
+</pre>
+<p>It is interpreted by the C language as:</p>
+
+<pre>
+   e = ( ( a ? b : c ) = d )
+</pre>
+<p>In the C++ language is interpreted as:</p>
+
+<pre>
+   e = ( a ? b : ( c = d ) ) 
+</pre>
+<p>In the C language case, we have a compilation error because the code is trying to assign a value to a lvalue (remember that lvalues can't be assigned to anything).</p>
+
+<pre>
+   ( a ? b : c ) = d 
+</pre>
+<p>But in C++ there's no invalid assignment, what makes a no error compilation performed.</p>
+
+<p>Now, one last question, that seems to be the most relevant in this precedence issue: why is the Stroustrup book precedence table different from the C precedence table?</p>
+
+<p>Well, I believe that, after all our analysis, the answer must be somewhat obvious: knowing that, in the ternary operator, the third operand is an assignment-expression, it is most likely the table is agree with the grammar if we put a extra weight for the assignment operators before the ternary operator. This way, if the third operand is an assignment operation (as the case above), the imaginary parentesis will be put first in the assignment operation, making the grammar definition valid:</p>
+
+<pre>
+   ( a ? b : ( c ) = d )
+</pre>
+<p>I hope this second post about the precedence table have cleared a bit more about the subject. It is not easy to understand the C language, but once you start to try, one magic door opens. Some things to remember from this experience:</p>
+
+<ul><li>The precedence table is not in the Standard; it is deduced from the grammar rules.</li>
+<li>There are rare expressions where we can't use the precedence table (e.g. ternary operator).</li></ul>
+
+</section>
+
+<span style="float: left;">
+ <a href="historia_da_linguagem_c_parte_1.html">[historia_da_linguagem_c_parte_1]</a>
+ <a href="movendo_o_cursor_do_mouse_com_o_teclado.html">[movendo_o_cursor_do_mouse_com_o_teclado]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

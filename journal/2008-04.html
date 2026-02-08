@@ -17,11 +17,6 @@
 <script src="/journal/js/jquery-1.12.4.js"></script>
 <script src="/journal/js/jquery-ui.js"></script>
 <script src="/journal/js/copy_clipboard.js"></script>
-<script>
-var quick_search_posts = [ 
- ]; 
-</script>
-<script src="/journal/js/quick_search.js"></script>
 <script src="/journal/js/list.js"></script>
 <link rel="icon" href="/journal/img/favicon.ico"/>
 </head>
@@ -44,28 +39,16 @@ role="navigation" aria-label="main navigation">
 <ul style="list-style: none;">
 
 <li><small><a href="2008-04.html#reflexo">Reflexo</a></small></li>
-
 <li><small><a href="2008-04.html#try_catch_flutuante">Try-catch flutuante</a></small></li>
-
 <li><small><a href="2008-04.html#conversor_de_houaiss_para_babylon_parte_2">Conversor de Houaiss para Babylon - parte 2</a></small></li>
-
 <li><small><a href="2008-04.html#linux_e_o_dhcp">Linux e o DHCP</a></small></li>
-
 <li><small><a href="2008-04.html#aprendendo_assembly_com_o_depurador">Aprendendo assembly com o depurador</a></small></li>
-
 <li><small><a href="2008-04.html#guia_basico_de_controle_de_codigo_mercurial">Guia básico de controle de código (Mercurial)</a></small></li>
-
 <li><small><a href="2008-04.html#crash_dump_analysis_o_livro">Crash Dump Analysis: o livro</a></small></li>
-
 <li><small><a href="2008-04.html#ode_ao_c++">Ode ao C++</a></small></li>
-
 <li><small><a href="2008-04.html#csi_crashed_server_investigation">CSI: Crashed Server Investigation?</a></small></li>
-
 <li><small><a href="2008-04.html#seminario_ccpp_portabilidade_e_performance">Seminário CCPP Portabilidade e Performance</a></small></li>
-
-<li><small><a href="2008-04.html#bazaar_e_fedora_8_a_saga">Bazaar e Fedora 8: a saga</a></small></li>
-</ul>
-
+<li><small><a href="2008-04.html#bazaar_e_fedora_8_a_saga">Bazaar e Fedora 8: a saga</a></small></li></ul>
 
 <span id="reflexo" title="Reflexo"/></span>
 <section id="section_reflexo">
@@ -103,7 +86,6 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    #include &lt;iostream&gt;
-   
    /* This class explodes */
    class Explode
    {
@@ -113,16 +95,13 @@ role="navigation" aria-label="main navigation">
          m_x = x;
          throw x;
        }
-   
        void print()
        {
          std::cout &lt;&lt; &quot;The number: &quot; &lt;&lt; m_x &lt;&lt; std::endl;
        }
-   
      private:
        int m_x;
    };
-   
    /* This class is going to be exploded */
    class Victim
    {
@@ -137,16 +116,13 @@ role="navigation" aria-label="main navigation">
          std::cerr &lt;&lt; &quot;We're going to blow up\n&quot;;
          // just like 'throw' over here
        }
-   
        void print()
        {
          m_explode.print();
        }
-   
      private:
        Explode m_explode;
    };
-   
    int main()
    {
      try
@@ -182,7 +158,6 @@ role="navigation" aria-label="main navigation">
    We're going to blow up
    Something BAD BAD happenned...
 </pre>
-
 </section><hr/>
 
 
@@ -212,32 +187,27 @@ role="navigation" aria-label="main navigation">
 <pre>
    #include &lt;iostream&gt;
    #include &lt;string&gt;
-   
    int main()
    {
      char cmd; // comando da linha atualmente lida
      string line; // linha atualmente lida
      int count = 0; // contador de palavras
-   
      while( getline(cin, line) )
      {
        cmd = line[0]; // guardamos o comando
        line.erase(0, 1); // tiramos o comando da linha
        format(line); // formatação da linha (explicações adiante)
-   
        switch( cmd ) // que comando é esse?
        {
        case '*': // verbete
          ++count;
          cout &lt;&lt; '\n' &lt;&lt; line &lt;&lt; '\n';
          break;
-   
        case ':': // definição
          cout &lt;&lt; line &lt;&lt; &quot;&lt;br&gt;\n&quot;;
          break;
        }
      }
-   
      return 0;
    }
 </pre>
@@ -252,13 +222,10 @@ role="navigation" aria-label="main navigation">
    {
      string::size_type pos1 = 0;
      string::size_type pos2 = 0;
-   
      while( (pos1 = str.find('&lt;')) != string::npos )
        str.replace(pos1, 1, &quot;&lt;&quot;);
-   
      while( (pos1 = str.find('&gt;')) != string::npos )
        str.replace(pos1, 1, &quot;&gt;&quot;);
-   
      while( (pos1 = str.find('{')) != string::npos )
      {
        if( pos1 &amp;&amp; str[pos1 - 1] == '\\' ) // caractere de escape
@@ -266,35 +233,26 @@ role="navigation" aria-label="main navigation">
        else
        {
          string subStr;
-   
          pos2 = str.find('}', pos1);
-   
          if( pos2 != string::npos )
            subStr = str.substr(pos1 + 1, pos2 - pos1 - 1);
          else
            subStr = str.substr(pos1 + 1);
-   
          istringstream is(subStr);
-   
          string fmt;
          string word;
          is &gt;&gt; fmt;
          getline(is, word);
          if( word[0] == ' ' )
          word.erase(0, 1);
-   
          if( fmt.find(&quot;\\i&quot;) != string::npos )
            word = &quot;&lt;i&gt;&quot; + word + &quot;&lt;/i&gt;&quot;;
-   
          if( fmt.find(&quot;\\b&quot;) != string::npos )
            word = &quot;&lt;b&gt;&quot; + word + &quot;&lt;/b&gt;&quot;;
-   
          if( fmt.find(&quot;\\f20&quot;) != string::npos )
            word = &quot;&quot; + word + &quot;&quot;;
-   
          if( fmt.find(&quot;\\super&quot;) != string::npos )
            word = &quot;&quot; + word + &quot;&quot;;
-   
          if( pos2 != string::npos )
            str.replace(pos1, pos2 - pos1 + 1, word);
          else
@@ -417,27 +375,22 @@ role="navigation" aria-label="main navigation">
    DS=0CF9  ES=0CF9  SS=9000  CS=0CF9  IP=0103   NV UP EI PL NZ NA PO NC
    0CF9:0103 50            PUSH    AX
    -t
-   
    AX=1234  BX=0000  CX=0000  DX=0000  SP=FFFD  BP=0000  SI=0000  DI=0000
    DS=0CF9  ES=0CF9  SS=9000  CS=0CF9  IP=0104   NV UP EI PL NZ NA PO NC
    0CF9:0104 40            INC     AX
    -t
-   
    AX=1235  BX=0000  CX=0000  DX=0000  SP=FFFD  BP=0000  SI=0000  DI=0000
    DS=0CF9  ES=0CF9  SS=9000  CS=0CF9  IP=0105   NV UP EI PL NZ NA PE NC
    0CF9:0105 50            PUSH    AX
    -t
-   
    AX=1235  BX=0000  CX=0000  DX=0000  SP=FFFB  BP=0000  SI=0000  DI=0000
    DS=0CF9  ES=0CF9  SS=9000  CS=0CF9  IP=0106   NV UP EI PL NZ NA PE NC
    0CF9:0106 40            INC     AX
    -t
-   
    AX=1236  BX=0000  CX=0000  DX=0000  SP=FFFB  BP=0000  SI=0000  DI=0000
    DS=0CF9  ES=0CF9  SS=9000  CS=0CF9  IP=0107   NV UP EI PL NZ NA PE NC
    0CF9:0107 50            PUSH    AX
    -t
-   
    AX=1236  BX=0000  CX=0000  DX=0000  SP=FFF9  BP=0000  SI=0000  DI=0000
    DS=0CF9  ES=0CF9  SS=9000  CS=0CF9  IP=0108   NV UP EI PL NZ NA PE NC
    0CF9:0108 6C            DB      6C
@@ -506,7 +459,6 @@ role="navigation" aria-label="main navigation">
 
 <li><a href="http://www.dumpanalysis.org/blog/">Crash Dump Analysis</a></li></ul>
 
-
 </section><hr/>
 
 
@@ -564,19 +516,15 @@ role="navigation" aria-label="main navigation">
    date:        Tue Apr 15 09:05:27 2008 -0300
    summary:     Primeira versao
    &gt; echo bla bla bla &gt;&gt; Main.cpp
-   
    &gt; hg status
    M Main.cpp
-   
    &gt; hg commit -m &quot;Alterado algumas coisas&quot;
-   
    &gt; hg log
    changeset:   1:829b081df653
    tag:         tip
    user:        Wanderley Caloni &lt;wanderley.caloni@gmail.com&gt;
    date:        Tue Apr 15 09:06:29 2008 -0300
    summary:     Alterado algumas coisas
-   
    changeset:   0:e9246bcf2107
    user:        Wanderley Caloni &lt;wanderley.caloni@gmail.com&gt;
    date:        Tue Apr 15 09:05:27 2008 -0300
@@ -664,48 +612,39 @@ role="navigation" aria-label="main navigation">
    * @author Wanderley Caloni Jr
    * @date 31.01.2005
    */
-   
    É natural que um programador tenha preferência por uma linguagem.
    Geralmente por motivos pessoais que se refletem nas características da
    linguagem. Eu, por exemplo, tenho vários motivos para amar essa
    linguagem:
-   
    Linguagem C. Todas as vantagens da linguagem C estão embutidas em C++.
    E sem aquele papo erudito que deve-se programar em OO para ser C++.
    Por ser multiparadigma, a linguagem também suporta o melhor da
    programação procedural e estruturada.
-   
    Popularidade. C++ é o que há. Linguagem unânime e reconhecida no mundo
    todo como de uso geral. Dificilmente você vai encontrar um algoritmo
    que não tenha representação em C++.
-   
    Economia e Expressividade. Pode parecer bobagem, mas coisas como
    operador de incremento e valor em todas expressões permite que se faça
    muita coisa com poucas linhas. Isso a torna muito expressiva. Isso, em
    outras palavras, quer dizer que você pode juntar várias expressões
    numa só, e esse conjunto será também uma expressão.
-   
    Liberdade. Em C++ você é o culpado de virtualmente qualquer coisa de
    bom e ruim que aconteça no seu programa, pois você tem que seguir
    poucas regras e tem que ser responsável no que faz. C++ não te ajuda a
    seguir um bom modelo de programação com restrições embutidas. Isso a
    torna difícil para iniciantes, mas conforme aumenta a experiência,
    maior o prazer em programar.
-   
    Portabilidade. A possibilidade de compilar e rodar o seu código em
    vários ambientes - de compilação e execução - é uma característica
    útil e agradável. No meu caso é só agradável, pois dificilmente faço
    código portável, apesar das boas noções que tenho sobre o assunto. E
    são essas boas noções que me permitem afirmar que C++ suporta muito
    bem essa possibilidade.
-   
    Rapidez. Pode não ser importante em muitos casos, mas já é do instinto
    do programador o desejo de eficiência no código. E nada como programar
    numa linguagem extremamente eficiente em tempo de execução para se
    sentir feliz de ver o código rodando.
-   
    FIM
-   
    []s
 </pre>
 <p>Strauss -- Legal. Vou colocar minha água mercadológica no feijão e <a href="http://www.1bit.com.br/content.1bit/weblog/ode_cpp">colocar no site</a>.</p>
@@ -757,7 +696,7 @@ role="navigation" aria-label="main navigation">
 <span id="seminario_ccpp_portabilidade_e_performance" title="Seminário CCPP Portabilidade e Performance"/></span>
 <section id="section_seminario_ccpp_portabilidade_e_performance">
 <p class="title"><a href="2008-04.html#seminario_ccpp_portabilidade_e_performance">#</a> Seminário CCPP Portabilidade e Performance</p>
-<span class="title-heading">Caloni, 2008-04-25 <a href="2008-03.html#quarto_encontro_c++">&lt;</a><a href="ccppbr.html">ccppbr</a><a href="2008-06.html#resultado_do_seminario_ccpp">&gt;</a><a href="2008-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_seminario_ccpp_portabilidade_e_performance')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2008-04-25 <a href="2008-03.html#epa_ccpp_4_nossa_comunidade_ganhando_forma">&lt;</a><a href="ccppbr.html">ccppbr</a><a href="2008-06.html#resultado_do_seminario_ccpp">&gt;</a><a href="2008-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_seminario_ccpp_portabilidade_e_performance')"><sup>[copy]</sup></a></span>
 
 <p>Reserve sua cadeira. Está marcado para o último dia do mês de maio o primeiro seminário de nosso grupo nacional de programadores e aficionados por C e C++. É bom ou não é?</p>
 
@@ -787,7 +726,7 @@ role="navigation" aria-label="main navigation">
 
 <p>Por exemplo, a manipulação de arquivos e diretórios não é lá o forte da STL, concentrada no conceito de streams. Com o uso do Boost, podemos ter o melhor da STL, só que turbinada. Além disso, o novo padrão de threads ainda está longe de chegar ao mercado, e o Boost.Threads é uma solução viável atualmente.</p>
 
-<h2>Técnicas de Otimização de Código por Rodrigo Kumpera &amp; André Tupinambá</h2>
+<h2>Técnicas de Otimização de Código por Rodrigo Kumpera & André Tupinambá</h2>
 
 <p>Essa é a estréia de dois palestrantes de uma só vez! Como um bom complemento, voltamos ao tema de otimização, dessa vez em aspectos mais genéricos. Entre questões mais ou menos banais como otimização de laços e benchmarkers, mas que faze toda a diferença saber, teremos ainda tópicos bem avançados, como a relação de nosso código com o cachê do processador, e a tão-falada técnica de branch prediction, presente na maioria dos processadores atuais.</p>
 

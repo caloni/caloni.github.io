@@ -17,11 +17,6 @@
 <script src="/journal/js/jquery-1.12.4.js"></script>
 <script src="/journal/js/jquery-ui.js"></script>
 <script src="/journal/js/copy_clipboard.js"></script>
-<script>
-var quick_search_posts = [ 
- ]; 
-</script>
-<script src="/journal/js/quick_search.js"></script>
 <script src="/journal/js/list.js"></script>
 <link rel="icon" href="/journal/img/favicon.ico"/>
 </head>
@@ -44,30 +39,17 @@ role="navigation" aria-label="main navigation">
 <ul style="list-style: none;">
 
 <li><small><a href="2007-10.html#tedio">Tédio</a></small></li>
-
 <li><small><a href="2007-10.html#debug_da_bios_com_o_softice_16_bits">Debug da BIOS com o SoftIce 16 bits</a></small></li>
-
 <li><small><a href="2007-10.html#cronograma">Cronogramas</a></small></li>
-
 <li><small><a href="2007-10.html#historia_do_windows_parte_50">História do Windows - parte 5.0</a></small></li>
-
 <li><small><a href="2007-10.html#engenharia_reversa_para_principiantes">Engenharia reversa para principiantes</a></small></li>
-
 <li><small><a href="2007-10.html#the_c_programming_language">A Linguagem de Programação C: O Livro</a></small></li>
-
 <li><small><a href="2007-10.html#guia_basico_para_programadores_de_primeiro_int_main">Guia básico para programadores de primeiro int main</a></small></li>
-
 <li><small><a href="2007-10.html#por_que_minha_dll_travou">Por que minha DLL travou?</a></small></li>
-
 <li><small><a href="2007-10.html#guia_basico_para_programadores_de_primeiro_breakpoint">Guia básico para programadores de primeiro breakpoint</a></small></li>
-
 <li><small><a href="2007-10.html#typeid_e_os_perigos_do_nao_polimorfismo">Typeid e os perigos do não-polimorfismo</a></small></li>
-
 <li><small><a href="2007-10.html#protecao_dos_membros_protected">Proteção dos membros protected</a></small></li>
-
-<li><small><a href="2007-10.html#alterando_mensagem_de_erro_no_notepad">Alterando mensagem de erro no Notepad</a></small></li>
-</ul>
-
+<li><small><a href="2007-10.html#alterando_mensagem_de_erro_no_notepad">Alterando mensagem de erro no Notepad</a></small></li></ul>
 
 <span id="tedio" title="Tédio"/></span>
 <section id="section_tedio">
@@ -463,7 +445,6 @@ role="navigation" aria-label="main navigation">
 
 <li>Leia livros bem introdutórios (até para criança vale) como Introdução Ilustrada à Computação.</li></ul>
 
-
 </section><hr/>
 
 
@@ -532,7 +513,6 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL,
    {
      printf(&quot;load dll&quot;);
      HMODULE lockDll = LoadLibrary(_T(&quot;dll_lock.dll&quot;));
-   
      if( lockDll )
      {
        Sleep(2000);
@@ -595,9 +575,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL,
 <pre>
    #include &lt;iostream&gt;
    #include &lt;typeinfo&gt;
-   
    using namespace std;
-   
    class Base
    {
    public:
@@ -606,45 +584,36 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL,
        cout &lt;&lt; &quot;Base()\n&quot;;
        m_x = 0;
      }
-   
      ~Base()
      {
        cout &lt;&lt; &quot;~Base()\n&quot;;
      }
-   
      int m_x;
    };
-   
    class Deriv : public Base
    {
    public:
      Deriv()
      {
        cout &lt;&lt; &quot;Deriv()\n&quot;;
-   
        m_x = 1;
        m_y = 0;
      }
-   
      virtual ~Deriv()
      {
        cout &lt;&lt; &quot;~Deriv()\n&quot;;
      }
-   
      int m_y;
    };
-   
    void func(Base* b)
    {
      cout &lt;&lt; typeid(*b).name() &lt;&lt; '\n';
    }
-   
    int main()
    {
      Base* b = new Deriv();
      func(b);
    } 
-   
 </pre>
 <p>O typeid usado nesse exemplo será o estático, no estilo typeid(type), porque o tipo do objeto para a função é de "ponteiro para objeto de classe não-polimórfica", ou seja, sem nenhuma função virtual. É importante lembrar que o polimorfismo em C++ só é aplicado se houver razão para tal, pois na linguagem a regra é que "não existe sobrecarga de execução sem que o programador queira":</p>
 
@@ -670,7 +639,6 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL,
    Deriv()
    class Deriv
 </pre>
-
 </section><hr/>
 
 
@@ -683,31 +651,25 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL,
 
 <pre>
    #include &lt;iostream&gt;
-   
    using namespace std;
-   
    class Base
    {
    protected:
    	int m_protected;
    };
-   
    class Deriv : public Base
    {
    public:
    	int GetProtectedFromBase();
    	int GetProtectedFromDeriv2();
    };
-   
    class Deriv2 : public Base
    {
    };
-   
    int Deriv::GetProtectedFromBase()
    {
    	return m_protected;
    }
-   
    int Deriv::GetProtectedFromDeriv2()
    {
    	Deriv2 deriv2;
@@ -716,14 +678,12 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL,
      // declared in class 'Base'
    	return deriv2.m_protected;
    }
-   
    int main()
    {
    	Deriv deriv;
    	deriv.GetProtectedFromBase();
    	deriv.GetProtectedFromDeriv2();
    }
-   
 </pre>
 <p>Esse é o motivo fundamental do porquê não podermos fazer isso:</p>
 
@@ -780,10 +740,8 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL,
 <p>Para variar, iremos depurar o Bloco de Notas, o maravilhoso editor de textos da Microsoft e plataforma de testes para serviços, GINAs e drivers. Para começar, poderemos usar quaisquer das opções anteriores, o que nos levará para uma saída poluída como a seguinte:</p>
 
 <pre>
-   
    Microsoft (R) Windows Debugger  Version 6.7.0005.1
    Copyright (c) Microsoft Corporation. All rights reserved.
-   
    CommandLine: notepad.exe
    Symbol search path is: SRV*C:Symbols*http://msdl.microsoft.com/downloads/symbols
    Executable search path is:
@@ -841,7 +799,6 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL,
 
 <pre>
    0:003&gt; ~* kvn
-   
       0  Id: 2b14.30f8 Suspend: 1 Teb: 000000b7`5be5b000 Unfrozen
     # Child-SP          RetAddr               : Args to Child                                                           : Call Site
    00 000000b7`5bdbd6f8 00007ff9`c74e078e     : 00000000`ffffffff 00007ff9`ae84cd4c 000000b7`00000000 00000000`00000001 : win32u!NtUserMsgWaitForMultipleObjectsEx+0x14
@@ -886,7 +843,6 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL,
    cs=0033  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000246
    shlwapi!ShellMessageBoxW:
    00007ff9`c7479410 4055            push    rbp
-   
 </pre>
 <p>Analisando pela convenção de chamada x64 sabemos que o terceiro parâmetro, lpcText, está em r8 e é um ID do resource. O que valida essa análise é também o primeiro parâmetro, a instância do módulo que contém os resources que serão usados para carregar a mensagem, que fica em rcx e não está zerado (ele aponta para o módulo commdlg32.dll). Dessa forma nossa tarefa se torna particularmente mais difícil, pois para encontrar a string usada na mensagem de erro seria necessário buscar no meio dos resources dessa DLL.</p>
 
@@ -898,7 +854,6 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL,
    0:000&gt; ezu 00000211`43d60000 &quot;Obrigado por utilizar o maravilhoso Bloco de Notas!&quot;
    0:000&gt; rr8 = 00000211`43d60000
    0:000&gt; g
-   
 </pre>
 <p>Note que se estivéssemos tentando exibir uma string Ansi iríamos usar o comando eza (edit zero terminated ansi string). O WinDbg possui inúmeros comandos parecidos que começam com e, cuja lista pode ser consultada pelo comando .hh e. O equivalente para leitura é o comando d (de dump).</p>
 

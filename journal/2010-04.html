@@ -17,11 +17,6 @@
 <script src="/journal/js/jquery-1.12.4.js"></script>
 <script src="/journal/js/jquery-ui.js"></script>
 <script src="/journal/js/copy_clipboard.js"></script>
-<script>
-var quick_search_posts = [ 
- ]; 
-</script>
-<script src="/journal/js/quick_search.js"></script>
 <script src="/journal/js/list.js"></script>
 <link rel="icon" href="/journal/img/favicon.ico"/>
 </head>
@@ -46,20 +41,12 @@ role="navigation" aria-label="main navigation">
 <li><small><a href="2010-04.html#novidades_no_windbg_7">Novidades no Windbg 7</a></small></li>
 <li><small><a href="2010-04.html#antigo_bemvindo_do_cine_tenis_verde">Antigo bem-vindo do Cine Tênis Verde</a></small></li>
 <li><small><a href="2010-04.html#a_voz">A voz</a></small></li>
-
 <li><small><a href="2010-04.html#homem_de_ferro_2">Homem de Ferro 2 (Jon Favreau, 2010)</a></small></li>
-
 <li><small><a href="2010-04.html#houaiss_para_babylon">Houaiss Para Babylon!</a></small></li>
-
 <li><small><a href="2010-04.html#using_todolist_and_microsoft_project_together">Using TodoList and Microsoft Project together</a></small></li>
-
 <li><small><a href="2010-04.html#mary_e_max_uma_amizade_diferente">Mary e Max - Uma Amizade Diferente (Adam Elliot, 2009)</a></small></li>
-
 <li><small><a href="2010-04.html#typedef_arcaico">Typedef arcaico</a></small></li>
-
-<li><small><a href="2010-04.html#por_que_long_pointer">Por que Long Pointer</a></small></li>
-</ul>
-
+<li><small><a href="2010-04.html#por_que_long_pointer">Por que Long Pointer</a></small></li></ul>
 
 <span id="novidades_no_windbg_7" title="Novidades no Windbg 7"/></span>
 <section id="section_novidades_no_windbg_7">
@@ -91,13 +78,10 @@ role="navigation" aria-label="main navigation">
 <p>Resumidamente, é um !analyze mais esperto com o algoritmo heurístico do Visual Basic .NET. Assim que for aberto um dump de tela azul e carregados os símbolos e o caminho dos fontes, a nova versão do !analyze irá verificar os valores do BugCheck gerado e, caso seja detectado que o problema está em seu driver, irá sugerir uma correção na sua função que estiver na pilha.</p>
 
 <pre>
-   
    Microsoft (R) Windows Debugger Version 6.9.0003.113 X86
    Copyright (c) Microsoft Corporation. All rights reserved.
-   
    Loading Dump File [C:\Tests\BSOD\BugCheck7F\2010-03-24ClientMemory.dmp]
    Kernel Complete Dump File: Full address space is available
-   
    ************************************************************
    WARNING: Dump file has been truncated.  Data may be missing.
    ************************************************************
@@ -115,31 +99,24 @@ role="navigation" aria-label="main navigation">
    ............
    Loading unloaded module list
    ..........................
-   
    *******************************************************************************
    *                                                                             *
    *                        Bugcheck Analysis                                    *
    *                                                                             *
    *******************************************************************************
-   
    Use !analyze -v to get detailed debugging information.
-   
    BugCheck 7F, {d, 0, 0, 0}
-   
    *** ERROR: Symbol file could not be found.  Defaulted to export symbols for MyDriver.sys -
    *** ERROR: Symbol file could not be found.  Defaulted to export symbols for mfehidk.sys -
    Probably caused by : MyDriver.sys ( MyDriver!KeBugCheckTest+2b )
-   
    Followup: MachineOwner
    ---------
-   
    0: kd&gt; !analyze -v
    *******************************************************************************
    *                                                                             *
    *                        Bugcheck Analysis                                    *
    *                                                                             *
    *******************************************************************************
-   
    UNEXPECTED_KERNEL_MODE_TRAP (7f)
    This means a trap occurred in kernel mode, and it's a trap of a kind
    that the kernel isn't allowed to have/catch (bound trap) or that
@@ -161,17 +138,12 @@ role="navigation" aria-label="main navigation">
    Arg2: 00000000
    Arg3: 00000000
    Arg4: 00000000
-   
    Debugging Details:
    ------------------
    BUGCHECK_STR:  0x7f_d
-   
    DEFAULT_BUCKET_ID:  DRIVER_FAULT
-   
    PROCESS_NAME:  cmd.eze
-   
    LAST_CONTROL_TRANSFER:  from 80564dd2 to 80544e7b
-   
    STACK_TEXT:
    a7f4b6a4 80564dd2 badb0d00 89679eb0 a7f40000 nt!KiSystemFatalException+0xf
    a7f4b774 ba182d80 e23bb528 00000002 a7f4b86c nt!NonPagedPoolDescriptor+0xb2
@@ -184,38 +156,28 @@ role="navigation" aria-label="main navigation">
    0012f918 4ad02d98 0014efc0 00150b00 00000000 cmd!ExecPgm+0x22b
    ...
    0012fff0 00000000 4ad05046 00000000 78746341 kernel32!BaseProcessStart+0x23
-   
    STACK_COMMAND:  kb
-   
    FOLLOWUP_IP:
    MyDriver!KeBugCheckTest+0x2b
    ba182d80 668945a4        mov     word ptr [ebp-5Ch],ax
-   
    SYMBOL_STACK_INDEX:  2
-   
    SYMBOL_NAME:  MyDriver!KeBugCheckTest+0x2b
-   
    FOLLOWUP_NAME:  MachineOwner
-   
    MODULE_NAME: MyDriver
-   
    IMAGE_NAME:  MyDriver.sys
-   
    DEBUG_FLR_IMAGE_TIMESTAMP:  4baa49d3
-   
    BugCheck Fix Tip:
    -----------------
    Try to remove the spin lock aquisition in MyDriver!KeBugCheckTest+2a. By doing this,
    the kernel IRQL priority system will not be in starvation mode.
-   
    Tip Code: C:\Tests\MyDriver\dispatch-funcs.cpp+345
-   
    Followup: MachineOwner
    ---------
 </pre>
 <p>Existem um pouco de polêmica em torno dessa funcionalidade. Alguns dizem que ela vai mais atrapalhar do que ajudar os programadores de kernel com a vinda de <a href="http://groups.google.com/group/ccppbrasil/msg/f1f6d52aa167c1ab?dmode=source">analistas de sistemas Júnior programando filtros de file system</a> sem a menor discrepância entre o que é um IRP assíncrono e uma ISR. Outros dizem que existirá uma versão paga do WinDbg com essa funcionalidade, nos mesmos moldes do Visual Studio 2010, que virá com a depuração reversa no Enterprise. Essas especulações só o tempo dirá se são verdade ou não. Se eu tiver que pagar mais caro por essas features, o lobby na empresa onde eu trabalho está garantido.</p>
 
 </section><hr/>
+
 
 <span id="antigo_bemvindo_do_cine_tenis_verde" title="Antigo bem-vindo do Cine Tênis Verde"/></span>
 <section id="section_antigo_bemvindo_do_cine_tenis_verde">
@@ -230,6 +192,7 @@ role="navigation" aria-label="main navigation">
 <p>Para que tudo isso faça sentido é vital que as pessoas assistam cada vez mais e mais filmes, pois apenas pela prática poderemos atingir a excelência em algo na vida. Porém, diferente de consumidores passivos, que deixam seu cérebro em uma tigela enquanto mastigam pipocas como zumbis observando a historinha que é colocada na sala escura cada vez mais cheia de pequenas telas dos celulares dos outros tipos de zumbis, é imperativo que usemos o cérebro e nossa mente como ferramentas de análise crítica do que nos é imposto pela mágica da projeção em 24 (ou 48) fps. Não aguentaremos mais os velhos formatos de uma mídia enlatada se conseguirmos projetar como consumidores ativos para quais tipos de obras dedicaremos nosso tempo e suado dinheirinho.</p>
 
 </section><hr/>
+
 
 <span id="a_voz" title="A voz"/></span>
 <section id="section_a_voz">
@@ -391,13 +354,13 @@ int main()
    cout &lt;&lt; typeid(s2).name() &lt;&lt; endl;
 }
 </pre>
-<blockquote>    </blockquote>
-<blockquote>    C:\Tests>cl /EHsc dois_apelidos.cpp</blockquote>
-<blockquote>    ...</blockquote>
-<blockquote>    /out:dois_apelidos.exe</blockquote>
-<blockquote>    dois_apelidos.obj</blockquote>
-<blockquote>    </blockquote>
-<blockquote>    C:\Tests>dois_apelidos.exe</blockquote>
+
+<blockquote>C:\Tests>cl /EHsc dois_apelidos.cpp</blockquote>
+<blockquote>...</blockquote>
+<blockquote>/out:dois_apelidos.exe</blockquote>
+<blockquote>dois_apelidos.obj</blockquote>
+
+<blockquote>C:\Tests>dois_apelidos.exe</blockquote>
 
 <p>struct Struct struct Struct</p>
 
@@ -430,10 +393,8 @@ int main()
 <pre>
    // Um ponteiro para função que recebe dois inteiros e não retorna nada.
    typedef void (* FP)(int, int) ;
-   
    // Um ponteiro para função que recebe dois inteiros e não retorna nada.
    void (*)(int, int);
-   
    // Um cast para ponteiro para função que recebe dois inteiros e não retorna nada.
    ( ( void (*)(int, int)) pf )(x, y);
 #include &lt;iostream&gt;
@@ -587,14 +548,12 @@ int main()
 <p>Esse artigo continua a explicação sobre <a href="http://www.caloni.com.br/typedef-arcaico">os typedefs arcaicos</a>, já que ainda falta explicar por que diabos os ponteiros da Microsoft começam com LP. Tentei explicar para [minha pupila] que, por ser código dos anos 80, as pessoas usavam LP para tudo, pois os CDs ainda não estavam tão difundidos.</p>
 
 <pre>
-   
    /** @brief Para instanciar um Bozo. @date 1982-02-21 */ 
    typedef struct _BOZO { 
       char helloMsg[100]; /* definir para &quot;alô, criançada, o bozo chegou...&quot; */ 
       float currentTime; /* definir para 5e60 */ 
    }
     BOZO, *LPBOZO;
-   
    /** @brief Para instanciar um Pokemon. @date 1996-03-01 */ 
    typedef struct _PIKACHU 
    { 
@@ -646,21 +605,19 @@ int main()
 <p>Com toda essa analogia, fica fácil perceber que o Windows não cabe em uma rua só. Seus aplicativos precisam de muitas ruas para rodar. Isso exige que todos seus ponteiros sejam long, pois do contrário o Juquinha estará entregando as cartas sempre nos endereços errados. Dessa forma, foi estipulado o typedef arcaico padrão para todos os tipos da API que usasse LP (Long Pointer) como prefixo:</p>
 
 <pre>
-   
    typedef unsigned long WORD, *LPDWORD;
    typedef const char* LPCSTR;
    typedef &lt;coloque-seu-tipo-aqui&gt; APELIDO, *LPAPELIDO;
 </pre>
 <p>E é por isso que, historicamente, todos os ponteiros para os apelidos da API Win32 possuem sua contraparte LP.</p>
 
-<p>Com a era 32 bits (e mais atualmente 64 bits) os endereços passaram a ser flat, ou seja, apontam para qualquer lugar na memória. Se eu quisesse continuar minha analogia falaria que é o equivalente a uma coordenada GPS, também muito na moda, e que pode apontar para qualquer lugar do planeta. Eu, por exemplo, já trabalhei &lt;del&gt;trabalho&lt;/del&gt; perto das coordenadas <a href="http://maps.google.com.br/maps?f=q[-23.563596,-46.653885]source=s_q[-23.563596,-46.653885]hl=pt-BR[-23.563596,-46.653885]geocode=[-23.563596,-46.653885]q=av.+paulista,+sao+paulo[-23.563596,-46.653885]ie=UTF8[-23.563596,-46.653885]hq=[-23.563596,-46.653885]hnear=Av.+Paulista+-+S%C3%A3o+Paulo[-23.563596,-46.653885]z=15">-23.563596,-46.653885</a>, o que eu costumo dizer que fica bem próximo do Paraíso =).</p>
+<p>Com a era 32 bits (e mais atualmente 64 bits) os endereços passaram a ser flat, ou seja, apontam para qualquer lugar na memória. Se eu quisesse continuar minha analogia falaria que é o equivalente a uma coordenada GPS, também muito na moda, e que pode apontar para qualquer lugar do planeta. Eu, por exemplo, já trabalhei &lt;del&gt;trabalho&lt;/del&gt; perto das coordenadas <a href="http://maps.google.com.br/maps?f=q&source=s_q&hl=pt-BR&geocode=&q=av.+paulista,+sao+paulo&ie=UTF8&hq=&hnear=Av.+Paulista+-+S%C3%A3o+Paulo&z=15">-23.563596,-46.653885</a>, o que eu costumo dizer que fica bem próximo do Paraíso =).</p>
 
 <h4>Largando velhos hábitos</h4>
 
 <p>De uns anos pra cá, existem novos typedefs nos headers que permitem o uso dos apelidos Win32 apenas com um P inicial.</p>
 
 <pre>
-   
    typedef unsigned long WORD, *LPDWORD, *PDWORD;
    typedef const char *LPCSTR, *PCSTR;
    typedef &lt;coloque-seu-tipo-aqui&gt; APELIDO, *LPAPELIDO, *PAPELIDO;

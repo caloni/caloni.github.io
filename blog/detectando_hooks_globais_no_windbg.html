@@ -17,11 +17,6 @@
 <script src="/blog/js/jquery-1.12.4.js"></script>
 <script src="/blog/js/jquery-ui.js"></script>
 <script src="/blog/js/copy_clipboard.js"></script>
-<script>
-var quick_search_posts = [ 
- ]; 
-</script>
-<script src="/blog/js/quick_search.js"></script>
 <script src="/blog/js/list.js"></script>
 <link rel="icon" href="/blog/img/favicon.ico"/>
 </head>
@@ -53,14 +48,12 @@ role="navigation" aria-label="main navigation">
 <p>No WinDbg é possível definir um ou mais comandos que são executados quando um breakpoint é acionado. Esses comandos ficam entre aspas duplas e podem conter as mesmas coisas que digitamos na linha de comando. Alguns comandos, porém, são mais úteis que outros nesse contexto. Por exemplo, o comando ".echo". Podemos digitar .echo na linha de comando do WinDbg. O que acontece?</p>
 
 <pre>
-   
    0:000&gt; .echo O que acontece?
    O que acontece?
 </pre>
 <p>Exatamente o que o comando se dispõe a fazer: imprimir seus argumentos na tela. E qual a vantagem nisso? Nenhuma, se estamos na linha de comando, mas muita se estivermos colocando um breakpoint onde queremos contar o número de vezes que passamos por lá, o comando tem serventia:</p>
 
 <pre>
-   
    0:000&gt; bp $exentry &quot;.echo Passou pelo main; g&quot;
    0:000&gt; g
    ModLoad: 5cb70000 5cb96000 ShimEng.dll
@@ -80,7 +73,6 @@ role="navigation" aria-label="main navigation">
 <p>Aprendi o comando j antes do .if, por isso acabo usando mais o primeiro, mas ambos possuem similaridades. O formato desse comando é exatamente como um "if-else":</p>
 
 <pre>
-   
    j Expression Command1 ; Command2
    j Expression 'Command1' ; 'Command2'
 </pre>
@@ -91,7 +83,6 @@ role="navigation" aria-label="main navigation">
 <p>Lembram-se de nossa peregrinação pela pilha de chamadas quando fizemos um <a href="2007-10.html#alterando_mensagem_de_erro_no_notepad">hook na função MessageBox</a> pelo WinDbg? Aqui é a mesma coisa, pois estou analisando um parâmetro passado na pilha (esp): o ID da thread para onde vai o hook.</p>
 
 <pre>
-   
    HHOOK SetWindowsHookEx(
      int idHook,
      HOOKPROC lpfn,

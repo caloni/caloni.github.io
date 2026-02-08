@@ -17,11 +17,6 @@
 <script src="/journal/js/jquery-1.12.4.js"></script>
 <script src="/journal/js/jquery-ui.js"></script>
 <script src="/journal/js/copy_clipboard.js"></script>
-<script>
-var quick_search_posts = [ 
- ]; 
-</script>
-<script src="/journal/js/quick_search.js"></script>
 <script src="/journal/js/list.js"></script>
 <link rel="icon" href="/journal/img/favicon.ico"/>
 </head>
@@ -44,28 +39,16 @@ role="navigation" aria-label="main navigation">
 <ul style="list-style: none;">
 
 <li><small><a href="2007-09.html#preconceito">Preconceito</a></small></li>
-
 <li><small><a href="2007-09.html#historia_do_windows_parte_40">História do Windows - parte 4.0</a></small></li>
-
 <li><small><a href="2007-09.html#o_passado_torto_de_um_programador_por_acaso">O passado torto de um programador por acaso</a></small></li>
-
 <li><small><a href="2007-09.html#antidebug_detectando_attach">Antidebug: Detectando Attach</a></small></li>
-
 <li><small><a href="2007-09.html#guia_basico_de_controle_de_codigo_source_safe">Guia básico de controle de código (Source Safe)</a></small></li>
-
 <li><small><a href="2007-09.html#aquisicao_de_recurso_e_inicializacao">Aquisição de recurso é inicialização</a></small></li>
-
 <li><small><a href="2007-09.html#hook_de_com_no_windbg">Hook de COM no WinDbg</a></small></li>
-
 <li><small><a href="2007-09.html#a_mobilidade_das_variaveis_no_printf">A mobilidade das variáveis no printf</a></small></li>
-
 <li><small><a href="2007-09.html#why_is_my_dll_locked">Why is my DLL locked?</a></small></li>
-
 <li><small><a href="2007-09.html#introducao_ao_c_builderturbo_c">Introdução ao C++ Builder...Turbo C++</a></small></li>
-
-<li><small><a href="2007-09.html#developer_you_need_to_know_english">Developer: you need to know English!</a></small></li>
-</ul>
-
+<li><small><a href="2007-09.html#developer_you_need_to_know_english">Developer: you need to know English!</a></small></li></ul>
 
 <span id="preconceito" title="Preconceito"/></span>
 <section id="section_preconceito">
@@ -349,7 +332,6 @@ void WINAPI AntiAttachAbort(void)
 
 <pre>
    #include &lt;stdio.h&gt;
-   
    class File
    {
      public:
@@ -357,15 +339,12 @@ void WINAPI AntiAttachAbort(void)
      {
        m_file = fopen(name, &quot;r&quot;);
      }
-   
      ~File()
      {
        fclose(m_file);
      }
-   
      FILE* m_file;
    };
-   
    int UseFile()
    {
      File config(&quot;config.txt&quot;);
@@ -385,7 +364,6 @@ void WINAPI AntiAttachAbort(void)
      // things aren't that good, so...
      throw Scatadush();
    }
-   
    int UseFileEx()
    {
      File config(&quot;config.txt&quot;);
@@ -403,31 +381,24 @@ void WINAPI AntiAttachAbort(void)
    class File2
    {
    public:
-   
      void Open(char* name)
      {
        m_file = fopen(name, &quot;r&quot;);
      }
-   
      void Close()
      {
        fclose(m_file);
      }
-   
      FILE* m_file;
    };
-   
    int UseFile2()
    {
      File2 config;
      config.Open(&quot;config.txt&quot;);
-   
      BlowUpFunction(); // exception thrown:
                        // the resource was 
                        // NOT released
-   
      config.Close(); // resource released
-   
      return 0;
    } 
 </pre>
@@ -472,20 +443,15 @@ void WINAPI AntiAttachAbort(void)
      public:
      virtual void *STDMETHODCALLTYPE Alloc( 
        /* [in] */ SIZE_T cb) = 0;
-   
      virtual void *STDMETHODCALLTYPE Realloc( 
        /* [in] */ void *pv,
        /* [in] */ SIZE_T cb) = 0;
-   
      virtual void STDMETHODCALLTYPE Free( 
        /* [in] */ void *pv) = 0;
-   
      virtual SIZE_T STDMETHODCALLTYPE GetSize( 
        /* [in] */ void *pv) = 0;
-   
      virtual int STDMETHODCALLTYPE DidAlloc( 
        void *pv) = 0;
-   
      virtual void STDMETHODCALLTYPE HeapMinimize(void) = 0;
    };
 </pre>
@@ -501,12 +467,10 @@ void WINAPI AntiAttachAbort(void)
    #include &lt;windows.h&gt;
    #include &lt;objbase.h&gt;
    #include &lt;objidl.h&gt;
-    
    int main()
    {
      CoInitialize(NULL);
      IMalloc* malloc = 0;
-   
      if( CoGetMalloc(1, &amp;malloc) == 0 )
      {
        if( void* pAlloc 
@@ -514,17 +478,14 @@ void WINAPI AntiAttachAbort(void)
        {
          malloc-&gt;Free(pAlloc);
        }
-   
        malloc-&gt;Release();
      }
-   
      CoUninitialize();
    } 
 </pre>
 <p>Vamos fazer de conta que é desnecessário dizer como se compila o fonte acima.</p>
 
 <pre>
-   
    cl /c imalloc-hook.cpp
    link imalloc-hook.obj ole32.lib
 </pre>
@@ -550,7 +511,6 @@ void WINAPI AntiAttachAbort(void)
 <p>Maravilha. Alguém chamou a função que queríamos (quem será?). Agora podemos dar uma olhada na pilha e no protótipo da CoGetMalloc:</p>
 
 <pre>
-   
    HRESULT CoGetMalloc(DWORD dwMemContext, LPMALLOC *ppMalloc);
    0:000&gt; dd esp L3
    0012ff70 0040101d 00000001 0012ff7c
@@ -560,7 +520,6 @@ void WINAPI AntiAttachAbort(void)
 <p>Como podemos ver nos parâmetros da pilha o nosso chamador passou certinho o valor 1 no campo reservado e um ponteiro no segundo parâmetro para uma área onde, se der tudo certo, será escrito o endereço de um IMalloc, que podemos chamar carinhosamente de this. De início vemos que a variável está zerada. Agora vamos executar a função até a saída e examinar os resultados.</p>
 
 <pre>
-   
    0:000&gt; bp /1 /c @$csp @$ra;g
    Breakpoint 1 hit
    eax=00000000 ebx=00000000 ecx=775e6034 edx=775e67f0 esi=00000001 edi=00403374
@@ -724,7 +683,6 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL,
    {
      printf(&quot;load dll&quot;);
      HMODULE lockDll = LoadLibrary(_T(&quot;dll_lock.dll&quot;));
-   
      if( lockDll )
      {
        Sleep(2000);

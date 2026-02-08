@@ -17,11 +17,6 @@
 <script src="/journal/js/jquery-1.12.4.js"></script>
 <script src="/journal/js/jquery-ui.js"></script>
 <script src="/journal/js/copy_clipboard.js"></script>
-<script>
-var quick_search_posts = [ 
- ]; 
-</script>
-<script src="/journal/js/quick_search.js"></script>
 <script src="/journal/js/list.js"></script>
 <link rel="icon" href="/journal/img/favicon.ico"/>
 </head>
@@ -44,13 +39,9 @@ role="navigation" aria-label="main navigation">
 <ul style="list-style: none;">
 
 <li><small><a href="2010-06.html#transformacao">Transformação</a></small></li>
-
 <li><small><a href="2010-06.html#const_e_volatile">Const e Volatile</a></small></li>
 <li><small><a href="2010-06.html#o_golpista_do_ano">O Golpista do Ano (Glenn Ficarra, John Requa, 2009)</a></small></li>
-
-<li><small><a href="2010-06.html#almas_a_venda">Almas à Venda (Sophie Barthes, 2009)</a></small></li>
-</ul>
-
+<li><small><a href="2010-06.html#almas_a_venda">Almas à Venda (Sophie Barthes, 2009)</a></small></li></ul>
 
 <span id="transformacao" title="Transformação"/></span>
 <section id="section_transformacao">
@@ -70,12 +61,10 @@ role="navigation" aria-label="main navigation">
 <p>Padrão C (ISO/IEC 9899:1990)</p>
 
 <pre>
-   
    6.5.3 type-qualifier
     const
     volatile
    Padrão C++ (ISO/IEC 14882:1998)
-   
    cv-qualifier
     const
     volatile
@@ -117,17 +106,13 @@ role="navigation" aria-label="main navigation">
    {
        const float Pi = 3.14;
    }
-   
    //...
-   
    int func1(int x)
    {
        float calc = x * Math::Pi;
        return calc;
    }
-   
    //...
-   
    int func2(int y)
    {
        const size_t PathSize = MAX_PATH * 2;
@@ -155,7 +140,6 @@ role="navigation" aria-label="main navigation">
 <p>É possível que exista uma variável que não pode ser modificada pelo seu programa, mas é modificada pelo sistema, de forma que ela é uma mutante!</p>
 
 <pre>
-   
    /// endereça o relógio do sistema, atualizado a cada 1/100 milissegundos
    const volatile int* g_systemClock = (const volatile int*) 0x7689B9D4;
 </pre>
@@ -164,6 +148,7 @@ role="navigation" aria-label="main navigation">
 <p>A definição de *g_systemClock é de uma memória que não pode ser alterada; só que ela é, pelo sistema. Então a variável também é volatile. No entanto, independente de ser const ou volatile, o tipo nunca será **alterado**, apenas **qualificado**. São duas coisas diferentes na linguagem.</p>
 
 </section><hr/>
+
 
 <span id="o_golpista_do_ano" title="O Golpista do Ano (Glenn Ficarra, John Requa, 2009)"/></span>
 <section id="section_o_golpista_do_ano">

@@ -17,11 +17,6 @@
 <script src="/blog/js/jquery-1.12.4.js"></script>
 <script src="/blog/js/jquery-ui.js"></script>
 <script src="/blog/js/copy_clipboard.js"></script>
-<script>
-var quick_search_posts = [ 
- ]; 
-</script>
-<script src="/blog/js/quick_search.js"></script>
 <script src="/blog/js/list.js"></script>
 <link rel="icon" href="/blog/img/favicon.ico"/>
 </head>
@@ -58,7 +53,6 @@ role="navigation" aria-label="main navigation">
      else
        return 1;
    }
-   
    int main()
    {
      return factorial(1000);
@@ -69,10 +63,8 @@ role="navigation" aria-label="main navigation">
 <pre>
    &gt;cl /Zi recursive-factorial1.c
    &gt;cdb recursive-factorial1.exe
-   
    Microsoft (R) Windows Debugger Version 6.8.0004.0 X86
    Copyright (c) Microsoft Corporation. All rights reserved.
-   
    CommandLine: recursive-factorial1.exe
    Symbol search path is: SRV*C:\Symbols*\\symbolserver\OSSYMBOLS
    Executable search path is:
@@ -175,43 +167,36 @@ role="navigation" aria-label="main navigation">
    (gdb) step
    4                       return factorial(n - 1) * n;
    (gdb)
-   
    Breakpoint 1, factorial (n=999) at recursive-factorial1.c:3
    3               if (n &gt; 1)
    (gdb)
    4                       return factorial(n - 1) * n;
    (gdb)
-   
    Breakpoint 1, factorial (n=998) at recursive-factorial1.c:3
    3               if (n &gt; 1)
    (gdb)
    4                       return factorial(n - 1) * n;
    (gdb)
-   
    Breakpoint 1, factorial (n=997) at recursive-factorial1.c:3
    3               if (n &gt; 1)
    (gdb)
    4                       return factorial(n - 1) * n;
    (gdb)
-   
    Breakpoint 1, factorial (n=996) at recursive-factorial1.c:3
    3               if (n &gt; 1)
    (gdb)
    4                       return factorial(n - 1) * n;
    (gdb)
-   
    Breakpoint 1, factorial (n=995) at recursive-factorial1.c:3
    3               if (n &gt; 1)
    (gdb)
    4                       return factorial(n - 1) * n;
    (gdb)
-   
    Breakpoint 1, factorial (n=994) at recursive-factorial1.c:3
    3               if (n &gt; 1)
    (gdb)
    4                       return factorial(n - 1) * n;
    (gdb)
-   
    Breakpoint 1, factorial (n=993) at recursive-factorial1.c:3
    3               if (n &gt; 1)
    (gdb)
@@ -231,11 +216,12 @@ role="navigation" aria-label="main navigation">
 <p>Isso acontece porque o compilador é obrigado a montar um novo stack frame para cada chamada da mesma função, já que os valores locais precisam manter-se intactos até o retorno recursivo da função. Porém, existe uma otimização chamada de tail recursion, que ocorre se, e somente se (de acordo com o livro):</p>
 
 <ul><li>A chamada recursiva é a última instrução que será executada no corpo da função.</li>
+
 <li>O valor de retorno da chamada não é parte de uma expressão.</li></ul>
+
 <p>Note que ser a última instrução não implica em ser a última linha da função, o importante é que seja a última linha executada. No nosso exemplo, isso já é fato, só que usamos o retorno em uma expressão.</p>
 
 <pre>
-   
    return factorial(n - 1) * n;
    // o retorno da chamada recursiva 
    // é parte de uma expressão
@@ -254,7 +240,6 @@ role="navigation" aria-label="main navigation">
      else
        return factorial(n - 1, n * a);
    }
-   
    int main()
    {
      return factorial(1000, 1);
@@ -267,7 +252,6 @@ role="navigation" aria-label="main navigation">
 <pre>
    &gt;cl /Zi /Og recursive-factorial2.c
    &gt;cdb recursive-factorial2.exe
-   
    ...
    bp factorial
    g
@@ -357,17 +341,14 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    $ gcc -g -foptimize-sibling-calls  recursive-factorial2.c
-   
    $ gdb a.exe
    ...
    (gdb) break factorial
    ...
    (gdb) run
-   
    ...
    Breakpoint 1, factorial (n=1000, a=0) at recursive-factorial2.c:3
    3               if (n &lt; 0)
-   
    (gdb) step
    5               else if (n == 0)
    (gdb)
@@ -383,7 +364,6 @@ role="navigation" aria-label="main navigation">
    factorial (n=999, a=0) at recursive-factorial2.c:2
    2       {
    (gdb)
-   
    Breakpoint 1, factorial (n=999, a=0) at recursive-factorial2.c:3
    3               if (n &lt; 0)
    (gdb)
@@ -401,7 +381,6 @@ role="navigation" aria-label="main navigation">
    factorial (n=998, a=0) at recursive-factorial2.c:2
    2       {
    (gdb)
-   
    Breakpoint 1, factorial (n=998, a=0) at recursive-factorial2.c:3
    3               if (n &lt; 0)
    (gdb)
@@ -419,7 +398,6 @@ role="navigation" aria-label="main navigation">
    factorial (n=997, a=0) at recursive-factorial2.c:2
    2       {
    (gdb)
-   
    Breakpoint 1, factorial (n=997, a=0) at recursive-factorial2.c:3
    3               if (n &lt; 0)
    (gdb)
@@ -437,7 +415,6 @@ role="navigation" aria-label="main navigation">
    factorial (n=996, a=0) at recursive-factorial2.c:2
    2       {
    (gdb)
-   
    Breakpoint 1, factorial (n=996, a=0) at recursive-factorial2.c:3
    3               if (n &lt; 0)
    (gdb)
@@ -464,7 +441,6 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    #include &lt;stdio.h&gt;
-   
    int factorial(int n, int a)
    {
        if (n &lt; 0)
@@ -476,7 +452,6 @@ role="navigation" aria-label="main navigation">
        else
            return factorial(n - 1, n * a);
    }
-   
    int main(int argc, char* argv[])
    {
        if( argc == 2 )
@@ -493,7 +468,6 @@ role="navigation" aria-label="main navigation">
        }
    }
 </pre>
-
 </section>
 
 <span style="float: left;">

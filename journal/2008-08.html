@@ -17,11 +17,6 @@
 <script src="/journal/js/jquery-1.12.4.js"></script>
 <script src="/journal/js/jquery-ui.js"></script>
 <script src="/journal/js/copy_clipboard.js"></script>
-<script>
-var quick_search_posts = [ 
- ]; 
-</script>
-<script src="/journal/js/quick_search.js"></script>
 <script src="/journal/js/list.js"></script>
 <link rel="icon" href="/journal/img/favicon.ico"/>
 </head>
@@ -45,22 +40,13 @@ role="navigation" aria-label="main navigation">
 
 <li><small><a href="2008-08.html#antidebugging_using_the_debugport">Antidebugging using the DebugPort</a></small></li>
 <li><small><a href="2008-08.html#perdao">Perdão</a></small></li>
-
 <li><small><a href="2008-08.html#antidebugging_during_the_process_attach">Antidebugging during the process attach</a></small></li>
-
 <li><small><a href="2008-08.html#aprendizado_em_kernel_mode">Aprendizado em kernel mode</a></small></li>
-
 <li><small><a href="2008-08.html#guia_para_iniciantes_no_driverentry">Guia para iniciantes no DriverEntry</a></small></li>
-
 <li><small><a href="2008-08.html#quando_o_navegador_nao_quer_largar_um_arquivo">Quando o navegador não quer largar um arquivo</a></small></li>
-
 <li><small><a href="2008-08.html#duas_pequenas_dicas_para_programar_no_caos">Duas pequenas dicas para programar no caos</a></small></li>
-
 <li><small><a href="2008-08.html#os_processosfantasma">Os processos-fantasma</a></small></li>
-
-<li><small><a href="2008-08.html#processleaker">ProcessLeaker</a></small></li>
-</ul>
-
+<li><small><a href="2008-08.html#processleaker">ProcessLeaker</a></small></li></ul>
 
 <span id="antidebugging_using_the_debugport" title="Antidebugging using the DebugPort"/></span>
 <section id="section_antidebugging_using_the_debugport">
@@ -199,6 +185,7 @@ int main(int argc, char* argv[])
 
 </section><hr/>
 
+
 <span id="perdao" title="Perdão"/></span>
 <section id="section_perdao">
 <p class="title"><a href="2008-08.html#perdao">#</a> Perdão</p>
@@ -278,7 +265,6 @@ int main()
 <pre>
    cl /c antiattach.cpp
    link antiattach.obj user32.lib
-   
    antiattach.exe
    Try to attach, if you can...
 </pre>
@@ -425,7 +411,6 @@ BYTE jmpToAntiAttachAbort[] =
    windbg -pn firefox.exe
    Microsoft (R) Windows Debugger Version 6.8.0004.0 X86
    Copyright (c) Microsoft Corporation. All rights reserved.
-   
    *** wait with pending attach
    Symbol search path is: SRV*C:\Symbols*http://msdl.microsoft.com/download/symbols;K:\Docs\Projects
    Executable search path is:
@@ -511,15 +496,12 @@ BYTE jmpToAntiAttachAbort[] =
    PROCESS 815f0da0  SessionId: 0  Cid: 0694    Peb: 7ffd8000  ParentCid: 0100
        DirBase: 0d6e9000  ObjectTable: 00000000  HandleCount:   0.
        Image: explorer.exe
-   
    PROCESS 8164bda0  SessionId: 0  Cid: 03b0    Peb: 7ffdf000  ParentCid: 0100
        DirBase: 02673000  ObjectTable: 00000000  HandleCount:   0.
        Image: explorer.exe
-   
    PROCESS 815f7d50  SessionId: 0  Cid: 020c    Peb: 7ffd9000  ParentCid: 0100
        DirBase: 0bc7f000  ObjectTable: 00000000  HandleCount:   0.
        Image: explorer.exe
-   
    PROCESS 8164c698  SessionId: 0  Cid: 0794    Peb: 7ffde000  ParentCid: 0100
        DirBase: 0cb08000  ObjectTable: e1a40f20  HandleCount: 279.
        Image: explorer.exe
@@ -552,66 +534,46 @@ BYTE jmpToAntiAttachAbort[] =
    PROCESS 817cc830  SessionId: none  Cid: 0004    Peb: 00000000  ParentCid: 0000
        DirBase: 00039000  ObjectTable: e1000cc0  HandleCount: 286.
        Image: System
-   
    Handle table at e1002000 with 286 Entries in use
    0004: Object: 817cc830  GrantedAccess: 001f0fff
-   
    0298: Object: 8169a958  GrantedAccess: 001f03ff
-   
    0308: Object: 8156c880  GrantedAccess: 00000438
-   
    067c: Object: 816744e8  GrantedAccess: 001f03ff
-   
    processor number 0, process 81589020
    Searching for handles of type Process
    PROCESS 81589020  SessionId: none  Cid: 016c    Peb: 7ffd7000  ParentCid: 0004
        DirBase: 06978000  ObjectTable: e130d688  HandleCount:  21.
        Image: smss.exe
-   
    Handle table at e12a5000 with 21 Entries in use
    0038: Object: 81561128  GrantedAccess: 001f0fff
-   
    003c: Object: 81561128  GrantedAccess: 00000400
-   
    0050: Object: 815b2128  GrantedAccess: 001f0fff
-   
    0054: Object: 81668020  GrantedAccess: 00000400
-   
    processor number 0, process 81561128
    Searching for handles of type Process
    PROCESS 81561128  SessionId: 0  Cid: 0234    Peb: 7ffde000  ParentCid: 016c
        DirBase: 0742d000  ObjectTable: e13e0418  HandleCount: 342.
        Image: csrss.exe
-   
    Handle table at e14f3000 with 342 Entries in use
    0014: Object: 815b2128  GrantedAccess: 001f0fff
-   
    00ec: Object: 8154e880  GrantedAccess: 001f0fff
-   
    0100: Object: 8156c880  GrantedAccess: 001f0fff
-   
    0130: Object: 815dc798  GrantedAccess: 001f0fff
-   
    processor number 0, process 815b2128
    Searching for handles of type Process
    PROCESS 815b2128  SessionId: 0  Cid: 024c    Peb: 7ffde000  ParentCid: 016c
        DirBase: 075b2000  ObjectTable: e13d5790  HandleCount: 448.
        Image: winlogon.exe
-   
    Handle table at e102b000 with 448 Entries in use
    018c: Object: 8154e880  GrantedAccess: 001f0fff
-   
    019c: Object: 8156c880  GrantedAccess: 001f0fff
-   
    processor number 0, process 8154e880
    Searching for handles of type Process
    PROCESS 8154e880  SessionId: 0  Cid: 0290    Peb: 7ffda000  ParentCid: 024c
        DirBase: 07908000  ObjectTable: e15fea78  HandleCount: 261.
        Image: services.exe
-   
    Handle table at e15cf000 with 261 Entries in use
    029c: Object: 81668020  GrantedAccess: 001f0fff
-   
    0330: Object: 815dc798  GrantedAccess: 001f0fff
    ... continua por muuuuuuuito mais tempo
 </pre>
@@ -624,30 +586,18 @@ BYTE jmpToAntiAttachAbort[] =
    PROCESS 8169a958  SessionId: 0  Cid: 03f4    Peb: 7ffdb000  ParentCid: 0290
        DirBase: 08437000  ObjectTable: e156bc38  HandleCount: 1302.
        Image: svchost.exe
-   
    Handle table at e19fe000 with 1302 Entries in use
    0108: Object: 815b2128  GrantedAccess: 00000478
-   
    0128: Object: 815b2128  GrantedAccess: 00000478
-   
    012c: Object: 815b2128  GrantedAccess: 00100000
-   
    015c: Object: 815b2128  GrantedAccess: 0000047a
-   
    01f4: Object: 81615928  GrantedAccess: 00000478
-   
    02f0: Object: 815f7d50  GrantedAccess: 00100068
-   
    035c: Object: 8169a958  GrantedAccess: 001f0fff
-   
    0dbc: Object: 8156c880  GrantedAccess: 00100000
-   
    0f44: Object: 8169a958  GrantedAccess: 00000068
-   
    1020: Object: 815f0da0  GrantedAccess: 00100068
-   
    10dc: Object: 8169a958  GrantedAccess: 00100000
-   
    1118: Object: 815f42f0  GrantedAccess: 00100068
    ...
    processor number 0, process 8164c220
@@ -655,16 +605,11 @@ BYTE jmpToAntiAttachAbort[] =
    PROCESS 8164c220  SessionId: 0  Cid: 044c    Peb: 7ffdf000  ParentCid: 02a4
        DirBase: 0db16000  ObjectTable: e15c66b8  HandleCount:  12.
        Image: ProcessLeaker.exe
-   
    Handle table at e103a000 with 12 Entries in use
    0010: Object: 815f0da0  GrantedAccess: 00100000
-   
    001c: Object: 815f42f0  GrantedAccess: 00100000
-   
    0028: Object: 8164bda0  GrantedAccess: 00100000
-   
    002c: Object: 815f7d50  GrantedAccess: 00100000
-   
    0030: Object: 8164c698  GrantedAccess: 00100000
 </pre>
 <p>Se lembrarmos o ponteiro dos outros processos, podemos notar que ele está bloqueando todas as outras instâncias dos antigos explorer.exe, executados em outras sessões do usuário:</p>
@@ -673,15 +618,12 @@ BYTE jmpToAntiAttachAbort[] =
    PROCESS 815f0da0  SessionId: 0  Cid: 0694    Peb: 7ffd8000  ParentCid: 0100
        DirBase: 0d6e9000  ObjectTable: 00000000  HandleCount:   0.
        Image: explorer.exe
-   
    PROCESS 8164bda0  SessionId: 0  Cid: 03b0    Peb: 7ffdf000  ParentCid: 0100
        DirBase: 02673000  ObjectTable: 00000000  HandleCount:   0.
        Image: explorer.exe
-   
    PROCESS 815f7d50  SessionId: 0  Cid: 020c    Peb: 7ffd9000  ParentCid: 0100
        DirBase: 0bc7f000  ObjectTable: 00000000  HandleCount:   0.
        Image: explorer.exe
-   
    PROCESS 8164c698  SessionId: 0  Cid: 0794    Peb: 7ffde000  ParentCid: 0100
        DirBase: 0cb08000  ObjectTable: e1a40f20  HandleCount: 279.
        Image: explorer.exe

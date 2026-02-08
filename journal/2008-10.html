@@ -17,11 +17,6 @@
 <script src="/journal/js/jquery-1.12.4.js"></script>
 <script src="/journal/js/jquery-ui.js"></script>
 <script src="/journal/js/copy_clipboard.js"></script>
-<script>
-var quick_search_posts = [ 
- ]; 
-</script>
-<script src="/journal/js/quick_search.js"></script>
 <script src="/journal/js/list.js"></script>
 <link rel="icon" href="/journal/img/favicon.ico"/>
 </head>
@@ -44,18 +39,11 @@ role="navigation" aria-label="main navigation">
 <ul style="list-style: none;">
 
 <li><small><a href="2008-10.html#nao_manifesto">Não Manifesto</a></small></li>
-
 <li><small><a href="2008-10.html#o_que_acontece_com_um_programador_com_pressa">O que acontece com um programador com pressa</a></small></li>
-
 <li><small><a href="2008-10.html#impressoes_do_quinto_encontro_de_ccpp">Impressões do quinto encontro de CCPP</a></small></li>
-
 <li><small><a href="2008-10.html#como_usar_wtl_com_o_atl_do_ddk">Como usar WTL com o ATL do DDK</a></small></li>
-
 <li><small><a href="2008-10.html#a_alca_dentro_do_fio_gerou_um_bloqueio_da_morte">A Alça Dentro do Fio Gerou um Bloqueio da Morte</a></small></li>
-
-<li><small><a href="2008-10.html#como_funciona_o_psexec">Como funciona o PsExec</a></small></li>
-</ul>
-
+<li><small><a href="2008-10.html#como_funciona_o_psexec">Como funciona o PsExec</a></small></li></ul>
 
 <span id="nao_manifesto" title="Não Manifesto"/></span>
 <section id="section_nao_manifesto">
@@ -142,7 +130,6 @@ role="navigation" aria-label="main navigation">
 <p>No entanto, você verá o seguinte erro durante a compilação dos recursos:</p>
 
 <pre>
-   
    ------ Build started: Project: MTPad, Configuration: Debug Win32 ------
    Compiling resources...
    Microsoft (R) Windows (R) Resource Compiler Version 6.0.5724.0
@@ -157,37 +144,30 @@ role="navigation" aria-label="main navigation">
 <p>Para resolver esse problema, remova a inclusão do arquivo de manifesto no arquivo RC:</p>
 
 <pre>
-   
    2 TEXTINCLUDE DISCARDABLE
    BEGIN
        &quot;#include &quot;&quot;atlres.h&quot;&quot;\r\n&quot;
        &quot;\0&quot;
    END
-   
    3 TEXTINCLUDE DISCARDABLE
    BEGIN
        &quot;CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST &quot;&quot;res\\\\MTPad.exe.manifest&quot;&quot;\r\n&quot;
        &quot;\0&quot;
    END
-   
    #endif    // APSTUDIO_INVOKED
-   
    ...
-   
    #ifndef APSTUDIO_INVOKED
    /////////////////////////////////////////////////////////////////////////////
    //
    // Generated from the TEXTINCLUDE 3 resource.
    //
    CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST &quot;res\\MTPad.exe.manifest&quot;
-   
    /////////////////////////////////////////////////////////////////////////////
    #endif    // not APSTUDIO_INVOKED
 </pre>
 <p>Depois dessa alteração, deve ainda existir o seguinte erro de linquedição:</p>
 
 <pre>
-   
    ------ Build started: Project: MTPad, Configuration: Debug Win32 ------
    Compiling resources...
    Microsoft (R) Windows (R) Resource Compiler Version 6.0.5724.0
@@ -205,14 +185,13 @@ role="navigation" aria-label="main navigation">
 <p>Esse problema ocorre porque as funções de alocação e desalocação de memória da ATL estão em outra LIB que os exemplos da WTL desconhecem. Para resolver, basta incluir essa nova dependência:</p>
 
 <pre>
-   
    #pragma comment(lib, &quot;atlthunk.lib&quot;)
 </pre>
 <p>E pronto! Agora temos todo o poder das 500 milhões de classes da ATL aliadas à ilimitada flexibilidade das classes de janelas da WTL.</p>
 
 <h4>Para aprender a usar WTL</h4>
 
-<p>  * [Explicando a sopa de letrinhas da programação C/C++ para Windows: WTL]</p>
+<p>  * <a href="http://www.1bit.com.br/content.1bit/weblog/sopa_de_letrinhas_wtl">Explicando a sopa de letrinhas da programação C/C++ para Windows: WTL</a></p>
 
 <p>  * <a href="http://www.codeproject.com/KB/wtl/wtl4mfc1.aspx">WTL for MFC Programmers</a></p>
 
@@ -257,15 +236,12 @@ role="navigation" aria-label="main navigation">
 <p>Sabe-se que o PsExec consegue **executar um programa remotamente**, ou seja, de uma máquina para outra, outra essa que chamaremos de **máquina-alvo**. O programa a ser executado geralmente deve estar disponível na própria máquina-alvo (condição ideal). Além da simples execução, para aplicativos console ele permite ainda a interação como se estivéssemos executando o programa remoto em nossa própria máquina local. Ele consegue isso redirecionando sua entrada e saída, o que o torna, como nos descreve o próprio autor, um "_telnet light_":</p>
 
 <pre>
-   
    psexec \\maquina-alvo [-u admin-na-maquina-alvo] cmd.exe
 </pre>
 <p>Além desse comportamento já muito útil ainda existe um bônus que se trata de especificar um executável local que será **copiado remotamente** para a máquina-alvo e executado. **Esse é o comportamento que espero imitar**:</p>
 
 <pre>
-   
    psexec \\maquina-alvo [-c c:\tests\myprogram.exe] [-u admin-na-maquina-alvo]
-   
    PsExec v1.72 - Execute processes remotely Copyright (C) 2001-2006 Mark Russinovich
    Sysinternals - www.sysinternals.com
    Microsoft Windows XP [versão 5.1.2600]
@@ -292,23 +268,17 @@ role="navigation" aria-label="main navigation">
 <p>Nessa segunda fase, podemos refazer o comportamento esperado inúmeras vezes, coletando dados e pensando a partir dos dados obtidos. Para esse caso,  como quase todos que analiso, vou usar o nosso amigo [WinDbg]. Para isso, como tenho sempre minhas ferramentas disponíveis no ambiente onde trabalho, basta digitar "windbg" antes do comando anterior e **dar uma olhada em algumas APIs-chave**, como a criação/abertura de arquivos e a criação de serviços. Note que é importante fazer isso em um **escopo limitado** para não perdermos horas de análise. Descobrir coisas como, por exemplo, que as ações do PsExec só começam a ser executadas após a digitação da senha do usuário, pode ajudar, pois daí só começo minha análise a partir desse ponto.</p>
 
 <pre>
-   
    windbg psexec \\maquina-alvo -u admin cmd.exe
-   
    PsExec v1.72 - Execute processes remotely
    Copyright (C) 2001-2006 Mark Russinovich
    Sysinternals - www.sysinternals.com
-   
    Password:
-   
    ntdll!DbgBreakPoint:
    7c90120e cc              int     3
    0:001&gt; bp kernel32!CreateFileW
    0:001&gt; bp advapi32!CreateServiceW
    0:001&gt; g
-   
    Connecting to maquina-alvo...
-   
    Breakpoint 0 hit
    eax=40150000 ebx=0011ee90 ecx=00000000 edx=00005078 esi=7c80932e edi=0011eeb0
    eip=7c8107f0 esp=0011ee70 ebp=0011eed0 iopl=0         nv up ei pl nz na pe nc
@@ -359,7 +329,6 @@ role="navigation" aria-label="main navigation">
 <p>Se analisarmos mais a fundo a pilha de chamadas conseguiremos dar um olhada nos parâmetros passados. Para isso existe a opção de mostrar os argumentos passados para as funções ao exibir a pilha:</p>
 
 <pre>
-   
    0:000&gt; kv 50
    ChildEBP RetAddr  Args to Child
    0011ee6c 77dc4b92 0011ee90 c0000000 00000003 kernel32!CreateFileW (FPO:
@@ -389,7 +358,6 @@ role="navigation" aria-label="main navigation">
 <p>Depois sugem várias paradas ao CreateFile, de maneira que a melhor forma de acompanhar isso é colocando um "_dumpezinho_" de memória na sua parada:</p>
 
 <pre>
-   
    0:000&gt; bp kernel32!CreateFileW &quot;du poi(@esp+4)&quot;
    breakpoint 0 redefined
    0:000&gt; g
@@ -424,16 +392,12 @@ role="navigation" aria-label="main navigation">
 <p>Muito bem! Chegamos a mais um ponto importante de nossa análise: o psexecsvc.exe é copiado através do compartilhamento **ADMIN$** remotamente (diretório c:\windows). Esse compartilhamento se torna acessível, uma vez que uma conexão autenticada já foi aberta. Se listarmos as conexões existentes, veremos o compartilhamento IPC$ aberto:</p>
 
 <pre>
-   
    &gt;net use
    Novas conexões serão lembradas.
-   
    Status       Local     Remoto                    Rede
-   
    -------------------------------------------------------------------------------
    OK                     \\10.2.0.40\IPC$          Rede Microsoft Windows
    Comando concluído com êxito.
-   
    &gt;
 </pre>
 <p>Também podemos notar que, enquanto estamos parados depurando o processo psexec.exe, temos acesso ao compartilhamento admin$:</p>
@@ -445,7 +409,6 @@ role="navigation" aria-label="main navigation">
 <p>Voltando à analise: temos direitos remotos nessa máquina. Dessa forma, fica fácil criar um serviço remotamente, que é o que faz o nosso amigo PsExec:</p>
 
 <pre>
-   
    0:000&gt; g
    Breakpoint 1 hit
    eax=00410870 ebx=00410870 ecx=00147a68 edx=00410844 esi=00410844 edi=00147a68
@@ -453,35 +416,26 @@ role="navigation" aria-label="main navigation">
    cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
    ADVAPI32!CreateServiceW:
    77fb7381 6a20            push    20h
-   
    0:000&gt; du poi(@esp+8)
    00410870  &quot;PSEXESVC&quot;
-   
    0:000&gt; du poi(@esp+8*4)
    001228dc  &quot;%SystemRoot%\PSEXESVC.EXE&quot;
 </pre>
 <p>Pronto. Isso era tudo que precisava para conseguir reproduzir seu comportamento. Agora posso fazer isso programando ou até manualmente:</p>
 
 <pre>
-   
    C:\Tests&gt;net use \\10.2.0.40\ipc$ /user:admin
    A senha ou o nome de usuário é inválido para \\10.2.0.40\ipc$.
-   
    Digite a senha para que 'admin' se conecte a '10.2.0.40':
    Comando concluído com êxito.
-   
    C:\Tests&gt;net use
    Novas conexões serão lembradas.
-   
    Status       Local     Remoto                    Rede
-   
    -------------------------------------------------------------------------------
    OK                     \\10.2.0.40\ipc$          Rede Microsoft Windows
    Comando concluído com êxito.
-   
    C:\Tests&gt;copy myprogram.exe \\10.2.0.40\admin$
    1 arquivo(s) copiado(s).
-   
    C:\Tests&gt;sc \\10.2.0.40 create MyProgram binPath= %systemroot%\myprogram.exe
    [SC] CreateService SUCCESS
 </pre>

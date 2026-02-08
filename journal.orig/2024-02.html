@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Jornal do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Jornal do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/journal/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/journal/index.xml" rel="feed" type="application/rss+xml" title="Jornal do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/journal/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/journal/css/jquery-ui.css"/>
+<script src="/journal/js/jquery-1.12.4.js"></script>
+<script src="/journal/js/jquery-ui.js"></script>
+<script src="/journal/js/copy_clipboard.js"></script>
+<script>
+var quick_search_posts = [ 
+ ]; 
+</script>
+<script src="/journal/js/quick_search.js"></script>
+<script src="/journal/js/list.js"></script>
+<link rel="icon" href="/journal/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="months.html">
+<div class="is-4"><b>Jornal do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<ul style="list-style: none;">
+
+<li><small><a href="2024-02.html#corrigindo_epub_encoding">Corrigindo EPUB encoding</a></small></li>
+<li><small><a href="2024-02.html#baby_driver">Baby Driver</a></small></li>
+<li><small><a href="2024-02.html#o_talentoso_ripley">O Talentoso Ripley</a></small></li>
+
+<li><small><a href="2024-02.html#kindle_11th_generation">Kindle (11th generation)</a></small></li>
+
+<li><small><a href="2024-02.html#filosofia_para_~~idiotas~~_corajosos_luiz_felipe_ponde">Filosofia para ~~idiotas~~ corajosos (Luiz Felipe Pondé)</a></small></li>
+<li><small><a href="2024-02.html#a_arte_de_escrever_arthur_schopenhauer">A Arte de Escrever (Arthur Schopenhauer)</a></small></li>
+<li><small><a href="2024-02.html#vinicola_castanho_jundiai">Vinícola Castanho (Jundiaí)</a></small></li>
+<li><small><a href="2024-02.html#mairena_reserve_bonarda_bodega_familia_blanco">Mairena Reserve Bonarda (Bodega Familia Blanco)</a></small></li>
+<li><small><a href="2024-02.html#cafe_da_feira">Café da Feira</a></small></li>
+
+<li><small><a href="2024-02.html#the_age_of_movies_selected_writings_of_pauline_kael">The Age of Movies - Selected Writings of Pauline Kael</a></small></li>
+
+<li><small><a href="2024-02.html#o_mundo_depois_de_nos">O Mundo Depois de Nós</a></small></li>
+
+<li><small><a href="2024-02.html#made_in_abyss">Made in Abyss</a></small></li>
+</ul>
+
+
+<span id="corrigindo_epub_encoding" title="Corrigindo EPUB encoding"/></span>
+<section id="section_corrigindo_epub_encoding">
+<p class="title"><a href="2024-02.html#corrigindo_epub_encoding">#</a> Corrigindo EPUB encoding</p>
+<span class="title-heading">Caloni, 2024-02-06 <a href="2024-01.html#merge_de_backups">&lt;</a><a href="computer.html">computer</a><a href="2024-03.html#comparando_logs_no_procmon">&gt;</a> <a href="2024-01.html#multiplas_leituras_a_respeito_do_self">&lt;</a><a href="books.html">books</a><a href="2024-02.html#kindle_11th_generation">&gt;</a><a href="2024-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_corrigindo_epub_encoding')"><sup>[copy]</sup></a></span>
+
+<p>Ontem baixei um livro do libgen.is em EPUB em inglês e ele estava legível mesmo com os sinais bizarros da língua inglesa, como asquelas aspas abre-e-fecha ou aquele travessão que era comum na época da datilografia como dois travessões unidos. No entanto, ao converter para Kindle com o kindlegen.exe tudo isso virou caracteres mais bizarros que um programador reconhece como UTF8 não-reconhecido pela máquina. Coisas como: €™, â€œ, â€™, â€œ.</p>
+
+<p>É possível ler, já que todo o resto permanece na confortável zona dos 127 bits da tabela ASCII. Contudo, inglês tem muito apóstrofe e travessão. Às vezes demora algum tempo para decodificar um apóstrofe seguido de um travessão ou vice-versa.</p>
+
+<p>Então resolvi dar uma olhada no arquivo EPUB original. Descompactei e abri o arquivo de introdução do livro, um XHTML dentro da subpasta OEBPS, onde geralmente fica o conteúdo (alguns, como eu em meu blogue, usam a subpasta EPUB, também válida). O arquivo é um XHTML, mas dentro parece HTML, começando assim:</p>
+
+<pre>
+&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; xml:lang=&quot;en&quot;&gt;
+&lt;head&gt;
+</pre>
+<p>No meu blogue cada arquivo XHTML gerado para conversão EPUB utiliza no início uma chave XML:</p>
+
+<pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+</pre>
+<p>Como eu sei que esses caracteres especiais funcionam no meu Kindle quando leio a conversão de EPUB para MOBI, apenas fiz o necessário: adicionei esta linha no começo de cada XHTML do EPUB original. O resto foi compactar novamente o arquivo EPUB e rodar o kindlegen.exe para este arquivo.</p>
+
+<p>Não é tão simples compactar um EPUB válido. É necessário zipar sem compactação o arquivo mimetype antes de colocar o resto. Em Windows não há um caminho fácil. Como eu gastei algum tempo no conversor do meu blogue, segue abaixo o código em Python para quem precisar:</p>
+
+<pre>
+import os
+import zipfile
+def zipdir(path, ziph):
+  # ziph is zipfile handle
+  paths = os.listdir(path)
+  for p in paths:
+    p = os.path.join(path, p) # Make the path relative
+    if os.path.isdir(p): # Recursive case
+      zipdir(p, ziph)
+    else:
+      ziph.write(p) # Write the file to the zipfile
+with zipfile.ZipFile('caloni.epub', 'w', compression=zipfile.ZIP_STORED) as zipf:
+  zipf.writestr(&quot;mimetype&quot;, &quot;application/epub+zip&quot;)
+with zipfile.ZipFile('caloni.epub', 'a', compression=zipfile.ZIP_DEFLATED, compresslevel=5) as zipf:
+  zipdir('EPUB', zipf)
+  zipdir('META-INF', zipf)
+</pre>
+<p>Após isso apenas um `kindlegen.exe ebook.epub` e tenho um MOBI com caracteres bizarros da língua inglesa funcionando. Para os curiosos de qual livro é este, apenas cito que ele estranhamente não é vendido na Amazon do Brazil. Ou seja, é daqueles ebooks que é mais fácil baixar do que comprar (o que invalida o preço da compra, que, afinal de contas, é para isso que gastamos nosso dinheiro, não?).</p>
+
+</section><hr/>
+
+<span id="baby_driver" title="Baby Driver"/></span>
+<section id="section_baby_driver">
+<p class="title"><a href="2024-02.html#baby_driver">#</a> Baby Driver</p>
+<span class="title-heading">Caloni, 2024-02-06 <a href="2024-01.html#red_crescer_e_uma_fera">&lt;</a><a href="cinema.html">cinema</a><a href="2024-02.html#o_talentoso_ripley">&gt;</a> <a href="2024-01.html#red_crescer_e_uma_fera">&lt;</a><a href="movies.html">movies</a><a href="2024-02.html#o_talentoso_ripley">&gt;</a><a href="2024-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_baby_driver')"><sup>[copy]</sup></a></span>
+
+<p>Assisti ao começo desse filme umas três vezes por causa da cena frenética de perseguição. Decidi um dia desses assistir até o final. No começo descubro que é do Edgar Wright, um roteirista e diretor que gosto muito apesar de ressalvas. Seu tom descolado de uma de suas primeiras obras, [Todo Mundo Quase Morto], gera o entretenimento despretensioso que espero encontrar na TV. Após passar por Hollywood com [As Aventuras de Tintim] e o absurdamente bom [Scott Pilgrim Contra o Mundo], sua volta às origens com [The World's End] é bem-humorada a ponto da vulnerável história passar ilesa. Wright gosta de projetos que defendem um ponto, por mais absurdo que seja, e seja levado às últimas consequências. Em um é sobre uma história de amor em meio à estranheza de um mundo populado por zumbis, no outro é cumprir a tradição de visitar vários pubs e encher a cara até o final da noite, mesmo com alienígenas querendo dominar o planeta. Um copo de chope gelado vale muito mais que invasão interplanetária no universo de Wright, se isso for o argumento do filme. E isso funciona justamente por não ser levado a sério.</p>
+
+<p>Já em Baby Driver existe um drama em cima da figura de um garoto bom de mixagem de som e melhor ainda em perseguições de alta velocidade. Atordoado com pesadelos do passado da morte da mãe em um acidente de carro e a figura paterna causadora de todo o mal, o filme constrói seu personagem como um super-herói -- ele tem até um guardião surdo e idoso para lhe dar conselhos da vida e poderia ser, como todo filme de super bem construído, um bom entretenimento e com textura. Mas a energia gasta nas edições frenéticas e milimetricamente coreografadas com o rapaz atrás de um volante ou de uma garçonete -- ambos em busca do sonho americano sobre quatro rodas -- é queimada na largada, sobrando para o final muitas cenas de ação sem sentido que trai seus personagens ou revela o quão superficial era todo aquele mundo dos criminosos justiceiros.</p>
+
+</section><hr/>
+
+<span id="o_talentoso_ripley" title="O Talentoso Ripley"/></span>
+<section id="section_o_talentoso_ripley">
+<p class="title"><a href="2024-02.html#o_talentoso_ripley">#</a> O Talentoso Ripley</p>
+<span class="title-heading">Caloni, 2024-02-06 <a href="2024-02.html#baby_driver">&lt;</a><a href="cinema.html">cinema</a><a href="2024-02.html#the_age_of_movies_selected_writings_of_pauline_kael">&gt;</a> <a href="2024-02.html#baby_driver">&lt;</a><a href="movies.html">movies</a><a href="2024-02.html#o_mundo_depois_de_nos">&gt;</a><a href="2024-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_o_talentoso_ripley')"><sup>[copy]</sup></a></span>
+
+<p>Estava nostálgico um dia desses e revi esse filme pelo qual nutria muita admiração do passado. Não foi em vão. Um roteiro absurdamente bem estruturado nos guia ao arco vulnerável de um garoto dos subúrbios de Nova Iorque para a terra prometida dos herdeiros de grandes fortunas, jovens e que sabem do que gostam: serem superficiais e se destacarem da multidão com prazeres efêmeros que custam um dinheiro pelo qual nunca suaram. Um arco que não está bem definido vai se delineando conforme vamos acompanhando as desventuras deste jovem interpretado por um carismático Matt Damon e que o desconstrói sem sequer percebermos. Há alguns exageros de direção que marca a época dos thriller e dramas adaptados de romances dos anos 90, mas seu núcleo narrativo continua intacto. Demorei alguns dias para conseguir me lembrar dos motivos que o levaram ao ato final, e dos porquês agora Ripley não sabe mais quem é, mas a boa notícia é que para ele isso pouco importa.</p>
+
+</section><hr/>
+
+
+<span id="kindle_11th_generation" title="Kindle (11th generation)"/></span>
+<section id="section_kindle_11th_generation">
+<p class="title"><a href="2024-02.html#kindle_11th_generation">#</a> Kindle (11th generation)</p>
+<span class="title-heading">Caloni, 2024-02-09 <a href="2024-02.html#corrigindo_epub_encoding">&lt;</a><a href="books.html">books</a><a href="2024-02.html#a_arte_de_escrever_arthur_schopenhauer">&gt;</a><a href="2024-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_kindle_11th_generation')"><sup>[copy]</sup></a></span>
+
+<p>Talvez mal acostumado com os botões laterais de versões antigas e depois de relutar por alguns anos, nessa Black Friday finalmente comprei uma versão touch na confiança dos reviews e da Amazon. Outro objetivo em atualizar, além de perder esse medo de sair de uma versão sem os revolucionários botões que infelizmente não serão mais lançados, também era usar uma versão com backlight e conseguir ler no meio da noite em luz bem baixa (casados sabem como é). Porém, mesmo convencido da compra, eu ainda temia como seria a nova virada de página. Hoje, meses depois de uso intensivo e depois de inclusive ter experimentado no processo uma outra marca de e-reader posso dizer com confiança: a equipe do Kindle é competente demais. Os caras evoluem mantendo a qualidade onde importa. A virada de página é maravilhosa mesmo na versão touch; rápida e indolor. Pode ser feita com qualquer uma das mãos, indo ou voltando. O backlight com modo dark mantém o mínimo de luz necessário em um quarto totalmente escuro para continuar lendo sem problemas. A única coisa que sentirei falta das versões antigas provavelmente é o histórico de navegação multinível (sem ele dependemos da formatação dos ebooks, mas paciência). De bônus, a mudança rápida de fonte, o sistema intuitivo de marcações, entre outras novas funcionalidades (como os cards de memorização de palavras) me levam a crer que dificilmente irei mudar de marca de e-reader. A essa altura posso me considerar e me sentir como usuários de produtos da Apple se sentem: reféns e felizes.</p>
+
+</section><hr/>
+
+
+<span id="filosofia_para_~~idiotas~~_corajosos_luiz_felipe_ponde" title="Filosofia para ~~idiotas~~ corajosos (Luiz Felipe Pondé)"/></span>
+<section id="section_filosofia_para_~~idiotas~~_corajosos_luiz_felipe_ponde">
+<p class="title"><a href="2024-02.html#filosofia_para_~~idiotas~~_corajosos_luiz_felipe_ponde">#</a> Filosofia para ~~idiotas~~ corajosos (Luiz Felipe Pondé)</p>
+<span class="title-heading">Caloni, 2024-02-15 <a href="2024-02.html#a_arte_de_escrever_arthur_schopenhauer">&lt;</a><a href="books.html">books</a><a href="2024-02.html#the_age_of_movies_selected_writings_of_pauline_kael">&gt;</a><a href="2024-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_filosofia_para_~~idiotas~~_corajosos_luiz_felipe_ponde')"><sup>[copy]</sup></a></span>
+
+<p>Estava folheando os livros disponíveis na Amazon Prime Reading e este estava saindo do catálogo. Peguei e li em dois dias. Ele é bem curtinho. Seu autor é o motivo pelo qual a filosofia no Brasil não é levada a sério. Ele percorre assuntos aleatórios pelos quais gostaria de dar sua opinião não-requisitada, parte para as conclusões e chama isso de filosofar. Sua fala tem por objetivo chocar por ofensas e por diminuição do outro lado. É bem óbvio sua estratégia. Já vi argumentação muito melhor no Telegram. O bom do livro é que ele acaba logo e você não precisa prestar atenção nas palavras do autor, praticando leitura dinâmica. Bônus: para os com viés de direita é uma massagem de ego. E de graça, por enquanto, no Amazon Prime Reading (esta não é uma propaganda, só se for ao contrário; olha o tipo de livro que deixam para ler "de graça").</p>
+
+</section><hr/>
+
+<span id="a_arte_de_escrever_arthur_schopenhauer" title="A Arte de Escrever (Arthur Schopenhauer)"/></span>
+<section id="section_a_arte_de_escrever_arthur_schopenhauer">
+<p class="title"><a href="2024-02.html#a_arte_de_escrever_arthur_schopenhauer">#</a> A Arte de Escrever (Arthur Schopenhauer)</p>
+<span class="title-heading">Caloni, 2024-02-15 <a href="2024-02.html#kindle_11th_generation">&lt;</a><a href="books.html">books</a><a href="2024-02.html#filosofia_para_~~idiotas~~_corajosos_luiz_felipe_ponde">&gt;</a><a href="2024-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_a_arte_de_escrever_arthur_schopenhauer')"><sup>[copy]</sup></a></span>
+
+<p>Da mesma série de "vamos ofender aquelas pessoas que eu não gosto" temos A Arte de Escrever, do filósofo Arthur Schopenhauer. É um compilado de artigos sobre o mesmo tema traduzidos pelo corajoso Pedro Süssekind, já que em um dos próprios textos que ele traduz neste livro está a opinião do autor sobre traduções. Spoiler: não é nada lisonjeador para o tradutor e muito menos para o leitor.</p>
+
+<p>Amargurado como estilo de vida e sedento por reconhecimento, Schopenhauer teve sua masterpiece ignorada por décadas a fio enquanto todos babavam ovo para Hegel, que não dizia coisa com coisa, mas fazia sucesso justamente por ninguém entender o que era dito.</p>
+
+<p>É apenas divertido ver o autor nesse estado de espírito tentando se elogiar diminuindo todos em volta, mas eventualmente algum insight pode ser encontrado. Como a questão dos escritores diletantes serem aqueles que vão ao fundo da alma dos assuntos que os interessam, enquanto os na época recém-chegados escritores profissionais, cuja recompensa em escrever era simplesmente dinheiro.</p>
+
+<p>Sim, foi lá que nasceram os primeiros blogueiros. E eles escreviam sobre qualquer assunto como meio para o seu fim (ganhar salário). Enquanto isso a turma do Schopenhauer e os que o antecederam ganhava pouco ou nada para compartilhar aqueles pensamentos profundos que foram trabalhados ao longo de diferentes momentos na vida e compilados como uma forma de agradecer pelo tempo de vida neste mundo.</p>
+
+<p>Outro insight maravilhoso é sobre como ler demais prejudica o nosso pensamento. O autor traça várias linhas em como isso nos vicia a pensar como os outros e nos inibe de tecermos nossos próprios pensamentos e ser quem realmente somos. Antes de ler eu já defendia que leitura demais pode deixar as pessoas burras. Agora tenho um filósofo dizendo a mesma coisa dois séculos atrás. Enquanto isso autores contemporâneos (para não manchar a palavra filósofo) como Pondé nos diz que o mal do século é que os jovens não se aprofundam nas leituras. Ambos estão certos, cada um à sua maneira.</p>
+
+<blockquote>Diante da imponente erudição de tais sabichões, às vezes digo para mim mesmo: Ah, essa pessoa deve ter pensado muito pouco para poder ter lido tanto! Até mesmo quando se relata, a respeito de Plínio, o Velho, que ele lia sem parar ou mandava que lessem para ele, seja à mesa, em viagens ou no banheiro, sinto a necessidade de me perguntar se o homem tinha tanta falta de pensamentos próprios que era preciso um afluxo contínuo de pensamentos alheios, como é preciso dar a quem sofre de tuberculose um caldo para manter sua vida.</blockquote>
+<blockquote>Assim como as atividades de ler e aprender, quando em excesso, são prejudiciais ao pensamento próprio, as de escrever e ensinar em demasia também desacostumam os homens da clareza e profundidade do saber e da compreensão, uma vez que não lhes sobra tempo para obtê-los.</blockquote>
+<blockquote>Na verdade, para o diletante, ao contrário, o assunto é o fim, e para o homem da área como tal, apenas um meio. No entanto, só se dedicará a um assunto com toda a seriedade alguém que esteja envolvido de modo imediato e que se ocupe dele com amor, con amore. É sempre de tais pessoas, e não dos assalariados, que vêm as grandes descobertas.</blockquote>
+<blockquote>Pois é apenas por meio da combinação ampla do que se sabe, por meio da comparação de cada verdade com todas as outras, que uma pessoa se apropria de seu próprio saber e o domina. Só é possível pensar com profundidade sobre o que se sabe, por isso se deve aprender algo; mas também só se sabe aquilo sobre o que se pensou com profundidade.</blockquote>
+<blockquote>O meio mais seguro para não possuir nenhum pensamento próprio é pegar um livro nas mãos a cada minuto livre.</blockquote>
+<blockquote>For ever reading, never to be read. [Sempre lendo para nunca serem lidos.] (Pope, Dunciad, III, 194)</blockquote>
+<blockquote>Às vezes é possível desvendar, com muito esforço e lentidão, por meio do próprio pensamento, uma verdade, uma idéia que poderia ser encontrada confortavelmente já pronta num livro. No entanto, ela é cem vezes mais valiosa quando obtida por meio do próprio pensamento. Pois só então ela é introduzida, como parte integrante, como membro vivo, em todo o sistema de nossos pensamentos, estabelecendo com eles uma conexão perfeita e firme, sendo entendida com todos os seus motivos e as suas conseqüências, adquirindo a cor, o tom, a marca de nosso modo de pensar.</blockquote>
+<blockquote>A pena está para o pensamento como a bengala está para o andar. Da mesma maneira que se caminha com mais leveza sem bengala, o pensamento mais pleno se dá sem a pena. Apenas quando uma pessoa começa a ficar velha ela gosta de usar bengala e pena.</blockquote>
+<blockquote>Sem se preocupar com isso, ele escreve como se recitasse um monólogo, quando deveria estabelecer um diálogo, e na verdade um diálogo no qual é preciso se expressar de modo ainda mais claro, já que não se ouvem as perguntas do interlocutor.</blockquote>
+<blockquote>Exatamente por esse motivo, o estilo não deve ser subjetivo, mas objetivo; e para tanto é necessário dispor as palavras de maneira que elas forcem o leitor, de imediato, a pensar exatamente o mesmo que o autor pensou.</blockquote>
+<blockquote>Quem escreve de maneira displicente confessa com isso, antes de tudo, que ele mesmo não atribui grande valor a seus pensamentos.</blockquote>
+<blockquote>Assim, quem lê recebe muita coisa para decorar, antes de obter algo para entender. É evidente que se trata de um péssimo procedimento e de um abuso da paciência do leitor.</blockquote>
+<blockquote>Com isso, produz-se a aparência de que o escritor possui mais profundidade e inteligência do que o leitor</blockquote>
+<blockquote>Na verdade, as orações subordinadas entre vírgulas são da mesma família das notas de rodapé e dos parênteses no meio do texto; as três coisas só se diferenciam, no fundo, pelo grau.</blockquote>
+<blockquote>[O mais importante é encontrar metáforas, pois é a única coisa que não se pode aprender de outros e é um sinal de uma natureza engenhosa. Para fazer metáforas é necessário reconhecer a igualdade.]</blockquote>
+<blockquote>Pois, quanto mais se lê, menor a quantidade de marcas deixadas no espírito pelo que foi lido: ele se torna como um quadro com muitas coisas escritas sobre as outras.</blockquote>
+<blockquote>Quanto às obras ruins, nunca se lerá pouco quando se trata delas; quanto às boas, nunca elas serão lidas com freqüência excessiva. Livros ruins são veneno intelectual, capaz de fazer definhar o espírito.</blockquote>
+<blockquote>Para ler o que é bom uma condição é não ler o que é ruim, pois a vida é curta, o tempo e a energia são limitados.</blockquote>
+</section><hr/>
+
+<span id="vinicola_castanho_jundiai" title="Vinícola Castanho (Jundiaí)"/></span>
+<section id="section_vinicola_castanho_jundiai">
+<p class="title"><a href="2024-02.html#vinicola_castanho_jundiai">#</a> Vinícola Castanho (Jundiaí)</p>
+<span class="title-heading">Caloni, 2024-02-15 <a href="2024-02.html#mairena_reserve_bonarda_bodega_familia_blanco">&lt;</a><a href="wine.html">wine</a><a href="2024-03.html#tortugas_e_garages">&gt;</a><a href="2024-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_vinicola_castanho_jundiai')"><sup>[copy]</sup></a></span>
+
+<p>Fazia tempo que não escrevia aqui sobre vinhos, não? Estou meio relapso nos assuntos do cotidiano, pensando em como (re)organizar meu blogue para abarcar tanto assuntos banais e aleatórios e textos mais rebuscados (WIP).</p>
+
+<p>Fui no festival da uva em Jundiaí e trouxe dois exemplares de vinhos da região, um tinto e outro branco, dessa vinícola que importa uvas e criou rótulos premiados (no Brasil).</p>
+
+<p>O branco foi o Luar Chardonnay, que é bem forte para esta uva. Adstringente e com pouco doce. Deve ter passagem em barrica de carvalho (o saite da produtora não está tão profissional assim a ponto de ter detalhes).</p>
+
+<p>O tinto foi um premiado, Poesia de Inverno, um "Gran Reserva" de acordo com o rótulo, o que aqui quer dizer 15 meses em carvalhos franceses de primeiro e segundo uso. Crescido no (risadas) "Terroir Jundiahy", acho que uma tentativa de chamar os gringos. É um bom Syrah, equilibrado. Charmoso, até. Eu não pagaria muito por ele, mas estava barato (pelo menos no festival).</p>
+
+</section><hr/>
+
+<span id="mairena_reserve_bonarda_bodega_familia_blanco" title="Mairena Reserve Bonarda (Bodega Familia Blanco)"/></span>
+<section id="section_mairena_reserve_bonarda_bodega_familia_blanco">
+<p class="title"><a href="2024-02.html#mairena_reserve_bonarda_bodega_familia_blanco">#</a> Mairena Reserve Bonarda (Bodega Familia Blanco)</p>
+<span class="title-heading">Caloni, 2024-02-15 <a href="2023-12.html#las_perdices">&lt;</a><a href="wine.html">wine</a><a href="2024-02.html#vinicola_castanho_jundiai">&gt;</a><a href="2024-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_mairena_reserve_bonarda_bodega_familia_blanco')"><sup>[copy]</sup></a></span>
+
+<p>Abri esta garrafa que trouxe de Mendoza, um dos primeiros do ano passado. Estava dando bobeira. É um 2015 e ele está muito, muito agradável. Este foi o único rótulo servido nos voos ao Qatar durante a Copa do Mundo de 2022 e eles tiveram que remover do rótulo a mulher usada como modelo, pois isso é proibido pelas leis locais. Mas com mulher ou sem mulher está boníssimo.</p>
+
+</section><hr/>
+
+<span id="cafe_da_feira" title="Café da Feira"/></span>
+<section id="section_cafe_da_feira">
+<p class="title"><a href="2024-02.html#cafe_da_feira">#</a> Café da Feira</p>
+<span class="title-heading">Caloni, 2024-02-15 <a href="2023-11.html#juan_valdez">&lt;</a><a href="coffee.html">coffee</a><a href="2024-03.html#cafe_qualita_em_graos">&gt;</a><a href="2024-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_cafe_da_feira')"><sup>[copy]</sup></a></span>
+
+<p>Agora tem café em grãos aqui na feira perto de casa. Tem até duas torras: forte e média. Optei pela média. Tem uma doçura bacana, é uma boa torra. Misturei com a minha própria torra dos grãos verdes de Poços e ficou um blend interessante, juntando um pouco do amendoado de um com a doçura de outro. Nada parecido com o cafezinho que brasileiro curte.</p>
+
+</section><hr/>
+
+
+<span id="the_age_of_movies_selected_writings_of_pauline_kael" title="The Age of Movies - Selected Writings of Pauline Kael"/></span>
+<section id="section_the_age_of_movies_selected_writings_of_pauline_kael">
+<p class="title"><a href="2024-02.html#the_age_of_movies_selected_writings_of_pauline_kael">#</a> The Age of Movies - Selected Writings of Pauline Kael</p>
+<span class="title-heading">Caloni, 2024-02-17 <a href="2024-02.html#filosofia_para_~~idiotas~~_corajosos_luiz_felipe_ponde">&lt;</a><a href="books.html">books</a><a href="2024-03.html#the_unwritten_laws_of_engineering">&gt;</a> <a href="2024-02.html#o_talentoso_ripley">&lt;</a><a href="cinema.html">cinema</a><a href="2024-02.html#o_mundo_depois_de_nos">&gt;</a><a href="2024-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_the_age_of_movies_selected_writings_of_pauline_kael')"><sup>[copy]</sup></a></span>
+
+<p>Este livro é um compilado de alguns dos melhores textos de Pauline Kael ao longo de sua carreira. Textos densos e completos. Li um ou dois antes de abandonar para depois. Eles são bem densos e com um vocabulário em inglês que eu ainda não alcancei.</p>
+
+<blockquote>The tastes of the mass audience belong to sociology, not aesthetics.</blockquote>
+<blockquote>The situation is not simple. Art derives from human experience, and the artist associates certain actions and motivations with certain cultural and vocational groups because that is how he has observed and experienced them. Would Jews be so fearful of the depiction of Jewish characters as ostentatious and vulgar, aggressive and secretive, if they did not recognize that these elements often converge in “Jewishness”? Would Negroes be so sensitive to the images of sullen bestiality and economic irresponsibility if they did not feel the impact? It is the germ of observed truth that pressure groups fear, a germ which infects only the individual but which the group treats as epidemic. The whole group becomes defensive under the guidance of pressuring leaders who inoculate them with false responsibilities. All these inoculations have produced a real democratic disease: a mass culture made up of stereotypes, models, whitewashes, smiles and lies. To allow the artist to treat his experience freely may be dangerous, but it is a step toward the restoration of individual responsibility. And how else can American indifference and cynicism be cured?</blockquote>
+<blockquote>Films do not suffer from the pressure to do something; they turn into drivel because of the pressures not to do almost everything. One may suspect that there is something fundamentally corrupt in a concept of democracy which places safety, harmony and conformity above truth.</blockquote>
+<blockquote>Fear of offending someone—anyone—may help to account for the death of American film comedy.</blockquote>
+</section><hr/>
+
+
+<span id="o_mundo_depois_de_nos" title="O Mundo Depois de Nós"/></span>
+<section id="section_o_mundo_depois_de_nos">
+<p class="title"><a href="2024-02.html#o_mundo_depois_de_nos">#</a> O Mundo Depois de Nós</p>
+<span class="title-heading">Caloni, 2024-02-27 <a href="2024-02.html#the_age_of_movies_selected_writings_of_pauline_kael">&lt;</a><a href="cinema.html">cinema</a><a href="2024-02.html#made_in_abyss">&gt;</a> <a href="2024-02.html#o_talentoso_ripley">&lt;</a><a href="movies.html">movies</a><a href="2024-03.html#a_lagoa_azul">&gt;</a><a href="2024-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_o_mundo_depois_de_nos')"><sup>[copy]</sup></a></span>
+
+<p>Este é o segundo filme do criador de [Mr. Robot], onde o primeiro foi um romance fofinho e confuso em torno de possibilidades. Dessa vez ele se volta para um EUA que acaba de se tornar apocalíptico e coloca em um AirBnB uma família de brancos e de negros para cozinhar e comentar farpas de americanos modernos da classe média alta. Neste caldeirão que se passa próximo da querida Nova Iorque do idealizador eventos estranhos se juntam à narrativa igualmente estranha, que tenta atordoar o espectador com sons e música de suspense, além de ângulos que dão enjôo ou que chamam a atenção para si mesmos. A edição tenta relacionar momentos tensos em uníssono sem perceber que está pagando mico por tentar parecer muito esperto ou desvendar o mundo com obviedades ditas pelos personagens. Quando eu adorei a série Mr. Robot apesar dela apresentar teorias da conspiração envolvendo poderosos capitalistas foi porque tudo se passava na cabeça de um esquizofrênico juvenil. Quando a mesma “análise” do mundo moderno assume ser algo adulto faz perder o charme. Me faz ter vergonha do seu criador.</p>
+
+</section><hr/>
+
+
+<span id="made_in_abyss" title="Made in Abyss"/></span>
+<section id="section_made_in_abyss">
+<p class="title"><a href="2024-02.html#made_in_abyss">#</a> Made in Abyss</p>
+<span class="title-heading">Caloni, 2024-02-28 <a href="2024-02.html#o_mundo_depois_de_nos">&lt;</a><a href="cinema.html">cinema</a><a href="2024-03.html#a_lagoa_azul">&gt;</a> <a href="2023-11.html#16_bit_sensation_watashi_to_minna_ga_tsukutta_bishōjo_game">&lt;</a><a href="animes.html">animes</a><a href="2024-05.html#ms_koizumi_loves_ramen_noodles">&gt;</a><a href="2024-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_made_in_abyss')"><sup>[copy]</sup></a></span>
+
+<p>A trilha sonora deste animê é elogiada porque ela é orgânica em meio à missão estilo video-game dos personagens de chegar ao fundo de um abismo e passar suas bem descritas fases encontrando seus bem conhecidos monstros. Não apenas a música, mas os sons produzidos estão prontos para serem embalados em um video-game, como de fato foi produzido. Dá sono a falta de compensação em investirmos tempo e atenção em personagens infanto-juvenis inconscientes de suas posições como personagens de um jogo com um fundo ligeiramente dramático.</p>
+
+</section><hr/>
+
+<span style="float: left;">
+ <a href="2024-01.html">[2024-01]</a>
+ <a href="2024-03.html">[2024-03]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

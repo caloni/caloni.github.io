@@ -17,11 +17,6 @@
 <script src="/journal/js/jquery-1.12.4.js"></script>
 <script src="/journal/js/jquery-ui.js"></script>
 <script src="/journal/js/copy_clipboard.js"></script>
-<script>
-var quick_search_posts = [ 
- ]; 
-</script>
-<script src="/journal/js/quick_search.js"></script>
 <script src="/journal/js/list.js"></script>
 <link rel="icon" href="/journal/img/favicon.ico"/>
 </head>
@@ -44,28 +39,16 @@ role="navigation" aria-label="main navigation">
 <ul style="list-style: none;">
 
 <li><small><a href="2007-07.html#introducao_ao_softice">Introdução ao SoftICE</a></small></li>
-
 <li><small><a href="2007-07.html#historia_do_windows_parte_20">História do Windows - parte 2.0</a></small></li>
-
 <li><small><a href="2007-07.html#google_shortcuts">Google shortcuts</a></small></li>
-
 <li><small><a href="2007-07.html#precedence_difference">Precedence difference</a></small></li>
-
 <li><small><a href="2007-07.html#desejo_insano_de_programar_no_kernel">Desejo insano de programar no kernel</a></small></li>
-
 <li><small><a href="2007-07.html#what_happens_inside_the_sizeof_operator">What happens inside the sizeof operator</a></small></li>
-
 <li><small><a href="2007-07.html#como_ser_um_melhor_desenvolvedor_nos_proximos_seis_meses">Como ser um melhor desenvolvedor nos próximos seis meses</a></small></li>
-
 <li><small><a href="2007-07.html#antidebug_interpretacao_baseada_em_excecao_parte_1">Antidebug: interpretação baseada em exceção (parte 1)</a></small></li>
-
 <li><small><a href="2007-07.html#c++0x_parcial_no_novo_gcc_43">C++0x parcial no novo GCC 4.3</a></small></li>
-
 <li><small><a href="2007-07.html#movendo_o_cursor_do_mouse_com_o_teclado">Movendo o cursor do mouse com o teclado</a></small></li>
-
-<li><small><a href="2007-07.html#c_and_c++_operators_precedence_table">C and C++ Operators Precedence Table</a></small></li>
-</ul>
-
+<li><small><a href="2007-07.html#c_and_c++_operators_precedence_table">C and C++ Operators Precedence Table</a></small></li></ul>
 
 <span id="introducao_ao_softice" title="Introdução ao SoftICE"/></span>
 <section id="section_introducao_ao_softice">
@@ -181,7 +164,6 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    #include &lt;stdio.h&gt;
-   
    int main()
    {
      int f1,f2,s=0;
@@ -257,7 +239,6 @@ role="navigation" aria-label="main navigation">
    // makes s equals 5, f1 equals 0
    // and returns the putchar call value.
    s = 5, f1 = 0, putchar(10)
-   
    // in both cases the returned value
    // is the f1 variable
    f1 = f1 : f1
@@ -267,7 +248,6 @@ role="navigation" aria-label="main navigation">
 <pre>
    // right; nothing to say
    f1 = 12;
-   
    // woops! what's that? putchar
    // returns a variable
    // but not a l-value
@@ -279,7 +259,6 @@ role="navigation" aria-label="main navigation">
    // Update (2026-01-25): I asked Copilot to fix the C code
    // and it generated this formated code that fixes the
    // program and removes all the fun.
-   
    #include &lt;stdio.h&gt;
    int main()
    {
@@ -298,7 +277,6 @@ role="navigation" aria-label="main navigation">
        return 0;
    }
 </pre>
-
 </section><hr/>
 
 
@@ -337,10 +315,8 @@ role="navigation" aria-label="main navigation">
       char field1[15];
       char field2[10];
    };
-   
    // error C2143: syntax error : missing ')' before '.'
    char buffer[ sizeof( S.field2 ) + 1 ];
-   
    // error C2070: '': illegal sizeof operand
    char buffer[ sizeof( S::field2 ) + 1 ]; 
 </pre>
@@ -408,7 +384,6 @@ role="navigation" aria-label="main navigation">
    void Function3();
    //...
    void FunctionN();
-   
    void ExecThread()
    {
      while( true )
@@ -416,20 +391,16 @@ role="navigation" aria-label="main navigation">
        ExecFunction(funcNumber);
      }
    }
-   
    int Functions[] = { 
      3, 4, 1, 2, 34, 66, 982
    };
-   
    int Start()
    {
      CreateThread(ExecThread);
-   
      for( 0 to size(Functions) )
      {
        ExecThreadToExecFunc(Function[i]);
      }
-   
      return 0;
    } 
 </pre>
@@ -442,7 +413,6 @@ role="navigation" aria-label="main navigation">
      // goes to except code
      return EXCEPTION_EXECUTE_HANDLER;
    }
-   
    void ExecThread()
    {
      while( true )
@@ -451,7 +421,6 @@ role="navigation" aria-label="main navigation">
        {
          // breakpoint exception
          __asm int 3
-   
          // it stops the debugger 
          // if we have an attached 
          // debugger in the process
@@ -462,7 +431,6 @@ role="navigation" aria-label="main navigation">
        {
          // does nothing
        }
-   
        Sleep(someTime);
      }
    } 
@@ -614,7 +582,6 @@ int main()
 <p>Podemos usá-la tanto no lugar da função assert quanto da diretiva #error. Mas seu uso mais interessante é como limite para a instanciação de emplates</p>
 
 <pre>
-   
    template&lt;typename T&gt;
    static_assert( sizeof(T) &gt;= sizeof(int), &quot;T is not big enough&quot; )
 </pre>
@@ -623,7 +590,6 @@ int main()
 <p>Depois de todos esse anos o pré-processador sofrerá um upgrade. O objetivo é ser compatível com o novo padrão da linguagem C, o C99. A maior novidade fica por conta do número variável de parâmetros para macros. A linha abaixo resume tudo:</p>
 
 <pre>
-   
    #define TRACE(format, ...) printf(format, __VA_ARGS__)
 </pre>
 <p>Ou seja, não será mais necessário usar o truque dos "parênteses duplos" em macros de log que formatam parâmetros.</p>
@@ -886,7 +852,6 @@ Exit=WIN+END
 <ul><li>The precedence table is not in the Standard; it is deduced from the grammar rules.</li>
 
 <li>There are rare expressions where we can't use the precedence table (e.g. ternary operator).</li></ul>
-
 
 </section><hr/>
 

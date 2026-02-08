@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script>
+var quick_search_posts = [ 
+ ]; 
+</script>
+<script src="/blog/js/quick_search.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="por_que_minha_dll_travou" title="Por que minha DLL travou?"/></span>
+<section id="section_por_que_minha_dll_travou">
+<p class="title">Por que minha DLL travou?</p>
+<span class="title-heading">Caloni, 2007-10-18 computer blog</span>
+
+<p>O resumo da ópera é que o código do Windows chamador do DllMain das DLLs carregadas/descarregadas utiliza um objeto de acesso exclusivo (leia "mutex") para sincronizar as chamadas. O resultado é que, em um processo, apenas um DllMain é chamado em um dado momento. Esse objeto é chamado de loader lock na documentação da Microsoft.</p>
+
+<img src="/blog/img/por_que_minha_dll_travou_loader_lock.gif"/>
+
+<p>Escrevi um código besta para exemplificar, mas representa o que já vi em muito código-fonte, e muitas vezes não consegui perceber o que estava acontecendo (tanto porque desconhecia a existência desse loader lock quanto o código estava obscuro demais pra entender mesmo).</p>
+
+<p>Update 2026-02-04. Perdi o código que cito acima, mas perguntei para o Chat-GPT para me dar um exemplo didático:</p>
+
+<pre>
+#include &lt;windows.h&gt;
+#include &lt;stdio.h&gt;
+DWORD WINAPI WorkerThread(LPVOID lpParam)
+{
+    // Simulate some work
+    Sleep(1000);
+    // Anything that might touch loader state is deadly here
+    // Even something innocent-looking like LoadLibrary
+    LoadLibraryA(&quot;user32.dll&quot;);
+    return 0;
+}
+BOOL WINAPI DllMain(HINSTANCE hinstDLL,
+                    DWORD fdwReason,
+                    LPVOID lpvReserved)
+{
+    switch (fdwReason)
+    {
+    case DLL_PROCESS_ATTACH:
+    {
+        HANDLE hThread;
+        DWORD threadId;
+        hThread = CreateThread(
+            NULL,
+            0,
+            WorkerThread,
+            NULL,
+            0,
+            &amp;threadId
+        );
+        if (hThread)
+        {
+            // 🚨 DEADLOCK HERE 🚨
+            // Loader lock is held, thread cannot safely execute
+            WaitForSingleObject(hThread, INFINITE);
+            CloseHandle(hThread);
+        }
+        break;
+    }
+    case DLL_PROCESS_DETACH:
+        break;
+    }
+    return TRUE;
+}
+</pre>
+<p>Uma simples vítima disso pode ser um pobre executável usando uma pobremente escrita DLL, assim como no código abaixo:</p>
+
+<pre>
+   int main()
+   {
+     printf(&quot;load dll&quot;);
+     HMODULE lockDll = LoadLibrary(_T(&quot;dll_lock.dll&quot;));
+   
+     if( lockDll )
+     {
+       Sleep(2000);
+       printf(&quot;free dll&quot;);
+       FreeLibrary(lockDll), lockDll  = NULL;
+       printf(&quot;done&quot;);
+     }
+   }
+</pre>
+<p>É importante sempre lembrar que a Microsoft acha feio, muito feio você ficar dependendo do DllMain pra fazer alguma coisa, mas admite que em alguns casos o único lugar onde podemos rodar código é no DllMain. Nesses casos -- e em alguns outros -- utilize uma comunicação paralela com sua thread travadona, por meio de um evento ou algo do gênero, antes que ela realmente saia. Com isso a thread pode ainda não ter saído, mas pode avisar a thread principal que o que ela precisava fazer já foi feito.</p>
+
+<p>Entre os clássicos e inestimáveis artigos de Matt Pietrek no Microsoft Journal há na <a href="http://bytepointer.com/resources/pietrek_debug_init_routines.htm">edição de setembro de 1999</a> um bem curto a respeito da inicialização de DLLs. Essa é a leitura mais sucinta, didática e esclarecedora sobre a questão.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="guia_basico_para_programadores_de_primeiro_breakpoint.html">[guia_basico_para_programadores_de_primeiro_breakpoint]</a>
+ <a href="guia_basico_para_programadores_de_primeiro_int_main.html">[guia_basico_para_programadores_de_primeiro_int_main]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

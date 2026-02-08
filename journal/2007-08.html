@@ -17,11 +17,6 @@
 <script src="/journal/js/jquery-1.12.4.js"></script>
 <script src="/journal/js/jquery-ui.js"></script>
 <script src="/journal/js/copy_clipboard.js"></script>
-<script>
-var quick_search_posts = [ 
- ]; 
-</script>
-<script src="/journal/js/quick_search.js"></script>
 <script src="/journal/js/list.js"></script>
 <link rel="icon" href="/journal/img/favicon.ico"/>
 </head>
@@ -45,30 +40,17 @@ role="navigation" aria-label="main navigation">
 
 <li><small><a href="2007-08.html#historia_da_linguagem_c_parte_1">História da Linguagem C: Parte 1</a></small></li>
 <li><small><a href="2007-08.html#dogmas">Dogmas</a></small></li>
-
 <li><small><a href="2007-08.html#historia_do_windows_parte_30">História do Windows - parte 3.0</a></small></li>
-
 <li><small><a href="2007-08.html#historia_do_windows_parte_351">História do Windows - parte 3.51</a></small></li>
-
 <li><small><a href="2007-08.html#antidebug_interpretacao_baseada_em_excecao_parte_2">Antidebug: interpretação baseada em exceção (parte 2)</a></small></li>
-
 <li><small><a href="2007-08.html#gina_x_credential_provider">GINA x Credential Provider</a></small></li>
-
 <li><small><a href="2007-08.html#historia_da_linguagem_c_parte_2">História da Linguagem C: Parte 2</a></small></li>
-
 <li><small><a href="2007-08.html#junctions">Junctions</a></small></li>
-
 <li><small><a href="2007-08.html#erro_de_compilacao_funcoes_muito_novas_na_win32_api">Erro de compilação: funções muito novas na Win32 API</a></small></li>
-
 <li><small><a href="2007-08.html#antidebug_ocupando_a_debugport">Antidebug: ocupando a DebugPort</a></small></li>
-
 <li><small><a href="2007-08.html#todolist">ToDoList</a></small></li>
-
 <li><small><a href="2007-08.html#hook_de_api_no_windbg">Hook de API no WinDbg</a></small></li>
-
-<li><small><a href="2007-08.html#barata_eletrica_e_o_hacker_de_antigamente">Barata Elétrica e o hacker de antigamente</a></small></li>
-</ul>
-
+<li><small><a href="2007-08.html#barata_eletrica_e_o_hacker_de_antigamente">Barata Elétrica e o hacker de antigamente</a></small></li></ul>
 
 <span id="historia_da_linguagem_c_parte_1" title="História da Linguagem C: Parte 1"/></span>
 <section id="section_historia_da_linguagem_c_parte_1">
@@ -111,6 +93,7 @@ role="navigation" aria-label="main navigation">
 
 </section><hr/>
 
+
 <span id="dogmas" title="Dogmas"/></span>
 <section id="section_dogmas">
 <p class="title"><a href="2007-08.html#dogmas">#</a> Dogmas</p>
@@ -145,7 +128,6 @@ role="navigation" aria-label="main navigation">
 <p>Antes de ser criada uma janela, é necessário registrar uma classe de janela no sistema, cuja relação com uma janela é mais ou menos a mesma entre classe e objeto no paradigma de orientação a objetos. Você primeiro define uma classe para sua janela e posteriormente pode criar inúmeras janelas a partir da mesma classe.</p>
 
 <pre>
-   
    WNDCLASS wndclass; //Dados sobre a classe de janela.
    wndclass.style = CS_HREDRAW | CS_VREDRAW;
    wndclass.lpfnWndProc = WndProc; // Função de janela (isso é importante!)
@@ -184,11 +166,8 @@ role="navigation" aria-label="main navigation">
      HELLOWIN.C -- Displays &quot;Hello, Windows&quot; in client area
      (c) Charles Petzold, 1990
      --------------------------------------------------------*/
-   
    #include &lt;windows.h&gt;
-   
    long FAR PASCAL WndProc (HWND, WORD, WORD, LONG) ;
-   
    int PASCAL WinMain (HANDLE hInstance, HANDLE hPrevInstance,
        LPSTR lpszCmdParam, int nCmdShow)
    {
@@ -196,7 +175,6 @@ role="navigation" aria-label="main navigation">
      HWND        hwnd ;
      MSG         msg ;
      WNDCLASS    wndclass ;
-   
      if (!hPrevInstance)
      {
        wndclass.style         = CS_HREDRAW | CS_VREDRAW ;
@@ -209,10 +187,8 @@ role="navigation" aria-label="main navigation">
        wndclass.hbrBackground = GetStockObject (WHITE_BRUSH) ;
        wndclass.lpszMenuName  = NULL ;
        wndclass.lpszClassName = szAppName ;
-   
        RegisterClass (&amp;wndclass) ;
      }
-   
      hwnd = CreateWindow (
        szAppName,           // window class name
        &quot;The Hello Program&quot;, // window caption
@@ -225,10 +201,8 @@ role="navigation" aria-label="main navigation">
        NULL,                // window menu handle
        hInstance,           // program instance handle
        NULL) ;              // creation parameters
-   
      ShowWindow (hwnd, nCmdShow) ;
      UpdateWindow (hwnd) ;
-   
      while (GetMessage (&amp;msg, NULL, 0, 0))
      {
        TranslateMessage (&amp;msg) ;
@@ -236,31 +210,24 @@ role="navigation" aria-label="main navigation">
      }
      return msg.wParam ;
    }
-   
    long FAR PASCAL WndProc (HWND hwnd, WORD message, WORD wParam, LONG lParam)
    {
      HDC hdc;
      PAINTSTRUCT ps;
      RECT rect;
-   
      switch (message)
      {
        case WM_PAINT:
          hdc = BeginPaint (hwnd, &amp;ps) ;
-   
          GetClientRect (hwnd, &amp;rect) ;
-   
          DrawText (hdc, &quot;Hello, Windows!&quot;, -1, &amp;rect,
              DT_SINGLELINE | DT_CENTER | DT_VCENTER) ;
-   
          EndPaint (hwnd, &amp;ps) ;
          return 0 ;
-   
        case WM_DESTROY:
          PostQuitMessage (0) ;
          return 0 ;
      }
-   
      return DefWindowProc (hwnd, message, wParam, lParam) ;
    } 
 </pre>
@@ -344,7 +311,6 @@ role="navigation" aria-label="main navigation">
    {
      BackToStart(restorePoint);
    }
-   
    int Start()
    {
      if( RestorePoint() == Defined )
@@ -355,7 +321,6 @@ role="navigation" aria-label="main navigation">
      {
        CallFunc();
      }
-   
      return 0;
    }
 </pre>
@@ -370,7 +335,6 @@ role="navigation" aria-label="main navigation">
    {
      return;
    }
-   
    void CallFunc()
    {
      Func();
@@ -382,7 +346,6 @@ role="navigation" aria-label="main navigation">
    Func:
    00411F73 prev_instruction ; ESP = 0012FD38 (four bytes stacked up)
    00411F74 ret ; *ESP = 00411FA3 (return address)
-   
    CallFunc:
    00411F9C prev_instruction
    00411F9E call Func (411424h) ; ESP = 0012FD3C
@@ -412,14 +375,12 @@ role="navigation" aria-label="main navigation">
    {
      longjmp(stack_state, 1);
    }
-   
    void CallFunc()
    {
      // setting returns 0
      // returning returns not 0
      if( setjmp(stack_state) == 0 )
        Func();
-   
      int x = 10;
    }
 </pre>
@@ -439,26 +400,20 @@ role="navigation" aria-label="main navigation">
      {
        longjmp(*env, 1);
      }
-   
      return ERROR_SUCCESS;
    }
-   
    /** And God said: 
      'int main!'
    */
    int main()
    {
      DWORD ret = ERROR_SUCCESS;
-   
      while( cin )
      {
        string line;
-   
        cout &lt;&lt; &quot;Type something\n&quot;;
        getline(cin, line);
-   
        jmp_buf env;
-   
        if( setjmp(env) == 0 )
        {
          LongJmp(&amp;env);
@@ -468,7 +423,6 @@ role="navigation" aria-label="main navigation">
          cout &lt;&lt; line &lt;&lt; endl;
        }
      }
-   
      return (int) ret;
    } 
 </pre>
@@ -480,7 +434,6 @@ role="navigation" aria-label="main navigation">
    #define ANTIDEBUG(code)
    {
      jmp_buf env;
-   
      if( setjmp(env) == 0 )
      {
        LongJmp(&amp;env);
@@ -490,23 +443,18 @@ role="navigation" aria-label="main navigation">
        code;
      }
    }
-   
    /** And God said: 'int main!'
    */
    int main()
    {
      DWORD ret = ERROR_SUCCESS;
-   
      while( cin )
      {
        string line;
-   
        cout &lt;&lt; &quot;Type something\n&quot;;
        getline(cin, line);
-   
        ANTIDEBUG(( cout &lt;&lt; line &lt;&lt; endl ));
      }
-   
      return (int) ret;
    } 
 </pre>
@@ -583,21 +531,16 @@ role="navigation" aria-label="main navigation">
       Character sequences of the form `%x' are interpreted and cause
       conversion of type 'x' of the next argument, other character
       sequences are printed verbatim.   Thus
-   
      printf(&quot;delta is %d*n&quot;, delta);
-   
      will convert the variable delta to decimal (%d) and print the
      string with the converted form of delta in place of %d.   The
      conversions %d-decimal, %o-octal, *s-string and %c-character
      are allowed.
-   
      This program calls upon the function `printn'. (see section
      9.1) */
-   
    printf(fmt, x1,x2,x3,x4,x5,x6,x7,x8,x9) {
      extrn printn, char, putchar;
      auto adx, x, c, i, j;
-   
      i= 0;  /* fmt index */
      adx = &amp;x1;  /* argument pointer */
    loop :
@@ -608,7 +551,6 @@ role="navigation" aria-label="main navigation">
      }
      x = *adx++;
      switch c = char(fmt,i++) {
-   
      case `d': /* decimal */
      case `o': /* octal */
        if(x &lt; O) {
@@ -617,11 +559,9 @@ role="navigation" aria-label="main navigation">
        }
        printn(x, c=='o'?8:1O);
        goto loop;
-   
      case 'c' : /* char */
        putchar(x);
        goto loop;
-   
      case 's': /* string */
        while(c=char(x, j++)) != '*e')
          putchar(c);
@@ -681,7 +621,6 @@ role="navigation" aria-label="main navigation">
 <pre>
    #include &lt;stdio.h&gt;
    #include &lt;windows.h&gt;
-   
    void main(void)
    {
      typedef enum _COMPUTER_NAME_FORMAT
@@ -696,13 +635,9 @@ role="navigation" aria-label="main navigation">
        ComputerNamePhysicalDnsFullyQualified,
        ComputerNameMax
      } COMPUTER_NAME_FORMAT;
-   
      COMPUTER_NAME_FORMAT CF = ComputerNameDnsDomain;
-   
      char szDomainName[MAX_COMPUTERNAME_LENGTH];
-   
      DWORD dwSize = sizeof(szDomainName);
-   
      //GetComputerName(szDomainName, &amp;dwSize);
      GetComputerNameEx(CF, szDomainName, &amp;dwSize);
    } 
@@ -710,7 +645,6 @@ role="navigation" aria-label="main navigation">
 <p>Tirando o fato que o retorno void não é mais um protótipo padrão da função main e que a definição da enumeração COMPUTER_NAME_FORMAT dentro da função main é no mínimo suspeita, podemos testar a compilação e verificar que existe exatamente um erro grave neste fonte:</p>
 
 <pre>
-   
    cl getcomputername.cpp
    getcomputername.cpp(26) : error C3861: 'GetComputerNameEx': identifier not found
 </pre>
@@ -726,7 +660,6 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    #if (_WIN32_WINNT &gt;= 0x0500)
-   
    typedef enum _COMPUTER_NAME_FORMAT {
        ComputerNameNetBIOS,
        ComputerNameDnsHostname,
@@ -738,7 +671,6 @@ role="navigation" aria-label="main navigation">
        ComputerNamePhysicalDnsFullyQualified,
        ComputerNameMax
    } COMPUTER_NAME_FORMAT ;
-   
    WINBASEAPI
    BOOL
    WINAPI
@@ -760,20 +692,16 @@ role="navigation" aria-label="main navigation">
    #else
    #define GetComputerNameEx  GetComputerNameExA
    #endif // !UNICODE
-   
    //...
-   
    #endif // _WIN32_WINNT
 </pre>
 <p>Ou seja, para que essa função seja visível a quem inclui o windows.h, é necessário antes definir que a versão mínima do Windows será a 0x0500, ou seja, Windows 2000 (vulgo Windows 5.0). Aliás, é como aparece na documentação. Um pouco de observação nesse caso seria o suficiente para resolver o caso, já que tanto abrindo o header quanto olhando no exemplo do MSDN nos levaria a crer que é necessário definir essa macro:</p>
 
 <pre>
    #define _WIN32_WINNT 0x0500
-   
    #include &lt;windows.h&gt;
    #include &lt;stdio.h&gt;
    #include &lt;tchar.h&gt;
-   
    void _tmain(void)
    {
      TCHAR buffer[256] = TEXT(&quot;&quot;);
@@ -787,7 +715,6 @@ role="navigation" aria-label="main navigation">
      TEXT(&quot;Physical DNS fully-qualified&quot;)};
      int cnf = 0;
      DWORD dwSize = sizeof(buffer);
-   
      for( cnf = 0; cnf &lt; ComputerNameMax; cnf++ )
      {
        if (!GetComputerNameEx( (COMPUTER_NAME_FORMAT)cnf, buffer, &amp;dwSize) )
@@ -797,7 +724,6 @@ role="navigation" aria-label="main navigation">
          return;
        }
          else _tprintf(TEXT(&quot;%s: %s\n&quot;), szDescription[cnf], buffer);
-   
        dwSize = sizeof(buffer);
        ZeroMemory(buffer, dwSize);
      }
@@ -836,26 +762,20 @@ role="navigation" aria-label="main navigation">
    void DebugLoop()
    {
      bool exitLoop = false;
-   
      while( ! exitLoop )
      {
        DEBUG_EVENT debugEvt;
-   
        WaitForDebugEvent(&amp;debugEvt, 
          INFINITE);
-   
        switch( debugEvt.dwDebugEventCode )
        {
          // This one...
-   
          // That one...
-   
          // Process is going out.
          case EXIT_PROCESS_DEBUG_EVENT:
            exitLoop = true;
            break;
        }
-   
        // Unfreeze the thread who sent the debug event.
        // Otherwise, it stays frozen forever!
        ContinueDebugEvent(debugEvt.dwProcessId, 
@@ -954,7 +874,6 @@ role="navigation" aria-label="main navigation">
 <p>O importante do Dependency Walker para o WinDbg é que com um editor é possível copiar todas as funções exibidas em sua interface para um editor, usar um pouco de regular expressions e criar uma batelada de breakpoints:</p>
 
 <pre>
-   
    ...
    bp user32!GetDC &quot;.echo GetDC; g&quot;
    bp user32!GetDesktopWindow &quot;.echo GetDesktopWindow; g&quot;

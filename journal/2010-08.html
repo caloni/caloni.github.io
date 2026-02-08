@@ -17,11 +17,6 @@
 <script src="/journal/js/jquery-1.12.4.js"></script>
 <script src="/journal/js/jquery-ui.js"></script>
 <script src="/journal/js/copy_clipboard.js"></script>
-<script>
-var quick_search_posts = [ 
- ]; 
-</script>
-<script src="/journal/js/quick_search.js"></script>
 <script src="/journal/js/list.js"></script>
 <link rel="icon" href="/journal/img/favicon.ico"/>
 </head>
@@ -44,30 +39,18 @@ role="navigation" aria-label="main navigation">
 <ul style="list-style: none;">
 
 <li><small><a href="2010-08.html#como_achar_o_codigofonte_sem_simbolos">Como achar o código-fonte sem símbolos</a></small></li>
-
 <li><small><a href="2010-08.html#novas_diferencas_no_bazaar">Novas diferenças no Bazaar</a></small></li>
-
 <li><small><a href="2010-08.html#a_origem">A Origem (Christopher Nolan, 2010)</a></small></li>
-
 <li><small><a href="2010-08.html#nao_e_minha_culpa">Não é minha culpa</a></small></li>
-
 <li><small><a href="2010-08.html#foto_dos_melhores_momentos">Foto dos melhores momentos</a></small></li>
 <li><small><a href="2010-08.html#superman_o_filme">Superman: O Filme (Richard Donner, 1978)</a></small></li>
-
 <li><small><a href="2010-08.html#os_mercenarios">Os Mercenários (Sylvester Stallone, 2010)</a></small></li>
-
 <li><small><a href="2010-08.html#evento_c++">Evento C++</a></small></li>
-
 <li><small><a href="2010-08.html#domicilio_conjugal">Domicilio Conjugal</a></small></li>
-
 <li><small><a href="2010-08.html#gerando_dumps_automatizados">Gerando dumps automatizados</a></small></li>
-
 <li><small><a href="2010-08.html#karate_kid_2010">Karate Kid</a></small></li>
 <li><small><a href="2010-08.html#um_lugar_chamado_notting_hill">Um Lugar Chamado Notting Hill</a></small></li>
-
-<li><small><a href="2010-08.html#como_ofuscar_strings">Como ofuscar strings</a></small></li>
-</ul>
-
+<li><small><a href="2010-08.html#como_ofuscar_strings">Como ofuscar strings</a></small></li></ul>
 
 <span id="como_achar_o_codigofonte_sem_simbolos" title="Como achar o código-fonte sem símbolos"/></span>
 <section id="section_como_achar_o_codigofonte_sem_simbolos">
@@ -117,10 +100,8 @@ role="navigation" aria-label="main navigation">
 <p>Analisar essa quantidade absurda de threads seria um saco. Além de inútil. Foi por isso deus inventou a função **!uniqstack**, que encontra automagicamente quais threads estão com a pilha duplicada.</p>
 
 <pre>
-   
    0:000&gt; !uniqstack
    Processing 1431 threads, please wait
-   
    .  0  Id: 4c8.30c Suspend: 1 Teb: 7ffde000 Unfrozen
          Start: Service+0xc60c (0040c60c)
          Priority: 0  Priority class: 32  Affinity: f
@@ -129,7 +110,6 @@ role="navigation" aria-label="main navigation">
    0012fa6c 7c2dd578 KERNEL32!ReadFile+0x181
    ...
    0012fff0 00000000 KERNEL32!BaseProcessStart+0x3d
-   
    .  1  Id: 4c8.4d8 Suspend: 1 Teb: 7ffdd000 Unfrozen
          Start: ADVAPI32!AccessCheckByTypeResultListAndAudit(...)
          Priority: 0  Priority class: 32  Affinity: f
@@ -138,14 +118,12 @@ role="navigation" aria-label="main navigation">
    ...
    00cf000c 007a0000 0x1366e0
    00cf000c 00000000 0x7a0000
-   
    .  2  Id: 4c8.580 Suspend: 1 Teb: 7ffdc000 Unfrozen
          Priority: 0  Priority class: 32  Affinity: f
    ChildEBP RetAddr
    010efe24 77d59815 NTDLL!ZwReplyWaitReceivePortEx+0xb
    ...
    010effec 00000000 KERNEL32!BaseThreadStart+0x52
-   
    .  3  Id: 4c8.adc Suspend: 1 Teb: 7ffd9000 Unfrozen
          Start: rtutils!TraceServerThread (778321fe)
          Priority: 0  Priority class: 32  Affinity: f
@@ -160,7 +138,6 @@ role="navigation" aria-label="main navigation">
    6665f0dc 7c59a0a2 NTDLL!ZwWaitForSingleObject+0xb
    ...
    6665ffec 00000000 KERNEL32!BaseThreadStart+0x52
-   
    Total threads: 1431
    Duplicate callstacks: 1092 (windbg thread #s follow):
    7, 9, 11, 12, 13, 14, 15, 17, 18, 20, 21, (...), 1428, 1429
@@ -208,7 +185,6 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    0:000&gt; ub 77d79970
-   
    rpcrt4!Invoke+0x20:
    77d79960 fd              std
    77d79961 f3a5            rep movs dword ptr es:[edi],dword ptr [esi]
@@ -238,13 +214,11 @@ role="navigation" aria-label="main navigation">
    00406084 8b4514          mov     eax,dword ptr [ebp+14h]
    00406087 66c7002f00      mov word ptr [eax],2Fh
    0040608c eb65            jmp     Service+0x60f3 (004060f3)
-   
    Service+0x608e:
    0040608e 56              push    esi
    0040608f 8b7508          mov     esi,dword ptr [ebp+8]
    00406092 837e5200        cmp     dword ptr [esi+52h],0
    00406096 7430            je      Service+0x60c8 (004060c8)
-   
    Service+0x6098:
    00406098 8d8538ffffff    lea     eax,[ebp-0C8h]
    0040609e 6830514100      push    offset Service+0x15130 (00415130)
@@ -260,7 +234,6 @@ role="navigation" aria-label="main navigation">
    004060be 8b4514          mov     eax,dword ptr [ebp+14h]
    004060c1 66c7000a40      mov     word ptr [eax],400Ah
    004060c6 eb2a            jmp     Service+0x60f2 (004060f2)
-   
    Service+0x60c8:
    004060c8 6804010000      push    104h
    004060cd 8d868c010000    lea     eax,[esi+18Ch]
@@ -273,10 +246,8 @@ role="navigation" aria-label="main navigation">
    004060e7 e892f2ffff      call    Service+0x537e (0040537e)
    004060ec 8b4d14          mov     ecx,dword ptr [ebp+14h]
    004060ef 668901          mov     word ptr [ecx],ax
-   
    Service+0x60f2:
    004060f2 5e              pop     esi
-   
    Service+0x60f3:
    004060f3 33c0            xor     eax,eax
    004060f5 c9              leave
@@ -333,7 +304,6 @@ STDMETHODIMP CService::Open(BYTE *fileName, COUNT keyNo, COUNT *pctReturn)
 <p>Para confirmar que não estamos sonhando, podemos dar uma olhada no parâmetro passado para a função Log antes do código retornar. A memória deverá conter uma string idêntica a do código-fonte.</p>
 
 <pre>
-   
    Service+0x6073:
    00406073 6a00            push    0
    00406075 6860514100      push    offset Service+0x15160 (00415160)
@@ -342,7 +312,6 @@ STDMETHODIMP CService::Open(BYTE *fileName, COUNT keyNo, COUNT *pctReturn)
    00406084 8b4514          mov     eax,dword ptr [ebp+14h]
    00406087 66c7002f00      mov     word ptr [eax],2Fh
    0040608c eb65            jmp     Service+0x60f3 (004060f3)
-   
    0:000&gt; da 00415160
    00415160  &quot;Error opening file before databa&quot;
    00415180  &quot;se to be initialized.&quot;
@@ -443,6 +412,7 @@ STDMETHODIMP CService::Open(BYTE *fileName, COUNT keyNo, COUNT *pctReturn)
 
 </section><hr/>
 
+
 <span id="superman_o_filme" title="Superman: O Filme (Richard Donner, 1978)"/></span>
 <section id="section_superman_o_filme">
 <p class="title"><a href="2010-08.html#superman_o_filme">#</a> Superman: O Filme (Richard Donner, 1978)</p>
@@ -507,7 +477,6 @@ STDMETHODIMP CService::Open(BYTE *fileName, COUNT keyNo, COUNT *pctReturn)
 <h4>1. NotMyFaultEither.exe.mdmp - Stack Trash</h4>
 
 <pre>
-   
    0:000&gt; kv
    ChildEBP RetAddr  Args to Child
    0012b200 7c90df3c 7c8025db 000000e8 00000000 ntdll!KiFastSystemCallRet
@@ -536,7 +505,6 @@ STDMETHODIMP CService::Open(BYTE *fileName, COUNT keyNo, COUNT *pctReturn)
 <h4>2. NotMyFaultEither.mdmp - Dead Lock</h4>
 
 <pre>
-   
    0:000&gt; kv
    ChildEBP RetAddr  Args to Child
    0012f900 7c90df3c 7c8025db 0000007c 00000000 ntdll!KiFastSystemCallRet
@@ -556,7 +524,6 @@ STDMETHODIMP CService::Open(BYTE *fileName, COUNT keyNo, COUNT *pctReturn)
    Handle 0000007c
      Type           Thread
    0:000&gt; ~* kv
-   
    .  0  Id: 5e4.39c Suspend: 0 Teb: 7ffdd000 Unfrozen
    ChildEBP RetAddr  Args to Child
    0012f900 7c90df3c 7c8025db 0000007c 00000000 ntdll!KiFastSystemCallRet
@@ -572,7 +539,6 @@ STDMETHODIMP CService::Open(BYTE *fileName, COUNT keyNo, COUNT *pctReturn)
    0012fb30 7e3799d8 0000800a 0012fbc8 7e375ba2 0x2d0036
    0012fb3c 7e375ba2 0000800a 002d0036 fffffffc user32!NotifyWinEvent+0xd
    0012fbc8 00000000 002d0036 004011b0 dcbaabcd user32!ButtonWndProcWorker+0x79b
-   
       1  Id: 5e4.6a4 Suspend: 0 Teb: 7ffdc000 Unfrozen
    ChildEBP RetAddr  Args to Child
    00b8ff10 7c90df3c 7c91b22b 00000080 00000000 ntdll!KiFastSystemCallRet
@@ -597,7 +563,6 @@ STDMETHODIMP CService::Open(BYTE *fileName, COUNT keyNo, COUNT *pctReturn)
 <h4>3. NotMyFaultEither_100808_172407.dmp - Access Violation</h4>
 
 <pre>
-   
    0:000&gt; kv
    ChildEBP RetAddr  Args to Child
    WARNING: Stack unwind information not available. Following frames may be wrong.
@@ -622,7 +587,6 @@ STDMETHODIMP CService::Open(BYTE *fileName, COUNT keyNo, COUNT *pctReturn)
 <h4>4. NotMyFaultEither_100808_175404.dmp - Exception not Handled</h4>
 
 <pre>
-   
    eax=00000000 ebx=00000111 ecx=7c91003d edx=00010000 esi=00330120 edi=7e374dfa
    eip=7c90120e esp=0012f9a0 ebp=00000001 iopl=0         nv up ei pl zr na pe nc
    cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
@@ -649,7 +613,7 @@ STDMETHODIMP CService::Open(BYTE *fileName, COUNT keyNo, COUNT *pctReturn)
 <span id="domicilio_conjugal" title="Domicilio Conjugal"/></span>
 <section id="section_domicilio_conjugal">
 <p class="title"><a href="2010-08.html#domicilio_conjugal">#</a> Domicilio Conjugal</p>
-<span class="title-heading">Caloni, 2010-08-17 <a href="2010-08.html#os_mercenarios">&lt;</a><a href="cinema.html">cinema</a><a href="2010-08.html#karate_kid_2010">&gt;</a> <a href="2010-08.html#os_mercenarios">&lt;</a><a href="movies.html">movies</a><a href="2010-08.html#karate_kid_2010">&gt;</a><a href="2010-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_domicilio_conjugal')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2010-08-17 <a href="2010-08.html#os_mercenarios">&lt;</a><a href="cinema.html">cinema</a><a href="2010-08.html#um_lugar_chamado_notting_hill">&gt;</a> <a href="2010-08.html#os_mercenarios">&lt;</a><a href="movies.html">movies</a><a href="2010-08.html#um_lugar_chamado_notting_hill">&gt;</a><a href="2010-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_domicilio_conjugal')"><sup>[copy]</sup></a></span>
 
 <p>Comédia romântica francesa datada de 70 e conduzida por François Truffaut. Nesse caso temos um casal vivendo sua vida em um condomínio de casas que mais lembra, nos minutos iniciais, um bom cortiço brasileiro. Mas aos poucos os detalhes culturais vão ganhando forma, não prejudicando a mensagem principal, que é contar a história de um casal como outro qualquer que passa por suas felicidades e tristezas, juntos ou separados.</p>
 
@@ -716,7 +680,6 @@ int main()
     WaitForSingleObject(crashThread, INFINITE);
 }
  
-</pre>
 <img src="/journal/img/gerando_dumps_automatizados_finddump.png"/>
 
 <p>Espero com isso aliviar a carga pesada de A.V.s que sempre aparece quando menos se espera. Cuidar de toneladas de código legado exige algumas pitadas de automatização nos lugares certos. Como já dizia meu primeiro chefe: se a mente não pensa...</p>
@@ -727,7 +690,7 @@ int main()
 <span id="karate_kid_2010" title="Karate Kid"/></span>
 <section id="section_karate_kid_2010">
 <p class="title"><a href="2010-08.html#karate_kid_2010">#</a> Karate Kid</p>
-<span class="title-heading">Caloni, 2010-08-27 <a href="2010-08.html#domicilio_conjugal">&lt;</a><a href="cinema.html">cinema</a><a href="2010-08.html#um_lugar_chamado_notting_hill">&gt;</a> <a href="2010-08.html#domicilio_conjugal">&lt;</a><a href="movies.html">movies</a><a href="2010-08.html#um_lugar_chamado_notting_hill">&gt;</a><a href="2010-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_karate_kid_2010')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2010-08-27 <a href="2010-08.html#um_lugar_chamado_notting_hill">&lt;</a><a href="cinema.html">cinema</a><a href="2010-09.html#enfim_viuva">&gt;</a> <a href="2010-08.html#um_lugar_chamado_notting_hill">&lt;</a><a href="movies.html">movies</a><a href="2010-09.html#enfim_viuva">&gt;</a><a href="2010-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_karate_kid_2010')"><sup>[copy]</sup></a></span>
 
 <p>Esse é praticamente um remake do original, só que em vez de caratê, como o nome supõe, a luta do filme é o kung-fu, onde o mestre é nada mais nada menos que Jackie Chan, o Sr. Han, que irá treinar Jaden Smith, o filho de Will, para se preparar para o torneio de Kung Fue se livrar das perseguições da escola.</p>
 
@@ -741,10 +704,11 @@ int main()
 
 </section><hr/>
 
+
 <span id="um_lugar_chamado_notting_hill" title="Um Lugar Chamado Notting Hill"/></span>
 <section id="section_um_lugar_chamado_notting_hill">
 <p class="title"><a href="2010-08.html#um_lugar_chamado_notting_hill">#</a> Um Lugar Chamado Notting Hill</p>
-<span class="title-heading">Caloni, 2010-08-27 <a href="2010-08.html#karate_kid_2010">&lt;</a><a href="cinema.html">cinema</a><a href="2010-09.html#enfim_viuva">&gt;</a> <a href="2010-08.html#karate_kid_2010">&lt;</a><a href="movies.html">movies</a><a href="2010-09.html#enfim_viuva">&gt;</a><a href="2010-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_um_lugar_chamado_notting_hill')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2010-08-27 <a href="2010-08.html#domicilio_conjugal">&lt;</a><a href="cinema.html">cinema</a><a href="2010-08.html#karate_kid_2010">&gt;</a> <a href="2010-08.html#domicilio_conjugal">&lt;</a><a href="movies.html">movies</a><a href="2010-08.html#karate_kid_2010">&gt;</a><a href="2010-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_um_lugar_chamado_notting_hill')"><sup>[copy]</sup></a></span>
 
 <p>Esta é uma história estilo conto de fadas, em que uma famosa atriz, inalcançável pela maioria dos mortais, acaba visitando um pequeno bairro de Londres (o Notting Hill do título) e conhece o dono de uma loja de livros de viagem (e é curioso que provavelmente ela deve ter viajado para muitos dos lugares descritos nos livros de suas estantes) e vivem um inusitado romance.</p>
 
@@ -787,18 +751,14 @@ int main()
 <pre>
    printf(&quot;struct ST_%s { byte key; size_t bufferSize; byte buffer[%d] }\n&quot;
      &quot; %s = { %d, %d, { &quot;;
-   
    for( ; ; ) printf(Cada byte ofuscado);
-   
    printtf(&quot; } };\n&quot;);
 </pre>
 <p>Pronto. Agora o usuário da string precisa abri-la usando uma macro esperta que irá chamar uma função esperta para desofuscar a string e entregar o ponteiro de buffer devidamente "casteado":</p>
 
 <pre>
    #include &quot;header-pos-processado.h&quot;
-   
    #define ABRE_VAR(var, type) (type) OpenVar( (GENERIC_STRUCT) var)
-   
    int main()
    {
      char* str = ABRE_VAR(MY_STR, char*);

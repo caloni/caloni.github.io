@@ -17,11 +17,6 @@
 <script src="/journal/js/jquery-1.12.4.js"></script>
 <script src="/journal/js/jquery-ui.js"></script>
 <script src="/journal/js/copy_clipboard.js"></script>
-<script>
-var quick_search_posts = [ 
- ]; 
-</script>
-<script src="/journal/js/quick_search.js"></script>
 <script src="/journal/js/list.js"></script>
 <link rel="icon" href="/journal/img/favicon.ico"/>
 </head>
@@ -44,10 +39,7 @@ role="navigation" aria-label="main navigation">
 <ul style="list-style: none;">
 
 <li><small><a href="2009-11.html#futuro">Futuro</a></small></li>
-
-<li><small><a href="2009-11.html#o_boot_no_windows_ntldr">O boot no Windows: NTLDR</a></small></li>
-</ul>
-
+<li><small><a href="2009-11.html#o_boot_no_windows_ntldr">O boot no Windows: NTLDR</a></small></li></ul>
 
 <span id="futuro" title="Futuro"/></span>
 <section id="section_futuro">
@@ -101,10 +93,8 @@ role="navigation" aria-label="main navigation">
 <p>A partir daí vários componentes do kernel serão carregados progressivamente. Só que a partir do momento que é chamada a rotina interna **KiInitializeKernel** o NTLDR não tem mais nada pra fazer: o kernel, em sua forma básica e primitiva, está carregado.</p>
 
 <pre>
-   
    windbg notepad
    $$&gt;a&lt;&lt;a href=&quot;http://www.caloni.com.br/carregando-dlls-arbitrarias-pelo-windbg-parte-2&quot;&gt;scripts\loadlibrary.txt&lt;/a&gt; ntoskrnl.exe
-   
    0:000&gt; lm m nt*
    start    end        module name
    00400000 00629000   ntoskrnl   (pdb symbols)          c:\tools\symbols\ntkrnlmp.pdb\46DFBE2D3E484140A0909F7519B1700A2\ntkrnlmp.pdb
@@ -124,7 +114,6 @@ role="navigation" aria-label="main navigation">
    0043afdb ntoskrnl!KiInitializeAbiosGdtEntry = &lt;no type information&gt;
    005dde01 ntoskrnl!KiInitializeMachineType = &lt;no type information&gt;
    005e51f7 ntoskrnl!KiInitializeMTRR = &lt;no type information&gt;
-   
    0:000&gt; u ntoskrnl!KiInitializeKernel
    ntoskrnl!KiInitializeKernel:
    005eadd2 6a28            push    28h

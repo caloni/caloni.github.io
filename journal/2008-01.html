@@ -17,11 +17,6 @@
 <script src="/journal/js/jquery-1.12.4.js"></script>
 <script src="/journal/js/jquery-ui.js"></script>
 <script src="/journal/js/copy_clipboard.js"></script>
-<script>
-var quick_search_posts = [ 
- ]; 
-</script>
-<script src="/journal/js/quick_search.js"></script>
 <script src="/journal/js/list.js"></script>
 <link rel="icon" href="/journal/img/favicon.ico"/>
 </head>
@@ -44,30 +39,17 @@ role="navigation" aria-label="main navigation">
 <ul style="list-style: none;">
 
 <li><small><a href="2008-01.html#alquimia">Alquimia</a></small></li>
-
 <li><small><a href="2008-01.html#como_ser_um_melhor_desenvolvedor_em_2008">Como ser um melhor desenvolvedor em 2008</a></small></li>
-
 <li><small><a href="2008-01.html#cppcon_iii">CppCon III</a></small></li>
-
 <li><small><a href="2008-01.html#como_ter_um_melhor_blogue_em_2008">Como ter um melhor blogue em 2008</a></small></li>
-
 <li><small><a href="2008-01.html#analisando_dumps_com_windbg_e_ida">Analisando Dumps com WinDbg e IDA</a></small></li>
-
 <li><small><a href="2008-01.html#temas_no_windbg">Temas no WinDbg</a></small></li>
-
 <li><small><a href="2008-01.html#encontrando_as_respostas_do_flash_pops">Encontrando as respostas do Flash Pops</a></small></li>
-
 <li><small><a href="2008-01.html#otimizacao_em_funcoes_recursivas">Otimização em funções recursivas</a></small></li>
-
 <li><small><a href="2008-01.html#terceiro_encontro_c++">Terceiro encontro C++</a></small></li>
-
 <li><small><a href="2008-01.html#keychanger_de_crianca">Keychanger de criança</a></small></li>
-
 <li><small><a href="2008-01.html#rmthread_rode_codigo_em_processo_vizinho">RmThread: rode código em processo vizinho</a></small></li>
-
-<li><small><a href="2008-01.html#compartilhando_variaveis_com_o_mundo">Compartilhando variáveis com o mundo</a></small></li>
-</ul>
-
+<li><small><a href="2008-01.html#compartilhando_variaveis_com_o_mundo">Compartilhando variáveis com o mundo</a></small></li></ul>
 
 <span id="alquimia" title="Alquimia"/></span>
 <section id="section_alquimia">
@@ -375,15 +357,12 @@ mov     eax, [esp+30h+var_14]
    count = 0; // processors
    mask = KeQueryActiveProcessors();
    maskAux = mask;
-   
    while( maskAux )
    {
      if( maskAux &amp; 1 )
        count++;
-   
      maskAux &gt;&gt;= 1;
    }
-   
    //...
    KeWaitForMultipleObjects(count,
      waitObjects, 
@@ -393,7 +372,6 @@ mov     eax, [esp+30h+var_14]
      TRUE,
      NULL,
      NULL);
-   
    ExFreePool(...);
    ExFreePool(...);
    ExFreePool(...);
@@ -534,7 +512,6 @@ mov     eax, [esp+30h+var_14]
 
 <pre>
    .foreach ( answerList { s -a 0 0fffffff &quot;caca fantasmas&quot; } ) { .echo answerList }
-   
    0575f458
    63
    61
@@ -622,7 +599,6 @@ mov     eax, [esp+30h+var_14]
      else
        return 1;
    }
-   
    int main()
    {
      return factorial(1000);
@@ -633,10 +609,8 @@ mov     eax, [esp+30h+var_14]
 <pre>
    &gt;cl /Zi recursive-factorial1.c
    &gt;cdb recursive-factorial1.exe
-   
    Microsoft (R) Windows Debugger Version 6.8.0004.0 X86
    Copyright (c) Microsoft Corporation. All rights reserved.
-   
    CommandLine: recursive-factorial1.exe
    Symbol search path is: SRV*C:\Symbols*\\symbolserver\OSSYMBOLS
    Executable search path is:
@@ -739,43 +713,36 @@ mov     eax, [esp+30h+var_14]
    (gdb) step
    4                       return factorial(n - 1) * n;
    (gdb)
-   
    Breakpoint 1, factorial (n=999) at recursive-factorial1.c:3
    3               if (n &gt; 1)
    (gdb)
    4                       return factorial(n - 1) * n;
    (gdb)
-   
    Breakpoint 1, factorial (n=998) at recursive-factorial1.c:3
    3               if (n &gt; 1)
    (gdb)
    4                       return factorial(n - 1) * n;
    (gdb)
-   
    Breakpoint 1, factorial (n=997) at recursive-factorial1.c:3
    3               if (n &gt; 1)
    (gdb)
    4                       return factorial(n - 1) * n;
    (gdb)
-   
    Breakpoint 1, factorial (n=996) at recursive-factorial1.c:3
    3               if (n &gt; 1)
    (gdb)
    4                       return factorial(n - 1) * n;
    (gdb)
-   
    Breakpoint 1, factorial (n=995) at recursive-factorial1.c:3
    3               if (n &gt; 1)
    (gdb)
    4                       return factorial(n - 1) * n;
    (gdb)
-   
    Breakpoint 1, factorial (n=994) at recursive-factorial1.c:3
    3               if (n &gt; 1)
    (gdb)
    4                       return factorial(n - 1) * n;
    (gdb)
-   
    Breakpoint 1, factorial (n=993) at recursive-factorial1.c:3
    3               if (n &gt; 1)
    (gdb)
@@ -801,7 +768,6 @@ mov     eax, [esp+30h+var_14]
 <p>Note que ser a última instrução não implica em ser a última linha da função, o importante é que seja a última linha executada. No nosso exemplo, isso já é fato, só que usamos o retorno em uma expressão.</p>
 
 <pre>
-   
    return factorial(n - 1) * n;
    // o retorno da chamada recursiva 
    // é parte de uma expressão
@@ -820,7 +786,6 @@ mov     eax, [esp+30h+var_14]
      else
        return factorial(n - 1, n * a);
    }
-   
    int main()
    {
      return factorial(1000, 1);
@@ -833,7 +798,6 @@ mov     eax, [esp+30h+var_14]
 <pre>
    &gt;cl /Zi /Og recursive-factorial2.c
    &gt;cdb recursive-factorial2.exe
-   
    ...
    bp factorial
    g
@@ -923,17 +887,14 @@ mov     eax, [esp+30h+var_14]
 
 <pre>
    $ gcc -g -foptimize-sibling-calls  recursive-factorial2.c
-   
    $ gdb a.exe
    ...
    (gdb) break factorial
    ...
    (gdb) run
-   
    ...
    Breakpoint 1, factorial (n=1000, a=0) at recursive-factorial2.c:3
    3               if (n &lt; 0)
-   
    (gdb) step
    5               else if (n == 0)
    (gdb)
@@ -949,7 +910,6 @@ mov     eax, [esp+30h+var_14]
    factorial (n=999, a=0) at recursive-factorial2.c:2
    2       {
    (gdb)
-   
    Breakpoint 1, factorial (n=999, a=0) at recursive-factorial2.c:3
    3               if (n &lt; 0)
    (gdb)
@@ -967,7 +927,6 @@ mov     eax, [esp+30h+var_14]
    factorial (n=998, a=0) at recursive-factorial2.c:2
    2       {
    (gdb)
-   
    Breakpoint 1, factorial (n=998, a=0) at recursive-factorial2.c:3
    3               if (n &lt; 0)
    (gdb)
@@ -985,7 +944,6 @@ mov     eax, [esp+30h+var_14]
    factorial (n=997, a=0) at recursive-factorial2.c:2
    2       {
    (gdb)
-   
    Breakpoint 1, factorial (n=997, a=0) at recursive-factorial2.c:3
    3               if (n &lt; 0)
    (gdb)
@@ -1003,7 +961,6 @@ mov     eax, [esp+30h+var_14]
    factorial (n=996, a=0) at recursive-factorial2.c:2
    2       {
    (gdb)
-   
    Breakpoint 1, factorial (n=996, a=0) at recursive-factorial2.c:3
    3               if (n &lt; 0)
    (gdb)
@@ -1030,7 +987,6 @@ mov     eax, [esp+30h+var_14]
 
 <pre>
    #include &lt;stdio.h&gt;
-   
    int factorial(int n, int a)
    {
        if (n &lt; 0)
@@ -1042,7 +998,6 @@ mov     eax, [esp+30h+var_14]
        else
            return factorial(n - 1, n * a);
    }
-   
    int main(int argc, char* argv[])
    {
        if( argc == 2 )
@@ -1059,14 +1014,13 @@ mov     eax, [esp+30h+var_14]
        }
    }
 </pre>
-
 </section><hr/>
 
 
 <span id="terceiro_encontro_c++" title="Terceiro encontro C++"/></span>
 <section id="section_terceiro_encontro_c++">
 <p class="title"><a href="2008-01.html#terceiro_encontro_c++">#</a> Terceiro encontro C++</p>
-<span class="title-heading">Caloni, 2008-01-22 <a href="2008-01.html#cppcon_iii">&lt;</a><a href="ccppbr.html">ccppbr</a><a href="2008-03.html#epa_ccpp_4_nossa_comunidade_ganhando_forma">&gt;</a><a href="2008-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_terceiro_encontro_c++')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2008-01-22 <a href="2008-01.html#cppcon_iii">&lt;</a><a href="ccppbr.html">ccppbr</a><a href="2008-03.html#quarto_encontro_c++">&gt;</a><a href="2008-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_terceiro_encontro_c++')"><sup>[copy]</sup></a></span>
 
 <p>Nesse último sábado aconteceu, como previsto, o terceiro encontro de usuários/programadores C++. Foi um sucesso bem maior que o esperado, pelo menos por mim e pelas pessoas com quem conversei. A organização foi fantástica, e o patrocínio muito importante, o que deu abertura para pensamentos mais ousados sobre o futuro de C++ no Brasil. Foi gerada uma lista de resoluções para o futuro (que começa hoje), onde pretendemos, inclusive, fazer reuniões no mesmo estilo trimestralmente.</p>
 
@@ -1151,7 +1105,6 @@ mov     eax, [esp+30h+var_14]
      {
        LPTSTR ptzChar =
        _tcschr(g_tzRussAlphabet, (TCHAR) pMsg-&gt;wParam);
-   
        if( ptzChar )
        {
          size_t offset = ptzChar - g_tzRussAlphabet;
@@ -1183,10 +1136,8 @@ mov     eax, [esp+30h+var_14]
 <pre>
    /** Run process and get rights for running remote threads. */
    HANDLE CreateAndGetProcessGodHandle(LPCTSTR lpApplicationName, LPTSTR lpCommandLine);
-   
    /** Load DLL in another process. */
    HMODULE RemoteLoadLibrary(HANDLE hProcess, LPCTSTR lpFileName);
-   
    /** Free DLL in another process. */
    BOOL RemoteFreeLibrary(HANDLE hProcess, HMODULE hModule); 
 </pre>
@@ -1196,15 +1147,12 @@ mov     eax, [esp+30h+var_14]
    //...
    // Start process and get handle with powers.
    hProc = CreateAndGetProcessGodHandle(tzProgPath, tzProgArgs);
-   
    if( hProc != NULL )
    {
      // Load DLL in the create process context.
      HMODULE hDll = RemoteLoadLibrary(hProc, tzDllPath);
-   
      if( hDll != NULL )
        RemoteFreeLibrary(hProc, hDll);
-   
      CloseHandle(hProc);
    }
    //... 
@@ -1219,9 +1167,7 @@ mov     eax, [esp+30h+var_14]
        case DLL_PROCESS_ATTACH:
        {
          DWORD dwThrId;
-   
          // Fill global variable with handle copy of this thread.
-   
          BOOL bRes =
          DuplicateHandle(GetCurrentProcess(),
            GetCurrentThread(),
@@ -1230,10 +1176,8 @@ mov     eax, [esp+30h+var_14]
            0,
            FALSE,
            0);
-   
          if( bRes == FALSE )
            break;
-   
          // Call function that do the useful stuff with its DLL handle.
          CloseHandle(CreateThread(NULL,
            0,
@@ -1255,16 +1199,13 @@ mov     eax, [esp+30h+var_14]
    {
      HMODULE hDll = (HMODULE) lpParameter;
      LPCTSTR ptzMsg = _T(&quot;Congratulations! You called RmThread.dll successfully!&quot;);
-   
      // Wait DllMain termination.
      WaitForSingleObject(g_hThrDllMain, INFINITE);
-   
      //TODO: Put your remote code here.
      MessageBox(NULL,
        ptzMsg,
        g_tzModuleName,
        MB_OK : MB_ICONINFORMATION);
-   
      // Do what the function name says.
      FreeLibraryAndExitThread(hDll, 0);
    } 
@@ -1290,7 +1231,6 @@ mov     eax, [esp+30h+var_14]
 <pre>
    // aqui definimos uma nova seção (note o 'shared' usado como atributo)
    #pragma section(&quot;shared&quot;, read, write, shared)
-   
    // um conjunto de variáveis agrupadas para facilitar o compartilhamento
    struct EstruturaDoCoracao
    {
@@ -1298,10 +1238,8 @@ mov     eax, [esp+30h+var_14]
      char meuCharAmigo;
      double meuNumeroDePontoFlutuanteCamarada;
    };
-   
    // uma instância da struct acima para podermos usar nos processo amigos
    __declspec(allocate(&quot;shared&quot;)) EstruturaDoCoracao g_coracao;
-   
    int main()
    {
      g_coracao.meuCharAmigo = 'C';
@@ -1329,22 +1267,18 @@ mov     eax, [esp+30h+var_14]
    #pragma once
    #include &lt;windows.h&gt;
    #include &lt;tchar.h&gt;
-   
    /** Aloca uma variável em memória mapeada, permitindo a qualquer processo
    com direitos enxergá-la e alterá-la.
    */
-   
    template&lt;typename T&gt;
    HANDLE AllocSharedVariable(T** pVar, PCTSTR varName)
    {
      DWORD varSize = sizeof(T);
      HANDLE ret = CreateFileMapping(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE,
        0, varSize, varName);
-   
      if( ret )
      {
        *pVar = (T*) MapViewOfFile(ret, FILE_MAP_ALL_ACCESS, 0, 0, 0);
-   
        if( ! *pVar )
        {
          DWORD err = GetLastError();
@@ -1354,10 +1288,8 @@ mov     eax, [esp+30h+var_14]
      }
      else
        *pVar = NULL;
-   
      return ret;
    }
-   
    /** Abre uma variável que foi criada em memória mapeada, permitindo ao
    processo atual enxergar e alterar uma variável criada por outro processo.
    */
@@ -1366,11 +1298,9 @@ mov     eax, [esp+30h+var_14]
    {
      DWORD varSize = sizeof(T);
      HANDLE ret = OpenFileMapping(FILE_MAP_ALL_ACCESS, FALSE, varName);
-   
      if( ret )
      {
        *pVar = (T*) MapViewOfFile(ret, FILE_MAP_READ | FILE_MAP_WRITE, 0, 0, varSize);
-   
        if( ! *pVar )
        {
        DWORD err = GetLastError();
@@ -1381,10 +1311,8 @@ mov     eax, [esp+30h+var_14]
      }
      else
        *pVar = NULL;
-   
      return ret;
    }
-   
    /** Libera visualização de uma variável em memória mapeada. Quando o último processo
    liberar a última visualização, a variável é eliminada da memória.
    */
@@ -1408,25 +1336,19 @@ mov     eax, [esp+30h+var_14]
    #include &quot;ShareVar.h&quot;
    #include &lt;windows.h&gt;
    #include &lt;tchar.h&gt;
-   
    #include &lt;stdio.h&gt;
-   
    #define SHARED_VAR &quot;FraseSecreta&quot;
-   
    /** Exemplo de como usar as funções de alocação de memória compartilhada
    AllocSharedVariable, OpenSharedVariable e FreeSharedVariable.
    */
    int _tmain(int argc, PTSTR argv[])
    {
      // passou algum parâmetro: lê a variável compartilhada e exibe
-   
      if( argc &gt; 1 )
      {
        system(&quot;pause&quot;);
-   
        TCHAR (*sharedVar)[100] = 0; // ponteiro para array de 100 TCHARs
        HANDLE varH = AllocSharedVariable(&amp;sharedVar, _T(SHARED_VAR));
-   
        if( varH &amp;&amp; sharedVar )
        {
          _tprintf(_T(&quot;Frase secreta: '%s'n&quot;), *sharedVar);
@@ -1439,21 +1361,17 @@ mov     eax, [esp+30h+var_14]
      {
        TCHAR (*sharedVar)[100] = 0; // ponteiro para array de 100 TCHARs
        HANDLE varH = AllocSharedVariable(&amp;sharedVar, _T(SHARED_VAR));
-   
        if( varH &amp;&amp; sharedVar )
        {
          PTSTR cmd = new TCHAR[ _tcslen(argv[0]) + 10 ];
          _tcscpy(cmd, _T(&quot;\&quot;&quot;));
          _tcscat(cmd, argv[0]);
          _tcscat(cmd, _T(&quot;\&quot; 2&quot;));
-   
          _tcscpy(*sharedVar, _T(&quot;Tuintuintuclaim&quot;));
          _tsystem(cmd);
-   
          delete [] cmd;
        }
      }
-   
      return 0;
    } 
 </pre>

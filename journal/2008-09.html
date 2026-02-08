@@ -17,11 +17,6 @@
 <script src="/journal/js/jquery-1.12.4.js"></script>
 <script src="/journal/js/jquery-ui.js"></script>
 <script src="/journal/js/copy_clipboard.js"></script>
-<script>
-var quick_search_posts = [ 
- ]; 
-</script>
-<script src="/journal/js/quick_search.js"></script>
 <script src="/journal/js/list.js"></script>
 <link rel="icon" href="/journal/img/favicon.ico"/>
 </head>
@@ -44,21 +39,13 @@ role="navigation" aria-label="main navigation">
 <ul style="list-style: none;">
 
 <li><small><a href="2008-09.html#serenidade">Serenidade</a></small></li>
-
 <li><small><a href="2008-09.html#de_volta_a_tona">De volta à tona</a></small></li>
-
 <li><small><a href="2008-09.html#retorno_do_pathisdirectory">Retorno do PathIsDirectory</a></small></li>
-
 <li><small><a href="2008-09.html#todo_programador_e_um_filosofo_em_potencial">Todo programador é um filósofo em potencial</a></small></li>
-
 <li><small><a href="2008-09.html#reuna_seus_comandos_mais_usados_no_windbg_com_cmdtree">Reúna seus comandos mais usados no WinDbg com .cmdtree</a></small></li>
-
 <li><small><a href="2008-09.html#v">V</a></small></li>
 <li><small><a href="2008-09.html#windows_jobs_com_completion_port">Windows Jobs com Completion Port</a></small></li>
-
-<li><small><a href="2008-09.html#cnasi_geracao_y_e_seus_gastos_em_ti">Cnasi, geração Y e seus gastos em TI</a></small></li>
-</ul>
-
+<li><small><a href="2008-09.html#cnasi_geracao_y_e_seus_gastos_em_ti">Cnasi, geração Y e seus gastos em TI</a></small></li></ul>
 
 <span id="serenidade" title="Serenidade"/></span>
 <section id="section_serenidade">
@@ -97,32 +84,25 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    Setting environment for using Microsoft Visual Studio 2008 x86 tools.
-   
    C:\Tests&gt;copy con IsPathDir.cpp
    #include &lt;shlwapi.h&gt;
    #include &lt;windows.h&gt;
    #include &lt;stdio.h&gt;
-   
    #pragma comment(lib, &quot;shlwapi.lib&quot;)
-   
    int main()
    {
            BOOL isDir = PathIsDirectory(&quot;C:\\Tests&quot;); // obs.: diretorio TEM que existir
            printf(&quot;Resultado: %d.\n&quot;, isDir);
    }^Z
            1 arquivo(s) copiado(s).
-   
    C:\Tests&gt;cl IsPathDir.cpp
    Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 15.00.21022.08 for 80x86
    Copyright (C) Microsoft Corporation.  All rights reserved.
-   
    IsPathDir.cpp
    Microsoft (R) Incremental Linker Version 9.00.21022.08
    Copyright (C) Microsoft Corporation.  All rights reserved.
-   
    /out:IsPathDir.exe
    IsPathDir.obj
-   
    C:\Tests&gt;IsPathDir.exe
    Resultado: 16.
 </pre>
@@ -156,20 +136,15 @@ role="navigation" aria-label="main navigation">
    C:\Tests&gt;cl /Zi IsPathDir.cpp
    Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 15.00.21022.08 for 80x86
    Copyright (C) Microsoft Corporation.  All rights reserved.
-   
    IsPathDir.cpp
    Microsoft (R) Incremental Linker Version 9.00.21022.08
    Copyright (C) Microsoft Corporation.  All rights reserved.
-   
    /out:IsPathDir.exe
    /debug
    IsPathDir.obj
-   
    C:\Tests&gt;cdb IsPathDir.exe
-   
    Microsoft (R) Windows Debugger Version 6.8.0004.0 X86
    Copyright (c) Microsoft Corporation. All rights reserved.
-   
    CommandLine: IsPathDir.exe
    Symbol search path is: SRV*c:\symbols*http://msdl.microsoft.com/download/symbols
    Executable search path is:
@@ -422,7 +397,6 @@ role="navigation" aria-label="main navigation">
    2048
    0x800
    ...
-   
    FILE_ATTRIBUTE_DIRECTORY       The handle that identifies a directory.
    16
    0x10
@@ -554,6 +528,7 @@ role="navigation" aria-label="main navigation">
 
 </section><hr/>
 
+
 <span id="windows_jobs_com_completion_port" title="Windows Jobs com Completion Port"/></span>
 <section id="section_windows_jobs_com_completion_port">
 <p class="title"><a href="2008-09.html#windows_jobs_com_completion_port">#</a> Windows Jobs com Completion Port</p>
@@ -561,7 +536,7 @@ role="navigation" aria-label="main navigation">
 
 <p>Ou "Como esperar o término de todos os processos-filho criados a partir de um conjunto de processos".</p>
 
-<p>Dessa vez confesso que esperava um pouco mais de documentação do MSDN, ou pelo menos um sistema de referências cruzadas eficiente. Outro dia demorei cerca de duas horas para conseguir [criar um _**job**_], anexar o processo desejado e, a pior parte, esperar que todos os processos (o principal e seus filhos e netos) terminassem.</p>
+<p>Dessa vez confesso que esperava um pouco mais de documentação do MSDN, ou pelo menos um sistema de referências cruzadas eficiente. Outro dia demorei cerca de duas horas para conseguir <a href="https://learn.microsoft.com/en-us/windows/win32/procthread/job-objects">criar um _**job**_</a>, anexar o processo desejado e, a pior parte, esperar que todos os processos (o principal e seus filhos e netos) terminassem.</p>
 
 <p>Além da pouca documentação, parece que não são muitas as pessoas que fazem isso e publicam na web, ou eu <a href="http://www.google.com.br/search?q=wait+all+processes+inside+job+object">não sei procurar direito</a>.</p>
 
@@ -579,7 +554,7 @@ role="navigation" aria-label="main navigation">
 
 <p>Para informações básicas de como criar um job e anexar processos recomendo o ótimo artigo de Jeffrey Richter (se você conseguir encontrar, meu último link está quebrado).</p>
 
-<p>No final desse artigo ele chega a citar o controle mais refinado dos processos através de uma [**completion port**], que permitirá receber eventos que ocorrem dentro de um job durante sua vida útil. Apesar de citar, não há código de exemplo que faça isso.</p>
+<p>No final desse artigo ele chega a citar o controle mais refinado dos processos através de uma <a href="https://learn.microsoft.com/en-us/windows/win32/fileio/i-o-completion-ports">**completion port**</a>, que permitirá receber eventos que ocorrem dentro de um job durante sua vida útil. Apesar de citar, não há código de exemplo que faça isso.</p>
 
 <p>Bom, agora há:</p>
 

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script>
+var quick_search_posts = [ 
+ ]; 
+</script>
+<script src="/blog/js/quick_search.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="what_happens_inside_the_sizeof_operator" title="What happens inside the sizeof operator"/></span>
+<section id="section_what_happens_inside_the_sizeof_operator">
+<p class="title">What happens inside the sizeof operator</p>
+<span class="title-heading">Caloni, 2007-07-16 computer ccpp english blog</span>
+
+<p>The question: how to get the size of a struct member without declaring it as a variable in memory? In pseudocode:</p>
+
+<pre>
+   struct S
+   {
+      char field1[15];
+      char field2[10];
+   };
+   
+   // error C2143: syntax error : missing ')' before '.'
+   char buffer[ sizeof( S.field2 ) + 1 ];
+   
+   // error C2070: '': illegal sizeof operand
+   char buffer[ sizeof( S::field2 ) + 1 ]; 
+</pre>
+<p>In this first try (even being a nice one) we can clearly see by instinct that the construction is not supposed to work. The compiler error is not even clear. The member access operator (the point sign) needs to have as its left some variable or constant of the same type of the struct. Since the operand is the type itself, there is no deal.</p>
+
+<p>The second test is more feasible. Even the compiler can alert us. We have accessed the right member in the right struct but in the wrong way. As we're not using a static member or, in other words, a class variable, we can't access the member by scope. We need an object. But in order to have an object we are supposed to have to create one, and this is exactly what is not allowed in our solution.</p>
+
+<p>This kind of problem reminds me about a curious feature inside the sizeof operator: it doesn't evaluate the expressions used as operands. How's that? Well, as the sizeof main purpose is to provide us the memory size filled by the expression, it simply doesn't make sense to execute the expression. We just need to note that the language we're talking about defends eficiency and clarity as main principles. If you want to execute the expression, we do it without using sizeof operator.</p>
+
+<p>So, now we know that everything put inside a sizeof is not going to be executed in fact. It works somewhat like the c++ "dead zone": is the place where - talking about executable code - nothing runs. That means we can build a object inside sizeof but nothing is going to happen, except for the expression size. Let's look the resulting assembly:</p>
+
+<pre>
+   // mov dword ptr [sz], 0Fh
+   sz = sizeof( (new S)-&gt;field1 );
+</pre>
+<p>Another way to do the same thing (for those who can't bear the use of operator new without a delete, seeing the code as a memory leak):</p>
+
+<pre>
+   // mov dword ptr [sz], 0Fh
+   sz = sizeof( ((S*)0)-&gt;field1 );
+</pre>
+<p>Conclusion: the operator new is called and nothing happens. We got what we wanted. That shows us one more time that the little details built inside a language layout are only very important in the exact time we need them.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="antidebug_interpretacao_baseada_em_excecao_parte_1.html">[antidebug_interpretacao_baseada_em_excecao_parte_1]</a>
+ <a href="precedence_difference.html">[precedence_difference]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

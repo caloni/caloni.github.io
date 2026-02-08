@@ -17,11 +17,6 @@
 <script src="/journal/js/jquery-1.12.4.js"></script>
 <script src="/journal/js/jquery-ui.js"></script>
 <script src="/journal/js/copy_clipboard.js"></script>
-<script>
-var quick_search_posts = [ 
- ]; 
-</script>
-<script src="/journal/js/quick_search.js"></script>
 <script src="/journal/js/list.js"></script>
 <link rel="icon" href="/journal/img/favicon.ico"/>
 </head>
@@ -45,27 +40,16 @@ role="navigation" aria-label="main navigation">
 
 <li><small><a href="2008-02.html#compartilhando_variaveis_com_o_mundo_v2">Compartilhando variáveis com o mundo v2</a></small></li>
 <li><small><a href="2008-02.html#emocao">Emoção</a></small></li>
-
 <li><small><a href="2008-02.html#process_monitor_e_o_monopolio_malcriado">Process Monitor e o monopólio malcriado</a></small></li>
-
 <li><small><a href="2008-02.html#silly_regex_trick">Silly regex trick</a></small></li>
-
 <li><small><a href="2008-02.html#desconstruindo_ioccc">Desconstruindo IOCCC</a></small></li>
-
 <li><small><a href="2008-02.html#funky_dowhile">Funky do-while</a></small></li>
-
 <li><small><a href="2008-02.html#os_diferentes_erros_na_linguagem_c">Os diferentes erros na linguagem C</a></small></li>
-
 <li><small><a href="2008-02.html#configurando_seus_projetos_no_visual_studio_multithreaded_debug_dll_mt">Configurando seus projetos no Visual Studio (Multi-threaded Debug DLL /MT,</a></small></li>
-
 <li><small><a href="2008-02.html#codigos_de_entrevista_o_ponteiro_nulo">Códigos de entrevista - o ponteiro nulo</a></small></li>
-
 <li><small><a href="2008-02.html#a_essencia_do_zen">A essência do zen</a></small></li>
 <li><small><a href="2008-02.html#conversor_de_houaiss_para_babylon_parte_1">Conversor de Houaiss para Babylon - parte 1</a></small></li>
-
-<li><small><a href="2008-02.html#quando_o_ponteiro_nulo_nao_e_invalido">Quando o ponteiro nulo não é inválido</a></small></li>
-</ul>
-
+<li><small><a href="2008-02.html#quando_o_ponteiro_nulo_nao_e_invalido">Quando o ponteiro nulo não é inválido</a></small></li></ul>
 
 <span id="compartilhando_variaveis_com_o_mundo_v2" title="Compartilhando variáveis com o mundo v2"/></span>
 <section id="section_compartilhando_variaveis_com_o_mundo_v2">
@@ -92,27 +76,22 @@ role="navigation" aria-label="main navigation">
      {
        m_memPointer = 0;
        m_memHandle = AllocSharedVariable(&amp;m_memPointer, varName);
-   
        if( ! m_memHandle || ! m_memPointer )
          throw GetLastError();
      }
-   
      // libera recursos alocados para a variável
      ~SharedVar()
      {
        FreeSharedVariable(m_memHandle, m_memPointer);
      }
-   
      T&amp; operator * ()
      {
        return *m_memPointer;
      }
-   
    private:
      // não vamos nos preocupar com isso agora
      SharedVar(const SharedVar&amp; obj);
      SharedVar&amp; operator = (const SharedVar&amp; obj);
-   
      T* m_memPointer;
      HANDLE m_memHandle;
    }; 
@@ -135,10 +114,8 @@ role="navigation" aria-label="main navigation">
        if( argc &gt; 1 )
        {
          system(&quot;pause&quot;);
-   
          // array de 100 TCHARs
          SharedVar&lt;TCHAR [100]&gt; sharedVar(_T(SHARED_VAR));
-   
          _tprintf(_T(&quot;Frase secreta: \'%s\'\n&quot;), *sharedVar);
          _tprintf(_T(&quot;Pressione &lt;enter&gt; para retornar...&quot;));
          getchar();
@@ -148,16 +125,13 @@ role="navigation" aria-label="main navigation">
        {
          // array de 100 TCHARs
          SharedVar&lt;TCHAR [100]&gt; sharedVar(_T(SHARED_VAR));
-   
          PTSTR cmd = new TCHAR[ _tcslen(argv[0]) + 10 ];
          _tcscpy(cmd, _T(&quot;\&quot;&quot;));
          _tcscat(cmd, argv[0]);
          _tcscat(cmd, _T(&quot;\&quot; 2&quot;));
-   
          _tcscpy(*sharedVar,
          _T(&quot;Vassora de sa, vassora de su, vassora de tuturuturutu!&quot;));
          _tsystem(cmd);
-   
          delete [] cmd;
        }
      }
@@ -165,13 +139,13 @@ role="navigation" aria-label="main navigation">
      {
        _tprintf(_T(&quot;Erro %08X.\n&quot;), err);
      }
-   
      return 0;
    } 
 </pre>
 <p>Existem duas mudanças significativas: 1. a variável sozinha já representa a memória compartilhada; 2. o tratamento de erro agora é centralizado em apenas um ponto. Se pra melhor ou pior, eu não sei. Tratamento de exceções e classes são duas "modernisses" que podem ou não se encaixar em um projeto de desenvolvimento. Tudo vai depender de tudo. Por isso a melhor saída depende de como será a entrada.</p>
 
 </section><hr/>
+
 
 <span id="emocao" title="Emoção"/></span>
 <section id="section_emocao">
@@ -234,7 +208,6 @@ role="navigation" aria-label="main navigation">
                                                                     BUILTIN\Administradores:F
                                                                     AUTORIDADE NT\SYSTEM:F
                                                                     MITY\Caloni:F
-   
    C:\Arquivos de programas\GameHouse\Monopoly Classic&gt;
 </pre>
 <p>Como podemos ver, o que é muito natural, um arquivo dentro da pasta de instalação de programas permite acesso de somente leitura para usuários comuns a seus arquivos, inclusive o Monopoly.log. Para fazer o teste, podemos simplesmente adicionar controle total a apenas esse arquivo, e rodar novamente o jogo.</p>
@@ -242,13 +215,11 @@ role="navigation" aria-label="main navigation">
 <pre>
    &gt;cacls Monopoly.log /E /G Usuários:F
    arquivo processado: C:\Arquivos de programas\GameHouse\Monopoly Classic\Monopoly.log
-   
    C:\Arquivos de programas\GameHouse\Monopoly Classic&gt;cacls Monopoly.log
    C:\Arquivos de programas\GameHouse\Monopoly Classic\Monopoly.log BUILTIN\Usuários:F
                                                                     BUILTIN\Administradores:F
                                                                     AUTORIDADE NT\SYSTEM:F
                                                                     MITY\Caloni:F
-   
    C:\Arquivos de programas\GameHouse\Monopoly Classic&gt;start monopolyclassic.exe
 </pre>
 <img src="/journal/img/process_monitor_e_o_monopolio_malcriado_monopoly_screenshot.jpg"/>
@@ -327,13 +298,11 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    int i;
-   
    main()
    {
      for( ; i[&quot;] &lt; i; ++i ){--i;}&quot;]; read('-' - '-', i++ + &quot;hello, world!\n&quot;, '/' / '/') )
        ;
    }
-   
    read(j, i, p)
    {
      write(j / p + p, i-- - j, i / i);
@@ -485,22 +454,18 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    int i = 0;
-   
    main()
    {
      char* indexString = &quot;]&lt;i;++i){--i;}&quot;;
      char* outputString = &quot;hello, world!\n&quot;;
-   
      for( ; indexString[i] != 0; read(&amp;outputString[i++]) )
        ;
    }
-   
    read(outStr)
    {
      write(1, outStr, 1);
    }
 </pre>
-
 </section><hr/>
 
 
@@ -515,11 +480,8 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    #ifdef NDEBUG
-   
    #define MYTRACE( message ) /* nothing */
-   
    #else
-   
    #define MYTRACE( message )   \
    {                            \
      char buffer[500];          \
@@ -530,7 +492,6 @@ role="navigation" aria-label="main navigation">
        message);                \
      OutputDebugString(buffer); \
    }
-   
    #endif /* NDEBUG */ 
 </pre>
 <p>Nothing much, but it seems to work. But, as we going to see in the following lines, it is really a buggy piece of code, since a call inside an if-else construction simply doesn't work.</p>
@@ -572,10 +533,8 @@ role="navigation" aria-label="main navigation">
    if( instruction )
    {
      /* a lot of comands */
-   
    } /* here I would expect an else or new instruction */
    ; /* a new command! okay, no else this time */
-   
    else /* wait! what this else is doing here without an if?!?! */
    {
      /* more commands */
@@ -589,7 +548,6 @@ role="navigation" aria-label="main navigation">
      printf(&quot;error&quot;);
    }
    printf(&quot;here we go&quot;);
-   
    else /* llegal else without matching if! */
    {
      printf(&quot;okay&quot;);
@@ -611,11 +569,8 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    #ifdef NDEBUG
-   
    #define MYTRACE( message ) /* nothing */
-   
    #else
-   
    #define MYTRACE( message )   \
    do                           \
    {                            \
@@ -628,7 +583,6 @@ role="navigation" aria-label="main navigation">
      printf(buffer);            \
    }                            \
    while( 0 )
-   
    #endif /* NDEBUG */ 
 </pre>
 <p>Using a do-while (with a false expression inside the test to execute the block just once) the if-else construction is allowed and working properly:</p>
@@ -659,7 +613,6 @@ role="navigation" aria-label="main navigation">
    }
    while( 0 );
 </pre>
-
 </section><hr/>
 
 
@@ -694,9 +647,7 @@ role="navigation" aria-label="main navigation">
 <pre>
    #ifndef __MEUHEADER__ // se já estiver definido, caio fora até endif
    #define __MEUHEADER__
-   
    // conteúdo do header
-   
    #endif // __MEUHEADER__
 </pre>
 <p>Esse conjunto de duas diretivas, por si só, é capaz de gerar os mais criativos e bizarros erros de compilação em C. E estamos falando de erros que ocorrem antes que sequer seja iniciado o processo de compilação propriamente dito. Obviamente que os erros serão capturados durante a compilação, mas o motivo deles terem ocorrido foi um erro decorrente do processo de preprocessamento. Por exemplo, vamos supor que um determinado fonte necessita de uma declaração de função contida em meuheader.h:</p>
@@ -704,7 +655,6 @@ role="navigation" aria-label="main navigation">
 <pre>
    #include &quot;header-do-mal.h&quot;
    #include &quot;meuheader.h&quot;
-   
    int func()
    {
       meuheaderFunc();
@@ -715,10 +665,8 @@ role="navigation" aria-label="main navigation">
 <pre>
    #ifndef __HEADERDOMAL__
    #define __HEADERDOMAL__
-   
     // tirei header da jogada, huahuahua (risos maléficos)
    #define __MEUHEADER__
-   
    #endif // __HEADERDOMAL__
 </pre>
 <p>Na hora do preprocessamento, o preprocessador não irá mais incluir o conteúdo dentro de header.h:</p>
@@ -726,9 +674,7 @@ role="navigation" aria-label="main navigation">
 <pre>
    #ifndef __MEUHEADER__ // se já estiver definido, caio fora até endif
    #define __MEUHEADER__
-   
    int meuheaderFunc(); // talvez alguém precise disso
-   
    #endif // __MEUHEADER__
 </pre>
 <p>Conseqüentemente, durante a compilação do código-fonte já preprocessado, sem a declaração da função meuheaderFunc, irá ocorrer o seguinte erro:</p>
@@ -754,9 +700,7 @@ role="navigation" aria-label="main navigation">
      int ret = message[0];
      return ret;
    }
-   
    int ret = cannotConvertError(3);
-   
    error C2664: 'cannotConvertError' : cannot convert parameter 1 from 'int' to 'const char *'
    if( test() )
      something;
@@ -800,7 +744,6 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    #define max(a, b) ( a &gt; b ? a : b )
-   
    int z = max( func(10), 30 );
 </pre>
 <p>Um outro erro que já encontrei algumas vezes é quando a definição de uma classe tem um sizeof diferente do compilado em sua LIB, pela exclusão ou adição de novos membros. Isso pode (vai) fazer com que, durante a execução, a pilha seja corrompida, membros diferentes sejam acessados, entre outras traquinagens. Esses erros costumam acusar a falta de sincronismo entre os headers usados e suas reais implementações.</p>
@@ -865,13 +808,11 @@ role="navigation" aria-label="main navigation">
 <pre>
    #include &lt;stdio.h&gt;
    #include &lt;stdlib.h&gt;
-   
    void func()
    {
      *(int *)0 = 0;
      return 0;
    }
-   
    int main(int argc, char **argv)
    {
      func();
@@ -948,6 +889,7 @@ role="navigation" aria-label="main navigation">
 <blockquote>Eckhart Tolle (O Poder do Agora, 1997)</blockquote>
 </section><hr/>
 
+
 <span id="conversor_de_houaiss_para_babylon_parte_1" title="Conversor de Houaiss para Babylon - parte 1"/></span>
 <section id="section_conversor_de_houaiss_para_babylon_parte_1">
 <p class="title"><a href="2008-02.html#conversor_de_houaiss_para_babylon_parte_1">#</a> Conversor de Houaiss para Babylon - parte 1</p>
@@ -998,7 +940,6 @@ role="navigation" aria-label="main navigation">
    cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
    kernel32!ReadFile:
    7c80180e 6a20            push    20h
-   
    $$ dados acima:
    $$  - O buffer de saída é 08bbf1d0 
    $$  - O número de bytes lidos é 200
@@ -1193,52 +1134,39 @@ role="navigation" aria-label="main navigation">
    #define _CRT_SECURE_NO_DEPRECATE
    #include &lt;windows.h&gt;
    #include &lt;stdio.h&gt;
-   
    //#define HOUAISS_PATH &quot;C:\\Projects\\Temp\\HouaissReader\\Houaiss\\&quot;
-   
    int WINAPI WinMain(HINSTANCE, HINSTANCE, PSTR cmdLine, int)
    {
      CHAR HOUAISS_PATH[MAX_PATH] = { };
-   
      sscanf(cmdLine, &quot;-p \&quot;%[^\&quot;]s&quot;, HOUAISS_PATH);
-   
      if( HOUAISS_PATH[0] == 0 )
      {
        MessageBox(NULL, &quot;How to use:\r\nHouCalc.exe -p \&quot;C:\\HouaissPath\\\&quot;&quot;, 
          &quot;Houaiss Decipher v. alpha&quot;, 0);
        return 0;
      }
-   
      for( int fileIdx = 1; fileIdx &lt; 64; ++fileIdx )
      {
        CHAR path1[MAX_PATH];
        CHAR path2[MAX_PATH];
-   
        sprintf(path1, &quot;%sdeah%03d.dhx&quot;, HOUAISS_PATH, fileIdx);
        sprintf(path2, &quot;%sdeah%03d.txt&quot;, HOUAISS_PATH, fileIdx);
-   
        HANDLE file1 = CreateFile(path1, GENERIC_READ, FILE_SHARE_READ,
          NULL, OPEN_EXISTING, 0, NULL);
-   
        HANDLE file2 = CreateFile(path2, GENERIC_READ | GENERIC_WRITE, 0,
          NULL, CREATE_ALWAYS, 0, NULL);
-   
        if( file1 != INVALID_HANDLE_VALUE &amp;&amp; file2 != INVALID_HANDLE_VALUE )
        {
          DWORD fileSize = GetFileSize(file1, NULL);
-   
          if( SetFilePointer(file2, fileSize, NULL, FILE_BEGIN) )
          {
            SetEndOfFile(file2);
-   
            HANDLE map1 = CreateFileMapping(file1, NULL, PAGE_READONLY, 0, 0, NULL);
            HANDLE map2 = CreateFileMapping(file2, NULL, PAGE_READWRITE, 0, 0, NULL);
-   
            if( map1 &amp;&amp; map2 )
            {
              PBYTE view1 = (PBYTE) MapViewOfFile(map1, FILE_MAP_READ, 0, 0, 0);
              PBYTE view2 = (PBYTE) MapViewOfFile(map2, FILE_MAP_WRITE, 0, 0, 0);
-   
              if( view1 &amp;&amp; view2 )
              {
                for( DWORD i = 0; i &lt; fileSize; ++i )
@@ -1246,26 +1174,22 @@ role="navigation" aria-label="main navigation">
                  view2[i] = view1[i] + 0x0B;
                }
              }
-   
              if( view1 )
                UnmapViewOfFile(view1);
              if( view2 )
                UnmapViewOfFile(view2);
            }
-   
            if( map1 )
              CloseHandle(map1);
            if( map2 )
              CloseHandle(map2);
          }
        }
-   
        if( file1 )
          CloseHandle(file1);
        if( file2 )
          CloseHandle(file2);
      }
-   
      return 0;
    }
 </pre>

@@ -17,11 +17,6 @@
 <script src="/blog/js/jquery-1.12.4.js"></script>
 <script src="/blog/js/jquery-ui.js"></script>
 <script src="/blog/js/copy_clipboard.js"></script>
-<script>
-var quick_search_posts = [ 
- ]; 
-</script>
-<script src="/blog/js/quick_search.js"></script>
 <script src="/blog/js/list.js"></script>
 <link rel="icon" href="/blog/img/favicon.ico"/>
 </head>
@@ -65,7 +60,6 @@ role="navigation" aria-label="main navigation">
 <p>Antes de ser criada uma janela, é necessário registrar uma classe de janela no sistema, cuja relação com uma janela é mais ou menos a mesma entre classe e objeto no paradigma de orientação a objetos. Você primeiro define uma classe para sua janela e posteriormente pode criar inúmeras janelas a partir da mesma classe.</p>
 
 <pre>
-   
    WNDCLASS wndclass; //Dados sobre a classe de janela.
    wndclass.style = CS_HREDRAW | CS_VREDRAW;
    wndclass.lpfnWndProc = WndProc; // Função de janela (isso é importante!)
@@ -104,11 +98,8 @@ role="navigation" aria-label="main navigation">
      HELLOWIN.C -- Displays &quot;Hello, Windows&quot; in client area
      (c) Charles Petzold, 1990
      --------------------------------------------------------*/
-   
    #include &lt;windows.h&gt;
-   
    long FAR PASCAL WndProc (HWND, WORD, WORD, LONG) ;
-   
    int PASCAL WinMain (HANDLE hInstance, HANDLE hPrevInstance,
        LPSTR lpszCmdParam, int nCmdShow)
    {
@@ -116,7 +107,6 @@ role="navigation" aria-label="main navigation">
      HWND        hwnd ;
      MSG         msg ;
      WNDCLASS    wndclass ;
-   
      if (!hPrevInstance)
      {
        wndclass.style         = CS_HREDRAW | CS_VREDRAW ;
@@ -129,10 +119,8 @@ role="navigation" aria-label="main navigation">
        wndclass.hbrBackground = GetStockObject (WHITE_BRUSH) ;
        wndclass.lpszMenuName  = NULL ;
        wndclass.lpszClassName = szAppName ;
-   
        RegisterClass (&amp;wndclass) ;
      }
-   
      hwnd = CreateWindow (
        szAppName,           // window class name
        &quot;The Hello Program&quot;, // window caption
@@ -145,10 +133,8 @@ role="navigation" aria-label="main navigation">
        NULL,                // window menu handle
        hInstance,           // program instance handle
        NULL) ;              // creation parameters
-   
      ShowWindow (hwnd, nCmdShow) ;
      UpdateWindow (hwnd) ;
-   
      while (GetMessage (&amp;msg, NULL, 0, 0))
      {
        TranslateMessage (&amp;msg) ;
@@ -156,31 +142,24 @@ role="navigation" aria-label="main navigation">
      }
      return msg.wParam ;
    }
-   
    long FAR PASCAL WndProc (HWND hwnd, WORD message, WORD wParam, LONG lParam)
    {
      HDC hdc;
      PAINTSTRUCT ps;
      RECT rect;
-   
      switch (message)
      {
        case WM_PAINT:
          hdc = BeginPaint (hwnd, &amp;ps) ;
-   
          GetClientRect (hwnd, &amp;rect) ;
-   
          DrawText (hdc, &quot;Hello, Windows!&quot;, -1, &amp;rect,
              DT_SINGLELINE | DT_CENTER | DT_VCENTER) ;
-   
          EndPaint (hwnd, &amp;ps) ;
          return 0 ;
-   
        case WM_DESTROY:
          PostQuitMessage (0) ;
          return 0 ;
      }
-   
      return DefWindowProc (hwnd, message, wParam, lParam) ;
    } 
 </pre>

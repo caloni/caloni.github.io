@@ -17,11 +17,6 @@
 <script src="/blog/js/jquery-1.12.4.js"></script>
 <script src="/blog/js/jquery-ui.js"></script>
 <script src="/blog/js/copy_clipboard.js"></script>
-<script>
-var quick_search_posts = [ 
- ]; 
-</script>
-<script src="/blog/js/quick_search.js"></script>
 <script src="/blog/js/list.js"></script>
 <link rel="icon" href="/blog/img/favicon.ico"/>
 </head>
@@ -53,17 +48,29 @@ role="navigation" aria-label="main navigation">
 <p>Vamos aproveitar que a versão NT foi melhorada para dar uma recapitulada geral de como as coisas funcionam internamente no sistema operacional. Em um desenho da arquitetura veremos diferentes módulos que fazem parte do sistema operacional que dividem funções específicas e que possuem métodos específicos de comunicação interna e externa. Importante notar que a divisão entre os componentes que descreverei abaixo já existia desde a primeira versão do NT, sendo que apenas alguns itens foram adicionados, como o Gerenciador de Plug &amp; Play e o Gerenciador de Energia. Os elementos principais do Windows, visto sob camadas de abstração, são:</p>
 
 <ul><li>Aplicações Win32, POSIX, OS/2;</li>
+
 <li>Subsistemas Win32, POSIX, OS/2;</li>
+
 <li>Subsistemas de integridade;</li>
+
 <li>Serviços do Executivo (em inglês Executive Services);</li>
+
 <li>Gerenciador de I/O ou I/O Manager;</li>
+
 <li>Gerenciador de Memória Virtual ou VMM, o Virtual Memory Manager;</li>
+
 <li>Process Manager, PnP Manager e Power Manager;</li>
+
 <li>Object Manager;</li>
+
 <li>Microkernel;</li>
+
 <li>Kernel mode drivers;</li>
+
 <li>Hardware Abstraction Layer (aka HAL);</li>
+
 <li>Por fim, o hardware.</li></ul>
+
 <img src="/blog/img/historia_do_windows_parte_50_windows_architecture.png"/>
 
 <blockquote>Um outro item importantíssimo que foi movido da versão 3.51 para a 4.0 é a GDI, responsável pelos gráficos. Inicialmente ela estava no modo de usuário, mas a necessidade de aumentar o desempenho do sistema fez com que ela fosse incorporada ao núcleo do sistema.  Agora vamos dissecar as partes interessantes.</blockquote>

@@ -17,11 +17,6 @@
 <script src="/journal/js/jquery-1.12.4.js"></script>
 <script src="/journal/js/jquery-ui.js"></script>
 <script src="/journal/js/copy_clipboard.js"></script>
-<script>
-var quick_search_posts = [ 
- ]; 
-</script>
-<script src="/journal/js/quick_search.js"></script>
 <script src="/journal/js/list.js"></script>
 <link rel="icon" href="/journal/img/favicon.ico"/>
 </head>
@@ -45,26 +40,15 @@ role="navigation" aria-label="main navigation">
 
 <li><small><a href="2008-05.html#acessando_memoria_fisica_no_windbg">Acessando memória física no WinDbg</a></small></li>
 <li><small><a href="2008-05.html#sofrimento">Sofrimento</a></small></li>
-
 <li><small><a href="2008-05.html#read_the_functional_manual">Read The Functional Manual</a></small></li>
-
 <li><small><a href="2008-05.html#como_tratar_um_merge_no_bazaar">Como tratar um merge no Bazaar</a></small></li>
-
 <li><small><a href="2008-05.html#kernel_mode_user_mode">Kernel Mode &gt;&gt; User Mode, ou Como Fazer Debug de User Mode pelo Kernel Mode</a></small></li>
-
 <li><small><a href="2008-05.html#aquele_do_while_engracado">Aquele do-while engraçado</a></small></li>
-
 <li><small><a href="2008-05.html#busca_do_google_com_atalhos">Busca do Google com atalhos</a></small></li>
-
 <li><small><a href="2008-05.html#mousetool_clique_automatico_do_seu_rato">MouseTool: clique automático do seu rato</a></small></li>
-
 <li><small><a href="2008-05.html#aprendendo_rapidamente_conceitos_essenciais_do_windbg">Aprendendo rapidamente conceitos essenciais do WinDbg</a></small></li>
-
 <li><small><a href="2008-05.html#how_to_run_anything_as_a_service">How to run anything as a service</a></small></li>
-
-<li><small><a href="2008-05.html#como_criar_uma_lib_no_visual_studio">Como criar uma LIB no Visual Studio</a></small></li>
-</ul>
-
+<li><small><a href="2008-05.html#como_criar_uma_lib_no_visual_studio">Como criar uma LIB no Visual Studio</a></small></li></ul>
 
 <span id="acessando_memoria_fisica_no_windbg" title="Acessando memória física no WinDbg"/></span>
 <section id="section_acessando_memoria_fisica_no_windbg">
@@ -85,7 +69,6 @@ role="navigation" aria-label="main navigation">
    10   16   16   16   16   dec
    A    0    0    0    0    hex
    1010 0000 0000 0000 0000 bin
-   
 </pre>
 <p>Para conseguir esses 4 bits adicionais foram usados dois registradores em conjunto, o segmento e o offset. Funciona assim: o segmento é multiplicado por 16 (ou deslocado 4 bits à esquerda) e logo depois é somado com o offset, resultando no endereçamento desejado:</p>
 
@@ -95,7 +78,6 @@ role="navigation" aria-label="main navigation">
                0x 9022
                0x  1514 (+)
    real addr:  0x 91734
-   
 </pre>
 <p>Ou seja, para acessar o byte de número 595764, ou 0x91734 podemos usar o segmento 0x9022 com o offset 0x1514. A soma desses dois com o segmento deslocado irá resultado no endereço flag, ou seja, aquele que obtemos se contarmos a memória do zero até o final da RAM. Importante lembrar que na época a RAM não costumava ser de valores como 2GB ou até 4GB, mas em KB mesmo. Isso explica a limitação do 8086 em endereçar até 640 KB.</p>
 
@@ -143,6 +125,7 @@ role="navigation" aria-label="main navigation">
 <p>É isso aí. Não espero que você use muitas vezes essa forma de acessar memória. Só que eu usei e... nunca se sabe =)</p>
 
 </section><hr/>
+
 
 <span id="sofrimento" title="Sofrimento"/></span>
 <section id="section_sofrimento">
@@ -210,33 +193,27 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    #include &lt;stdio.h&gt;
-   
    void InitFunction()
    {
      printf(&quot;InitFunction&quot;);
    }
-   
    void DoAnotherJob()
    {
      char buf[100] = &quot;&quot;;
      fgets(buf, sizeof(buf), stdin);
      printf(&quot;New line: %s&quot;, buf);
    }
-   
    void TerminateFunction()
    {
      printf(&quot;TerminateFunction&quot;);
    }
-   
    int main()
    {
      InitFunction();
-   
      while( ! feof(stdin) )
      {
        DoAnotherJob();
      }
-   
      TerminateFunction();
    }
 </pre>
@@ -261,7 +238,6 @@ role="navigation" aria-label="main navigation">
 <pre>
    C:\Tests&gt;bzr branch bzrpilot bzrpilot-linebreak
    Branched 1 revision(s).
-   
    C:\Tests&gt;bzr branch bzrpilot bzrpilot-bufferoverflow
    Branched 1 revision(s).
 </pre>
@@ -319,33 +295,24 @@ role="navigation" aria-label="main navigation">
    C:\Tests&gt;bzr log bzrpilot-linebreak --short
      3 Wanderley Caloni  2008-05-08
        A little fix
-   
      2 Wanderley Caloni  2008-05-08
        Corrected line breaks
-   
      1 Wanderley Caloni  2008-05-08
        Our first version
-   
    C:\Tests&gt;bzr log bzrpilot-bufferoverflow --short
      2 Wanderley Caloni  2008-05-08
        Corrigido buffer overflow
-   
      1 Wanderley Caloni  2008-05-08
        Our first version
-   
    C:\Tests&gt;bzr log bzrpilot --short
      1 Wanderley Caloni  2008-05-08
        Our first version
-   
    C:\Tests&gt;cd bzrpilot
-   
    C:\Tests\bzrpilot&gt;bzr pull ..\bzrpilot-linebreak
      M  bzppilot.cpp
    All changes applied successfully.
    Now on revision 3.
-   
    C:\Tests\bzrpilot&gt;bzr pull ..\bzrpilot-bufferoverflow
-   
    bzr: ERROR: These branches have diverged. Use the merge command to reconcile them.
 </pre>
 <p>Ops. Algo deu errado no segundo pull. O Bazaar nos diz que os ranches estão diferentes, e que termos que usar o comando merge no lugar.</p>
@@ -390,9 +357,7 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    #include &lt;stdio.h&gt;
-   
    #define ENOUGH_BYTES 100
-   
    void InitFunction()
    {
      printf(&quot;InitFunction\n&quot;);
@@ -450,7 +415,6 @@ role="navigation" aria-label="main navigation">
    Committing to: C:/Tests/bzrpilot/
    modified bzppilot.cpp
    Committed revision 4.
-   
    C:\Tests\bzrpilot&gt;bzr log
    ------------------------------------------------------------
    revno: 4
@@ -587,7 +551,6 @@ role="navigation" aria-label="main navigation">
      MYTRACE(&quot;Oh, my God&quot;);
    else
      MYTRACE(&quot;That's right&quot;); 
-   
    error C2181: illegal else without matching if
 </pre>
 <p>Por que isso? Para responder a essa questão nós precisamos olhar um pouco mais de perto no resultado do preprocessador da linguagem, que apenas troca nossa macro pelo pedaço de código que ela representa:</p>
@@ -620,11 +583,8 @@ role="navigation" aria-label="main navigation">
    if( instruction )
    {
      /* um monte de comandos */
-   
    } /* aqui eu esperaria um else ou uma instrução nova */
-   
    ; /* uma instrução nova! ok, sem else desa vez */
-   
    else /* espere ae! o que esse else está fazendo aqui sem um if?!?! */
    {
      /* mais comandos */
@@ -703,7 +663,6 @@ role="navigation" aria-label="main navigation">
      }
      while( 0 );
 </pre>
-
 </section><hr/>
 
 

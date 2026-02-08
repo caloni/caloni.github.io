@@ -17,11 +17,6 @@
 <script src="/blog/js/jquery-1.12.4.js"></script>
 <script src="/blog/js/jquery-ui.js"></script>
 <script src="/blog/js/copy_clipboard.js"></script>
-<script>
-var quick_search_posts = [ 
- ]; 
-</script>
-<script src="/blog/js/quick_search.js"></script>
 <script src="/blog/js/list.js"></script>
 <link rel="icon" href="/blog/img/favicon.ico"/>
 </head>
@@ -50,31 +45,25 @@ role="navigation" aria-label="main navigation">
 
 <pre>
    #include &lt;iostream&gt;
-   
    using namespace std;
-   
    class Base
    {
    protected:
    	int m_protected;
    };
-   
    class Deriv : public Base
    {
    public:
    	int GetProtectedFromBase();
    	int GetProtectedFromDeriv2();
    };
-   
    class Deriv2 : public Base
    {
    };
-   
    int Deriv::GetProtectedFromBase()
    {
    	return m_protected;
    }
-   
    int Deriv::GetProtectedFromDeriv2()
    {
    	Deriv2 deriv2;
@@ -83,14 +72,12 @@ role="navigation" aria-label="main navigation">
      // declared in class 'Base'
    	return deriv2.m_protected;
    }
-   
    int main()
    {
    	Deriv deriv;
    	deriv.GetProtectedFromBase();
    	deriv.GetProtectedFromDeriv2();
    }
-   
 </pre>
 <p>Esse é o motivo fundamental do porquê não podermos fazer isso:</p>
 
