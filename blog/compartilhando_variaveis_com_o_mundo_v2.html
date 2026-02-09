@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="compartilhando_variaveis_com_o_mundo_v2" title="Compartilhando variáveis com o mundo v2"/></span>
+<section id="section_compartilhando_variaveis_com_o_mundo_v2">
+<p class="title">Compartilhando variáveis com o mundo v2</p>
+<span class="title-heading">Caloni, 2008-02-01 computer blog</span>
+
+<p>Como todas as coisas que fazemos e pensamos depois, descobrimos que sempre existe uma outra maneira de fazer a mesma coisa. Se é melhor ou não, pode ser uma questão de gosto, estética, objetivos de vida, etc. Com a <a href="2008-01.html#compartilhando_variaveis_com_o_mundo">implementação das variáveis mapeadas globais</a> não foi diferente. Bem, é isso que se espera fazer com código experimental: experimentos. E deu no que deu: SharedVar versão 2.0 alpha Enterprise Edition.</p>
+
+<p>Quando comentei no final do artigo anterior que existem pessoas que só conseguem gerar código dentro de uma classe, não estava brincando. Existem linguagens, inclusive, que suportam apenas o paradigma de orientação a objetos, e levam isso muito a sério. C++ com certeza não é uma dessas linguagens, o que quer dizer que você tem a liberdade e a responsabilidade de tomar o melhor caminho para determinado problema.</p>
+
+<p>Nessa segunda solução do nosso programa alocador de variáveis globais, pra variar, vamos utilizar uma classe. E pra entrar de vez no mundo POO vamos utilizar de quebra tratamento de erro orientado a exceções. Como vamos notar, aplicadas adequadamente, essas duas características da linguagem conseguirão um código mais simples de entender, embora não se possa dizer o mesmo da implementação "under the hood".</p>
+
+<pre>
+   /** Classe helper para as nossas funções de alocação de variáveis
+   compartilhadas com o mundo. */
+   template&lt;typename T&gt;
+   class SharedVar
+   {
+   public:
+     // se conseguir, parabéns; senão, retorna BUM!
+     SharedVar(PCTSTR varName)
+     {
+       m_memPointer = 0;
+       m_memHandle = AllocSharedVariable(&amp;m_memPointer, varName);
+       if( ! m_memHandle || ! m_memPointer )
+         throw GetLastError();
+     }
+     // libera recursos alocados para a variável
+     ~SharedVar()
+     {
+       FreeSharedVariable(m_memHandle, m_memPointer);
+     }
+     T&amp; operator * ()
+     {
+       return *m_memPointer;
+     }
+   private:
+     // não vamos nos preocupar com isso agora
+     SharedVar(const SharedVar&amp; obj);
+     SharedVar&amp; operator = (const SharedVar&amp; obj);
+     T* m_memPointer;
+     HANDLE m_memHandle;
+   }; 
+</pre>
+<p>Como podemos notar, em programação "nada se cria, tudo se reutiliza". Reutilização é boa quando podemos acrescentar características adicionais ao código sem deturpar seu objetivo original. E isso é bom.</p>
+
+<p>Note que nossa classe tenta fazer as coisas logo no construtor, já que seu único objetivo é representar uma variável da memória cachê. Se ela não for bem-sucedida em sua missão, ela explode, porque não há nada que ela possa fazer para garantir a integridade do objeto sendo criado e ela não tem como saber qual o melhor tratamento de erro para o usuário da classe. Geralmente o melhor - ou pelo menos o mais adequado - é o tratamento que o usuário dá ao seu código, porque o usuário da classe é que deve saber o contexto de execução do seu código.</p>
+
+<p>Bem, como o código agora está em uma classe e o erro é baseado em exceção, o código cliente muda um pouco:</p>
+
+<pre>
+   /** Exemplo de como usar as funções de alocação de memória compartilhada
+   AllocSharedVariable, OpenSharedVariable e FreeSharedVariable.
+   */
+   int _tmain(int argc, PTSTR argv[])
+   {
+     try
+     {
+       // passou algum parâmetro: lê a variável compartilhada e exibe
+       if( argc &gt; 1 )
+       {
+         system(&quot;pause&quot;);
+         // array de 100 TCHARs
+         SharedVar&lt;TCHAR [100]&gt; sharedVar(_T(SHARED_VAR));
+         _tprintf(_T(&quot;Frase secreta: \'%s\'\n&quot;), *sharedVar);
+         _tprintf(_T(&quot;Pressione &lt;enter&gt; para retornar...&quot;));
+         getchar();
+       }
+       else // não passou parâmetro: escreve na variável 
+       // compartilhada e chama nova instância
+       {
+         // array de 100 TCHARs
+         SharedVar&lt;TCHAR [100]&gt; sharedVar(_T(SHARED_VAR));
+         PTSTR cmd = new TCHAR[ _tcslen(argv[0]) + 10 ];
+         _tcscpy(cmd, _T(&quot;\&quot;&quot;));
+         _tcscat(cmd, argv[0]);
+         _tcscat(cmd, _T(&quot;\&quot; 2&quot;));
+         _tcscpy(*sharedVar,
+         _T(&quot;Vassora de sa, vassora de su, vassora de tuturuturutu!&quot;));
+         _tsystem(cmd);
+         delete [] cmd;
+       }
+     }
+     catch(DWORD err)
+     {
+       _tprintf(_T(&quot;Erro %08X.\n&quot;), err);
+     }
+     return 0;
+   } 
+</pre>
+<p>Existem duas mudanças significativas: 1. a variável sozinha já representa a memória compartilhada; 2. o tratamento de erro agora é centralizado em apenas um ponto. Se pra melhor ou pior, eu não sei. Tratamento de exceções e classes são duas "modernisses" que podem ou não se encaixar em um projeto de desenvolvimento. Tudo vai depender de tudo. Por isso a melhor saída depende de como será a entrada.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="process_monitor_e_o_monopolio_malcriado.html">[process_monitor_e_o_monopolio_malcriado]</a>
+ <a href="compartilhando_variaveis_com_o_mundo.html">[compartilhando_variaveis_com_o_mundo]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

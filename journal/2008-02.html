@@ -45,7 +45,7 @@ role="navigation" aria-label="main navigation">
 <li><small><a href="2008-02.html#desconstruindo_ioccc">Desconstruindo IOCCC</a></small></li>
 <li><small><a href="2008-02.html#funky_dowhile">Funky do-while</a></small></li>
 <li><small><a href="2008-02.html#os_diferentes_erros_na_linguagem_c">Os diferentes erros na linguagem C</a></small></li>
-<li><small><a href="2008-02.html#configurando_seus_projetos_no_visual_studio_multithreaded_debug_dll_mt">Configurando seus projetos no Visual Studio (Multi-threaded Debug DLL /MT,</a></small></li>
+<li><small><a href="2008-02.html#configurando_seus_projetos_no_visual_studio_para_rodar_em_outras_maquinas">Configurando seus projetos no Visual Studio para rodar em outras máquinas</a></small></li>
 <li><small><a href="2008-02.html#codigos_de_entrevista_o_ponteiro_nulo">Códigos de entrevista - o ponteiro nulo</a></small></li>
 <li><small><a href="2008-02.html#a_essencia_do_zen">A essência do zen</a></small></li>
 <li><small><a href="2008-02.html#conversor_de_houaiss_para_babylon_parte_1">Conversor de Houaiss para Babylon - parte 1</a></small></li>
@@ -54,9 +54,7 @@ role="navigation" aria-label="main navigation">
 <span id="compartilhando_variaveis_com_o_mundo_v2" title="Compartilhando variáveis com o mundo v2"/></span>
 <section id="section_compartilhando_variaveis_com_o_mundo_v2">
 <p class="title"><a href="2008-02.html#compartilhando_variaveis_com_o_mundo_v2">#</a> Compartilhando variáveis com o mundo v2</p>
-<span class="title-heading">Caloni, 2008-02-01 <a href="2008-01.html#compartilhando_variaveis_com_o_mundo">&lt;</a><a href="computer.html">computer</a><a href="2008-02.html#process_monitor_e_o_monopolio_malcriado">&gt;</a><a href="2008-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_compartilhando_variaveis_com_o_mundo_v2')"><sup>[copy]</sup></a></span>
-
-<p>Nota de desempenho: esse artigo finaliza (finalmente) a republicação de todos os artigos do antigo blogue. Isso quer dizer que a partir de agora eu sou obrigado a trabalhar, e, se quiser manter meu ritmo atual, vou ter que fazer mais do que cinco cliques do mouse.</p>
+<span class="title-heading">Caloni, 2008-02-01 <a href="2008-01.html#compartilhando_variaveis_com_o_mundo">&lt;</a><a href="computer.html">computer</a><a href="2008-02.html#process_monitor_e_o_monopolio_malcriado">&gt;</a> <a href="2008-01.html#compartilhando_variaveis_com_o_mundo">&lt;</a><a href="blog.html">blog</a><a href="2008-02.html#process_monitor_e_o_monopolio_malcriado">&gt;</a><a href="2008-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_compartilhando_variaveis_com_o_mundo_v2')"><sup>[copy]</sup></a></span>
 
 <p>Como todas as coisas que fazemos e pensamos depois, descobrimos que sempre existe uma outra maneira de fazer a mesma coisa. Se é melhor ou não, pode ser uma questão de gosto, estética, objetivos de vida, etc. Com a <a href="2008-01.html#compartilhando_variaveis_com_o_mundo">implementação das variáveis mapeadas globais</a> não foi diferente. Bem, é isso que se espera fazer com código experimental: experimentos. E deu no que deu: SharedVar versão 2.0 alpha Enterprise Edition.</p>
 
@@ -160,7 +158,7 @@ role="navigation" aria-label="main navigation">
 <span id="process_monitor_e_o_monopolio_malcriado" title="Process Monitor e o monopólio malcriado"/></span>
 <section id="section_process_monitor_e_o_monopolio_malcriado">
 <p class="title"><a href="2008-02.html#process_monitor_e_o_monopolio_malcriado">#</a> Process Monitor e o monopólio malcriado</p>
-<span class="title-heading">Caloni, 2008-02-05 <a href="2008-02.html#compartilhando_variaveis_com_o_mundo_v2">&lt;</a><a href="computer.html">computer</a><a href="2008-02.html#silly_regex_trick">&gt;</a><a href="2008-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_process_monitor_e_o_monopolio_malcriado')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2008-02-05 <a href="2008-02.html#compartilhando_variaveis_com_o_mundo_v2">&lt;</a><a href="computer.html">computer</a><a href="2008-02.html#silly_regex_trick">&gt;</a> <a href="2008-02.html#compartilhando_variaveis_com_o_mundo_v2">&lt;</a><a href="blog.html">blog</a><a href="2008-02.html#desconstruindo_ioccc">&gt;</a><a href="2008-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_process_monitor_e_o_monopolio_malcriado')"><sup>[copy]</sup></a></span>
 
 <p>Uma das primeiras regras que aprendemos para manter a integridade do Windows é utilizá-lo somente com a conta de usuários restritos, o que evitaria, por exemplo, que um programa mal-intencionado instale um serviço ou driver, que teriam acesso às partes íntimas do sistema operacional.</p>
 
@@ -203,24 +201,23 @@ role="navigation" aria-label="main navigation">
 <p>O próximo erro diz respeito a uma tentativa de acesso ao arquivo Monopoly.log localizado no diretório de instalação do jogo, o que já é mais sugestivo. Podemos fazer um pequeno teste alterando o acesso desse arquivo.</p>
 
 <pre>
-   C:\Arquivos de programas\GameHouse\Monopoly Classic&gt;cacls Monopoly.log
-   C:\Arquivos de programas\GameHouse\Monopoly Classic\Monopoly.log BUILTIN\Usuários:R
-                                                                    BUILTIN\Administradores:F
-                                                                    AUTORIDADE NT\SYSTEM:F
-                                                                    MITY\Caloni:F
-   C:\Arquivos de programas\GameHouse\Monopoly Classic&gt;
+   cacls Monopoly.log
+   Monopoly.log BUILTIN\Usuários:R
+                BUILTIN\Administradores:F
+                AUTORIDADE NT\SYSTEM:F
+                MITY\Caloni:F
 </pre>
 <p>Como podemos ver, o que é muito natural, um arquivo dentro da pasta de instalação de programas permite acesso de somente leitura para usuários comuns a seus arquivos, inclusive o Monopoly.log. Para fazer o teste, podemos simplesmente adicionar controle total a apenas esse arquivo, e rodar novamente o jogo.</p>
 
 <pre>
-   &gt;cacls Monopoly.log /E /G Usuários:F
-   arquivo processado: C:\Arquivos de programas\GameHouse\Monopoly Classic\Monopoly.log
-   C:\Arquivos de programas\GameHouse\Monopoly Classic&gt;cacls Monopoly.log
-   C:\Arquivos de programas\GameHouse\Monopoly Classic\Monopoly.log BUILTIN\Usuários:F
-                                                                    BUILTIN\Administradores:F
-                                                                    AUTORIDADE NT\SYSTEM:F
-                                                                    MITY\Caloni:F
-   C:\Arquivos de programas\GameHouse\Monopoly Classic&gt;start monopolyclassic.exe
+   cacls Monopoly.log /E /G Usuários:F
+   arquivo processado: Monopoly.log
+   cacls Monopoly.log
+   Monopoly.log BUILTIN\Usuários:F
+                BUILTIN\Administradores:F
+                AUTORIDADE NT\SYSTEM:F
+                MITY\Caloni:F
+   start monopolyclassic.exe
 </pre>
 <img src="/journal/img/process_monitor_e_o_monopolio_malcriado_monopoly_screenshot.jpg"/>
 
@@ -282,7 +279,7 @@ role="navigation" aria-label="main navigation">
 <span id="desconstruindo_ioccc" title="Desconstruindo IOCCC"/></span>
 <section id="section_desconstruindo_ioccc">
 <p class="title"><a href="2008-02.html#desconstruindo_ioccc">#</a> Desconstruindo IOCCC</p>
-<span class="title-heading">Caloni, 2008-02-11 <a href="2008-02.html#silly_regex_trick">&lt;</a><a href="computer.html">computer</a><a href="2008-02.html#funky_dowhile">&gt;</a><a href="2008-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_desconstruindo_ioccc')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2008-02-11 <a href="2008-02.html#silly_regex_trick">&lt;</a><a href="computer.html">computer</a><a href="2008-02.html#funky_dowhile">&gt;</a> <a href="2008-02.html#process_monitor_e_o_monopolio_malcriado">&lt;</a><a href="blog.html">blog</a><a href="2008-02.html#funky_dowhile">&gt;</a><a href="2008-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_desconstruindo_ioccc')"><sup>[copy]</sup></a></span>
 
 <p>Como alguns devem saber, e outros não (ou não deveriam), existe uma competição internacional para escolher quem escreve o código em C mais ofuscado. Isso mesmo. O evento se chama <a href="http://www.ioccc.org">The International Obfuscated C Code Contest</a> (IOCCC resumidamente) e costuma premiar anualmente os melhores "do ramo" com a chamada "menção desonrosa".</p>
 
@@ -396,7 +393,7 @@ role="navigation" aria-label="main navigation">
 
 <p>Em um passado bem longínquo, o padrão ANSI C não existia, e outras funções dominavam o ambiente UNIX. Muitas dessas funções foram adaptadas, e outras completamente copiadas para a formação do padrão. No entanto, ainda que o padrão não tenha colocado algumas funções clássicas, elas continuaram sendo usadas e suportadas. Um bom exemplo disso são as funções read e write, que, apesar de não estarem no padrão, estão no [livro de K&amp;R], no capítulo sobre fluxos (streams) em UNIX, provando que são bem populares.</p>
 
-<p>Dentro desse mundo paralelo, existem identificadores de fluxos padrões para a entrada e a saída padrão. Melhor ainda, esses identificadores são inteiros que estão especificados da seguinte maneira (tirado da <a href="http://www.gnu.org/software/libc/manual/html_node/Descriptors-and-Streams.html#index-STDIN_005fFILENO-1235">referência GNU</a> da linguagem C, meu grifo):</p>
+<p>Dentro desse mundo paralelo, existem identificadores de fluxos padrões para a entrada e a saída padrão. Melhor ainda, esses identificadores são inteiros que estão especificados da seguinte maneira (tirado da <a href="https://ftp.gnu.org/old-gnu/Manuals/glibc-2.2.3/html_node/libc_231.html">referência GNU</a> da linguagem C, meu grifo):</p>
 
 <blockquote>There are also symbolic constants defined in unistd.h for the file descriptors belonging to the standard streams stdin, stdout, and stderr; see Standard Streams.</blockquote>
 
@@ -443,7 +440,7 @@ role="navigation" aria-label="main navigation">
 <pre>
    write(1, i, 1);
 </pre>
-<p>Pronto, já temos condições de interpretar o significado dessa chamada à write. Como já vimos, o número 1 identifica a saída padrão, o que quer dizer que estamos escrevendo algo na saída padrão. Esse algo é o parâmetro "i" que, como vimos, é o endereço do i'ésimo caractere da string "hello, word!\n". O último argumento é o número de bytes a serem escritos, que será sempre um. O que quer dizer que o laço em for chamada a função read strlen("hello, world!\n") vezes passando o endereço do próximo caractere de cada vez. A função read, por sua vez, escreve este caractere na saída padrão. O resultado, como todos que compilarem o fonte e rodarem poderão comprovar, é a impressão da mensagem mais famosa do mundo da computação:</p>
+<p>Pronto, já temos condições de interpretar o significado dessa chamada à write. Como já vimos, o número 1 identifica a saída padrão, o que quer dizer que estamos escrevendo algo na saída padrão. Esse algo é o parâmetro "i" que, como vimos, é o endereço do i'ésimo caractere da string "hello, word!\n". O último argumento é o número de bytes a serem escritos, que será sempre um. O que quer dizer que o laço em for faz a chamada para a função read `strlen("hello, world!\n")` vezes passando o endereço do próximo caractere de cada vez. A função read, por sua vez, escreve este caractere na saída padrão. O resultado, como todos que compilarem o fonte e rodarem poderão comprovar, é a impressão da mensagem mais famosa do mundo da computação:</p>
 
 <pre>
    hello, world!
@@ -472,7 +469,7 @@ role="navigation" aria-label="main navigation">
 <span id="funky_dowhile" title="Funky do-while"/></span>
 <section id="section_funky_dowhile">
 <p class="title"><a href="2008-02.html#funky_dowhile">#</a> Funky do-while</p>
-<span class="title-heading">Caloni, 2008-02-13 <a href="2008-02.html#desconstruindo_ioccc">&lt;</a><a href="computer.html">computer</a><a href="2008-02.html#os_diferentes_erros_na_linguagem_c">&gt;</a> <a href="2008-02.html#silly_regex_trick">&lt;</a><a href="english.html">english</a><a href="2008-05.html#how_to_run_anything_as_a_service">&gt;</a><a href="2008-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_funky_dowhile')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2008-02-13 <a href="2008-02.html#desconstruindo_ioccc">&lt;</a><a href="computer.html">computer</a><a href="2008-02.html#os_diferentes_erros_na_linguagem_c">&gt;</a> <a href="2008-02.html#silly_regex_trick">&lt;</a><a href="english.html">english</a><a href="2008-05.html#how_to_run_anything_as_a_service">&gt;</a> <a href="2008-02.html#desconstruindo_ioccc">&lt;</a><a href="blog.html">blog</a><a href="2008-02.html#os_diferentes_erros_na_linguagem_c">&gt;</a><a href="2008-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_funky_dowhile')"><sup>[copy]</sup></a></span>
 
 <p>It's a known habit to use do-while constructions when there's a need to define a macro that has more than one command instead of using the { simple multicommand brackets }. What was never clear is why this is so.</p>
 
@@ -527,7 +524,7 @@ role="navigation" aria-label="main navigation">
      OutputDebugString(buffer);
    };
 </pre>
-<p>So, that's why. When we call a macro, generally we use the funcion-call syntax, putting a semicolon in the end. This is the right way to call a function, but in the macro case, it's a disaster, because it creates two commands instead of one (an empty semicolon, despite doing nothing, it's a valid command). So that's what the compiler does:</p>
+<p>So, that's why. When we call a macro, generally we use the function-call syntax, putting a semicolon in the end. This is the right way to call a function, but in the macro case, it's a disaster, because it creates two commands instead of one (an empty semicolon, despite doing nothing, it's a valid command). So that's what the compiler does:</p>
 
 <pre>
    if( instruction )
@@ -565,7 +562,7 @@ role="navigation" aria-label="main navigation">
    /* I expect a semicolon here, in order
       to end the do-while instruction */
 </pre>
-<p>So we can rewrite our trace macro the right way, even being a funcky one:</p>
+<p>So we can rewrite our trace macro the right way, even being a funky one:</p>
 
 <pre>
    #ifdef NDEBUG
@@ -619,7 +616,7 @@ role="navigation" aria-label="main navigation">
 <span id="os_diferentes_erros_na_linguagem_c" title="Os diferentes erros na linguagem C"/></span>
 <section id="section_os_diferentes_erros_na_linguagem_c">
 <p class="title"><a href="2008-02.html#os_diferentes_erros_na_linguagem_c">#</a> Os diferentes erros na linguagem C</p>
-<span class="title-heading">Caloni, 2008-02-15 <a href="2008-02.html#funky_dowhile">&lt;</a><a href="computer.html">computer</a><a href="2008-02.html#configurando_seus_projetos_no_visual_studio_multithreaded_debug_dll_mt">&gt;</a> <a href="2007-10.html#protecao_dos_membros_protected">&lt;</a><a href="ccpp.html">ccpp</a><a href="2008-04.html#try_catch_flutuante">&gt;</a><a href="2008-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_os_diferentes_erros_na_linguagem_c')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2008-02-15 <a href="2008-02.html#funky_dowhile">&lt;</a><a href="computer.html">computer</a><a href="2008-02.html#configurando_seus_projetos_no_visual_studio_para_rodar_em_outras_maquinas">&gt;</a> <a href="2007-10.html#protecao_dos_membros_protected">&lt;</a><a href="ccpp.html">ccpp</a><a href="2008-04.html#try_catch_flutuante">&gt;</a> <a href="2008-02.html#funky_dowhile">&lt;</a><a href="blog.html">blog</a><a href="2008-02.html#configurando_seus_projetos_no_visual_studio_para_rodar_em_outras_maquinas">&gt;</a><a href="2008-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_os_diferentes_erros_na_linguagem_c')"><sup>[copy]</sup></a></span>
 
 <p>Uma coisa que me espanta de vez em quando é o total desconhecimento por programadores mais ou menos experientes dos níveis de erros que podem ocorrer em um fonte escrito em C ou C++. Desconheço o motivo, mas desconfio que o fato de outras linguagens não terem essa divisão de processos pode causar alguma nivelação entre as linguagens e fazer pensar que o processo de compilação em C é como em qualquer outra linguagem.</p>
 
@@ -753,16 +750,16 @@ role="navigation" aria-label="main navigation">
 </section><hr/>
 
 
-<span id="configurando_seus_projetos_no_visual_studio_multithreaded_debug_dll_mt" title="Configurando seus projetos no Visual Studio (Multi-threaded Debug DLL /MT,"/></span>
-<section id="section_configurando_seus_projetos_no_visual_studio_multithreaded_debug_dll_mt">
-<p class="title"><a href="2008-02.html#configurando_seus_projetos_no_visual_studio_multithreaded_debug_dll_mt">#</a> Configurando seus projetos no Visual Studio (Multi-threaded Debug DLL /MT,</p>
-<span class="title-heading">Caloni, 2008-02-21 <a href="2008-02.html#os_diferentes_erros_na_linguagem_c">&lt;</a><a href="computer.html">computer</a><a href="2008-02.html#codigos_de_entrevista_o_ponteiro_nulo">&gt;</a><a href="2008-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_configurando_seus_projetos_no_visual_studio_multithreaded_debug_dll_mt')"><sup>[copy]</sup></a></span>
+<span id="configurando_seus_projetos_no_visual_studio_para_rodar_em_outras_maquinas" title="Configurando seus projetos no Visual Studio para rodar em outras máquinas"/></span>
+<section id="section_configurando_seus_projetos_no_visual_studio_para_rodar_em_outras_maquinas">
+<p class="title"><a href="2008-02.html#configurando_seus_projetos_no_visual_studio_para_rodar_em_outras_maquinas">#</a> Configurando seus projetos no Visual Studio para rodar em outras máquinas</p>
+<span class="title-heading">Caloni, 2008-02-21 <a href="2008-02.html#os_diferentes_erros_na_linguagem_c">&lt;</a><a href="computer.html">computer</a><a href="2008-02.html#codigos_de_entrevista_o_ponteiro_nulo">&gt;</a> <a href="2008-02.html#os_diferentes_erros_na_linguagem_c">&lt;</a><a href="blog.html">blog</a><a href="2008-02.html#codigos_de_entrevista_o_ponteiro_nulo">&gt;</a><a href="2008-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_configurando_seus_projetos_no_visual_studio_para_rodar_em_outras_maquinas')"><sup>[copy]</sup></a></span>
 
 <p>Ao iniciar na arte da programação em C no Visual Studio eventualmente o programador irá querer testar seus programas rodando em outra máquina que não seja a de desenvolvimento, mandar uma versão beta para amigos, pra namorada e pro seu cachorro. Geralmente, por padrão, existem algumas dependências do programa compilado com uma DLL de runtime da versão do ambiente em que foi compilado o dito cujo, dificultando um pouco a distribuição do seu motherfucker-program.</p>
 
 <p>Porém, seus "poroberemas se acabaram-se". Com o inovador configurador de projetos do Visual Studio, tudo o que você queria é possível, e ainda mais!</p>
 
-<p>Nota do autor: isso não foi uma propaganda gratuita, apenas uma piada. Se fosse um verdadeiro anúncio das maravilhas do Visual Studio, eu agora estaria falando daquele tal código gerenciado e o tal do C++ CLI.</p>
+<p>Nota do autor: isso não foi uma propaganda gratuita, apenas uma piada. Se fosse um verdadeiro anúncio das maravilhas do Visual Studio, eu agora estaria falando daquele tal código gerenciado e o tal do ~~C++ CLI~~ &lt;coloque a próxima tecnologia "revolucionária" que o marketing microsoftiano está vendendo no momento&gt;.</p>
 
 <p>Inicialmente, se compilarmos um programa em Debug no Visual Studio 2005 teremos as seguintes dependências. kernel32 e msvcrx.dll (onde x é a versão do Visual Studio). A DLL kernel32 é nativa e sempre estará presente no Windows. Porém, a msvcr não. Ela veio junto com o pacote do Visual Studio, e se não for distribuída em outras máquinas, você não conseguirá rodar seu programa, pois isso gerará o erro de DLL não encontrada.</p>
 
@@ -796,7 +793,7 @@ role="navigation" aria-label="main navigation">
 <span id="codigos_de_entrevista_o_ponteiro_nulo" title="Códigos de entrevista - o ponteiro nulo"/></span>
 <section id="section_codigos_de_entrevista_o_ponteiro_nulo">
 <p class="title"><a href="2008-02.html#codigos_de_entrevista_o_ponteiro_nulo">#</a> Códigos de entrevista - o ponteiro nulo</p>
-<span class="title-heading">Caloni, 2008-02-25 <a href="2008-02.html#configurando_seus_projetos_no_visual_studio_multithreaded_debug_dll_mt">&lt;</a><a href="computer.html">computer</a><a href="2008-02.html#conversor_de_houaiss_para_babylon_parte_1">&gt;</a><a href="2008-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_codigos_de_entrevista_o_ponteiro_nulo')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2008-02-25 <a href="2008-02.html#configurando_seus_projetos_no_visual_studio_para_rodar_em_outras_maquinas">&lt;</a><a href="computer.html">computer</a><a href="2008-02.html#conversor_de_houaiss_para_babylon_parte_1">&gt;</a> <a href="2008-02.html#configurando_seus_projetos_no_visual_studio_para_rodar_em_outras_maquinas">&lt;</a><a href="blog.html">blog</a><a href="2008-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_codigos_de_entrevista_o_ponteiro_nulo')"><sup>[copy]</sup></a></span>
 
 <p>Bom, parece que o "mother-fucker" wordpress ferrou com meu artigo sobre o Houaiss. Enquanto eu choro as pitangas aqui vai um outro artigo um pouco mais simples, mas igualmente interessante.</p>
 
@@ -840,7 +837,7 @@ role="navigation" aria-label="main navigation">
 </pre>
 <p>Duas ressalvas aqui: a primeira quanto ao retorno da função é void, porém a função retorna um inteiro. Na linguagem C, isso funciona, no máximo um _warning_ do compilador. Em C++, isso é erro brabo de tipagem.</p>
 
-<p>A segunda ressalva diz respeito à linha obscura, sintaticamente correta, mas cuja semântica iremos guardar para o final, já que ainda falta o main para analisar.a</p>
+<p>A segunda ressalva diz respeito à linha obscura, sintaticamente correta, mas cuja semântica iremos guardar para o final, já que ainda falta o main para analisar.</p>
 
 <pre>
    int main(int argc, char **argv)
@@ -849,7 +846,7 @@ role="navigation" aria-label="main navigation">
        return 0;
    }
 </pre>
-<p>A clássica função inicial, nada de mais aqui. Retorna um int, e de fato retorn. Chama a função func, definida acima.</p>
+<p>A clássica função inicial, nada de mais aqui. Retorna um int, e de fato retorna. Chama a função func, definida acima.</p>
 
 <p>A linha que guardamos para analisar contém uma operação de casting, atribuição e deferência, sendo o casting executado primeiro, operador unário que é, seguido pelo segundo operador unário, a deferência. Como sempre, a atribuição é uma das últimas. Descomprimida a expressão dessa linha, ficamos com algo parecido com as duas linhas abaixo:</p>
 
@@ -857,7 +854,7 @@ role="navigation" aria-label="main navigation">
    int* p = (int*) 0;
    *p = 0;
 </pre>
-<p>Não tem nada de errado em atribuir o valor 0 a um ponteiro, que é equivalente ao define NULL da biblioteca C (e C++). De acordo com a <a href="http://www.gnu.org/software/libc/manual/html_node/Null-Pointer-Constant.html#Null-Pointer-Constant">referência GNU</a>, é recomendado o uso do define, mas nada impede utilizar o 0 "hardcoded".</p>
+<p>Não tem nada de errado em atribuir o valor 0 a um ponteiro, que é equivalente ao define NULL da biblioteca C (e C++). De acordo com a <a href="https://ftp.gnu.org/old-gnu/Manuals/glibc-2.2.5/html_node/Null-Pointer-Constant.html">referência GNU</a>, é recomendado o uso do define, mas nada impede utilizar o 0 "hardcoded".</p>
 
 <p>Porém, estamos escrevendo em um ponteiro nulo, o que com certeza é um comportamento não-definido de conseqüências provavelmente funestas. O ponteiro nulo é um ponteiro inválido que serve apenas para marcar um ponteiro como inválido. Se escrevermos em um endereço inválido, bem, não é preciso ler o padrão para saber o que vai acontecer =)</p>
 
