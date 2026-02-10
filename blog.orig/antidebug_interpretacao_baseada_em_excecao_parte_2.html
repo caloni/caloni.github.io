@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="antidebug_interpretacao_baseada_em_excecao_parte_2" title="Antidebug: interpretação baseada em exceção (parte 2)"/></span>
+<section id="section_antidebug_interpretacao_baseada_em_excecao_parte_2">
+<p class="title">Antidebug: interpretação baseada em exceção (parte 2)</p>
+<span class="title-heading">Caloni, 2007-08-09 computer projects blog</span>
+
+<p>No <a href="2007-07.html#antidebug_interpretacao_baseada_em_excecao_parte_1">primeiro artigo</a> vimos como é possível "enganar" o depurador através de exceções e assim fazer o atacante perder um tempo considerável tentando se desvencilhar dos breakpoints de mentira. Porém, vimos também que essa é uma solução difícil de manter no código-fonte, além de possuir o ponto fraco de ser facilmente contornada se descoberta. Agora é a hora de tornar as coisas mais fáceis de manter e ao mesmo tempo garantir maior dificuldade mesmo que o atacante descubra o que está acontecendo debaixo do seu nariz.</p>
+
+<p>O upgrade apresentado aqui continua utilizando o lançamento de exceções intrinsecamente, mas agora não depende mais da divisão do código em minifunções e chamá-las aos poucos. Em vez disso, temos apenas que pegar traços de código e colocá-los em torno de uma macro milagrosa que fará tudo o que quisermos. Isso, claro, depois de algumas marteladas que serão explicadas aqui.</p>
+
+<pre>
+   void LongJmp(restorePoint)
+   {
+     BackToStart(restorePoint);
+   }
+   int Start()
+   {
+     if( RestorePoint() == Defined )
+     {
+       LongJmp(if);
+     }
+     else
+     {
+       CallFunc();
+     }
+     return 0;
+   }
+</pre>
+<p>A solução acima está apresentada em pseudo-código para tornar mais claro o conceito. Note que existe uma espécie de "retorno invisível", não baseado em retorno de pilha, envolvido. Para implementá-lo, contudo, podemos nos ajeitar com o velho e bom padrão C ANSI, com as rotinas setjmp  e longjmp. Para entender a implementação dessa funções na plataforma 8086 precisamos ter primeiro uma visão básica da estrutura de pilha na chamada de funções.</p>
+
+<p>Registradores são variáveis reservadas do processador que podem ser utilizadas pelo código assembly da plataforma envolvida. Stack frame (estrutura da pilha) nada mais é que a hierarquia de chamadas das funções, o "quem chamou quem" em uma execução qualquer. Call e ret são instruções em assembly para chamar uma função (call) e sair de uma função (ret), respectivamente. Ambas alteram o stack frame.</p>
+
+<p>Imagine que você tem uma função, CallFunc, e outra função, Func, e que uma chame a outra. Para analisarmos apenas a chamada de função, e apenas isso, vamos considerar que Func não recebe nenhum parâmetro e não retorna nenhum valor. O código em C fica, então, assim:</p>
+
+<pre>
+   void Func()
+   {
+     return;
+   }
+   void CallFunc()
+   {
+     Func();
+   }
+</pre>
+<p>Simples, não? Por esse mesmo motivo o disassembly terá que ser igualmente simples. Em CallFunc ele deverá conter a chamada da função (call) e em Func o retorno da chamada (ret). Se você compilar o código acima e o assembly vier com mais coisas pode ser que que eventualmente apareça mais código embutido em versões Debug, ou se estiver muito diferente ou inexistente pode ser uma otimização do seu compilador.</p>
+
+<pre>
+   Func:
+   00411F73 prev_instruction ; ESP = 0012FD38 (four bytes stacked up)
+   00411F74 ret ; *ESP = 00411FA3 (return address)
+   CallFunc:
+   00411F9C prev_instruction
+   00411F9E call Func (411424h) ; ESP = 0012FD3C
+   00411FA3 next_instruction
+</pre>
+<p>A partir do assembly acima podemos concluir no mínimo duas coisas:</p>
+
+<p> 1. a pilha "cresce" para baixo, pois seu valor decrementou de quadro (0012FD3C para 0012FD38 são 4 byte a menos).</p>
+
+<p> 2. o valor de retorno da função chamada é o endereço da próxima instrução após a chamada (call), no caso 00411FA3.</p>
+
+<p>Ora, da mesma forma que conseguimos acompanhar essa simples execução, o atacante também o fará. Por isso que no meio dessa chamada iremos colocar o lançamento de uma exceção e, no retorno, faremos não do modo convencional apresentado, mas por uma outra técnica que, ao invés de utilizar a instrução ret, seta "manualmente" o valor do registrador ESP (estado da pilha) e "pula" para a próxima instrução de CallFunc.</p>
+
+<pre>
+   Func:
+   00411F60 throw_exception
+   00411F61 ...
+   00411F73 catch_exception
+   00411F74 mov ESP, 0012FD3C ; ESP = 0012FD3C, como em CallFunc
+   00411F75 jmp 00411FA3 ; &quot;pula&quot; para CallFunc::next_instruction
+</pre>
+<p>Toda essa esculhambada em assembly não precisa ser necessariamente feita em linguagem de baixo nível. Foi apenas uma maneira que encontrei pra ilustrar as diferenças entre retorno baseado em pilha e alteração no fluxo do código. Como já foi dito, para a sorte e o bem-estar de todos, essa mesma técnica pode ser implementada com funções C da biblioteca ANSI:</p>
+
+<pre>
+   jmp_buf stack_state;
+   void Func()
+   {
+     longjmp(stack_state, 1);
+   }
+   void CallFunc()
+   {
+     // setting returns 0
+     // returning returns not 0
+     if( setjmp(stack_state) == 0 )
+       Func();
+     int x = 10;
+   }
+</pre>
+<p>Essa foi a técnica adicionada à solução do lançamento de exceções. E o código final ficou mais claro (além de rápido, por economizar o uso de uma thread para leitura dos comandos).</p>
+
+<pre>
+   /** The only purpose of 
+     this function is to 
+     generate an exception. */
+   DWORD LongJmp(jmp_buf* env)
+   {
+     __try
+     {
+       __asm int 3
+     }
+       __except( EXCEPTION_EXECUTE_HANDLER )
+     {
+       longjmp(*env, 1);
+     }
+     return ERROR_SUCCESS;
+   }
+   /** And God said: 
+     'int main!'
+   */
+   int main()
+   {
+     DWORD ret = ERROR_SUCCESS;
+     while( cin )
+     {
+       string line;
+       cout &lt;&lt; &quot;Type something\n&quot;;
+       getline(cin, line);
+       jmp_buf env;
+       if( setjmp(env) == 0 )
+       {
+         LongJmp(&amp;env);
+       }
+       else
+       {
+         cout &lt;&lt; line &lt;&lt; endl;
+       }
+     }
+     return (int) ret;
+   } 
+</pre>
+<p>À primeira vista parece um desperdício o if estar diretamente no código (lembre-se que vamos utilizar a mesma estrutura condicional em várias e várias partes do código. Para tornar mais claro seu uso, resumir a chamada protegida e permitir que a proteção seja desabilitada em debug, vamos criar uma macro:</p>
+
+<pre>
+   /** Use this macro instead of LongJmp
+   */
+   #define ANTIDEBUG(code)
+   {
+     jmp_buf env;
+     if( setjmp(env) == 0 )
+     {
+       LongJmp(&amp;env);
+     }
+     else
+     {
+       code;
+     }
+   }
+   /** And God said: 'int main!'
+   */
+   int main()
+   {
+     DWORD ret = ERROR_SUCCESS;
+     while( cin )
+     {
+       string line;
+       cout &lt;&lt; &quot;Type something\n&quot;;
+       getline(cin, line);
+       ANTIDEBUG(( cout &lt;&lt; line &lt;&lt; endl ));
+     }
+     return (int) ret;
+   } 
+</pre>
+<p>Veja que como agora permitimos a seleção do anti-debug por chamada, fica mais fácil escolher quais os pontos a serem protegidos e quais não devem/podem por conta de perfomance ou outro detalhe obscuro que sempre existe na vida de um programador C++.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="historia_da_linguagem_c_parte_2.html">[historia_da_linguagem_c_parte_2]</a>
+ <a href="historia_do_windows_parte_30.html">[historia_do_windows_parte_30]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

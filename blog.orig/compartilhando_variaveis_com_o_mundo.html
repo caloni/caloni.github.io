@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="compartilhando_variaveis_com_o_mundo" title="Compartilhando variáveis com o mundo"/></span>
+<section id="section_compartilhando_variaveis_com_o_mundo">
+<p class="title">Compartilhando variáveis com o mundo</p>
+<span class="title-heading">Caloni, 2008-01-30 computer blog</span>
+
+<p>Desde que comecei a programar, para compartilhar variáveis entre processo é meio que consenso usar-se a milenar técnica do crie uma seção compartilhada no seu executável/DLL. Isso funciona desde a época em que <a href="http://dqsoft.blogspot.com/2006/10/gerenciamento-de-memria-windows-16-bits.html">o Windows era em preto e branco</a>. Mas, como tudo em programação, existem mil maneiras de assar o pato. Esse artigo explica uma delas, a não-tão-milenar técnica do use memória mapeada nomeada misturada com templates.</p>
+
+<p>Era comum (talvez ainda seja) fazer um código assim:</p>
+
+<pre>
+   // aqui definimos uma nova seção (note o 'shared' usado como atributo)
+   #pragma section(&quot;shared&quot;, read, write, shared)
+   // um conjunto de variáveis agrupadas para facilitar o compartilhamento
+   struct EstruturaDoCoracao
+   {
+     int meuIntPreferido;
+     char meuCharAmigo;
+     double meuNumeroDePontoFlutuanteCamarada;
+   };
+   // uma instância da struct acima para podermos usar nos processos amigos
+   __declspec(allocate(&quot;shared&quot;)) EstruturaDoCoracao g_coracao;
+   int main()
+   {
+     g_coracao.meuCharAmigo = 'C';
+     g_coracao.meuIntPreferido = 42;
+     g_coracao.meuNumeroDePontoFlutuanteCamarada = 3.14159265358979323846264338;
+   } 
+</pre>
+<p>Aquele pragma do começo garante que qualquer instância do mesmo executável, mas processos distintos, irão compartilhar qualquer variável definida dentro da seção "shared". O nome na verdade não importa muito - é apenas usado para clareza - , mas o atributo do final, sim.</p>
+
+<p>Algumas desvantagens dessa técnica são:</p>
+
+<ul><li>Não permite compartilhamento entre executáveis diferentes, salvo se tratar-se de uma DLL carregada por ambos.</li>
+
+<li>É um compartilhamento estático, que permanece do início do primeiro processo ao fim do último.</li>
+
+<li>Não possui proteção, ou seja, se for uma DLL, qualquer executável que a carregar tem acesso à área de memória.</li></ul>
+
+<p>Muitas vezes essa abordagem é suficiente, como em hooks globais, que precisam apenas de uma ou duas variáveis compartilhadas. Também pode ser útil como contador de instâncias, do mesmo jeito que usamos as variáveis estáticas de uma classe em C++ (vide shared_ptr do boost, ou a CString do ATL, que usa o mesmo princípio).</p>
+
+<p>Houve uma vez em que tive que fazer hooks direcionados a threads específicas no sistema, onde eu não sabia nem qual o processo host nem quantos hooks seriam feitos. Essa é uma situação onde fica muito difícil usar a técnica milenar.</p>
+
+<p>Foi daí que eu fiz um conjunto de funções alfa-beta de compartilhamento de variáveis baseado em template e memória mapeada:</p>
+
+<pre>
+   #pragma once
+   #include &lt;windows.h&gt;
+   #include &lt;tchar.h&gt;
+   /** Aloca uma variável em memória mapeada, permitindo a qualquer processo
+   com direitos enxergá-la e alterá-la.
+   */
+   template&lt;typename T&gt;
+   HANDLE AllocSharedVariable(T** pVar, PCTSTR varName)
+   {
+     DWORD varSize = sizeof(T);
+     HANDLE ret = CreateFileMapping(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE,
+       0, varSize, varName);
+     if( ret )
+     {
+       *pVar = (T*) MapViewOfFile(ret, FILE_MAP_ALL_ACCESS, 0, 0, 0);
+       if( ! *pVar )
+       {
+         DWORD err = GetLastError();
+         CloseHandle(ret);
+         SetLastError(err);
+       }
+     }
+     else
+       *pVar = NULL;
+     return ret;
+   }
+   /** Abre uma variável que foi criada em memória mapeada, permitindo ao
+   processo atual enxergar e alterar uma variável criada por outro processo.
+   */
+   template&lt;typename T&gt;
+   HANDLE OpenSharedVariable(T** pVar, PCTSTR varName)
+   {
+     DWORD varSize = sizeof(T);
+     HANDLE ret = OpenFileMapping(FILE_MAP_ALL_ACCESS, FALSE, varName);
+     if( ret )
+     {
+       *pVar = (T*) MapViewOfFile(ret, FILE_MAP_READ | FILE_MAP_WRITE, 0, 0, varSize);
+       if( ! *pVar )
+       {
+       DWORD err = GetLastError();
+       CloseHandle(ret);
+       ret = NULL;
+       SetLastError(err);
+       }
+     }
+     else
+       *pVar = NULL;
+     return ret;
+   }
+   /** Libera visualização de uma variável em memória mapeada. Quando o último processo
+   liberar a última visualização, a variável é eliminada da memória.
+   */
+   template&lt;typename T&gt;
+   VOID FreeSharedVariable(HANDLE varH, T* pVar)
+   {
+     if( pVar )
+       UnmapViewOfFile(pVar);
+     if( varH )
+       CloseHandle(varH);
+   } 
+</pre>
+<p>Como pode-se ver, o seu funcionamento é muito simples: uma função-template que recebe uma referência para um ponteiro de ponteiro do tipo da variável desejada, o seu nome global e retorna uma variável alocada na memória de cachê do sistema. Como contraparte existe uma função que abre essa memória baseada em seu nome e faz o cast (coversão de tipo) necessário. Ambas as chamadas devem chamar uma terceira função para liberar o recurso.</p>
+
+<p>O segredo para entender mais detalhes dessa técnica é pesquisar as funções envolvidas: CreateFileMapping, OpenFileMapping, MapViewOfFile e UnmapViewOfFile. Bem, o CloseHandle também ;)</p>
+
+<p>Ah, é mesmo! Fiz especialmente para o artigo:</p>
+
+<pre>
+   #define _CRT_SECURE_NO_DEPRECATE
+   #include &quot;ShareVar.h&quot;
+   #include &lt;windows.h&gt;
+   #include &lt;tchar.h&gt;
+   #include &lt;stdio.h&gt;
+   #define SHARED_VAR &quot;FraseSecreta&quot;
+   /** Exemplo de como usar as funções de alocação de memória compartilhada
+   AllocSharedVariable, OpenSharedVariable e FreeSharedVariable.
+   */
+   int _tmain(int argc, PTSTR argv[])
+   {
+     // passou algum parâmetro: lê a variável compartilhada e exibe
+     if( argc &gt; 1 )
+     {
+       system(&quot;pause&quot;);
+       TCHAR (*sharedVar)[100] = 0; // ponteiro para array de 100 TCHARs
+       HANDLE varH = AllocSharedVariable(&amp;sharedVar, _T(SHARED_VAR));
+       if( varH &amp;&amp; sharedVar )
+       {
+         _tprintf(_T(&quot;Frase secreta: '%s'n&quot;), *sharedVar);
+         _tprintf(_T(&quot;Pressione &lt;enter&gt; para retornar...&quot;));
+         getchar();
+       }
+     }
+     else // não passou parâmetro: escreve na variável 
+     // compartilhada e chama nova instância
+     {
+       TCHAR (*sharedVar)[100] = 0; // ponteiro para array de 100 TCHARs
+       HANDLE varH = AllocSharedVariable(&amp;sharedVar, _T(SHARED_VAR));
+       if( varH &amp;&amp; sharedVar )
+       {
+         PTSTR cmd = new TCHAR[ _tcslen(argv[0]) + 10 ];
+         _tcscpy(cmd, _T(&quot;\&quot;&quot;));
+         _tcscat(cmd, argv[0]);
+         _tcscat(cmd, _T(&quot;\&quot; 2&quot;));
+         _tcscpy(*sharedVar, _T(&quot;Tuintuintuclaim&quot;));
+         _tsystem(cmd);
+         delete [] cmd;
+       }
+     }
+     return 0;
+   } 
+</pre>
+<p>Preciso lembrar que essa é uma versão inicial ainda, mas que pode muito bem ser melhorada. Duas idéias interessantes são: parametrizar a proteção da variável (através do SECURITY_ATTRIBUTES) e transformá-la em classe. Uma classe parece ser uma idéia bem popular. Afinal, tem tanta gente que só se consegue programar se o código estiver dentro de uma.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="compartilhando_variaveis_com_o_mundo_v2.html">[compartilhando_variaveis_com_o_mundo_v2]</a>
+ <a href="rmthread_rode_codigo_em_processo_vizinho.html">[rmthread_rode_codigo_em_processo_vizinho]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="sizeof_de_novo" title="Sizeof (de novo)"/></span>
+<section id="section_sizeof_de_novo">
+<p class="title">Sizeof (de novo)</p>
+<span class="title-heading">Caloni, 2007-12-17 computer blog</span>
+
+<p>Algumas coisas em C parecem tão simples na programação do dia-a-dia que em alguns momentos podem existir situações confusas e misteriosas. O uso obscuro do operador sizeof, por exemplo, pode dar margem a interpretações erradas a respeito do que está acontecendo por debaixo dos panos. Apesar do padrão ter sido elaborado para tentar tornar a linguagem uma coisa intuitiva e de fácil dedução, isso não acontece todas as vezes.</p>
+
+<p>Vamos tomar, por exemplo, o seguinte minicódigo:</p>
+
+<pre>
+   size_t len = sizeof(&quot;A simple string&quot;);
+   memcpy(buf, &quot;A simple string&quot;, len);
+</pre>
+<p>A pergunta ingênua: quantos bytes são copiados para buf?</p>
+
+<p>A resposta ingênua: er... o tamanho de "A simple string"?</p>
+
+<p>Agora vamos supor que você é um pouco mais esperto e começa a pensar: "mas, peraí, estou passando na realidade um ponteiro para sizeof, o que quer dizer que, se meus cálculos estiverem corretos, e estivermos em uma plataforma de 32 bits, sizeof deve retornar 4, o que quer dizer que acabei de achar um bug escabroso, uhuu!".</p>
+
+<p>Muito bem, o raciocínio é perfeito. Afinal de contas, "A simple string" é um ponteiro para um array de caracteres terminados em zero, certo?</p>
+
+<p>Estou quase certo disso. Porém, isso quer dizer que já deixei vários bugs escabrosos há uns 4 anos atrás em trechos de código parecidos com esse. Será que eu estava errado e não me dei conta, ou sabia de algo que esqueci faz muito tempo?</p>
+
+<p>Eu e meu amigo demos uma olhada no padrão da linguagem C de 89 (revisão de 90), que diz duas coisas muito importantes nesse momento: o que é um sizeof e o que é uma string constante (chamada no padrão de string literal):</p>
+
+<blockquote>#### Sizeof (6.3.3.4)</blockquote>
+
+<blockquote>The sizeof operator yields the size (in bytes) of its operand, which may be an expression or the parenthesized name of a type. The size is determined from the type of the operand, which is not itself evaluated. The result is an integer constant.</blockquote>
+
+<blockquote>#### String literal (6.1.4)</blockquote>
+
+<blockquote>A character string literal is a sequence of zero or more multibyte characters enclosed in double-quotes, as in "xyz". A wide string literal is the same, except prefixed by the letter L. (...) The multibyte character sequence is then used to initialize an array of static storage duration and lenght just sufficient to contain the sequence.</blockquote>
+<p>Em C++ (padrão ISO de 98) o texto é muito parecido, apenas abragendo também o conceito de type-id (desnecessário explicar para o contexto deste artigo):</p>
+
+
+<blockquote>#### Sizeof (5.3.3)</blockquote>
+
+<blockquote>The sizeof operator yields the number of bytes in the object representation of its operand. The operand is either an expression, which is not evaluated, or a parenthesized type-id.</blockquote>
+
+<blockquote>#### String literal (2.13.4)</blockquote>
+
+<blockquote>A string literal is a sequence of characters (as defined in 2.13.2) surrounded by double quotes, optionally beginning with the letter L, as in "..." or L"...". (...) An ordinary string literal has type "array of n const char" and static storage duration (...).</blockquote>
+<p>Esses textos do padrão demonstram que o operador sizeof irá retornar o número de bytes baseado no tipo do operando, e que o tipo de uma string literal é de array de caracteres com o tamanho justo para caber a string.</p>
+
+<p>Bem, todos sabemos o resultado das linhas abaixo:</p>
+
+<pre>
+   char charArray[100];
+   size_t len = sizeof(charArray);
+</pre>
+<p>Nesse caso é simples de observar que o operador sizeof irá retornar 100, que é o número em bytes para abrigar o tipo do operando, que é de "array de 100 caracteres". Podemos, então, imaginar que a nossa idiomática expressão do início é no fundo um resumo das linhas que se seguem.</p>
+
+<pre>
+   ...
+   static char aSimpleString[] = &quot;A simple string&quot;;
+   ...
+   size_t len = sizeof(aSimpleString);
+   memcpy(buf, aSimpleString, len);
+</pre>
+<p>Ou seja, o tipo de nossa string é na verdade de array estático de caracteres, como se uma variável tivesse sido definida anteriormente com o conteúdo da string, que deve estar em algum lugar da memória do programa. Visto dessa forma fica bem mais simples de entender o que acontece na versão resumida.</p>
+
+<p>O mais encorajador desse problema do sizeof é que a resposta ingênua estava certa, ou seja, pelo menos dessa vez, o padrão conseguiu através de suas regras seguir a intuição do programador.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="o_que_acontece_quando_o_contador_estoura.html">[o_que_acontece_quando_o_contador_estoura]</a>
+ <a href="carregando_dlls_arbitrarias_pelo_windbg_parte_2.html">[carregando_dlls_arbitrarias_pelo_windbg_parte_2]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

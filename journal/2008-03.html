@@ -65,7 +65,7 @@ role="navigation" aria-label="main navigation">
 <span id="iteradores_nao_sao_constantes" title="Iteradores não são constantes"/></span>
 <section id="section_iteradores_nao_sao_constantes">
 <p class="title"><a href="2008-03.html#iteradores_nao_sao_constantes">#</a> Iteradores não são constantes</p>
-<span class="title-heading">Caloni, 2008-03-04 <a href="2008-02.html#quando_o_ponteiro_nulo_nao_e_invalido">&lt;</a><a href="computer.html">computer</a><a href="2008-03.html#sed_grep_e_afins">&gt;</a><a href="2008-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_iteradores_nao_sao_constantes')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2008-03-04 <a href="2008-02.html#conversor_de_houaiss_para_babylon_parte_1">&lt;</a><a href="computer.html">computer</a><a href="2008-03.html#sed_grep_e_afins">&gt;</a> <a href="2008-02.html#conversor_de_houaiss_para_babylon_parte_1">&lt;</a><a href="blog.html">blog</a><a href="2008-03.html#estranho">&gt;</a><a href="2008-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_iteradores_nao_sao_constantes')"><sup>[copy]</sup></a></span>
 
 <p>Um bug que já encontrei uma dúzia de vezes entre os novatos da STL é a utilização de iteradores como se eles não fossem mudar nunca. Porém, a verdade é bem diferente: iteradores se tornam inválidos sim, e com muito mais freqüência do que normalmente se imagina. Entre as situações em que iteradores podem mudar estão as seguintes:</p>
 
@@ -100,7 +100,7 @@ role="navigation" aria-label="main navigation">
      }
    }
 </pre>
-<p>Algo de errado irá acontecer apenas se o elemento removido for o último localizado no contêiner.</p>
+<p>Algo de errado irá acontecer se o elemento removido for o último localizado no contêiner. Porém, mesmo que não for, um item será pulado durante a iteração, pois o iterador apontando para o próximo elemento será incrementado antes de passar pelo loop.</p>
 
 <p>Esse é um erro comum para os acostumados com outros tipos de iteração (ex: ponteiros) e que não estudaram os princípios básicos da STL, entre eles o da reutilização de algoritmos. Se fosse usado este princípio, nada disso teria acontecido:</p>
 
@@ -122,7 +122,7 @@ role="navigation" aria-label="main navigation">
 <span id="estranho" title="Estranho"/></span>
 <section id="section_estranho">
 <p class="title"><a href="2008-03.html#estranho">#</a> Estranho</p>
-<span class="title-heading">Caloni, 2008-03-06<a href="2008-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_estranho')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2008-03-06 <a href="2008-03.html#iteradores_nao_sao_constantes">&lt;</a><a href="blog.html">blog</a><a href="2008-03.html#o_misterio_das_pilhas_diferentes">&gt;</a><a href="2008-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_estranho')"><sup>[copy]</sup></a></span>
 
 <p>Bom, é hora de dizer tchau. Essa é minha última semana escovando bits na empresa onde estava por três anos. É estranho e esquisito dizer isso, mas me sinto um tanto aliviado. Nessa empreitada, porém, aprendi algumas coisas que valem a pena colocar na bagagem. Sempre é melhor entender do que criticar.</p>
 
@@ -244,7 +244,7 @@ role="navigation" aria-label="main navigation">
 <span id="o_misterio_das_pilhas_diferentes" title="O mistério das pilhas diferentes"/></span>
 <section id="section_o_misterio_das_pilhas_diferentes">
 <p class="title"><a href="2008-03.html#o_misterio_das_pilhas_diferentes">#</a> O mistério das pilhas diferentes</p>
-<span class="title-heading">Caloni, 2008-03-12 <a href="2008-03.html#sed_grep_e_afins">&lt;</a><a href="computer.html">computer</a><a href="2008-03.html#influence_board">&gt;</a><a href="2008-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_o_misterio_das_pilhas_diferentes')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2008-03-12 <a href="2008-03.html#sed_grep_e_afins">&lt;</a><a href="computer.html">computer</a><a href="2008-03.html#influence_board">&gt;</a> <a href="2008-03.html#estranho">&lt;</a><a href="blog.html">blog</a><a href="2008-03.html#depuracao_da_mbr">&gt;</a><a href="2008-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_o_misterio_das_pilhas_diferentes')"><sup>[copy]</sup></a></span>
 
 <p>Mal comecei a leitura do meu mais novo <a href="http://advancedwindowsdebugging.com/">"mother-fucker" livro</a> e já encontrei a solução para nunca mais viver o terror que vivi quando tive que testar minha engenharia reversa do artigo sobre o Houaiss. Se trata de uma simples questão que não sei por que não sigo todas as vezes religiosamente: configure seus símbolos corretamente.</p>
 
@@ -334,7 +334,7 @@ role="navigation" aria-label="main navigation">
      User time: 0 days 0:00:02.723
    Live user mode: &lt;Local&gt;
    command line: '&quot;C:\Tools\DbgTools\windbg.exe&quot; -pn houaiss2.exe'  Debugger Process 0xEC4
-   dbgeng:  image 6.6.0007.5, built Sat Jul 08 17:12:40 2006
+   dbgeng:  image 6.6.0007.5, built Sat Jul 08 17:12:40 2006 &lt;-- mais antiga
            [path: C:\Tools\DbgTools\dbgeng.dll]
    dbghelp: image 6.6.0007.5, built Sat Jul 08 17:11:32 2006
            [path: C:\Tools\DbgTools\dbghelp.dll]
@@ -363,7 +363,7 @@ role="navigation" aria-label="main navigation">
      User time: 0 days 0:00:01.078
    Live user mode: &lt;Local&gt;
    command line: '&quot;C:\Tools\DbgTools\windbg.exe&quot; -pn houaiss2.exe'  Debugger Process 0x864
-   dbgeng:  image 6.8.0004.0, built Thu Sep 27 18:28:09 2007
+   dbgeng:  image 6.8.0004.0, built Thu Sep 27 18:28:09 2007 &lt;-- bem mais nova
            [path: C:\Tools\DbgTools\dbgeng.dll]
    dbghelp: image 6.8.0004.0, built Thu Sep 27 18:27:05 2007
            [path: C:\Tools\DbgTools\dbghelp.dll]
@@ -494,7 +494,7 @@ role="navigation" aria-label="main navigation">
 <span id="depuracao_da_mbr" title="Depuração da MBR"/></span>
 <section id="section_depuracao_da_mbr">
 <p class="title"><a href="2008-03.html#depuracao_da_mbr">#</a> Depuração da MBR</p>
-<span class="title-heading">Caloni, 2008-03-24 <a href="2008-03.html#como_rodar_qualquer_coisa_como_servico">&lt;</a><a href="computer.html">computer</a><a href="2008-03.html#windbg_a_distancia">&gt;</a><a href="2008-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_depuracao_da_mbr')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2008-03-24 <a href="2008-03.html#como_rodar_qualquer_coisa_como_servico">&lt;</a><a href="computer.html">computer</a><a href="2008-03.html#windbg_a_distancia">&gt;</a> <a href="2008-03.html#o_misterio_das_pilhas_diferentes">&lt;</a><a href="blog.html">blog</a><a href="2008-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_depuracao_da_mbr')"><sup>[copy]</sup></a></span>
 
 <p>Dando continuidade a um artigo bem antigo sobre <a href="2007-10.html#debug_da_bios_com_o_softice_16_bits">depuração da BIOS usando SoftIce</a>, como já vimos, podemos igualmente depurar a MBR após a chamada da INT13. Porém, devo atentar para o fato que, em algumas VMs, e sob determinadas condições do tempo e quantidade de ectoplasma na atmosfera, é possível que a máquina trave após o hot boot iniciado pelo depurador. Isso provavelmente tem cura usando o espaço de endereçamento alto da memória com a ajuda de aplicativos como LH e UMB.</p>
 

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="ponteiros_de_metodo_conceito_fundamental" title="Ponteiros de método: conceito fundamental"/></span>
+<section id="section_ponteiros_de_metodo_conceito_fundamental">
+<p class="title">Ponteiros de método: conceito fundamental</p>
+<span class="title-heading">Caloni, 2007-11-05 computer blog</span>
+
+<p>Diferente de ponteiros de função globais ou estáticas, que são a grosso modo ponteiros como qualquer um, os ponteiros de método possuem uma semântica toda especial que costuma intimidar até quem está acostumado com a aritmética de ponteiros avançada. Não é pra menos: é praticamente uma definição à parte, com algumas limitações e que deixa a desejar os quase sempre criativos programadores da linguagem, que vira e mexe estão pedindo mudanças no C++0x.</p>
+
+<p>Três regras iniciais que devem ser consideradas para usarmos ponteiros para métodos são:</p>
+
+<ul><li>A semântica para lidar com ponteiros de método é totalmente diferente de ponteiros de função.</li>
+
+<li>Ponteiros de método de classes distintas nunca se misturam.</li>
+
+<li>Para chamarmos um ponteiro de método precisamos sempre de um objeto da classe para a qual ele aponta.</li></ul>
+
+<p>Visto isso, passemos a um exemplo simples, um chamador de métodos aleatórios, que ilustra o princípio básico de utilização:</p>
+
+<pre>
+   #include &lt;iostream&gt;
+   #include &lt;time.h&gt;
+   class Rand;
+   typedef void (Rand::*FP)();
+   class Rand
+   {
+     public:
+       Rand()
+       {
+         srand(time(NULL));
+       }
+       FP GiveMeFunc()
+       {
+         return m_funcs[rand() % 3];
+       }
+     private:
+       void FuncOne()   { std::cout &lt;&lt; &quot;One!\n&quot;; }
+       void FuncTwo()   { std::cout &lt;&lt; &quot;Two!\n&quot;; }
+       void FuncThree() { std::cout &lt;&lt; &quot;Three!\n&quot;; }
+       static FP m_funcs[3];
+   };
+   FP Rand::m_funcs[3] = { &amp;FuncOne, &amp;FuncTwo, &amp;FuncThree };
+   void passThrough(FP fp)
+   {
+     Rand r;
+     ( r.*fp )(); // &lt;&lt;-- this
+   }
+   /** No princípio Deus disse:
+     'int main!'
+    */
+   int main()
+   {
+     Rand r;
+     FP fp;
+     fp = r.GiveMeFunc();
+     passThrough(fp);
+   }
+</pre>
+<p>Como podemos ver, para o typedef de ponteiros de método é necessário especificar o escopo da classe. Com isso o compilador já sabe que só poderá aceitar endereços de métodos pertencentes à mesma classe com o mesmo protótipo. Na hora de atribuir, usamos o operador de endereço e o nome do método (com escopo, se estivermos fora da classe). É importante notar que, diferente de ponteiros de função, o operador de endereço é obrigatório. Do contrário:</p>
+
+<pre>
+   error C4867: 'Rand::FuncOne': function call 
+   missing argument list; use '&amp;Rand::FuncOne' 
+   to create a pointer to member
+</pre>
+<p>E, por fim, a chamada. Como é a chamada de um método, é quase intuitiva a necessidade de um objeto para chamá-la. Do contrário não teríamos um this para alterar o objeto em qualquer método não-estático, certo? Daí a necessidade do padrão C++ especificar dois operadores especialistas para esse fim, construídos a partir da combinação de operadores já existentes em C:</p>
+
+<pre>
+   Rand r;
+   Rand* pr = &amp;r;
+   // [obj] .* [method ptr]
+   ( r.*pMethod )();
+   // [obj ptr] -&gt;* [method ptr] 
+   ( pr-&gt;*pMethod )();
+</pre>
+<p>Esses operadores obrigam o programador a sempre ter um objeto e um ponteiro. Daí não tem como errar. Infelizmente, devido à ordem de precedência, temos que colocar os parênteses em torno da expressão para chamar o método. Pelo menos fica equivalente ao que precisávamos fazer antes da padronização da linguagem C.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="ponteiro_de_metodo_qual_this_e_usado.html">[ponteiro_de_metodo_qual_this_e_usado]</a>
+ <a href="alterando_mensagem_de_erro_no_notepad.html">[alterando_mensagem_de_erro_no_notepad]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

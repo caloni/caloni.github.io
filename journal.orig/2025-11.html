@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Jornal do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Jornal do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/journal/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/journal/index.xml" rel="feed" type="application/rss+xml" title="Jornal do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/journal/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/journal/css/jquery-ui.css"/>
+<script src="/journal/js/jquery-1.12.4.js"></script>
+<script src="/journal/js/jquery-ui.js"></script>
+<script src="/journal/js/copy_clipboard.js"></script>
+<script src="/journal/js/list.js"></script>
+<link rel="icon" href="/journal/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="months.html">
+<div class="is-4"><b>Jornal do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<ul style="list-style: none;">
+
+<li><small><a href="2025-11.html#por_que_cada_membro_dispose_existe">Por que cada membro Dispose existe?</a></small></li>
+<li><small><a href="2025-11.html#o_senhor_dos_aneis_a_sociedade_do_anel">O Senhor dos Anéis: A Sociedade do Anel</a></small></li>
+<li><small><a href="2025-11.html#o_senhor_dos_aneis_as_duas_torres">O Senhor dos Anéis: As Duas Torres</a></small></li>
+<li><small><a href="2025-11.html#ser_programador_wanderley_caloni">Ser programador (Wanderley Caloni)</a></small></li></ul>
+
+<span id="por_que_cada_membro_dispose_existe" title="Por que cada membro Dispose existe?"/></span>
+<section id="section_por_que_cada_membro_dispose_existe">
+<p class="title"><a href="2025-11.html#por_que_cada_membro_dispose_existe">#</a> <a class="external" href="https://blog.ivankahl.com/csharp-dispose-pattern/">Por que cada membro Dispose existe?</a></p>
+<span class="title-heading">Caloni, 2025-11-14 <a href="dotnet.html">dotnet</a> <a href="2025-10.html#tips_for_probabilistic_software">&lt;</a><a href="digest.html">digest</a><a href="2025-12.html#what_actually_makes_you_senior">&gt;</a> <a href="2025-10.html#tips_for_probabilistic_software">&lt;</a><a href="blogging.html">blogging</a><a href="2025-12.html#what_actually_makes_you_senior">&gt;</a><a href="2025-11.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_por_que_cada_membro_dispose_existe')"><sup>[copy]</sup></a></span>
+
+<p>Tudo gira em torno da necessidade de gerenciar objetos não gerenciáveis, o que implica em um finalizer para que seja feito isso, e apenas isso. O finalizer não deve tocar em código gerenciado, e é por isso que existe um Boolean definindo se disposing será feito. Todo o resto do código do finalizer deve ser para liberação de recursos nativos.</p>
+
+<p>O Dispose sem parâmetros é público e existe para ser chamado pelo usuário, direta ou indiretamente (using). Ele deve chamar o Dispose protegido passando o parâmetro disposing como true. Deve avisar o GC para não chamar o finalizer, já que não devemos chamar o Dispose protegido de novo. Isso deve ser feito mesmo que não exista um finalizer na classe, pois as classes base podem conter, agora ou no futuro. A Microsoft também recomenda porque pode ser que no futuro a própria classe tenha, o que parece tão gambiarrento quanto você imagina. Se ainda não te convenci, a Microsoft obriga por contrato (documentado) que você deve sempre desabilitar.</p>
+
+<blockquote>If your type implements IDisposable, Dispose() should always call GC.SuppressFinalize(this) even if the class has no finalizer.</blockquote>
+<p>No entanto, se a classe não tem recursos não gerenciados e está selada, ou seja, não haverá subclasse com finalizer, você pode adotar um pattern mais simples, sem Dispose(disposing), sem finalizer e portanto sem chamar GC.SupressFinalizer. E se sua classe não tem nenhum recurso disposable você ainda pode apenas implementar o Dispose público vazio.</p>
+
+<p>Para evitar gerenciar recursos nativos você pode usar a classe SafeHandle, que como já lida com o finalizer internamente evita a necessidade da classe que usa chamar a supressão.</p>
+
+<p>O Dispose protegido faz a deslocação de recursos de fato, gerenciado, se disposing for true, e não gerenciado sempre. Para os gerenciados ele chama o método Dispose. Por fim, se houver um finalizer, ele chama o Dispose protegido com disposing como false, pois os objetos gerenciados podem já ter sido finalizados e resta os não gerenciados.</p>
+
+</section><hr/>
+
+
+<span id="o_senhor_dos_aneis_a_sociedade_do_anel" title="O Senhor dos Anéis: A Sociedade do Anel"/></span>
+<section id="section_o_senhor_dos_aneis_a_sociedade_do_anel">
+<p class="title"><a href="2025-11.html#o_senhor_dos_aneis_a_sociedade_do_anel">#</a> O Senhor dos Anéis: A Sociedade do Anel</p>
+<span class="title-heading">Caloni, 2025-11-21 <a href="2025-11.html#o_senhor_dos_aneis_as_duas_torres">&lt;</a><a href="movies.html">movies</a><a href="2025-11.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_o_senhor_dos_aneis_a_sociedade_do_anel')"><sup>[copy]</sup></a></span>
+
+<p>Reassistir depois de mais de uma década fez o filme envelhecer no bom sentido: não parece em nada com os filmes atuais. Tem pelo menos umas sete cenas de tirar o fôlego. O CGI é datado, mas permanece quase impecável (como 2001: Uma Odisseia no Espaço). Mantém ainda a tradição das grandes produções de Hollywood, embora já estejamos no novo século. Não há praticamente nada que eu não me lembrava desde a primeira vez que vi no cinema. É um dos filmes que deixa a sua mensagem tão poderosa e perene que fica para sempre. O que muda ao reassistir é o espectador. Hoje percebo mais as partes maduras da saga, especialmente sobre política e valores. É um filme que tem uma alma vibrante e solene, um estilo próprio que define de maneira exemplar como se faz filme de quest.</p>
+
+</section><hr/>
+
+
+<span id="o_senhor_dos_aneis_as_duas_torres" title="O Senhor dos Anéis: As Duas Torres"/></span>
+<section id="section_o_senhor_dos_aneis_as_duas_torres">
+<p class="title"><a href="2025-11.html#o_senhor_dos_aneis_as_duas_torres">#</a> O Senhor dos Anéis: As Duas Torres</p>
+<span class="title-heading">Caloni, 2025-11-21 <a href="2025-10.html#poor_things_2023">&lt;</a><a href="movies.html">movies</a><a href="2025-11.html#o_senhor_dos_aneis_a_sociedade_do_anel">&gt;</a><a href="2025-11.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_o_senhor_dos_aneis_as_duas_torres')"><sup>[copy]</sup></a></span>
+
+<p>É um vídeo game de três horas que move lentamente uma história já iniciada. É sobre alianças, lealdade e esperança. E sobre cenas de batalha que irão novamente te deixar sem fôlego por um tempo. Uma senhora prévia de O Retorno do Rei com sua batalha mais épica já filmada no cinema. Ele é claramente inferior ao início da trilogia, mas cumpre seu papel de investir tempo e energia em direção ao terceiro ato, além de contar com alguns momentos inesquecíveis do Cinema, como o monólogo da criatura Gollum e uma das melhores interpretações sem a captura do rosto do ator (Andy Serkis).</p>
+
+</section><hr/>
+
+
+<span id="ser_programador_wanderley_caloni" title="Ser programador (Wanderley Caloni)"/></span>
+<section id="section_ser_programador_wanderley_caloni">
+<p class="title"><a href="2025-11.html#ser_programador_wanderley_caloni">#</a> Ser programador (Wanderley Caloni)</p>
+<span class="title-heading">Caloni, 2025-11-22 <a href="2025-09.html#padroes_de_pensamento">&lt;</a><a href="quotes.html">quotes</a><a href="2025-12.html#what_actually_makes_you_senior">&gt;</a><a href="2025-11.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_ser_programador_wanderley_caloni')"><sup>[copy]</sup></a></span>
+
+<blockquote>Tratar cada novo código com tanta seriedade como se fosse a última versão é descartar a alegria e virtude de ser um programador.</blockquote>
+
+<blockquote>Não é sobre funcionar, mas descobrir como as coisas não funcionam.</blockquote>
+</section><hr/>
+
+<span style="float: left;">
+ <a href="2025-10.html">[2025-10]</a>
+ <a href="2025-12.html">[2025-12]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

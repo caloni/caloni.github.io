@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="historia_da_linguagem_c_parte_2" title="História da Linguagem C: Parte 2"/></span>
+<section id="section_historia_da_linguagem_c_parte_2">
+<p class="title">História da Linguagem C: Parte 2</p>
+<span class="title-heading">Caloni, 2007-08-15 computer ccpp blog</span>
+
+<p>No princípio... não, não, não. Antes do princípio, quando C era considerada a terceira letra do alfabeto e o que tínhamos eram linguagens experimentais para todos os lados, dois famigerados senhores dos Laboratórios Bell, K. Thompson e D. Ritchie, criaram uma linguagem chamada B. E B era bom.</p>
+
+<img src="/blog/img/historia_da_linguagem_c_parte_2_kthompson_dritchie.jpg"/>
+
+<p>O bom de B era sua rica expressividade e sua simples gramática. Tão simples que o <a href="http://cm.bell-labs.co/who/dmr/kbman.html">manual da linguagem</a> consistia de apenas 30 páginas. Isso é menos do que as 32 palavras reservadas de C. As instruções eram definidas em termos de ifs e gotos e as variáveis eram definidas em termos de um padrão de bits de tamanho fixo, geralmente a word, ou palavra, da plataforma, que utilizada em expressões definiam seu tipo. Esse padrão de bits era chamado rvalue. Imagine a linguagem C de hoje em dia com apenas um tipo: int.</p>
+
+<p>Como esse padrão de bits nunca muda de tamanho, todas as rotinas da biblioteca recebiam e retornavam sempre valores do mesmo tamanho na memória. Isso na linguagem C quer dizer que o char da época ocupava tanto quanto o int. Existia inclusive uma função que retornava o caractere de uma string na posição especificada:</p>
+
+<pre>
+   c = char(string, i); /* the i-th character of the string is returned */
+</pre>
+<p>Sim! Char era uma função, um conversor de "tipos". No entanto a própria variável que armazenava um char tinha o tamanho de qualquer objeto da linguagem. Esse é o motivo pelo qual, tradicionalmente, as seguintes funções recebem e retornam ints em C e C++:</p>
+
+<pre>
+   int getchar( void ); // read a character from stdin
+   int putchar( int c ); // writes a character to stdout
+   void *memset( void *dest, int c, size_t count ); // sets buffers to a specified character
+</pre>
+<p>Segue o exemplo de uma função na linguagem B, hoje muito famosa:</p>
+
+<pre>
+   /* The following function is a general formatting, printing, and
+      conversion subroutine.  The first argument is a format string.
+      Character sequences of the form `%x' are interpreted and cause
+      conversion of type 'x' of the next argument, other character
+      sequences are printed verbatim.   Thus
+     printf(&quot;delta is %d*n&quot;, delta);
+     will convert the variable delta to decimal (%d) and print the
+     string with the converted form of delta in place of %d.   The
+     conversions %d-decimal, %o-octal, *s-string and %c-character
+     are allowed.
+     This program calls upon the function `printn'. (see section
+     9.1) */
+   printf(fmt, x1,x2,x3,x4,x5,x6,x7,x8,x9) {
+     extrn printn, char, putchar;
+     auto adx, x, c, i, j;
+     i= 0;  /* fmt index */
+     adx = &amp;x1;  /* argument pointer */
+   loop :
+     while((c=char(fmt,i++) ) != `%') {
+       if(c == `*e')
+         return;
+       putchar(c);
+     }
+     x = *adx++;
+     switch c = char(fmt,i++) {
+     case `d': /* decimal */
+     case `o': /* octal */
+       if(x &lt; O) {
+         x = -x ;
+         putchar('-');
+       }
+       printn(x, c=='o'?8:1O);
+       goto loop;
+     case 'c' : /* char */
+       putchar(x);
+       goto loop;
+     case 's': /* string */
+       while(c=char(x, j++)) != '*e')
+         putchar(c);
+       goto loop;
+     }
+     putchar('%') ;
+     i--;
+     adx--;
+     goto loop;
+   } 
+</pre>
+<p>Como podemos ver, vários elementos (se não todos) da linguagem C já estão presentes na B.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="antidebug_ocupando_a_debugport.html">[antidebug_ocupando_a_debugport]</a>
+ <a href="antidebug_interpretacao_baseada_em_excecao_parte_2.html">[antidebug_interpretacao_baseada_em_excecao_parte_2]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

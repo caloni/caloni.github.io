@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="o_que_acontece_quando_o_contador_estoura" title="O que acontece quando o contador estoura"/></span>
+<section id="section_o_que_acontece_quando_o_contador_estoura">
+<p class="title">O que acontece quando o contador estoura</p>
+<span class="title-heading">Caloni, 2007-12-25 computer blog</span>
+
+<p>Dois conceitos de programação relacionados a limites computacionais são bem conhecidos do programador: o famigerado overflow e o não-tão-famoso underflow (embora seja fácil imaginar que ele é o oposto do primeiro). O primeiro ocorre quando somamos a uma variável inteira não-nula um valor cujo resultado não consegue ser representado pelo tamanho de memória usado para armazenar esse tipo inteiro (que pode ser um caractere, um inteiro curto, inteiro longo e por aí vai). O underflow, por outro lado (outro lado mesmo), é o resultado de uma subtração que não pode ser representado pelo número de bits do seu tipo inteiro.</p>
+
+<p>Nada melhor que um código para ilustrar melhor esses dois ilustres acontecimentos:</p>
+
+<pre>
+   #include &lt;limits.h&gt;
+   #include &lt;iostream&gt;
+   int main()
+   {
+     int x = INT_MAX;
+     std::cout &lt;&lt; x &lt;&lt; std::endl;
+     x = x + 1;
+     std::cout &lt;&lt; x &lt;&lt; std::endl;
+   } 
+   Saída:
+    2147483647
+   -2147483648
+</pre>
+<p>O indicador de que algo está errado é simples: como diabos foi um número positivo virar negativo, já que eu somei ao invés de subtrair? No entanto, computacionalmente parece extremamente correto: o próximo número após o maior valor positivo possível é o menor número negativo possível.</p>
+
+<p>Nos computadores atuais tudo no final acaba sendo representado por zeros e uns, até o sinal de negativo dos números menores que zero. Por isso mesmo, para que consigamos usar números menores que zero, precisamos gastar um bit para indicar que este número é negativo. Existem muitas representações interessantes, dentre as quais a mais popular acabou sendo a de complemento de dois. A regra é simples:</p>
+
+<blockquote>Toda representação binária que tiver o bit mais significativo ligado (o bit mais à esquerda) significa um número negativo cujo valor absoluto se obtém invertendo-se o resto dos bits e adicionando um.</blockquote>
+<p>Quando o bit mais à esquerda não está ligado o valor absoluto é ele mesmo; ou seja, é um número positivo, incluindo o zero. Como vamos ver, isso facilita em muito os cálculos para o computador. Para nós, a coisa não fica lá muito difícil. Só precisamos lembrar que, em hexadecimal, todos os valores que tiverem o byte mais significativo igual ou maior que 8 (que é 1000 em binário) é negativo e temos que aplicar o método de complemento de dois para obter seu valor absoluto. Vejamos o valor -8, por exemplo:</p>
+
+<p>  1. Primeiro temos a representação real (em um byte): 1111 1000.</p>
+
+<p>  2. O bit mais significativo está ligado: é um número negativo. Descartamos o sinal, fica 111 1000.</p>
+
+<p>  3. Devemos agora inverter todos os bits: 111 1000 se torna 000 0111.</p>
+
+<p>  4. Por fim, somamos um: 000 0111 + 1 = 000 1000.</p>
+
+<p>  5. Como vimos no parágrafo anterior, 000 1000, ou simplesmente 1000, é 8. Na verdade, -8!</p>
+
+<p>O que significa, na notação complemento de dois, a representação onde estão todos os bits ligados, independente do número de bytes?</p>
+
+<p>Se alterarmos o código acima para imprimir na saída os números hexadecimais, obteremos a seguinte saída:</p>
+
+<pre>
+   7fffffff
+   80000000
+</pre>
+<p>E o mais legal é que agora sabemos que o primeiro número é o maior valor positivo possível nesse tamanho de int, pois possui todos os bits ligados exceto o bit de sinal. Já o segundo número, o primeiro incrementado de 1, possui todos os bits desligados exceto o bit de sinal: é o menor número negativo possível!</p>
+
+<p>Consegue imaginar como os cálculos são feitos pelo computador? Curioso? Então dê uma olhada na Wikipedia sobre <a href="http://en.wikipedia.org/wiki/Twos_complement">complemento de dois</a>.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="curiosidades_inuteis_o_operador_de_subscrito_em_c.html">[curiosidades_inuteis_o_operador_de_subscrito_em_c]</a>
+ <a href="sizeof_de_novo.html">[sizeof_de_novo]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>
