@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="conversor_de_houaiss_para_babylon_parte_2" title="Conversor de Houaiss para Babylon - parte 2"/></span>
+<section id="section_conversor_de_houaiss_para_babylon_parte_2">
+<p class="title">Conversor de Houaiss para Babylon - parte 2</p>
+<span class="title-heading">Caloni, 2008-04-08 computer projects blog</span>
+
+<p>Após algumas semanas de suspense, chegamos finalmente à nossa segunda e última parte da saga do dicionário Houaiss.</p>
+
+<p>Como devem <a href="2008-02.html#conversor_de_houaiss_para_babylon_parte_1">estar lembrados</a>, a primeira parte se dispôs a desmontar a ofuscação usada nos arquivos do dicionário para permitir nossa posterior análise, com o simples e justo objetivo de importá-lo para o Babylon, cujas funcionalidades de busca são bem superiores.</p>
+
+<p>Feito isso, agora nos resta entender a estrutura interna do Houaiss para montar um conversor que irá ajudar o Babylon Builder a construir nosso Houaiss-Babylon. Simples, não?</p>
+
+<p>A primeira parte de toda análise é a busca por padrões com um pouco de bom senso. O Houaiss armazena suas definições em um conjunto de arquivos de nome deahNNN.dhx (provavelmente deah de Dicionario Eletrônico Antônio Houaiss). Os NNN variam de 001 -- o maior arquivo -- até 065, com algumas poucas lacunas, em um total de 53 arquivos originais.</p>
+
+<p>O nosso rústico importador fez o trabalho de desofuscar todos os 53 arquivos usando a mesma lógica encontrada pelo WinDbg: somar o valor 0x0B para cada byte do arquivo. Dessa forma foram gerados 53 arquivos novos no mesmo diretório, porém com a extensão TXT.</p>
+
+<p>Partindo do bom senso, abriremos o arquivo maior, deah001.txt, e abriremos o próprio dicionário Houaiss, em busca de um padrão que faça sentido. Como poderemos ver na figura abaixo, o padrão inicial não é nem um pouco complicado.</p>
+
+<img src="/blog/img/conversor_de_houaiss_para_babylon_parte_2_houaiss_analysis.png"/>
+
+<p>As duas primeiras observações do formato do arquivo nos dizem que (1) o primeiro caractere de cada linha indica o conteúdo dessa linha, e que (2) a formatação dos caracteres é feita dentro de um par de chaves {}.</p>
+
+<p>Dessa forma, podemos começar a construir nosso interpretador de arquivos do Houaiss em seu formato básico.</p>
+
+<pre>
+   #include &lt;iostream&gt;
+   #include &lt;string&gt;
+   int main()
+   {
+     char cmd; // comando da linha atualmente lida
+     string line; // linha atualmente lida
+     int count = 0; // contador de palavras
+     while( getline(cin, line) )
+     {
+       cmd = line[0]; // guardamos o comando
+       line.erase(0, 1); // tiramos o comando da linha
+       format(line); // formatação da linha (explicações adiante)
+       switch( cmd ) // que comando é esse?
+       {
+       case '*': // verbete
+         ++count;
+         cout &lt;&lt; '\n' &lt;&lt; line &lt;&lt; '\n';
+         break;
+       case ':': // definição
+         cout &lt;&lt; line &lt;&lt; &quot;&lt;br&gt;\n&quot;;
+         break;
+       }
+     }
+     return 0;
+   }
+</pre>
+<p>Simples e funcional. Com esse código já é possível extrair o básico que precisamos de um dicionário: os vocábulos e suas definições.</p>
+
+<p>Para conseguir mais, é necessário mais trabalho.</p>
+
+<p>A formatação segue o estilo já identificado, de forma que podemos aos poucos montar um interpretador de formatação para HTML, que é o formato reconhecido pelo Babylon Builder. Podemos seguir o seguinte molde, chamado no exemplo de código anterior:</p>
+
+<pre>
+   void format(string&amp; str)
+   {
+     string::size_type pos1 = 0;
+     string::size_type pos2 = 0;
+     while( (pos1 = str.find('&lt;')) != string::npos )
+       str.replace(pos1, 1, &quot;&lt;&quot;);
+     while( (pos1 = str.find('&gt;')) != string::npos )
+       str.replace(pos1, 1, &quot;&gt;&quot;);
+     while( (pos1 = str.find('{')) != string::npos )
+     {
+       if( pos1 &amp;&amp; str[pos1 - 1] == '\\' ) // caractere de escape
+         str.replace(pos1 - 1, 2, &quot;{&quot;);
+       else
+       {
+         string subStr;
+         pos2 = str.find('}', pos1);
+         if( pos2 != string::npos )
+           subStr = str.substr(pos1 + 1, pos2 - pos1 - 1);
+         else
+           subStr = str.substr(pos1 + 1);
+         istringstream is(subStr);
+         string fmt;
+         string word;
+         is &gt;&gt; fmt;
+         getline(is, word);
+         if( word[0] == ' ' )
+         word.erase(0, 1);
+         if( fmt.find(&quot;\\i&quot;) != string::npos )
+           word = &quot;&lt;i&gt;&quot; + word + &quot;&lt;/i&gt;&quot;;
+         if( fmt.find(&quot;\\b&quot;) != string::npos )
+           word = &quot;&lt;b&gt;&quot; + word + &quot;&lt;/b&gt;&quot;;
+         if( fmt.find(&quot;\\f20&quot;) != string::npos )
+           word = &quot;&quot; + word + &quot;&quot;;
+         if( fmt.find(&quot;\\super&quot;) != string::npos )
+           word = &quot;&quot; + word + &quot;&quot;;
+         if( pos2 != string::npos )
+           str.replace(pos1, pos2 - pos1 + 1, word);
+         else
+           str.replace(pos1, pos2, word);
+       }
+     }
+   }
+</pre>
+<p>Algumas partes ainda estão feias, eu sei. Mas, ei, isso é um código de ráquer, não é mesmo? Além do mais, se isso não é desculpa suficiente, estamos trabalhando em uma versão beta.</p>
+
+<p>A partir dessas duas funções é possível dissecar o primeiro arquivo do dicionário, e assim, construirmos a primeira versão interessante do Houaiss no Babylon.</p>
+
+<img src="/blog/img/conversor_de_houaiss_para_babylon_parte_2_houaiss_babylon_installing.png"/>
+
+<p>Como é normal a qualquer dicionário do Babylon, podemos instalá-lo simplesmente clicando duas vezes no arquivo (em uma máquina com Babylon previamente instalado).</p>
+
+<img src="/blog/img/conversor_de_houaiss_para_babylon_parte_2_houaiss_babylon.png"/>
+
+<p>O projeto atual está um tanto capenga, mas já desencripta os arquivos do Houaiss e gera o projeto do Babylon Builder sozinho. Em anexo já está um projeto do Babylon Builder. Basta copiar o arquivo Houaiss.txt para a pasta do projeto e gerar o projeto do Babylon.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="guia_basico_de_controle_de_codigo_distribuido.html">[guia_basico_de_controle_de_codigo_distribuido]</a>
+ <a href="try_catch_flutuante.html">[try_catch_flutuante]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

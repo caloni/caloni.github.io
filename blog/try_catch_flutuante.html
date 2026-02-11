@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="try_catch_flutuante" title="Try-catch flutuante"/></span>
+<section id="section_try_catch_flutuante">
+<p class="title">Try-catch flutuante</p>
+<span class="title-heading">Caloni, 2008-04-03 computer ccpp blog</span>
+
+<p>Esse detalhe da linguagem quem me fez descobrir foi o Yorick, que costuma comentar no blogue e tive o prazer de conhecer no <a href="2008-03.html#epa_ccpp_4_nossa_comunidade_ganhando_forma">4o. EPA-CCPP</a>.</p>
+
+<p>É possível, apesar de bizarro, colocar um bloco try-catch em torno da lista de inicialização de variáveis de um construtor. Essa característica da linguagem permite que possamos capturar alguma exceção lançada por algum construtor de algum membro da classe. A construção em código ficaria no estilo abaixo:</p>
+
+<pre>
+   Class::Class() try : initialization-list
+   {
+       // Class constructor body
+   }
+   catch(...) // note: this IS right!
+   {
+       // do something about
+       // just like &quot;throw&quot; over here
+   }
+</pre>
+<p>Apesar dessa capacidade, não conseguimos parar o lançamento da exceção. Após seu lançamento, caímos no bloco catch abaixo do corpo do construtor e a exceção é lançada novamente, como se houvesse uma intrução throw no final do catch.</p>
+
+<p>O exemplo abaixo demonstra um código de uma classe que captura a exceção durante a inicialização dos membros. Na seguida o catch da função main é executada, provando que a exceção de fato não é "salva" no primeiro bloco.</p>
+
+<pre>
+   #include &lt;iostream&gt;
+   /* This class explodes */
+   class Explode
+   {
+     public:
+       Explode(int x) 
+       {
+         m_x = x;
+         throw x;
+       }
+       void print()
+       {
+         std::cout &lt;&lt; &quot;The number: &quot; &lt;&lt; m_x &lt;&lt; std::endl;
+       }
+     private:
+       int m_x;
+   };
+   /* This class is going to be exploded */
+   class Victim
+   {
+     public:
+       Victim() try : m_explode(5)
+       {
+         std::cout &lt;&lt; &quot;You're supposed to NOT seeing this...\n&quot;;
+       }
+       catch(...) 
+       { 
+         std::cerr &lt;&lt; &quot;Something BAD hapenned\n&quot;;
+         std::cerr &lt;&lt; &quot;We're going to blow up\n&quot;;
+         // just like 'throw' over here
+       }
+       void print()
+       {
+         m_explode.print();
+       }
+     private:
+       Explode m_explode;
+   };
+   int main()
+   {
+     try
+     {
+       Victim vic;
+     }
+     catch(...)
+     {
+       std::cerr &lt;&lt; &quot;Something BAD BAD happenned...\n&quot;;
+     }
+   }
+</pre>
+<p>Testei esse código nos seguintes compiladores:</p>
+
+<ul><li>Visual Studio 6. Falhou, demonstrando desconhecer a sintaxe.</li>
+
+<li>Borland C++ Builder 5. Falhou, demonstrando desconhecer a sintaxe.</li>
+
+<li>Borland Developer Studio 4. Falhou, com o mesmo erro.</li>
+
+<li>Visual Studio 2003. Comportamento esperado.</li>
+
+<li>Visual Studio 2005. Comportamento esperado.</li>
+
+<li>Visual Studio 2008. Comportamento esperado.</li>
+
+<li>G++ (no Cygwin). Comportamento esperado.</li></ul>
+
+<p>A saída esperada é a seguinte:</p>
+
+<pre>
+   Something BAD hapenned
+   We're going to blow up
+   Something BAD BAD happenned...
+</pre>
+</section>
+
+<span style="float: left;">
+ <a href="conversor_de_houaiss_para_babylon_parte_2.html">[conversor_de_houaiss_para_babylon_parte_2]</a>
+ <a href="epa_ccpp_4_nossa_comunidade_ganhando_forma.html">[epa_ccpp_4_nossa_comunidade_ganhando_forma]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>
