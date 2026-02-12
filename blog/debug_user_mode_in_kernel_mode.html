@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="debug_user_mode_in_kernel_mode" title="Como Fazer Debug de User Mode pelo Kernel Mode"/></span>
+<section id="section_debug_user_mode_in_kernel_mode">
+<p class="title"><a class="external" href="https://youtu.be/j1f7DQkFI5A">Como Fazer Debug de User Mode pelo Kernel Mode</a></p>
+<span class="title-heading">Caloni, 2008-05-13 computer windbg blog blogging</span>
+
+<p>Existem algumas situações onde um depurador WYSIWYG é artigo de luxo.</p>
+
+<p>Imagine o seguinte: temos um serviço que inicia automagicamente antes do login do Windows, e possivelmente antes mesmo do ambiente gráfico. Esse serviço tem algum problema que impede que ele funcione sob as circunstâncias de inicialização do sistema. O que fazer?  Atachar o WinDbg no processo?</p>
+
+<p>Mas que mané WinDbg? Que mané atachar? Nessa hora nós temos bem menos do que nossos sentidos são capazes de enxergar.</p>
+
+<p>Nessas horas o único que pode nos ajudar é o kernel debugger.</p>
+
+<p>Os depuradores do pacote Debugging Tools (especialmente o ntsd e o cdb) suportam o funcionamento em modo proxy, ou seja, eles apenas redirecionam a saída e os comandos entre as duas pontas da depuração (o depurador e o depurado). Isso é comumente usado em <a href="2008-03.html#windbg_a_distancia">depuração remota</a> e <a href="http://www.driverentry.com.br">depuração de kernel</a>, quando o sistema inteiro está congelado. O objetivo aqui é conseguir os dois: depurar remotamente um processo em um sistema que está travado.</p>
+
+<p>Para isso podemos nos utilizar do parâmetro -d, que manda o depurador redirecionar toda saída e controle para o depurador de kernel. Para que isso funcione o depurador já deve estar atachado no sistema-alvo. A coisa funciona mais ou menos assim:</p>
+
+<img src="/blog/img/kernel_mode_user_mode_windbg_user_kernel.png"/>
+
+<p>Com essa configuração temos a vantagem de ter o sistema congelado só pra nós, ao mesmo tempo que conseguimos depurar nosso processo fujão, passo-a-passo.</p>
+
+<p>A única desvantagem é não ter uma GUI tão poderosa quando o "WinDbg fonte colorido, tooltips, etc". Pra quem não liga pra essas frescuras, é possível depurar processos de maneira produtiva utilizando esse cenário.</p>
+
+<p>Para ativar qualquer programa que irá rodar nesse modo, basta usar o aplicativo gflags:</p>
+
+<pre>
+   gflags /p /enable servico.exe /debug &quot;c:\path\ntsd.exe -d&quot;
+</pre>
+<p>Para entender o fluxo de navegação pelo mundo kernel-user misturados é preciso dar uma lida bem profunda na ajuda do Debugging Tools para entender como as coisas estão funcionando nessa configuração milagrosa que estamos usando. Procure por "Controlling the User-Mode Debugger from the Kernel Debugger". Também é possível ouvir falar parcamente sobre isso no livro Advanced Windows Debugging na parte "Redirecting a User Mode Debugger Through a Kernel". A vantagem é que vem de brinde uma bela figura para pendurar em um quadro no escritório (embora eu possa jurar que já vi essa figura na ajuda do WinDbg):</p>
+
+<img src="/blog/img/kernel_mode_user_mode_windbg_user_kernel2.png"/>
+
+<p>Como podemos notar, o controlador de tudo é o kernel debugger. Assim que o depurador de processo entra em ação, ele se comunica com o depurador de kernel que entra no modo user mode prompt, pedindo entrada para ser redirecionada ao depurador de processo. Existem alguns caminhos para sair de um estado e entrar em outro, como o comando .breakin e o .sleep.</p>
+
+<p>É necessário recomentar: estamos nos comunicando com um depurador e o seu processo depurado em um sistema totalmente travado. Isso quer dizer que o acesso a coisas como código-fonte e símbolos é extremamente limitado, porém não impossível. Apenas mantenha-os localmente na máquina-vítima, pois uma comunicação pela rede não irá funcionar.</p>
+
+<p>A depuração com a linha atual no código-fonte demarcando onde estamos também não é possível, uma vez que o WinDbg da ponta de cá apenas faz o papel de garoto de recados para o "depurador de verdade" do outro lado (no nosso exemplo, o ntsd). Isso quer dizer que a forma mais "fácil" de ir passo-a-passo é usar o comando p (step) ou t (trace), além de habilitar o uso de fonte em 100%.</p>
+
+<pre>
+   input&gt; .srcpath c:\maquina-vitima\src
+   input&gt; l+* $$ habilita uso de código-fonte no ntsd
+   ...
+   0:000&gt; p
+   &gt;  15: int main() $$ número da linha seguido do fonte
+   &gt;  16: {
+   0:000&gt; bp myFunction
+   0:000&gt; g
+   0:000&gt;
+</pre>
+<p>Um tipo de problema que só pode ser depurado dessa maneira enfatiza a importância do uso de unit tests, além de um controle de qualidade mais aguçado antes de liberar uma versão para o cliente.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="read_the_functional_manual.html">[read_the_functional_manual]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

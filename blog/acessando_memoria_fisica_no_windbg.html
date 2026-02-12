@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="acessando_memoria_fisica_no_windbg" title="Acessando memória física no WinDbg"/></span>
+<section id="section_acessando_memoria_fisica_no_windbg">
+<p class="title">Acessando memória física no WinDbg</p>
+<span class="title-heading">Caloni, 2008-05-01 computer blog</span>
+
+<p>Como muitos devem saber, acessar memória virtual no WinDbg é coisa de criança, assim como em todo depurador decente. Se estamos falando de kernel mode então, nem se fala! A memória virtual é parte integrante do sistema operacional. Podemos saber mais sobre isso na apresentação do Strauss sobre gerenciamento de memória no Windows (update 2026-02-12: infelizmente não mais disponível).</p>
+
+<p>Porém, existem situações, como a que passei essa semana, onde é preciso saber e alterar o conteúdo da memória de verdade, mesmo. Quando eu falo "de verdade mesmo" estou falando em acessar a memória através do seu endereçamento real, que conta do zero até o final da sua memória RAM, sem divisão de processos e sem proteções de acesso.</p>
+
+<p>Para isso é que serve um depurador de verdade, mesmo.</p>
+
+<p>No modo real, onde vivem sistemas como o MS-DOS e programas como o Turbo C, a memória é acessada através do par de coordenadas conhecido como segmento e offset. Entre outros motivos, isso acontece porque em um determinado momento da história o 8086 possuía 16 bits em seus registradores, mas conseguia endereçar até 640 quilobytes, o que resulta em 640 vezes 1024, ou seja, 655366 bytes, um número dez vezes maior do que 65536 mil, ou 2 elevado a 16, o maior número representado por 16 bits.</p>
+
+<p>Dessa forma, foi necessário o uso de mais 4 bits para fazer a coisa funcionar, pois como podemos notar logo abaixo, a representação do último byte de 640 KB exige isso:</p>
+
+<pre>
+   10   16   16   16   16   dec
+   A    0    0    0    0    hex
+   1010 0000 0000 0000 0000 bin
+</pre>
+<p>Para conseguir esses 4 bits adicionais foram usados dois registradores em conjunto, o segmento e o offset. Funciona assim: o segmento é multiplicado por 16 (ou deslocado 4 bits à esquerda) e logo depois é somado com o offset, resultando no endereçamento desejado:</p>
+
+<pre>
+   segment:    0x 9022
+   offset:     0x  1514
+               0x 9022
+               0x  1514 (+)
+   real addr:  0x 91734
+</pre>
+<p>Ou seja, para acessar o byte de número 595764, ou 0x91734 podemos usar o segmento 0x9022 com o offset 0x1514. A soma desses dois com o segmento deslocado irá resultado no endereço flag, ou seja, aquele que obtemos se contarmos a memória do zero até o final da RAM. Importante lembrar que na época a RAM não costumava ser de valores como 2GB ou até 4GB, mas em KB mesmo. Isso explica a limitação do 8086 em endereçar até 640 KB.</p>
+
+<p>Se nós repararmos bem, veremos que esse método implica em conseguirmos acessar o mesmo byte com um conjunto de segmentos e offsets diferentes, já que a soma pode ser resultado de operandos diversos. Esse é o chamado efeito de overlapping da memória segmentada, onde os programadores em assembly daquela época tinham que tomar alguns cuidados básicos para não atravessar a memória dos outros. No nosso exemplo acima, por exemplo, seria bem mais fácil chamar nosso bytezinho de segmento 0x9000, offset 0x1734.</p>
+
+<pre>
+   0x  9000
+   0x   1734 (+)
+   0x  91734
+</pre>
+<p>É verdade! Então, o WinDbg possui alguns comandos extendidos e formas de representar essa memória real, atualmente limitada não mais em 640 KB, mas até onde seus pentes de RAM agüentarem. Os mais comuns são os que imitam os nossos conhecidos dumps de memória: db, dc, dd... Temos daí as extensões !db, !dc, !dd... (note a exclamação do início).</p>
+
+<pre>
+   windbg -kl
+   lkd&gt; !db 91734
+   #   91734 00 (...) .....
+   #   91744 00 (...) .....
+   #   91754 00 (...) .....
+   #   91764 00 (...) .....
+   #   91774 00 (...) .....
+   #   91784 00 (...) .....
+   #   91794 00 (...) .....
+</pre>
+<p>Simples, assim. O sinal de # no início do dump de memória denota memória real.</p>
+
+<p>Infelizmente, o WinDbg não nos permite ler certas regiões da memória por conta do cacheamento feito pelo processador. Para permitir a leitura em todas as condições, existem  três flags que podem ser utilizados:</p>
+
+<ul><li>c lê da memória cacheada</li>
+
+<li>uc lê da memória não-cacheada</li>
+
+<li>wc lê da memória de escrita combinada</li></ul>
+
+<p>Nesse caso é possível, embora fique por sua conta e risco, ler qualquer memória não-cacheada usando-se a flag uc.</p>
+
+<p>É possível fazer mais brincadeiras usando os comandos comuns do WinDbg e uma notação diferente da memória. No entanto, é preciso tomar alguns cuidados quando mexer com isso. É recomendado o uso de uma máquina-vítima para esses testes, e não depuração local como estou fazendo.</p>
+
+<pre>
+      descrição    example
+      ------------ ----------
+   %  32, 64 bits  %6400000
+   &amp;  real 8086    &amp;9000:1734
+   #  real 8086    #4C
+</pre>
+<p>É isso aí. Não espero que você use muitas vezes essa forma de acessar memória. Só que eu usei e... nunca se sabe =)</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="read_the_functional_manual.html">[read_the_functional_manual]</a>
+ <a href="csi_crashed_server_investigation.html">[csi_crashed_server_investigation]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>
