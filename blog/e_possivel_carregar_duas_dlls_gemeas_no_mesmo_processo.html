@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="e_possivel_carregar_duas_dlls_gemeas_no_mesmo_processo" title="É possível carregar duas DLLs gêmeas no mesmo processo?"/></span>
+<section id="section_e_possivel_carregar_duas_dlls_gemeas_no_mesmo_processo">
+<p class="title">É possível carregar duas DLLs gêmeas no mesmo processo?</p>
+<span class="title-heading">Caloni, 2008-06-21 computer blog</span>
+
+<p>Um dos últimos artigos de Dmitry Vostokov, e tenho que falar assim porque o cara escreve muito em pouco tempo, fala sobre os perigos de termos uma mesma DLL carregada duas vezes em um único processo, muitas vezes em versões diferentes. Para os observadores atentos como Dmitry esse é um perigo que muitas vezes temos que estar preparados. Para os espertinhos de plantão, a resposta padrão seria: "não vou me preocupar, porque o contador de instâncias cuida disso".</p>
+
+<p>Será mesmo tão simples?</p>
+
+<p>Vamos supor um caso bem simples e plausível, que é exatamente o mesmo do artigo do Crash Dump Analysis: um produto qualquer possui dois pontos em que ele carrega a mesma DLL. Contudo, no primeiro ponto é usado um caminho relativo, dentro da pasta DLL; na segunda chamada é usado o caminho atual. Se existir de fato duas DLLs, mesmo que idênticas, nesses lugares, então teremos duas instâncias da "mesma DLL" carregadas no processo.</p>
+
+<p>O código do aplicativo apenas tenta carregar a DLL em dois lugares distintos e exibe o endereço para onde elas foram mapeadas em nosso processo de teste:</p>
+
+<pre>
+#include &lt;windows.h&gt;
+#include &lt;stdio.h&gt;
+int main()
+{
+    HMODULE dll1 = LoadLibrary(&quot;.\\DLL\\DLL.dll&quot;);
+    HMODULE dll2 = LoadLibrary(&quot;.\\DLL.dll&quot;);
+    printf(&quot;First DLL: %p\nSecond DLL: %p&quot;,
+        dll1, dll2);
+    return 0;
+}
+</pre>
+<p>A DLL é uma DLL trivial:</p>
+
+<pre>
+#include &lt;windows.h&gt;
+BOOL WINAPI DllMain(HINSTANCE inst, DWORD reason, PVOID reserv)
+{
+    return TRUE;
+}
+</pre>
+<p>Vamos aos testes.</p>
+
+<p>No caso da DLL não existir ambos os retornos serão nulos, que é o natural e esperado quando a DLL não pode ser encontrada nos lugares especificados pelo sistema e pelo aplicativo.</p>
+
+<pre>
+   K:\Docs\Projects&gt;cl app.c
+   Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 14.00.50727.42 for 80x86
+   Copyright (C) Microsoft Corporation.  All rights reserved.
+   app.c
+   Microsoft (R) Incremental Linker Version 8.00.50727.42
+   Copyright (C) Microsoft Corporation.  All rights reserved.
+   /out:app.exe
+   app.obj
+   K:\Docs\Projects&gt;app
+   First DLL: 00000000
+   Second DLL: 00000000
+</pre>
+<p>No caso que a DLL existe apenas no caminho do aplicativo ela é carregada com sucesso se usado o caminho relativo, pois o caminho atual faz parte da lista de caminhos que o sistema percorre para encontrá-la. A primeira chamada deve falhar.</p>
+
+<pre>
+   K:\Docs\Projects&gt;cl /LD dll.c
+   Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 14.00.50727.42 for 80x86
+   Copyright (C) Microsoft Corporation.  All rights reserved.
+   dll.c
+   Microsoft (R) Incremental Linker Version 8.00.50727.42
+   Copyright (C) Microsoft Corporation.  All rights reserved.
+   /out:dll.dll
+   /dll
+   /implib:dll.lib
+   dll.obj
+   K:\Docs\Projects&gt;app
+   First DLL: 00000000
+   Second DLL: 10000000
+</pre>
+<p>No caso problemático em que a DLL existe em ambos os lugares a mesma DLL é carregada em dois endereços distintos da memória do mesmo processo, o que pode causar sérios problemas dependendo do código envolvido.</p>
+
+<pre>
+   K:\Docs\Projects&gt;mkdir DLL
+   K:\Docs\Projects&gt;copy dll.dll DLL
+   1 arquivo(s) copiado(s).
+   K:\Docs\Projects&gt;app
+   First DLL: 10000000
+   Second DLL: 00350000
+</pre>
+<p>Apesar do mundo parecer injusto, temos uma segunda regra que podemos usar para aqueles casos onde a idiotisse já foi feita:</p>
+
+<p>Vamos supor que estamos no meio de uma mudança bem radical no produto e queremos ter certeza que qualquer chamada à nossa DLL irá invocar unicamente a que estiver dentro do caminho do produto (caminho atual). Para esse caso o Windows permite uma saída muito interessante, que é o uso de um arquivo com o nome do aplicativo mais o sufixo ".local". Se esse arquivo existir, de acordo com o MSDN, então qualquer chamada à DLL irá ter sempre a prioridade do caminho atual.</p>
+
+<pre>
+   K:\Docs\Projects&gt;copy con app.exe.local
+   ^Z
+   1 arquivo(s) copiado(s).
+   K:\Docs\Projects&gt;app
+   First DLL: 10000000
+   Second DLL: 10000000
+</pre>
+<p>Tente evitar a replicação do mesmo arquivo em diversos lugares. Quando eu digo "mesmo arquivo" me refiro ao mesmo nome de DLL, embora não necessariamente a mesma versão. Isso pode evitar algumas dores de cabeça futuras. E muitas, muitas horas de depuração.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="primeiros_passos_na_documentacao_de_codigofonte_usando_doxygen.html">[primeiros_passos_na_documentacao_de_codigofonte_usando_doxygen]</a>
+ <a href="alinhamento_de_memoria_portavel.html">[alinhamento_de_memoria_portavel]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

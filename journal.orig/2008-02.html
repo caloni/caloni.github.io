@@ -48,8 +48,7 @@ role="navigation" aria-label="main navigation">
 <li><small><a href="2008-02.html#configurando_seus_projetos_no_visual_studio_para_rodar_em_outras_maquinas">Configurando seus projetos no Visual Studio para rodar em outras máquinas</a></small></li>
 <li><small><a href="2008-02.html#codigos_de_entrevista_o_ponteiro_nulo">Códigos de entrevista - o ponteiro nulo</a></small></li>
 <li><small><a href="2008-02.html#a_essencia_do_zen">A essência do zen</a></small></li>
-<li><small><a href="2008-02.html#conversor_de_houaiss_para_babylon_parte_1">Conversor de Houaiss para Babylon - parte 1</a></small></li>
-<li><small><a href="2008-02.html#quando_o_ponteiro_nulo_nao_e_invalido">Quando o ponteiro nulo não é inválido</a></small></li></ul>
+<li><small><a href="2008-02.html#conversor_de_houaiss_para_babylon_parte_1">Conversor de Houaiss para Babylon - parte 1</a></small></li></ul>
 
 <span id="compartilhando_variaveis_com_o_mundo_v2" title="Compartilhando variáveis com o mundo v2"/></span>
 <section id="section_compartilhando_variaveis_com_o_mundo_v2">
@@ -793,7 +792,7 @@ role="navigation" aria-label="main navigation">
 <span id="codigos_de_entrevista_o_ponteiro_nulo" title="Códigos de entrevista - o ponteiro nulo"/></span>
 <section id="section_codigos_de_entrevista_o_ponteiro_nulo">
 <p class="title"><a href="2008-02.html#codigos_de_entrevista_o_ponteiro_nulo">#</a> Códigos de entrevista - o ponteiro nulo</p>
-<span class="title-heading">Caloni, 2008-02-25 <a href="2008-02.html#configurando_seus_projetos_no_visual_studio_para_rodar_em_outras_maquinas">&lt;</a><a href="computer.html">computer</a><a href="2008-02.html#conversor_de_houaiss_para_babylon_parte_1">&gt;</a> <a href="2008-02.html#configurando_seus_projetos_no_visual_studio_para_rodar_em_outras_maquinas">&lt;</a><a href="blog.html">blog</a><a href="2008-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_codigos_de_entrevista_o_ponteiro_nulo')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2008-02-25 <a href="2008-02.html#configurando_seus_projetos_no_visual_studio_para_rodar_em_outras_maquinas">&lt;</a><a href="computer.html">computer</a><a href="2008-02.html#conversor_de_houaiss_para_babylon_parte_1">&gt;</a> <a href="2008-02.html#configurando_seus_projetos_no_visual_studio_para_rodar_em_outras_maquinas">&lt;</a><a href="blog.html">blog</a><a href="2008-02.html#conversor_de_houaiss_para_babylon_parte_1">&gt;</a><a href="2008-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_codigos_de_entrevista_o_ponteiro_nulo')"><sup>[copy]</sup></a></span>
 
 <p>Bom, parece que o "mother-fucker" wordpress ferrou com meu artigo sobre o Houaiss. Enquanto eu choro as pitangas aqui vai um outro artigo um pouco mais simples, mas igualmente interessante.</p>
 
@@ -874,6 +873,26 @@ role="navigation" aria-label="main navigation">
 </pre>
 <p>Dito isso, me sinto melhor =)</p>
 
+<h2>Update 2008-02-29: Quando o ponteiro nulo não é inválido</h2>
+
+<p>Existe coisa mais prazerosa do que admitir um erro que foi cometido na mesma semana? Existe: quando você sabia que estava certo, mas resolveu usar o senso comum por falta de provas.</p>
+
+<p>Pois bem. O mesmo amigo que me recomendou que escrevesse sobre o assunto do ponteiro nulo achou um livro sobre <a href="http://www.literateprogramming.com/ctraps.pdf">armadilhas em C</a> com um exemplo que demonstra exatamente o contrário: dependendo da plataforma, ponteiros nulos são sim válidos.</p>
+
+<p>Nesse caso, se tratava de um programa que iria rodar em um microprocessador, daqueles que o <a href="http://dqsoft.blospot.com">DQ</a> costuma programar. Pois bem. Quando o dito cujo ligava era necessário chamar uma rotina que estava localizada exatamente no endereço 0. Para fazer isso, o código era o seguinte:</p>
+
+<pre>
+   ( * (void(*)()) 0 ) ();
+</pre>
+<p>Nada mais simples: um cast do endereço 0 (apesar de normalmente inválido, 0 pode ser convertido para endereço) para ponteiro de função que não recebe parâmetros e não retorna nada, seguido de deferência ("o apontado de") e chamada (a dupla final de parênteses). A linha acima é o equivalente às linhas abaixo:</p>
+
+<pre>
+   typedef void (*func_t)();
+   func_t func = (func_t) 0;
+   func();
+</pre>
+<p>É bem o que o autor diz depois de jogar esta expressão: "expressions like these strike terror into the hearts of C programmers". É lógico que isso não é bem verdade para as pessoas que acompanham este blogue =)</p>
+
 </section><hr/>
 
 
@@ -890,7 +909,7 @@ role="navigation" aria-label="main navigation">
 <span id="conversor_de_houaiss_para_babylon_parte_1" title="Conversor de Houaiss para Babylon - parte 1"/></span>
 <section id="section_conversor_de_houaiss_para_babylon_parte_1">
 <p class="title"><a href="2008-02.html#conversor_de_houaiss_para_babylon_parte_1">#</a> Conversor de Houaiss para Babylon - parte 1</p>
-<span class="title-heading">Caloni, 2008-02-27 <a href="2008-02.html#codigos_de_entrevista_o_ponteiro_nulo">&lt;</a><a href="computer.html">computer</a><a href="2008-02.html#quando_o_ponteiro_nulo_nao_e_invalido">&gt;</a> <a href="2007-11.html#mousetool">&lt;</a><a href="projects.html">projects</a><a href="2008-03.html#influence_board">&gt;</a><a href="2008-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_conversor_de_houaiss_para_babylon_parte_1')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2008-02-27 <a href="2008-02.html#codigos_de_entrevista_o_ponteiro_nulo">&lt;</a><a href="computer.html">computer</a><a href="2008-03.html#iteradores_nao_sao_constantes">&gt;</a> <a href="2007-11.html#mousetool">&lt;</a><a href="projects.html">projects</a><a href="2008-03.html#influence_board">&gt;</a> <a href="2008-02.html#codigos_de_entrevista_o_ponteiro_nulo">&lt;</a><a href="blog.html">blog</a><a href="2008-03.html#iteradores_nao_sao_constantes">&gt;</a><a href="2008-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_conversor_de_houaiss_para_babylon_parte_1')"><sup>[copy]</sup></a></span>
 
 <p>Este artigo é sobre desmontar e montar novamente. Iremos descobrir como as entradas do dicionário Houaiss eletrônico estão gravadas em um primeiro momento, para depois remontarmos essa informação de maneira que ela possa ser usada em outro dicionário de uso mais flexível, o Babylon. Ou seja, este não é um guia de vandalismo. Estava apenas querendo usar um dicionário de qualidade excelente em outro dicionário cuja interface é muito boa.</p>
 
@@ -1191,32 +1210,6 @@ role="navigation" aria-label="main navigation">
    }
 </pre>
 <p>Parte da mágica já foi feita, talvez a mais importante e divertida. Daqui pra lá deixaremos o WinDbg de lado e analisaremos o formato em que o texto do dicionário é armazenado, ignorando sua ofuscação básica, que não é mais um problema. Como o artigo já está extenso o suficiente, vou deixar a continuação dessa empreitada para uma futura publicação.</p>
-
-</section><hr/>
-
-
-<span id="quando_o_ponteiro_nulo_nao_e_invalido" title="Quando o ponteiro nulo não é inválido"/></span>
-<section id="section_quando_o_ponteiro_nulo_nao_e_invalido">
-<p class="title"><a href="2008-02.html#quando_o_ponteiro_nulo_nao_e_invalido">#</a> Quando o ponteiro nulo não é inválido</p>
-<span class="title-heading">Caloni, 2008-02-29 <a href="2008-02.html#conversor_de_houaiss_para_babylon_parte_1">&lt;</a><a href="computer.html">computer</a><a href="2008-03.html#iteradores_nao_sao_constantes">&gt;</a><a href="2008-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_quando_o_ponteiro_nulo_nao_e_invalido')"><sup>[copy]</sup></a></span>
-
-<p>Existe coisa mais prazerosa do que admitir um erro que foi cometido na mesma semana? Existe: quando você sabia que estava certo, mas resolveu usar o senso comum por falta de provas.</p>
-
-<p>Pois bem. O mesmo amigo que me recomendou que escrevesse sobre o assunto do ponteiro nulo achou um livro sobre <a href="http://www.literateprogramming.com/ctraps.pdf">armadilhas em C</a> com um exemplo que demonstra exatamente o contrário: dependendo da plataforma, ponteiros nulos são sim válidos.</p>
-
-<p>Nesse caso, se tratava de um programa que iria rodar em um microprocessador, daqueles que o <a href="http://dqsoft.blospot.com">DQ</a> costuma programar. Pois bem. Quando o dito cujo ligava era necessário chamar uma rotina que estava localizada exatamente no endereço 0. Para fazer isso, o código era o seguinte:</p>
-
-<pre>
-   ( * (void(*)()) 0 ) ();
-</pre>
-<p>Nada mais simples: um cast do endereço 0 (apesar de normalmente inválido, 0 pode ser convertido para endereço) para ponteiro de função que não recebe parâmetros e não retorna nada, seguido de deferência ("o apontado de") e chamada (a dupla final de parênteses). A linha acima é o equivalente às linhas abaixo:</p>
-
-<pre>
-   typedef void (*func_t)();
-   func_t func = (func_t) 0;
-   func();
-</pre>
-<p>É bem o que o autor diz depois de jogar esta expressão: "expressions like these strike terror into the hearts of C programmers". É lógico que isso não é bem verdade para as pessoas que acompanham este blogue =)</p>
 
 </section><hr/>
 

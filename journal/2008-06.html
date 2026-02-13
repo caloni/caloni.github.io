@@ -64,7 +64,7 @@ role="navigation" aria-label="main navigation">
 <span id="resultado_do_seminario_ccpp" title="Resultado do Seminário CCPP"/></span>
 <section id="section_resultado_do_seminario_ccpp">
 <p class="title"><a href="2008-06.html#resultado_do_seminario_ccpp">#</a> Resultado do Seminário CCPP</p>
-<span class="title-heading">Caloni, 2008-06-03 <a href="2008-04.html#seminario_ccpp_portabilidade_e_performance">&lt;</a><a href="ccppbr.html">ccppbr</a><a href="2008-09.html#v">&gt;</a><a href="2008-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_resultado_do_seminario_ccpp')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2008-06-03 <a href="2008-04.html#seminario_ccpp_portabilidade_e_performance">&lt;</a><a href="ccppbr.html">ccppbr</a><a href="2008-09.html#v">&gt;</a> <a href="2008-05.html#aprendendo_rapidamente_conceitos_essenciais_do_windbg">&lt;</a><a href="blog.html">blog</a><a href="2008-06.html#alinhamento_de_memoria_portavel">&gt;</a><a href="2008-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_resultado_do_seminario_ccpp')"><sup>[copy]</sup></a></span>
 
 <p>Aconteceu nesse fim-de-semana, como era previsto, o nosso primeiro Seminário CCPP Brasil, com direito a pessoas de todas as idades e origens, mas todas com algo em comum: a paixão e o interesse pelas linguagens-mestre do mundo da programação.</p>
 
@@ -116,6 +116,7 @@ role="navigation" aria-label="main navigation">
 
 <p>Enfim, para quem pôde ver, a palestra focou nos princípios que farão hoje em dia um programador C++ completo, profissional e que, como seus colegas de outras linguagens, se preocupa igualmente com a produtividade de seu código. Ah, sim, e não gosta nem um pouco de reinventar a roda.</p>
 
+<blockquote>Update 2026-02-13. Hoje o shared_ptr já faz parte da STL e temos conversão entre string e inteiros também direto da STL. Esta apresentação estava demonstrando partes tão úteis da biblioteca Boost que seria questão de tempo até o comitê atualizar a biblioteca padrão com estes itens essenciais.</blockquote>
 <h2>Técnicas de Otimização de Código, por Rodrigo Kumpera & André Tupinambá</h2>
 
 <img src="/journal/img/resultado_do_seminario_ccpp_seminario_otimizacao1.jpg"/>
@@ -608,7 +609,9 @@ role="navigation" aria-label="main navigation">
 <span id="alinhamento_de_memoria_portavel" title="Alinhamento de Memória Portável"/></span>
 <section id="section_alinhamento_de_memoria_portavel">
 <p class="title"><a href="2008-06.html#alinhamento_de_memoria_portavel">#</a> Alinhamento de Memória Portável</p>
-<span class="title-heading">Caloni, 2008-06-18 <a href="2008-06.html#guia_basico_de_repositorios_no_bazaar">&lt;</a><a href="computer.html">computer</a><a href="2008-06.html#e_possivel_carregar_duas_dlls_gemeas_no_mesmo_processo">&gt;</a><a href="2008-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_alinhamento_de_memoria_portavel')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2008-06-18 <a href="2008-06.html#guia_basico_de_repositorios_no_bazaar">&lt;</a><a href="computer.html">computer</a><a href="2008-06.html#e_possivel_carregar_duas_dlls_gemeas_no_mesmo_processo">&gt;</a> <a href="2008-06.html#resultado_do_seminario_ccpp">&lt;</a><a href="blog.html">blog</a><a href="2008-06.html#e_possivel_carregar_duas_dlls_gemeas_no_mesmo_processo">&gt;</a><a href="2008-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_alinhamento_de_memoria_portavel')"><sup>[copy]</sup></a></span>
+
+<p>Update 2026-02-13. Hoje este post está desatualizado. O padrão C++ já fornece o comando alignas que permite fazer alinhamento de memória de maneira portável. Deixo publicado apenas como curiosidade para ambientes com compiladores menos privilegiados.</p>
 
 <p>Como vimos durante o seminário CCPP, o alinhamento de memória pode ser problemático durante momentos críticos, como migração de plataforma (16 para 32 bits) e de ambiente (compilador novo). A forma como a memória é alinhada influi diretamente em algoritmos de criptografia ou de rede, para citar dois exemplos bem comuns, fazendo com que o que funcionava antes não funcione mais sem mexer uma única linha de código. Eu já vi isso. E isso não é bom.</p>
 
@@ -651,7 +654,7 @@ role="navigation" aria-label="main navigation">
 </pre>
 <p>O código acima usa o conceito de união de estruturas (union) para fazer valer um alinhamento na marra (no caso, 8). Uma estrutura, como todos sabem, amontoa os seus membros um após o outro na memória. Dessa forma podemos tratar um bloco de memória com um leiaute que definimos com outros tipos. Em uma união, os membros não são amontoados um após o outro. Todos eles começam no mesmo ponto da memória. Eles se sobrescrevem. O tamanho da união sempre é o tamanho do seu maior membro, e não a soma de todos. É um tanto difícil de descrever esse leiaute, mas imagine que você tenha apenas uma posição na memória e queira chamá-la de vários nomes e tamanhos diferentes. Essa é a união.</p>
 
-<p>Como deve ser fácil de imaginar, uma união não tem tanto uso quanto uma estrutura, mas ainda assim faz parte da linguagem. Ela possibilita enxergar a mesma região de memória sob vários ângulos. Podemos descobrir a organização de um inteiro na memória, por exemplo, byte a byte. Dependendo se a plataforma onde o programa acima é compilado, esse leiaute pode mudar. O motivo é que cada plataforma e compilador terá sua maneira de traduzir o código C na memória.</p>
+<p>Como deve ser fácil de imaginar, uma união não tem tanto uso quanto uma estrutura, mas ainda assim faz parte da linguagem. Ela possibilita enxergar a mesma região de memória sob vários ângulos. Podemos descobrir a organização de um inteiro na memória, por exemplo, byte a byte. Dependendo da plataforma onde o programa acima é compilado, esse leiaute pode mudar. O motivo é que cada plataforma e compilador terá sua maneira de traduzir o código C na memória.</p>
 
 <p>Agora que sabemos o que são uniões fica fácil entender o esquema da solução portável. A union acima simplesmente usa a segunda estrutura como uma auxiliar de alinhamento. Com ela do tamanho múltiplo do alinhamento desejado forçamos a união inteira a ter esse alinhamento, independente do tamanho da estrutura útil, a que iremos usar para armazenar os dados. Todo o resto é usado para alinhar na memória.</p>
 
@@ -690,9 +693,9 @@ role="navigation" aria-label="main navigation">
 <span id="e_possivel_carregar_duas_dlls_gemeas_no_mesmo_processo" title="É possível carregar duas DLLs gêmeas no mesmo processo?"/></span>
 <section id="section_e_possivel_carregar_duas_dlls_gemeas_no_mesmo_processo">
 <p class="title"><a href="2008-06.html#e_possivel_carregar_duas_dlls_gemeas_no_mesmo_processo">#</a> É possível carregar duas DLLs gêmeas no mesmo processo?</p>
-<span class="title-heading">Caloni, 2008-06-21 <a href="2008-06.html#alinhamento_de_memoria_portavel">&lt;</a><a href="computer.html">computer</a><a href="2008-06.html#reflexao_em_c">&gt;</a><a href="2008-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_e_possivel_carregar_duas_dlls_gemeas_no_mesmo_processo')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2008-06-21 <a href="2008-06.html#alinhamento_de_memoria_portavel">&lt;</a><a href="computer.html">computer</a><a href="2008-06.html#primeiros_passos_na_documentacao_de_codigofonte_usando_doxygen">&gt;</a> <a href="2008-06.html#alinhamento_de_memoria_portavel">&lt;</a><a href="blog.html">blog</a><a href="2008-06.html#primeiros_passos_na_documentacao_de_codigofonte_usando_doxygen">&gt;</a><a href="2008-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_e_possivel_carregar_duas_dlls_gemeas_no_mesmo_processo')"><sup>[copy]</sup></a></span>
 
-<p>Um <a href="http://www.dumpanalysis.org/blog/index.php/2008/06/19/crash-dump-analysis-patterns-part-64/">dos últimos artigos</a> de Dmitry Vostokov, e tenho que falar assim porque o cara escreve muito em pouco tempo, fala sobre os perigos de termos uma mesma DLL carregada duas vezes em um único processo, muitas vezes em versões diferentes. Para os observadores atentos como Dmitry esse é um perigo que muitas vezes temos que estar preparados. Para os espertinhos de plantão, a resposta padrão seria: "não vou me preocupar, porque o contador de instâncias cuida disso".</p>
+<p>Um dos últimos artigos de Dmitry Vostokov, e tenho que falar assim porque o cara escreve muito em pouco tempo, fala sobre os perigos de termos uma mesma DLL carregada duas vezes em um único processo, muitas vezes em versões diferentes. Para os observadores atentos como Dmitry esse é um perigo que muitas vezes temos que estar preparados. Para os espertinhos de plantão, a resposta padrão seria: "não vou me preocupar, porque o contador de instâncias cuida disso".</p>
 
 <p>Será mesmo tão simples?</p>
 
@@ -952,13 +955,13 @@ BOOL WINAPI DllMain(HINSTANCE inst, DWORD reason, PVOID reserv)
 <span id="primeiros_passos_na_documentacao_de_codigofonte_usando_doxygen" title="Primeiros passos na documentação de código-fonte usando Doxygen"/></span>
 <section id="section_primeiros_passos_na_documentacao_de_codigofonte_usando_doxygen">
 <p class="title"><a href="2008-06.html#primeiros_passos_na_documentacao_de_codigofonte_usando_doxygen">#</a> Primeiros passos na documentação de código-fonte usando Doxygen</p>
-<span class="title-heading">Caloni, 2008-06-26<a href="2008-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_primeiros_passos_na_documentacao_de_codigofonte_usando_doxygen')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2008-06-26 <a href="2008-06.html#e_possivel_carregar_duas_dlls_gemeas_no_mesmo_processo">&lt;</a><a href="computer.html">computer</a><a href="2008-06.html#reflexao_em_c">&gt;</a> <a href="2008-06.html#e_possivel_carregar_duas_dlls_gemeas_no_mesmo_processo">&lt;</a><a href="blog.html">blog</a><a href="2008-06.html#reflexao_em_c">&gt;</a><a href="2008-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_primeiros_passos_na_documentacao_de_codigofonte_usando_doxygen')"><sup>[copy]</sup></a></span>
 
 <p>Comentários são essenciais em um código-fonte bem feito. O código pode até fazer milagres, salvar vidas e multiplicar pães, mas se não tiver um apóstolo eficiente que escreva um evangelho para ele, as pessoas não vão conseguir usar!</p>
 
 <p>OK, a analogia foi horrível.</p>
 
-<p>Bom, já que é pra fazer comentários, porque não fazê-los de uma forma que seja possível extrair todo esse texto diretamente do fonte e transformá-lo em documentação? Dessa forma você evita ter que abrir o Word (arght!) e evita que a documentação fique desatualizada quando o documentador do seu projeto for embora da empresa.</p>
+<p>Bom, já que é pra fazer comentários, por que não fazê-los de uma forma que seja possível extrair todo esse texto diretamente do fonte e transformá-lo em documentação? Dessa forma você evita ter que abrir o Word (arght!) e evita que a documentação fique desatualizada quando o documentador do seu projeto for embora da empresa.</p>
 
 <p>Vocês não têm documentador no projeto? Ah, tá. Bem-vindo ao grupo.</p>
 
@@ -1037,13 +1040,13 @@ BOOL WINAPI DllMain(HINSTANCE inst, DWORD reason, PVOID reserv)
 <span id="reflexao_em_c" title="Reflexão em C++"/></span>
 <section id="section_reflexao_em_c">
 <p class="title"><a href="2008-06.html#reflexao_em_c">#</a> Reflexão em C++</p>
-<span class="title-heading">Caloni, 2008-06-30 <a href="2008-06.html#e_possivel_carregar_duas_dlls_gemeas_no_mesmo_processo">&lt;</a><a href="computer.html">computer</a><a href="2008-07.html#pesquisas_sobre_a_gina">&gt;</a><a href="2008-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_reflexao_em_c')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2008-06-30 <a href="2008-06.html#primeiros_passos_na_documentacao_de_codigofonte_usando_doxygen">&lt;</a><a href="computer.html">computer</a><a href="2008-07.html#pesquisas_sobre_a_gina">&gt;</a> <a href="2008-06.html#primeiros_passos_na_documentacao_de_codigofonte_usando_doxygen">&lt;</a><a href="blog.html">blog</a><a href="2008-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_reflexao_em_c')"><sup>[copy]</sup></a></span>
 
 <p>O termo e conceito de reflection, muito usado em linguagens modernas, é a capacidade de um programa de observar e até de alterar sua própria estrutura. Bom, isso você pode ler na Wikipédia. O interessante é o que podemos usar desse conceito na linguagem C++.</p>
 
 <p>Infelizmente não muito.</p>
 
-<p>O sistema de RTTI (Run Time Type Identification), a identificação de tipos em tempo de execução, seria o começo do reflection em C++. Foi um começo que não teve meio nem fim, mas existe na linguagem. Dessa forma podemos tirar algum proveito disso.</p>
+<p>O sistema de RTTI (Run Time Type Information), a identificação de tipos em tempo de execução, seria o começo do reflection em C++. Foi um começo que não teve meio nem fim, mas existe na linguagem. Dessa forma podemos tirar algum proveito disso.</p>
 
 <p>Um leitor pediu para que eu falasse um pouco sobre essas coisas, especificamente como se faz para obter o nome da classe de onde estamos executando um determinado método. Para esse tipo de construção podemos usar o operado typeid, que retorna informações básicas sobre um tipo de acordo com um tipo, instância ou expressão:</p>
 

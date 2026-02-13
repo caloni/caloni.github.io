@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="aquele_do_while_engracado" title="Aquele do-while engraçado"/></span>
+<section id="section_aquele_do_while_engracado">
+<p class="title">Aquele do-while engraçado</p>
+<span class="title-heading">Caloni, 2008-05-15 computer ccpp blog</span>
+
+<p>Nesses últimos dias andei conversando com um amigo que está estudando sistemas operacionais na faculdade. Melhor ainda, vendo o código real de um sistema operacional em funcionamento. A conseqüência é que, além de aprender um bocado de como as coisas funcionam de verdade debaixo dos panos, acaba-se aprendendo alguns truquezinhos básicos e tradicionais da linguagem C.</p>
+
+<p>Por exemplo, é um hábito conhecido o uso de construções do-while quando existe a necessidade de definir uma macro que possui mais de um comando em vez de usar a igualmente conhecida { construção de múltiplos comandos entre chaves }.</p>
+
+<p>O que talvez não seja tão conhecido é o porquê das coisas serem assim.</p>
+
+<p>Vamos imaginar uma macro de logue que é habilitada em compilações debug, mas é mantida em silêncio em compilações release:</p>
+
+<pre>
+   #ifdef NDEBUG
+   #define MYTRACE(message) /*nada*/
+   #else
+   #define MYTRACE(message)  \
+     { \
+       char buffer[500]; \
+       sprintf(buffer, \
+         &quot;DBG: %s(%d) %s\n&quot;, \
+         __FILE__, \
+         __LINE__, \
+         message); \
+       output(buffer); \
+     }
+   #endif /* NDEBUG */ 
+</pre>
+<p>Nada de mais, e parece até funcionar. Porém, como veremos nas próximas linhas, esse é realmente um exemplo de código "buguento", já que uma chamada dentro de uma construção if-else simplesmente não funciona.</p>
+
+<pre>
+   if( exploded() )
+     MYTRACE(&quot;Oh, my God&quot;);
+   else
+     MYTRACE(&quot;That's right&quot;); 
+   error C2181: illegal else without matching if
+</pre>
+<p>Por que isso? Para responder a essa questão nós precisamos olhar um pouco mais de perto no resultado do preprocessador da linguagem, que apenas troca nossa macro pelo pedaço de código que ela representa:</p>
+
+<pre>
+   if( exploded() )
+   {
+     char buffer[500];
+     sprintf(buffer,
+         &quot;DBG: %s(%d) %s\n&quot;,
+         __FILE__,
+         __LINE__,
+         &quot;Oh, my God&quot;);
+     output(buffer);
+   };
+   else
+   {
+     char buffer[500];
+     sprintf(buffer,
+         &quot;DBG: %s(%d) %s\n&quot;,
+         __FILE__,
+         __LINE__,
+         &quot;That's right&quot;);
+     output(buffer);
+   };
+</pre>
+<p>Dessa forma, podemos ver o porquê. Quando chamamos a macro, geralmente usamos a sintaxe de chamada de função, colocando um sinal de ponto-e-vírgula logo após a chamada. Essa é a maneira correta de se chamar uma função, mas no caso de uma macro, dessa macro, é um desastre, porque ela cria dois comandos em vez de um só (um ponto-e-vírgula vazio, apesar de não fazer nada, é um comando válido). Então, isso é o que o compilador faz:</p>
+
+<pre>
+   if( instruction )
+   {
+     /* um monte de comandos */
+   } /* aqui eu esperaria um else ou uma instrução nova */
+   ; /* uma instrução nova! ok, sem else desa vez */
+   else /* espere ae! o que esse else está fazendo aqui sem um if?!?! */
+   {
+     /* mais comandos */
+   }
+</pre>
+<p>Pense sobre o comando vazio como se ele fosse um comando real, o que é a maneira mais fácil de entender o erro de compilação que recebemos ao compilar o código abaixo:</p>
+
+<pre>
+   if( error() )
+   {
+     printf(&quot;error&quot;);
+   }
+   printf(&quot;here we go&quot;);
+   else /* llegal else without matching if! */
+   {
+     printf(&quot;okay&quot;);
+   }
+</pre>
+<p>Por essa razão, a maneira tradicional de escapar desse erro comum é usar uma construção válida que peça de fato um ponto-e-vírgula no final. Felizmente nós, programadores C/C++, temos essa construção, e ela é... muito bem, o do-while!</p>
+
+<pre>
+   do
+   {
+     /* múltiplos comandos aqui */
+   }
+   while( expression )
+     ; /* eu espero um ponto-e-vírgula aqui,
+          para finalizar minha 
+          instrução do-while */
+</pre>
+<p>Assim nós podemos reescrever nossa macro de logue da maneira certa (e todas as 549.797 macros já escritas em nossa vida de programador). E, apesar de ser uma construção um tanto bizarra, ela funciona melhor do que nossa tentativa inicial:</p>
+
+<pre>
+   #ifdef NDEBUG
+   #define MYTRACE(message) /*nada*/
+   #else
+   #define MYTRACE(message)  \
+   do  \
+   { \
+     char buffer[500]; \
+     sprintf(buffer, \
+       &quot;DBG: %s(%d) %s\n&quot;, \
+       __FILE__, \
+       __LINE__, \
+       message); \
+     output(buffer); \
+   } \
+   while( 0 )
+   #endif /* NDEBUG */ 
+</pre>
+<p>Ao usar um do-while (com uma expressão que retorna falso dentro do teste, de maneira que o código seja executado apenas uma vez) a construção if-else consegue funcionar perfeitamente:</p>
+
+<pre>
+   if( exploded() )
+     do
+     {
+       char buffer[500];
+       sprintf(buffer,
+           &quot;MYTRACE: %s(%d) %s\n&quot;,
+           __FILE__,
+           __LINE__,
+           &quot;Oh, my God&quot;);
+       OutputDebugString(buffer);
+     }
+     while( 0 );
+   else
+     do
+     {
+       char buffer[500];
+       sprintf(buffer,
+           &quot;MYTRACE: %s(%d) %s\n&quot;,
+           __FILE__,
+           __LINE__,
+           &quot;That's right&quot;);
+       OutputDebugString(buffer);
+     }
+     while( 0 );
+</pre>
+</section>
+
+<span style="float: left;">
+ <a href="aprendendo_rapidamente_conceitos_essenciais_do_windbg.html">[aprendendo_rapidamente_conceitos_essenciais_do_windbg]</a>
+ <a href="debug_user_mode_in_kernel_mode.html">[debug_user_mode_in_kernel_mode]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

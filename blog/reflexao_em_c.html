@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="reflexao_em_c" title="Reflexão em C++"/></span>
+<section id="section_reflexao_em_c">
+<p class="title">Reflexão em C++</p>
+<span class="title-heading">Caloni, 2008-06-30 computer blog</span>
+
+<p>O termo e conceito de reflection, muito usado em linguagens modernas, é a capacidade de um programa de observar e até de alterar sua própria estrutura. Bom, isso você pode ler na Wikipédia. O interessante é o que podemos usar desse conceito na linguagem C++.</p>
+
+<p>Infelizmente não muito.</p>
+
+<p>O sistema de RTTI (Run Time Type Information), a identificação de tipos em tempo de execução, seria o começo do reflection em C++. Foi um começo que não teve meio nem fim, mas existe na linguagem. Dessa forma podemos tirar algum proveito disso.</p>
+
+<p>Um leitor pediu para que eu falasse um pouco sobre essas coisas, especificamente como se faz para obter o nome da classe de onde estamos executando um determinado método. Para esse tipo de construção podemos usar o operado typeid, que retorna informações básicas sobre um tipo de acordo com um tipo, instância ou expressão:</p>
+
+<pre>
+#include &lt;iostream&gt;
+using namespace std;
+int main()
+{
+    cout &lt;&lt; typeid( int ).name() &lt;&lt; endl;
+    int x;
+    cout &lt;&lt; typeid( x ).name() &lt;&lt; endl;
+    cout &lt;&lt; typeid( 2 + 2 ).name() &lt;&lt; endl;
+}
+   C:\Tests&gt;cl typeid.cpp
+   Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 15.00.21022.08 for 80x86
+   Copyright (C) Microsoft Corporation.  All rights reserved.
+   /out:typeid.exe
+   typeid.obj
+   C:\Tests&gt;typeid.exe
+   int
+</pre>
+<p>Dessa forma, podemos nos aproveitar do fato que todo método não-estático possui a variável implícita this, do tipo "ponteiro constante para T", onde T é o tipo da classe que contém o método sendo chamado.</p>
+
+<pre>
+#include &lt;iostream&gt;
+using namespace std;
+class MyClass
+{
+    public:
+      void MyMethod()
+      {
+        cout &lt;&lt; typeid(*this).name() &lt;&lt; &quot;::MyMethod&quot; &lt;&lt; endl;
+      }
+};
+int main()
+{
+    MyClass myc;
+    myc.MyMethod();
+}
+   C:\Tests&gt;cl typeid-class.cpp
+   Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 15.00.21022.08 for 80x86
+   Copyright (C) Microsoft Corporation.  All rights reserved.
+   /out:typeid-class.exe
+   typeid-class.obj
+   C:\Tests&gt;typeid-class.exe
+   class MyClass::MyMethod
+</pre>
+<p>Com classes não-polimórficas a coisa parece não ter muita utilidade. No entanto, essa mesma técnica pode ser aplicada em classes derivadas, uma vez que o operador typeid pode trabalhar em tempo de execução:</p>
+
+<pre>
+#include &lt;iostream&gt;
+using namespace std;
+class MyClass
+{
+    public:
+      virtual void MyMethod()
+      {
+        cout &lt;&lt; typeid(*this).name() &lt;&lt; &quot;::MyMethod&quot; &lt;&lt; endl;
+      }
+};
+class MyDerivatedClass1 : public MyClass { };
+class MyDerivatedClass2 : public MyClass { };
+int main()
+{
+    MyClass* myc1 = new MyDerivatedClass1;
+    MyClass* myc2 = new MyDerivatedClass2;
+    myc1-&gt;MyMethod();
+    myc2-&gt;MyMethod();
+}
+   C:\Tests&gt;cl typeid-class2.cpp
+   Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 15.00.21022.08 for 80x86
+   Copyright (C) Microsoft Corporation.  All rights reserved.
+   /out:typeid-class2.exe
+   typeid-class2.obj
+   C:\Tests&gt;typeid-class2.exe
+   class MyDerivatedClass1::MyMethod class MyDerivatedClass2::MyMethod
+</pre>
+<p>Apenas se lembre de ter de fato uma classe polimórfica (eu consegui isso tornando MyMethod uma função virtual). Do contrário você pode <a href="2007-10.html#typeid_e_os_perigos_do_nao_polimorfismo">ter problemas</a>.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="primeiros_passos_na_documentacao_de_codigofonte_usando_doxygen.html">[primeiros_passos_na_documentacao_de_codigofonte_usando_doxygen]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

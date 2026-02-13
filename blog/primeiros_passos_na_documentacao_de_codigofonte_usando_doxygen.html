@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="primeiros_passos_na_documentacao_de_codigofonte_usando_doxygen" title="Primeiros passos na documentação de código-fonte usando Doxygen"/></span>
+<section id="section_primeiros_passos_na_documentacao_de_codigofonte_usando_doxygen">
+<p class="title">Primeiros passos na documentação de código-fonte usando Doxygen</p>
+<span class="title-heading">Caloni, 2008-06-26 computer blog</span>
+
+<p>Comentários são essenciais em um código-fonte bem feito. O código pode até fazer milagres, salvar vidas e multiplicar pães, mas se não tiver um apóstolo eficiente que escreva um evangelho para ele, as pessoas não vão conseguir usar!</p>
+
+<p>OK, a analogia foi horrível.</p>
+
+<p>Bom, já que é pra fazer comentários, por que não fazê-los de uma forma que seja possível extrair todo esse texto diretamente do fonte e transformá-lo em documentação? Dessa forma você evita ter que abrir o Word (arght!) e evita que a documentação fique desatualizada quando o documentador do seu projeto for embora da empresa.</p>
+
+<p>Vocês não têm documentador no projeto? Ah, tá. Bem-vindo ao grupo.</p>
+
+<p>O Doxygen é uma ferramenta que consegue extrair comentários do seu código-fonte, formatados ou não, e transformar em arquivos html, doc, chm, etc. O resultado é muito impressionante, pois ele é capaz de interpretar algumas linguagens (como C++) e mostrar a hierarquia de classes e funções.</p>
+
+<p>Ele não obriga que o desenvolvedor formate corretamente os comentários, mas ao fazer isso podemos descrever o funcionamento exato de funções de interface, como o que cada parâmetro significa, o valor de retorno, algumas observações quanto ao uso, etc.</p>
+
+<p>Aprender a usar Doxygen é muito fácil. Ele possui uma ajuda com vários exemplos com os quais podemos começar a programar um código auto-documentado.</p>
+
+<p>Por ser uma ferramenta bem flexível, são permitidos inúmeros formatos para se auto-documentar o código. Vou descrever como eu faço, mas pode ser que outro formato lhe agrade mais. Para conhecê-los, dê uma olhada no seu manual.</p>
+
+<p>A primeira coisa a saber sobre comentários de documentação é que eles devem vir sempre ANTES do elemento que estamos comentando. Por exemplo, uma classe:</p>
+
+<pre>
+   /** Nova classe de exemplo
+   *
+   * Essa classe é um exemplo de como utilizar o Doxygen
+   */
+   class ClasseDeExemplo
+   {
+      // ...
+   };
+</pre>
+<p>Note que o comentário inicia com um duplo asterisco "/**". Isso indica ao Doxygen que vem documentação por aí.</p>
+
+<p>Observe que seria mais simples que o Doxygen pegasse todo e qualquer comentário e transformasse em documentação. No entanto, existem comentários que não devem ser publicados, pois são muito específicos do funcionamento interno da função. Dessa forma o programa-documentador lhe dá a liberdade de fazer comentários documentáveis e não-documentáveis.</p>
+
+<p>Também existe um outro formato bem popular, usado pelo pessoal do Java, que são os comentários que se iniciam com três barras:</p>
+
+<pre>
+   ///
+   /// Nova classe de exemplo
+   ///
+   /// Essa classe é um exemplo de como utilizar o Doxygen
+   /// E esse comentário é equivalente ao anterior
+   ///
+   class ClasseDeExemplo
+   {
+      // ...
+   };
+</pre>
+<p>Além desse estilo de comentário, existem campos-chave que podemos colocar. Para definir um campo-chave, uma forma válida é usar o arroba seguido do seu nome, e a descrição. Eis um exemplo cheio deles:</p>
+
+<pre>
+   /** @brief Função de exemplo
+   *
+   * Essa função tem por objetivo exemplificar o uso do Doxygen
+   *
+   * @param firstParam Serve como primeiro parâmetro da função
+   * @param[out] anotherParam Esse é outro parâmetro que recebemos
+   *
+   * @return Se der erro, retorna -1. Se der tudo certo, 0.
+   *
+   * @remarks Essa função não pode ser chamada antes de ChamaEuPrimeiro.
+   */
+   int FuncaoDeExemplo(int firstParam, int anotherParam)
+   {
+      // ...
+   }
+</pre>
+<p>Vejamos:</p>
+
+<ul><li>brief. Serve como descrição inicial e sucinta do que a função faz. Mais explicações podem existir depois dessa primeira linha introdutória.</li>
+
+<li>param. Descreve o objetivo de um parâmetro, assim como se ele é de entrada ou saída.</li>
+
+<li>return. Explica os diversos retornos que a função pode ter.</li>
+
+<li>remark. Observações especiais que podem ajudar quem chama a função.</li></ul>
+
+<p>Existem diversos outros tipos de marcadores e com certeza você encontrará muita utilidade em outros. No entanto, esse é o basico que todo desenvolvedor do seu time deve saber para já começar a documentar suas funções.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="reflexao_em_c.html">[reflexao_em_c]</a>
+ <a href="e_possivel_carregar_duas_dlls_gemeas_no_mesmo_processo.html">[e_possivel_carregar_duas_dlls_gemeas_no_mesmo_processo]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>
