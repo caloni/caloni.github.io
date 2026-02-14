@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Jornal do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Jornal do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/journal/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/journal/index.xml" rel="feed" type="application/rss+xml" title="Jornal do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/journal/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/journal/css/jquery-ui.css"/>
+<script src="/journal/js/jquery-1.12.4.js"></script>
+<script src="/journal/js/jquery-ui.js"></script>
+<script src="/journal/js/copy_clipboard.js"></script>
+<script src="/journal/js/list.js"></script>
+<link rel="icon" href="/journal/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="months.html">
+<div class="is-4"><b>Jornal do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<ul style="list-style: none;">
+
+<li><small><a href="2022-12.html#como_eu_reviso_meus_textos">Como Eu Reviso Meus Textos</a></small></li>
+<li><small><a href="2022-12.html#natalia_bocanera">Natália Bocanera</a></small></li>
+<li><small><a href="2022-12.html#wandinha">Wandinha</a></small></li>
+<li><small><a href="2022-12.html#a_familia_addams_2">A Familia Addams 2</a></small></li>
+<li><small><a href="2022-12.html#chainsaw_man">Chainsaw Man</a></small></li>
+<li><small><a href="2022-12.html#memorias_postumas_de_bras_cubas">Memórias Póstumas de Brás Cubas</a></small></li>
+<li><small><a href="2022-12.html#mammals">Mammals</a></small></li>
+<li><small><a href="2022-12.html#a_league_of_their_own">A League of Their Own</a></small></li>
+<li><small><a href="2022-12.html#argentina_1985">Argentina, 1985</a></small></li>
+<li><small><a href="2022-12.html#feliz_2023">Feliz 2023</a></small></li>
+<li><small><a href="2022-12.html#avatar_o_caminho_da_agua">Avatar, O Caminho da Água</a></small></li>
+<li><small><a href="2022-12.html#biblia_sagrada_exodo">Bíblia Sagrada: Êxodo</a></small></li>
+<li><small><a href="2022-12.html#uma_equipe_muito_especial">Uma Equipe Muito Especial</a></small></li></ul>
+
+<span id="como_eu_reviso_meus_textos" title="Como Eu Reviso Meus Textos"/></span>
+<section id="section_como_eu_reviso_meus_textos">
+<p class="title"><a href="2022-12.html#como_eu_reviso_meus_textos">#</a> Como Eu Reviso Meus Textos</p>
+<span class="title-heading">Caloni, 2022-12-04<a href="2022-12.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_como_eu_reviso_meus_textos')"><sup>[copy]</sup></a></span>
+
+<p>Este é um post que deve ficar desatualizado em breve porque eu vivo refinando a forma de revisar meus textos, mas nunca registrei como faço isso. Essa é minha oportunidade. Bem, a última grande reforma nesse processo surgiu depois que dediquei os anos 2020 e 2021 para revisar desde o começo todos os meus três mil posts já escritos. A partir dessa revigorante experiência foi possível subir um pouquinho mais no <a href="2017-03.html#mastery_the_key_to_success_and_long_term_fulfillment">meu platô</a> de habilidades de escrita para algo que eu considero próximo do ideal. Se não é ideal, pelo menos é uma forma automática de trabalhar escrita e reescrita dos meus rascunhos.</p>
+
+<p>A base para a mudança foi essa frase de Stephen King em seu livro <a href="2019-08.html#on_writing_stephen_king">On Writing</a>:</p>
+
+<blockquote>escreva com a porta fechada; reescreva com a porta aberta</blockquote>
+<p>Isso quer dizer que nós escritores podemos, a princípio, colocar tudo no papel. Papel aceita tudo mesmo. Porém, existe um filtro na hora de publicar a versão final para outros lerem. E este filtro é o que deve ser ativado quando nós fechamos a porta. A reescrita, talvez, seja a parte mais importante do ato de escrever, pois é nela que é possível transformar nossos caóticos pensamentos em algo que possa ser traduzido pelo leitor.</p>
+
+<p>Mas devaneio. O que eu gostaria de falar neste post é mais sobre o operacional, do ponto de vista deste blog, que pertence a um programador, e portanto contém um roteiro para automatizar as partes chatas.</p>
+
+<p>Vou começar descrevendo o que eu faço para publicar novos posts. Bem, eu utilizo o [publicador hugo], que transforma meus arquivos texto em páginas html estáticas, o que permite colocar em qualquer servidor de arquivos. A partir daí é apenas a boa e velha navegação Web 1.0 com alguns poucos scripts para auxiliar nas buscas.</p>
+
+<p>Para começar um novo post no hugo existe um comando. Este comando é automatizado por mim em um script em que ele já usa um modelo de arquivo com a marcação de rascunho ligada, o que quer dizer que o post se publicado nesse momento não irá aparecer na lista de novidades, já que eu retiro os rascunhos de lá. No entanto, eu mantenho uma lista apenas para esses rascunhos, por comodidade e porque eu acredito que o processo de escrever texto é muito próximo de escrever código: não há versão final. O que chamamos de final é a melhor versão que conseguimos publicar neste momento, mas sempre é possível melhorar. É por isso que os rascunhos ficam publicados. Não que alguém mereça lê-los. Considere esses textos como minha branch de desenvolvimento, que no caso de um escritor solitário se confunde com a master. Se houvesse um grupo de escritores trabalhando para este blog provavelmente teríamos uma develop e uma master.</p>
+
+<p>Pois bem. Rascunhos são importantes, mas precisam se manter à distância até que tenhamos uma versão minimamente publicável: um release. Antes que isso aconteça os posts vão sendo publicados em um cantinho à parte, e junto disso eu publico dois livros digitais para uso próprio que vão para meu leitor de ebooks. Um deles contém todos os posts e uso para referência offline. O outro, mais atualizado, é minha branch develop. Ele contém apenas os rascunhos. Que eu preciso ler para poder retrabalhar. E é por isso que ele existe. Eu lerei no momento oportuno, mas, e isso é importante, nunca na hora de escrever. A hora da leitura crítica do próprio texto deve ser diferente e distante da hora da escrita. Por quê isso? Para que o leitor e escritor não se confundam. É preciso haver esse distanciamento para aguçar nosso lado crítico, de quem lê o texto de outra pessoa e acha que poderia ser melhor. No momento de ler meus próprios rascunhos eu sou o revisor deste Pull Request.</p>
+
+<p>E eu posso pedir por modificações.</p>
+
+<p>Os pedidos que eu faço são anotações de trechos do texto. Essas anotações qualquer leitor de ebooks lhe permite jogar para um arquivo texto. Que é o que eu faço. Isso é automático no caso do Kindle, acredito que seja para a maioria dos leitores. Esse arquivo fica no leitor, esperando meu próximo round de escritas. Quando chega esse momento eu copio este arquivo localmente, salvo em um arquivo do meu próprio repositório de textos. Vou dar um exemplo atual:</p>
+
+<pre>
+Journal do Caloni (Wanderley Caloni)
+- Highlight Loc. 66342  | Added on Saturday, 3 December 22 00:26:00 GMT-03:00
+[publicador hugo]: https://gohugo.io/minhas anotações de leitura. [^1] 
+==========
+Journal do Caloni (Wanderley Caloni)
+- Highlight Loc. 66346  | Added on Saturday, 3 December 22 00:27:01 GMT-03:00
+loquaz, densa, 
+==========
+Journal do Caloni (Wanderley Caloni)
+- Highlight Loc. 66348  | Added on Saturday, 3 December 22 00:27:28 GMT-03:00
+cada detalhe dessa questão é explorada em mais detalhes. 
+==========
+Journal do Caloni (Wanderley Caloni)
+- Highlight Loc. 66357  | Added on Saturday, 3 December 22 00:29:03 GMT-03:00
+eles, quase da mesma forma, as atividades que para eles 
+==========
+</pre>
+<p>Esse não é um formato muito bom para trabalhar, então eu jogo para um arquivo de rascunhos e deixo apenas as linhas que eu anotei de fato.</p>
+
+<pre>
+minhas anotações de leitura. [^1] 
+loquaz, densa, 
+cada detalhe dessa questão é explorada em mais detalhes. 
+eles, quase da mesma forma, as atividades que para eles 
+</pre>
+<p>Então eu edito essas linhas para fazer parte de uma busca coletiva através da função matchadd do Vim.</p>
+
+<pre>
+%s/\(.*\) $/call matchadd(&quot;search&quot;, &quot;\1&quot;)/
+</pre>
+<p>Com isso cada linha conterá um comando válido do Vim para adicionar o trecho sublinhado como parte de um grupo de busca.</p>
+
+<pre>
+call matchadd(&quot;search&quot;, &quot;minhas anotações de leitura. [^1]&quot;)
+call matchadd(&quot;search&quot;, &quot;loquaz, densa,&quot;)
+call matchadd(&quot;search&quot;, &quot;cada detalhe dessa questão é explorada em mais detalhes.&quot;)
+call matchadd(&quot;search&quot;, &quot;eles, quase da mesma forma, as atividades que para eles&quot;)
+</pre>
+<p>Dessa forma eu salvo as modificações e rodo o arquivo como um arquivo de comandos do Vim com `:so %`. O editor irá então realçar todos os itens deste grupo de busca em qualquer arquivo que eu abra. E agora é a hora de abrir os rascunhos ou textos que andei revisando.</p>
+
+<p>Aí chega o momento do bom senso. Eu não escrevo anotações na hora da revisão: eu apenos sublinho. Considero o suficiente. Com base nos trechos que sublinhei eu devo melhorar o parágrafo, a frase ou corrigir a ortografia de alguma palavra. Pode ser qualquer coisa. Muitas vezes eu sublinho um parágrafo inteiro porque ele está problemático. Quando eu fico repetindo palavras no meio da frase eu sublinho o início do uso de uma palavra e o final com a mesma palavra. Enfim, para um bom entendedor um sublinhado basta.</p>
+
+<p>Depois de revisados os textos eles estão prontos ou para serem publicados em sua versão final, quando eles perdem a marcação de rascunho e ganham a categoria e tags que merecem, ou para voltarem para nova revisão. Textos muito longos ou problemáticos ganham várias rodadas de revisão.</p>
+
+<p>Agora é a hora de obter os novos textos que andei escrevendo para inserir também no meu novo livro de rascunhos. Esses textos podem estar em qualquer lugar. Pode ser um email que mando para mim mesmo, mensagens salvas do Telegram ou até a área de transferência atual do computador onde estou. Qualquer origem é válida, assim como a qualidade inicial. "Escreva com a porta fechada", lembra?</p>
+
+<p>Pois bem. Salvos os novos rascunhos em um novo commit, publico as novas modificações e os novos textos em novas versões do blog e dos livros, incluindo o livro de rascunhos. E tudo começa novamente até a próxima leitura.</p>
+
+</section><hr/>
+
+
+<span id="natalia_bocanera" title="Natália Bocanera"/></span>
+<section id="section_natalia_bocanera">
+<p class="title"><a href="2022-12.html#natalia_bocanera">#</a> <a class="external" href="https://coletivocritico.com">Natália Bocanera</a></p>
+<span class="title-heading">Caloni, 2022-12-04 <a href="2022-10.html#as_paredes_falam">&lt;</a><a href="mostrasp.html">mostrasp</a><a href="2023-10.html#o_que_vem_ai_na_mostra_2023_47a">&gt;</a> <a href="2022-11.html#passagem_de_parametros_c_vs_c++">&lt;</a><a href="blogging.html">blogging</a><a href="2023-01.html#vitamin_d_the_nutrition_source">&gt;</a><a href="2022-12.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_natalia_bocanera')"><sup>[copy]</sup></a></span>
+
+<p>A advogada em seu tempo livre escreve sobre cinema para o saite Coletivo Crítico, dando sua visão feminista sobre a arte cinematográfica. Peguei alguns textos dessa última Mostra para ler e é possível constatar que ela de fato sabe escrever. Mais do que isso: pincela com certa habilidade os pontos principais que anotou sobre os filmes que assistiu. Sempre, claro, sob o viés feminista junto do pacote ideológico que dispensa apresentações.</p>
+
+<p>É curioso observar as falhas no raciocínio de Bocanera ao esmiuçar uma obra sob o filtro ideológico, algo muito comum para os que abraçam uma causa. Eu já fui muito e ainda sou eventualmente vítima desse engodo de escrever sem retirar minhas vestes egoístas da forma radical como enxergo o mundo. Sabendo disso, não quero apontar dedos. Apenas observar.</p>
+
+<p>Veja, por exemplo, <a href="https://coletivocritico.com/2022/10/22/46a-mostra-febre-do-mediterraneo/">seu texto sobre A Febre do Mediterrâneo</a>, um dos melhores filmes dessa mostra. A escritora está obcecada em listar as questões referentes à inversão de papéis, já que o protagonista é homem e fica em casa cuidando dos filhos, pois abandonou seu emprego para virar um escritor sem livros, muito semelhante a nós, críticos sem imprensa, já que ninguém liga mais para leitura. Este é um homem desempregado, sem função na família. Um inútil. Faz sentido ter depressão.</p>
+
+<p>A mulher do protagonista é quem sustenta a casa. Do ponto de vista do texto de Bocanera, a depressão do marido seria também a causa de muitas mulheres que são donas de casa e possuem jornadas duplas. Ela também cita jornadas não remuneradas, provavelmente se referindo ao trabalho doméstico. Ou seja, a observação até pertinente caberia apenas às mulheres, mas não ao marido, e principalmente ao personagem, que não vive nada do que é descrito. Nesse caso é até irônico constatar que ele e a família são de boa vida, de classe média. O trabalho que ele tem com os filhos não é praticamente nada se não fosse seu estado clínico.</p>
+
+<p>Bocanera é uma escritora com um pé na erudição e outro na narrativa. Preocupada em contextualizar o leitor sobre as camadas dos filmes que analisa, talvez até mais para si mesma, seus textos não são tão inacessíveis quanto saites que não se lê por aí. Porém, também não são de jovens despreocupados com o conteúdo e que mal sabem compor um parágrafo que não seja estendendo a sinopse. De qualquer forma, tenho minhas dúvidas se aproveitaria ler algo que ela produz. Um tradutor de ideologias ou o material compilado para a imprensa é muito próximo, e já está pronto no dia da cabine de imprensa.</p>
+
+</section><hr/>
+
+
+<span id="wandinha" title="Wandinha"/></span>
+<section id="section_wandinha">
+<p class="title"><a href="2022-12.html#wandinha">#</a> Wandinha</p>
+<span class="title-heading">Caloni, 2022-12-04 <a href="2022-11.html#pepsi_where_is_my_jet">&lt;</a><a href="cinema.html">cinema</a><a href="2022-12.html#a_familia_addams_2">&gt;</a> <a href="2022-11.html#pepsi_where_is_my_jet">&lt;</a><a href="movies.html">movies</a><a href="2022-12.html#a_familia_addams_2">&gt;</a><a href="2022-12.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_wandinha')"><sup>[copy]</sup></a></span>
+
+<p>A Família Addams já teve as mais diversas encarnações, mas eu não me lembro de uma versão chata. Wandinha já começa com problemas incorrigíveis ao transformar uma coadjuvante original em protagonista. Além de que a atmosfera da série não se encaixa em momento algum com o espírito da obra original ou mesmo de suas incessantes revisitas nos quadrinhos, na TV e no cinema. E para piorar, a série usa e abusa da narração em off, revelando em seu núcleo uma preguiça inerente que não subexiste apenas no roteiro, mas em toda a produção, desde o figurino até a escolha dos atores.</p>
+
+<p>A motivação é ser uma série adolescente investigativa onde habita essa incorrigível menina que era uma vez macabra, mas não mais. Agora ela é feminista, o que não deixa de ser macabro, mas infelizmente também deixa de ser engraçado, quando os comentários sarcásticos espetam o já abatido patriarcado que não apita mais nada.</p>
+
+<p>E por mencionar troca de papéis, Wandinha se aventura no universo emprestado do seu vizinho: o Harry Potter das malvadezas. Tudo o que acontece na escola de ~~bruxos~~ ~~aberrações~~ figuras fantásticas onde ela estuda tem relação direta com essa menina que acabou de chegar. Até o investigador da cidade tem um passado de perseguição ao seu pai.</p>
+
+<p>A Família Addams surgiu nos anos 30, dos rascunhos do cartunista Charles Addams. Se trata de uma inversão satírica onde uma família de aristocratas são atraídos pelo macabro e ignoram a sensação que geram nas pessoas ditas normais. Alguns dos rascunhos de Addams foram parar no The New Yorker e desde então houve adaptações para outras mídias, desde os quadrinhos, passando pela série televisiva da década de 60 e chegando nos filmes da década de 90, sucessos de bilheteria.</p>
+
+<p>Não à toa. Os filmes apresentam os inspiradíssimos Raul Julia como papai Gomez, Anjelica Huston como Morticia, Christopher Lloyd como Tio Chico e Christina Ricci como Vandinha Addams, uma revelação na época. Ricci também estrelaria no live action de Gasparzinho, o Fantasminha Camarada, da mesma década. A maquiagem, o figurino e o mise en scene dos dois filmes com essa família macabra até hoje são dignos de nota. As atuações estão exageradas na medida certa. Estas produções estão naquele grupo sincero dos anos 90 em que se ganhava dinheiro nos cinemas, mas faziam por merecer.</p>
+
+<p>Na série netflixiana os problemas começam já no elenco que compõem a família, que mal aparece, mas deixa um gosto ruim. Luis Guzmán é um péssimo Gomez porque ele sequer é um ator. Raul Julia dança sapateado em cima da "interpretação" de Guzmán, que está com uma aparência decadente demais para um aristocrata. O mesmo pode-se dizer de Morticia Addams, na pele de uma Catherine Zeta-Jones em fim de carreira. O pouco tempo que essa dupla tem em cena é o suficiente para manter um estado de choque pela discrepância horrorosa entre as hoje figuras imortais de Julia e Huston. Toda a dignidade do casal Addams esvanece em questão de segundos em Wandinha.</p>
+
+<p>A atriz Jenna Ortega até entrega uma personagem por trás de todo esse roteiro preguiçoso e sequências previsíveis de dar sono. Sua postura é firme mesmo sendo o epicentro de um enlatado desastroso. Ela tem potencial de ser uma nova Wandinha Addams nos cinemas. Basta mudar a direção equivocada de um Tim Burton pagando boletos, a direção de arte, a maquiagem, o figurino, a fotografia... Faltou alguma coisa? Bom, talvez fosse interessante mudar essa década terrível que vivemos.</p>
+
+</section><hr/>
+
+
+<span id="a_familia_addams_2" title="A Familia Addams 2"/></span>
+<section id="section_a_familia_addams_2">
+<p class="title"><a href="2022-12.html#a_familia_addams_2">#</a> A Familia Addams 2</p>
+<span class="title-heading">Caloni, 2022-12-07 <a href="2022-12.html#wandinha">&lt;</a><a href="cinema.html">cinema</a><a href="2022-12.html#memorias_postumas_de_bras_cubas">&gt;</a> <a href="2022-12.html#wandinha">&lt;</a><a href="movies.html">movies</a><a href="2022-12.html#memorias_postumas_de_bras_cubas">&gt;</a><a href="2022-12.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_a_familia_addams_2')"><sup>[copy]</sup></a></span>
+
+<p>Não tão fresco quando o primeiro filme, esta continuação hoje tem cara de feito para TV, mas mantém algumas boas piadas, fáceis de criar porque o material é tão bom. Os atores estão lá, mas faltam situações para que você perceba. A história de uma viúva negra se encaixa bem, mas Joan Cusack está um tom acima de resto do elenco. Raul Julia e Angelica Huston refazem seus papéis, mas é Cristina Ricci que rouba algumas cenas fazendo menos. O figurino está de matar, mas vestido de gala. Esta é uma produção típica dos anos 90, que virou um gênero à parte. Não há riscos que sentimos pelos personagens, então a aventura vira apenas mais um episódio desta adorável família, que nos lembra de uma forma bem humorada a enxergar outras formas de ver a vida.</p>
+
+</section><hr/>
+
+
+<span id="chainsaw_man" title="Chainsaw Man"/></span>
+<section id="section_chainsaw_man">
+<p class="title"><a href="2022-12.html#chainsaw_man">#</a> Chainsaw Man</p>
+<span class="title-heading">Caloni, 2022-12-10 <a href="2022-12.html#memorias_postumas_de_bras_cubas">&lt;</a><a href="cinema.html">cinema</a><a href="2022-12.html#mammals">&gt;</a> <a href="2022-11.html#aharensan">&lt;</a><a href="animes.html">animes</a><a href="2023-01.html#lookism">&gt;</a><a href="2022-12.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_chainsaw_man')"><sup>[copy]</sup></a></span>
+
+<p>Assisti um ep desse anime porque meu amigo falou que o diretor fez umas coisas interessantes com o movimento de câmera. Depois assistindo fica mais claro o motivo. Com o uso de CGI nos cenários o movimento é mais fluido,  ocorre em um espaço tridimensional, ou se parece. Bem mais que o anime tradicional. Falta alma aos movimentos. Ele emula um grande trabalho e conta rapidamente a história desse rapaz. A história aposta no choque, assim como Dororo é uma história triste de partir o coração. Nós torcemos pelo herói? Não é para tanto. Enxergamos a visão ocidental da crítica capitalista sobre os que têm tanto e ainda querem mais. Tudo o que ele quer é uma vida normal. Poder passar pão na geleia. De partir o coração se não fosse manipulador. Ah, e se esfregar em uma garota. O sonho incel de um caçador de demônios pagando a dívida infinita do falecido pai que se matou (talvez depois descubramos que não, anime tem disso). Os movimentos ficaram bonitos. Mas eles por si só contam uma história ou são bonitos no <a href="2017-10.html#your_name">estilo Shinkai</a>: vazios de significado?</p>
+
+</section><hr/>
+
+
+<span id="memorias_postumas_de_bras_cubas" title="Memórias Póstumas de Brás Cubas"/></span>
+<section id="section_memorias_postumas_de_bras_cubas">
+<p class="title"><a href="2022-12.html#memorias_postumas_de_bras_cubas">#</a> Memórias Póstumas de Brás Cubas</p>
+<span class="title-heading">Caloni, 2022-12-10 <a href="2022-12.html#a_familia_addams_2">&lt;</a><a href="cinema.html">cinema</a><a href="2022-12.html#chainsaw_man">&gt;</a> <a href="2022-12.html#a_familia_addams_2">&lt;</a><a href="movies.html">movies</a><a href="2022-12.html#mammals">&gt;</a><a href="2022-12.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_memorias_postumas_de_bras_cubas')"><sup>[copy]</sup></a></span>
+
+<p>A graça está em adaptar a obra para o cinema convertendo os devaneios verbais em viagens longas no espaço e no tempo. Não à toa este filme foi filmado em cinco cidades e dois países diferentes. Não é um filme muito animado, mas assim é o livro. A melancolia que Cubas curaria com seu emplasto foi a mesma que o acompanhou por toda a vida sem perceber. Como livro a psicologia do personagem é fascinante. Como filme é como se ele realmente fosse.</p>
+
+</section><hr/>
+
+
+<span id="mammals" title="Mammals"/></span>
+<section id="section_mammals">
+<p class="title"><a href="2022-12.html#mammals">#</a> Mammals</p>
+<span class="title-heading">Caloni, 2022-12-15 <a href="2022-12.html#chainsaw_man">&lt;</a><a href="cinema.html">cinema</a><a href="2022-12.html#argentina_1985">&gt;</a> <a href="2022-12.html#memorias_postumas_de_bras_cubas">&lt;</a><a href="movies.html">movies</a><a href="2022-12.html#argentina_1985">&gt;</a><a href="2022-12.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_mammals')"><sup>[copy]</sup></a></span>
+
+<p>Esta série é sobre traição, mas também é sobre a dualidade entre a nossa vida mental e a realização no mundo real. E tudo passa pelo nosso filtro animal, o que tenta conciliar as regras sociais e os comportamentos contraditórios.</p>
+
+<p>O gancho é eficiente. Nossa atenção é sequestrada por eventos de impacto. Um casal sai de férias e avista uma baleia. Uma grávida perde o bebê, um chef prestes a abrir seu próprio restaurante com o nome da esposa descobre que ela teve pelo menos três amantes sexuais. Uma mulher solitária tem a experiência alucinógena de ser uma personagem em um livro sobre Coco Chanel.</p>
+
+<p>Tudo acontece no espaço de seis horas de streaming em um tempo psicológico a ser definido. Não é um conteúdo muito alongado porque a trama te prende bem. A direção inusitada brinca com movimentos sem cortes para manter sequências tensas do início ao fim.</p>
+
+<p>E tudo termina da maneira que começou. Aberto, interpretativo. Uma exploração não muito ambiciosa, mas original, em busca do que faz da monogamia uma pedra fundamental na sociedade moderna e uma pedra no sapato do modernismo pós-burguesia.</p>
+
+</section><hr/>
+
+
+<span id="a_league_of_their_own" title="A League of Their Own"/></span>
+<section id="section_a_league_of_their_own">
+<p class="title"><a href="2022-12.html#a_league_of_their_own">#</a> A League of Their Own</p>
+<span class="title-heading">Caloni, 2022-12-19 <a href="2022-12.html#argentina_1985">&lt;</a><a href="cinema.html">cinema</a><a href="2022-12.html#uma_equipe_muito_especial">&gt;</a> <a href="2022-12.html#argentina_1985">&lt;</a><a href="movies.html">movies</a><a href="2022-12.html#uma_equipe_muito_especial">&gt;</a><a href="2022-12.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_a_league_of_their_own')"><sup>[copy]</sup></a></span>
+
+<p>Esta série quer contar um pouco sobre as aberrações, em uma época onde elas não são aceitas. Só que hoje elas são mais que toleradas: são celebradas. A história pode parecer de superação. Ele faz lembrar daquela sensação de hoje de que algo está errado.</p>
+
+<p>Baseada em um filme com Tom Hanks e Geena Davis dos anos 90 com roteiro de Kelly Candaele, a história é expandida para mais mulheres, cores e opções sexuais. Abbi Jacobson demonstra tanto segurança em seu papel de técnica do time de beisebol quanto insegurança em sua vida pessoal, especialmente quando conhece seu affair, interpretada de maneira convincente por D'Arcy Carden, de The Good Place. Ambas vieram da comédia, mas é Carden que faz a transição para o drama mais firme e com menos falas.</p>
+
+<p>Embora a série tenha tudo para ser um desastre e desdenhar da arte audiovisual ela é bem produzida. As saias das jogadoras formam um capricho charmoso. O uso de cores mais realistas de uma época mais conhecida pelo preto e branco é de um revisionismo curioso, desprovido de imaginação e suportado pela técnica. As personagens secundárias, como a melhor amiga da atriz negra forte e independente que quer ser rebatedora, são versões incompletas de uma "crítica" que é um tiro pela culatra.</p>
+
+</section><hr/>
+
+
+<span id="argentina_1985" title="Argentina, 1985"/></span>
+<section id="section_argentina_1985">
+<p class="title"><a href="2022-12.html#argentina_1985">#</a> Argentina, 1985</p>
+<span class="title-heading">Caloni, 2022-12-19 <a href="2022-12.html#mammals">&lt;</a><a href="cinema.html">cinema</a><a href="2022-12.html#a_league_of_their_own">&gt;</a> <a href="2022-12.html#mammals">&lt;</a><a href="movies.html">movies</a><a href="2022-12.html#a_league_of_their_own">&gt;</a><a href="2022-12.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_argentina_1985')"><sup>[copy]</sup></a></span>
+
+<p>Filme de 2022 com Ricardo Darín sendo o promotor que julgou os ditadores após a redemocratização do país. Narração fluida e quase família, comercialmente válido e ainda longo, mas passa rápido. A história é de 85, mas parece de 22, mesmo, pois pra onde eles olham só tem fascista. É aquela curva de filme de justiça padrão, montando o time de jovens que logo é esquecido, tensão nas ameaças de morte e uma pataquada na hora do discurso final do promotor.</p>
+
+</section><hr/>
+
+
+<span id="feliz_2023" title="Feliz 2023"/></span>
+<section id="section_feliz_2023">
+<p class="title"><a href="2022-12.html#feliz_2023">#</a> Feliz 2023</p>
+<span class="title-heading">Caloni, 2022-12-19<a href="2022-12.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_feliz_2023')"><sup>[copy]</sup></a></span>
+
+<p>Então chegou aquela época do ano. Você sabe, aquela. Onde falamos sobre Tudo em Todo o Lugar ao Mesmo Tempo. Onde falamos sobre Amor e Trovão. Onde relembramos como nos últimos anos vivemos em um Mundo Estranho, nos levando de vez em quando ao Multiverso da Loucura.</p>
+
+<p>Então prepare-se para seguir pelo Caminho da Água e redescobrir como tudo começou, mas em uma visão diferente. Foi um Adão Negro dessa vez que iniciou nossa terra de Wakanda Para Sempre. Não foi graças ao Batman, mas pudemos voar alto, no Top Gun das emoções.</p>
+
+<p>Esta mensagem de fim de ano pode parecer confusa, mas o mundo está cada vez menos simples. O importante é lembrar: Sempre em Frente, sem Pânico (seja o 1 ou o 5). Embora alguns acontecimentos nos queiram levar ao Beco do Pesadelo e nos encontramos com Os Caras Malvados, lembre-se de O Homem do Norte, lá na </p>
+
+<p>Cidade Perdida, onde vive o Elvis. Mas Não! Não Olhe! Não Se Preocupe, Querida. Não há A Fera a te machucar quando temos Mães Paralelas a nos ajudar.</p>
+
+<p>É na calmaria de perto do Natal e do novo ano iluminado pela lanterna do Buzz Lightyear que nós sabemos que podemos contar com os que são Mais Que Amigos. Mesmo distantes, mesmo sem se ver por um tempo, eu sei que tudo vai dar certo.</p>
+
+<p>Este é o nosso confuso, mas dedicado, Feliz Festas de Final de Ano para você, cinéfilo e amigo :)</p>
+
+</section><hr/>
+
+
+<span id="avatar_o_caminho_da_agua" title="Avatar, O Caminho da Água"/></span>
+<section id="section_avatar_o_caminho_da_agua">
+<p class="title"><a href="2022-12.html#avatar_o_caminho_da_agua">#</a> Avatar, O Caminho da Água</p>
+<span class="title-heading">Caloni, 2022-12-26 <a href="2022-12.html#uma_equipe_muito_especial">&lt;</a><a href="cinema.html">cinema</a><a href="2023-01.html#lookism">&gt;</a> <a href="2022-12.html#uma_equipe_muito_especial">&lt;</a><a href="movies.html">movies</a><a href="2023-01.html#ruido_branco_white_noise">&gt;</a> <a href="2022-03.html#carne_tremula">&lt;</a><a href="miniviews.html">miniviews</a><a href="2023-11.html#um_convidado_bem_trapalhao">&gt;</a> <a href="2022-03.html#carne_tremula">&lt;</a><a href="fragments.html">fragments</a><a href="2023-11.html#um_convidado_bem_trapalhao">&gt;</a><a href="2022-12.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_avatar_o_caminho_da_agua')"><sup>[copy]</sup></a></span>
+
+<p>O protocolo de entretenimento refazendo a mesma história e seguindo os passos da franquia Star Wars já no segundo filme, inacabado, com pontas soltas. Cameron assina a direção e o roteiro, demonstrando não ter criado nada de novo nos últimos 20 anos.</p>
+
+</section><hr/>
+
+
+<span id="biblia_sagrada_exodo" title="Bíblia Sagrada: Êxodo"/></span>
+<section id="section_biblia_sagrada_exodo">
+<p class="title"><a href="2022-12.html#biblia_sagrada_exodo">#</a> Bíblia Sagrada: Êxodo</p>
+<span class="title-heading">Caloni, 2022-12-26 <a href="2022-08.html#biblia_sagrada_genesis">&lt;</a><a href="books.html">books</a><a href="2023-03.html#algorithms_for_dummies">&gt;</a> <a href="2022-08.html#biblia_sagrada_genesis">&lt;</a><a href="philosophy.html">philosophy</a><a href="2023-01.html#pensamentos_marco_aurelio">&gt;</a> <a href="2022-08.html#biblia_sagrada_genesis">&lt;</a><a href="bible.html">bible</a><a href="2023-09.html#biblia_sagrada_levitico">&gt;</a> <a href="2022-08.html#biblia_sagrada_genesis">&lt;</a><a href="esoteric.html">esoteric</a><a href="2023-09.html#biblia_sagrada_levitico">&gt;</a><a href="2022-12.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_biblia_sagrada_exodo')"><sup>[copy]</sup></a></span>
+
+<p>O povo judeu é teimoso. Esse é o maior ensinamento que o segundo livro do Pentateuco tem a nos dizer. Se Deus continuasse andando com este povo pelas areias do deserto após terem sido libertos das garras dos egípcios, ele acabaria por matar a todos eles. Palavras do Próprio.</p>
+
+<p>Se Gênesis, <a href="2022-08.html#biblia_sagrada_genesis">livro anterior</a>, ganhava pontos por uma descrição histórica de uma cultura primitiva de tempos indizíveis para nós, homens modernos, Êxodo é apenas mais um arco pseudo-dramático de um povo se vangloriando de ter o "deus certo". Surgem leis que definem o que este deus considera que deve ser obrigatório na vida de seu povo, como cortar o pingulim e estraçalhar animais e jogar o sangue na mesa do ritual. No meio há algumas leis que lembram as de propriedade, como não cobiçar as coisas dos outros, roubar, matar, etc. Mais tarde ~~os libertários irão resumir estas leis em um conjunto mais sucinto e lógico~~ Jesus irá estabelecer regras mais simples de serem lembradas.</p>
+
+<p>Porém, enquanto isso, celebremos a Festa dos Pães sem Fermento. Que nomezinho mais chinfrim seu Javé.</p>
+
+<blockquote>Celebrem a Festa dos Pães sem Fermento, pois ela os lembrará de que eu tirei suas multidões da terra do Egito exatamente nesse dia. A festa será uma lei permanente para vocês; celebrem-na nesse dia de geração em geração.</blockquote>
+<blockquote>À meia-noite, o SENHOR feriu mortalmente todos os filhos mais velhos da terra do Egito, desde o filho mais velho do faraó, sentado em seu trono, até o filho mais velho do prisioneiro no calabouço. Até mesmo os primeiros machos dentre os animais foram mortos. O faraó, todos os seus oficiais e todo o povo egípcio acordaram durante a noite, e ouviu-se um grande lamento em toda a terra do Egito. Não houve uma só casa onde não morresse alguém.</blockquote>
+<blockquote>Naquela mesma noite, os israelitas partiram de Ramessés rumo a Sucote. Havia cerca de seiscentos mil homens, além das mulheres e crianças. Saiu com eles uma mistura de gente que não era israelita, além de imensos rebanhos de ovelhas, bois e outros animais.</blockquote>
+<blockquote>O povo de Israel tinha vivido 430 anos no Egito. Na verdade, essa grande multidão do SENHOR deixou a terra exatamente no dia em que se completaram os 430 anos. O SENHOR passou a noite toda em vigília para tirar seu povo do Egito. Essa, portanto, é a noite do SENHOR e deverá ser celebrada por todos os israelitas, de geração em geração.</blockquote>
+<blockquote>O povo saiu de Sucote e acampou em Etã, à beira do deserto. O SENHOR ia adiante deles. Durante o dia, guiava-os com uma coluna de nuvem e, durante a noite, fornecia luz com uma coluna de fogo. Isso permitia que caminhassem de dia e de noite. E a coluna de nuvem não se afastava do povo durante o dia, nem a coluna de fogo durante a noite.</blockquote>
+<blockquote>O SENHOR disse a Moisés: "Ordene aos israelitas que deem a volta e acampem em Pi-Hairote, entre Migdol e o mar. Acampem ali, à beira do mar, em frente a Baal-Zefom. O faraó pensará: 'Os israelitas estão vagando perdidos, prisioneiros do deserto!'. Mais uma vez, endurecerei o coração do faraó, e ele os perseguirá. Planejei tudo isso para mostrar minha glória por meio do faraó e de todo o seu exército. Então os egípcios saberão que eu sou o SENHOR". E os israelitas assim fizeram.</blockquote>
+<blockquote>Então Moisés estendeu a mão sobre o mar e, com um forte vento leste, o SENHOR abriu caminho no meio das águas. O vento soprou a noite toda, transformando o fundo do mar em terra seca. E o povo de Israel atravessou pelo meio do mar, caminhando em terra seca, com uma parede de água de cada lado.</blockquote>
+<blockquote>O SENHOR disse a Moisés: "Até quando este povo se recusará a obedecer às minhas ordens e instruções?"</blockquote>
+<blockquote>Os israelitas comeram maná durante quarenta anos, até chegarem à terra onde se estabeleceriam. Comeram maná até chegarem à fronteira da terra de Canaã. </blockquote>
+<blockquote>Eu sou o SENHOR, seu Deus, que o libertou da terra do Egito, onde você era escravo.</blockquote>
+<blockquote>Não tenha outros deuses além de mim.</blockquote>
+<blockquote>Não faça para si espécie alguma de ídolo ou imagem de qualquer coisa no céu, na terra ou no mar.</blockquote>
+<blockquote>Não se curve diante deles nem os adore, pois eu, o SENHOR, seu Deus, sou um Deus zeloso.</blockquote>
+<blockquote>Trago as consequências do pecado dos pais sobre os filhos até a terceira e quarta geração dos que me rejeitam, mas demonstro amor por até mil gerações dos que me amam e obedecem a meus mandamentos.</blockquote>
+<blockquote>Não use o nome do SENHOR, seu Deus, de forma indevida.</blockquote>
+<blockquote>O SENHOR não deixará impune quem usar o nome dele de forma indevida.</blockquote>
+<blockquote>Lembre-se de guardar o sábado, fazendo dele um dia santo.</blockquote>
+<blockquote>Você tem seis dias na semana para fazer os trabalhos habituais, mas o sétimo dia é o sábado do SENHOR, seu Deus.</blockquote>
+<blockquote>Nesse dia, ninguém em sua casa fará trabalho algum: nem você, nem seus filhos e filhas, nem seus servos e servas, nem seus animais, nem os estrangeiros que vivem entre vocês.</blockquote>
+<blockquote>O SENHOR fez os céus, a terra, o mar e tudo que neles há em seis dias; no sétimo dia, porém, descansou. Por isso o SENHOR abençoou o sábado e fez dele um dia santo.</blockquote>
+<blockquote>Honre seu pai e sua mãe. Assim você terá vida longa e plena na terra que o SENHOR, seu Deus, lhe dá.</blockquote>
+<blockquote>Não mate.</blockquote>
+<blockquote>Não cometa adultério.</blockquote>
+<blockquote>Não roube.</blockquote>
+<blockquote>Não dê falso testemunho contra o seu próximo.</blockquote>
+<blockquote>Não cobice a casa do seu próximo. Não cobice a mulher dele, nem seus servos ou servas, nem seu boi ou jumento, nem qualquer outra coisa que lhe pertença.</blockquote>
+<blockquote>Sacrifique o novilho na presença do SENHOR, à entrada da tenda do encontro. Com o dedo, coloque um pouco do sangue do animal nas pontas do altar e derrame o restante na base do altar. Tome toda a gordura que envolve os órgãos internos, o lóbulo do fígado, os dois rins e a gordura ao redor deles e queime tudo no altar. Depois, tome o restante do novilho, incluindo o couro, a carne e o excremento, e queime-o fora do acampamento como oferta pelo pecado. </blockquote>
+<blockquote>Então Moisés disse aos levitas: "Hoje vocês se consagraram para o serviço do SENHOR, pois lhe obedeceram mesmo quando tiveram de matar seus próprios filhos e irmãos. Hoje vocês receberam dele uma bênção". </blockquote>
+<blockquote>Mas eu não viajarei no meio de vocês, pois são um povo teimoso e rebelde. Se eu os acompanhasse, certamente os destruiria ao longo do caminho". </blockquote>
+<blockquote>Javé é a transliteração mais provável do nome próprio YHWH; nesta tradução aparece, em geral, como "SENHOR". </blockquote>
+<blockquote>SENHOR disse ainda: "Fique nesta rocha, perto de mim. Quando minha presença gloriosa passar, eu o colocarei numa abertura da rocha e o cobrirei com minha mão até que eu tenha passado. Depois, tirarei minha mão e você me verá pelas costas. Meu rosto, porém, ninguém poderá ver". </blockquote>
+<blockquote>"Javé! O SENHOR! O Deus de compaixão e misericórdia! Sou lento para me irar e cheio de amor e fidelidade. Cubro de amor mil gerações e perdoo o mal, a rebeldia e o pecado. Contudo, não absolvo o culpado; trago as consequências do pecado dos pais sobre os filhos até a terceira e quarta geração". </blockquote>
+<blockquote>Vocês têm seis dias na semana para fazer o trabalho habitual, mas o sétimo dia será um sábado de descanso total, um dia consagrado ao SENHOR. Quem trabalhar no sábado será executado. Nem sequer acendam fogo em suas casas no sábado". </blockquote>
+<blockquote>O povo contribuiu com ofertas especiais de ouro que totalizaram 1.024 quilos, 132 calculados de acordo com o siclo do santuário. Esse ouro foi usado em toda a construção do santuário. (...) O imposto foi arrecadado de 603.550 homens de 20 anos para cima. </blockquote>
+</section><hr/>
+
+
+<span id="uma_equipe_muito_especial" title="Uma Equipe Muito Especial"/></span>
+<section id="section_uma_equipe_muito_especial">
+<p class="title"><a href="2022-12.html#uma_equipe_muito_especial">#</a> Uma Equipe Muito Especial</p>
+<span class="title-heading">Caloni, 2022-12-26 <a href="2022-12.html#a_league_of_their_own">&lt;</a><a href="cinema.html">cinema</a><a href="2022-12.html#avatar_o_caminho_da_agua">&gt;</a> <a href="2022-12.html#a_league_of_their_own">&lt;</a><a href="movies.html">movies</a><a href="2022-12.html#avatar_o_caminho_da_agua">&gt;</a><a href="2022-12.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_uma_equipe_muito_especial')"><sup>[copy]</sup></a></span>
+
+<p>Este é o filme que inspirou a série da Amazon A League of Their Own. Ele é cafona, mas alguns de seus momentos hoje servem para encontrar as referências na série. Ele difere da nova produção porque ainda defende a feminilidade clássica aliada à liberdade das mulheres de fazer algo além de ter filhos e cozinhar. Seu drama é mais eficiente que o da série. Envolve duas irmãs. A mais velha é Geena Davis e ela é boa em tudo. A mais nova se inspira na irmã e ao mesmo tempo acha que está sendo ofuscada por ela e quer uma chance fora do mundo da fazenda onde vivem. Há outras personagens que apresentam diferentes dramas, como Tom Hanks e seu ex-campeão que depois de uma lesão vive bebendo. Seus motivos não são bem explicados e soa um clichê de filmes do esporte. Há Madonna e sua personagem libertina. Ela contracena uma rápida sequência na pista de dança. A direção é eficiente em contar a história, mas sem criatividade é burocrático em vários momentos. No final vira uma homenagem a esta época em que surgiu a liga feminina para perpetuar o entretenimento do beisebol aos americanos durante a guerra. A citação a O Mágico de Oz é uma das referências.</p>
+
+</section><hr/>
+
+<span style="float: left;">
+ <a href="2022-11.html">[2022-11]</a>
+ <a href="2023-01.html">[2023-01]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

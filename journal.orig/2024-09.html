@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Jornal do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Jornal do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/journal/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/journal/index.xml" rel="feed" type="application/rss+xml" title="Jornal do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/journal/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/journal/css/jquery-ui.css"/>
+<script src="/journal/js/jquery-1.12.4.js"></script>
+<script src="/journal/js/jquery-ui.js"></script>
+<script src="/journal/js/copy_clipboard.js"></script>
+<script src="/journal/js/list.js"></script>
+<link rel="icon" href="/journal/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="months.html">
+<div class="is-4"><b>Jornal do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<ul style="list-style: none;">
+
+<li><small><a href="2024-09.html#txt2blog_mais_formas_de_link_ajustes_e_melhorias">Txt2Blog: Mais formas de link (ajustes e melhorias)</a></small></li>
+<li><small><a href="2024-09.html#etchart_estate_torrontes_2022">Etchart Estate Torrontés 2022</a></small></li>
+<li><small><a href="2024-09.html#all_language_is_but_a_poor_translation_franz_kafka">All language is but a poor translation (Franz Kafka)</a></small></li>
+<li><small><a href="2024-09.html#as_branquelas">As Branquelas</a></small></li>
+<li><small><a href="2024-09.html#entrevista_com_o_vampiro">Entrevista com o Vampiro</a></small></li>
+<li><small><a href="2024-09.html#listas_a_implementacao_e_a_morte">Listas: a implementação e a morte</a></small></li>
+<li><small><a href="2024-09.html#the_awk_programming_language_alfred_aho">The AWK Programming Language (Alfred Aho)</a></small></li>
+<li><small><a href="2024-09.html#the_algorithm_design_manual_steven_s_skiena">The Algorithm Design Manual (Steven S. Skiena)</a></small></li>
+<li><small><a href="2024-09.html#god_loves_me_marlon_wayans">God Loves Me (Marlon Wayans)</a></small></li>
+<li><small><a href="2024-09.html#anarchism_vs_objectivism_by_harry_binswanger_e_outros_textos_filosoficos">Anarchism vs. Objectivism by Harry Binswanger (e outros textos filosóficos)</a></small></li>
+<li><small><a href="2024-09.html#gellmann_amnesia_michael_crichton">Gell-Mann Amnesia (Michael Crichton)</a></small></li>
+<li><small><a href="2024-09.html#tradi_cafe_doce_de_leite">Tradi Café Doce de Leite</a></small></li>
+<li><small><a href="2024-09.html#informacao_nao_e_conhecimento">Informação não é conhecimento</a></small></li>
+<li><small><a href="2024-09.html#como_degustar_cafe_e_vinho">Como degustar café e vinho</a></small></li>
+<li><small><a href="2024-09.html#software_architecture_in_practice_len_bass_paul_clements_rick_kazman">Software Architecture in Practice (Len Bass, Paul Clements, Rick Kazman)</a></small></li>
+<li><small><a href="2024-09.html#what_if_randall_munroe_2014">What If (Randall Munroe, 2014)</a></small></li></ul>
+
+<span id="txt2blog_mais_formas_de_link_ajustes_e_melhorias" title="Txt2Blog: Mais formas de link (ajustes e melhorias)"/></span>
+<section id="section_txt2blog_mais_formas_de_link_ajustes_e_melhorias">
+<p class="title"><a href="2024-09.html#txt2blog_mais_formas_de_link_ajustes_e_melhorias">#</a> Txt2Blog: Mais formas de link (ajustes e melhorias)</p>
+<span class="title-heading">Caloni, 2024-09-01 <a href="2024-08.html#tentei_dividir_um_post_em_dois_mas">&lt;</a><a href="projects.html">projects</a><a href="2024-09.html#listas_a_implementacao_e_a_morte">&gt;</a><a href="2024-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_txt2blog_mais_formas_de_link_ajustes_e_melhorias')"><sup>[copy]</sup></a></span>
+
+<p>Dei uma reformada no script awk que estava com muitas variáveis globais (agora são poucas e reconhecíveis) e aproveitei para remover os links de busca por outros artigos por links diretos para os artigos. Para conseguir isso eu tive que rodar um script antes no arquivo inteiro dos posts para localizar onde ficarão os posts para depois conseguir linkar na hora de renderizar os mesmos posts. Isso resolve apenas uma questão pendente com os links. Há mais alguns acertos e melhorias do tema que é justamente o motivo de eu ter feito o próprio script de geração de blogs: metadados.</p>
+
+<p>O primeiro ajuste é um bug que existe ao referenciar posts com o mesmo slug. Como é possível que isso exista em meses diferentes (cada capítulo do blog, ou página html, são os posts de um mês), fica indefinido a qual post o texto se refere se ele usa um slug ambíguo. Para resolver isso algumas soluções são possíveis. A melhor delas talvez seja referenciar todos os posts com o mesmo slug. Afinal de contas, se o slug é o mesmo é muito provável que ele se refira ao mesmo tema (dois ou mais textos sobre o mesmo filme, por exemplo).</p>
+
+<p>Um segundo ajuste é considerar o mês/chapter sempre que for utilizar um slug (o que corrigiria outros problemas com indexação e listagem) e utilizar o slug mais recente como o default. Ainda não estou certo se utilizar um default é uma solução viável, pois pode haver ambiguidades não-planejadas e tira a liberdade do autor em especificar exatamente a qual texto ele se refere. O autor poderia teoricamente referenciar de duas formas: ou com o chapter em mente ou um slug qualquer que pode ser usado como coringa (o mais novo ou a listagem completa de slugs ambíguos). De repente o slug se torne um identificador atemporal sobre um mesmo tema (já que o título, que pode ser diferente, pode dar conta do resto).</p>
+
+<p>Um outro desejo que nutro sobre metadados é a possibilidade de linkar temas mais esparsos que tags. O uso indiscriminado de tags já foi pensado e isso geraria um desconforto muito grande em manter tudo isso sincronizado, muito embora ele possa precisar se usado como um peso que o autor define para certo tema. A dualidade aqui é entre o peso que o autor deve poder atribuir a um tema versus o peso oculto que uma certa busca pode ter. Exemplifico.</p>
+
+<p>Imagine que você como autor queira eventualmente falar sobre [Keanu Reeves]. Em dado texto sobre [John Wick] você irá ressaltar algum traço específico de sua personalidade. Em outro, sobre uma revisita a [Matrix], irá comentar em um parágrafo sobre a trajetória do ator. A pergunta é: você, autor, gostaria de juntar esses parágrafos espalhados sobre um ator em uma tag, ou seria mais interessante conseguir apontar diretamente para os parágrafos em si? Ou, ainda, será que o próprio leitor (você no futuro ou um leitor de verdade) deveria conseguir fazer esta busca? Concluindo a pergunta: os metadados mais emergem como consequência da criação de conteúdo ou eles são parte da criação ou do retrabalho em cima do conteúdo?</p>
+
+<p>Mas divago. Vamos aos links práticos.</p>
+
+<p>Notas de rodapé global, por exemplo. Seria muito útil (seria?) através de um nome marcado com colchetes em um ou mais posts apontar para um verbete de um dicionário ou algo do gênero?</p>
+
+<p>Não esquecer também das notas de rodapé locais, essas mais úteis ainda. Seriam itens numerados (ou autonumeráveis) cujo conteúdo estará no blog ao final do texto e em um livro no rodapé da página (e em um ebook em um link de nota de rodapé).</p>
+
+<p>Um índice onosmático ou temático precisa ser construído através de alguma marcação específica no post ou no parágrafo que será usado como referência (de preferência o parágrafo). Talvez valha a pena indexar os parágrafos de um post (ou do mês/chapter) por números crescentes e itens indexáveis em cada parágrafo podem se reunir em um índice onosmático ou algo do tipo em uma página específica. Para isso acontecer é uma modificação relativamente simples no script, mas complicada de se trabalhar em todos os textos.</p>
+
+<p>Não que qualquer outra estratégia já não seja por si só trabalhar novamente os textos. Trabalhar metadados talvez seja mais uma questão de revisão do que de autoindexar conteúdo gerado. O peso de um termo está em ele existir no texto ou no autor colocar ênfase?</p>
+
+</section><hr/>
+
+
+<span id="etchart_estate_torrontes_2022" title="Etchart Estate Torrontés 2022"/></span>
+<section id="section_etchart_estate_torrontes_2022">
+<p class="title"><a href="2024-09.html#etchart_estate_torrontes_2022">#</a> Etchart Estate Torrontés 2022</p>
+<span class="title-heading">Caloni, 2024-09-01 <a href="2024-08.html#montes_alpha_merlot_2021">&lt;</a><a href="wine.html">wine</a><a href="2024-09.html#como_degustar_cafe_e_vinho">&gt;</a><a href="2024-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_etchart_estate_torrontes_2022')"><sup>[copy]</sup></a></span>
+
+<p>Este Torrontés não é tão forte para o paladar mais acostumado com vinhos brancos serem fáceis de tomar. Ele é encorpado, claro, como todo Torrontés. Porém, ele lembra mais tons frutados antes de ser mais seco. Considero um bom ponto de entrada. Ele é uma das três garrafas que adquiri no mercado local da mesma vinícola e da mesma uva. Veremos as outras duas.</p>
+
+</section><hr/>
+
+
+<span id="all_language_is_but_a_poor_translation_franz_kafka" title="All language is but a poor translation (Franz Kafka)"/></span>
+<section id="section_all_language_is_but_a_poor_translation_franz_kafka">
+<p class="title"><a href="2024-09.html#all_language_is_but_a_poor_translation_franz_kafka">#</a> All language is but a poor translation (Franz Kafka)</p>
+<span class="title-heading">Caloni, 2024-09-06 <a href="2024-08.html#50_classicos_da_filosofia_bowdon_tom_butler">&lt;</a><a href="quotes.html">quotes</a><a href="2024-09.html#gellmann_amnesia_michael_crichton">&gt;</a><a href="2024-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_all_language_is_but_a_poor_translation_franz_kafka')"><sup>[copy]</sup></a></span>
+
+<blockquote>All language is but a poor translation.</blockquote>
+<blockquote>Franz Kafka</blockquote>
+<p>Or:</p>
+
+<blockquote>There is no net of words so fine the truth cannot slip through it.</blockquote>
+</section><hr/>
+
+
+<span id="as_branquelas" title="As Branquelas"/></span>
+<section id="section_as_branquelas">
+<p class="title"><a href="2024-09.html#as_branquelas">#</a> As Branquelas</p>
+<span class="title-heading">Caloni, 2024-09-07 <a href="2024-09.html#entrevista_com_o_vampiro">&lt;</a><a href="cinema.html">cinema</a><a href="2024-09.html#god_loves_me_marlon_wayans">&gt;</a> <a href="2024-09.html#entrevista_com_o_vampiro">&lt;</a><a href="movies.html">movies</a><a href="2024-11.html#a_contadora_de_filmes">&gt;</a><a href="2024-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_as_branquelas')"><sup>[copy]</sup></a></span>
+
+<p>Após a revisão fui dar uma olhada nas críticas do passado e não me identifiquei mais em execrar um filme ruim de gosto duvidoso. Não é possível odiar um filme engraçado desses por dois motivos, sendo que o primeiro é ser engraçado, e o segundo é ser politicamente incorreto. É bom ver um filme que é ruim sem se fazer de inteligente. Estranho como hoje em dia encontrar um filme desses é uma joia rara.</p>
+
+<p>Mas apesar de se divertir moderadamente, ele envelheceu mal. É uma produção da família Wayans. Não é tão engraçado quando Todo Mundo em Pânico, mas tem o pai do Chris Rock (Terry Crews, da série Todo Mundo Odeia o Chris, inspirado na biografia do comediante) cantando música de menininha e se achando branco. O quão engraçado isso pode ser depende de quão rápido você entender.</p>
+
+</section><hr/>
+
+
+<span id="entrevista_com_o_vampiro" title="Entrevista com o Vampiro"/></span>
+<section id="section_entrevista_com_o_vampiro">
+<p class="title"><a href="2024-09.html#entrevista_com_o_vampiro">#</a> Entrevista com o Vampiro</p>
+<span class="title-heading">Caloni, 2024-09-07 <a href="2024-08.html#pisque_duas_vezes">&lt;</a><a href="cinema.html">cinema</a><a href="2024-09.html#as_branquelas">&gt;</a> <a href="2024-08.html#pisque_duas_vezes">&lt;</a><a href="movies.html">movies</a><a href="2024-09.html#as_branquelas">&gt;</a><a href="2024-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_entrevista_com_o_vampiro')"><sup>[copy]</sup></a></span>
+
+<p>"Have you heard enough? I had to listen to this... for centuries." Meu amigo me fez ver essa cena por séculos. Ela não é tão marcante assim hoje, mas o filme, mesmo com as marcas de datação em uma trilha sonora passada ou alguns cortes exagerados, mantém-se como uma das melhores adaptações de livro para o cinema. Ele não deseja contar nada além do que se sabe sobre vampiros exceto a questão existencial do que é ser um, e neste filme é meio bosta. O filme aborda essa filosofia a uma distância segura do espectador. Tem uma história para seguir, mas a essência está nas entrelinhas junto de atuações no mínimo inspiradas e no máximo Kirsten Dunst. Para uma atriz daquela idade (12 anos) uma criação potente. Ela mescla o fato de ter décadas de vivência com a imaturidade de uma criança como poucos personagens em sua condição. Não me lembro de nenhum exemplo tão enigmático. Você só percebe isso em sua atuação e menos nos diálogos. Já as falas dos vampiros adultos não é tão intenso, é mais reflexão e é difícil captar o peso de uma vida de séculos. Mesmo depois de duas horas de filme ainda não sabemos quem são Louis, Lestrad e Armand exceto sombras do seu tempo tentando sobreviver às eras. É uma visão romântica que apenas Brad Pitt segura no protagonismo com uma intensidade equivalente a de Dunst. Os efeitos são datados, mas passam. O final é mais imortal que os próprios vampiros. Vamos voltando à realidade mundana a muito contragosto. A dualidade de aceitar a transição que poucos transsexuais têm coragem de representar na tela mesmo hoje com tanto poder de representatividade. Falta coragem. Nem Lana Wachowski teve culhões em Matrix 4. Talvez se ainda fosse homem conseguiria. Aos poucos vamos vendo que não são os temas sociais que incomodam, mas a falta de coragem de saltar mesmo nos temas que são propostos. Em Entrevista eles vão a fundo mesmo em um filme bem comercial, o que já é alguma coisa. Não tem profundidade, mas sugere a sensação.</p>
+
+</section><hr/>
+
+
+<span id="listas_a_implementacao_e_a_morte" title="Listas: a implementação e a morte"/></span>
+<section id="section_listas_a_implementacao_e_a_morte">
+<p class="title"><a href="2024-09.html#listas_a_implementacao_e_a_morte">#</a> Listas: a implementação e a morte</p>
+<span class="title-heading">Caloni, 2024-09-08 <a href="2024-09.html#txt2blog_mais_formas_de_link_ajustes_e_melhorias">&lt;</a><a href="projects.html">projects</a><a href="2026-02.html#sections_as_monthyear">&gt;</a><a href="2024-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_listas_a_implementacao_e_a_morte')"><sup>[copy]</sup></a></span>
+
+<p>Implementei suporte a listas no blogue e comecei a vomitar listas temáticas, como os meus textos de Breaking Bad, House of Cards e outros, apagando o post com a lista dos textos relacionados com estas séries. A ideia era permitir uma indexação diferente de tags, um conjunto menor, que não precisa ser mantido, mas ao mesmo tempo categorizado sob a mesma alcunha.</p>
+
+<p>Foi depois de pronto que eu refleti: precisa mesmo?</p>
+
+<p>Pois o próprio nome dessas obras já permite buscar qualquer texto relacionado. A ideia inicial do que eu chamo de listas na verdade seria na versão ebook um índice remissivo e um índice bibliográfico. Ou seja, ligar posts por nomezinhos não é tão eficaz quanto parecia no começo. A conclusão no momento é que não vi vantagem.</p>
+
+<p>Afinal, se existe um nome tão importante para ligar diferentes textos que já não estão ligados por um nome em comum ele não mereceria um texto apenas para ele em vez de uma lista?</p>
+
+<p>No processo de desilusão da minha ideia pensei se o que eu queria mesmo não eram diferentes TOCs (Table of Contents) sobre diferentes tópicos, uma maneira de pré-organização para o que um dia poderá virar algo maior que uma coleção de posts.</p>
+
+<p>Os metadados são tão importantes assim? Sua construção merece tempo despendido? Eu sou uma pessoa que gosta muito disso (categorizar), mas ultimamente venho achando que já fui longe demais. Pelo menos no caso do blog onde é tão fácil buscar por temas. Em um livro talvez tenha sua utilidade ainda.</p>
+
+<p>E foi aí que eu entendi que o sistema do blog já está meio caminho andado com essa visão através de um outro conceito já implementado: capítulos.</p>
+
+<p>Os capítulos criados para o blog são basicamente os posts organizados por meses, o que dá vazão suficiente para que o sistema de arquivos não seja sobrecarregado com milhares de arquivos-posts na hora de renderizar. Este mesmo sistema que agrupa posts em meses chama internamente este agrupamento de capítulos.</p>
+
+<p>Se em vez de utilizar meses para agrupar posts eu definir nomes de capítulos o sistema atual pode se manter quase idêntico, com a diferença que ele irá levar em conta capítulos definidos manualmente antes de agrupar por meses.</p>
+
+<p>Ao mesmo tempo, as tags podem ser usadas como filtro de conteúdo. Se o renderizador apenas gerar conteúdo de uma TAG específica e agrupar em um capítulo específico teremos a estrutura inicial de um livro ou artigo longo.</p>
+
+<p>A ideia geral é essa. Conforme textos longos forem surgindo, se aproveitando dessa estrutura, pode-se ir adicionando outros elementos de publicação, como os índices já citados e as notas de rodapé.</p>
+
+<p>E com isso nascem e morrem as listas.</p>
+
+</section><hr/>
+
+
+<span id="the_awk_programming_language_alfred_aho" title="The AWK Programming Language (Alfred Aho)"/></span>
+<section id="section_the_awk_programming_language_alfred_aho">
+<p class="title"><a href="2024-09.html#the_awk_programming_language_alfred_aho">#</a> The AWK Programming Language (Alfred Aho)</p>
+<span class="title-heading">Caloni, 2024-09-14 <a href="2024-09.html#the_algorithm_design_manual_steven_s_skiena">&lt;</a><a href="books.html">books</a><a href="2024-09.html#what_if_randall_munroe_2014">&gt;</a> <a href="2024-09.html#the_algorithm_design_manual_steven_s_skiena">&lt;</a><a href="computer.html">computer</a><a href="2024-09.html#software_architecture_in_practice_len_bass_paul_clements_rick_kazman">&gt;</a><a href="2024-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_the_awk_programming_language_alfred_aho')"><sup>[copy]</sup></a></span>
+
+<p>Acabei de ler o The Awk Programming Language. Livraço. Impressionante a qualidade de escrita dos autores da época. É uma carta aberta de programadores para programadores 👏.</p>
+
+<blockquote>Awk is useful for creating small tools and personal scripts that help you to automate repetitive tasks or to deal with some weirdly specific computation that you care about but no one else does.</blockquote>
+<blockquote>If the script files are placed in a directory that is in your shell search path (which is often $HOME/bin), you can use them as if they were built-in commands, as we have here.</blockquote>
+<blockquote>There’s always a tradeoff between processing input on the fly and collecting it in an array to be processed in the END block.</blockquote>
+<blockquote>Fortunately, modern processors are so fast and memories so capacious that it’s usually fine to start with the simplest code possible rather than trying to save time or space. Certainly this is the case when you’re evolving a program: simple first, faster but more complicated later but only if necessary.</blockquote>
+<blockquote>Tukey invented a number of basic data visualization techniques like boxplots, inspired the statistical programming language S that led to the widely-used R language, co-invented the Fast Fourier Transform, and coined the words “bit” and “software.” The authors knew John Tukey as a friend and colleague at Bell Labs in the 1970s and 1980s, where among a large number of very smart and creative people, he stood out as someone special.</blockquote>
+<blockquote>This may or may not be statistically significant, but the average rating of high-alcohol beers is higher than the overall average rating, which in turn is higher than low-alcohol beers. (This is consistent with the personal preferences of at least one of the authors.)</blockquote>
+<blockquote>The moral of these examples is that one has to look at all the data carefully. How many fields are empty or have an explicitly non-useful value like “N/A”? What is the range of values in a column? What are the distinct values? Answering such questions should be part of the initial exploration, and creating some simple scripts to automate the process can be a good investment.</blockquote>
+<blockquote>As John Tukey said, The combination of some data and an aching desire for an answer does not ensure that a reasonable answer can be extracted from a given body of data. Be approximately right rather than exactly wrong.</blockquote>
+<blockquote>Far better an approximate answer to the right question, which is often vague, than the exact answer to the wrong question, which can always be made precise.</blockquote>
+<blockquote>By the way, as a historical note, one of the inspirations for Awk was an error-checking tool created by Marc Rochkind at Bell Labs in the mid 1970s. Marc’s program, written in C, took a sequence of regular expressions as input and created a C program that would scan its input and report any line that matched any of the patterns. It was a very neat idea, and we stole it unabashedly.</blockquote>
+<blockquote>A newline character is always a field separator for multiline records, regardless of the value of FS. When RS is set to "", the field separator by default is any sequence of spaces and tabs, or newline. When FS is set to \n, only a newline acts as a field separator.</blockquote>
+<blockquote>Exercise 6-17. Enhance fmt to infer the proper format of a document by recognizing probable titles, headings, lists, and other facilities provided by Markdown. Rather than formatting, it could generate formatting commands for subsequent formatting with troff, LaTeX or HTML.</blockquote>
+<blockquote>We have chosen symbolic names that begin and end with an underscore, but any names can be used as long as they can be separated from other text. (Item names must all be distinct, even if in different categories; this simplifies the code.)</blockquote>
+<blockquote>The conversion is done by passing the document through two programs. This division of labor is another instance of a powerful general technique: the first program creates a second program to do the rest of the job; it’s a program that writes a program.</blockquote>
+<blockquote>Note the format conversion %*s: the field width is determined by the next argument in the call of printf and that value replaces the asterisk.</blockquote>
+<blockquote>A KWIC or permuted index can be useful for detecting anomalies in writing, like spelling errors, because the process brings together words that share a common prefix but may differ later. A variation that works on columns in a dataset will have the same desirable properties.</blockquote>
+<blockquote>A major document like a book or a manual usually needs an index. There are three parts to indexing. The first is deciding on the terms to be indexed; this is demanding intellectual work if done well, and is hard to mechanize. The second is to insert indexing terms in the text that will capture page numbers as the text is formatted. The third part really is mechanical: producing, from a list of index terms and page numbers, a properly alphabetized and formatted index, like the one at the back of this book.</blockquote>
+<blockquote>These programs contain details that are specific to the troff formatter, which we used to typeset this book.</blockquote>
+<blockquote>The important lesson, however, is that dividing the job into a sequence of tiny programs makes the whole task simpler and easier to adapt to new requirements.</blockquote>
+<blockquote>Awk is useful for creating processors for experimental languages because its basic operations support many of the tasks involved in language translation. Simple syntax analysis can be handled with field splitting and regular expression pattern matching. Symbol tables can be managed with associative arrays. Code generation can be done with printf statements.</blockquote>
+<blockquote>Our language graph is an extremely simplified version of the graph-plotting language grap, by Jon Bentley and Brian Kernighan, which is a preprocessor for the pic picture-drawing language.</blockquote>
+<blockquote>In the past, we have used Awk programs to translate simple languages into grap commands; today we would more likely generate Python, as we did above.</blockquote>
+<blockquote>Rather than writing a parser from scratch, we can pipe commands into an instance of Awk and have it do the computations.</blockquote>
+<blockquote>We were surprised at how rapidly Awk became popular as a general-purpose programming language; our first reaction to a program that didn’t fit on one page was shock and amazement. What had happened was that many people restricted their use of the computer to the shell (the command language) and to Awk. Rather than writing in a “real” programming language, they were stretching the tools they found convenient.</blockquote>
+<blockquote>In addition, the absence of an explicit concatenation operator, an advantage for short programs, now requires the opening parenthesis of a function call to follow the function name with no intervening spaces.</blockquote>
+</section><hr/>
+
+
+<span id="the_algorithm_design_manual_steven_s_skiena" title="The Algorithm Design Manual (Steven S. Skiena)"/></span>
+<section id="section_the_algorithm_design_manual_steven_s_skiena">
+<p class="title"><a href="2024-09.html#the_algorithm_design_manual_steven_s_skiena">#</a> The Algorithm Design Manual (Steven S. Skiena)</p>
+<span class="title-heading">Caloni, 2024-09-14 <a href="2024-08.html#undoing_yourself_christopher_s_hyatt">&lt;</a><a href="books.html">books</a><a href="2024-09.html#the_awk_programming_language_alfred_aho">&gt;</a> <a href="2024-08.html#dividindo_o_assembly_para_conquistar">&lt;</a><a href="computer.html">computer</a><a href="2024-09.html#the_awk_programming_language_alfred_aho">&gt;</a><a href="2024-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_the_algorithm_design_manual_steven_s_skiena')"><sup>[copy]</sup></a></span>
+
+<p>Acordei no meio da noite pensando em como remover um elemento de uma árvore, aí eu desisti de criar minha própria solução. Baixei The Algorithm Design Manual e Cormen para aprender. Um lapso temporário.</p>
+
+<blockquote>Binary search requires that we have fast access to two elements—specifically the median elements above and below the given node. To combine these ideas, we need a “linked list” with two pointers per node. This is the basic idea behind binary search trees.</blockquote>
+<blockquote>But what of a to-be-deleted node with two children? Our solution is to relabel this node with the key of its immediate successor in sorted order. This successor must be the smallest value in the right subtree, specifically the leftmost descendant in the right subtree (p). Moving this to the point of deletion results in a properly-labeled binary search tree, and reduces our deletion problem to physically removing a node with at most one child—</blockquote>
+<blockquote>Unfortunately, bad things can happen when building trees through insertion. The data structure has no control over the order of insertion. Consider what happens if the user inserts the keys in sorted order. The operations insert(a), followed by insert(b), insert(c), insert(d),…will produce a skinny linear height tree where only right pointers are used.</blockquote>
+<blockquote>There are three desirable properties for a good algorithm. We seek algorithms that are correct and efficient, while being easy to implement. (...) These goals may not be simultaneously achievable.</blockquote>
+<blockquote>It is seldom obvious whether a given algorithm correctly solves a given problem. Correct algorithms usually come with a proof of correctness, which is an explanation of why we know that the algorithm must take every instance of the problem to the desired result.</blockquote>
+<blockquote>Seeking counterexamples that break pretender algorithms is an important part of the algorithm design process. efficient algorithms are often lurking out there;</blockquote>
+<blockquote>The heart of any algorithm is an idea. If your idea is not clearly revealed when you express an algorithm, then you are using too low-level a notation to describe it.</blockquote>
+<blockquote>An important and honorable technique in algorithm design is to narrow the set of allowable instances until there is a correct and efficient algorithm. For example, we can restrict a graph problem from general graphs down to trees, or a geometric problem from two dimensions down to one.</blockquote>
+<blockquote>A devious way to break a greedy heuristic is to provide instances where everything is the same size.</blockquote>
+<blockquote>The reason both seemed like magic is because recursion is mathematical induction. In both, we have general and boundary conditions, with the general condition breaking the problem into smaller and smaller pieces.</blockquote>
+</section><hr/>
+
+
+<span id="god_loves_me_marlon_wayans" title="God Loves Me (Marlon Wayans)"/></span>
+<section id="section_god_loves_me_marlon_wayans">
+<p class="title"><a href="2024-09.html#god_loves_me_marlon_wayans">#</a> God Loves Me (Marlon Wayans)</p>
+<span class="title-heading">Caloni, 2024-09-14 <a href="2024-09.html#as_branquelas">&lt;</a><a href="cinema.html">cinema</a><a href="2024-11.html#a_contadora_de_filmes">&gt;</a><a href="2024-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_god_loves_me_marlon_wayans')"><sup>[copy]</sup></a></span>
+
+<p>Reassisti <a href="2024-09.html#as_branquelas">As Branquelas</a> e engatilhou eu buscar sobre a família Wayans. Agora que descobri que é uma família grande. Aí depois fui buscar sobre o standup que ele fez depois que o Chris Rock levou um tapa do Will Smith no Oscar.</p>
+
+<p>O show é enérgico, uma coisa do momento, um espaço safe para se liberar do politicamente correto. Bom roteiro, boa energia. Considerando que 1h de show gira em torno da mesma piada e há quebras de tom por causa das idas e vindas entre o humor e o biográfico, achei bem bacana.</p>
+
+<p>Fora que o Marlon não fazia standup há muito tempo e por obra do destino Chris Rock foi o motivo dele sair e voltar. essa pegada standup é muito autêntica.</p>
+
+<p>O Marlon explora questões sociais em torno do evento, diferenças entre brancos e negros, destrincha a figura do Will Smith do ponto de vista do establishment. Tudo isso sem ser boring, sendo apenas ele mesmo.</p>
+
+<p>Com 50 anos é admirável quanta energia ele colocou, pulando, descendo e subindo do palco, lançando o microfone para longe, brincando com o banquinho. uma energia e tanto o que colabora ainda mais pra autenticidade do número.</p>
+
+<p>Tão autêntico quanto o tapa que o Chris Rock levou do Will Smith 🙊.</p>
+
+</section><hr/>
+
+
+<span id="anarchism_vs_objectivism_by_harry_binswanger_e_outros_textos_filosoficos" title="Anarchism vs. Objectivism by Harry Binswanger (e outros textos filosóficos)"/></span>
+<section id="section_anarchism_vs_objectivism_by_harry_binswanger_e_outros_textos_filosoficos">
+<p class="title"><a href="2024-09.html#anarchism_vs_objectivism_by_harry_binswanger_e_outros_textos_filosoficos">#</a> <a class="external" href="https://www.hbletter.com/objectivism-vs-anarchism/">Anarchism vs. Objectivism by Harry Binswanger (e outros textos filosóficos)</a></p>
+<span class="title-heading">Caloni, 2024-09-18 <a href="2024-08.html#evidence_for_sugar_addiction_behavioral_and_neurochemical_effects_of_intermittent_excessive_sugar_intake_nicole_m_avena_pedro_rada_and_bartley_g_hoebel">&lt;</a><a href="philosophy.html">philosophy</a><a href="2024-09.html#informacao_nao_e_conhecimento">&gt;</a> <a href="2024-04.html#barreado">&lt;</a><a href="repost.html">repost</a> <a href="2024-08.html#evidence_for_sugar_addiction_behavioral_and_neurochemical_effects_of_intermittent_excessive_sugar_intake_nicole_m_avena_pedro_rada_and_bartley_g_hoebel">&lt;</a><a href="blogging.html">blogging</a><a href="2025-05.html#on_being_a_senior_engineer_john_allspaw">&gt;</a><a href="2024-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_anarchism_vs_objectivism_by_harry_binswanger_e_outros_textos_filosoficos')"><sup>[copy]</sup></a></span>
+
+<p>Um texto bem longo e denso. Um desafio e tanto resumi-lo.</p>
+
+<p>Em primeiro lugar, é necessário entender que não há opção de não impor uma moral. Uma moral é sempre um requisito de uma sociedade civilizada, ou até a maneira de um indivíduo se relacionar com o mundo. Dessa forma, um governo constituído de uma forma objetiva ainda irá impor a moralidade que se defende de agressão.</p>
+
+<p>A questão de agências de segurança é isso: são instituições que irão promover uma moral pelo uso da força. Um governo também é isso, só que movido pela filosofia objetiva de seus cidadãos. Se estes não possuem racionalidade de constituir um governo assim, como ocorreu com os EUA, como eles poderiam patrocinar agências de segurança melhores que isso? Recai a questão do rei filósofo de Platão. As massas são incapazes de escolher a melhor filosofia, então os militares forçam essa filosofia.</p>
+
+<p>Mas a questão continua: as massas e os militares não saberiam qual filosofia suportar. Agências de segurança não competem em um mercado, pois este mercado não existiria em um ambiente onde há troca de tiros. Pense em agências de segurança não como coletivo, mas indivíduos. Se um usa a força contra o outro, não há competição, apenas o uso da força.</p>
+
+<p>Criar um governo é separar a força do capricho. Todos os seus cidadãos devem concordar em abrir mão do uso da força por capricho, e apenas seguir a filosofia objetiva sob a qual a sociedade em que vive é fundada. A própria esquerda pode achar que o acúmulo de capital é coerção e instituir uma agência de segurança para fazer valer sua moral pela força. E todo uso da força é monopolista. Não há competição (a não ser que considere uma guerra uma competição, mas de forma alguma isso pode ser considerado voluntário). Não usar força, nem como retaliação, seria a única forma de anarquismo coerente. Ex: se eu atiro de volta em quem me atira, estou impondo minha moral de não haver força iniciada sobre mim.</p>
+
+<p>A solução anarquista consistente é apenas convencer racionalmente a não atirar em mim, o que é pacifismo. Não há imposição de moral em um governo. O que ele faz é garantir a liberdade de seus cidadãos agirem virtuosamente se assim o quiserem, mas nunca forçá-los. Ele faz isso em nome da moral, mas sem impô-la. Se é moralmente defensável que um homem se defenda, também o é juntar com outros homens e fazer o mesmo por procuração: um governo objetivista. A diferença entre um governo e uma agência de segurança é que um governo está agindo sob um controle objetivo.</p>
+
+<p>Dessa forma, anarquistas que são contra um governo são na verdade inimigos do objetivismo, pois querem ter o "direito" de usar força sob capricho. O argumento que governos crescem naturalmente. O motivo: filosofia errada. São as ideias dos homens que guiam seu governo.</p>
+
+<h2>Libertarianism and Moral Disintegration - Joseph Rowlands</h2>
+
+<p>A questão aqui é que o libertarianismo não possui uma base moral para extrair o princípio ético e político da não-agressão. Dessa forma, um libertário deve aceitar essa regra sem ser uma escolha consciente, uma conclusão lógica da racionalidade. Em vez de ser um guia moral, o PNA vira uma regra aceita e que, uma vez que interfira nos desejos egoístas do indivíduo, se torna um empecilho. Se for seguida sem ser aceita de forma consciente, portanto, obedecê-la vira uma forma de altruísmo (sacrifício pelos outros sem razão).</p>
+
+<p>Por último, não há virtudes em seguir uma vida moral, por atingir uma virtude moral. Não existe certo e errado no libertarianismo, apenas o proibido.</p>
+
+<h2>Your Dog Owns Your House - Anthony de Jasay</h2>
+
+<p>De maneira a surpreender o leitor, Anthony de Jasay traduz o pensamento socialista em um texto a respeito de como alguém deve sua casa a todos os envolvidos direta, indireta e historicamente, desde o cachorro que a protege até Cristóvão Colombo, por ter descoberto a terra onde ela está. Depois discute esse mesmo conceito aplicado a outras propriedades e frutos do trabalho de alguém.</p>
+
+<p>Na segunda parte do texto ele desmistifica a falácia. Primeiro desmente esse nonsense que é existir um ente chamado sociedade, com desejos e racionalidade. Depois, lembra a todos que as trocas entre indivíduos que houve na construção da casa já foram pagas por algum tipo de valor, monetário ou não. Para finalizar, destrincha a última defesa esquerdista: de que essas trocas são efetuadas de maneira desigual em nível de informação.</p>
+
+<p>A defesa é incisiva: se não é possível determinar o nível de desigualdade em trocas voluntárias, é descabido corrigir esse processo usando trocas coercitivas, pois daí sim não haverá nem como estabelecer que durante a troca houve uma contagem de valores (desiguais ou não). Conclui estabelecendo que trocas voluntárias, diferente das coercitivas, é a única que não utiliza um mecanismo imoral para atingir um objetivo moral.</p>
+
+<p>PS: O Library of Economics and Liberty parece um repositório bem interessante de artigos, livros e pensamentos liberais, libertários, anarquistas.</p>
+
+</section><hr/>
+
+
+<span id="gellmann_amnesia_michael_crichton" title="Gell-Mann Amnesia (Michael Crichton)"/></span>
+<section id="section_gellmann_amnesia_michael_crichton">
+<p class="title"><a href="2024-09.html#gellmann_amnesia_michael_crichton">#</a> Gell-Mann Amnesia (Michael Crichton)</p>
+<span class="title-heading">Caloni, 2024-09-20 <a href="2024-09.html#all_language_is_but_a_poor_translation_franz_kafka">&lt;</a><a href="quotes.html">quotes</a><a href="2024-11.html#software_architecture_by_oliver_goldman">&gt;</a> <a href="2024-09.html#informacao_nao_e_conhecimento">&lt;</a><a href="philosophy.html">philosophy</a><a href="2025-01.html#anotacoes_de_a_hacker_manifesto_mckenzie_wark">&gt;</a><a href="2024-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_gellmann_amnesia_michael_crichton')"><sup>[copy]</sup></a></span>
+
+
+<blockquote>"Briefly stated, the Gell-Mann Amnesia effect is as follows. You open the newspaper to an article on some subject you know well. In Murray's case, physics. In mine, show business. You read the article and see the journalist has absolutely no understanding of either the facts or the issues. Often, the article is so wrong it actually presents the story backward—reversing cause and effect. I call these the "wet streets cause rain" stories. Paper's full of them.</blockquote>
+
+<blockquote>In any case, you read with exasperation or amusement the multiple errors in a story, and then turn the page to national or international affairs, and read as if the rest of the newspaper was somehow more accurate about Palestine than the baloney you just read. You turn the page, and forget what you know." </blockquote>
+
+<blockquote>– Michael Crichton (1942-2008)</blockquote>
+
+</section><hr/>
+
+
+<span id="tradi_cafe_doce_de_leite" title="Tradi Café Doce de Leite"/></span>
+<section id="section_tradi_cafe_doce_de_leite">
+<p class="title"><a href="2024-09.html#tradi_cafe_doce_de_leite">#</a> Tradi Café Doce de Leite</p>
+<span class="title-heading">Caloni, 2024-09-20 <a href="2024-09.html#como_degustar_cafe_e_vinho">&lt;</a><a href="coffee.html">coffee</a><a href="2024-11.html#experimento_starbucks">&gt;</a><a href="2024-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_tradi_cafe_doce_de_leite')"><sup>[copy]</sup></a></span>
+
+<p>Café de doce de leite, tangerina e baunilha. É a novidade do verão. Este é mais um grão que trago de Poços de Caldas, da Tradi Café. É uma casa de torrefação que fica no piso superior do mercado municipal da cidade. O dono é um mestre torrador e encontra o que há de melhor na região para sua arte.</p>
+
+<p>Esta amostra que peguei eu achei bem estranha nos primeiros dias. Demorou até o finalzinho para eu perceber que este é um café bem diferente. Ele não tem qualquer amargor, uma doçura de refresco e uns toques cítricos bem rebuscados. Um cafezão sem apelar para aromas mais comuns. Ele é exótico de propósito.</p>
+
+<p>Foi bom enquanto durou. Que venham mais cafezes.</p>
+
+</section><hr/>
+
+
+<span id="informacao_nao_e_conhecimento" title="Informação não é conhecimento"/></span>
+<section id="section_informacao_nao_e_conhecimento">
+<p class="title"><a href="2024-09.html#informacao_nao_e_conhecimento">#</a> Informação não é conhecimento</p>
+<span class="title-heading">Caloni, 2024-09-20 <a href="2024-09.html#anarchism_vs_objectivism_by_harry_binswanger_e_outros_textos_filosoficos">&lt;</a><a href="philosophy.html">philosophy</a><a href="2024-09.html#gellmann_amnesia_michael_crichton">&gt;</a> <a href="2023-12.html#fiquei_45_dias_longe_do_telegram_fora_como_criar_clickbaits_estilo_hn_eis_o_que_descobri">&lt;</a><a href="essays.html">essays</a><a href="2024-12.html#qual_e_a_data_de_um_texto">&gt;</a><a href="2024-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_informacao_nao_e_conhecimento')"><sup>[copy]</sup></a></span>
+
+<p>A informação do meu blogue não me serve de nada a não ser como reafirmação do conhecimento interno que mantenho. Essa minha máquina de estados única e exclusiva da minha linha de vida. Talvez algo sirva para alguém em algum momento, mas nunca será a essência do que procuro. O conhecimento em si se separa da informação quando este se transforma em um processo internalizado do ser. Um algoritmo. É este algoritmo a parte mais importante do uso da informação.</p>
+
+<p>Hoje em dia informação é de graça. Você consegue a qualquer momento na ponta dos dedos. O algoritmo, porém, é que irá definir como a informação será usada. É o algoritmo que irá melhorar o processamento da informação. A informação pode servir de combustível para o algoritmo, o aprendizado por repetição de máquinas biológicas (nós) ou mecânicas (IA), mas nunca será conhecimento. Conhecer é a qualia. Nem máquina mecânicas devem a possuir. Apenas as biológicas, como um mero capricho do algoritmo da natureza.</p>
+
+<p>Tudo que estou procurando para meu conteúdo é flexibilidade de categorizar e estruturar. Porém, não se trata de uma estrutura automática e enfadonha, que é feita por um script. Deve ser necessário categorizar manualmente, post a post, para que no processo sejam descobertas inesperadas ligações, corrigidas e ampliadas relações. As tags não irão bastar. Deve ser necessário que tags sejam apenas um dos itens da taxonomia, junto de categorias, palavras-chave e propriedades (book, chapter), onde os itens poderão ser slugs para outros posts, invisíveis talvez para o leitor do blog, mas parte da estrutura que será o combustível para capítulos, livros e, por que não, vários blogues. Isso fica a critério do organizador, cuja função é igualmente importante de escrever. Ele é não apenas o editor, mas o revisor do conhecimento. O reformador de informações imprecisas, incompletas ou deslocadas.</p>
+
+<p>Conclusões deste último pensamento sobre o blogue: manter a escrita frequente, mas talvez reavaliar outras formas de estruturar o conhecimento realmente útil no próprio blogue. Uma ideia é usar a estrutura de capítulo (que no blogue são os meses) para conteúdo mais estruturado e denso.</p>
+
+<p>Este seria o pilar que inicia um novo capítulo nos posts do blogue: o meta conhecimento.</p>
+
+</section><hr/>
+
+
+<span id="como_degustar_cafe_e_vinho" title="Como degustar café e vinho"/></span>
+<section id="section_como_degustar_cafe_e_vinho">
+<p class="title"><a href="2024-09.html#como_degustar_cafe_e_vinho">#</a> Como degustar café e vinho</p>
+<span class="title-heading">Caloni, 2024-09-20 <a href="2024-06.html#fiz_chili">&lt;</a><a href="food.html">food</a><a href="2024-11.html#experimento_starbucks">&gt;</a> <a href="2024-08.html#coffee++_caparao">&lt;</a><a href="coffee.html">coffee</a><a href="2024-09.html#tradi_cafe_doce_de_leite">&gt;</a> <a href="2024-09.html#etchart_estate_torrontes_2022">&lt;</a><a href="wine.html">wine</a><a href="2025-12.html#king_selby">&gt;</a><a href="2024-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_como_degustar_cafe_e_vinho')"><sup>[copy]</sup></a></span>
+
+<p>Minhas últimas experiências tomando café no Japão junto da leitura de anotações antigas me levaram a concluir formas inteligentes de degustar bebidas que podem não ser do seu agrado.</p>
+
+<p>Em especial o café ruim ou forte demais geralmente é disfarçado colocando açúcar. Não faça isso. Irá aumentar demais a acidez da bebida e fará mal ao estômago.</p>
+
+<p>Se o problema é a bebida ser muito forte basta acrescentar mais água, no que chegamos na beleza que é a receita do café americano: espresso mais água. No espresso está todo o caráter concentrado de um café. Na água o poder da diluição, além de ser uma forma rápida de diminuir a temperatura após a extração, o que pode facilitar degustar sem se queimar.</p>
+
+<p>Uma lógica semelhante pode ser aplicada para vinhos. Não colocar água, mas deixar mais tempo respirando. Vinhos baratos costumam ter um aroma e gosto de álcool muito presentes. Não apenas por serem baratos, mas jovens, o que mantém ainda a bebida vibrante. E ela não deve servir para envelhecer. Porém, pode servir para decantar, que é o processo de oxigenar mais o vinho antes de degustar. Um pouco do álcool evapora e características secundárias do seu sabor e aroma se revelam diferente.</p>
+
+<p>É possível oxigenar com a passagem do tempo em um decantador ou bochechando o gole da bebida direto na boca, mais rápido e menos incômodo quando estiver apreciando a bebida com companhia e não quiser perder mais de uma hora decantando, em um pedantismo que faz perder o momentum de bebermos todos juntos o néctar dos deuses. Não coloque a bebida acima da experiência coletiva.</p>
+
+<p>Fiz isso, por exemplo, com um "El Esteco Don David Malbec 2016". Estávamos em 2017 visitando a região de Cafayate, em Salta (Argentina):</p>
+
+<blockquote>Muito ácido e quente, mas respirando e bochechando solta taninos interessantes, com gosto de ameixa ou frutas maduras e deixa de ser tão quente.</blockquote>
+<p>Agora, se estiver sozinho, pode deixar uma taça servida horas do seu lado. Ou até mesmo de um dia para o outro. A experiência é mais válida quanto mais jovem ou barato for o vinho.</p>
+
+<p>Não faça o mesmo com o café. Café tem que ser extraído e bebido na hora. Claro que pode deixar algumas horas na cafeteira ou em uma térmica, mas não será a mesma coisa. Muito do aroma e sabor se perde nos primeiros minutos. Mais do que se colocar água para diluir.</p>
+
+<p>Para qualquer bebida acrescentar rituais de degustação, como durante viagens, ajuda também a enriquecer a experiência depois em casa. Como quando sinto "cheiro de vinícola" ao abrir uma garrafa em casa pela simples conexão entre o cheiro úmido de uma adega durante a visitação em uma vinícola com o mesmo aroma de uma garrafa armazenada num lugar desses por alguns meses. É agradável porque visitar estes lugares cria uma memória afetiva.</p>
+
+<p>Mais uma vez, o mesmo princípio pode ser aplicado a outras bebidas.</p>
+
+</section><hr/>
+
+
+<span id="software_architecture_in_practice_len_bass_paul_clements_rick_kazman" title="Software Architecture in Practice (Len Bass, Paul Clements, Rick Kazman)"/></span>
+<section id="section_software_architecture_in_practice_len_bass_paul_clements_rick_kazman">
+<p class="title"><a href="2024-09.html#software_architecture_in_practice_len_bass_paul_clements_rick_kazman">#</a> Software Architecture in Practice (Len Bass, Paul Clements, Rick Kazman)</p>
+<span class="title-heading">Caloni, 2024-09-20 <a href="2024-09.html#what_if_randall_munroe_2014">&lt;</a><a href="books.html">books</a><a href="2024-11.html#uma_dieta_alem_da_moda_jose_carlos_souto">&gt;</a> <a href="2024-09.html#the_awk_programming_language_alfred_aho">&lt;</a><a href="computer.html">computer</a><a href="2025-01.html#clean_architecture_a_craftsmans_guide_to_software_structure_and_design_robert_c_martin_aka_uncle_bob">&gt;</a><a href="2024-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_software_architecture_in_practice_len_bass_paul_clements_rick_kazman')"><sup>[copy]</sup></a></span>
+
+<p>Mais um da série de livros para preencher lacunas nos meus conhecimentos técnicos. Seguem recortes finais (não continuarei lendo).</p>
+
+<blockquote>Module structures partition systems into implementation units, which in this book we call modules.</blockquote>
+<blockquote>Modules represent a static way of considering the system. Modules are assigned areas of functional responsibility; there is less emphasis in these structures on how the resulting software manifests itself at runtime.</blockquote>
+<blockquote>Module implementations include packages, classes, and layers.</blockquote>
+<blockquote>What other software does it actually use and depend on?</blockquote>
+<blockquote>Decomposition structure. The units are modules that are related to each other by the “is-a-submodule-of” relation, showing how modules are decomposed into smaller modules recursively until the modules are small enough to be easily understood.</blockquote>
+<blockquote>The uses structure is used to engineer systems that can be extended to add functionality, or from which useful functional subsets can be extracted.</blockquote>
+<blockquote>In general, you should design and document a structure only if doing so brings a positive return on the investment, usually in terms of decreased development or maintenance costs.</blockquote>
+<blockquote>There is no such thing as an inherently good or bad architecture. Architectures are either more or less fit for some purpose.</blockquote>
+<blockquote>One of the messages of this book is that architectures can, in fact, be evaluated—one of the great benefits of paying attention to them—but such evaluation only makes sense in the context of specific stated goals.</blockquote>
+</section><hr/>
+
+
+<span id="what_if_randall_munroe_2014" title="What If (Randall Munroe, 2014)"/></span>
+<section id="section_what_if_randall_munroe_2014">
+<p class="title"><a href="2024-09.html#what_if_randall_munroe_2014">#</a> What If (Randall Munroe, 2014)</p>
+<span class="title-heading">Caloni, 2024-09-20 <a href="2024-09.html#the_awk_programming_language_alfred_aho">&lt;</a><a href="books.html">books</a><a href="2024-09.html#software_architecture_in_practice_len_bass_paul_clements_rick_kazman">&gt;</a><a href="2024-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_what_if_randall_munroe_2014')"><sup>[copy]</sup></a></span>
+
+<p>Estava com esse livro há um bom tempo na prateleira. Essa última viagem foi uma ótima oportunidade para terminar de ler. Recomendo fortemente para distrair dos pensamentos do dia-a-dia.</p>
+
+<blockquote>Your veins are supposed to bring low-oxygen blood back to your lungs to be refilled with oxygen. But in the Death Zone, there’s so little oxygen in the air that your veins lose oxygen to the air instead of gaining it.</blockquote>
+<blockquote>Jeff Potter’s excellent book Cooking for Geeks provides a great introduction to the science of cooking meat, and explains what ranges of heat produce what effects in steak and why. Cook’s The Science of Good Cooking was also helpful.</blockquote>
+<blockquote>Bone marrow is also central to the human immune system. Without it, we lose the ability to produce white blood cells, and our immune system collapses.</blockquote>
+<blockquote>There are other types of rapidly dividing cells in the body. Our hair follicles and stomach lining also divide constantly, which is why chemotherapy can cause hair loss and nausea.</blockquote>
+<blockquote>In cases of severe radiation poisoning, the immune system collapse is the primary cause of death.</blockquote>
+<blockquote>On worlds without plants, oxygen doesn’t stay in the atmosphere—it combines with other elements to form things like carbon dioxide and rust. Plants undo this by stripping the oxygen back out and pumping it into the air.</blockquote>
+<blockquote>To put that in perspective, it takes about five milliseconds for the fastest nerve impulse to travel the length of the arm. That means that when your arm is still rotating toward the correct position, the signal to release the ball is already at your wrist. In terms of timing, this is like a drummer dropping a drumstick from the tenth story and hitting a drum on the ground on the correct beat.</blockquote>
+<blockquote>The messages are relatively long, but there’s not a lot of information in each one—all they tell you is whether the person decided to send the trap message or the horse message. It’s effectively a 1 or a 0. Although there are a lot of letters, for a reader who knows the pattern of the language, each tweet carries only one bit of information per sentence. This example hints at a very deep idea, which is that information is fundamentally tied to the recipient’s uncertainty about the message’s content and his or her ability to predict it in advance.</blockquote>
+<blockquote>At the equator in March and September, sunset is a hair over two minutes long. Closer to the poles, in places like London, it can take between 200 and 300 seconds. It’s shortest in spring and fall (when the Sun is over the equator) and longest in the summer and winter.</blockquote>
+<blockquote>A typical lightning strike delivers enough energy to power a residential house for about two days.</blockquote>
+</section><hr/>
+
+<span style="float: left;">
+ <a href="2024-08.html">[2024-08]</a>
+ <a href="2024-11.html">[2024-11]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>
