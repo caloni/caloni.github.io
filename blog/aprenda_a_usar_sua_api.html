@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="aprenda_a_usar_sua_api" title="Aprenda a usar sua API"/></span>
+<section id="section_aprenda_a_usar_sua_api">
+<p class="title">Aprenda a usar sua API</p>
+<span class="title-heading">Caloni, 2008-07-22 computer blog</span>
+
+<p>É conhecido que uma das desvantagens de se programar diretamente em Win32 API é a dificuldade de se entender os parâmetros e o retorno das funções. Concordo em parte. Constituída de boa documentação, parte da culpa dos programas mal-feitos reside na preguiça do programador em olhar a documentação por completo. A Win32 API está longe de ser perfeita, mas pelo menos está razoavelmente documentada, e é na leitura atenta da documentação que iremos encontrar as respostas que precisamos para que o programa funcione.</p>
+
+<p>Vejamos alguns exemplos. O código abaixo parece bem razoável:</p>
+
+<pre>
+#include &lt;windows.h&gt;
+int main()
+{
+    HANDLE hFile = CreateFile(&quot;c:\\tests\\myfile.txt&quot;, GENERIC_READ, 
+      FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
+    if( hFile )
+    {
+      DWORD read = 0;
+      CHAR buffer[100];
+      if( ReadFile(hFile, buffer, sizeof(buffer), &amp;read, NULL) )
+      {
+        WriteBuffer(buffer);
+      }
+      CloseHandle(hFile);
+    }
+}
+</pre>
+<p>No entanto, está errado.</p>
+
+<p>É fato que a maioria das funções que retornam handles retornam NULL para indicar o erro na tentativa de obter o recurso. Ao comparar o retorno com NULL, o programador geralmente faz uma chamada a GetLastError para saber o que aconteceu. No entanto, uma das funções mais usadas, a CreateFile, não retorna NULL, mas INVALID_HANDLE_VALUE.</p>
+
+<p>Sendo assim, o código acima deveria ser:</p>
+
+<pre>
+   if( hFile != INVALID_HANDLE_VALUE )
+</pre>
+<p>GetVersion também é uma função que muitos erraram. Erraram tanto que eles fizeram uma nova versão menos complicada. Como está escrito no MSDN: "The GetVersionEx function was developed because many existing applications err when examining the packed DWORD value returned by GetVersion, transposing the major and minor version numbers."</p>
+
+<p>O motivo de tantos erro pode ter sido o fato que o valor retornado é uma estrutura de bits dentro de um DWORD, coisa que nem todos programadores C sabem lidar muito bem, e o fato de ser uma função muito utilizada por todos (pegar a versão do sistema operacional).</p>
+
+<p>Eis a tabela de campos do retorno de GetVersion:</p>
+
+<ul><li>Platform, High-order bit, Next 7 bits, Low-order byte</li>
+
+<li>Windows NT 3.51, 0, Build number, 3</li>
+
+<li>Windows NT 4.0, 0, Build number, 4</li>
+
+<li>Windows 2000 or Windows XP, 0, Build number, 5</li>
+
+<li>Windows 95, Windows 98, or Windows Me, 1, Reserved, 4</li>
+
+<li>Win32s with Windows 3.1, 1, Build number, 3</li></ul>
+
+<p>Mesmo que não seja tão difícil, pode ser ambíguo. Por exemplo, como saber se o Windows é 95, 98 ou ME?</p>
+
+<p>O código abaixo, muito usado por todos que suportam ainda o Windows mais velhinhos, verifica se estamos rodando em plataforma NT ou 9x.</p>
+
+<pre>
+#include &lt;windows.h&gt;
+#include &lt;stdio.h&gt;
+int main()
+{
+    DWORD winVer = GetVersion();
+    BOOL isPlatformNT = winVer &gt;= 0x80000000 ? FALSE : TRUE;
+    if( isPlatformNT )
+      printf(&quot;Plataforma NT\n&quot;);
+    else
+      printf(&quot;Bem-vindo ao parque dos dinossauros!\n&quot;);
+    return isPlatformNT ? 1 : 0;
+}
+</pre>
+<img src="/blog/img/aprenda_a_usar_sua_api_jurassicpark.png"/>
+
+<p>Nem sempre o handle que obtemos é fechado com CloseHandle. As funções abaixo retornam handles que devem ser desalocados com as funções à direita:</p>
+
+<ul><li>Função que obtém recurso: Função que libera recurso</li>
+
+<li>LoadLibrary: FreeLibrary</li>
+
+<li>RegOpenKey: RegCloseKey</li>
+
+<li>GetDC: ReleaseDC</li>
+
+<li>BeginPaint: EndPaint</li></ul>
+
+<p>Sempre tem mais exemplos. Algumas dicas úteis para o dia-a-dia de um programador Win32 API são:</p>
+
+<ul><li>Leia a documentação;</li>
+
+<li>Se atente aos valores de retorno em caso de sucesso e erro;</li>
+
+<li>Leia sempre a seção remarks pelo menos uma vez; ela explica como desalocar recursos;</li>
+
+<li>Releia a documentação.</li></ul>
+
+<p>Às vezes uma singela chamada de uma função de autenticação pode nos fazer preencher uma estrutura de 20 membros, sendo que seis deles são obtidos com mais sete chamadas de funções, todas com direito a desalocar recursos no final. O importante é sempre manter a calma, o espírito de aprendizado e aventura. Afinal, quem mandou não fazer software de telinha?</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="antidebugging_using_exceptions_part_one.html">[antidebugging_using_exceptions_part_one]</a>
+ <a href="sobre_padroes_ou_o_conhecido_unresolved_external.html">[sobre_padroes_ou_o_conhecido_unresolved_external]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

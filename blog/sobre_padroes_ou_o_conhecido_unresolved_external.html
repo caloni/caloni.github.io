@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="sobre_padroes_ou_o_conhecido_unresolved_external" title="Sobre padrões, ou o conhecido unresolved external"/></span>
+<section id="section_sobre_padroes_ou_o_conhecido_unresolved_external">
+<p class="title">Sobre padrões, ou o conhecido unresolved external</p>
+<span class="title-heading">Caloni, 2008-07-18 computer blog</span>
+
+<blockquote>Sempre que nos deparamos com um problema que aos poucos vai consumindo o nosso tempo, tendemos a gastar mais tempo fazendo coisas inúteis que sabemos que não irá adiantar de nada.</blockquote>
+<p>Resolver um problema por si só não basta: é preciso rapidez. E como conseguimos rapidez para resolver problemas? Um jeito que eu, meu cérebro e o Dmitry Vostokov conhecem é montando padrões.</p>
+
+<p>Um padrão nos ajuda a não pensar novamente em coisas que sabemos a resposta, de tantas vezes que já fizemos. Só precisamos saber o caminho para resolver determinado problema.</p>
+
+<p>Mesmo assim, existem diversos caminhos a percorrer. Até mesmo para um singelo e batidíssimo "unresolved external".</p>
+
+<h4>Primeiro passo: você está usando a LIB correta?</h4>
+
+<p>O erro mais comum é usar uma LIB onde não está a função que estamos usando, ou usar uma versão diferente da mesma LIB que não contém a função, ou contém, mas com assinatura (parâmetros da função) diferentes. Isso pode ser verificado no código-fonte da LIB, se disponível, ou então pelo uso do dumpbin, como já vimos anteriormente.</p>
+
+<p>Dica extra: às vezes você pensa que está usando uma LIB em um determinado caminho, mas o linker achou a LIB primeiro em outro lugar. Para se certificar que está verificando a mesma LIB que o linker achou, use o Process Monitor.</p>
+
+<p>Às vezes, porém, não estamos usando a função diretamente e não conhecemos quem a usaria. Para isso que hoje em dia os compiladores mais espertos nos dizem em que parte do código foi referenciado a tal função:</p>
+
+<pre>
+   test.obj : error LNK2019: unresolved external symbol func referenced in function main
+</pre>
+<p>É sábio primeiro inspecionar a função que referencia, para depois entender porque ela não foi encontrada. Mesmo parecendo diferente, essa operação faz parte do primeiro passo, que é identificar a origem.</p>
+
+<h4>Segundo passo: você digitou direito?</h4>
+
+<p>Parece estúpido, mas às vezes é esse o caso. Essa é a segunda coisa a fazer porque não é tão comum quanto a primeira, visto que hoje em dia é rotina colocarmos as funções em um header e incluirmos esse cabeçalho em nosso código-fonte (em C++, praticamente obrigatório). Se houvesse discrepância entre o nome da função chamada e o nome da função existente, provavelmente teríamos um erro de compilação ("função não encontrada") antes do erro de linking.</p>
+
+<h4>Terceiro passo: tente incluir a função diretamente no seu código</h4>
+
+<p>Se a LIB não está cooperando, e der pouco trabalho, experimente incluir a função inteira (ou o cpp) dentro do seu projeto, para linkar diretamente. Se funcionar, então existe alguma diferença de compilação entre os dois projetos (o seu e o da LIB) para que haja uma divergência no nome procurado. Procure nas opções de projeto.</p>
+
+<h4>Quarto passo: comece de novo!</h4>
+
+<p>Sempre que nos deparamos com um problema que aos poucos vai consumindo o nosso tempo, tendemos a gastar mais tempo fazendo coisas inúteis que sabemos que não irá adiantar de nada. Às vezes fazer brute force pode dar certo. Outras vezes, seria melhor recomeçar a pesquisa e tentar entender de fato o que está acontecendo na compilação. Em outras palavras: gastar o seu tempo pensando pode ser mais produtivo do que agir instintivamente.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="aprenda_a_usar_sua_api.html">[aprenda_a_usar_sua_api]</a>
+ <a href="reflexao_em_c.html">[reflexao_em_c]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

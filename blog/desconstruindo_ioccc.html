@@ -151,19 +151,22 @@ role="navigation" aria-label="main navigation">
 </pre>
 <p>Também devemos lembrar que o caractere de controle '\n' é representado apenas por um byte, apesar de no fonte parecer dois.</p>
 
-<p>Em um passado bem longínquo, o padrão ANSI C não existia, e outras funções dominavam o ambiente UNIX. Muitas dessas funções foram adaptadas, e outras completamente copiadas para a formação do padrão. No entanto, ainda que o padrão não tenha colocado algumas funções clássicas, elas continuaram sendo usadas e suportadas. Um bom exemplo disso são as funções read e write, que, apesar de não estarem no padrão, estão no [livro de K&amp;R], no capítulo sobre fluxos (streams) em UNIX, provando que são bem populares.</p>
+<p>Em um passado bem longínquo, o padrão ANSI C não existia, e outras funções dominavam o ambiente UNIX. Muitas dessas funções foram adaptadas, e outras completamente copiadas para a formação do padrão. No entanto, ainda que o padrão não tenha colocado algumas funções clássicas, elas continuaram sendo usadas e suportadas. Um bom exemplo disso são as funções read e write, que, apesar de não estarem no padrão, estão no <a href="2007-10.html#the_c_programming_language">livro de KandR</a>, no capítulo sobre fluxos (streams) em UNIX, provando que são bem populares.</p>
 
 <p>Dentro desse mundo paralelo, existem identificadores de fluxos padrões para a entrada e a saída padrão. Melhor ainda, esses identificadores são inteiros que estão especificados da seguinte maneira (tirado da <a href="https://ftp.gnu.org/old-gnu/Manuals/glibc-2.2.3/html_node/libc_231.html">referência GNU</a> da linguagem C, meu grifo):</p>
 
 <blockquote>There are also symbolic constants defined in unistd.h for the file descriptors belonging to the standard streams stdin, stdout, and stderr; see Standard Streams.</blockquote>
 
 <blockquote>STDIN_FILENO</blockquote>
+
 <blockquote>This macro has value 0, which is the file descriptor for standard input.</blockquote>
 
 <blockquote>STDOUT_FILENO</blockquote>
+
 <blockquote>This macro has value 1, which is the file descriptor for standard output.</blockquote>
 
 <blockquote>STDERR_FILENO</blockquote>
+
 <blockquote>This macro has value 2, which is the file descriptor for standard error output.</blockquote>
 <p>Agora podemos voltar ao fonte. Vejamos como é implementada a função read, chamada dentro do laço for. Como todos sabem, se uma função já é definida em sua própria unidade, não haverá uma busca por referências externas, o que quer dizer que a implementação padrão de read não atrapalha a implementação local.</p>
 
