@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="windows_jobs_com_completion_port" title="Windows Jobs com Completion Port"/></span>
+<section id="section_windows_jobs_com_completion_port">
+<p class="title">Windows Jobs com Completion Port</p>
+<span class="title-heading">Caloni, 2008-09-23 computer blog</span>
+
+<p>Ou "Como esperar o término de todos os processos-filho criados a partir de um conjunto de processos".</p>
+
+<p>Dessa vez confesso que esperava um pouco mais de documentação do MSDN, ou pelo menos um sistema de referências cruzadas eficiente. Outro dia demorei cerca de duas horas para conseguir <a href="https://learn.microsoft.com/en-us/windows/win32/procthread/job-objects">criar um job</a>, anexar o processo desejado e, a pior parte, esperar que todos os processos (o principal e seus filhos e netos) terminassem.</p>
+
+<p>Além da pouca documentação, parece que não são muitas as pessoas que fazem isso e publicam na web, ou eu <a href="http://www.google.com.br/search?q=wait+all+processes+inside+job+object">não sei procurar direito</a>.</p>
+
+<blockquote>Update 2026-02-17: hoje você segue o link do Google acima e a IA já te explica como deve proceder. Entre no modo IA e ele te joga o código completo.</blockquote>
+<p>Mas, pra início de conversa, o que é um job mesmo?</p>
+
+<h4>Leve introdução sobre o conceito de jobs</h4>
+
+<p>Um job é um objeto "novo" no kernel do Windows 2000 em diante, e se prontifica a suprir a carência que havia anteriormente de **controle sobre o que os processos podem fazer e por quanto tempo**.</p>
+
+<p>A abstração mais coerente que eu consigo tirar de um job é como **um trabalho a ser executada por um ou mais processos**. O objeto job controla a criação, o término e as exceções que ocorrem dentro dele mesmo.</p>
+
+<img src="/blog/img/windows_jobs_com_completion_port_job.gif"/>
+
+<p>Entre as funções mais úteis de um job estão limitar o tempo de execução do conjunto de processos, o número de handles/arquivos/outros objetos abertos, limite de memória RAM ocupada e a possibilidade de terminar todos os processos de uma só vez.</p>
+
+<p>Para informações básicas de como criar um job e anexar processos recomendo o ótimo artigo de Jeffrey Richter (se você conseguir encontrar, meu último link está quebrado).</p>
+
+<p>No final desse artigo ele chega a citar o controle mais refinado dos processos através de uma <a href="https://learn.microsoft.com/en-us/windows/win32/fileio/i-o-completion-ports">completion port</a>, que permitirá receber eventos que ocorrem dentro de um job durante sua vida útil. Apesar de citar, não há código de exemplo que faça isso.</p>
+
+<p>Bom, agora há:</p>
+
+<pre>
+#define _WIN32_WINNT 0x0500 // Jobs só existem do 2000 em diante
+#include &lt;windows.h&gt;
+/** @brief Função que cria um processo a partir de cmdLine
+ * e coloca-o dentro de um job. A função aguarda o término
+ * do processo e de qualquer subprocesso criado por este.
+ */
+DWORD CreateJobAndWait(LPSTR cmdLine)
+{
+   // primeiro, criamos um job sem nome
+   HANDLE job = CreateJobObject(NULL, NULL);
+   if( job )
+   {
+      STARTUPINFO si = { sizeof(si) };
+      PROCESS_INFORMATION pi;
+      // depois, criamos um processo suspenso (travado)
+      if( CreateProcess(NULL, cmdLine, NULL, NULL, FALSE, 
+         CREATE_SUSPENDED | CREATE_NEW_CONSOLE, NULL, NULL, &amp;si, &amp;pi) )
+      {
+         // atribuímos esse processo ao nosso jobo
+         AssignProcessToJobObject(job, pi.hProcess);
+         // rodamos o processo
+         ResumeThread(pi.hThread);
+         // essa é uma completion i/o port genérica
+         // (ou seja, não relacionada com nenhum arquivo
+         // ou outra completion port)
+         HANDLE port = CreateIoCompletionPort(INVALID_HANDLE_VALUE, 
+                 NULL, 0, 0);
+         if( port )
+         {
+            JOBOBJECT_ASSOCIATE_COMPLETION_PORT jobPort;
+            jobPort.CompletionKey = 0; // ver variável key abaixo
+            jobPort.CompletionPort = port; // nossa completion port vai aqui!
+            // definimos a c.p. em nosso job
+            if( SetInformationJobObject(job, 
+                        JobObjectAssociateCompletionPortInformation, 
+                        &amp;jobPort, sizeof(jobPort)) )
+            {
+               ULONG_PTR key = 0; // ver membro CompletionKey acima
+               LPOVERLAPPED overlap = 0;
+               DWORD tranferred = 0;
+               // nosso loop de mensagens com completion port
+               while( GetQueuedCompletionStatus(port, &amp;tranferred, 
+                  &amp;key, &amp;overlap, INFINITE) )
+               {
+                  // transferred especifica a mensagem
+                  DWORD msg = *(LPDWORD) &amp;tranferred;
+                  // significa que não existem mais processos rodando
+                  if( msg == JOB_OBJECT_MSG_ACTIVE_PROCESS_ZERO )
+                     break; // saímos fora
+               }
+            }
+            CloseHandle(port); // fecha tudo
+         }
+         CloseHandle(pi.hThread); // fecha tudo
+         CloseHandle(pi.hProcess); // fecha tudo
+      }
+      CloseHandle(job); // fecha tudo
+   }
+   return 0;
+}
+int main(int argc, char* argv[])
+{
+   if( argc == 2 )
+      CreateJobAndWait(argv[1]);
+}
+</pre>
+<p>O exemplo acima cria um processo baseado em uma linha de comando e espera pelo término do processo criado e de todos os subprocessos criados a partir do primeiro processo. Note que mesmo que o primeiro processo termine, a Completion Port só receberá o evento que todos os processos acabaram depois que o último subprocesso terminar.</p>
+
+<p>Dessa forma, ao compilarmos o código e rodarmos mais um prompt de comando através de nosso programa ele fica travado mesmo ao fecharmos o prompt criado. O programa só será finalizado ao fecharmos o Bloco de Notas iniciado pelo segundo prompt.</p>
+
+<p>Além desse evento, que era o que eu estava procurando, esse método permite obter outros eventos bem interessantes:</p>
+
+<p>  * JOB_OBJECT_MSG_NEW_PROCESS. Um novo processo foi criado dentro do job.</p>
+
+<p>  * JOB_OBJECT_MSG_EXIT_PROCESS. Um processo existente dentro do job foi terminado.</p>
+
+<p>  * JOB_OBJECT_MSG_PROCESS_MEMORY_LIMIT. O limite de memória de um processo já foi alcançado.</p>
+
+<p>  * JOB_OBJECT_MSG_END_OF_PROCESS_TIME. O limite de tempo de processamento de um processo já foi alcançado.</p>
+
+<p>Enfim, jobs não terminam por aí. Dê mais uma olhada no MSDN e veja se encontra mais alguma utilidade interessante para o nosso amigo job. Eu encontrei e fiquei feliz.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="todo_programador_e_um_filosofo_em_potencial.html">[todo_programador_e_um_filosofo_em_potencial]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

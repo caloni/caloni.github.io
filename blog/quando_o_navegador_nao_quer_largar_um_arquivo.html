@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="quando_o_navegador_nao_quer_largar_um_arquivo" title="Quando o navegador não quer largar um arquivo"/></span>
+<section id="section_quando_o_navegador_nao_quer_largar_um_arquivo">
+<p class="title">Quando o navegador não quer largar um arquivo</p>
+<span class="title-heading">Caloni, 2008-08-13 computer blog</span>
+
+<p>De vez em quando gosto muito de um vídeo que estou assistindo. Gosto tanto que faço questão de guardar para assistir mais vezes depois. O problema é que o meu Firefox ou, para ser mais técnico, o plugin de vídeo que roda em cima do meu navegador, não permite isso. Ele simplesmente cria um arquivo temporário para exibir o vídeo e logo depois o apaga, utilizando uma técnica muito útil da função CreateFile, que bloqueia o acesso do arquivo temporário e apaga-o logo após o uso:</p>
+
+<blockquote>dwShareMode 0 disables subsequent open operations on a file or device to request any type of access to that file or device.</blockquote>
+
+<blockquote>dwFlagsAndAttributes 0x00000000 FILE_FLAG_DELETE_ON_CLOSE the file is to be deleted immediately after all of its handles are closed, which includes the specified handle and any other open or duplicated handles.</blockquote>
+<p>Muito bem. Isso quer dizer que é possível abrir um arquivo que mais ninguém pode abrir (nem para copiar para outro arquivo), e ao mesmo tempo garante que quando ele for fechado será apagado. Isso parece uma ótima proteção de cópia não-autorizada para a maioria das pessoas.</p>
+
+<p>Infelizmente, tudo isso roda sob limites muito restritos: um navegador, rodando em user mode, usando APIs bem definidas e facilmente depuráveis.</p>
+
+<h4>De volta ao WinDbg</h4>
+
+<p>Antes de iniciar a reprodução do vídeo, e conseqüentemente a criação do arquivo temporário, podemos atachar uma instância do nosso depurador do coração e colocar um breakpoint onde interessa:</p>
+
+<pre>
+   windbg -pn firefox.exe
+   ntdll!DbgBreakPoint:
+   7c901230 cc              int     3
+   0:017&gt; bp kernel32!CreateFileA
+   0:017&gt; bp kernel32!CreateFileW
+   0:017&gt; g
+   Breakpoint 2 hit
+   eax=00000001 ebx=00000000 ecx=05432c10 edx=0000003e esi=0532ea00 edi=00000000
+   eip=7c831f31 esp=0317fdc4 ebp=0317fde8 iopl=0         nv up ei pl nz na po nc
+   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000202
+   kernel32!CreateFileW:
+   7c810760 8bff            mov     edi,edi
+</pre>
+<p>Nesse momento podemos dar uma boa olhada nos parâmetros 4 e 6 da função para ver se trata-se realmente da proteção prevista (na verdade, prevista, nada; esse é um artigo baseado em uma experiência passada; vamos imaginar, contudo, que estamos descobrindo essas coisas como na primeira vez).</p>
+
+<pre>
+   0:000&gt; dd esp
+   0012f30c  300afc06 03f91920 c0000000 00000000
+   0012f31c  00000000 00000002 14000000 00000000
+</pre>
+<p>Como podemos ver, o modo de compartilhamento do arquivo é nenhum. Entre os flags definidos no sexto parâmetro, está o de apagar o arquivo ao fechar o handle, como pude constatar no header do SDK.</p>
+
+<p>Nesse caso, a solução mais óbvia e simples foi deixar esse bit desabilitado, não importando se o modo de compartilhamento está desativado. Tudo que temos que fazer é assistir o vídeo mais uma vez e fechar a aba do navegador. O arquivo será fechado, o compartilhamento aberto, e o arquivo, não apagado.</p>
+
+<pre>
+   0:012&gt; bp kernel32!CreateFileW &quot;ed @esp+4*6 poi(@esp+4*6) &amp; 0xfbffffff&quot;
+   breakpoint 1 redefined
+   0:012&gt; bp kernel32!CreateFileA &quot;ed @esp+4*6 poi(@esp+4*6) &amp; 0xfbffffff&quot;
+   breakpoint 0 redefined
+   0:012&gt; g
+</pre>
+<p>E agora posso voltar a armazenar meus vídeos favoritos.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="os_processosfantasma.html">[os_processosfantasma]</a>
+ <a href="antidebugging_during_the_process_attach.html">[antidebugging_during_the_process_attach]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

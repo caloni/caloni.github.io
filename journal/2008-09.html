@@ -40,7 +40,7 @@ role="navigation" aria-label="main navigation">
 
 <li><small><a href="2008-09.html#serenidade">Serenidade</a></small></li>
 <li><small><a href="2008-09.html#de_volta_a_tona">De volta à tona</a></small></li>
-<li><small><a href="2008-09.html#retorno_do_pathisdirectory">Retorno do PathIsDirectory</a></small></li>
+<li><small><a href="2008-09.html#bug_no_retorno_do_pathisdirectory">Bug no retorno do PathIsDirectory</a></small></li>
 <li><small><a href="2008-09.html#todo_programador_e_um_filosofo_em_potencial">Todo programador é um filósofo em potencial</a></small></li>
 <li><small><a href="2008-09.html#reuna_seus_comandos_mais_usados_no_windbg_com_cmdtree">Reúna seus comandos mais usados no WinDbg com .cmdtree</a></small></li>
 <li><small><a href="2008-09.html#v">V</a></small></li>
@@ -72,10 +72,10 @@ role="navigation" aria-label="main navigation">
 </section><hr/>
 
 
-<span id="retorno_do_pathisdirectory" title="Retorno do PathIsDirectory"/></span>
-<section id="section_retorno_do_pathisdirectory">
-<p class="title"><a href="2008-09.html#retorno_do_pathisdirectory">#</a> Retorno do PathIsDirectory</p>
-<span class="title-heading">Caloni, 2008-09-10<a href="2008-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_retorno_do_pathisdirectory')"><sup>[copy]</sup></a></span>
+<span id="bug_no_retorno_do_pathisdirectory" title="Bug no retorno do PathIsDirectory"/></span>
+<section id="section_bug_no_retorno_do_pathisdirectory">
+<p class="title"><a href="2008-09.html#bug_no_retorno_do_pathisdirectory">#</a> Bug no retorno do PathIsDirectory</p>
+<span class="title-heading">Caloni, 2008-09-10 <a href="2008-08.html#os_processosfantasma">&lt;</a><a href="computer.html">computer</a><a href="2008-09.html#reuna_seus_comandos_mais_usados_no_windbg_com_cmdtree">&gt;</a> <a href="2008-08.html#os_processosfantasma">&lt;</a><a href="blog.html">blog</a><a href="2008-09.html#todo_programador_e_um_filosofo_em_potencial">&gt;</a><a href="2008-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_bug_no_retorno_do_pathisdirectory')"><sup>[copy]</sup></a></span>
 
 <p>Estava eu outro dia programando aquele código esperto "para ontem" quando me deparei com uma situação no mínimo inusitada. Ao testar se um caminho recebido era de fato um diretório me foi retornado pela API um valor diferente de TRUE. E diferente de FALSE!</p>
 
@@ -148,260 +148,46 @@ role="navigation" aria-label="main navigation">
    Copyright (c) Microsoft Corporation. All rights reserved.
    CommandLine: IsPathDir.exe
    Symbol search path is: SRV*c:\symbols*http://msdl.microsoft.com/download/symbols
-   Executable search path is:
-   ModLoad: 00400000 00426000   IsPathDir.exe
-   ModLoad: 7c900000 7c9b4000   ntdll.dll
-   ModLoad: 7c800000 7c8ff000   C:\WINDOWS\system32\kernel32.dll
-   ModLoad: 77ea0000 77f16000   C:\WINDOWS\system32\SHLWAPI.dll
-   ModLoad: 77f50000 77ffb000   C:\WINDOWS\system32\ADVAPI32.dll
-   ModLoad: 77db0000 77e41000   C:\WINDOWS\system32\RPCRT4.dll
-   ModLoad: 77e50000 77e97000   C:\WINDOWS\system32\GDI32.dll
-   ModLoad: 7e360000 7e3f0000   C:\WINDOWS\system32\USER32.dll
-   ModLoad: 77bf0000 77c48000   C:\WINDOWS\system32\msvcrt.dll
-   (ea0.de0): Break instruction exception - code 80000003 (first chance)
-   eax=00241eb4 ebx=7ffde000 ecx=00000004 edx=00000010 esi=00241f48 edi=00241eb4
-   eip=7c901230 esp=0012fb20 ebp=0012fc94 iopl=0         nv up ei pl nz na po nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000202
+   ...
    ntdll!DbgBreakPoint:
    7c901230 cc              int     3
    0:000&gt; g shlwapi!PathIsDirectoryA
-   ModLoad: 76360000 7637d000   C:\WINDOWS\system32\IMM32.DLL
-   ModLoad: 62e80000 62e89000   C:\WINDOWS\system32\LPK.DLL
-   ModLoad: 74d50000 74dbb000   C:\WINDOWS\system32\USP10.dll
    eax=009836e0 ebx=7ffde000 ecx=00000001 edx=00422828 esi=0006f4cc edi=7c911970
    eip=77ee7538 esp=0012ff6c ebp=0012ff78 iopl=0         nv up ei pl zr na pe nc
    cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
    SHLWAPI!PathIsDirectoryA:
    77ee7538 8bff            mov     edi,edi
    0:000&gt; p
-   eax=009836e0 ebx=7ffde000 ecx=00000001 edx=00422828 esi=0006f4cc edi=7c911970
-   eip=77ee753a esp=0012ff6c ebp=0012ff78 iopl=0         nv up ei pl zr na pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
-   SHLWAPI!PathIsDirectoryA+0x2:
-   77ee753a 55              push    ebp
-   0:000&gt;
-   eax=009836e0 ebx=7ffde000 ecx=00000001 edx=00422828 esi=0006f4cc edi=7c911970
-   eip=77ee753b esp=0012ff68 ebp=0012ff78 iopl=0         nv up ei pl zr na pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
-   SHLWAPI!PathIsDirectoryA+0x3:
-   77ee753b 8bec            mov     ebp,esp
-   0:000&gt;
-   eax=009836e0 ebx=7ffde000 ecx=00000001 edx=00422828 esi=0006f4cc edi=7c911970
-   eip=77ee753d esp=0012ff68 ebp=0012ff68 iopl=0         nv up ei pl zr na pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
-   SHLWAPI!PathIsDirectoryA+0x5:
-   77ee753d 81ec0c020000    sub     esp,20Ch
-   0:000&gt;
-   eax=009836e0 ebx=7ffde000 ecx=00000001 edx=00422828 esi=0006f4cc edi=7c911970
-   eip=77ee7543 esp=0012fd5c ebp=0012ff68 iopl=0         nv up ei pl nz ac pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000216
-   SHLWAPI!PathIsDirectoryA+0xb:
-   77ee7543 a180d2f077      mov     eax,dword ptr [SHLWAPI!__security_cookie
-   0:000&gt;
-   eax=00007a43 ebx=7ffde000 ecx=00000001 edx=00422828 esi=0006f4cc edi=7c911970
-   eip=77ee7548 esp=0012fd5c ebp=0012ff68 iopl=0         nv up ei pl nz ac pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000216
-   SHLWAPI!PathIsDirectoryA+0x10:
-   77ee7548 56              push    esi
-   0:000&gt;
-   eax=00007a43 ebx=7ffde000 ecx=00000001 edx=00422828 esi=0006f4cc edi=7c911970
-   eip=77ee7549 esp=0012fd58 ebp=0012ff68 iopl=0         nv up ei pl nz ac pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000216
-   SHLWAPI!PathIsDirectoryA+0x11:
-   *** WARNING: Unable to verify checksum for IsPathDir.exe
-   77ee7549 8b7508          mov     esi,dword ptr [ebp+8] ss:0023:0012ff70=0041dc5c
-   0:000&gt;
-   eax=00007a43 ebx=7ffde000 ecx=00000001 edx=00422828 esi=0041dc5c edi=7c911970
-   eip=77ee754c esp=0012fd58 ebp=0012ff68 iopl=0         nv up ei pl nz ac pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000216
-   SHLWAPI!PathIsDirectoryA+0x14:
-   77ee754c 85f6            test    esi,esi
-   0:000&gt;
-   eax=00007a43 ebx=7ffde000 ecx=00000001 edx=00422828 esi=0041dc5c edi=7c911970
-   eip=77ee754e esp=0012fd58 ebp=0012ff68 iopl=0         nv up ei pl nz na pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000206
-   SHLWAPI!PathIsDirectoryA+0x16:
-   77ee754e 8945fc          mov     dword ptr [ebp-4],eax ss:0023:0012ff64=fffffffe
-   0:000&gt;
-   eax=00007a43 ebx=7ffde000 ecx=00000001 edx=00422828 esi=0041dc5c edi=7c911970
-   eip=77ee7551 esp=0012fd58 ebp=0012ff68 iopl=0         nv up ei pl nz na pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000206
-   SHLWAPI!PathIsDirectoryA+0x19:
-   77ee7551 0f8493000000    je      SHLWAPI!PathIsDirectoryA+0xb2 (77ee75ea) [br=0]
-   0:000&gt;
-   eax=00007a43 ebx=7ffde000 ecx=00000001 edx=00422828 esi=0041dc5c edi=7c911970
-   eip=77ee7557 esp=0012fd58 ebp=0012ff68 iopl=0         nv up ei pl nz na pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000206
-   SHLWAPI!PathIsDirectoryA+0x1f:
-   77ee7557 56              push    esi
-   0:000&gt;
-   eax=00007a43 ebx=7ffde000 ecx=00000001 edx=00422828 esi=0041dc5c edi=7c911970
-   eip=77ee7558 esp=0012fd54 ebp=0012ff68 iopl=0         nv up ei pl nz na pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000206
-   SHLWAPI!PathIsDirectoryA+0x20:
-   77ee7558 e85cc0fdff      call    SHLWAPI!PathIsUNCServerA (77ec35b9)
-   0:000&gt;
-   eax=00000000 ebx=7ffde000 ecx=00000001 edx=00422828 esi=0041dc5c edi=7c911970
-   eip=77ee755d esp=0012fd58 ebp=0012ff68 iopl=0         nv up ei pl zr na pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
-   SHLWAPI!PathIsDirectoryA+0x25:
-   77ee755d 85c0            test    eax,eax
-   0:000&gt;
-   eax=00000000 ebx=7ffde000 ecx=00000001 edx=00422828 esi=0041dc5c edi=7c911970
-   eip=77ee755f esp=0012fd58 ebp=0012ff68 iopl=0         nv up ei pl zr na pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
-   SHLWAPI!PathIsDirectoryA+0x27:
-   77ee755f 0f8585000000    jne     SHLWAPI!PathIsDirectoryA+0xb2 (77ee75ea) [br=0]
-   0:000&gt;
-   eax=00000000 ebx=7ffde000 ecx=00000001 edx=00422828 esi=0041dc5c edi=7c911970
-   eip=77ee7565 esp=0012fd58 ebp=0012ff68 iopl=0         nv up ei pl zr na pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
-   SHLWAPI!PathIsDirectoryA+0x2d:
-   77ee7565 56              push    esi
-   0:000&gt;
-   eax=00000000 ebx=7ffde000 ecx=00000001 edx=00422828 esi=0041dc5c edi=7c911970
-   eip=77ee7566 esp=0012fd54 ebp=0012ff68 iopl=0         nv up ei pl zr na pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
-   SHLWAPI!PathIsDirectoryA+0x2e:
-   77ee7566 e812feffff      call    SHLWAPI!PathIsUNCServerShareA (77ee737d)
-   0:000&gt;
-   eax=00000000 ebx=7ffde000 ecx=00000001 edx=00422828 esi=0041dc5c edi=7c911970
-   eip=77ee756b esp=0012fd58 ebp=0012ff68 iopl=0         nv up ei pl zr na pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
-   SHLWAPI!PathIsDirectoryA+0x33:
-   77ee756b 85c0            test    eax,eax
-   0:000&gt;
-   eax=00000000 ebx=7ffde000 ecx=00000001 edx=00422828 esi=0041dc5c edi=7c911970
-   eip=77ee756d esp=0012fd58 ebp=0012ff68 iopl=0         nv up ei pl zr na pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
-   SHLWAPI!PathIsDirectoryA+0x35:
-   77ee756d 0f8486000000    je      SHLWAPI!PathIsDirectoryA+0xc1 (77ee75f9) [br=1]
-   0:000&gt;
-   eax=00000000 ebx=7ffde000 ecx=00000001 edx=00422828 esi=0041dc5c edi=7c911970
-   eip=77ee75f9 esp=0012fd58 ebp=0012ff68 iopl=0         nv up ei pl zr na pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
-   SHLWAPI!PathIsDirectoryA+0xc1:
-   77ee75f9 56              push    esi
-   0:000&gt;
-   eax=00000000 ebx=7ffde000 ecx=00000001 edx=00422828 esi=0041dc5c edi=7c911970
-   eip=77ee75f9 esp=0012fd58 ebp=0012ff68 iopl=0         nv up ei pl zr na pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
-   SHLWAPI!PathIsDirectoryA+0xc1:
-   77ee75f9 56              push    esi
-   0:000&gt;
-   eax=00000000 ebx=7ffde000 ecx=00000001 edx=00422828 esi=0041dc5c edi=7c911970
-   eip=77ee75fa esp=0012fd54 ebp=0012ff68 iopl=0         nv up ei pl zr na pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
-   SHLWAPI!PathIsDirectoryA+0xc2:
-   77ee75fa ff15d411ea77    call    dword ptr [SHLWAPI!_imp__GetFileAttributesA (77ea11d4)]
-   0:000&gt;
-   eax=00000011 ebx=7ffde000 ecx=7c91056d edx=00140608 esi=0041dc5c edi=7c911970
-   eip=77ee7600 esp=0012fd58 ebp=0012ff68 iopl=0         nv up ei pl zr na pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
-   SHLWAPI!PathIsDirectoryA+0xc8:
-   77ee7600 83f8ff          cmp     eax,0FFFFFFFFh
-   0:000&gt;
-   eax=00000011 ebx=7ffde000 ecx=7c91056d edx=00140608 esi=0041dc5c edi=7c911970
-   eip=77ee7603 esp=0012fd58 ebp=0012ff68 iopl=0         nv up ei pl nz ac pe cy
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000217
-   SHLWAPI!PathIsDirectoryA+0xcb:
-   77ee7603 74e5            je      SHLWAPI!PathIsDirectoryA+0xb2 (77ee75ea) [br=0]
-   0:000&gt;
-   eax=00000011 ebx=7ffde000 ecx=7c91056d edx=00140608 esi=0041dc5c edi=7c911970
-   eip=77ee7605 esp=0012fd58 ebp=0012ff68 iopl=0         nv up ei pl nz ac pe cy
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000217
-   SHLWAPI!PathIsDirectoryA+0xcd:
-   77ee7605 83e010          and     eax,10h
-   0:000&gt;
-   eax=00000010 ebx=7ffde000 ecx=7c91056d edx=00140608 esi=0041dc5c edi=7c911970
-   eip=77ee7608 esp=0012fd58 ebp=0012ff68 iopl=0         nv up ei pl nz na po nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000202
-   SHLWAPI!PathIsDirectoryA+0xd0:
-   77ee7608 ebe2            jmp     SHLWAPI!PathIsDirectoryA+0xb4 (77ee75ec)
-   0:000&gt;
-   eax=00000010 ebx=7ffde000 ecx=7c91056d edx=00140608 esi=0041dc5c edi=7c911970
-   eip=77ee75ec esp=0012fd58 ebp=0012ff68 iopl=0         nv up ei pl nz na po nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000202
-   SHLWAPI!PathIsDirectoryA+0xb4:
-   77ee75ec 8b4dfc          mov     ecx,dword ptr [ebp-4] ss:0023:0012ff64=00007a43
-   0:000&gt;
-   eax=00000010 ebx=7ffde000 ecx=00007a43 edx=00140608 esi=0041dc5c edi=7c911970
-   eip=77ee75ef esp=0012fd58 ebp=0012ff68 iopl=0         nv up ei pl nz na po nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000202
-   SHLWAPI!PathIsDirectoryA+0xb7:
-   77ee75ef 5e              pop     esi
-   0:000&gt;
-   eax=00000010 ebx=7ffde000 ecx=00007a43 edx=00140608 esi=0006f4cc edi=7c911970
-   eip=77ee75f0 esp=0012fd5c ebp=0012ff68 iopl=0         nv up ei pl nz na po nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000202
-   SHLWAPI!PathIsDirectoryA+0xb8:
-   77ee75f0 e82bcafbff      call    SHLWAPI!__security_check_cookie (77ea4020)
-   0:000&gt;
-   eax=00000010 ebx=7ffde000 ecx=00007a43 edx=00140608 esi=0006f4cc edi=7c911970
-   eip=77ee75f5 esp=0012fd5c ebp=0012ff68 iopl=0         nv up ei pl zr na pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
-   SHLWAPI!PathIsDirectoryA+0xbd:
-   77ee75f5 c9              leave
-   0:000&gt;
-   eax=00000010 ebx=7ffde000 ecx=00007a43 edx=00140608 esi=0006f4cc edi=7c911970
-   eip=77ee75f6 esp=0012ff6c ebp=0012ff78 iopl=0         nv up ei pl zr na pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
-   SHLWAPI!PathIsDirectoryA+0xbe:
-   77ee75f6 c20400          ret     4
-   0:000&gt;
-   eax=00000010 ebx=7ffde000 ecx=00007a43 edx=00140608 esi=0006f4cc edi=7c911970
-   eip=0040101f esp=0012ff74 ebp=0012ff78 iopl=0         nv up ei pl zr na pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
-   IsPathDir!main+0xf:
-   0040101f 8945fc          mov     dword ptr [ebp-4],eax ss:0023:0012ff74=00000001
-   0:000&gt;
-   eax=00000010 ebx=7ffde000 ecx=00007a43 edx=00140608 esi=0006f4cc edi=7c911970
-   eip=00401022 esp=0012ff74 ebp=0012ff78 iopl=0         nv up ei pl zr na pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
-   IsPathDir!main+0x12:
-   00401022 8b45fc          mov     eax,dword ptr [ebp-4] ss:0023:0012ff74=00000010
-   0:000&gt;
-   eax=00000010 ebx=7ffde000 ecx=00007a43 edx=00140608 esi=0006f4cc edi=7c911970
-   eip=00401025 esp=0012ff74 ebp=0012ff78 iopl=0         nv up ei pl zr na pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
-   IsPathDir!main+0x15:
-   00401025 50              push    eax
-   0:000&gt;
-   eax=00000010 ebx=7ffde000 ecx=00007a43 edx=00140608 esi=0006f4cc edi=7c911970
-   eip=00401026 esp=0012ff70 ebp=0012ff78 iopl=0         nv up ei pl zr na pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
-   IsPathDir!main+0x16:
-   00401026 6868dc4100      push    offset IsPathDir!__xt_z+0x12c (0041dc68)
-   0:000&gt;
-   eax=00000010 ebx=7ffde000 ecx=00007a43 edx=00140608 esi=0006f4cc edi=7c911970
-   eip=0040102b esp=0012ff6c ebp=0012ff78 iopl=0         nv up ei pl zr na pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
-   IsPathDir!main+0x1b:
-   0040102b e81a000000      call    IsPathDir!printf (0040104a)
-   0:000&gt;
-   Resultado: 16.
-   eax=0000000f ebx=7ffde000 ecx=004010e5 edx=004228b8 esi=0006f4cc edi=7c911970
-   eip=00401030 esp=0012ff6c ebp=0012ff78 iopl=0         nv up ei ng nz ac pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000296
-   IsPathDir!main+0x20:
-   00401030 83c408          add     esp,8
-   0:000&gt;
+   push    ebp
+   mov     ebp,esp
+   sub     esp,20Ch
+   mov     eax,dword ptr [SHLWAPI!__security_cookie
+   push    esi
+   mov     esi,dword ptr [ebp+8] ss:0023:0012ff70=0041dc5c
+   test    esi,esi
+   mov     dword ptr [ebp-4],eax ss:0023:0012ff64=fffffffe
+   je      SHLWAPI!PathIsDirectoryA+0xb2 (77ee75ea) [br=0]
+   push    esi
+   call    SHLWAPI!PathIsUNCServerA (77ec35b9)
+   test    eax,eax
+   jne     SHLWAPI!PathIsDirectoryA+0xb2 (77ee75ea) [br=0]
+   push    esi
+   call    SHLWAPI!PathIsUNCServerShareA (77ee737d)
+   test    eax,eax
+   je      SHLWAPI!PathIsDirectoryA+0xc1 (77ee75f9) [br=1]
+   push    esi
+   call    dword ptr [SHLWAPI!_imp__GetFileAttributesA (77ea11d4)]
+   cmp     eax,0FFFFFFFFh
+   ...
 </pre>
 <p>Ou seja, para pastas locais a função simplesmente usa a conhecidíssima GetFileAttributes, que retorna o flag 0x10 setado caso se trate de uma pasta, de acordo com a documentação: "The attributes can be one or more of the following values:"</p>
 
-<pre>
-   Return code/value              Description
-   FILE_ATTRIBUTE_ARCHIVE         A file or directory that is an archive file or directory.
-   32
-   0x20
-   FILE_ATTRIBUTE_COMPRESSED      A file or directory that is compressed.
-   2048
-   0x800
-   ...
-   FILE_ATTRIBUTE_DIRECTORY       The handle that identifies a directory.
-   16
-   0x10
-</pre>
+<ul><li>FILE_ATTRIBUTE_ARCHIVE 32 (0x20) A file or directory that is an archive file or directory.</li>
+
+<li>FILE_ATTRIBUTE_COMPRESSED 2048 (0x800) A file or directory that is compressed.</li>
+
+<li>FILE_ATTRIBUTE_DIRECTORY 16 (0x10) The handle that identifies a directory.</li></ul>
+
 <p>Aqui termina nossa dúvida sobre o pequenino bug na documentação. E isso nos lembra também que é sempre bom comparar as coisas da melhor maneira possível. E essa melhor maneira em se tratando de ifs é supor apenas dois valores binário: ou é zero ou é não-zero.</p>
 
 </section><hr/>
@@ -410,7 +196,7 @@ role="navigation" aria-label="main navigation">
 <span id="todo_programador_e_um_filosofo_em_potencial" title="Todo programador é um filósofo em potencial"/></span>
 <section id="section_todo_programador_e_um_filosofo_em_potencial">
 <p class="title"><a href="2008-09.html#todo_programador_e_um_filosofo_em_potencial">#</a> Todo programador é um filósofo em potencial</p>
-<span class="title-heading">Caloni, 2008-09-12 <a href="2008-05.html#read_the_functional_manual">&lt;</a><a href="essays.html">essays</a><a href="2008-10.html#a_alca_dentro_do_fio_gerou_um_bloqueio_da_morte">&gt;</a><a href="2008-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_todo_programador_e_um_filosofo_em_potencial')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2008-09-12 <a href="2008-05.html#read_the_functional_manual">&lt;</a><a href="essays.html">essays</a><a href="2008-10.html#a_alca_dentro_do_fio_gerou_um_bloqueio_da_morte">&gt;</a> <a href="2007-06.html#a_inteligencia_do_if_parte_2">&lt;</a><a href="philosophy.html">philosophy</a><a href="2016-11.html#o_mundo_de_sofia">&gt;</a> <a href="2008-09.html#bug_no_retorno_do_pathisdirectory">&lt;</a><a href="blog.html">blog</a><a href="2008-09.html#windows_jobs_com_completion_port">&gt;</a><a href="2008-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_todo_programador_e_um_filosofo_em_potencial')"><sup>[copy]</sup></a></span>
 
 <p>Tivemos uma conversa muito frutífera hoje durante o almoço ao conhecer uma professora que sentava ao nosso lado, exímia conhecedora da mente humana e amante das artes nobres como a filosofia e a lógica. O importante dessa colóquio foi ter encontrado um motivo muito mais forte para gostar de programação do que qualquer outro que já me surgira na cabeça desde que mexo com essas coisas: O computador não deve dar ordens ao homem e este repeti-las como uma máquina. O homem, como ser pensante, deve dizer ao computador o que fazer, e este responder-lhe diligentemente.</p>
 
@@ -422,9 +208,7 @@ role="navigation" aria-label="main navigation">
 
 <p>Criar é pensar. Programadores pensam em coisas novas todos os dias e as executam. Quando encontram algo repetitivo, organizam o código para não terem que repetir mais a mesma baboseira e voltam a fazer coisas interessantes e originais. Se existe um processo enfadonho e chato, o programador inventa um jeito para o computador fazê-lo, e não ele. E a vida do programador sempre gira em torno desse ciclo: dispensa as coisas chatas mandando o computador fazer e se dedica a fazer coisas novas.</p>
 
-<p>A discussão não parou por aí, pois me levou a entender o vazio que eu sinto ao estudar coisas que não uso nunca. Porque aprender por aprender não vai me levar a lugar algum. Pode até ser perigoso ler coisas que não servem para nada. Me faz parecer inútil.</p>
-
-<p>E não livros longos, ricos em detalhes e que fazem perder o fio da meada ao terminá-lo.</p>
+<p>A discussão não parou por aí, pois me levou a entender o vazio que eu sinto ao estudar coisas que não uso nunca. Porque aprender por aprender não vai me levar a lugar algum. Pode até ser perigoso ler livros longos, ricos em detalhes e que fazem perder o fio da meada ao terminá-lo. Faz parecer inútil.</p>
 
 <p>Também me mostra que mais vale a pena aprender a pensar, ou pensar melhor, do que aprender uma nova tecnologia em um livro recém-lançado de 1500 páginas. Quando aprendemos a pensar resolvemos os problemas por nós mesmos, e não por uma formulazinha mágica tirada do saite favorito de bricabraques.</p>
 
@@ -438,7 +222,7 @@ role="navigation" aria-label="main navigation">
 <span id="reuna_seus_comandos_mais_usados_no_windbg_com_cmdtree" title="Reúna seus comandos mais usados no WinDbg com .cmdtree"/></span>
 <section id="section_reuna_seus_comandos_mais_usados_no_windbg_com_cmdtree">
 <p class="title"><a href="2008-09.html#reuna_seus_comandos_mais_usados_no_windbg_com_cmdtree">#</a> Reúna seus comandos mais usados no WinDbg com .cmdtree</p>
-<span class="title-heading">Caloni, 2008-09-19 <a href="2008-08.html#processleaker">&lt;</a><a href="computer.html">computer</a><a href="2008-09.html#windows_jobs_com_completion_port">&gt;</a><a href="2008-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_reuna_seus_comandos_mais_usados_no_windbg_com_cmdtree')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2008-09-19 <a href="2008-09.html#bug_no_retorno_do_pathisdirectory">&lt;</a><a href="computer.html">computer</a><a href="2008-09.html#windows_jobs_com_completion_port">&gt;</a><a href="2008-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_reuna_seus_comandos_mais_usados_no_windbg_com_cmdtree')"><sup>[copy]</sup></a></span>
 
 <p>Tudo começou com o <a href="https://docs.microsoft.com/en-us/archive/blogs/debuggingtoolbox/special-commandexecute-commands-from-a-customized-user-interface-with-cmdtree">artigo de Roberto Farah</a> sobre o comando "escondido" do WinDbg .cmdtree. Logo depois meus outros colegas do fã-clube do WinDbg <a href="http://voneinem-windbg.blogspot.com/2008/09/amazing-helper-cmdtree.html">Volker von Einem</a> e <a href="http://www.dumpanalysis.org/blog/index.php/2008/09/18/cmdtreetxt-for-cda-checklist/">Dmitry Vostokov</a> comentaram sobre a imensa utilidade desse comando. E não é pra menos. É de longe o melhor comando não-documentado do ano. Tão bom que sou obrigado a comentar em português sobre ele, apesar dos três artigos já citados.</p>
 
@@ -533,14 +317,15 @@ role="navigation" aria-label="main navigation">
 <span id="windows_jobs_com_completion_port" title="Windows Jobs com Completion Port"/></span>
 <section id="section_windows_jobs_com_completion_port">
 <p class="title"><a href="2008-09.html#windows_jobs_com_completion_port">#</a> Windows Jobs com Completion Port</p>
-<span class="title-heading">Caloni, 2008-09-23 <a href="2008-09.html#reuna_seus_comandos_mais_usados_no_windbg_com_cmdtree">&lt;</a><a href="computer.html">computer</a><a href="2008-10.html#como_usar_wtl_com_o_atl_do_ddk">&gt;</a><a href="2008-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_windows_jobs_com_completion_port')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2008-09-23 <a href="2008-09.html#reuna_seus_comandos_mais_usados_no_windbg_com_cmdtree">&lt;</a><a href="computer.html">computer</a><a href="2008-10.html#como_usar_wtl_com_o_atl_do_ddk">&gt;</a> <a href="2008-09.html#todo_programador_e_um_filosofo_em_potencial">&lt;</a><a href="blog.html">blog</a><a href="2008-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_windows_jobs_com_completion_port')"><sup>[copy]</sup></a></span>
 
 <p>Ou "Como esperar o término de todos os processos-filho criados a partir de um conjunto de processos".</p>
 
-<p>Dessa vez confesso que esperava um pouco mais de documentação do MSDN, ou pelo menos um sistema de referências cruzadas eficiente. Outro dia demorei cerca de duas horas para conseguir <a href="https://learn.microsoft.com/en-us/windows/win32/procthread/job-objects">criar um _**job**_</a>, anexar o processo desejado e, a pior parte, esperar que todos os processos (o principal e seus filhos e netos) terminassem.</p>
+<p>Dessa vez confesso que esperava um pouco mais de documentação do MSDN, ou pelo menos um sistema de referências cruzadas eficiente. Outro dia demorei cerca de duas horas para conseguir <a href="https://learn.microsoft.com/en-us/windows/win32/procthread/job-objects">criar um job</a>, anexar o processo desejado e, a pior parte, esperar que todos os processos (o principal e seus filhos e netos) terminassem.</p>
 
 <p>Além da pouca documentação, parece que não são muitas as pessoas que fazem isso e publicam na web, ou eu <a href="http://www.google.com.br/search?q=wait+all+processes+inside+job+object">não sei procurar direito</a>.</p>
 
+<blockquote>Update 2026-02-17: hoje você segue o link do Google acima e a IA já te explica como deve proceder. Entre no modo IA e ele te joga o código completo.</blockquote>
 <p>Mas, pra início de conversa, o que é um job mesmo?</p>
 
 <h4>Leve introdução sobre o conceito de jobs</h4>
@@ -555,7 +340,7 @@ role="navigation" aria-label="main navigation">
 
 <p>Para informações básicas de como criar um job e anexar processos recomendo o ótimo artigo de Jeffrey Richter (se você conseguir encontrar, meu último link está quebrado).</p>
 
-<p>No final desse artigo ele chega a citar o controle mais refinado dos processos através de uma <a href="https://learn.microsoft.com/en-us/windows/win32/fileio/i-o-completion-ports">**completion port**</a>, que permitirá receber eventos que ocorrem dentro de um job durante sua vida útil. Apesar de citar, não há código de exemplo que faça isso.</p>
+<p>No final desse artigo ele chega a citar o controle mais refinado dos processos através de uma <a href="https://learn.microsoft.com/en-us/windows/win32/fileio/i-o-completion-ports">completion port</a>, que permitirá receber eventos que ocorrem dentro de um job durante sua vida útil. Apesar de citar, não há código de exemplo que faça isso.</p>
 
 <p>Bom, agora há:</p>
 

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="antidebugging_using_the_debugport" title="Antidebugging using the DebugPort"/></span>
+<section id="section_antidebugging_using_the_debugport">
+<p class="title">Antidebugging using the DebugPort</p>
+<span class="title-heading">Caloni, 2008-08-01 computer projects english antidebug blog</span>
+
+<p>When a debugger starts a process to be debugged or, the article case, connects to a already created process, the communication between these processes is made through an internal resource inside Windows called LPC (Local Procedure Call). The system creates a "magic" communication port for debugging and the debugging events pass throw it.</p>
+
+<p>Among these events we can tell the most frequent:</p>
+
+<ul><li>Activated breakpoints</li>
+
+<li>Thrown exceptions</li>
+
+<li>Threads creation/termination</li>
+
+<li>DLLs load/unload</li>
+
+<li>Process exit</li></ul>
+
+<p>In the case of connecting into a existent process, the API DebugActiveProcess is called. Since this call, if successful, the caller program is free now to call the API DebugActiveProcess, looking for debugging events. The main loop for a debugger is, so, pretty simple:</p>
+
+<pre>
+void DebugLoop()
+{
+    bool exitLoop = false;
+    while( ! exitLoop )
+    {
+      DEBUG_EVENT debugEvt;
+      // Wait for some debug event.
+      WaitForDebugEvent(&amp;debugEvt, INFINITE);
+      // Let us see what it is about.
+      switch( debugEvt.dwDebugEventCode )
+      {
+        // This one...
+        // That one...
+        // Process is going out. We get out the loop and go away.
+        case EXIT_PROCESS_DEBUG_EVENT:
+        exitLoop = true;
+        break;
+      }
+      // We need to unfreeze the thread who sent the debug event.
+      // Otherwise, it stays frozen forever!
+      ContinueDebugEvent(debugEvt.dwProcessId, debugEvt.dwThreadId, DBG_EXCEPTION_NOT_HANDLED);
+    }
+} 
+</pre>
+<p>The interesting detail about this communication process is that a program can be debugged actively only for ONE debugger. In other words, while there's a process A debugging process B, no one besides A can debug and break B.Using this principle, we can imagine a debugging protection based on this exclusivity, creating a protector process that connects to the protected process and "debugs" it:</p>
+
+<pre>
+/** @brief Antidebug protection based on DebugPort aquisition.
+* @author Wanderley Caloni (wanderley.caloni@gmail.com)
+* @date 2007-08
+*/
+#include &lt;windows.h&gt;
+/* Every debugger needs a debugging loop. In this loop it catches
+debugging events sent by the operating system.
+*/
+DWORD DebugLoop()
+{
+    DWORD ret = ERROR_SUCCESS;
+    bool exitLoop = false;
+    while( ! exitLoop )
+    {
+      DEBUG_EVENT debugEvt;
+      WaitForDebugEvent(&amp;debugEvt, INFINITE);
+      switch( debugEvt.dwDebugEventCode )
+      {
+        // Process going out. We get out the loop and leave.
+        case EXIT_PROCESS_DEBUG_EVENT:
+        exitLoop = true;
+        break;
+      }
+      // Necessary, since the current thread is frozen.
+      ContinueDebugEvent(debugEvt.dwProcessId, debugEvt.dwThreadId, DBG_EXCEPTION_NOT_HANDLED);
+    }
+    return ret;
+}
+/* Attachs to the protected process againt debugging. Actually, we protect it
+againt debugging being its debugger.
+*/
+DWORD AntiAttach(DWORD pid)
+{
+    DWORD ret = ERROR_SUCCESS;
+    if( pid )
+    {
+      BOOL dbgActProc;
+      dbgActProc = DebugActiveProcess(pid);
+      if( dbgActProc )
+        DebugLoop();
+      else
+        ret = GetLastError();
+    }
+    else
+      ret = ERROR_INVALID_HANDLE;
+    return ret;
+}
+/* In the beginning, God said: 'int main!'
+*/
+int main(int argc, char* argv[])
+{
+    DWORD ret = ERROR_SUCCESS;
+    if( argc &gt; 1 )
+    {
+      DWORD pid = atoi(argv[1]);
+      ret = AntiAttach(pid);
+    }
+    return (int) ret;
+} 
+</pre>
+<p>The needed steps to test the code above are:</p>
+
+<p>  1. Compile the code</p>
+
+<p>  2. Run notepad (or another victim)</p>
+
+<p>  3. Get its PID (Process ID)</p>
+
+<p>  4. Run the protector process passing the notepad PID as the argument</p>
+
+<p>  5. Try to attach to the notepad using a debugger (e.g. Visual C++)</p>
+
+<p>After the attach process, the debug port is occupied, and the communication between the debugger and debuggee is made throug LPC. Bellow we can see a little illustration of how things work:</p>
+
+<img src="/blog/img/antidebugging_using_the_debugport_debug_port2.gif"/>
+
+<p>Basically the process stay receiving debugging events (through the LPC message queue) until the final event, the process exit. Notice that if someone try to terminate the protector process the debuggee process will be terminated, too.</p>
+
+<h4>Flawless? OK...</h4>
+
+<p>The strength in this protection is that it doesn't affect the code understanding and readability. In fact the code that protects is in another process. The weakness, I would say, it is your visibility. Everyone that will try to attack the solution will se two processes being created, what gives them something to think about...</p>
+
+<p>That's why thinking about the implementation is vital. Particularly the main point to be thought is the debugger/debuggee union. As much as better these two pieces were packed, harder to the attacker will be to separate them. An additional idea is to use the same technique in the opposite way, in other words, the debuggee process to attach into the debugger.</p>
+
+<p>This time I'm not going to say that there's a easy solution. Maybe because I haven't though enough about the problem. Ideas?</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="antidebugging_during_the_process_attach.html">[antidebugging_during_the_process_attach]</a>
+ <a href="antidebugging_using_exceptions_part_one.html">[antidebugging_using_exceptions_part_one]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>
