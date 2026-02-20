@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="a_solucao_mais_simples_e_usar_a_fonte_luke" title="A solução mais simples é usar a fonte, Luke!"/></span>
+<section id="section_a_solucao_mais_simples_e_usar_a_fonte_luke">
+<p class="title">A solução mais simples é usar a fonte, Luke!</p>
+<span class="title-heading">Caloni, 2008-04-29 computer blog</span>
+
+<p>Seria bom se as coisas simples da vida fossem simples, não é mesmo? Ontem, sexta passada e quinta passada, no meio de outras tarefas "urgentes", tentava desesperadamente conseguir instalar o <a href="http://bazaar-vcs.org/">Bazaar</a> na minha VM de desenvolvimento, um Fedora 8 todinho configurado.</p>
+
+<p>Para azar da minha pessoa, o guia simples e rápido de instalação do Bazaar não funcionava para minha distribuição Linux. Na verdade, funciona. Porém, é instalada uma versão tão antiga (0.91!) que o formato do banco de dados já se tornou incompatível.</p>
+
+<pre>
+   #yum info bzr
+   ...
+   Available Packages
+   Name     : bzr
+   Arch     : i386
+   Version  : 0.91
+   ...
+</pre>
+<p>O pior, no entanto, foi tentar encontrar uma solução para o problema. Fiz mil e uma pesquisas com palavras-chave que nem imaginava que seria capaz de formular. E nada. A princípio minha idéia era apenas atualizar a lista de pacotes do repositório gerenciado pelo yum, o gerenciador de pacotes oficial do Fedora. Entre minhas buscas, encontrei os seguintes itens:</p>
+
+<ul><li>Um FAQ do Fedora (que não conseguiu responder à minha pergunta).</li>
+
+<li>O sítio do projeto do yum, gerenciador de pacotes (cujo FAQ não conseguiu responder o mínimo).</li>
+
+<li>Uma lista enorme de sítios explicando como criar seu próprio repositório (sem comentários).</li></ul>
+
+<p>Enfim, a coisa não estava saindo do lugar. E o cronograma apertando até o dia final. Até que decidi usar o caminho mais rápido e pentelho: perguntar para quem entende do assunto. No caso meu amigo de trabalho Marcio Andrey Oliveira. A resposta foi simples e direta:</p>
+
+<blockquote>Por que você não instala direto dos fontes?</blockquote>
+<p>Uia! E não é que é mais simples, mesmo?</p>
+
+<pre>
+   #wget https://launchpad.net/bzr/1.3/1.3.1/+download/bzr-1.3.1.tar.gz
+   #tar -zxvf bzr-1.3.1.tar.gz /* ele teve que me explicar esse comando singelo */
+   #cd bzr-1.3.1
+   #cat INSTALL
+   Installation
+   ------------
+   When upgrading using setup.py, it is recommended that you first delete the
+   bzrlib directory from the install target.
+   To install bzr as a user, run
+     python setup.py install --home ~
+   To install system-wide, run (as root)
+     python setup.py install
+   #python setup.py install
+</pre>
+<p>E foi isso! É a segunda vez que tento fazer algo simples no Linux e me dou mal. Com certeza os dias futuros serão melhores. Mas me bate aquela sensação que as coisas poderiam já estar em um nível mais fácil de se mexer. Opinião pessoal.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="acessando_memoria_fisica_no_windbg.html">[acessando_memoria_fisica_no_windbg]</a>
+ <a href="seminario_ccpp_portabilidade_e_performance.html">[seminario_ccpp_portabilidade_e_performance]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

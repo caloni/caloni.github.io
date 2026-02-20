@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="o_caso_da_funcao_desaparecida" title="O caso da função desaparecida"/></span>
+<section id="section_o_caso_da_funcao_desaparecida">
+<p class="title">O caso da função desaparecida</p>
+<span class="title-heading">Caloni, 2008-07-16 computer blog</span>
+
+<p>Todos os projetos do Visual Studio 6 estavam compilando normalmente com a nova modificação do código-fonte, uma singela chamada a uma função da DLL iphlpapi.dll. No entanto, ainda restava a compilação para Windows 95, um legado que não era permitido esquecer devido ao parque antigo de máquinas e sistemas operacionais de nossos clientes.</p>
+
+<p>Ora, acontece que a função em questão não existe em Windows 95! O que fazer?</p>
+
+<p>Essa é uma situação comum e controlada, que chega a ser quase um padrão de projeto: funções novas demais. A saída? Não chamar a função quando o sistema não for novo o suficiente. Isso pode ser resolvido facilmente com uma chamada a GetVersion.</p>
+
+<p>Porém, um outro problema decorrente dessa situação é que a função chamada estaticamente cria um link de importação da DLL para o executável. Ou seja, uma dependência estática. Dependências estáticas necessitam ser resolvidas antes que o programa execute, e o carregador (loader) de programas do sistema é responsável por essa verificação.</p>
+
+<p>Para verificar a existência de todas as DLLs e funções necessárias para nosso programa podemos utilizar o mundialmente conhecido Dependency Walker:</p>
+
+<pre>
+   depends meu_executavel.exe
+</pre>
+<img src="/blog/img/o_caso_da_funcao_de_delay_load_desaparecida_depends_meu_executavel.png"/>
+
+<blockquote>Nota 2026-02-20. Hoje eu não recomendo usar esta ferramenta, que está praticamente descontinuada. Aprenda a usar o dumpbin, das ferramentas do Visual Studio.</blockquote>
+<p>Se a função ou DLL não existe no sistema, o seguinte erro costuma ocorrer (isso depende da versão do Sistema Operacional):</p>
+
+<img src="/blog/img/o_caso_da_funcao_de_delay_load_desaparecida_loader_erro.png"/>
+
+<p>Mas nem tudo está perdido!</p>
+
+<p>Existe uma LIB no Visual Studio que serve para substituir a dependência estática de uma DLL pela verificação dinâmica da existência de suas funções quando, e se, for executada a função no programa.</p>
+
+<p>Essa LIB contém algumas funções-chave que o Visual Studio utiliza ser for usado o seguinte parâmetro de compilação:</p>
+
+<pre>
+   /delayload:iphlpapi.dll
+</pre>
+<p>A função principal se chama "__delayLoadHelper@8", ou seja, é uma função com convenção de chamada WINAPI (stdcall) que recebe dois parâmetros.</p>
+
+<p>Isso costuma sempre funcionar, sendo que tive uma grande surpresa com os seguintes erros de compilação na versão do programa que deve ser executada em Windows 95:</p>
+
+<pre>
+   --------------------Configuration: Project - Win32 Win95 Release--------------------
+   Linking...
+   iphlpapi.lib(iphlpapi.dll) : error LNK2001: unresolved external symbol ___delayLoadHelper@8
+   release/meu_executavel.exe : fatal error LNK1120: 1 unresolved externals
+   Error executing link.exe.
+   meu_executavel.exe - 3 error(s), 0 warning(s)
+</pre>
+<p>Isso, é claro, depois de ter checado e rechecado a existência da LIB de Delay Load na lista de LIBs a serem lincadas:</p>
+
+<img src="/blog/img/o_caso_da_funcao_de_delay_load_desaparecida_delayimp.png"/>
+
+<p>Acontece que eu conheço algumas ferramentas que podem sempre me ajudar em situações de compilação e linque: Process Monitor e dumpbin. O Process Monitor pode ser usado para obter exatamente a localização da LIB que estamos tentando verificar:</p>
+
+<img src="/blog/img/o_caso_da_funcao_de_delay_load_desaparecida_delayimpprocmon.png"/>
+
+<p>Após localizar o local, podemos listar seus símbolos, mais precisamente a função "delayLoadHelper":</p>
+
+<pre>
+   C:\DDK\3790\lib\w2k\i386&gt;dumpbin /symbols delayimp.lib | grep delayLoadHelper
+   108 00000000 SECT3C notype ()    External     | ___delayLoadHelper2@8
+</pre>
+<p>A análise mostra que a função possui um "2" no final de seu nome, causando o erro de linque.</p>
+
+<p>Essa função, pelo visto, tem mudado de nome desde o Visual C++ 6, o que fez com que LIBs mais novas não funcionassem com essa versão do Visual Studio.</p>
+
+<p>Para sanar o problema, existem duas coisas que podem ser feitas:</p>
+
+<p>  1. Usar a delayimp.lib antiga. Isso não exige nenhuma mudança no código.</p>
+
+<p>  2. Criar uma função delayLoadHelper como wrapper. Isso exige a escrita de código. O código-fonte dessa função está disponível no diretório Include do Visual Studio, e pode ser adaptada para versões antigas.</p>
+
+<p>Nessa sessão de depuração você aprendeu como usar o Process Monitor para rastrear arquivos usados na compilação e como listar símbolos de LIBs que são usadas para lincar o programa.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="sobre_padroes_ou_o_conhecido_unresolved_external.html">[sobre_padroes_ou_o_conhecido_unresolved_external]</a>
+ <a href="primeiros_passos_no_vmware_workstation.html">[primeiros_passos_no_vmware_workstation]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

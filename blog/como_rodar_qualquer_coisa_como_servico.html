@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="como_rodar_qualquer_coisa_como_servico" title="Como rodar qualquer coisa como serviço"/></span>
+<section id="section_como_rodar_qualquer_coisa_como_servico">
+<p class="title">Como rodar qualquer coisa como serviço</p>
+<span class="title-heading">Caloni, 2008-03-20 computer blog</span>
+
+<p>Update 2026-02-20: há muitos anos troquei esta solução pelo <a href="https://nssm.cc/">NSSM</a>, que eu recomendo fortemente. Ele foi usado em produtos robustos e evita termos que manter código redundante para manter programas que não nasceram para ser serviços, mas preciso rodar independente da conta do usuário.</p>
+
+<p>A maior vantagem de se rodar um aplicativo como serviço, interativo ou não, é permitir que ele seja iniciado antes que seja feito um logon na máquina. Um exemplo que acontece comigo é a necessidade de depurar a <a href="2007-08.html#gina_x_credential_provider">GINA</a>. Para isso, preciso que o depurador remoto do Visual Studio seja iniciado antes do logon. A solução mais fácil e rápida é rodar o Msvcmon, a parte servidora da depuração, como um serviço. Hoje eu descobri um atalho bem interessante para isso.</p>
+
+<p>Um <a href="http://www.alex-ionescu.com/?p=59">artigo do Alex Ionescu</a> falava sobre esse aplicativo linha de comando usado para criar, iniciar e apagar serviços. Mesmo não sendo o foco do artigo, achei muito útil a informação, pois não conhecia esse utilitário. Logo começaram a borbulhar idéias na minha mente:</p>
+
+<blockquote>"E se eu usasse esse carinha para iniciar o notepad?"</blockquote>
+<img src="/blog/img/como_rodar_qualquer_coisa_como_servico_wordclip.jpg"/>
+
+<p>Bem, o Bloco de Notas é a vítima padrão de testes. Logo, a linha a seguir provaria que é possível rodá-lo na conta de sistema:</p>
+
+<pre>
+   sc create Notepad binpath= &quot;%systemroot%\NOTEPAD.EXE&quot; type= interact type= own
+</pre>
+<p>Porém, como todo serviço, é esperado que ele se comunique com o Gerenciador de Serviços do Windows. Como o Bloco de Notas mal imagina que agora ele é um motta-fucka service, expira o timeout de inicialização e o SCM (Service Control Manager) mata o processo.</p>
+
+<pre>
+   &gt;net start notepad
+   The service is not responding to the control function.
+   More help is available by typing NET HELPMSG 2186.
+</pre>
+<p>Como diria meu amigo <a href="http://codebehind.wordpress.com/">Thiago</a>, "não bom".</p>
+
+<p>Porém porém, o SCM não mata os processos filhos do processo-serviço. Bug? Feature? Gambi? Seja o que for, pode ser usado para iniciar o nosso querido msvcmon:</p>
+
+<pre>
+   set binpath=%systemroot%\system32\cmd.exe /c c:\Tools\msvcmon.exe -tcpip -anyuser -timeout -1
+   sc create Msvcmon binpath= &quot;%binpath%&quot; type= interact type= own
+</pre>
+<p>Agora, quando iniciarmos o serviço Msvcmon, o processo cmd.exe será criado, que por sua vez irá rodar o msvcmon.exe que queríamos, e ficará esperando inocentemente pela sua "funesta morte" pelo SCM.</p>
+
+<img src="/blog/img/como_rodar_qualquer_coisa_como_servico_msvcmon_service.png"/>
+
+</section>
+
+<span style="float: left;">
+ <a href="quarto_encontro_c++.html">[quarto_encontro_c++]</a>
+ <a href="o_misterio_das_pilhas_diferentes.html">[o_misterio_das_pilhas_diferentes]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

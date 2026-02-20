@@ -41,14 +41,13 @@ role="navigation" aria-label="main navigation">
 <li><small><a href="2008-04.html#reflexo">Reflexo</a></small></li>
 <li><small><a href="2008-04.html#try_catch_flutuante">Try-catch flutuante</a></small></li>
 <li><small><a href="2008-04.html#conversor_de_houaiss_para_babylon_parte_2">Conversor de Houaiss para Babylon - parte 2</a></small></li>
-<li><small><a href="2008-04.html#linux_e_o_dhcp">Linux e o DHCP</a></small></li>
 <li><small><a href="2008-04.html#aprendendo_assembly_com_o_depurador">Aprendendo assembly com o depurador</a></small></li>
 <li><small><a href="2008-04.html#guia_basico_de_controle_de_codigo_distribuido">Guia básico de controles de código distribuído</a></small></li>
 <li><small><a href="2008-04.html#crash_dump_analysis_o_livro">Crash Dump Analysis: o livro</a></small></li>
 <li><small><a href="2008-04.html#ode_ao_c++">Ode ao C++</a></small></li>
 <li><small><a href="2008-04.html#csi_crashed_server_investigation">CSI: Crashed Server Investigation?</a></small></li>
 <li><small><a href="2008-04.html#seminario_ccpp_portabilidade_e_performance">Seminário CCPP Portabilidade e Performance</a></small></li>
-<li><small><a href="2008-04.html#bazaar_e_fedora_8_a_saga">Bazaar e Fedora 8: a saga</a></small></li></ul>
+<li><small><a href="2008-04.html#a_solucao_mais_simples_e_usar_a_fonte_luke">A solução mais simples é usar a fonte, Luke!</a></small></li></ul>
 
 <span id="reflexo" title="Reflexo"/></span>
 <section id="section_reflexo">
@@ -165,7 +164,7 @@ role="navigation" aria-label="main navigation">
 <span id="conversor_de_houaiss_para_babylon_parte_2" title="Conversor de Houaiss para Babylon - parte 2"/></span>
 <section id="section_conversor_de_houaiss_para_babylon_parte_2">
 <p class="title"><a href="2008-04.html#conversor_de_houaiss_para_babylon_parte_2">#</a> Conversor de Houaiss para Babylon - parte 2</p>
-<span class="title-heading">Caloni, 2008-04-08 <a href="2008-04.html#try_catch_flutuante">&lt;</a><a href="computer.html">computer</a><a href="2008-04.html#linux_e_o_dhcp">&gt;</a> <a href="2008-03.html#influence_board">&lt;</a><a href="projects.html">projects</a><a href="2008-05.html#mousetool_clique_automatico_do_seu_rato">&gt;</a> <a href="2008-04.html#try_catch_flutuante">&lt;</a><a href="blog.html">blog</a><a href="2008-04.html#guia_basico_de_controle_de_codigo_distribuido">&gt;</a><a href="2008-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_conversor_de_houaiss_para_babylon_parte_2')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2008-04-08 <a href="2008-04.html#try_catch_flutuante">&lt;</a><a href="computer.html">computer</a><a href="2008-04.html#aprendendo_assembly_com_o_depurador">&gt;</a> <a href="2008-03.html#influence_board">&lt;</a><a href="projects.html">projects</a><a href="2008-05.html#mousetool_clique_automatico_do_seu_rato">&gt;</a> <a href="2008-04.html#try_catch_flutuante">&lt;</a><a href="blog.html">blog</a><a href="2008-04.html#aprendendo_assembly_com_o_depurador">&gt;</a><a href="2008-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_conversor_de_houaiss_para_babylon_parte_2')"><sup>[copy]</sup></a></span>
 
 <p>Após algumas semanas de suspense, chegamos finalmente à nossa segunda e última parte da saga do dicionário Houaiss.</p>
 
@@ -277,52 +276,10 @@ role="navigation" aria-label="main navigation">
 </section><hr/>
 
 
-<span id="linux_e_o_dhcp" title="Linux e o DHCP"/></span>
-<section id="section_linux_e_o_dhcp">
-<p class="title"><a href="2008-04.html#linux_e_o_dhcp">#</a> Linux e o DHCP</p>
-<span class="title-heading">Caloni, 2008-04-09 <a href="2008-04.html#conversor_de_houaiss_para_babylon_parte_2">&lt;</a><a href="computer.html">computer</a><a href="2008-04.html#aprendendo_assembly_com_o_depurador">&gt;</a><a href="2008-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_linux_e_o_dhcp')"><sup>[copy]</sup></a></span>
-
-<p>Quando procuramos no google por "linux dhcp", o que vem em resposta são diversas dicas, tutoriais, documentos oficiais e palpites sobre como configurar um servidor Linux.</p>
-
-<p>Muito bem. E a outra ponta da história?</p>
-
-<p>Estes testes foram feitos em um Fedora 8, não me pergunte mais detalhes.</p>
-
-<p>O primeiro linque útil encontrado foi a documentação da Red Hat. Além disso seguem alguns macetes que eu descobri no decorrer do percurso. A primeira coisa a ser configurada é o arquivo /etc/sysconfig/network. Nele devemos, em uma configuração simplista, colocar uma única linha:</p>
-
-<pre>
-   NETWORKING=yes
-</pre>
-<p>Tive alguns problemas com a entrada NETWORKING_IPV6, ou algo do gênero. A comunicação com o servidor DHCP da rede simplesmente não funcionava com essa linha, deixando o computador sem IP durante o boot. Má configuração do servidor? Pode até ser. Porém, não quis entrar nesses meandros.</p>
-
-<p>Por isso, se houver a linha sobre IPV6 e você tiver problemas, comente-a temporariamente.</p>
-
-<p>O passo seguinte é configurar a interface de rede, que é no fim das contas a representação da sua placa. Para isso temos alguns arquivos em /etc/sysconfig/network-scripts no formato ifcfg-nome-da-interface. Se você digitar ifconfig na linha de comando terá os nomes de interface disponíveis. No meu caso, eth0.</p>
-
-<pre>
-   vi /etc/sysconfig/network-scripts/ifcfg-eth0
-   DEVICE=eth0
-   BOOTPROTO=dhcp
-   ONBOOT=yes
-   :wq
-</pre>
-<p>Note que o valor BOOTPROTO é realmente BOOTPROTO, com um O no final. Tive alguns problemas de soletrar também nesse caso, o que me gerou mais alguns reboots mal-sucedidos.</p>
-
-<p>Bem, o que isso faz? Basicamente, manda o Linux utilizar o protocolo DHCP, procurando na rede algum servidor que lhe dê algum IP válido. Só isso. O resto ele faz dinamicamente.</p>
-
-<p>Inclusive alterar automaticamente o arquivo /etc/resolv.conf. Nele estão definidas algumas coisas como o domínio de nomes que estamos e os IPs de onde buscar a resolução de nomes.</p>
-
-<p>Feito isso, como se costuma dizer, voilà! Temos um cliente DHCP funcionando contente e feliz. Eu reiniciei a máquina para tudo dar certo, mas provavelmente devem existir maneiras mais saudáveis de reiniciar a rede (talvez um ifdown seguido de ifup resolvesse).  E agora eu posso finalmente ter acesso aos pacotes de instalação que precisava.</p>
-
-<p>Notas de um Linux padawan =)</p>
-
-</section><hr/>
-
-
 <span id="aprendendo_assembly_com_o_depurador" title="Aprendendo assembly com o depurador"/></span>
 <section id="section_aprendendo_assembly_com_o_depurador">
 <p class="title"><a href="2008-04.html#aprendendo_assembly_com_o_depurador">#</a> Aprendendo assembly com o depurador</p>
-<span class="title-heading">Caloni, 2008-04-11 <a href="2008-04.html#linux_e_o_dhcp">&lt;</a><a href="computer.html">computer</a><a href="2008-04.html#guia_basico_de_controle_de_codigo_distribuido">&gt;</a><a href="2008-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_aprendendo_assembly_com_o_depurador')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2008-04-11 <a href="2008-04.html#conversor_de_houaiss_para_babylon_parte_2">&lt;</a><a href="computer.html">computer</a><a href="2008-04.html#guia_basico_de_controle_de_codigo_distribuido">&gt;</a> <a href="2008-04.html#conversor_de_houaiss_para_babylon_parte_2">&lt;</a><a href="blog.html">blog</a><a href="2008-04.html#guia_basico_de_controle_de_codigo_distribuido">&gt;</a><a href="2008-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_aprendendo_assembly_com_o_depurador')"><sup>[copy]</sup></a></span>
 
 <p>Além de servir para corrigir alguns <a href="2008-01.html#analisando_dumps_com_windbg_e_ida">bugs escabrosos</a> o nosso bom e fiel amigo depurador também possui uma utilidade inusitada: ensinar assembly! A pessoa interessada em aprender alguns conceitos básicos da arquitetura do 8086 pode se exercitar na frente de um depurador 16 ou 32 bits sem ter medo de ser feliz.</p>
 
@@ -436,19 +393,13 @@ role="navigation" aria-label="main navigation">
 
 <p>Depurar é um processo que exige dedicação (experiência) tanto ou mais do que o próprio desenvolvimento. Por isso, fazer um esforço para descobrir algum problema em algum software pode ser vantajoso no futuro, pois você terá mais capacidade de entender o que está acontecendo à sua volta.</p>
 
-<p>Básico a intermediário: <a href="2007-10.html#guia_basico_para_programadores_de_primeiro_breakpoint">Guia básico para programadores de primeiro breakpoint</a>, <a href="2007-10.html#alterando_mensagem_de_erro_no_notepad">Alterando mensagem de erro no Notepad</a>, <a href="2008-01.html#encontrando_as_respostas_do_flash_pops">Encontrando as respostas do Flash Pops</a>.</p>
-
-<p>Intermediário a avançado: <a href="2007-08.html#hook_de_api_no_windbg">Hook de API no WinDbg</a>, <a href="2007-09.html#hook_de_com_no_windbg">Hook de COM no WinDbg</a>, <a href="2007-11.html#detectando_hooks_globais_no_windbg">Detectando hooks globais no WinDbg</a>, <a href="2008-01.html#analisando_dumps_com_windbg_e_ida">Analisando dumps com WinDbg e IDA</a>.</p>
-
-<p>Blogues que eu acho superinteressantes sobre debugging (do mais essencial para o mais avançado): <a href="http://blogs.msdn.com/ntdebugging">Advanced Windows Debugging</a>, <a href="http://www.dumpanalysis.org/blog/">Crash Dump Analysis</a>.</p>
-
 </section><hr/>
 
 
 <span id="guia_basico_de_controle_de_codigo_distribuido" title="Guia básico de controles de código distribuído"/></span>
 <section id="section_guia_basico_de_controle_de_codigo_distribuido">
 <p class="title"><a href="2008-04.html#guia_basico_de_controle_de_codigo_distribuido">#</a> Guia básico de controles de código distribuído</p>
-<span class="title-heading">Caloni, 2008-04-15 <a href="2008-04.html#aprendendo_assembly_com_o_depurador">&lt;</a><a href="computer.html">computer</a><a href="2008-04.html#ode_ao_c++">&gt;</a> <a href="2008-04.html#conversor_de_houaiss_para_babylon_parte_2">&lt;</a><a href="blog.html">blog</a><a href="2008-04.html#ode_ao_c++">&gt;</a><a href="2008-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_guia_basico_de_controle_de_codigo_distribuido')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2008-04-15 <a href="2008-04.html#aprendendo_assembly_com_o_depurador">&lt;</a><a href="computer.html">computer</a><a href="2008-04.html#ode_ao_c++">&gt;</a> <a href="2008-04.html#aprendendo_assembly_com_o_depurador">&lt;</a><a href="blog.html">blog</a><a href="2008-04.html#ode_ao_c++">&gt;</a><a href="2008-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_guia_basico_de_controle_de_codigo_distribuido')"><sup>[copy]</sup></a></span>
 
 <p>Houve um bom motivo para que, semana passada, eu estivesse caçando inúmeras versões de um projeto desenvolvido fora da empresa: falta de controle de código. Esse tipo de lapso pode consumir de horas a dias de tempo perdido, dependendo de em quantas cópias de máquinas virtuais ficou espalhado o código.</p>
 
@@ -529,7 +480,7 @@ role="navigation" aria-label="main navigation">
 <span id="crash_dump_analysis_o_livro" title="Crash Dump Analysis: o livro"/></span>
 <section id="section_crash_dump_analysis_o_livro">
 <p class="title"><a href="2008-04.html#crash_dump_analysis_o_livro">#</a> Crash Dump Analysis: o livro</p>
-<span class="title-heading">Caloni, 2008-04-17 <a href="2007-10.html#the_c_programming_language">&lt;</a><a href="books.html">books</a><a href="2011-10.html#coders_at_work_reflections_on_the_craft_of_programming">&gt;</a><a href="2008-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_crash_dump_analysis_o_livro')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2008-04-17 <a href="2007-10.html#the_c_programming_language">&lt;</a><a href="books.html">books</a><a href="2011-10.html#coders_at_work_reflections_on_the_craft_of_programming">&gt;</a> <a href="2008-03.html#influence_board">&lt;</a><a href="archive.html">archive</a><a href="2008-05.html#como_tratar_um_merge_no_bazaar">&gt;</a><a href="2008-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_crash_dump_analysis_o_livro')"><sup>[copy]</sup></a></span>
 
 <p>Para quem acabou de terminar o Advanced Windows Debugging (como eu) e não consegue ler no computador os complicados artigos de Dmitry Vostokov (como eu), "seus problemas acabaram-se": acabou de ser lançado o Memory Dump Analysis Volume 1 em hardware! Em modelos portáveis (paperback) e desktop (hardcover).</p>
 
@@ -571,7 +522,7 @@ role="navigation" aria-label="main navigation">
 <span id="ode_ao_c++" title="Ode ao C++"/></span>
 <section id="section_ode_ao_c++">
 <p class="title"><a href="2008-04.html#ode_ao_c++">#</a> Ode ao C++</p>
-<span class="title-heading">Caloni, 2008-04-21 <a href="2008-04.html#guia_basico_de_controle_de_codigo_distribuido">&lt;</a><a href="computer.html">computer</a><a href="2008-04.html#bazaar_e_fedora_8_a_saga">&gt;</a> <a href="2008-04.html#try_catch_flutuante">&lt;</a><a href="ccpp.html">ccpp</a><a href="2008-05.html#aquele_do_while_engracado">&gt;</a> <a href="2008-04.html#guia_basico_de_controle_de_codigo_distribuido">&lt;</a><a href="blog.html">blog</a><a href="2008-04.html#csi_crashed_server_investigation">&gt;</a><a href="2008-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_ode_ao_c++')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2008-04-21 <a href="2008-04.html#guia_basico_de_controle_de_codigo_distribuido">&lt;</a><a href="computer.html">computer</a><a href="2008-04.html#a_solucao_mais_simples_e_usar_a_fonte_luke">&gt;</a> <a href="2008-04.html#try_catch_flutuante">&lt;</a><a href="ccpp.html">ccpp</a><a href="2008-05.html#aquele_do_while_engracado">&gt;</a> <a href="2008-04.html#guia_basico_de_controle_de_codigo_distribuido">&lt;</a><a href="blog.html">blog</a><a href="2008-04.html#csi_crashed_server_investigation">&gt;</a><a href="2008-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_ode_ao_c++')"><sup>[copy]</sup></a></span>
 
 <p>Era uma vez em uma troca de emails:</p>
 
@@ -675,7 +626,7 @@ role="navigation" aria-label="main navigation">
 <span id="csi_crashed_server_investigation" title="CSI: Crashed Server Investigation?"/></span>
 <section id="section_csi_crashed_server_investigation">
 <p class="title"><a href="2008-04.html#csi_crashed_server_investigation">#</a> CSI: Crashed Server Investigation?</p>
-<span class="title-heading">Caloni, 2008-04-23 <a href="2007-08.html#barata_eletrica_e_o_hacker_de_antigamente">&lt;</a><a href="essays.html">essays</a><a href="2008-05.html#read_the_functional_manual">&gt;</a> <a href="2008-04.html#ode_ao_c++">&lt;</a><a href="blog.html">blog</a><a href="2008-05.html#acessando_memoria_fisica_no_windbg">&gt;</a><a href="2008-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_csi_crashed_server_investigation')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2008-04-23 <a href="2007-08.html#barata_eletrica_e_o_hacker_de_antigamente">&lt;</a><a href="essays.html">essays</a><a href="2008-05.html#read_the_functional_manual">&gt;</a> <a href="2008-04.html#ode_ao_c++">&lt;</a><a href="blog.html">blog</a><a href="2008-04.html#seminario_ccpp_portabilidade_e_performance">&gt;</a><a href="2008-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_csi_crashed_server_investigation')"><sup>[copy]</sup></a></span>
 
 <p>O artigo de Jeff Dailey, The Digital DNA of Bugs Dump Analysis as Forensic Science (2026-02-12: não encontrei mais na web), em que ele compara a nossa atividade de "cientistas do debugging" com a atividade dos profissionais da análise forense, é exatamente o que eu penso sobre nossa profissão. Freqüentemente assisto à série CSI: Las Vegas e mais freqüentemente ainda uso os métodos científicos empregados pela equipe de Gil Grissom para resolver os problemas mais escabrosos que podem ocorrer em um sistema.</p>
 
@@ -710,7 +661,7 @@ role="navigation" aria-label="main navigation">
 <span id="seminario_ccpp_portabilidade_e_performance" title="Seminário CCPP Portabilidade e Performance"/></span>
 <section id="section_seminario_ccpp_portabilidade_e_performance">
 <p class="title"><a href="2008-04.html#seminario_ccpp_portabilidade_e_performance">#</a> Seminário CCPP Portabilidade e Performance</p>
-<span class="title-heading">Caloni, 2008-04-25 <a href="2008-03.html#epa_ccpp_4_nossa_comunidade_ganhando_forma">&lt;</a><a href="ccppbr.html">ccppbr</a><a href="2008-06.html#resultado_do_seminario_ccpp">&gt;</a><a href="2008-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_seminario_ccpp_portabilidade_e_performance')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2008-04-25 <a href="2008-03.html#epa_ccpp_4_nossa_comunidade_ganhando_forma">&lt;</a><a href="ccppbr.html">ccppbr</a><a href="2008-06.html#resultado_do_seminario_ccpp">&gt;</a> <a href="2008-04.html#csi_crashed_server_investigation">&lt;</a><a href="blog.html">blog</a><a href="2008-04.html#a_solucao_mais_simples_e_usar_a_fonte_luke">&gt;</a><a href="2008-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_seminario_ccpp_portabilidade_e_performance')"><sup>[copy]</sup></a></span>
 
 <p>Reserve sua cadeira. Está marcado para o último dia do mês de maio o primeiro seminário de nosso grupo nacional de programadores e aficionados por C e C++. É bom ou não é?</p>
 
@@ -749,14 +700,12 @@ role="navigation" aria-label="main navigation">
 </section><hr/>
 
 
-<span id="bazaar_e_fedora_8_a_saga" title="Bazaar e Fedora 8: a saga"/></span>
-<section id="section_bazaar_e_fedora_8_a_saga">
-<p class="title"><a href="2008-04.html#bazaar_e_fedora_8_a_saga">#</a> Bazaar e Fedora 8: a saga</p>
-<span class="title-heading">Caloni, 2008-04-29 <a href="2008-04.html#ode_ao_c++">&lt;</a><a href="computer.html">computer</a><a href="2008-05.html#acessando_memoria_fisica_no_windbg">&gt;</a><a href="2008-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_bazaar_e_fedora_8_a_saga')"><sup>[copy]</sup></a></span>
+<span id="a_solucao_mais_simples_e_usar_a_fonte_luke" title="A solução mais simples é usar a fonte, Luke!"/></span>
+<section id="section_a_solucao_mais_simples_e_usar_a_fonte_luke">
+<p class="title"><a href="2008-04.html#a_solucao_mais_simples_e_usar_a_fonte_luke">#</a> A solução mais simples é usar a fonte, Luke!</p>
+<span class="title-heading">Caloni, 2008-04-29 <a href="2008-04.html#ode_ao_c++">&lt;</a><a href="computer.html">computer</a><a href="2008-05.html#acessando_memoria_fisica_no_windbg">&gt;</a> <a href="2008-04.html#seminario_ccpp_portabilidade_e_performance">&lt;</a><a href="blog.html">blog</a><a href="2008-05.html#acessando_memoria_fisica_no_windbg">&gt;</a><a href="2008-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_a_solucao_mais_simples_e_usar_a_fonte_luke')"><sup>[copy]</sup></a></span>
 
-<p>Seria bom se as coisas simples da vida fossem simples, não é mesmo?</p>
-
-<p>Ontem, sexta passada e quinta passada, no meio de outras tarefas "urgentes", tentava desesperadamente conseguir instalar o <a href="http://bazaar-vcs.org/">Bazaar</a> na minha VM de desenvolvimento, um Fedora 8 todinho configurado.</p>
+<p>Seria bom se as coisas simples da vida fossem simples, não é mesmo? Ontem, sexta passada e quinta passada, no meio de outras tarefas "urgentes", tentava desesperadamente conseguir instalar o <a href="http://bazaar-vcs.org/">Bazaar</a> na minha VM de desenvolvimento, um Fedora 8 todinho configurado.</p>
 
 <p>Para azar da minha pessoa, o guia simples e rápido de instalação do Bazaar não funcionava para minha distribuição Linux. Na verdade, funciona. Porém, é instalada uma versão tão antiga (0.91!) que o formato do banco de dados já se tornou incompatível.</p>
 

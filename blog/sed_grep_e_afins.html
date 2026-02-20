@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="sed_grep_e_afins" title="Sed, Grep e afins"/></span>
+<section id="section_sed_grep_e_afins">
+<p class="title">Sed, Grep e afins</p>
+<span class="title-heading">Caloni, 2008-03-10 computer blog</span>
+
+<p>Esse artigo é resultado de eu ter me matado para conseguir encontrar a forma correta de usar o aplicativo sed para fazer uma filtragem simples nos resultados de uma listagem de arquivos.</p>
+
+<p>Primeiramente, eu gostaria de expressar minha total surpresa ao não conseguir encontrar um guia simples e confiável de uso dessas ferramentas na web. Existem três teorias: ou eu não sei usar as palavras mágicas certas no Google, ou a indexação das páginas realmente importantes sobre o assunto não funcionam com o Google, ou de fato não existe documentação fácil sobre o tema.</p>
+
+<p>Como esta é uma exceção em anos de "googadas", eu fico com a terceira opção.</p>
+
+<p>Existem algumas ferramentas que já salvaram minha vida uma dúzia de vezes e devo admitir que são tão poderosas e flexíveis quanto difíceis de usar:</p>
+
+<ul><li>Grep. Use esta se quiser fazer uma busca, qualquer busca, em um arquivo, um conjunto de arquivos ou uma enxurrada de caracteres do prompt de comando.</li>
+
+<li>Sed. Use esta se quiser processar a entrada de um arquivo, um conjunto de arquivos ou uma enxurrada de caracteres do prompt de comando.</li>
+
+<li>Sort. Use esta se quiser ordenar qualquer coisa da entrada padrão (inclusive arquivos, conjunto de arquivos...).</li></ul>
+
+<p>Essas ferramentas são nativas do ambiente Linux, mas podem ser instaladas no Windows através do Cygwin, do Mingw ou nativamente através das ferramentas GnuWin32.</p>
+
+<blockquote>Update 2026-02-20: desde muitos anos tenho usado de adicionar no path do sistema algumas pastas da instalação do Git. Lá existem todas essas ferramentas e muito mais.</blockquote>
+<p>O que eu queria era processar a saída de um programa de forma que eu tivesse a lista de todas as extensões dos arquivos. Por exemplo, para a seguinte entrada:</p>
+
+<pre>
+   c:\path\arquivo1.cpp
+   c:\path\arquivo2.h
+   c:\arquivo3.hpp
+   c:\path\path2\arquivo4.cpp
+</pre>
+<p>Eu gostaria de uma saída no seguinte formato:</p>
+
+<pre>
+   .cpp
+   .h
+   .hpp
+</pre>
+<p>Basicamente é isso.</p>
+
+<p>Para filtrar o path do arquivo, e ao mesmo tempo retirar seu nome, podemos usar o seguinte comando (fora outras trilhões de variantes):</p>
+
+<pre>
+   programa | sed -e &quot;s/^.*\\//&quot; -e &quot;s/.*\.\(.*\)/\1/&quot;
+</pre>
+<p>Após esse processamento, a saída é um monte de extensões vindas de um monte de arquivos:</p>
+
+<pre>
+   cpp
+   h
+   cpp
+   h
+   c
+   h
+   cpp
+   h
+   mak
+   vcproj
+   h
+   cpp
+   h
+   cpp
+   h
+   cpp
+   h
+   cpp
+   h
+   c
+   h
+   txt
+   c
+   cpp
+   h
+   mak
+   vcproj
+   cpp
+   h
+   ...
+</pre>
+<p>Como podemos ver e é óbvio de imaginar, muitas extensões irão se repetir. Para eliminar as repetições e ordenar a saída da saída corretamente, usamos o comando sort:</p>
+
+<pre>
+   programa | sed -e &quot;s/^.*\\//&quot; -e &quot;s/.*\.\(.*\)/\1/&quot; | sort -u
+</pre>
+<p>Os caracteres .*[]^$\ dão problemas se usados sem escape no sed, pois fazem parte dos comandos para procurar expressões regulares. Use-os com o caractere de escape `\`.</p>
+
+<blockquote>Obs 2026-02-20: O comando sort do Windows pode entrar em conflito com o sort da GNU. Nesse caso é preciso especificar o path completo do sort correto ou colocar o path das ferramentas GNU com prioridade maior que as do system32, o que eu não recomendo.</blockquote>
+<p>Para concatenar comandos no sed, use sempre -e "comando". A ordem de execução dos comandos é a ordem em que eles são inseridos na linha de comando, ou seja, podemos confiar que no segundo comando o primeiro já terá sido executado e assim por diante.</p>
+
+<p>Para fazer o escape das barras do caminho de um arquivo temos que usar o conjunto `\/` (obs.: caminhos em formato Unix). Para evitar esse uso enfadonho podemos substituir o caractere de divisão do comando s colocando-o na frente:</p>
+
+<pre>
+   s/path\/muito\/muito\/muito\/longo.cpp/outropath\/muito\/muito\/longo.cpp/s#/path/muito/muito/muito/longo.cpp#/outropath/muito/muito/longo.cpp#
+</pre>
+<p>Para agrupar expressõe, use sempre `\(` e `\)`. É o contrário do uso dos caracteres especiais. Coisas de Unix.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="o_misterio_das_pilhas_diferentes.html">[o_misterio_das_pilhas_diferentes]</a>
+ <a href="estranho.html">[estranho]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

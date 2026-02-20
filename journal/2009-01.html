@@ -60,15 +60,15 @@ role="navigation" aria-label="main navigation">
 <p class="title"><a href="2009-01.html#basico_do_basico_assembly">#</a> Básico do básico: assembly</p>
 <span class="title-heading">Caloni, 2009-01-26 <a href="2008-12.html#basico_do_basico_binario">&lt;</a><a href="computer.html">computer</a><a href="2009-01.html#as_funcoespolegar">&gt;</a><a href="2009-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_basico_do_basico_assembly')"><sup>[copy]</sup></a></span>
 
-<p>É lógico que não poderia faltar no cinto de utilidades de todo bom programador C conhecimentos **básicos** da linguagem assembly, sua mãe espiritual. São tantos conceitos em comum que, uma vez aprendido seu funcionamento, fica difícil não pensar no código-assembly gerado pelo compilador C. E é nesse ponto que as coisas começam a ficar mais claras.</p>
+<p>É lógico que não poderia faltar no cinto de utilidades de todo bom programador C conhecimentos básicos da linguagem assembly, sua mãe espiritual. São tantos conceitos em comum que, uma vez aprendido seu funcionamento, fica difícil não pensar no código-assembly gerado pelo compilador C. E é nesse ponto que as coisas começam a ficar mais claras.</p>
 
-<p>Antes de tudo, é importantíssimo lembrar que o foco aqui é apenas a arquitetura **8086**, um dos marcos na invenção de computadores de massa, mas que existem trocentros outros modelos de processadores e computadores funcionando mundo afora. Não deixe sua mente fechar para os outros tipos de modelos.</p>
+<p>Antes de tudo, é importantíssimo lembrar que o foco aqui é apenas a arquitetura 8086, um dos marcos na invenção de computadores de massa, mas que existem trocentros outros modelos de processadores e computadores funcionando mundo afora. Não deixe sua mente fechar para os outros tipos de modelos.</p>
 
-<p>A CPU trabalha em conjunto com a memória RAM. Só que o acesso à essa memória, apesar de rápida, não é comparável à velocidade em que as coisas ocorrem dentro da própria CPU. Esse é apenas um dos motivos para a existência de um conjunto bem menor de memória que vive nas entranhas do processador, bem ao lado dele. São os chamados **registradores**.</p>
+<p>A CPU trabalha em conjunto com a memória RAM. Só que o acesso à essa memória, apesar de rápida, não é comparável à velocidade em que as coisas ocorrem dentro da própria CPU. Esse é apenas um dos motivos para a existência de um conjunto bem menor de memória que vive nas entranhas do processador, bem ao lado dele. São os chamados registradores.</p>
 
 <img src="/journal/img/basico_do_basico_assembly_kcKufIn.gif"/>
 
-<p>Os registradores são memória do tipo ultra-rápida que funciona **no mesmo ritmo do processador**. A maioria das instruções executadas pela CPU faz referência a pelo menos um registrador. E por um motivo muito simples: é o modelo de entrada-e-saída funcionando!</p>
+<p>Os registradores são memória do tipo ultra-rápida que funciona no mesmo ritmo do processador. A maioria das instruções executadas pela CPU faz referência a pelo menos um registrador. E por um motivo muito simples: é o modelo de entrada-e-saída funcionando!</p>
 
 <p>No modelo de entrada-e-saída, ultrassimplificado por mim nesse artigo, o processador executa microinstruções muito básicas, que juntas fazem alguma coisa de útil, por exemplo, somar dois números:</p>
 
@@ -86,7 +86,7 @@ role="navigation" aria-label="main navigation">
 
 <img src="/journal/img/basico_do_basico_assembly_N90ooMD.gif"/>
 
-<p>É lógico que o sistema não se baseia apenas em movimentações simples de memória. Existem algumas abstrações que estão incrustadas no funcionamento da arquitetura. Uma das mais importantes é o conceito de **pilha**, vital tanto em arquitetura, quanto assembly, quanto linguagem C e muitas outras linguagens, também.</p>
+<p>É lógico que o sistema não se baseia apenas em movimentações simples de memória. Existem algumas abstrações que estão incrustadas no funcionamento da arquitetura. Uma das mais importantes é o conceito de pilha, vital tanto em arquitetura, quanto assembly, quanto linguagem C e muitas outras linguagens, também.</p>
 
 <p>Pilha é uma forma de armazenar memória em blocos empilhados um-a-um. Esses blocos são empilhados na ordem a, b, c e desempilhados na ordem c, b, a. Ou seja, quem foi empilhado por último será o primeiro a ser desempilhado. A analogia com uma pilha de pratos é óbvia e simples de imaginar.</p>
 
@@ -101,9 +101,9 @@ role="navigation" aria-label="main navigation">
 <blockquote>Um passado distante. Antigamente eram muito usados os chamados registradores de segmento. Eles representavam o endereçamento da arquitetura de 16 bits do 8086. Cada endereço de memória estava localizado em um segmento, que era uma abstração para multiplicar a memória e assim alcançar a quantidade de RAM que estava disponível no sistema. Com a chegada do 32 bits, isso não é mais usado diretamente pelos programadores, que não têm que se preocupar mais tanto com esses detalhes internos da memória.</blockquote>
 <p>Resumidamente, temos no PC os seguintes tipos de registradores e seu uso geral na programação C:</p>
 
-<p>Registradores de uso geral. **EAX, EBX, ECX, EDX**.</p>
+<p>Registradores de uso geral. EAX, EBX, ECX, EDX.</p>
 
-<p>Registradores de código e dados. **ESP, EBP, EIP**.</p>
+<p>Registradores de código e dados. ESP, EBP, EIP.</p>
 
 <p>Você os verá em 90% das ocasiões em que desassemblar seu código C, pois a rotina do código não muda muito: soma, divide, multiplica, muda endereço do código (saltos), compara valores (flags).</p>
 
@@ -111,7 +111,7 @@ role="navigation" aria-label="main navigation">
 
 <p>Ah, sim, as flags! Elas são importantíssimas para o funcionamento sadio de nossos programas. Sem as flags, não teríamos coisas maravilhosas e fundamentais na programação moderna, tais como o salto condicional.</p>
 
-<p>As flags são bits que **mudam de acordo com algumas instruções**, principalmente as de **comparação** (vide cmp). Após a execução de comparação, o estado de determinadas flags junto da próxima instrução (que deverá ser um salto condicional) irá dizer para onde o programa irá pular sua execução. É assim que temos o if:</p>
+<p>As flags são bits que mudam de acordo com algumas instruções, principalmente as de comparação (vide cmp). Após a execução de comparação, o estado de determinadas flags junto da próxima instrução (que deverá ser um salto condicional) irá dizer para onde o programa irá pular sua execução. É assim que temos o if:</p>
 
 <p>if( x == 10 )XEhIgualA10();elseXEhDiferenteDe10();</p>
 

@@ -167,7 +167,7 @@ role="navigation" aria-label="main navigation">
    t2 10
    t1 10
 </pre>
-<p>Explicando mais uma vez com mais detalhes: quando uma thread guarda o valor do contador na variável local e volta para o final da fila, ela deixa de armazenar o contador atualizado para apenas **depois** que todas as outras threads passarem na sua frente. Só que as outras threads também pegam o mesmo valor do contador, pois ele ainda não foi alterado. Quando chega a hora da segunda passada no guichê das CPUs, todas as threads incrementaram o mesmo valor do contador. Se houvesse apenas um processador em uma máquina o fluxo de execução do ponto de vista do processamento único para duas threads ficaria mais ou menos o seguinte (zzz é quando uma thread dorme):</p>
+<p>Explicando mais uma vez com mais detalhes: quando uma thread guarda o valor do contador na variável local e volta para o final da fila, ela deixa de armazenar o contador atualizado para apenas depois que todas as outras threads passarem na sua frente. Só que as outras threads também pegam o mesmo valor do contador, pois ele ainda não foi alterado. Quando chega a hora da segunda passada no guichê das CPUs, todas as threads incrementaram o mesmo valor do contador. Se houvesse apenas um processador em uma máquina o fluxo de execução do ponto de vista do processamento único para duas threads ficaria mais ou menos o seguinte (zzz é quando uma thread dorme):</p>
 
 <pre>
    t1 c = count (0)

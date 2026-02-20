@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="how_to_run_anything_as_a_service" title="How to run anything as a service"/></span>
+<section id="section_how_to_run_anything_as_a_service">
+<p class="title">How to run anything as a service</p>
+<span class="title-heading">Caloni, 2008-05-27 computer english blog</span>
+
+<blockquote>Update 2026-02-20: Many years ago I switched from this solution to [NSSM], which I highly recommend. It has been used in robust products and avoids having to maintain redundant code to support programs that weren't designed to be services, but need to run independently of the user's account.</blockquote>
+<p>The biggest advantage running an application as a service, interactive or not, is to allow its start before a logon be performed. An example that happens to me is the need of debugging a <a href="2007-08.html#gina_x_credential_provider">GINA</a>. In order to do this, I need the Visual Studio remote debugger be started before logon. The easiest and fastest solution is to run Msvcmon, the server part of debugging, as a service.</p>
+
+<p>Today I've figured out a pretty interesting shortcut to achieve it.</p>
+
+<p>An <a href="http://www.alex-ionescu.com/?p=59">Alex Ionescu article</a> talks about this command line application used to create, initiate and remove services. Even not being the article focus, I found the information pretty useful, since I didn't know such app. Soon some ideas starting to born in my mind:</p>
+
+<blockquote>"What if I used this guy to run notepad?"</blockquote>
+<p>Well, the Notepad is the default test victim. Soon, the following line would prove possible to run it in the system account:</p>
+
+<pre>
+   sc create Notepad binpath= &quot;%systemroot%\NOTEPAD.EXE&quot; type= interact type= own
+</pre>
+<p>However, as every service, it is supposed to communicate with the Windows Service Manager. Since Notepad even "knows" it is now a superpowerful service, the service initialization time is expired and SCM kills the process.</p>
+
+<pre>
+   &gt;net start notepad
+   The service is not responding to the control function.
+   More help is available by typing NET HELPMSG 2186.
+</pre>
+<p>As would say my friend <a href="http://codebehind.wordpress.com">Thiago</a>, "not good".</p>
+
+<p>"Yet however", SCM doesn't kill the child processes from the service-process. Bug? Feature? Workaround? Whatever it is, it can be used to initiate our beloved msvcmon:</p>
+
+<pre>
+   set binpath=%systemroot%\system32\cmd.exe /c c:\Tools\msvcmon.exe -tcpip -anyuser -timeout -1
+   sc create Msvcmon binpath= &quot;%binpath%&quot; type= interact type= own
+</pre>
+<p>Now, when we start Msvcmon service, the process cmd.exe will be create, that on the other hand will run the msvcmon.exe target process. Cmd in this case will only wait for its imminent death.</p>
+
+<img src="/blog/img/how_to_run_anything_as_a_service_msvcmon_service.png"/>
+
+</section>
+
+<span style="float: left;">
+ <a href="como_criar_uma_lib_no_visual_studio.html">[como_criar_uma_lib_no_visual_studio]</a>
+ <a href="aprendendo_rapidamente_conceitos_essenciais_do_windbg.html">[aprendendo_rapidamente_conceitos_essenciais_do_windbg]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

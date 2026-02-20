@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="basico_do_basico_ponteiros" title="Básico do básico: ponteiros"/></span>
+<section id="section_basico_do_basico_ponteiros">
+<p class="title">Básico do básico: ponteiros</p>
+<span class="title-heading">Caloni, 2008-12-06 computer blog</span>
+
+<p>Nessas últimas semanas tenho gastado meu tempo junto da mais nova pupila da SCUA, aspirante a programadora em C e Install Shield Script. Minha tarefa? Explicar tudo, desde o mais simples, como variáveis, até as coisas não tão triviais, como símbolos de depuração.</p>
+
+<p>Posso afirmar que tem sido muito compensador ativar algumas partes do meu cérebro que acreditava nem mais existirem. Rever velhos conceitos, apesar de manjados, nos dá a oportunidade de lembrar que as coisas mais complexas que construímos no dia-a-dia se baseiam em um punhado de preceitos básicos que é essencial ter na cabeça. E nunca esquecê-los.</p>
+
+<p>Meu amigo costuma chamar esses preceitos básicos de fundamentais. Isso por um bom motivo lógico e semântico: tudo que aprendemos de básico sobre qualquer área de conhecimento serve-nos de base para suportar as outras coisas que virão a ser entendidas na mesma área de conhecimento. Ou seja: é a parte mais importante a ser aprendida. Sem ela, a base, não nos é possível construir nada sólido e duradouro. Sem ela, toda a estrutura construída _a posteriori_ se rompe e vai abaixo.</p>
+
+<p>Foi partindo desse princípio que me preocupei com esmero para explicar as peças mais fundamentais do conhecimento em jogo, formadoras da cabeça de um programador para sempre, seja em C como em qualquer outra linguagem. E como nada é bem explicado sem formar imagens na cabeça, aproveitei para desenhar alguns esboços no papel. O resultado desses esboços é esse artigo.</p>
+
+<h4>Ponteiro: o eterno vilão da história</h4>
+
+<p>Não tenho a presunção de conseguir explicar 100% para alguém iniciante o que são ponteiros em C, como usá-los e como se proteger deles. Definitivamente ponteiro não é um conceito simples, apesar de básico, e posso dizer sem vergonha que demorei cerca de seis meses no meu aprendizado em C pra entender completamente tudo relacionado com ponteiros. Demorou, quebrei a cabeça, mas depois nunca mais esqueci.</p>
+
+<p>De acordo com o meu amigo Rafael, a melhor definição que usei até hoje para explicar esse conceito envolvia um armário repleto de gavetas, todas numeradas em ordem de posição (1, 2, 3...). Cada gaveta podia guardar qualquer coisa, inclusive o número de outra gaveta em um pedaço de papel. Com isso, eu poderia guardar em uma gaveta aleatória o que eu precisava guardar e escrever o "endereço" dessa gaveta em um pedaço de papel e guardá-lo na gaveta número 1, por exemplo. Com isso poderia até esquecer a posição onde está o que eu guardei, pois bastava abrir a gaveta número 1 e ler a posição em que estava essa gaveta.</p>
+
+<p>Deve ter ficado óbvio, mas se não ficou: o armário é a memória RAM, as gavetas são váriáveis e as gavetas onde guardamos pedaços de papel são ponteiros, que não deixam de ser variáveis, e apontam para outras gavetas que são... adivinha? Outras variáveis!</p>
+
+<img src="/blog/img/basico_do_basico_ponteiros_pointers_drawer.gif"/>
+
+<img src="/blog/img/basico_do_basico_ponteiros_draft_pointers_strings_arrays.jpg"/>
+
+<p>Outros conceitos que costumo utilizar é relacionar a memória RAM com a memória do programa e contar a memória como se contam carneirinhos. Dessa forma fica fácil pelo menos entender dois conceitos fundamentais na arte dos ponteiros: memória e endereço.</p>
+
+<h4>Practice makes perfect</h4>
+
+<p>O segundo passo, acredito eu, é entender como a memória é dimensionada através do programa, e como o tipo molda a representação dos bits e bytes através das ligações de silício, mas isso fica pra mais tarde. Temos que programar, e é isso que vai de fato fazer a diferença no aprendizado de uma linguagem como C. Nada como uma boa mistura de teoria e prática para gerar um concreto armado que irá suportar um Empire State de conhecimento.</p>
+
+<p>Por isso, segue uma lista de tarefas interessantes para exercitar o conceito de ponteiros:</p>
+
+<ul><li>Criar funções que modificam números passados como parâmetro.</li>
+
+<li>Criar funções que modificam texto passado como parâmetro.</li>
+
+<li>Alocar e desalocar memória dinamicamente.</li></ul>
+
+<p>Tarefas mais específicas da minha área e que uso o tempo todo:</p>
+
+<ul><li>Escrever e ler texto em arquivos.</li>
+
+<li>Escrever e ler no registro do Windows.</li>
+
+<li>Obter o endereço de uma função do Windows dinamicamente. E chamá-la.</li></ul>
+
+<p>Nota: Não use as classes superiores de C++ nem referências. Estou falando de estudar ponteiros nua e cruamente. Não seja preguiçoso. Algumas coisas devem ser feitas da maneira mais "primitiva" até se entender com o que se está lidando. Lembre-se que os melhores programadores possuem os alicerces mais fortes.</p>
+
+<h4>Bônus Points: Fantoches!</h4>
+
+<p>Este <a href="https://www.youtube.com/watch?v=5VnDaHBi8dM&ab_channel=Napalm">vídeo</a> é o mais didático do universo sobre como funcionam ponteiros em C. Veja e mostre pros seus filhos.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="basico_do_basico_tipos.html">[basico_do_basico_tipos]</a>
+ <a href="como_funciona_o_psexec.html">[como_funciona_o_psexec]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

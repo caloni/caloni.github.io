@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="funcoes_muito_novas_na_win32_api" title="Funções muito novas na Win32 API"/></span>
+<section id="section_funcoes_muito_novas_na_win32_api">
+<p class="title">Funções muito novas na Win32 API</p>
+<span class="title-heading">Caloni, 2007-08-21 computer blog</span>
+
+<p>Quando fala-se em depuração geralmente o pensamento que vem é de um código que já foi compilado e está rodando em alguma outra máquina e gerando problemas não detectados nos testes de desenvolvedor. Mas nem sempre é assim. Depuração pode envolver problemas durante a própria compilação. Afinal de contas, se não está compilando, ou foi compilado errado, é porque já existem problemas antes mesmo da execução começar.</p>
+
+<p>O fonte abaixo, por exemplo, envolve um detalhe que costuma atormentar alguns programadores, ou por falta de observação ou documentação (ou ambos).</p>
+
+<pre>
+   #include &lt;stdio.h&gt;
+   #include &lt;windows.h&gt;
+   void main(void)
+   {
+     typedef enum _COMPUTER_NAME_FORMAT
+     {
+       ComputerNameNetBIOS,
+       ComputerNameDnsHostname,
+       ComputerNameDnsDomain,
+       ComputerNameDnsFullyQualified,
+       ComputerNamePhysicalNetBIOS,
+       ComputerNamePhysicalDnsHostname,
+       ComputerNamePhysicalDnsDomain,
+       ComputerNamePhysicalDnsFullyQualified,
+       ComputerNameMax
+     } COMPUTER_NAME_FORMAT;
+     COMPUTER_NAME_FORMAT CF = ComputerNameDnsDomain;
+     char szDomainName[MAX_COMPUTERNAME_LENGTH];
+     DWORD dwSize = sizeof(szDomainName);
+     //GetComputerName(szDomainName, &amp;dwSize);
+     GetComputerNameEx(CF, szDomainName, &amp;dwSize);
+   } 
+</pre>
+<p>Tirando o fato que o retorno void não é mais um protótipo padrão da função main e que a definição da enumeração COMPUTER_NAME_FORMAT dentro da função main é no mínimo suspeita, podemos testar a compilação e verificar que existe exatamente um erro grave neste fonte:</p>
+
+<pre>
+   cl getcomputername.cpp
+   getcomputername.cpp(26) : error C3861: 'GetComputerNameEx': identifier not found
+</pre>
+<p>A função GetComputerNameEx parece não ter sido definida, apesar de estarmos incluindo o header windows.h, que é o pedido pela documentação do MSDN.</p>
+
+<p>Esse tipo de problema acontece na maioria das vezes por dois motivos:</p>
+
+<p>  1. o header responsável não foi incluído (não é o caso, como vimos),</p>
+
+<p>  2. é necessário especificar a versão mínima do sistema operacional.</p>
+
+<p>De fato, se criarmos coragem e abrirmos o arquivo winbase.h, que é onde a função é definida de fato, e procurarmos pela função GetComputerNameEx encontramos a seguinte condição:</p>
+
+<pre>
+   #if (_WIN32_WINNT &gt;= 0x0500)
+   typedef enum _COMPUTER_NAME_FORMAT {
+       ComputerNameNetBIOS,
+       ComputerNameDnsHostname,
+       ComputerNameDnsDomain,
+       ComputerNameDnsFullyQualified,
+       ComputerNamePhysicalNetBIOS,
+       ComputerNamePhysicalDnsHostname,
+       ComputerNamePhysicalDnsDomain,
+       ComputerNamePhysicalDnsFullyQualified,
+       ComputerNameMax
+   } COMPUTER_NAME_FORMAT ;
+   WINBASEAPI
+   BOOL
+   WINAPI
+   GetComputerNameExA (
+       __in    COMPUTER_NAME_FORMAT NameType,
+       __out_ecount_part_opt(*nSize, *nSize + 1) LPSTR lpBuffer,
+       __inout LPDWORD nSize
+       );
+   WINBASEAPI
+   BOOL
+   WINAPI
+   GetComputerNameExW (
+       __in    COMPUTER_NAME_FORMAT NameType,
+       __out_ecount_part_opt(*nSize, *nSize + 1) LPWSTR lpBuffer,
+       __inout LPDWORD nSize
+       );
+   #ifdef UNICODE
+   #define GetComputerNameEx  GetComputerNameExW
+   #else
+   #define GetComputerNameEx  GetComputerNameExA
+   #endif // !UNICODE
+   //...
+   #endif // _WIN32_WINNT
+</pre>
+<p>Ou seja, para que essa função seja visível a quem inclui o windows.h, é necessário antes definir que a versão mínima do Windows será a 0x0500, ou seja, Windows 2000 (vulgo Windows 5.0). Aliás, é como aparece na documentação. Um pouco de observação nesse caso seria o suficiente para resolver o caso, já que tanto abrindo o header quanto olhando no exemplo do MSDN nos levaria a crer que é necessário definir essa macro:</p>
+
+<pre>
+   #define _WIN32_WINNT 0x0500
+   #include &lt;windows.h&gt;
+   #include &lt;stdio.h&gt;
+   #include &lt;tchar.h&gt;
+   void _tmain(void)
+   {
+     TCHAR buffer[256] = TEXT(&quot;&quot;);
+     TCHAR szDescription[8][32] = {TEXT(&quot;NetBIOS&quot;), 
+     TEXT(&quot;DNS hostname&quot;), 
+     TEXT(&quot;DNS domain&quot;), 
+     TEXT(&quot;DNS fully-qualified&quot;), 
+     TEXT(&quot;Physical NetBIOS&quot;), 
+     TEXT(&quot;Physical DNS hostname&quot;), 
+     TEXT(&quot;Physical DNS domain&quot;), 
+     TEXT(&quot;Physical DNS fully-qualified&quot;)};
+     int cnf = 0;
+     DWORD dwSize = sizeof(buffer);
+     for( cnf = 0; cnf &lt; ComputerNameMax; cnf++ )
+     {
+       if (!GetComputerNameEx( (COMPUTER_NAME_FORMAT)cnf, buffer, &amp;dwSize) )
+       {
+         _tprintf(TEXT(&quot;GetComputerNameEx failed (%d)\n&quot;),
+         GetLastError());
+         return;
+       }
+         else _tprintf(TEXT(&quot;%s: %s\n&quot;), szDescription[cnf], buffer);
+       dwSize = sizeof(buffer);
+       ZeroMemory(buffer, dwSize);
+     }
+   } 
+</pre>
+<p>Outra observação que poderia ter ajudado na hora de codificar seria dar uma olhada no que os caras escrevem na seção de advertências (remarks) da documentação:</p>
+
+<blockquote>To compile an application that uses this function, define the _WIN32_WINNT macro as 0x0500 or later. For more information, see Using the Windows Headers.</blockquote>
+<p>Podemos também notar pela definição do COMPUTER_NAME_FORMAT dentro do main que o código estava no meio do caminho de cometer um sacrilégio: declarar funções e estruturas que já estão definidas nos headers da API. Portanto, se você já encontrou algum código parecido com esse, é hora de colocar em prática algumas teorias de refactoring.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="antidebug_ocupando_a_debugport.html">[antidebug_ocupando_a_debugport]</a>
+ <a href="junctions.html">[junctions]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

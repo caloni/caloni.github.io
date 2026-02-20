@@ -52,9 +52,9 @@ role="navigation" aria-label="main navigation">
 
 <h4>Leve introdução sobre o conceito de jobs</h4>
 
-<p>Um job é um objeto "novo" no kernel do Windows 2000 em diante, e se prontifica a suprir a carência que havia anteriormente de **controle sobre o que os processos podem fazer e por quanto tempo**.</p>
+<p>Um job é um objeto "novo" no kernel do Windows 2000 em diante, e se prontifica a suprir a carência que havia anteriormente de controle sobre o que os processos podem fazer e por quanto tempo.</p>
 
-<p>A abstração mais coerente que eu consigo tirar de um job é como **um trabalho a ser executada por um ou mais processos**. O objeto job controla a criação, o término e as exceções que ocorrem dentro dele mesmo.</p>
+<p>A abstração mais coerente que eu consigo tirar de um job é como um trabalho a ser executada por um ou mais processos. O objeto job controla a criação, o término e as exceções que ocorrem dentro dele mesmo.</p>
 
 <img src="/blog/img/windows_jobs_com_completion_port_job.gif"/>
 
@@ -135,24 +135,25 @@ int main(int argc, char* argv[])
 </pre>
 <p>O exemplo acima cria um processo baseado em uma linha de comando e espera pelo término do processo criado e de todos os subprocessos criados a partir do primeiro processo. Note que mesmo que o primeiro processo termine, a Completion Port só receberá o evento que todos os processos acabaram depois que o último subprocesso terminar.</p>
 
-<p>Dessa forma, ao compilarmos o código e rodarmos mais um prompt de comando através de nosso programa ele fica travado mesmo ao fecharmos o prompt criado. O programa só será finalizado ao fecharmos o Bloco de Notas iniciado pelo segundo prompt.</p>
+<p>Dessa forma, ao compilarmos o código e rodarmos mais um prompt de comando e um Bloco de Notas através de nosso programa ele fica travado mesmo ao fecharmos o prompt criado. O programa só será finalizado ao fecharmos o segundo prompt e o Bloco de Notas. Ou qualquer outro subprocesso criado.</p>
 
 <p>Além desse evento, que era o que eu estava procurando, esse método permite obter outros eventos bem interessantes:</p>
 
-<p>  * JOB_OBJECT_MSG_NEW_PROCESS. Um novo processo foi criado dentro do job.</p>
+<ul><li>JOB_OBJECT_MSG_NEW_PROCESS. Um novo processo foi criado dentro do job.</li>
 
-<p>  * JOB_OBJECT_MSG_EXIT_PROCESS. Um processo existente dentro do job foi terminado.</p>
+<li>JOB_OBJECT_MSG_EXIT_PROCESS. Um processo existente dentro do job foi terminado.</li>
 
-<p>  * JOB_OBJECT_MSG_PROCESS_MEMORY_LIMIT. O limite de memória de um processo já foi alcançado.</p>
+<li>JOB_OBJECT_MSG_PROCESS_MEMORY_LIMIT. O limite de memória de um processo já foi alcançado.</li>
 
-<p>  * JOB_OBJECT_MSG_END_OF_PROCESS_TIME. O limite de tempo de processamento de um processo já foi alcançado.</p>
+<li>JOB_OBJECT_MSG_END_OF_PROCESS_TIME. O limite de tempo de processamento de um processo já foi alcançado.</li></ul>
 
 <p>Enfim, jobs não terminam por aí. Dê mais uma olhada no MSDN e veja se encontra mais alguma utilidade interessante para o nosso amigo job. Eu encontrei e fiquei feliz.</p>
 
 </section>
 
 <span style="float: left;">
- <a href="todo_programador_e_um_filosofo_em_potencial.html">[todo_programador_e_um_filosofo_em_potencial]</a>
+ <a href="a_alca_dentro_do_fio_gerou_um_bloqueio_da_morte.html">[a_alca_dentro_do_fio_gerou_um_bloqueio_da_morte]</a>
+ <a href="v.html">[v]</a>
 </span>
 </div>
 </div>
