@@ -241,27 +241,27 @@ role="navigation" aria-label="main navigation">
 
 <p>Alguns detalhes sórdidos que podem fazer alguma diferença para você, desenvolvedor de sistemas operacionais, um dia desses:</p>
 
-<p>  * Os setores de que estamos falando (MBR, partição ativa) normalmente devem terminar com uma assinatura de dois bytes (0x55 0xAA), o que "garante" que o código contido nesse setor é válido e pode ser executado.</p>
+<ul><li>Os setores de que estamos falando (MBR, partição ativa) normalmente devem terminar com uma assinatura de dois bytes (0x55 0xAA), o que "garante" que o código contido nesse setor é válido e pode ser executado.</li>
 
-<p>  * No caso do loader do Windows (pré-Vista), existia um arquivo no diretório-raiz da partição ativa chamado boot.ini que continha uma lista de possíveis modos de inicializar o sistema operacional, inclusive com múltiplas versões do Windows, cada um localizado em uma partição/pasta distinta (e.g., multiboot com Windows 98 e XP).</p>
+<li>No caso do loader do Windows (pré-Vista), existia um arquivo no diretório-raiz da partição ativa chamado boot.ini que continha uma lista de possíveis modos de inicializar o sistema operacional, inclusive com múltiplas versões do Windows, cada um localizado em uma partição/pasta distinta (e.g., multiboot com Windows 98 e XP).</li>
 
-<p>  * O limite de quatro partições da MBR pode ser aumentado com o uso de partições estendidas; as partições estendidas apontam para um bloco de setores no HD que inicia com um setor que contém outra tabela de partições exatamente onde fica a tabela da MBR, também com quatro entradas.</p>
+<li>O limite de quatro partições da MBR pode ser aumentado com o uso de partições estendidas; as partições estendidas apontam para um bloco de setores no HD que inicia com um setor que contém outra tabela de partições exatamente onde fica a tabela da MBR, também com quatro entradas.</li>
 
-<p>  * O endereçamento da localização das partições na MBR pode ser feito de duas maneiras distintas: por CHS ou por LBA. A versão CHS é bem antiga, mas ainda usada, e especifica uma localização no HD através de um posicionamento físico de três dimensões, com cilindro/trilha (C - Cylinder), cabeça (H - Head) e setor (S - Sector). Sim, isso é bem _old-fashionable_. Também existe o LBA (Logical Block Addressing), que é uma forma lógica de endereçar setores no disco, através de deslocamentos (_offsets_).</p>
+<li>O endereçamento da localização das partições na MBR pode ser feito de duas maneiras distintas: por CHS ou por LBA. A versão CHS é bem antiga, mas ainda usada, e especifica uma localização no HD através de um posicionamento físico de três dimensões, com cilindro/trilha (C - Cylinder), cabeça (H - Head) e setor (S - Sector). Sim, isso é bem _old-fashionable_. Também existe o LBA (Logical Block Addressing), que é uma forma lógica de endereçar setores no disco, através de deslocamentos (_offsets_).</li></ul>
 
 <p>Para detectar problemas de hardware, a BIOS pode ajudar com seus beeps significativos. Isso aparentemente parece ser o fim da picada, mas não é. O DQ sabe muito bem que podemos ter problemas no hardware que exigem análises mais sofisticadas (como comprimento de onda dos sinais).</p>
 
 <p>Se for detectar algum problema no sistema de boot baseado em MBR, então você tem dois caminhos:</p>
 
-<p>  * Usar o SoftICE 16 bits e depurar o carregamento da MBR pela BIOS</p>
+<ul><li>Usar o SoftICE 16 bits e depurar o carregamento da MBR pela BIOS</li>
 
-<p>  * Usar o Debug 16 bits do MS-DOS (ou similar) e depurar diretamente o código de boot da MBR, reproduzindo os passos anteriores da BIOS.</p>
+<li>Usar o Debug 16 bits do MS-DOS (ou similar) e depurar diretamente o código de boot da MBR, reproduzindo os passos anteriores da BIOS.</li></ul>
 
 <p>Se o problema for durante o carregamento do próprio sistema operacional, as mensagens de erro do loader são significativas. No entanto, pode-se usar o Debug mais uma vez e depurar essa parte, logo antes, é claro, do sistema entrar em modo protegido de 32 bits, o que daí já é outra história (que pretendo contar em breve).</p>
 
-<p>  * Artigo sobre o boot no Linux</p>
+<ul><li>Artigo sobre o boot no Linux</li>
 
-<p>  * <a href="http://www.csl.mtu.edu/~machoudh/blog/?p=258">Artigo sobre o boot no Linux</a></p>
+<li><a href="http://www.csl.mtu.edu/~machoudh/blog/?p=258">Artigo sobre o boot no Linux</a></li></ul>
 
 </section><hr/>
 

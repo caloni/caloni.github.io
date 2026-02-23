@@ -296,9 +296,9 @@ int main()
 <blockquote>Get/set the associated string object The first version returns a copy of the string object currently associated with the string stream buffer.</blockquote>
 <p>Ora, a função str retorna uma **cópia** do objeto string usado internamento pelo buffer de nossa string stream. Duas coisas ocorrem em qualquer cópia de um objeto retornada por uma função:</p>
 
-<p>  * A cópia do objeto original e seu desacoplamento (óbvio).</p>
+<ul><li>A cópia do objeto original e seu desacoplamento (óbvio).</li>
 
-<p>  * A construção de um objeto baseado no original e que, após o fim da expressão onde foi chamado o método, **é destruído**.</p>
+<li>A construção de um objeto baseado no original e que, após o fim da expressão onde foi chamado o método, **é destruído**.</li></ul>
 
 <p>Uma vez que a chamada a str termina, é entregue uma instância de uma string que contém a string original que está sendo usada pela string stream para a expressão da chamada, que geralmente vem seguida de uma cópia:</p>
 
@@ -417,11 +417,11 @@ int main()
 
 <p>Para depurar localmente, supondo que seja um executável simples, você precisa dos seguintes itens:</p>
 
-<p>  * Pasta do WinDbg copiado (a Debugging Tools instalada pelo SDK, ou sua pastinha particular guardada no PenDrive).</p>
+<ul><li>Pasta do WinDbg copiado (a Debugging Tools instalada pelo SDK, ou sua pastinha particular guardada no PenDrive).</li>
 
-<p>  * Símbolos dos binários envolvidos (em sincronia com os binários que iremos analisar).</p>
+<li>Símbolos dos binários envolvidos (em sincronia com os binários que iremos analisar).</li>
 
-<p>  * Fontes da compilação dos binários (a versão exata seria ideal; grave o revno do controle de fonte pra facilitar).</p>
+<li>Fontes da compilação dos binários (a versão exata seria ideal; grave o revno do controle de fonte pra facilitar).</li></ul>
 
 <p>Os fontes, no caso de uma conexão por Terminal Server, podem ser disponibilizados através do mapeamento de drives entre as máquinas. Os símbolos, no entanto, por serem usados extensivamente pelo WinDbg, é recomendável que estejam locais na máquina depurada, pois do contrário você terá que tomar uma quantidade excessiva de cafés para executar meia-dúzia de instruções.</p>
 

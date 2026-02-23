@@ -79,47 +79,46 @@ role="navigation" aria-label="main navigation">
 <p>Pois é. As coisas nem sempre acabam sendo como o esperado. Se você possuir uma LIB, por exemplo, e nela existirem duas funções, como abaixo, e você se limitar a usar em seu programa apenas a primeira, todas as dependências da segunda também irão parar no executável final.</p>
 
 <pre>
-#include &quot;LibMod.h&quot;
-#include &lt;windows.h&gt;
-#include &lt;Tlhelp32.h&gt;
-#include &lt;stdio.h&gt;
-// Essa função é usada pelo nosso App
-int UsingOldApis()
-{
-    DWORD ver = GetVersion(); // API paleozoica, OK.
-    return int( (DWORD)(LOBYTE(LOWORD(ver))) );
-}
-// Essa função NÃO é usada pelo nosso App
-void UsingNewApis()
-{
-    // Opa: função moderninha!!
-    if( HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL) )
-    {
-      PROCESSENTRY32 procEntry;
-      // Tudo bem, nosso App não vai usar essa função.
-      if( Process32First(snapshot, &amp;procEntry) )
-      {
-        printf(&quot;Process list:\n&quot;);
-        do
-        {
-          printf(&quot;%s\n&quot;, procEntry.szExeFile);
-        }
-        while( Process32Next(snapshot, &amp;procEntry) );
-      }
-      CloseHandle(snapshot);
-    }
-}
- 
-#include &quot;LibMod.h&quot;
-#include &lt;stdio.h&gt;
-#include &lt;stdlib.h&gt;
-int main()
-{
-    // Usando apenas funções paleozoicas, certo?
-    printf(&quot;Our Major OS version is %d\n&quot;, UsingOldApis() );
-    system(&quot;pause&quot;);
-}
- 
+   #include &quot;LibMod.h&quot;
+   #include &lt;windows.h&gt;
+   #include &lt;Tlhelp32.h&gt;
+   #include &lt;stdio.h&gt;
+   // Essa função é usada pelo nosso App
+   int UsingOldApis()
+   {
+       DWORD ver = GetVersion(); // API paleozoica, OK.
+       return int( (DWORD)(LOBYTE(LOWORD(ver))) );
+   }
+   // Essa função NÃO é usada pelo nosso App
+   void UsingNewApis()
+   {
+       // Opa: função moderninha!!
+       if( HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL) )
+       {
+         PROCESSENTRY32 procEntry;
+         // Tudo bem, nosso App não vai usar essa função.
+         if( Process32First(snapshot, &amp;procEntry) )
+         {
+           printf(&quot;Process list:\n&quot;);
+           do
+           {
+             printf(&quot;%s\n&quot;, procEntry.szExeFile);
+           }
+           while( Process32Next(snapshot, &amp;procEntry) );
+         }
+         CloseHandle(snapshot);
+       }
+   }
+   #include &quot;LibMod.h&quot;
+   #include &lt;stdio.h&gt;
+   #include &lt;stdlib.h&gt;
+   int main()
+   {
+       // Usando apenas funções paleozoicas, certo?
+       printf(&quot;Our Major OS version is %d\n&quot;, UsingOldApis() );
+       system(&quot;pause&quot;);
+   }
+</pre>
 <h4>Por que isso ocorre?</h4>
 
 <p>Acontece que o nosso amigo linker gera uma lista de dependências por módulo (CPP), e não por função. Dessa forma, tudo que vier é lucro.</p>
@@ -185,19 +184,19 @@ void UsingNewApis()
 
 <p>Um dia desses conversando com o Rodrigo Strauss, falando sobre como é interessante trocar informações e experiências sobre C++, ele teve a brilhante e original idéia (ninguém nunca fez isso antes) de propor encontros razoavelmente regulares para fazermos isso. A idéia dele era mais ou menos essa:</p>
 
-<p>  * Peridiocidade dos encontros de X em X meses. Ainda não fechamos isso;</p>
+<ul><li>Peridiocidade dos encontros de X em X meses. Ainda não fechamos isso;</li>
 
-<p>  * X pautas por reunião, votadas pelos participantes. Já temos algumas sugestões como, recursos arcanos do C++ (essa, de acordo com ele, seria minha função), ferramentas, bibliotecas, organização de código etc;</p>
+<li>X pautas por reunião, votadas pelos participantes. Já temos algumas sugestões como, recursos arcanos do C++ (essa, de acordo com ele, seria minha função), ferramentas, bibliotecas, organização de código etc;</li>
 
-<p>  * Troca de experiências sobre C++ em diversos sistemas operacionais. Por exemplo, nós mostraríamos para o pessoal de UNIX o Visual C++ e aprenderíamos com eles sobre emacs ou KDevelop;</p>
+<li>Troca de experiências sobre C++ em diversos sistemas operacionais. Por exemplo, nós mostraríamos para o pessoal de UNIX o Visual C++ e aprenderíamos com eles sobre emacs ou KDevelop;</li>
 
-<p>  * Começar de forma muito simples, como uma mesa redonda, e se a coisa avançar, arrumar um lugar para palestras e apresentações;</p>
+<li>Começar de forma muito simples, como uma mesa redonda, e se a coisa avançar, arrumar um lugar para palestras e apresentações;</li>
 
-<p>  * Reuniões em bares ou restaurantes onde possamos conversar, levar acompanhantes e nos sentirmos seguros levando notebooks ou Pockets. Podemos até subir uma rede wifi e aumentar a diversão :-)</p>
+<li>Reuniões em bares ou restaurantes onde possamos conversar, levar acompanhantes e nos sentirmos seguros levando notebooks ou Pockets. Podemos até subir uma rede wifi e aumentar a diversão :-)</li>
 
-<p>  * Como eu e o Strauss somos de São Paulo (na verdade, eu sou de São Bernardo), os primeiros encontros seriam na capital;</p>
+<li>Como eu e o Strauss somos de São Paulo (na verdade, eu sou de São Bernardo), os primeiros encontros seriam na capital;</li>
 
-<p>  * Isso é uma boa desculpa para se encontrar e tomar um chopp || guaraná || cachaça.</p>
+<li>Isso é uma boa desculpa para se encontrar e tomar um chopp || guaraná || cachaça.</li></ul>
 
 <p>Gostaríamos que as pessoas da comunidade C++ dessem sugestões sobre essa idéia. Estamos pensando em agendar o primeiro encontro para dia 17/12/2005 (sábado) durante a tarde, em um Outback (comida australiana, Shopping Center Norte ou Eldorado, tem infra para crianças e a comida é muito boa). Como pauta do primeiro encontro eu sugiro uma apresentação dos participantes (o que será desnecessário se só eu e o Strauss aparecermos) e uma discussão sobre o presente e o futuro do mercado de trabalho C++.</p>
 
@@ -257,13 +256,13 @@ void UsingNewApis()
 
 <p>Entusiasta ao máximo, ele montou uma lista baseada em estudo constante sob variadas formas, mesmo longe do micro:</p>
 
-<p>  * Contar binário e calcular hexa na cabeça;</p>
+<ul><li>Contar binário e calcular hexa na cabeça;</li>
 
-<p>  * Ler livros;</p>
+<li>Ler livros;</li>
 
-<p>  * Programar em papel;</p>
+<li>Programar em papel;</li>
 
-<p>  * Algo mais?</p>
+<li>Algo mais?</li></ul>
 
 <p>De acordo com ele, o programador não consegue viver sem lógica, e quando tenta, se torna algo "intolerável".</p>
 
@@ -279,11 +278,11 @@ void UsingNewApis()
 
 <p>O que eu adicionaria na lista?</p>
 
-<p>  * Assistir CSI. Pra entender o uso prático dos métodos indutivo e dedutivo de raciocínio; mais indutivo.</p>
+<ul><li>Assistir CSI. Pra entender o uso prático dos métodos indutivo e dedutivo de raciocínio; mais indutivo.</li>
 
-<p>  * Assistir House. Nunca é demais se imaginar como o médico-louco que cura todas as doenças esquisitas; doença aqui é bug.</p>
+<li>Assistir House. Nunca é demais se imaginar como o médico-louco que cura todas as doenças esquisitas; doença aqui é bug.</li>
 
-<p>  * Assistir Dexter. Veja como ele faz o seu trabalho seguindo sempre o mesmo método e deixando o ambiente limpinho, sem nenhuma pista.</p>
+<li>Assistir Dexter. Veja como ele faz o seu trabalho seguindo sempre o mesmo método e deixando o ambiente limpinho, sem nenhuma pista.</li></ul>
 
 <p>Fora isso, curta o que está fazendo. Isso é o primordial. Arrebenta com qualquer dúvida que tiver sobre estar no caminho certo.</p>
 

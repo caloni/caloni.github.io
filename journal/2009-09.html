@@ -75,7 +75,7 @@ role="navigation" aria-label="main navigation">
 
 <p>Que usuário merece ver isso?</p>
 
-<p>Bom, se ele soubesse analisar o assembly do setor de boot, seria fácil entender essa mensagem. E analisar o assembly é simples demais, quase tão simples quanto entender a mensagem acima. Tudo que precisamos é do programa Debug 16 bits, como o que já vem com o Windows ou <a href="http://www.freedos.org/cgi-bin/lsm.cgi?mode=lsm&lsm=base/debug.lsm">aquele mais turbinado d</a>[o FreeDOS].</p>
+<p>Bom, se ele soubesse analisar o assembly do setor de boot, seria fácil entender essa mensagem. E analisar o assembly é simples demais, quase tão simples quanto entender a mensagem acima. Tudo que precisamos é do programa Debug 16 bits, como o que já vem com o Windows ou <a href="http://www.freedos.org/cgi-bin/lsm.cgi?mode=lsm&lsm=base/debug.lsm">aquele mais turbinado do FreeDOS</a>.</p>
 
 <p>Podemos usar o Debug 16 bits para abrir o setor de boot salvo em algum arquivo e analisá-lo. Esse "salvo em algum arquivo" nós podemos obter usando o <a href="http://mh-nexus.de/en/hxd/">HxD</a>, um sofware bom demais que eu uso quase todos os dias da minha vida, ou para analisar os primeiros setores do disco ou ler arquivos binários que caem na minha caixa de e-mails.</p>
 
@@ -105,20 +105,20 @@ role="navigation" aria-label="main navigation">
 
 <p>Existem duas formas que conheço para analisar o _disassembly _de um setor de boot pelo Debug. Para os que gostam de aventuras radicais (RPG em modo texto?) existe a análise dinâmica, que consiste em digitar no prompt do DOS o comando Debug e o nome do arquivo salvo com o setor de boot. O primeiro comando u irá desmontar os primeiros bytes do setor (e, portanto, as primeiras instruções). Eu costumo fazer isso para uma visão geral de cinco minutos.</p>
 
-<p>A segunda forma de análise que exixte é para os preguiçosos que não conseguem fazer tudo no mesmo dia e optam por salvar o dump do disasssembly em um segundo arquivo. Para realizar essa proeza usando o Debug não é preciso mais que três neurônios:</p>
+<p>A segunda forma de análise que exixte é para os preguiçosos que não conseguem fazer tudo no mesmo dia e optam por salvar o dump do disasssembly em um segundo arquivo. Para realizar essa proeza usando o Debug não é preciso mais que três neurônios</p>
 
-<ul><li>digite em um arquivo chamado u.bat o seguinte conteúdo:</li></ul>
+<p>Digite em um arquivo chamado u.bat o seguinte conteúdo:</p>
 
 <pre>
    u 100 400
    q
 </pre>
-<ul><li>rode o debug como a linha abaixo:</li></ul>
+<p>Rode o debug como a linha abaixo:</p>
 
 <pre>
    debug &lt; u.bat &gt; a.asm
 </pre>
-<ul><li>Pronto! Temos um a.asm com toda a saída do setor de boot. Agora podemos analisá-la e editá-la:</li></ul>
+<p>Pronto! Temos um a.asm com toda a saída do setor de boot. Agora podemos analisá-la e editá-la:</p>
 
 <pre>
    ; Salto inicial
@@ -243,8 +243,6 @@ role="navigation" aria-label="main navigation">
 <p><a href="http://www.caloni.com.br/o-boot-no-windows-sem-windows">primeiro artigo</a> sobre o boot sem Windows foi 80% escrito com o que eu já sabia de cabeça de tanto [mexer na MBR]: http://www.caloni.com.br/depuracao-da-mbr</p>
 
 <p><a href="http://www.caloni.com.br/o-boot-no-windows-sem-windows">primeiro artigo</a> sobre o boot sem Windows foi 80% escrito com o que eu já sabia de cabeça de tanto [mexer na MBR]  e de tanto [depurar o processo de boot em 16 bits]: http://www.caloni.com.br/debug-da-bios-com-o-softice-16-bits</p>
-
-<p><a href="http://www.freedos.org/cgi-bin/lsm.cgi?mode=lsm&lsm=base/debug.lsm">aquele mais turbinado d</a>[o FreeDOS]: http://www.freedos.org/cgi-bin/lsm.cgi?mode=lsm&amp;lsm=base/debug.lsm</p>
 
 </section><hr/>
 

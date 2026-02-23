@@ -93,7 +93,7 @@ role="navigation" aria-label="main navigation">
 
 <img src="/journal/img/tres_em_um_brmIxLu.png"/>
 
-<p> Outra coisa que aprendi foi como enviar mensagens ao usuário para impedir que este reinicie a máquina em momentos importantes:</p>
+<p>Outra coisa que aprendi foi como enviar mensagens ao usuário para impedir que este reinicie a máquina em momentos importantes:</p>
 
 <img src="/journal/img/tres_em_um_0OKkJKy.png"/>
 
@@ -372,50 +372,50 @@ role="navigation" aria-label="main navigation">
 <p>Esse é o uso clássico: precisamos de uma descrição de um código de erro para o usuário; um código Win32. A chamada para esse tipo de uso pode ser encapsulada em uma função mais simples:</p>
 
 <pre>
-#define _CRT_SECURE_NO_WARNINGS // quanta frescura...
-#include &lt;tchar.h&gt;
-#include &lt;windows.h&gt;
-#include &lt;string&gt;
-using namespace std;
-wstring GetErrorDescription(DWORD errNumber)
-{
-    wstring ret;
-    bool msgOk = false;
-    LPVOID lpMsgBuf = NULL;
-    if( FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER // aloque pra mim (não sei o tamanho)
-      | FORMAT_MESSAGE_FROM_SYSTEM // descrição do erro está no sistema
-      | FORMAT_MESSAGE_IGNORE_INSERTS, // ignora os inserts pra não sofrer com hackerzinhos
-      NULL, // sem fonte:
-      errNumber, // a fonte é o código de erro
-      MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // idioma padrão
-      (LPTSTR)&amp;lpMsgBuf,// isso é um ponteiro para um ponteiro para um buffer que será alocado
-      0, // nada disso
-      NULL // e nem disso
-      ) &gt; 0 ) // maior que zero quer dizer &quot;beleza!&quot;
-    {
-      if( lpMsgBuf ) // só pra...
-      {
-        ret = (PCWSTR) lpMsgBuf; // ok, vamos usar essa string
-        msgOk = true;
-        LocalFree(lpMsgBuf); // não precisamos mais da memória alocada
-      }
-    }
-    if( ! msgOk ) // alguma coisa não deu certo
-    {
-      wchar_t msgBuf[100]; // o suficiente
-      _snwprintf(msgBuf, 100, L&quot;Unknown error (code %d)&quot;, errNumber);
-      ret = msgBuf;
-    }
-    return ret;
-}
-int CALLBACK wWinMain(HINSTANCE, HINSTANCE, PWSTR errNumberStr, int)
-{
-    int errNumber = _wtoi(errNumberStr);
-    wstring errDesc = GetErrorDescription(errNumber);
-    MessageBox(NULL, errDesc.c_str(), L&quot;GetLastError&quot;, MB_OK | MB_ICONINFORMATION);
-    return errNumber;
-}
- 
+   #define _CRT_SECURE_NO_WARNINGS // quanta frescura...
+   #include &lt;tchar.h&gt;
+   #include &lt;windows.h&gt;
+   #include &lt;string&gt;
+   using namespace std;
+   wstring GetErrorDescription(DWORD errNumber)
+   {
+       wstring ret;
+       bool msgOk = false;
+       LPVOID lpMsgBuf = NULL;
+       if( FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER // aloque pra mim (não sei o tamanho)
+         | FORMAT_MESSAGE_FROM_SYSTEM // descrição do erro está no sistema
+         | FORMAT_MESSAGE_IGNORE_INSERTS, // ignora os inserts pra não sofrer com hackerzinhos
+         NULL, // sem fonte:
+         errNumber, // a fonte é o código de erro
+         MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // idioma padrão
+         (LPTSTR)&amp;lpMsgBuf,// isso é um ponteiro para um ponteiro para um buffer que será alocado
+         0, // nada disso
+         NULL // e nem disso
+         ) &gt; 0 ) // maior que zero quer dizer &quot;beleza!&quot;
+       {
+         if( lpMsgBuf ) // só pra...
+         {
+           ret = (PCWSTR) lpMsgBuf; // ok, vamos usar essa string
+           msgOk = true;
+           LocalFree(lpMsgBuf); // não precisamos mais da memória alocada
+         }
+       }
+       if( ! msgOk ) // alguma coisa não deu certo
+       {
+         wchar_t msgBuf[100]; // o suficiente
+         _snwprintf(msgBuf, 100, L&quot;Unknown error (code %d)&quot;, errNumber);
+         ret = msgBuf;
+       }
+       return ret;
+   }
+   int CALLBACK wWinMain(HINSTANCE, HINSTANCE, PWSTR errNumberStr, int)
+   {
+       int errNumber = _wtoi(errNumberStr);
+       wstring errDesc = GetErrorDescription(errNumber);
+       MessageBox(NULL, errDesc.c_str(), L&quot;GetLastError&quot;, MB_OK | MB_ICONINFORMATION);
+       return errNumber;
+   }
+</pre>
 <img src="/journal/img/formatmessage_para_dumies_rnrw5UN.png"/>
 
 <p>Existem milhares de forma de usar essa função, como você deve ter percebido pelos parâmetros. Não seja tímido: se você conhece algum truquezinho esperto e quer compartilhar com os usuários da FormatMessage, essa é a hora!</p>

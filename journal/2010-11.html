@@ -268,21 +268,21 @@ role="navigation" aria-label="main navigation">
 
 <p>No meio dos procedimentos batidos que todos fazem a lista abaixo resume bem:</p>
 
-<p>  * Restaurar instalação do Internet Explorer.</p>
+<ul><li>Restaurar instalação do Internet Explorer.</li>
 
-<p>  * Atualizar Internet Explorer.</p>
+<li>Atualizar Internet Explorer.</li>
 
-<p>  * Rodar Windows Update.</p>
+<li>Rodar Windows Update.</li>
 
-<p>  * Registrar novamente DLLs do Shell (ShDocVw.dll, etc).</p>
+<li>Registrar novamente DLLs do Shell (ShDocVw.dll, etc).</li></ul>
 
 <p>No meio das análises não-tão-batidas que foram feitas estavam os seguintes itens:</p>
 
-<p>  * Log de operações pelo Process Monitor da abertura do browser até o erro.</p>
+<ul><li>Log de operações pelo Process Monitor da abertura do browser até o erro.</li>
 
-<p>  * Dump gerado no momento da mensagem de erro.</p>
+<li>Dump gerado no momento da mensagem de erro.</li>
 
-<p>  * Comparação de registro exportado com máquina sadia.</p>
+<li>Comparação de registro exportado com máquina sadia.</li></ul>
 
 <p>Nada parecia resolver o impasse, a não ser reinstalar o Windows, coisa que o cliente não queria. Dessa forma, A última tentativa não-enlouquecida de tentar descobrir a causa do problema foi usar uma VM e importar o registro exportado da máquina defeituosa.</p>
 
@@ -290,11 +290,11 @@ role="navigation" aria-label="main navigation">
 
 <p>Partindo disso, imaginei que o que ocorria era que havia algo faltando no registro danificado, e não algo a mais. Dessa forma, realizei a seguinte operação:</p>
 
-<p>  * Exportei o registro da máquina saudável.</p>
+<ul><li>Exportei o registro da máquina saudável.</li>
 
-<p>  * Transformei a exportação em exclusão total das chaves.</p>
+<li>Transformei a exportação em exclusão total das chaves.</li>
 
-<p>  * Importei ambos os registros no esquema "apaga tudo cria tudo de novo".</p>
+<li>Importei ambos os registros no esquema "apaga tudo cria tudo de novo".</li></ul>
 
 <img src="/journal/img/suporte_tecnico_l7Rc7kY.png"/>
 
@@ -413,27 +413,27 @@ role="navigation" aria-label="main navigation">
 <p>Com toda a calma do mundo, você saca o seu netbook, baixa a versão homologada do controle de fonte e descobre facilmente o problema, gerando um patch e recompilando o projeto.</p>
 
 <pre>
-#include &lt;windows.h&gt;
-#include &lt;stdio.h&gt;
-#include &lt;time.h&gt;
-#include &lt;stdlib.h&gt;
-void DoProcess()
-{
-    int nextNumber = rand() % 1000;
-    //bool even = nextNumber % 2;
-    bool even = !(nextNumber % 2);
-    printf(&quot;%d =&gt; %s\n&quot;, nextNumber, even ? &quot;even&quot; : &quot;odd&quot;);
-}
-int main()
-{
-    srand( time(0) );
-    while( true )
-    {
-      DoProcess();
-      Sleep(3000);
-    }
-}
- 
+   #include &lt;windows.h&gt;
+   #include &lt;stdio.h&gt;
+   #include &lt;time.h&gt;
+   #include &lt;stdlib.h&gt;
+   void DoProcess()
+   {
+       int nextNumber = rand() % 1000;
+       //bool even = nextNumber % 2;
+       bool even = !(nextNumber % 2);
+       printf(&quot;%d =&gt; %s\n&quot;, nextNumber, even ? &quot;even&quot; : &quot;odd&quot;);
+   }
+   int main()
+   {
+       srand( time(0) );
+       while( true )
+       {
+         DoProcess();
+         Sleep(3000);
+       }
+   }
+</pre>
 <p>Feliz da vida, avisa o seu chefe que a única coisa que precisam trocar é o serviço crítico. Parar, trocar o arquivo, reiniciar o serviço. Simples.</p>
 
 <p>Porém, ele lhe avisa que esse é um serviço crítico, que não pode parar por nenhum segundo sequer. A atualização terá que ser feita sem parar o ciclo ininterrupto de pares/ímpares chegando do gerador de números randômicos.</p>
@@ -587,15 +587,15 @@ int main()
 
 <p>Aqui estamos nós de novo. Mais uma vez a Tempo Real Eventos irá organizar esse evento de final de ano. E mais uma vez, junto dos meus amigos, irei palestrar sobre um item indispensável no nécessaire de todo escovador de bits: assembly gerado pelo compilador. Vamos falar brevemente sobre o funcionamento de um código assembly 32 bits e passar para a análise dos compiladores modernos e o que eles fazem para tornar o código ainda mais rápido do que o próprio fonte em C++.</p>
 
-<p>  * Gerando código assembly;</p>
+<ul><li>Gerando código assembly;</li>
 
-<p>  * Guia ultra-rápido de assembly;</p>
+<li>Guia ultra-rápido de assembly;</li>
 
-<p>  * Recursividade sem problemas na pilha;</p>
+<li>Recursividade sem problemas na pilha;</li>
 
-<p>  * STL aumenta performance? (exemplos práticos);</p>
+<li>STL aumenta performance? (exemplos práticos);</li>
 
-<p>  * Assembly 64 bits.</p>
+<li>Assembly 64 bits.</li></ul>
 
 <p>Uma outra dúvida pertinente (e discutida nos bares nerds da cidade) é se usar código STL não deixaria mais lento o resultado final, já que ele é cheio das abstrações. Por mais que autoridades competentes no funcionamento da linguagem como Pedro Lamarão e Thiago Adams digam que as otimizações do compiladores modernos na STL/Boost são diversas vezes mais eficientes que o código artesanal de um programador, sempre fica aquela pulga atrás da orelha, pulga esta que podemos matar facilmente analisando o assembly gerado. E essa confiança extra nos dará novas chances de programar coisas legais de verdade, e não ficar ensebando um código que já está na sua velocidade máxima.</p>
 
