@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="como_compilar_em_somente_um_passo" title="Como compilar em somente um passo"/></span>
+<section id="section_como_compilar_em_somente_um_passo">
+<p class="title">Como compilar em somente um passo</p>
+<span class="title-heading">Caloni, 2009-05-25 computer blog</span>
+
+<p>Uma das primeiras perguntas do <a href="http://brazil.joelonsoftware.com/Articles/TheJoelTest.html">teste do Joel</a> é saber se você pode compilar todo o projeto em apenas um passo. Essa é uma questão essencial e um desafio para muitas equipes. Perdem-se horas sagradas para gerar um novo Release.</p>
+
+<p>Compilação automática geralmente está disponível nas ferramentas de desenvolvimento. Se você estiver usando o Visual Studio, por exemplo, é possível fazer isso com uma linha:</p>
+
+<pre>
+   devenv minha-solução.sln /Rebuild Release
+</pre>
+<p>Se não for exatamente o que você precisa, basta fazer uma <a href="http://www.google.com/search?q=visual%20studio%20automatic%20build">pesquisa de quinze minutos</a> e encontrar os parâmetros corretos. O objetivo é: eu rodo esse comando em cima do projeto inteiro em uma máquina zerada e ele simplesmente compila.</p>
+
+<h4>Múltiplas soluções</h4>
+
+<p>É lógico que ter apenas um solution ou workspace para guardar projetos médios e grandes é inviável. Demora para carregar no ambiente e possuem dezenas de dependências. Isso já foi tentado duas vezes nas duas empresas em que trabalhei e não funcionou. Talvez por isso seja necessário criar um _script_ que rode o comando acima para todas as soluções do projeto, o que não muda muito o _modus operandi_ da coisa:</p>
+
+<pre>
+   call :Build ..\Libraries\Libraries.sln
+   call :Build ..\Services\Services.sln
+   call :Build ..\Drivers\Drivers.sln
+   call :Build ..\Tools\Tools.sln
+   goto :eof
+   :Build
+   echo %1...
+   devenv &quot;%1&quot; /Rebuild Release
+   exit /b %errorlevel%
+</pre>
+<p>Note que meu script usa a estrutura padronizada dos diretórios de um projeto, onde cada tipo de componente tem sua pasta e solução.</p>
+
+<p>Aos poucos você pode ir colocando "frescurinhas" em seu build (executa Debug e Release, roda automatizado no servidor, faz testes unitários, incrementa o número da versão, ...), mas algumas premissas sempre se mantêm:</p>
+
+<ul><li>Deve ser possível compilar o projeto inteiro em um passo</li>
+
+<li>Deve ser possível usar qualquer máquina de desenvolvimento para isso</li></ul>
+
+<p>Regras simples de ser seguidas se você usar sempre a máxima do <a href="http://en.wikipedia.org/wiki/KISS_principle">KISS</a>.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="bugs_dificeis_de_achar.html">[bugs_dificeis_de_achar]</a>
+ <a href="a_sala_da_fila_das_threads.html">[a_sala_da_fila_das_threads]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

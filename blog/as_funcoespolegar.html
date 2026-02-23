@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="as_funcoespolegar" title="As funções-polegar"/></span>
+<section id="section_as_funcoespolegar">
+<p class="title">As funções-polegar</p>
+<span class="title-heading">Caloni, 2009-01-30 computer blog</span>
+
+<p>Como já havia dito, não há nada mais prazeroso do que ensinar a alguém os velhos truques da profissão e relembrar o porquê de tantas coisas que guardamos na cabeça sobre programação. Hoje tive a oportunidade de explicar como funcionam as funções-polegar.</p>
+
+<p>A função-polegar, uma categoria de função muito peculiar em várias APIs, possui um comportamento padrão de retorno de erros. Entre as diversas funções-polegar que conheço e uso, eis algumas que lembro de cor:</p>
+
+<ul><li>read, write (C)</li>
+
+<li>connect, send (Sockets)</li>
+
+<li>ReadFile, WriteFile, CreateProcess (Win32)</li></ul>
+
+<p>O que todas essas funções têm em comum? Bom, ignorando seu funcionamento interno ou seu objetivo, todas elas possuem um valor de retorno no estilo sim ou não, ou seja, deu certo ou não deu. Nessas funções o código de erro, o motivo da função não ter dado certo, não é retornado diretamente. É o que chamo de esquema do polegar pra cima ou polegar pra baixo. O retorno da função especifica o ângulo giratório do dedão:</p>
+
+<ul><li>ssize_t pread, ssize_t write. Retorno de -1 significa que deu algo errado.</li>
+
+<li>int connect, int send. Se retornar SOCKET_ERROR</li>
+
+<li>BOOL ReadFile, BOOL WriteFile, BOOL CreateProcess. TRUE sucesso, FALSE erro.</li></ul>
+
+<p>Por exemplo, chamamos a função ReadFile para ler um arquivo. Ela retorna FALSE. Isso significa que não deu certo nossa leitura. Por quê? Ora, não sabemos ainda. Apenas sabemos que o polegar está virado para baixo!</p>
+
+<p>Em funções nessas condições, geralmente existe uma segunda função (ou variável) que retorna o último erro que ocorreu na API, ou seja, o erro que fez com que última função chamada retornasse que algo não deu certo. Nas funções de exemplo, são usados três métodos distintos, pois estamos falando de três APIs distintas:</p>
+
+<ul><li>Variável errno</li>
+
+<li>Função WSAGetLastError</li>
+
+<li>Função GetLastError</li></ul>
+
+<p>São esses métodos que realmente retornam o porquê da função ter dado errado. E é elas que devemos chamar, eu disse devemos chamar, sempre que a função der errado. Até porque, já que o polegar está virado para baixo, temos que fazer alguma coisa para que nosso programa não morra.</p>
+
+<p>Como bem observado pelo Fernando, nem todas as funções-polegar possuem uma função para obter a causa do erro. Vide SysAllocString, ou mesmo malloc. Nesse caso, não há muito o que determinar a não ser que não foi possível alocar o recurso pedido pelo sistema. Paciência.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="windbginfo.html">[windbginfo]</a>
+ <a href="basico_do_basico_assembly.html">[basico_do_basico_assembly]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

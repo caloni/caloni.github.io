@@ -55,10 +55,10 @@ role="navigation" aria-label="main navigation">
 
 <span id="bugs_dificeis_de_achar" title="Bugs Difíceis de Achar"/></span>
 <section id="section_bugs_dificeis_de_achar">
-<p class="title"><a href="2009-06.html#bugs_dificeis_de_achar">#</a> Bugs Difíceis de Achar</p>
-<span class="title-heading">Caloni, 2009-06-18 <a href="2009-05.html#como_compilar_em_somente_um_passo">&lt;</a><a href="computer.html">computer</a><a href="2009-07.html#strings">&gt;</a><a href="2009-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_bugs_dificeis_de_achar')"><sup>[copy]</sup></a></span>
+<p class="title"><a href="2009-06.html#bugs_dificeis_de_achar">#</a> <a class="external" href="https://www.wired.com/2005/11/historys-worst-software-bugs/">Bugs Difíceis de Achar</a></p>
+<span class="title-heading">Caloni, 2009-06-18 <a href="2009-05.html#como_compilar_em_somente_um_passo">&lt;</a><a href="computer.html">computer</a><a href="2009-07.html#strings">&gt;</a> <a href="2009-06.html#programadores_de_verdade_nao_usam_java">&lt;</a><a href="blog.html">blog</a> <a href="2009-06.html#programadores_de_verdade_nao_usam_java">&lt;</a><a href="blogging.html">blogging</a><a href="2011-03.html#houaiss_no_kindle">&gt;</a><a href="2009-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_bugs_dificeis_de_achar')"><sup>[copy]</sup></a></span>
 
-<p>Saiu um artigo na Wired News sobre <a href="http://wired.com/news/technology/bugs/0,2924,69355,00.html?tw=wn_tophead_1">os piores bugs da história</a>. Entre eles estão a explosão de um oleoduto soviético em plena guerra-fria (como se não bastasse chernobyl), o primeiro worm da Internet (que se aproveita de um buffer overflow da função gets) e o famoso erro de divisão em ponto flutuante do Pentium; um erro de cálculo de cerca de 0,006% que causou um prejuízo de 457 milhões de dólares para a Intel.</p>
+<p>Saiu um artigo na Wired News sobre os piores bugs da história (2026-02-22 apenas para assinantes). Entre eles estão a explosão de um oleoduto soviético em plena guerra-fria (como se não bastasse chernobyl), o primeiro worm da Internet (que se aproveita de um buffer overflow da função gets) e o famoso erro de divisão em ponto flutuante do Pentium; um erro de cálculo de cerca de 0,006% que causou um prejuízo de 457 milhões de dólares para a Intel.</p>
 
 <p>Mas o que achei mais legal, apesar de não estar na lista, estava relacionado com o <a href="http://en.wikipedia.org/wiki/Mariner_1">Mariner 1</a>, primeira espaçonave de um programa da NASA para pesquisar Marte, Vênus e Mercúrio em võos automatizados. Mariner 1 não chegou a sair de órbita, pois houve uma falha na antena de comunicação entre módulos e um bug no programa do computador de bordo.</p>
 
@@ -81,61 +81,51 @@ role="navigation" aria-label="main navigation">
 
 <p>O tipo de erro de falta de atenção do programa da NASA lembra uma das mais duras críticas às linguagem C e C++: é fácil escrever um código errado do ponto de vista lógico mas sintaticamente correto (compilável). Alguns exemplos famosos:</p>
 
-<p>   // batata entre os iniciantes</p>
-
-<p>   if( isActived &amp;&amp; isTimeToLaunch );</p>
+<p>Batata entre os iniciantes:</p>
 
 <pre>
+   if( isActived &amp;&amp; isTimeToLaunch );
      doTheStuff();
 </pre>
-<p>   // dizem que até Brian Kernighan criticava</p>
-
-<p>   switch( value )</p>
-
-<p>   {</p>
+<p>Dizem que até Brian Kernighan criticava:</p>
 
 <pre>
+   switch( value )
+   {
      case 10: 
-        evaluateSentence();
+       evaluateSentence();
      case 11: 
-        elevenException();
+       elevenException();
+   }
 </pre>
-<p>   }</p>
-
-<p>   // programado no notepad</p>
-
-<p>   value = 12;              /* agora somos obrigados a atualizar a variável rates</p>
-
-<p>   rates = value * 8;       /* nunca apague esta linha! */</p>
-
-<p>   // mais um "top beginner"</p>
-
-<p>   if( newValue = 20 )</p>
+<p>Programado no notepad:</p>
 
 <pre>
+   value = 12;              /* agora somos obrigados a atualizar a variável rates
+   rates = value * 8;       /* nunca apague esta linha! */
+</pre>
+<p>Mais um "top beginner":</p>
+
+<pre>
+   if( newValue = 20 )
      doSpecificStuff();
 </pre>
-<p>   // infelizmente isso é muito comum</p>
-
-<p>   int calcPayment()</p>
-
-<p>   {</p>
+<p>Infelizmente isso é muito comum:</p>
 
 <pre>
+   int calcPayment()
+   {
      if( testing == true ) return 1000;
      else if( newValue &gt; 500 ) return 1500;
+   }
 </pre>
-<p>   }</p>
-
-<p>   // o perigo dos brackets opcionais</p>
-
-<p>   if( value == 12 )</p>
+<p>O perigo dos brackets opcionais:</p>
 
 <pre>
+   if( value == 12 )
      //func();
+   doSpecificStuff();
 </pre>
-<p>   doSpecificStuff();</p>
-
 <p>Dessa coleção de problemas, o compilador nos brinda com dois warnings:</p>
 
 <pre>
@@ -149,7 +139,7 @@ role="navigation" aria-label="main navigation">
 </pre>
 <p>Agora imagine o número de horas noturnas em frente ao micro que você não poderia ter economizado em sua vida se aumentasse o nível de warning e lêsse-os de vez em quando? =)</p>
 
-<h2>Mais um Bug</h2>
+<h4>Mais um Bug</h4>
 
 <p>Colaborando com a lista de bugs difíceis de achar do artigo ai vai código/piadinha:</p>
 
@@ -185,7 +175,7 @@ role="navigation" aria-label="main navigation">
 <span id="programadores_de_verdade_nao_usam_java" title="Programadores de verdade não usam Java"/></span>
 <section id="section_programadores_de_verdade_nao_usam_java">
 <p class="title"><a href="2009-06.html#programadores_de_verdade_nao_usam_java">#</a> <a class="external" href="http://www.pbm.com/~lindahl/real.programmers.html">Programadores de verdade não usam Java</a></p>
-<span class="title-heading">Caloni, 2009-06-18 <a href="2009-03.html#provas_de_conceito_yes">&lt;</a><a href="essays.html">essays</a><a href="2018-07.html#argentina_vs_franca_e_o_fim_da_geracao_dos_autistas">&gt;</a> <a href="2008-07.html#entrevista_com_o_caloni_no_do_zero_ao_mestre">&lt;</a><a href="blogging.html">blogging</a><a href="2011-03.html#houaiss_no_kindle">&gt;</a><a href="2009-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_programadores_de_verdade_nao_usam_java')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2009-06-18 <a href="2009-04.html#deixe_o_programador_programar">&lt;</a><a href="essays.html">essays</a><a href="2018-07.html#argentina_vs_franca_e_o_fim_da_geracao_dos_autistas">&gt;</a> <a href="2009-05.html#como_compilar_em_somente_um_passo">&lt;</a><a href="blog.html">blog</a><a href="2009-06.html#bugs_dificeis_de_achar">&gt;</a> <a href="2008-07.html#entrevista_com_o_caloni_no_do_zero_ao_mestre">&lt;</a><a href="blogging.html">blogging</a><a href="2009-06.html#bugs_dificeis_de_achar">&gt;</a><a href="2009-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_programadores_de_verdade_nao_usam_java')"><sup>[copy]</sup></a></span>
 
 <p>Quando era um newbie (e um wanna-be) gostava de ler o "Real Programmers Don't Use Pascal", um texto humorístico que mais me influenciou e encorajou a caminho da iluminação C/C++ do que o livro de K&amp;R. A partir dele, supunha eu, ser um "programador de verdade" era ser tudo. Ser um Quiche Eater (Comedor de Torta) não era nada. Programadores de verdade é que resolvem os problemas de verdade! Quiche Eaters são os losers que estudam os conceitos acadêmicos da ciência da computação e nunca fazem um maldito programa que preste (conhece alguém assim?).</p>
 

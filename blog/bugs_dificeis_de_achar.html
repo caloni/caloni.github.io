@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="bugs_dificeis_de_achar" title="Bugs Difíceis de Achar"/></span>
+<section id="section_bugs_dificeis_de_achar">
+<p class="title"><a class="external" href="https://www.wired.com/2005/11/historys-worst-software-bugs/">Bugs Difíceis de Achar</a></p>
+<span class="title-heading">Caloni, 2009-06-18 computer blog blogging</span>
+
+<p>Saiu um artigo na Wired News sobre os piores bugs da história (2026-02-22 apenas para assinantes). Entre eles estão a explosão de um oleoduto soviético em plena guerra-fria (como se não bastasse chernobyl), o primeiro worm da Internet (que se aproveita de um buffer overflow da função gets) e o famoso erro de divisão em ponto flutuante do Pentium; um erro de cálculo de cerca de 0,006% que causou um prejuízo de 457 milhões de dólares para a Intel.</p>
+
+<p>Mas o que achei mais legal, apesar de não estar na lista, estava relacionado com o <a href="http://en.wikipedia.org/wiki/Mariner_1">Mariner 1</a>, primeira espaçonave de um programa da NASA para pesquisar Marte, Vênus e Mercúrio em võos automatizados. Mariner 1 não chegou a sair de órbita, pois houve uma falha na antena de comunicação entre módulos e um bug no programa do computador de bordo.</p>
+
+<p>Falava-se que o bug havia sido gerado ao trocar uma vírgula por um ponto em um loop escrito em FORTRAN. Apesar de não ter sido esse o causador da falha do computador da nave do projeto Mariner, ele existiu de fato em outro projeto da NASA, o Mercury. A linha fatal no caso era essa:</p>
+
+<pre>
+   DO 17 I = 1. 10
+</pre>
+<p>É óbvio que a intenção do programador foi fazer um loop até o label 17 dez vezes, pois a instrução para isso é:</p>
+
+<pre>
+   DO 17 I = 1, 10
+</pre>
+<p>Mas pela troca da vírgula pelo ponto, e como em FORTRAN os caracteres de espaço não são significativos, a linha com o bug não representa mais um loop, mas uma atribuição a uma variável chamada "DO17I":</p>
+
+<pre>
+   DO17I = 1.10
+</pre>
+<p>Esse detalhe esdrúxulo de uma das linguagens mais famosas da época nos leva a crer que antigamente os programadores deveriam estar muito mais atentos durante a digitação de código do que os programadores de hoje em dia, com seus ambientes com verificação sintática embutida. Existe inclusive um texto humorístico de longa data comparando programadores de verdade e programadores de linguagens estruturadas como PASCAL recém-saídos da faculdade, carinhosamente citados no texto como "Quiche Eaters" (comedores de pastelão).</p>
+
+<p>O tipo de erro de falta de atenção do programa da NASA lembra uma das mais duras críticas às linguagem C e C++: é fácil escrever um código errado do ponto de vista lógico mas sintaticamente correto (compilável). Alguns exemplos famosos:</p>
+
+<p>Batata entre os iniciantes:</p>
+
+<pre>
+   if( isActived &amp;&amp; isTimeToLaunch );
+     doTheStuff();
+</pre>
+<p>Dizem que até Brian Kernighan criticava:</p>
+
+<pre>
+   switch( value )
+   {
+     case 10: 
+       evaluateSentence();
+     case 11: 
+       elevenException();
+   }
+</pre>
+<p>Programado no notepad:</p>
+
+<pre>
+   value = 12;              /* agora somos obrigados a atualizar a variável rates
+   rates = value * 8;       /* nunca apague esta linha! */
+</pre>
+<p>Mais um "top beginner":</p>
+
+<pre>
+   if( newValue = 20 )
+     doSpecificStuff();
+</pre>
+<p>Infelizmente isso é muito comum:</p>
+
+<pre>
+   int calcPayment()
+   {
+     if( testing == true ) return 1000;
+     else if( newValue &gt; 500 ) return 1500;
+   }
+</pre>
+<p>O perigo dos brackets opcionais:</p>
+
+<pre>
+   if( value == 12 )
+     //func();
+   doSpecificStuff();
+</pre>
+<p>Dessa coleção de problemas, o compilador nos brinda com dois warnings:</p>
+
+<pre>
+   warning C4390: &quot;;&quot;: empty controlled statement found; is this the intent?
+   warning C4715: &quot;calcPayment&quot;: not all control paths return a value
+</pre>
+<p>Em nível 4 (o padrão de um projeto é 3) há um warning adicional:</p>
+
+<pre>
+   warning C4706: assignment within conditional expression
+</pre>
+<p>Agora imagine o número de horas noturnas em frente ao micro que você não poderia ter economizado em sua vida se aumentasse o nível de warning e lêsse-os de vez em quando? =)</p>
+
+<h4>Mais um Bug</h4>
+
+<p>Colaborando com a lista de bugs difíceis de achar do artigo ai vai código/piadinha:</p>
+
+<pre>
+   /** 
+    * The Hitch Hiker&quot;s Guide to the Galaxy 
+    * The Answer to Life, the Universe, and Everything
+    */
+   #include &lt;iostream&gt;
+   #define SIX    1 + 5
+   #define NINE   8 + 1
+   using namespace std;
+   int main(void) {
+       cout &lt;&lt; &quot;The Answer to Life, &quot;
+               &quot;the Universe, &quot;
+               &quot;and Everything is &quot; 
+            &lt;&lt; SIX * NINE 
+            &lt;&lt; endl;
+       return EXIT_SUCCESS;
+   }
+</pre>
+<p>Esse não é pego pelos alertas dos compiladores (pelo menos não pelos que eu uso)... É um bom motivo para usar const no lugar de define em alguns casos, ou no mínimo cercar o define por parênteses "(" e ")"</p>
+
+<p>Outro bug muito comum entre iniciantes é o de templates aninhados, apesar de que compiladores mais novos lidam melhor com o bug e trazem mensagens de erro mais claras:</p>
+
+<pre>
+   list&lt;list&lt;int&gt;&gt;  // inválido no caso, é assumido o operador de stream &quot;&gt;&gt;&quot;
+   list&lt;list&lt;int&gt; &gt; // válido
+</pre>
+</section>
+
+<span style="float: left;">
+ <a href="programadores_de_verdade_nao_usam_java.html">[programadores_de_verdade_nao_usam_java]</a>
+ <a href="como_compilar_em_somente_um_passo.html">[como_compilar_em_somente_um_passo]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="a_sala_da_fila_das_threads" title="A sala da fila das threads"/></span>
+<section id="section_a_sala_da_fila_das_threads">
+<p class="title">A sala da fila das threads</p>
+<span class="title-heading">Caloni, 2009-04-17 computer blog</span>
+
+<p>Quando falei sobre <a href="a_fila_das_threads.html">a fila das threads</a>, e como cada thread espera pacientemente em uma fila até chegar sua vez de ser atendida no guichê das CPUs, também vimos como é fácil fazer caquinhas em um programa que roda paralelamente duas threads ou mais.</p>
+
+<p>Também falei que iríamos resolver esse problema, afinal de contas, temos que salvar todos aqueles programas que usam dezenas de threads trabalhando ao mesmo tempo para contar números de um até dez.</p>
+
+<p>A boa notícia é que o salvamento é mais simples do que parece: coloque todas as suas threads em uma sala trancada e deixe apenas uma chave. As threads terão que brigar para sair da sala e, depois que a vencedora sair, as outras terão que ficar esperando ela voltar.</p>
+
+<p>Confuso? Se estiver, ainda bem. Isso quer dizer que estamos novamente em um daqueles artigos com "pseudo-parábolas", a maneira mais ilustrada de explicar as coisas.</p>
+
+<p>Os SOs modernos possuem inúmeras maneiras de controlar e monitorar o acesso a recursos do sistema. Neste breve artigo irei falar apenas de um: o critical section, ou, em tradução livre, "seção crítica". O "seção" desse nome diz respeito a uma seção do programa, ou seja, um pedaço de código mesmo. Um pedaço de código crítico.</p>
+
+<p>Resumidamente, um critical section é um recurso que apenas uma thread por vez pode obter. Para que outra thread tenha acesso ao mesmo critical section, a primeira thread que o obteve deve soltá-lo. Enquanto ela não solta, as outras threads ficam paradas, esperando pela chave, na sala trancada.</p>
+
+<p>Do ponto de vista do programador o critical secton é apenas uma estrutura que é usada na chamada de quatro funções básicas: para inicializar o recurso, para entrar na seção crítica, para sair da seção crítica e para liberar o recurso, quando aquele critical section não será usado mais.</p>
+
+<p>Falando assim, parece simples. Bom, na verdade é simples, mesmo. Tudo que você precisa para corrigir o programa do artigo anterior é criar um critical section e fazer com que as threads obtenham-no antes de mexer com o contador compartilhado.</p>
+
+<pre>
+   #include &lt;windows.h&gt;
+   #include &lt;stdio.h&gt;
+   #define MAX_COUNTER 10
+   int g_counter = 0;
+   CRITICAL_SECTION g_cs;
+   DWORD WINAPI Increment()
+   {
+     DWORD tid 
+       = GetCurrentThreadId();
+     while( g_counter &lt; MAX_COUNTER )
+     {
+       // esse é o começo de nossa 
+       // seção crítica
+       // só uma thread entra
+       // por vez por aqui
+       EnterCriticalSection(&amp;g_cs);
+       int temp = g_counter;
+       temp = temp + 1;
+       Sleep(0); // indo para 
+                 // o final da fila
+       g_counter = temp;
+       // esse é o fim de nossa 
+       // seção crítica
+       // a partir dessa chamada 
+       // outra thread pode 
+       // entrar pelo começo
+       LeaveCriticalSection(&amp;g_cs);
+       printf(&quot;Counter: %d&quot;
+         &quot;\t\tThread: %d\n&quot;, 
+         temp, 
+         tid);
+     }
+     return 0;
+   }
+   int main()
+   {
+     HANDLE threads[3];
+     DWORD tids[3];
+     // precisamos inicializar 
+     // nosso recurso de 
+     // seção crítica
+     InitializeCriticalSection(&amp;g_cs);
+     for( int i = 0; i &lt; 3; ++i )
+     {
+       threads[i] 
+         = CreateThread(NULL, 
+         0, 
+         IncrementGlobalCounter, 
+         0, 
+         0, 
+         &amp;tids[i]);
+       printf(&quot;Thread %i: %d\n&quot;, 
+         i, 
+         tids[i]);
+     }
+     // aguarda as threads
+     WaitForMultipleObjects(3, 
+       threads, 
+       TRUE, 
+       INFINITE);
+     // agora precisamos liberar o 
+     // recurso de seção crítica
+     DeleteCriticalSection(&amp;g_cs);
+   }
+</pre>
+<p>Para finalizar, algo para pensar: se uma thread só consegue um critical section depois que outra thread soltá-lo, o que acontece se essa outra thread estiver esperando por outro critical section que uma thread que aguarda estiver segurando?</p>
+
+<p>Acabamos de ilustrar um procedimento muito simples para cagar completamente no código e gerar um travamento que pode demorar de horas a semanas para ser detectado e resolvido. É o conhecido deadlock. Se você não entendeu ainda, imagine que, para voltar à sala das threads, a primeira thread que saiu precisa de duas chaves; só que ela só pegou a primeira, e a segunda está dentro da sala. Para pegar a segunda chave, ela precisa entrar na sala, só que a sala está trancada pelas duas chaves!</p>
+
+<p>Deadlocks são sempre indesejáveis, e é por isso que existem diversas técnicas para tentar evitá-los. A mais conhecida é sempre obter os critical sections na mesma ordem. Dessa forma a obtenção de recursos é hierarquizada, o que impede que dois CSs estejam no mesmo nível de obtenção, evitando que duas threads distintas os obtenham.</p>
+
+<p>Espero que tenha ficado claro nossa breve explanação de como podemos controlar programas multithreading. Espero, pois a próxima tarefa é entender outros conceitos mais abstratos e virtuais, como funções virtuais e classes abstratas.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="como_compilar_em_somente_um_passo.html">[como_compilar_em_somente_um_passo]</a>
+ <a href="deixe_o_programador_programar.html">[deixe_o_programador_programar]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>
