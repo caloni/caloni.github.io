@@ -371,7 +371,7 @@ Traceback (most recent call last):
 ImportError: No module named 'google.protobuf'
 (python27) d:\src\MyFictionalPackage&gt;
 </pre>
-<p>Para fazer funcionar há um pequeno patch: criar um arquivo \_\_init\_\_.py dentro da pasta google onde está instalado o pacote do protobuf:</p>
+<p>Para fazer funcionar há um pequeno patch: criar um arquivo __init__.py dentro da pasta google onde está instalado o pacote do protobuf:</p>
 
 <pre>
 (python27) d:\src\MyFictionalPackage&gt;dir d:\deploy\python27\Lib\site-packages\google
@@ -383,7 +383,7 @@ ImportError: No module named 'google.protobuf'
 14/07/2018  14:15    &lt;DIR&gt;          protobuf
                0 File(s)              0 bytes
                3 Dir(s)  102.341.001.216 bytes free
-(python27) d:\src\MyFictionalPackage&gt;copy con d:\deploy\python27\Lib\site-packages\google\\_\_init\_\_.py
+(python27) d:\src\MyFictionalPackage&gt;copy con d:\deploy\python27\Lib\site-packages\google\__init__.py
 ^Z
         1 file(s) copied.
 (python27) d:\src\MyFictionalPackage&gt;dir d:\deploy\python27\Lib\site-packages\google
@@ -471,7 +471,7 @@ copying c:\programs\python27\DLLs\unicodedata.pyd -&gt; build\exe.win32-2.7\lib\
 d:\src\MyFictionalPackage\build\exe.win32-2.7\MyFictionalPackage.exe
 (python27) d:\src\MyFictionalPackage&gt;
 </pre>
-<p>**Nota**: conteúdo do arquivo setup.py:</p>
+<p>Nota: conteúdo do arquivo setup.py:</p>
 
 <pre>
 import sys
@@ -677,7 +677,7 @@ sed -i -e &quot;s/&lt;em&gt;//&quot; -e &quot;s/&lt;\/em&gt;//&quot; calibre_ent
 </pre>
 <h3>calibre_entries_clean.bat (limpa formatação das entradas)</h3>
 
-<p>Algumas entradas possuem o marcador **em**, que deve ser retirado antes de ordenar os títulos.</p>
+<p>Algumas entradas possuem o marcador em, que deve ser retirado antes de ordenar os títulos.</p>
 
 <pre>
 sed -i -e &quot;s/&lt;em&gt;//&quot; -e &quot;s/&lt;\/em&gt;//&quot; calibre_entries.txt
@@ -695,7 +695,7 @@ sort calibre_entries.txt &gt; calibre_entries_sorted.txt
 
 <h3>calibre_entries_to_template.bat (converte entradas da enciclopédia para o template do Calibre)</h3>
 
-<p>Essa parte do processo precisa converter as entradas no formato Título Link para entradas HTML com a tag **a**, no formato que o Calibre espera:</p>
+<p>Essa parte do processo precisa converter as entradas no formato Título Link para entradas HTML com a tag a, no formato que o Calibre espera:</p>
 
 <pre>
 sed -e &quot;s/\(^.*\) \(index.*$\)/        &lt;a href=\&quot;\2\&quot;&gt;\1&lt;\/a&gt;&lt;br\/&gt;/&quot; calibre_entries_sorted.txt &gt; calibre_template_entries.html

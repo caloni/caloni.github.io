@@ -168,11 +168,11 @@ $options = array(
 $context  = stream_context_create($options);
 $result = file_get_contents($url, false, $context);
 ?&gt;
-<p>As informações _AQUI_VAI_SUA_CHAVE_ e _AQUI_VAI_SEU_TOKEN_DE_ACESSO_ você já obteve no linque de geração de key/secret. Já o _ID_DO_CARD_ é algo que depende de em qual lista seu card está, mas felizmente também existe um shortlink único e imutável para cada card no sistema:</p>
+<p>As informações AQUI_VAI_SUA_CHAVE e AQUI_VAI_SEU_TOKEN_DE_ACESSO você já obteve no linque de geração de key/secret. Já o ID_DO_CARD é algo que depende de em qual lista seu card está, mas felizmente também existe um shortlink único e imutável para cada card no sistema:</p>
 
 <img src="/journal/img/integrando_bitbucketgithub_com_trello_xONdnSw.png"/>
 
-<p>Basta usar o ID em Base64-ou-o-que-o-valha no lugar de _ID_DO_CARD_ que já estamos OK. Depois que este código conseguir ser executado, basta ter acesso à internet que ele irá escrever "Hello, World" no cartão referenciado:</p>
+<p>Basta usar o ID em Base64-ou-o-que-o-valha no lugar de ID_DO_CARD que já estamos OK. Depois que este código conseguir ser executado, basta ter acesso à internet que ele irá escrever "Hello, World" no cartão referenciado:</p>
 
 <img src="/journal/img/integrando_bitbucketgithub_com_trello_rbCigTV.png"/>
 
@@ -186,7 +186,7 @@ $result = file_get_contents($url, false, $context);
 
 <p>Lembre-se de colocar seu código PHP em um servidor visível na web. Lembre-se também de usar o método de envio urlencoded do payload para simplificar seu tratamento. Para simplificar ainda mais o processo, coloque qualquer coisa no segredo (não validaremos neste post, mas #ficadica de segurança se você não quer que outros acessem seu PHP inadvertidamente).</p>
 
-<p>Pois bem. No código que irá receber o payload do GitHub precisamos de duas coisas: saber qual <a href="https://developer.github.com/webhooks/">a estrutura que vai ser recebida</a> e _como localizar o id do card onde iremos enviar a informação_. Nesse caso, mais uma vez, para simplificar, vamos procurar pelo próprio linque permanente do cartão na mensagem do commit. Aliás, doS commitS (sendo um push, é provável que o evento seja gerado com diversos commits aninhados).</p>
+<p>Pois bem. No código que irá receber o payload do GitHub precisamos de duas coisas: saber qual <a href="https://developer.github.com/webhooks/">a estrutura que vai ser recebida</a> e como localizar o id do card onde iremos enviar a informação. Nesse caso, mais uma vez, para simplificar, vamos procurar pelo próprio linque permanente do cartão na mensagem do commit. Aliás, doS commitS (sendo um push, é provável que o evento seja gerado com diversos commits aninhados).</p>
 
 <pre>
 &lt;?php
@@ -227,7 +227,7 @@ foreach( $pushData-&gt;commits as $c )
 
 <img src="/journal/img/integrando_bitbucketgithub_com_trello_vVmuKb7.png"/>
 
-<h2>_Adendo: BitBucket_</h2>
+<h2>Adendo: BitBucket</h2>
 
 <p>A única coisa que muda no caso do <a href="http://www.bitbucket.org">BitBucket</a> é a tela onde deve ser inserido seu webhook (método POST, sempre) e a estrutura JSon que é enviada. De lambuja, eis o que deve ser feito com esse payload:</p>
 

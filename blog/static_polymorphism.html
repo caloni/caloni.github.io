@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="static_polymorphism" title="Static Polymorphism"/></span>
+<section id="section_static_polymorphism">
+<p class="title">Static Polymorphism</p>
+<span class="title-heading">Caloni, 2009-07-10 computer english blog</span>
+
+<p>To explain the polymorphism nothing is better than see how stuff used to be. If you were a twenty old C programmer in the past and created the following functions:</p>
+
+<pre>
+int sum(int x, int y);
+double sum(double x, double y);
+int main()
+{
+    int zi = sum(2, 3);
+    double zd = sum(2.5, 3.4);
+    return 0;
+}
+</pre>
+<p>Immediately the compiler would blame you about the following errors:</p>
+
+<pre>
+   overload.c
+   overload.c(2) : warning C4028: formal parameter 1 different from declaration
+   overload.c(2) : warning C4028: formal parameter 2 different from declaration
+   overload.c(2) : error C2371: 'sum' : redefinition; different basic types
+           overload.c(1) : see declaration of 'sum'
+</pre>
+<p>This happens because in C the identifiers are unique into the scope. This is the reason why the following code is wrong also:</p>
+
+<pre>
+int main()
+{
+    int x = 0;
+    int x = 1;
+    return 0;
+}
+   overload.c
+   overload.c(5) : error C2374: 'x' : redefinition; multiple initialization
+           overload.c(4) : see declaration of 'x'
+</pre>
+<p>Back to the 90's, this is also wrong in C++. Even for a logic issue: how the compiler can pick a variable if we're using the same name for both of them?</p>
+
+<p>Even though, there's a little trick to stop the ambiguity when we talk about functions: the parameters that they receives.</p>
+
+<pre>
+int sum(int x, int y);
+double sum(double x, double y);
+int main()
+{
+    int zi = sum(2, 3); // two int's: call sum(int, int)
+    double zd = sum(2.5, 3.4); // two double's: it can only be sum(double, double)
+    return 0;
+}
+   C:\Tests&gt;cl /c overload.cpp
+   Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 13.10.6030 for 80x86
+   Copyright (C) Microsoft Corporation 1984-2002. All rights reserved.
+   overload.cpp
+   C:\Tests&gt;
+</pre>
+<p>This allowed in C++ the creation of static overload, that is exactly this: to call a function not just by its name, but also to match its signature, the number and the type of the received parameters. We call static because this is done just by the compiler, not creating any overhead during the execution.</p>
+
+<p>Among the most common uses some are as it follows:</p>
+
+<p>Functions with the same name treating different parameters;</p>
+
+<pre>
+   sum(int, int);
+   sum(double, double);
+</pre>
+<p>Obs.: This ignores, of course, the templates usefulness.</p>
+
+<p>New version of the same fuction with addictional parameters;</p>
+
+<pre>
+   export_data(void* buffer, int size);
+   export_data(void* buffer, int size, unsigned long options);
+</pre>
+<p>Same method name to set and get the value of a class property;</p>
+
+<pre>
+   Class::Property(int x); // setter
+   int x Class::Property() const; // getter
+</pre>
+<p>Well, whatever your imagination and needs demand =)</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="name_mangling.html">[name_mangling]</a>
+ <a href="polimorfismo_estatico.html">[polimorfismo_estatico]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

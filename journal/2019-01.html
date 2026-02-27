@@ -109,7 +109,7 @@ role="navigation" aria-label="main navigation">
 
 <p>Depois de um mês de correção e mais um ou dois meses preparando um compilado do que ocorreu no software que estamos mantendo, foi descoberta uma situação muito peculiar que ocorre tanto em Windows XP quanto no Windows 10, mas que no 10 tem uma correção bem-educada e no XP... bom, nem tanto.</p>
 
-<p>O problema ocorreu em um uso padrão do Boost.Asio de modo assíncrono. Sem querer entrar muito em código nesse momento -- que teve como base nosso projeto de servidor de requisições mais rápido do universo, o **motherforker** -- se trata apenas de um listening que usa spawn de um lambda para tratar os accepts e dentro dele cria processos, redirecionando sua entrada e saída.</p>
+<p>O problema ocorreu em um uso padrão do Boost.Asio de modo assíncrono. Sem querer entrar muito em código nesse momento -- que teve como base nosso projeto de servidor de requisições mais rápido do universo, o motherforker -- se trata apenas de um listening que usa spawn de um lambda para tratar os accepts e dentro dele cria processos, redirecionando sua entrada e saída.</p>
 
 <pre>
 // pseudocode
@@ -122,7 +122,7 @@ void Acceptor::doAccept()
     }
 }
 </pre>
-<p>Nas entranhas do Boost.Asio na implementação para Windows o accept utiliza a API AcceptEx, que já cria o socket cliente antes mesmo da conexão ser fechada. Se trata de uma operação de IO assíncrono como os que tem no Windows: faz tudo que é necessário fazer e é responsabilidade do programa verificar se houve IO (de maneira síncrona ou assíncrona). No caso do Asio a maneira de verificar é via checagem do handle de completion durante os momentos de idle do **io_service**.</p>
+<p>Nas entranhas do Boost.Asio na implementação para Windows o accept utiliza a API AcceptEx, que já cria o socket cliente antes mesmo da conexão ser fechada. Se trata de uma operação de IO assíncrono como os que tem no Windows: faz tudo que é necessário fazer e é responsabilidade do programa verificar se houve IO (de maneira síncrona ou assíncrona). No caso do Asio a maneira de verificar é via checagem do handle de completion durante os momentos de idle do io_service.</p>
 
 <pre>
 BOOL AcceptEx(
@@ -189,9 +189,9 @@ ClientSocket = socket(result-&gt;ai_family, result-&gt;ai_socktype, result-&gt;a
 
 <li>Escrita no socket cliente do segundo request enquanto o primeiro request ainda não foi finalizado.</li>
 
-<li>**BUG**: Cliente do segundo request não recebe sua resposta.</li>
+<li>BUG: Cliente do segundo request não recebe sua resposta.</li>
 
-<li>**RESULTADO ESPERADO**: Que o cliente do primeiro request não interferisse no segundo.</li>
+<li>RESULTADO ESPERADO: Que o cliente do primeiro request não interferisse no segundo.</li>
 
 <li>Detalhe: Cliente do segundo requeste recebe eventualmente sua resposta após o primeiro request terminar.</li></ul>
 
@@ -207,7 +207,7 @@ ClientSocket = socket(result-&gt;ai_family, result-&gt;ai_socktype, result-&gt;a
 
 <p>A terceira solução encontrada durante a compilação deste artigo é usar em vez da função socket, que não dá o controle sobre herança de handle, a função WSASocketW, onde existe um argumento dwFlags em que é possível passar o valor WSA_FLAG_NO_HANDLE_INHERIT (0x80), onde o handle do socket não será criado com a flag de herdável. Dessa forma apenas o socket cliente não se torna herdável e com isso o primeiro request não trava o segundo. A vantagem dessa correção é que ela é pontual no código e é de uma API já antiga, portanto compatível com todos os Windows.</p>
 
-<p>**Update (2019-01-07)**: Na verdade a flag de não-herança do socket só passou a existir no Windows 7 com SP1, o que inviabiliza essa solução para Windows Vista e XP, como previamente foi dito.</p>
+<p>Update (2019-01-07): Na verdade a flag de não-herança do socket só passou a existir no Windows 7 com SP1, o que inviabiliza essa solução para Windows Vista e XP, como previamente foi dito.</p>
 
 <img src="/journal/img/bug_boost_asio_acceptex_winsock_FUrSKg2.png"/>
 
@@ -217,7 +217,7 @@ ClientSocket = socket(result-&gt;ai_family, result-&gt;ai_socktype, result-&gt;a
 
 <p>Já para o Boost.Asio será necessário um estudo de impacto e o envio de uma proposta de correção (ou uso de um patch em que a criação do socket cliente deve ser feita sem herança). Isso pode potencialmente quebrar o funcionamento de outros tipos de programas que dependem direta ou indiretamente da herança de todos os sockets, ou talvez o Boost.Asio tenha uma maneira educada de entregar o controle da criação de sockets dependente de implementação. Eu não sei. Este é um próximo passo da pesquisa.</p>
 
-<p>**Update (2019-01-07)**: Embora use a função WSASocketW o Boost.Asio não suporta a parametrização das flags, e sua implementação não é sobrecarregável, fazendo parte do namespace socket_opt. Foi criado <a href="https://github.com/boostorg/asio/issues/190">um issue</a> no GitHub do projeto Boost.Asio para ver os comentários e colocações da equipe. No aguardo.</p>
+<p>Update (2019-01-07): Embora use a função WSASocketW o Boost.Asio não suporta a parametrização das flags, e sua implementação não é sobrecarregável, fazendo parte do namespace socket_opt. Foi criado <a href="https://github.com/boostorg/asio/issues/190">um issue</a> no GitHub do projeto Boost.Asio para ver os comentários e colocações da equipe. No aguardo.</p>
 
 </section><hr/>
 

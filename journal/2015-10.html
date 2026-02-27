@@ -470,7 +470,7 @@ rc_new_content = re.sub(u'^.*FILEVERSION.*$', file_version_string, rc_new_conten
 
 <h3>Indexando símbolos e binários</h3>
 
-<p>Outro detalhe de binários é que eles vivem sendo sobrescritos. Todo "Project, Build" sobrescreve o binário anterior, que pode ter sido justamente o enviado para o cliente. Se o cliente não possuir nenhum procedimento de armazenamento de versões dos binários gerados (às vezes ele nem precisa, essa é nossa função) não há como obter os símbolos de binários que podem gerar problemas futuros (todo _software_ tem bug).</p>
+<p>Outro detalhe de binários é que eles vivem sendo sobrescritos. Todo "Project, Build" sobrescreve o binário anterior, que pode ter sido justamente o enviado para o cliente. Se o cliente não possuir nenhum procedimento de armazenamento de versões dos binários gerados (às vezes ele nem precisa, essa é nossa função) não há como obter os símbolos de binários que podem gerar problemas futuros (todo software tem bug).</p>
 
 <p>Para resolver isso, o mínimo que se deve fazer é super-simples e nada difícil: crie uma pasta em algum lugar, nomeie essa pasta seu servidor de símbolos, a cada novo binário que será entregue, indexe o binário e os seus símbolos. Como? Com o <a href="https://msdn.microsoft.com/en-us/library/windows/hardware/ff551063(v=vs.85">"Debugging Tools for Windows"</a>, como dizia um amigo meu, é mamão com açúcar:</p>
 
@@ -493,7 +493,7 @@ Windows Registry Editor Version 5.00
 
 <img src="/journal/img/indexando_simbolos_com_rapidez_tvCCYcm.png"/>
 
-<p>Você também pode gerar o mesmo comando para EXEs, bastando realizar o mesmo passo-a-passo na pasta **exefile** em vez de **dllfile**.</p>
+<p>Você também pode gerar o mesmo comando para EXEs, bastando realizar o mesmo passo-a-passo na pasta exefile em vez de dllfile.</p>
 
 <p>Procedimentos como esse devem ser uma coisa simples, não difícil. Programadores e pessoas são preguiçosas, e precisam de algum incentivo. E nesse caso, o incentivo é: o que você vai fazer quando der um crash com um binário que você não sabe de onde veio nem qual fonte foi usado para compilá-lo? Pois é.</p>
 

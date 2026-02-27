@@ -138,13 +138,13 @@ role="navigation" aria-label="main navigation">
 
 <p>Há muito tempo atrás eu falei sobre <a href="2007-12.html#debug_remoto_no_c_builder">o depurador remoto do C++ Builder</a>, na época a ferramenta que eu mais utilizava para programar. Hoje disparado é o Visual Studio, já faz mais de uma década. Desde o VS2003 tem sido muito simples depurar remotamente. Tão simples que eu realmente esqueci que talvez algumas pessoas não saibam o quanto é útil essa ferramenta no dia-a-dia.</p>
 
-<p>É possível depurar qualquer executável, tendo seu código-fonte ou não. A diferença é que sem código você terá que olhar o assembly e se for compilado como release você pode olhar o código mas ele não fará muito sentido em alguns momentos (onde estão minhas variáveis locais?). O melhor dos mundos, é claro, é depurar um executável que você tenha os símbolos, o código e esteja compilado em **debug**. Daí o código irá falar com você da maneira mais fácil.</p>
+<p>É possível depurar qualquer executável, tendo seu código-fonte ou não. A diferença é que sem código você terá que olhar o assembly e se for compilado como release você pode olhar o código mas ele não fará muito sentido em alguns momentos (onde estão minhas variáveis locais?). O melhor dos mundos, é claro, é depurar um executável que você tenha os símbolos, o código e esteja compilado em debug. Daí o código irá falar com você da maneira mais fácil.</p>
 
 <p>É simples de achar essa opção no projeto em qualquer Visual Studio. Vá nas opções do projeto, Linker e irá encontrar em algum lugar sobre a geração do PDB. Não tenha medo de explorar as opções do projeto. Elas refletem como o XML do projeto muda (sim, é um XML). Se estiver querendo saber exatamente como ele muda, use um controle de fonte e vá experimentando.</p>
 
 <img src="/journal/img/debugger_remoto_do_visual_studio_znl7K0b.png"/>
 
-<p>Para depurar pelo Visual Studio 2003 há um programa chamado **msvcmon.exe** que deve ser copiado e executado na máquina-alvo. Ele é um executável que pode ser copiado para qualquer lugar. Junto dele devem estar duas DLLs: a **natdbgdm.dll** e a **natdbgtlnet.dll**. Se você tiver o VS2003 instalado deve achar esses arquivos em algum lugar, ou no pior dos casos no CD de instalação. Por via das dúvidas sempre há um link amigo na internet para ajudar alguém a achar o que precisa.</p>
+<p>Para depurar pelo Visual Studio 2003 há um programa chamado msvcmon.exe que deve ser copiado e executado na máquina-alvo. Ele é um executável que pode ser copiado para qualquer lugar. Junto dele devem estar duas DLLs: a natdbgdm.dll e a natdbgtlnet.dll. Se você tiver o VS2003 instalado deve achar esses arquivos em algum lugar, ou no pior dos casos no CD de instalação. Por via das dúvidas sempre há um link amigo na internet para ajudar alguém a achar o que precisa.</p>
 
 <p>Copiados esses arquivos na máquina-alvo é necessário copiar também o executável. Afinal de contas, ele irá executar remotamente! O arquivo PDB, no entanto, você só precisa guardar com você. Lembre-se que toda recompilação em Debug altera de maneira significativa o PDB, então não recompile seu projeto enquanto estiver depurando. Se for fazê-lo, troque o executável na máquina-alvo.</p>
 
@@ -175,14 +175,14 @@ Options:
         Allow &quot;abc&quot; user/group in domain &quot;xyz&quot; to connect
 C:\Tools\msvcmon-vs2003&gt;
 </pre>
-<p>Minhas opções favoritas são **-tcpip -anyuser -timeout -1**, o que libera o acesso a qualquer usuário direto por TCP/IP e o timeout da execução é infinito. All access no limits =)</p>
+<p>Minhas opções favoritas são -tcpip -anyuser -timeout -1, o que libera o acesso a qualquer usuário direto por TCP/IP e o timeout da execução é infinito. All access no limits =)</p>
 
 <pre>
 C:\Tools\msvcmon-vs2003&gt;msvcmon -tcpip -anyuser -timeout -1
 Microsoft (R) Visual C++ Remote Debug Monitor(x86) Version 7.10.3077
 Copyright (C) Microsoft Corporation 1987-2002. All rights reserved.
 Maximum number of concurrent sessions:20
-**TCP-IP Mode**
+TCP-IP Mode
 WARNING: TCP-IP mode is not a secure way to debug your application. For better
 security use msvcmon in pipe mode or the default port in the processes
 dialog to debug your application.
@@ -218,7 +218,7 @@ Waiting for Connections - everyone is allowed access
 
 <img src="/journal/img/debugger_remoto_do_visual_studio_2yUrl8z.png"/>
 
-<p>Você até já sabe qual o caminho do sucesso: **<a href="2015-03.html#o_profissional">All access to everyoooone</a>**!!! ;)</p>
+<p>Você até já sabe qual o caminho do sucesso: <a href="2015-03.html#o_profissional">All access to everyoooone</a>!!! ;)</p>
 
 <img src="/journal/img/debugger_remoto_do_visual_studio_ajBG8fM.gif"/>
 

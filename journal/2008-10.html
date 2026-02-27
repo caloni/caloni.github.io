@@ -75,7 +75,7 @@ role="navigation" aria-label="main navigation">
 
 <p>O fato é que eles fizeram isso, e agora é possível ter o WTL mais novo compilado com o WDK. E nem é tão difícil assim.</p>
 
-<p>A primeira coisa a fazer é obter o tal do WDK. Para variar um pouco, agora existe (existia) um processo de registro antes de obter acesso ao _download_, mais ou menos nos termos da Borland para baixar o C++ Builder ou Turbo Pascal ou o Developer Studio.</p>
+<p>A primeira coisa a fazer é obter o tal do WDK. Para variar um pouco, agora existe (existia) um processo de registro antes de obter acesso ao download, mais ou menos nos termos da Borland para baixar o C++ Builder ou Turbo Pascal ou o Developer Studio.</p>
 
 <blockquote>Aliás, para os que baixaram esses produtos gratuitos da Borland versão C++ e não funcionou em algumas máquinas, como foi o meu caso, está disponível para baixar uma versão mais nova; dessa vez não vi nenhum problema na compilação e depuração. Ainda.</blockquote>
 <p>Após instalado, em qualquer lugar da sua escolha, configure no seu Visual Studio o caminho de onde se encontra a pasta atl71 (ou a 30, ou a 21). Aproveite também para colocar a pasta do WTL e o diretório de LIBs:</p>
@@ -192,7 +192,7 @@ role="navigation" aria-label="main navigation">
 
 <h4>Dados conhecidos</h4>
 
-<p>Sabe-se que o PsExec consegue executar um programa remotamente, ou seja, de uma máquina para outra, outra essa que chamaremos de máquina-alvo. O programa a ser executado geralmente deve estar disponível na própria máquina-alvo (condição ideal). Além da simples execução, para aplicativos console ele permite ainda a interação como se estivéssemos executando o programa remoto em nossa própria máquina local. Ele consegue isso redirecionando sua entrada e saída, o que o torna, como nos descreve o próprio autor, um "_telnet light_":</p>
+<p>Sabe-se que o PsExec consegue executar um programa remotamente, ou seja, de uma máquina para outra, outra essa que chamaremos de máquina-alvo. O programa a ser executado geralmente deve estar disponível na própria máquina-alvo (condição ideal). Além da simples execução, para aplicativos console ele permite ainda a interação como se estivéssemos executando o programa remoto em nossa própria máquina local. Ele consegue isso redirecionando sua entrada e saída, o que o torna, como nos descreve o próprio autor, um "telnet light":</p>
 
 <pre>
    psexec \\maquina-alvo [-u admin-na-maquina-alvo] cmd.exe
@@ -210,7 +210,7 @@ role="navigation" aria-label="main navigation">
 
 <h4>Primeiro passo: reproduzir o comportamento analisado e coletar pistas</h4>
 
-<p>Já fizemos isso logo acima. Se trata apenas de observar o programa funcionando. Ao mesmo tempo em que entendemos seu _modus operandi_ coletamos pistas sobre suas entranhas. No caso do PsExec, que faz coisas além-mar, como redirecionar os _pipes_ de entrada/saída de um programa console, iremos checar a existência de algum serviço novo na máquina-alvo e arquivos novos que foram copiados, além de opcionalmente dar uma olhada no registro. Ferramentas da própria SysInternals como Process Explorer e Process Monitor também são úteis nessa análise inicial.</p>
+<p>Já fizemos isso logo acima. Se trata apenas de observar o programa funcionando. Ao mesmo tempo em que entendemos seu modus operandi coletamos pistas sobre suas entranhas. No caso do PsExec, que faz coisas além-mar, como redirecionar os pipes de entrada/saída de um programa console, iremos checar a existência de algum serviço novo na máquina-alvo e arquivos novos que foram copiados, além de opcionalmente dar uma olhada no registro. Ferramentas da própria SysInternals como Process Explorer e Process Monitor também são úteis nessa análise inicial.</p>
 
 <img src="/journal/img/como_funciona_o_psexec_lCf4KiT.png"/>
 
@@ -283,7 +283,7 @@ role="navigation" aria-label="main navigation">
    001225d8 0034002e 0x30002e
    001225dc 00000000 0x34002e
 </pre>
-<p>Uma rápida busca no Google nos informa que o _pipe _querendo ser aberto pertence à lista de _pipes _que estão sempre disponíveis nas máquinas para responder às requisições do sistema. São importantes para a comunicação entre processos (IPC, Inter Process Communication). No entanto, quem usa esse pipe é o sistema, e ele foi chamado, como pudemos ver, pela função WNetAddConnection2W.</p>
+<p>Uma rápida busca no Google nos informa que o pipe querendo ser aberto pertence à lista de pipes que estão sempre disponíveis nas máquinas para responder às requisições do sistema. São importantes para a comunicação entre processos (IPC, Inter Process Communication). No entanto, quem usa esse pipe é o sistema, e ele foi chamado, como pudemos ver, pela função WNetAddConnection2W.</p>
 
 <p>Se analisarmos mais a fundo a pilha de chamadas conseguiremos dar um olhada nos parâmetros passados. Para isso existe a opção de mostrar os argumentos passados para as funções ao exibir a pilha:</p>
 
@@ -314,7 +314,7 @@ role="navigation" aria-label="main navigation">
 </pre>
 <p>Ele tenta abrir uma conexão com a máquina-alvo em seu compartilhamento de IPC, que como já vimos serve para comunicação entre processos, até entre máquinas distintas. Dessa forma, descobrimos um dos pontos importantes no funcionamento do PsExec: ele usa o nome e senha fornecidos para abrir uma comunicação remota no compartilhamento IPC$.</p>
 
-<p>Depois sugem várias paradas ao CreateFile, de maneira que a melhor forma de acompanhar isso é colocando um "_dumpezinho_" de memória na sua parada:</p>
+<p>Depois sugem várias paradas ao CreateFile, de maneira que a melhor forma de acompanhar isso é colocando um "dumpezinho" de memória na sua parada:</p>
 
 <pre>
    0:000&gt; bp kernel32!CreateFileW &quot;du poi(@esp+4)&quot;

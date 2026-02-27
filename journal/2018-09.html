@@ -138,7 +138,7 @@ endif()
 
 <p>A integração com o Visual Studio ocorre com o uso daqueles pedaços de configuração de projetos que são as abas de propriedades. Você mesmo pode criar abas de propriedade como arquivos separados do seu vcxproj para configurações comuns a mais projetos.</p>
 
-<p>Para realizar a integração o comando é **vcpkg integrate install":</p>
+<p>Para realizar a integração o comando é vcpkg integrate install":</p>
 
 <pre>
 c:\Libs\vcpkg&gt;vcpkg.exe integrate install
@@ -154,9 +154,9 @@ CMake projects should use: &quot;-DCMAKE_TOOLCHAIN_FILE=c:/Libs/vcpkg/scripts/bu
 
 <p>O mecanismo envolve uma pasta do msbuild:</p>
 
-<p>**C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\ImportBefore\Default**</p>
+<p>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\ImportBefore\Default</p>
 
-<p>Dentro dessa pasta é colocado um desses pedaços de configuração (propriedades) chamado **vcpkg.system.props**.</p>
+<p>Dentro dessa pasta é colocado um desses pedaços de configuração (propriedades) chamado vcpkg.system.props.</p>
 
 <pre>
 &lt;Project ToolsVersion=&quot;4.0&quot; xmlns=&quot;http://schemas.microsoft.com/developer/msbuild/2003&quot;&gt;
@@ -167,14 +167,14 @@ CMake projects should use: &quot;-DCMAKE_TOOLCHAIN_FILE=c:/Libs/vcpkg/scripts/bu
   &lt;Import Condition=&quot;'$(VCLibPackagePath)' != '' and Exists('$(VCLibPackagePath).targets')&quot; Project=&quot;$(VCLibPackagePath).targets&quot; /&gt;
 &lt;/Project&gt;
 </pre>
-<p>Essa diretiva usa a pasta definida pela variável de ambiente **LOCALAPPDATA** (geralmente C:\Users\&lt;seu-usuario&gt;\AppData\Local) para localizar um outro arquivo, o **vcpkg.user.targets**.</p>
+<p>Essa diretiva usa a pasta definida pela variável de ambiente LOCALAPPDATA (geralmente C:\Users\&lt;seu-usuario&gt;\AppData\Local) para localizar um outro arquivo, o vcpkg.user.targets.</p>
 
 <pre>
 &lt;Project ToolsVersion=&quot;4.0&quot; xmlns=&quot;http://schemas.microsoft.com/developer/msbuild/2003&quot;&gt;
   &lt;Import Condition=&quot;Exists('C:\Libs\vcpkg\scripts\buildsystems\msbuild\vcpkg.targets') and '$(VCPkgLocalAppDataDisabled)' == ''&quot; Project=&quot;C:\Libs\vcpkg\scripts\buildsystems\msbuild\vcpkg.targets&quot; /&gt;
 &lt;/Project&gt;
 </pre>
-<p>No exemplo estou usando um vcpkg disponível na pasta c:\libs (que é basicamente um clone do repositório GitHub do vcpkg). Note que ele inclui automaticamente nos projetos do Visual Studio um target dentro dele, o **vcpkg\scripts\buildsystems\msbuild\vcpkg.targets**. Vejamos o que tem nele:</p>
+<p>No exemplo estou usando um vcpkg disponível na pasta c:\libs (que é basicamente um clone do repositório GitHub do vcpkg). Note que ele inclui automaticamente nos projetos do Visual Studio um target dentro dele, o vcpkg\scripts\buildsystems\msbuild\vcpkg.targets. Vejamos o que tem nele:</p>
 
 <pre>
 &lt;Project ToolsVersion=&quot;4.0&quot; xmlns=&quot;http://schemas.microsoft.com/developer/msbuild/2003&quot;&gt;
@@ -257,7 +257,7 @@ c:\Libs\vcpkg&gt;mv c:\Libs\vcpkg\installed\x86-windows\debug\lib\python36_d.lib
 </pre>
 <p>Pelo menos tudo que começar com Debug (ou Release) já entraria no filtro.</p>
 
-<p>**Update**: Essa sugestão já foi adicionada à última versão do vcpkg. É feita uma normalização do nome:</p>
+<p>Update: Essa sugestão já foi adicionada à última versão do vcpkg. É feita uma normalização do nome:</p>
 
 <pre>
   &lt;PropertyGroup Condition=&quot;'$(VcpkgEnabled)' == 'true'&quot;&gt;
@@ -298,7 +298,7 @@ c:\Libs\vcpkg&gt;mv c:\Libs\vcpkg\installed\x86-windows\debug\lib\python36_d.lib
     &lt;/ItemGroup&gt;
   &lt;/Target&gt;
 </pre>
-<p>O script executado pelo PowerShell fica em **vcpkg\scripts\buildsystems\msbuild** e recebe o TargetPath (o binário-alvo) como parâmetro e onde estão os binários instalados pelo vcpkg, e com base na saída da ferramenta dumpbin extrai as dependências do executável e as busca no diretório bin:</p>
+<p>O script executado pelo PowerShell fica em vcpkg\scripts\buildsystems\msbuild e recebe o TargetPath (o binário-alvo) como parâmetro e onde estão os binários instalados pelo vcpkg, e com base na saída da ferramenta dumpbin extrai as dependências do executável e as busca no diretório bin:</p>
 
 <pre>
 $a = $(dumpbin /DEPENDENTS $targetBinary | ? { $_ -match &quot;^    [^ ].*\.dll&quot; } | % { $_ -replace &quot;^    &quot;,&quot;&quot; })
@@ -318,7 +318,7 @@ KERNEL32.dll
 if (Test-Path &quot;$installedDir\$_&quot;) {
     deployBinary $baseTargetBinaryDir $installedDir &quot;$_&quot;
 </pre>
-<p>**Fato curioso**: no script do PowerShell existem alguns hacks para alguns pacotes, incluindo Qt.</p>
+<p>Fato curioso: no script do PowerShell existem alguns hacks para alguns pacotes, incluindo Qt.</p>
 
 <h3>CMake for the win!</h3>
 
@@ -326,7 +326,7 @@ if (Test-Path &quot;$installedDir\$_&quot;) {
 
 <img src="/journal/img/vcpkg_internals_aOHtf5a.png"/>
 
-<p>Essa parte fica em **vcpkg/scripts/cmake**. Olhe, por exemplo, como retornar a versão do Windows SDK (vcpkg_get_windows_sdk.cmake):</p>
+<p>Essa parte fica em vcpkg/scripts/cmake. Olhe, por exemplo, como retornar a versão do Windows SDK (vcpkg_get_windows_sdk.cmake):</p>
 
 <pre>
 # Returns Windows SDK number via out variable &quot;ret&quot;
@@ -388,7 +388,7 @@ c:\Libs\vcpkg&gt;vcpkg.exe create bitforge http://caloni.com.br/release/bitforge
 -- To launch an editor for these new files, run
 --     .\vcpkg edit bitforge
 </pre>
-<p>_Dica: você pode também testar ou implantar isso localmente usando Python:_</p>
+<p>Dica: você pode também testar ou implantar isso localmente usando Python:</p>
 
 <pre>
 python3 -m http.server
@@ -672,7 +672,7 @@ explicit pull_coroutine( coroutine_fn fn, attributes const&amp; attrs = attribut
 <blockquote>The default size for the reserved and initially committed stack memory is specified in the executable file header. Thread or fiber creation fails if there is not enough memory to reserve or commit the number of bytes requested. The default stack reservation size used by the linker is 1 MB. To specify a different default stack reservation size for all threads and fibers, use the STACKSIZE statement in the module definition (.def) file. The operating system rounds up the specified size to the nearest multiple of the system's allocation granularity (typically 64 KB). To retrieve the allocation granularity of the current system, use the GetSystemInfo function.</blockquote>
 <img src="/journal/img/coroutine_internals_0dMVf0k.png"/>
 
-<p>_Detalhe curioso de arquitetura x86 (32 bits): na hora de alocar, o sp (stack pointer) aponta para o final da pilha. Isso porque no x86 a **pilha cresce "para baixo"**._</p>
+<p>Detalhe curioso de arquitetura x86 (32 bits): na hora de alocar, o sp (stack pointer) aponta para o final da pilha. Isso porque no x86 a pilha cresce "para baixo".</p>
 
 <pre>
 ctx.sp = static_cast&lt; char * &gt;( limit) + ctx.size;
@@ -684,7 +684,7 @@ typedef pull_coroutine_object&lt;push_coroutine, coroutine_fn, stack_allocator&g
 void * sp = static_cast&lt;char*&gt;(stack_ctx.sp) - sizeof( object_t);
 impl_ = new (sp) object_t(boost::forward&lt;coroutine_fn&gt;(fn), attrs, detail::preallocated(sp, size, stack_ctx), stack_alloc); 
 </pre>
-<p>Bom, entrando mais a fundo na implementação de corrotinas do Boost, temos o objeto **pull_coroutine_impl**, que possui flags, ponteiro para exceção e o contexto do chamador e do chamado para se localizar.</p>
+<p>Bom, entrando mais a fundo na implementação de corrotinas do Boost, temos o objeto pull_coroutine_impl, que possui flags, ponteiro para exceção e o contexto do chamador e do chamado para se localizar.</p>
 
 <pre>
 template&lt;&gt;
@@ -696,7 +696,7 @@ protected:
     coroutine_context   *   caller_;
     coroutine_context   *   callee_;
 </pre>
-<p>O **coroutine_context** possui elementos já conhecidos de quem faz hook de função: trampolins. Ou seja, funções usadas para realizar saltos incondicionais de um ponto a outro do código independente de contexto. Na minha época de hooks isso se fazia alocando memória na heap e escrevendo o código assembly necessário para realizar o pulo, geralmente de uma colinha de uma função naked (funções naked não possuem prólogo e epílogo, que são partes do código que montam e desmontam contextos dentro da pilha, responsável pela montagem dos frames com ponto de retorno, variáveis locais, argumentos).</p>
+<p>O coroutine_context possui elementos já conhecidos de quem faz hook de função: trampolins. Ou seja, funções usadas para realizar saltos incondicionais de um ponto a outro do código independente de contexto. Na minha época de hooks isso se fazia alocando memória na heap e escrevendo o código assembly necessário para realizar o pulo, geralmente de uma colinha de uma função naked (funções naked não possuem prólogo e epílogo, que são partes do código que montam e desmontam contextos dentro da pilha, responsável pela montagem dos frames com ponto de retorno, variáveis locais, argumentos).</p>
 
 <pre>
 // class hold stack-context and coroutines execution-context
@@ -754,11 +754,11 @@ inline void push()
     if ( except_) rethrow_exception( except_);
 }
 </pre>
-<p>Com os dados disponíveis nos objetos de contexto (no exemplo do main, a variável source) é possível pelo Windbg analisar qualquer tipo de stack com o comando **k**.</p>
+<p>Com os dados disponíveis nos objetos de contexto (no exemplo do main, a variável source) é possível pelo Windbg analisar qualquer tipo de stack com o comando k.</p>
 
 <img src="/journal/img/coroutine_internals_mDcM4jk.png"/>
 
-<p>A variável de uma coroutine contém o contexto do chamador e do chamado. Quando houver a necessidade de explorar uma pilha não-ativa é preciso obter o valor de **sp** através dessa variável. Ela fica um pouco escondida, mas está lá. Acredite.</p>
+<p>A variável de uma coroutine contém o contexto do chamador e do chamado. Quando houver a necessidade de explorar uma pilha não-ativa é preciso obter o valor de sp através dessa variável. Ela fica um pouco escondida, mas está lá. Acredite.</p>
 
 <img src="/journal/img/coroutine_internals_uQ7WYl8.png"/>
 
@@ -804,7 +804,7 @@ WARNING: Stack unwind information not available. Following frames may be wrong.
 0a 00b70a30 00000000 00000000 00000000 00b70a48 coroutines_cooperative!boost::coroutines::detail::pull_coroutine_object&lt;boost::coroutines::push_coroutine&lt;void&gt;,void,void (__cdecl*)(boost::coroutines::push_coroutine&lt;void&gt; &amp;),boost::coroutines::basic_standard_stack_allocator&lt;boost::coroutines::stack_traits&gt; &gt;::`vftable'
 .detach
 </pre>
-<p>_Dica: É importante detachar do processo, mesmo que estejamos analisando em modo não-invasivo, porque a porta de Debug pode ser ocupada e o Visual Studio vai ficar pra sempre esperando receber eventos de debug que ele não vai mais receber._</p>
+<p>Dica: É importante detachar do processo, mesmo que estejamos analisando em modo não-invasivo, porque a porta de Debug pode ser ocupada e o Visual Studio vai ficar pra sempre esperando receber eventos de debug que ele não vai mais receber.</p>
 
 <p>Após rodarmos novamente o programa ele pára no main. Podemos atachar com o WinDbg quantas vezes precisarmos:</p>
 

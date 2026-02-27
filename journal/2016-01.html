@@ -255,7 +255,7 @@ int main()
    obj.MeuMetodo(); // o contexto é obj, uma instância de MinhaClasse
 }
 </pre>
-<p>Para obter esse contexto, existe uma palavra-chave reservada dentro dos métodos que é o __this__, que está tão incrustado na linguagem que não precisa ser usado explicitamente: quando referenciamos alguma propriedade (ou um outro método) da classe, só pelo fato de estarmos dentro de um método o compilador já entende que se trata do mesmo objeto, ou mesmo contexto.</p>
+<p>Para obter esse contexto, existe uma palavra-chave reservada dentro dos métodos que é o this, que está tão incrustado na linguagem que não precisa ser usado explicitamente: quando referenciamos alguma propriedade (ou um outro método) da classe, só pelo fato de estarmos dentro de um método o compilador já entende que se trata do mesmo objeto, ou mesmo contexto.</p>
 
 <pre>
 class MinhaClasse
@@ -271,7 +271,7 @@ void MinhaClasse::MeuMetodo()
    MeuOutroMetodo(); // ou seja: this-&gt;MeuOutroMetodo();
 }
 </pre>
-<p>E contexto nesse sentido nada mais é que um endereço na memória para alguma coisa que nos interessa. Tal qual uma função API do Windows -- tal qual <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa364418(v=vs.85">FindFirstFile</a> -- que recebe ou retorna uma __struct__ com o que precisamos, esse geralmente é o contexto procurado.</p>
+<p>E contexto nesse sentido nada mais é que um endereço na memória para alguma coisa que nos interessa. Tal qual uma função API do Windows -- tal qual <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/aa364418(v=vs.85">FindFirstFile</a> -- que recebe ou retorna uma struct com o que precisamos, esse geralmente é o contexto procurado.</p>
 
 <pre>
 WIN32_FIND_DATA findData;
@@ -293,7 +293,7 @@ HANDLE MyFindFirstFile(const char* pattern, LPWIN32_FIND_DATA findData)
    findData-&gt;dwFileAttributes = FILE_ATTRIBUTE_ENCRYPTED;
    //...
 </pre>
-<p>Tal como uma __struct__ que definimos, ela vira o contexto. Da mesma forma, um objeto de uma classe em C++ é esse contexto. Podemos fazer a mesma coisa em C, com o trabalho adicional de especificar o "this" (isto é, o ponteiro para o contexto/struct):</p>
+<p>Tal como uma struct que definimos, ela vira o contexto. Da mesma forma, um objeto de uma classe em C++ é esse contexto. Podemos fazer a mesma coisa em C, com o trabalho adicional de especificar o "this" (isto é, o ponteiro para o contexto/struct):</p>
 
 <pre>
 struct MinhaClasse
@@ -316,7 +316,7 @@ void MinhaClasse_MeuMetodo(MinhaClasse* pThis)
 <p class="title"><a href="2016-01.html#classe_objeto_contexto_metodo">#</a> Classe, objeto, contexto, método</p>
 <span class="title-heading">Caloni, 2016-01-11 <a href="2016-01.html#classe_objeto_contexto">&lt;</a><a href="computer.html">computer</a><a href="2016-01.html#classe_objeto_contexto_metodo_polimorfismo">&gt;</a> <a href="2016-01.html#classe_objeto_contexto">&lt;</a><a href="ccpp.html">ccpp</a><a href="2016-01.html#classe_objeto_contexto_metodo_polimorfismo">&gt;</a><a href="2016-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_classe_objeto_contexto_metodo')"><sup>[copy]</sup></a></span>
 
-<p>No <a href="2016-01.html#classe_objeto_contexto">post anterior</a> falamos como a passagem de um endereço de uma struct consegue nos passar o contexto de um "objeto", seja em C (manualmente) ou em C++ (automagicamente pelo operador implícito __this__). Trocamos uma propriedade desse "objeto" em C, mas ainda não chamamos um método.</p>
+<p>No <a href="2016-01.html#classe_objeto_contexto">post anterior</a> falamos como a passagem de um endereço de uma struct consegue nos passar o contexto de um "objeto", seja em C (manualmente) ou em C++ (automagicamente pelo operador implícito this). Trocamos uma propriedade desse "objeto" em C, mas ainda não chamamos um método.</p>
 
 <p>Hoje faremos isso.</p>
 
@@ -379,7 +379,7 @@ int main()
 
 <img src="/journal/img/classe_objeto_contexto_metodo_JLJaAsB.png"/>
 
-<p>Parece muito trabalho para algo que é feito "automagicamente" em C++, certo? Certo. Porém, agora sabemos o que acontece por baixo dos panos em C++ e que pode ser feito em C (ainda que "na mão"). Você provavelmente nunca fará esse tipo de código em C para emular C++, mas o objetivo desse código é entender como funciona, por exemplo, a _vtable_ do C++, que permite polimorfismo.</p>
+<p>Parece muito trabalho para algo que é feito "automagicamente" em C++, certo? Certo. Porém, agora sabemos o que acontece por baixo dos panos em C++ e que pode ser feito em C (ainda que "na mão"). Você provavelmente nunca fará esse tipo de código em C para emular C++, mas o objetivo desse código é entender como funciona, por exemplo, a vtable do C++, que permite polimorfismo.</p>
 
 <p>Mas esse é assunto para <a href="2016-01.html#classe_objeto_contexto_metodo_polimorfismo">outro post</a>.</p>
 
@@ -409,7 +409,7 @@ int main()
 <p class="title"><a href="2016-01.html#classe_objeto_contexto_metodo_polimorfismo">#</a> Classe, objeto, contexto, método, polimorfismo</p>
 <span class="title-heading">Caloni, 2016-01-12 <a href="2016-01.html#classe_objeto_contexto_metodo">&lt;</a><a href="computer.html">computer</a><a href="2016-01.html#gabaritos">&gt;</a> <a href="2016-01.html#classe_objeto_contexto_metodo">&lt;</a><a href="ccpp.html">ccpp</a><a href="2016-01.html#gabaritos">&gt;</a><a href="2016-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_classe_objeto_contexto_metodo_polimorfismo')"><sup>[copy]</sup></a></span>
 
-<p>No <a href="2016-01.html#classe_objeto_contexto_metodo">post anterior</a> implementamos "métodos" em C usando ponteiros de função dentro de structs que eram passadas como parâmetro. Tudo isso embutido por um compilador que gera o que chamamos de instância de uma classe, ou objeto, em C++. Isso é possível graças ao contexto que é passado para uma função (que no caso de C++ é o operador implícito __this__, que sempre existe dentro de um método não-estático).</p>
+<p>No <a href="2016-01.html#classe_objeto_contexto_metodo">post anterior</a> implementamos "métodos" em C usando ponteiros de função dentro de structs que eram passadas como parâmetro. Tudo isso embutido por um compilador que gera o que chamamos de instância de uma classe, ou objeto, em C++. Isso é possível graças ao contexto que é passado para uma função (que no caso de C++ é o operador implícito this, que sempre existe dentro de um método não-estático).</p>
 
 <pre>
 ClasseCpp obj;
@@ -418,7 +418,7 @@ ClasseC obj;
 obj.Metodo = ClasseC_Metodo;
 obj.Metodo(&amp;obj); // passando this explicitamente
 </pre>
-<p>Para objetos não-polimórficos, o C++ não precisa mudar essa tabela de funções que os objetos de uma classe contém. No entanto, quando há pelo menos um método virtual, surge a necessidade de se criar a famigerada __vtable__, ou seja, justamente uma tabela de ponteiros de função, que dependem da classe instanciada (base ou algumas das derivadas). Se uma classe derivada sobrescreve um método de alguma classe base, é o endereço desse método que irá existir na _vtable_. Já vimos isso <a href="2011-03.html#vtable">há muito tempo atrás</a> escovando os bits da vtable direto no assembly e na pilha.</p>
+<p>Para objetos não-polimórficos, o C++ não precisa mudar essa tabela de funções que os objetos de uma classe contém. No entanto, quando há pelo menos um método virtual, surge a necessidade de se criar a famigerada vtable, ou seja, justamente uma tabela de ponteiros de função, que dependem da classe instanciada (base ou algumas das derivadas). Se uma classe derivada sobrescreve um método de alguma classe base, é o endereço desse método que irá existir na vtable. Já vimos isso <a href="2011-03.html#vtable">há muito tempo atrás</a> escovando os bits da vtable direto no assembly e na pilha.</p>
 
 <pre>
 #include &lt;iostream&gt;
@@ -455,7 +455,7 @@ int main()
 </pre>
 <img src="/journal/img/classe_objeto_contexto_metodo_polimorfismo_Ye5mA8L.png"/>
 
-<p>Como você deve imaginar, é possível também fazer isso em C. Basta mudar os endereços das variáveis do tipo ponteiro de função que estão na struct usada como contexto. Para ficar o mais próximo possível do "modo C++" de fazer polimorfirmo, podemos escrever _hardcoded_ a tal _vtable_ para os diferentes tipos de "classe":</p>
+<p>Como você deve imaginar, é possível também fazer isso em C. Basta mudar os endereços das variáveis do tipo ponteiro de função que estão na struct usada como contexto. Para ficar o mais próximo possível do "modo C++" de fazer polimorfirmo, podemos escrever hardcoded a tal vtable para os diferentes tipos de "classe":</p>
 
 <pre>
 #include &lt;stdio.h&gt;
@@ -496,7 +496,7 @@ int main()
 </pre>
 <img src="/journal/img/classe_objeto_contexto_metodo_polimorfismo_tRAtU9d.png"/>
 
-<p>A versão C ainda tem a vantagem de não precisar de uma vtable const (embora seja adequado em situações normais de temperatura e pressão). Os "métodos" poderiam mudar caso algum estado mudasse, alguma exceção fosse disparada, mantendo o mesmo contexto, mas um comportamento (vtable) diferente. Quem utiliza muito essa estratégia é o _kernel_ do Windows, que mexe com estruturas que contém não apenas listas ligadas genéricas, mas funções de _callback_ que não apenas o código da Microsoft precisa chamar, mas os próprios _drivers_ de terceiros que se preocupam com bom comportamento e _guidelines_ que tornam o SO rodando perfeitamente.</p>
+<p>A versão C ainda tem a vantagem de não precisar de uma vtable const (embora seja adequado em situações normais de temperatura e pressão). Os "métodos" poderiam mudar caso algum estado mudasse, alguma exceção fosse disparada, mantendo o mesmo contexto, mas um comportamento (vtable) diferente. Quem utiliza muito essa estratégia é o kernel do Windows, que mexe com estruturas que contém não apenas listas ligadas genéricas, mas funções de callback que não apenas o código da Microsoft precisa chamar, mas os próprios drivers de terceiros que se preocupam com bom comportamento e guidelines que tornam o SO rodando perfeitamente.</p>
 
 <img src="/journal/img/classe_objeto_contexto_metodo_polimorfismo_k20fqVJ.gif"/>
 
@@ -538,7 +538,7 @@ int main()
 <p class="title"><a href="2016-01.html#gabaritos">#</a> Gabaritos</p>
 <span class="title-heading">Caloni, 2016-01-13 <a href="2016-01.html#classe_objeto_contexto_metodo_polimorfismo">&lt;</a><a href="computer.html">computer</a><a href="2016-01.html#templates_em_c_no_lugar_de_macros">&gt;</a> <a href="2016-01.html#classe_objeto_contexto_metodo_polimorfismo">&lt;</a><a href="ccpp.html">ccpp</a><a href="2016-11.html#a_linguagem_de_programacao_cpp_o_inicio">&gt;</a><a href="2016-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_gabaritos')"><sup>[copy]</sup></a></span>
 
-<p>Um __template__ -- ou, como é na tradução da primeira edição de The C++ Programming Language, de Bjarne Stroustrup, aqui no Brasil: __gabarito__ -- é um molde que pode ser usado por diferentes tipos para traduzir o mesmo algoritmo, ou pelo menos a mesma intenção de algoritmo (por pela sobrecarga de operadores é possível que o comportamento de tipos diferentes pode ser diferente).</p>
+<p>Um template -- ou, como é na tradução da primeira edição de The C++ Programming Language, de Bjarne Stroustrup, aqui no Brasil: gabarito -- é um molde que pode ser usado por diferentes tipos para traduzir o mesmo algoritmo, ou pelo menos a mesma intenção de algoritmo (por pela sobrecarga de operadores é possível que o comportamento de tipos diferentes pode ser diferente).</p>
 
 <p>Em C++, fazer uma função template é muito simples:</p>
 
@@ -560,13 +560,13 @@ int main()
 </pre>
 <img src="/journal/img/gabaritos_84Ptrvk.png"/>
 
-<p>Continuando nosso tema de fazer as mesmas coisas em C, __templates__ não é tão simples, pois não existe de fato na linguagem. Templates são interpretados pelo compilador, que gera um esqueleto de algoritmo que é usado para preencher código de todos os tipos utilizados. Em C isso era feito usando macros. Porém, macros não fazem parte da linguagem C. É apenas uma ferramenta chamada pré-processador que substitui texto antes do programa ser compilado. É através do pré-processador que, por exemplo, os headers são incluídos em um código-fonte. Isso já foi explicado em um <a href="2008-02.html#os_diferentes_erros_na_linguagem_c">artigo</a> bem velhinho, e mais recentemente em uma <a href="2015-01.html#entendendo_a_compilacao">palestra</a>.</p>
+<p>Continuando nosso tema de fazer as mesmas coisas em C, templates não é tão simples, pois não existe de fato na linguagem. Templates são interpretados pelo compilador, que gera um esqueleto de algoritmo que é usado para preencher código de todos os tipos utilizados. Em C isso era feito usando macros. Porém, macros não fazem parte da linguagem C. É apenas uma ferramenta chamada pré-processador que substitui texto antes do programa ser compilado. É através do pré-processador que, por exemplo, os headers são incluídos em um código-fonte. Isso já foi explicado em um <a href="2008-02.html#os_diferentes_erros_na_linguagem_c">artigo</a> bem velhinho, e mais recentemente em uma <a href="2015-01.html#entendendo_a_compilacao">palestra</a>.</p>
 
 <pre>
 // qual o tipo de x e y? qualquer um que faça comparação
 #define MACRO(x, y) x &lt; y
 </pre>
-<p>Eu não recomendaria usar macros em C++, assim como não recomendo em C. Porém, em C é a única opção para reciclar algoritmos de maneira estática. Exceto se você usar ponteiros de função, o que adiciona pouco overhead, mas se perde, assim como a técnica de macro, a informação dos tipos. A própria libc contém uma função, <a href="http://www.cplusplus.com/reference/cstdlib/qsort/">__qsort__</a>, que é "genérica" através do uso de ponteiros sem tipo (void*) e ponteiro de função. A função ordena elementos de uma lista, mas para isso depende da função de comparação que é passada por parâmetro. Essa função recebe dois void* que deve comparar. Além disso, o leiaute na memória tem que ser fixo, contínuo, pois é assim que a função consegue mover os elementos. Ou seja, bem limitado.</p>
+<p>Eu não recomendaria usar macros em C++, assim como não recomendo em C. Porém, em C é a única opção para reciclar algoritmos de maneira estática. Exceto se você usar ponteiros de função, o que adiciona pouco overhead, mas se perde, assim como a técnica de macro, a informação dos tipos. A própria libc contém uma função, <a href="http://www.cplusplus.com/reference/cstdlib/qsort/">qsort</a>, que é "genérica" através do uso de ponteiros sem tipo (void*) e ponteiro de função. A função ordena elementos de uma lista, mas para isso depende da função de comparação que é passada por parâmetro. Essa função recebe dois void* que deve comparar. Além disso, o leiaute na memória tem que ser fixo, contínuo, pois é assim que a função consegue mover os elementos. Ou seja, bem limitado.</p>
 
 <img src="/journal/img/gabaritos_3TkGFkN.png"/>
 
@@ -616,7 +616,7 @@ typedef struct _LIST_ENTRY {
 
 <img src="/journal/img/templates_em_c_no_lugar_de_macros_865mgsu.jpg"/>
 
-<p>Ele pode estar realmente no __meio__ do elemento, pois isso não importa, desde que você saiba voltar para o começo da estrutura. Isso é útil quando um elemento pode fazer parte de diferentes listas.</p>
+<p>Ele pode estar realmente no meio do elemento, pois isso não importa, desde que você saiba voltar para o começo da estrutura. Isso é útil quando um elemento pode fazer parte de diferentes listas.</p>
 
 <pre>
 typedef struct _LIST_ENTRY {
@@ -876,7 +876,7 @@ int main()
 
 <p>Vamos testar aqui o log da nossa cobaia de plantão, o amigo Notepad (ou Bloco de Notas), exibindo um texto que demonstra com perfeição uma das minhas características mais bizarras: confundir expressões e frases prontas.</p>
 
-<p>_Nota: Lembrando que estaremos testando em Windows XP 32 bits com um WinDbg igualmente 32 bits. Inicialmente comecei a testar a versão 64, mas ela também deu xabu. Aparentemente coisas periféricas do Debugging Tools nunca são muito bem testadas._</p>
+<p>Nota: Lembrando que estaremos testando em Windows XP 32 bits com um WinDbg igualmente 32 bits. Inicialmente comecei a testar a versão 64, mas ela também deu xabu. Aparentemente coisas periféricas do Debugging Tools nunca são muito bem testadas.</p>
 
 <img src="/journal/img/log_de_apis_chamadas_direto_do_windbg_5gLF4Qd.png"/>
 
@@ -940,7 +940,7 @@ Logging disabled.
 0:004&gt; .detach
 Detached
 </pre>
-<p>Depois de gerarmos o que precisamos, podemos desatachar do processo e analisar o resultado: **um arquivo LGV**. Para abrir esse arquivo existe uma outra ferramenta chamada **logviewer**.</p>
+<p>Depois de gerarmos o que precisamos, podemos desatachar do processo e analisar o resultado: um arquivo LGV. Para abrir esse arquivo existe uma outra ferramenta chamada logviewer.</p>
 
 <img src="/journal/img/log_de_apis_chamadas_direto_do_windbg_fNq4uUu.png"/>
 
@@ -952,7 +952,7 @@ Detached
 
 <img src="/journal/img/log_de_apis_chamadas_direto_do_windbg_mNDJRhK.png"/>
 
-<p>Note, por exemplo, que houve uma falha antes na abertura do mesmo arquivo, mas isso porque houve uma tentativa de abrir um arquivo que já existe (abertura com direito de apenas leitura). Essa chamada foi feita pela DLL do diálogo comum de abertura/salvamento de arquivo do Windows (**comdlg32.dll**), e não pelo **notepad.exe**.</p>
+<p>Note, por exemplo, que houve uma falha antes na abertura do mesmo arquivo, mas isso porque houve uma tentativa de abrir um arquivo que já existe (abertura com direito de apenas leitura). Essa chamada foi feita pela DLL do diálogo comum de abertura/salvamento de arquivo do Windows (comdlg32.dll), e não pelo notepad.exe.</p>
 
 <img src="/journal/img/log_de_apis_chamadas_direto_do_windbg_p2bgEl2.png"/>
 
@@ -1008,7 +1008,7 @@ Detached
 
 <p>Enquanto estudava sobre <a href="https://en.wikipedia.org/wiki/Distributed_version_control">controle de fontes distribuído</a>, experimentei e usei os projetos Mercurial e Bazaar, precursores desse modelo que funcionavam bem em Windows. Havia o Git, mas por conta da sua evolução assimétrica, o ambiente da Microsoft havia ficado para trás.</p>
 
-<p>Hoje com o Git sendo praticamente o _mainstream_ das conversões do SubVersion, e funcionando razoavelmente bem em ambientes Windows (64 ou 32), sobraram apenas os repositórios do Mercurial e do Bazaar. Na verdade, mais do Bazaar, pois eu havia migrado já do Hg pelo Bazaar possuir algo que hoje o Git emula, mas antes era um diferencial no projeto da Canonical: detecção de rename completo (com histórico e tudo). Isso para refatoração era vital, e suporte à refatoração pesada era o que eu precisava no momento.</p>
+<p>Hoje com o Git sendo praticamente o mainstream das conversões do SubVersion, e funcionando razoavelmente bem em ambientes Windows (64 ou 32), sobraram apenas os repositórios do Mercurial e do Bazaar. Na verdade, mais do Bazaar, pois eu havia migrado já do Hg pelo Bazaar possuir algo que hoje o Git emula, mas antes era um diferencial no projeto da Canonical: detecção de rename completo (com histórico e tudo). Isso para refatoração era vital, e suporte à refatoração pesada era o que eu precisava no momento.</p>
 
 <p>Agora é hora de manter esse histórico vivo, mas convertido para o que todos usam.</p>
 
@@ -1079,7 +1079,7 @@ gvim fast-export.txt
 hack hack hack
 type fast-export.txt | git fast-import
 </pre>
-<p>_Note que talvez você precise de um editor que suporte arquivos gigantescos (como o Vim) e precise se debruçar sobre merges com arquivos com mesmo nome e diferentes cases. Isso que dá manter projetos com refactoring pesado._</p>
+<p>Note que talvez você precise de um editor que suporte arquivos gigantescos (como o Vim) e precise se debruçar sobre merges com arquivos com mesmo nome e diferentes cases. Isso que dá manter projetos com refactoring pesado.</p>
 
 <p>Por fim, faça a conversão para todos os .bzr que tiver e haverá um .git com todo o histórico desses anos usando Bazaar. O próximo passo é montar o histórico de todos eles em apenas um repositório (se assim desejar). Segue uma série de comandos que pode ajudar para usar em uma batch:</p>
 

@@ -60,7 +60,7 @@ role="navigation" aria-label="main navigation">
 <span id="strings" title="Strings"/></span>
 <section id="section_strings">
 <p class="title"><a href="2009-07.html#strings">#</a> Strings</p>
-<span class="title-heading">Caloni, 2009-07-07 <a href="2009-06.html#bugs_dificeis_de_achar">&lt;</a><a href="computer.html">computer</a><a href="2009-07.html#static_polymorphism">&gt;</a><a href="2009-07.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_strings')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2009-07-07 <a href="2009-06.html#bugs_dificeis_de_achar">&lt;</a><a href="computer.html">computer</a><a href="2009-07.html#static_polymorphism">&gt;</a> <a href="2009-05.html#meu_roteiro_c++">&lt;</a><a href="archive.html">archive</a><a href="2009-12.html#aprendendo_um_terceiro_idioma">&gt;</a><a href="2009-07.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_strings')"><sup>[copy]</sup></a></span>
 
 <p>Como já vimos centenas e centenas de vezes, memória é apenas memória até que alguém diga que isso vale alguma coisa. Em seu estado latente é o que chamamos formalmente de dados. E dados são bytes armazenados na memória.</p>
 
@@ -76,7 +76,7 @@ role="navigation" aria-label="main navigation">
 
 <p>Agora note por que tanto uma string vazia em Pascal e em C possuem os mesmos dados, mas informação diferente.</p>
 
-<p>Outras strings que não necessariamente possuem terminador nulo: std::string, UNICODESTRING.aspx), strings no kernel.</p>
+<p>Outras strings que não necessariamente possuem terminador nulo: std::string, UNICODESTRING, strings no kernel.</p>
 
 </section><hr/>
 
@@ -84,7 +84,7 @@ role="navigation" aria-label="main navigation">
 <span id="polimorfismo_estatico" title="Polimorfismo estático"/></span>
 <section id="section_polimorfismo_estatico">
 <p class="title"><a href="2009-07.html#polimorfismo_estatico">#</a> Polimorfismo estático</p>
-<span class="title-heading">Caloni, 2009-07-10 <a href="2009-07.html#static_polymorphism">&lt;</a><a href="computer.html">computer</a><a href="2009-07.html#name_mangling">&gt;</a><a href="2009-07.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_polimorfismo_estatico')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2009-07-10 <a href="2009-07.html#static_polymorphism">&lt;</a><a href="computer.html">computer</a><a href="2009-07.html#name_mangling">&gt;</a> <a href="2009-07.html#static_polymorphism">&lt;</a><a href="blog.html">blog</a><a href="2009-07.html#name_mangling">&gt;</a><a href="2009-07.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_polimorfismo_estatico')"><sup>[copy]</sup></a></span>
 
 <p>Para explicar polimorfismo, nada como ver as coisas como elas eram. Se você fosse um programador C de vinte anos atrás e criasse as seguintes funções:</p>
 
@@ -171,17 +171,17 @@ int main()
 <span id="static_polymorphism" title="Static Polymorphism"/></span>
 <section id="section_static_polymorphism">
 <p class="title"><a href="2009-07.html#static_polymorphism">#</a> Static Polymorphism</p>
-<span class="title-heading">Caloni, 2009-07-10 <a href="2009-07.html#strings">&lt;</a><a href="computer.html">computer</a><a href="2009-07.html#polimorfismo_estatico">&gt;</a> <a href="2008-08.html#antidebugging_during_the_process_attach">&lt;</a><a href="english.html">english</a><a href="2009-08.html#what_ive_been_doing_in_the_last_10_years">&gt;</a><a href="2009-07.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_static_polymorphism')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2009-07-10 <a href="2009-07.html#strings">&lt;</a><a href="computer.html">computer</a><a href="2009-07.html#polimorfismo_estatico">&gt;</a> <a href="2008-08.html#antidebugging_during_the_process_attach">&lt;</a><a href="english.html">english</a><a href="2009-08.html#what_ive_been_doing_in_the_last_10_years">&gt;</a> <a href="2009-06.html#bugs_dificeis_de_achar">&lt;</a><a href="blog.html">blog</a><a href="2009-07.html#polimorfismo_estatico">&gt;</a><a href="2009-07.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_static_polymorphism')"><sup>[copy]</sup></a></span>
 
 <p>To explain the polymorphism nothing is better than see how stuff used to be. If you were a twenty old C programmer in the past and created the following functions:</p>
 
 <pre>
-int soma(int x, int y);
-double soma(double x, double y);
+int sum(int x, int y);
+double sum(double x, double y);
 int main()
 {
-    int zi = soma(2, 3);
-    double zd = soma(2.5, 3.4);
+    int zi = sum(2, 3);
+    double zd = sum(2.5, 3.4);
     return 0;
 }
 </pre>
@@ -212,19 +212,19 @@ int main()
 <p>Even though, there's a little trick to stop the ambiguity when we talk about functions: the parameters that they receives.</p>
 
 <pre>
-int soma(int x, int y);
-double soma(double x, double y);
+int sum(int x, int y);
+double sum(double x, double y);
 int main()
 {
-    int zi = soma(2, 3); // dois tipos int: chamar soma(int, int)
-    double zd = soma(2.5, 3.4); // dois tipos double: só pode ser soma(double, double)
+    int zi = sum(2, 3); // two int's: call sum(int, int)
+    double zd = sum(2.5, 3.4); // two double's: it can only be sum(double, double)
     return 0;
 }
-   C:Tests&gt;cl /c overload.cpp
+   C:\Tests&gt;cl /c overload.cpp
    Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 13.10.6030 for 80x86
    Copyright (C) Microsoft Corporation 1984-2002. All rights reserved.
    overload.cpp
-   C:Tests&gt;
+   C:\Tests&gt;
 </pre>
 <p>This allowed in C++ the creation of static overload, that is exactly this: to call a function not just by its name, but also to match its signature, the number and the type of the received parameters. We call static because this is done just by the compiler, not creating any overhead during the execution.</p>
 
@@ -258,15 +258,23 @@ int main()
 <span id="name_mangling" title="Name mangling"/></span>
 <section id="section_name_mangling">
 <p class="title"><a href="2009-07.html#name_mangling">#</a> Name mangling</p>
-<span class="title-heading">Caloni, 2009-07-13 <a href="2009-07.html#polimorfismo_estatico">&lt;</a><a href="computer.html">computer</a><a href="2009-08.html#adplus_no_cliente_nao_voce">&gt;</a><a href="2009-07.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_name_mangling')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2009-07-13 <a href="2009-07.html#polimorfismo_estatico">&lt;</a><a href="computer.html">computer</a><a href="2009-08.html#adplus_no_cliente_nao_voce">&gt;</a> <a href="2009-07.html#polimorfismo_estatico">&lt;</a><a href="blog.html">blog</a><a href="2009-08.html#o_boot_no_windows_sem_windows">&gt;</a><a href="2009-07.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_name_mangling')"><sup>[copy]</sup></a></span>
 
 <p>A sobrecarga estática possui algumas desvantagens em relação ao sistema de nomes da boa e velha linguagem C: ela não foi padronizada entre compiladores. O que isso quer dizer na prática é que funções exportadas de bibliotecas dinâmicas (DLLs) vão possuir nomes diferentes dependendo do compilador utilizado (e sua versão). Isso é o que chamamos name mangling.</p>
 
 <p>Em dois projetos usando Visual C++ 2008 e Borland C++ Builder 5 (última versão que funciona direito) eu fiz uma exportação da função soma em linguagem C (o fonte é um .c). Veja o resultado:</p>
 
+<img src="/journal/img/name-mangling-borland-c.png"/>
+
+<img src="/journal/img/name-mangling-vcpp-c.png"/>
+
 <p>Já usando a linguagem C++ (o fonte é um .cpp) temos outro resultado totalmente diferente para nossas duas funções soma descritas no artigo anterior:</p>
 
-<p>Se quiser tentar entender essas letrinhas bizarras, recomendo baixar projetos de exemplo. Se apenas entender que você não conseguirá juntar classes VC++ e Builder usando dllexport.aspx) para tudo quanto é lado, então terminamos por aqui.</p>
+<img src="/journal/img/name-mangling-borland-cpp.png"/>
+
+<img src="/journal/img/name-mangling-vcpp-cpp.png"/>
+
+<p>Se quiser tentar entender essas letrinhas bizarras, recomendo baixar projetos de exemplo. Se apenas entender que você não conseguirá juntar classes VC++ e Builder usando dllexport para tudo quanto é lado, então terminamos por aqui.</p>
 
 </section><hr/>
 

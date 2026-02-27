@@ -294,11 +294,11 @@ int main()
 <p>O porquê isso ocorre só fica óbvio quando vemos <a href="http://www.cplusplus.com/reference/iostream/stringstream/str/">a ajuda</a> (ou a assinatura) da função str da classe stringstream:</p>
 
 <blockquote>Get/set the associated string object The first version returns a copy of the string object currently associated with the string stream buffer.</blockquote>
-<p>Ora, a função str retorna uma **cópia** do objeto string usado internamento pelo buffer de nossa string stream. Duas coisas ocorrem em qualquer cópia de um objeto retornada por uma função:</p>
+<p>Ora, a função str retorna uma cópia do objeto string usado internamento pelo buffer de nossa string stream. Duas coisas ocorrem em qualquer cópia de um objeto retornada por uma função:</p>
 
 <ul><li>A cópia do objeto original e seu desacoplamento (óbvio).</li>
 
-<li>A construção de um objeto baseado no original e que, após o fim da expressão onde foi chamado o método, **é destruído**.</li></ul>
+<li>A construção de um objeto baseado no original e que, após o fim da expressão onde foi chamado o método, é destruído.</li></ul>
 
 <p>Uma vez que a chamada a str termina, é entregue uma instância de uma string que contém a string original que está sendo usada pela string stream para a expressão da chamada, que geralmente vem seguida de uma cópia:</p>
 
@@ -311,7 +311,7 @@ int main()
 </pre>
 <p>A variável buf no exemplo acima será, portanto, a terceira string usada aqui até então. Ao final da expressão, a string intermediária retornada por str é automaticamente destruída, por se trata de uma cópia temporária para obedecer a sintaxe de retorno da função.</p>
 
-<p>Agora, o que acontece se, **na cópia temporária**, é feita uma operação para obter seu ponteiro interno usado para armazenar sua string estilo C?</p>
+<p>Agora, o que acontece se, na cópia temporária, é feita uma operação para obter seu ponteiro interno usado para armazenar sua string estilo C?</p>
 
 <p>Obviamente ele fica inválido após o fim da expressão!</p>
 

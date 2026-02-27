@@ -343,7 +343,7 @@ role="navigation" aria-label="main navigation">
 </pre>
 <p>Show.</p>
 
-<p>Mas o que acontece se eu precisar no momento do refactory (**que deve, sim, existir**) eu decidir remover meus arquivos inúteis?</p>
+<p>Mas o que acontece se eu precisar no momento do refactory (que deve, sim, existir) eu decidir remover meus arquivos inúteis?</p>
 
 <p>Continuo compilando normalmente o projeto, mas na hora de depurar...</p>
 
@@ -351,11 +351,11 @@ role="navigation" aria-label="main navigation">
 
 <p>Mas o que ocorre? Eu acabei de compilar o projeto! E se eu compilar novamente e pressionar F5, ele continua apresentando o mesmo problema!</p>
 
-<p>_OK, não estou admitindo aqui o famigerado Rebuild All. Se você mantém projetos com mais de 200 arquivos, acho que deve **repensar seus conceitos** ao usar Rebuild All para tudo nessa vida._</p>
+<p>OK, não estou admitindo aqui o famigerado Rebuild All. Se você mantém projetos com mais de 200 arquivos, acho que deve repensar seus conceitos ao usar Rebuild All para tudo nessa vida.</p>
 
-<p>Acontece que existe uma árvore de dependências que o Visual Studio mantém para saber se seu projeto foi atualizado com tudo que tem mais de novo no que diz respeito ao **File System**, mas às vezes se esquece de checar o FS com o que está na solution. Por conta disso, o HeaderInutil e o CppInutil continuam dentro da árvore de dependência como zumbis.</p>
+<p>Acontece que existe uma árvore de dependências que o Visual Studio mantém para saber se seu projeto foi atualizado com tudo que tem mais de novo no que diz respeito ao File System, mas às vezes se esquece de checar o FS com o que está na solution. Por conta disso, o HeaderInutil e o CppInutil continuam dentro da árvore de dependência como zumbis.</p>
 
-<p>O que pode ser feito nesse caso (além do que os personagens de The Walking Dead costumam fazer) é configurar o arquivo devenv.exe.config (presente em **%programfiles(x86)%\Microsoft Visual Studio 10.0\Common7\IDE**) e adicionar as seguintes linhas após a seção **configSections. (**Esses passos <a href="http://blogs.msdn.com/b/vsproject/archive/2009/07/21/enable-c-project-system-logging.aspx">estão descritos no blogue da equipe do VC</a>.)</p>
+<p>O que pode ser feito nesse caso (além do que os personagens de The Walking Dead costumam fazer) é configurar o arquivo devenv.exe.config (presente em %programfiles(x86)%\Microsoft Visual Studio 10.0\Common7\IDE) e adicionar as seguintes linhas após a seção configSections. (Esses passos <a href="http://blogs.msdn.com/b/vsproject/archive/2009/07/21/enable-c-project-system-logging.aspx">estão descritos no blogue da equipe do VC</a>.)</p>
 
 <pre>
    &lt;system.diagnostics&gt;
@@ -366,13 +366,13 @@ role="navigation" aria-label="main navigation">
 </pre>
 <img src="/journal/img/header_inutil_header_inutil3.png"/>
 
-<p>Depois de modificar o arquivo, reinicie o Visual Studio e tente novamente apertar F5 no mesmo projeto, **mas com o <a href="http://technet.microsoft.com/en-us/sysinternals/bb896647">DebugView </a>aberto**.</p>
+<p>Depois de modificar o arquivo, reinicie o Visual Studio e tente novamente apertar F5 no mesmo projeto, mas com o <a href="http://technet.microsoft.com/en-us/sysinternals/bb896647">DebugView </a>aberto.</p>
 
 <img src="/journal/img/header_inutil_header_inutil4.png"/>
 
-<p>Como um amigo meu diria: "**AHÁ!!**". Descobrimos o culpado.</p>
+<p>Como um amigo meu diria: "AHÁ!!". Descobrimos o culpado.</p>
 
-<p>A solução? Nesse caso não tem jeito: dar um clean no projeto e build novamente para que o VS reconstrua a árvore de dependências. Porém, **agora sabemos por que precisamos do Rebuild All**. Não é RebuildAllMania.</p>
+<p>A solução? Nesse caso não tem jeito: dar um clean no projeto e build novamente para que o VS reconstrua a árvore de dependências. Porém, agora sabemos por que precisamos do Rebuild All. Não é RebuildAllMania.</p>
 
 </section><hr/>
 

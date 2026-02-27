@@ -511,21 +511,21 @@ role="navigation" aria-label="main navigation">
 
 <p>Além de outros, ele lista alguns que particularmente já aconteceram comigo ou com colegas de depuração:</p>
 
-<p>**O WinDbg demora um tempo absurdo para processar o carregamento dos módulos e está usando tempo máximo de processamento em apenas uma CPU.**</p>
+<p>O WinDbg demora um tempo absurdo para processar o carregamento dos módulos e está usando tempo máximo de processamento em apenas uma CPU.</p>
 
 <p>Isso ocorre porque existem breakpoints ainda  não resolvidos. Resolva deixando apenas esses tipos de breakpoints que são absolutamente necessários, pois cada vez que um módulo é carregado o depurador precisa fazer o parser de cada um deles para verificar se ele já consegue resolve-lo.</p>
 
-<p>Às vezes, porém, existe algum lixo nos workspaces carregados por ele que permanecem mesmo depois de apagarmos todos os breakpoints inúteis ou reiniciar o sistema. Em último caso, sempre podemos apagar o workspace do registro, em **HKCU\Software\Microsoft\Windbg\Workspaces**.</p>
+<p>Às vezes, porém, existe algum lixo nos workspaces carregados por ele que permanecem mesmo depois de apagarmos todos os breakpoints inúteis ou reiniciar o sistema. Em último caso, sempre podemos apagar o workspace do registro, em HKCU\Software\Microsoft\Windbg\Workspaces.</p>
 
-<p>**O WinDbg continua demorando décadas para analisar o carregamento, mas agora nem consome tanta CPU assim.**</p>
+<p>O WinDbg continua demorando décadas para analisar o carregamento, mas agora nem consome tanta CPU assim.</p>
 
-<p>Isso ocorre porque na cadeia de paths para procurar por símbolos existe algum endereço de rede/internet errado que faz com que ele tenha que caminhar em falso diversas vezes. Esse e outros erros de símbolos sempre poderão ser analisados através do universal **!sym noisy**, que imprime todo tipo de informação útil do que pode dar errado durante um .reload explícito (eu digitei) ou implícito (lazy reload).</p>
+<p>Isso ocorre porque na cadeia de paths para procurar por símbolos existe algum endereço de rede/internet errado que faz com que ele tenha que caminhar em falso diversas vezes. Esse e outros erros de símbolos sempre poderão ser analisados através do universal !sym noisy, que imprime todo tipo de informação útil do que pode dar errado durante um .reload explícito (eu digitei) ou implícito (lazy reload).</p>
 
-<p>**O WinDbg continua recusando carregar um símbolo que eu sei que existe e sei que é válido.**</p>
+<p>O WinDbg continua recusando carregar um símbolo que eu sei que existe e sei que é válido.</p>
 
-<p>Talvez ele exista, mas por algum motivo foi copiado corrompido para o symbol server. Mais uma vez, **!sym noisy** nele e deve acontecer algum erro de **E_PDB_CORRUPT**. Nesse caso, apague o PDB culpado e tente de novo.</p>
+<p>Talvez ele exista, mas por algum motivo foi copiado corrompido para o symbol server. Mais uma vez, !sym noisy nele e deve acontecer algum erro de E_PDB_CORRUPT. Nesse caso, apague o PDB culpado e tente de novo.</p>
 
-<p>E, como brinde, um grande aliado da produtividade: **como evitar que o WinDbg bloqueie seu PDB enquanto você precisa constantemente recompilar seu driver:**</p>
+<p>E, como brinde, um grande aliado da produtividade: como evitar que o WinDbg bloqueie seu PDB enquanto você precisa constantemente recompilar seu driver:</p>
 
 <p>.reload -u modulo</p>
 

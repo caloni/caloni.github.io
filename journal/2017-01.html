@@ -474,8 +474,8 @@ if (!ReadFile(hFile,
 
 <p>Este <a href="https://support.microsoft.com/en-us/kb/156932">adendo</a> possui a informação que ninguém ainda sabia porque... porque a Microsoft é uma p\*\*\*, oras =)</p>
 
-<blockquote>If, on the other hand, an operation is completed immediately, then &NumberOfBytesRead passed into ReadFile is valid for the number of bytes read. In this case, ignore the OVERLAPPED structure passed into ReadFile; __do not use it with GetOverlappedResult or WaitForSingleObject.__</blockquote>
-<p>Ou seja, em caso da função ReadFile (ou WriteFile) retornar TRUE em uma operação assíncrona/overlapped, isso quer dizer que a operação foi concluída com sucesso de forma síncrona, não sendo necessário aguardar o I/O ser concluído. Na verdade, é um pouco mais específico: o WaitForSingleObject __não deve ser chamado__. No nosso caso, ao chamá-lo, criávamos uma espera eterna, já que o I/O não seria mais sinalizado (porque deveria? a operação já foi concluída!).</p>
+<blockquote>If, on the other hand, an operation is completed immediately, then &NumberOfBytesRead passed into ReadFile is valid for the number of bytes read. In this case, ignore the OVERLAPPED structure passed into ReadFile; do not use it with GetOverlappedResult or WaitForSingleObject.</blockquote>
+<p>Ou seja, em caso da função ReadFile (ou WriteFile) retornar TRUE em uma operação assíncrona/overlapped, isso quer dizer que a operação foi concluída com sucesso de forma síncrona, não sendo necessário aguardar o I/O ser concluído. Na verdade, é um pouco mais específico: o WaitForSingleObject não deve ser chamado. No nosso caso, ao chamá-lo, criávamos uma espera eterna, já que o I/O não seria mais sinalizado (porque deveria? a operação já foi concluída!).</p>
 
 <p>Uma colinha da M$ de como deve ser feito o tratamento:</p>
 
@@ -518,7 +518,7 @@ if (!ReadFile(hFile,
 </pre>
 <p>Após essa correção no projeto as coisas começaram a funcionar normalmente.</p>
 
-<p>A BitForge fez a alteração em <a href="https://github.com/bitforgebr/hidapi/commit/132e03f37e8ab8c95ee264e1cfbeef6b2ed39a5b">um fork próprio</a> da hidapi e enviou o __pull request__ para os mantenedores oficiais da hidapi, a signal11. Esta é mais uma lição de que, em se tratando de I/O, as coisas difíceis que o kernel às vezes faz lá embaixo acabam refletindo aqui em cima. Às vezes até na própria API!</p>
+<p>A BitForge fez a alteração em <a href="https://github.com/bitforgebr/hidapi/commit/132e03f37e8ab8c95ee264e1cfbeef6b2ed39a5b">um fork próprio</a> da hidapi e enviou o pull request para os mantenedores oficiais da hidapi, a signal11. Esta é mais uma lição de que, em se tratando de I/O, as coisas difíceis que o kernel às vezes faz lá embaixo acabam refletindo aqui em cima. Às vezes até na própria API!</p>
 
 </section><hr/>
 

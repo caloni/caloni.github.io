@@ -191,7 +191,7 @@ role="navigation" aria-label="main navigation">
 <span id="o_boot_no_windows_sem_windows" title="O boot no Windows: sem Windows"/></span>
 <section id="section_o_boot_no_windows_sem_windows">
 <p class="title"><a href="2009-08.html#o_boot_no_windows_sem_windows">#</a> O boot no Windows: sem Windows</p>
-<span class="title-heading">Caloni, 2009-08-18 <a href="2009-08.html#adplus_no_cliente_nao_voce">&lt;</a><a href="computer.html">computer</a><a href="2009-09.html#o_boot_no_windows_prentldr">&gt;</a><a href="2009-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_o_boot_no_windows_sem_windows')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2009-08-18 <a href="2009-08.html#adplus_no_cliente_nao_voce">&lt;</a><a href="computer.html">computer</a><a href="2009-09.html#o_boot_no_windows_prentldr">&gt;</a> <a href="2009-07.html#name_mangling">&lt;</a><a href="blog.html">blog</a><a href="2009-09.html#o_boot_no_windows_prentldr">&gt;</a><a href="2009-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_o_boot_no_windows_sem_windows')"><sup>[copy]</sup></a></span>
 
 <p>Desde quando o usuário liga o computador até o momento em que ele vê a barra de tarefas e aqueles fundos lindos de papel de parede existem diversas coisas sendo feitas por debaixo do pano. Essa série de artigos irá explicar essas diversas coisas, ou seja, como funciona e quais as fases do boot de uma máquina que possui Windows instalado (plataforma NT).</p>
 
@@ -239,6 +239,8 @@ role="navigation" aria-label="main navigation">
 
 <p>Todos os componentes principais desse boot podem ser visualizados de uma forma bem macro na figura abaixo.</p>
 
+<img src="/journal/img/boot.png"/>
+
 <p>Alguns detalhes sórdidos que podem fazer alguma diferença para você, desenvolvedor de sistemas operacionais, um dia desses:</p>
 
 <ul><li>Os setores de que estamos falando (MBR, partição ativa) normalmente devem terminar com uma assinatura de dois bytes (0x55 0xAA), o que "garante" que o código contido nesse setor é válido e pode ser executado.</li>
@@ -247,7 +249,7 @@ role="navigation" aria-label="main navigation">
 
 <li>O limite de quatro partições da MBR pode ser aumentado com o uso de partições estendidas; as partições estendidas apontam para um bloco de setores no HD que inicia com um setor que contém outra tabela de partições exatamente onde fica a tabela da MBR, também com quatro entradas.</li>
 
-<li>O endereçamento da localização das partições na MBR pode ser feito de duas maneiras distintas: por CHS ou por LBA. A versão CHS é bem antiga, mas ainda usada, e especifica uma localização no HD através de um posicionamento físico de três dimensões, com cilindro/trilha (C - Cylinder), cabeça (H - Head) e setor (S - Sector). Sim, isso é bem _old-fashionable_. Também existe o LBA (Logical Block Addressing), que é uma forma lógica de endereçar setores no disco, através de deslocamentos (_offsets_).</li></ul>
+<li>O endereçamento da localização das partições na MBR pode ser feito de duas maneiras distintas: por CHS ou por LBA. A versão CHS é bem antiga, mas ainda usada, e especifica uma localização no HD através de um posicionamento físico de três dimensões, com cilindro/trilha (C - Cylinder), cabeça (H - Head) e setor (S - Sector). Sim, isso é bem old-fashionable. Também existe o LBA (Logical Block Addressing), que é uma forma lógica de endereçar setores no disco, através de deslocamentos (offsets).</li></ul>
 
 <p>Para detectar problemas de hardware, a BIOS pode ajudar com seus beeps significativos. Isso aparentemente parece ser o fim da picada, mas não é. O DQ sabe muito bem que podemos ter problemas no hardware que exigem análises mais sofisticadas (como comprimento de onda dos sinais).</p>
 
@@ -258,10 +260,6 @@ role="navigation" aria-label="main navigation">
 <li>Usar o Debug 16 bits do MS-DOS (ou similar) e depurar diretamente o código de boot da MBR, reproduzindo os passos anteriores da BIOS.</li></ul>
 
 <p>Se o problema for durante o carregamento do próprio sistema operacional, as mensagens de erro do loader são significativas. No entanto, pode-se usar o Debug mais uma vez e depurar essa parte, logo antes, é claro, do sistema entrar em modo protegido de 32 bits, o que daí já é outra história (que pretendo contar em breve).</p>
-
-<ul><li>Artigo sobre o boot no Linux</li>
-
-<li><a href="http://www.csl.mtu.edu/~machoudh/blog/?p=258">Artigo sobre o boot no Linux</a></li></ul>
 
 </section><hr/>
 
