@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="base64" title="Base64"/></span>
+<section id="section_base64">
+<p class="title">Base64</p>
+<span class="title-heading">Caloni, 2011-03-09 computer blog</span>
+
+<p>No meio dos meus artigos pendentes, encontrei esse, de Luiz Rocha, que fala sobre a dificuldade de entender o que seria Base64:</p>
+
+<blockquote>Salve Caloni,</blockquote>
+
+<blockquote>Já leio o seu site a algum tempo. Realmente acho complicado, alguns eu nem entendo =D.  Mais eh o seguinte, eu estou montando um projeto, mas eu não entendo nada de trabalhar com binários. Então pesquisei na internet, e achei um algoritmo que pode me ajudar, [na lógica]. É o base64 mas eu não entendi como ele converte e desconverte em binário. Será que vc pode me ajudar, obrigado!!</blockquote>
+<p>Não é a primeira pessoa que pede informações sobre algo específico demais para explicar (para isso existe a <a href="http://en.wikipedia.org/wiki/Base64">Wikipedia</a> e o <a href="http://www.google.com/search?q=base64">Google</a>, não?). No meio da minha escrita, percebi que já havia escrito sobre os fundamentos do conhecimento por trás da criação do Base64, conhecimento esse, acredito eu, todo programador que quer sair do lugar com os próprios pés deve ter.</p>
+
+<ul><li><a href="basico_do_basico_assembly.html">Básico do básico: assembly</a></li>
+
+<li><a href="basico_do_basico_binario.html">Básico do básico: binário</a> <-- Luiz, você está procurando por esse!</li>
+
+<li><a href="basico_do_basico_tipos.html">Básico do básico: tipos</a></li>
+
+<li><a href="basico_do_basico_ponteiros.html">Básico do básico: ponteiros</a></li></ul>
+
+<p>Bônus:</p>
+
+<ul><li><a href="ofuscando_strings.html">Ofuscando strings</a></li>
+
+<li><a href="passagem_por_valor_e_emails_com_anexo.html">Passagem por valor e emails com anexo</a></li>
+
+<li><a href="como_funcionam_as_strings.html">Como funcionam as strings</a></li></ul>
+
+<p>Para colocar a mão na massa:</p>
+
+<ul><li><a href="visual_studio_configurar_projetos.html">Configurando seus projetos no Visual Studio</a></li>
+
+<li><a href="visual_studio_criar_lib.html">Como criar uma LIB no Visual Studio</a></li></ul>
+
+<p>Acredito que tudo que um programador precisa saber é o básico. O problema é que esse básico cresce a cada ano, mas, de qualquer forma, continua sendo necessário voltar às raízes de vez em quando, e se existe algo que ele nunca deve esquecer, é isso.</p>
+
+<p>Até porque na programação, 90% não se cria, se copia.</p>
+
+<p>Imaginemos o cenário para a criação do Base64:</p>
+
+<p>Alguns meios de comunicação, notadamente <a href="http://pt.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol">envio de e-mails</a> e a <a href="http://pt.wikipedia.org/wiki/Hypertext_Transfer_Protocol">navegação web</a>, por incrível que pareça, trabalham em um protocolo totalmente em modo texto. É até fácil de entender, pois quando essas tecnologias nasceram as limitações de velocidade e estabilidade das conexões permitiam apenas o envio de texto puro de uma ponta a outra.</p>
+
+<p>Isso quer dizer que, na prática, os anexos de um e-mail e as imagens de uma página trafegam, pelo protocolo definido, em modo texto.</p>
+
+<p>Como isso é possível?</p>
+
+<p>A solução não é tão obscura quanto possa parecer. Se um programador médio tivesse esse problema e nenhuma solução existisse ainda, ele faria o que sempre fez para resolver problemas desse tipo: codificar a mensagem na forma permitida. Isso já é feito com o próprio texto, que é apenas <a href="basico_do_basico_binario.html">uma interpretação de tabelas de caracteres</a>.</p>
+
+<p>Tudo que é necessário fazer é o contrário, mas usando a mesma lógica: montar uma tabela de caracteres válidos e traduzir para um conteúdo binário, sendo que todas as combinações possíveis devem caber nessa tabela.</p>
+
+<p>A forma mais básica binária de comunicação é um byte, constituído por 8 bits, que combinados darão 2^8 entradas em nossa tabela, que precisaria de 256 caracteres diferentes. Como isso ultrapassa o limite dos protocolos que estamos lidando, que em sua maioria utilizam a tabela ascii básica, que possui 128 posições, sendo que algumas posições não possuem caracteres imprimíveis, decidiu-se usar o múltiplo anterior: 64 posições, o que nos dá a chance de codificar 6 bits de cada vez (2^6).</p>
+
+<p>Esse padrão de codificação se chama Base64. Se quiser mais detalhes, basta ler a <a href="http://tools.ietf.org/html/rfc989">RFC</a>, que é pequena e muito simples de se ler.</p>
+
+<p>Agora, como codificar essa solução? Só entendendo o básico, é claro.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="consumo_abusivo_de_memoria.html">[consumo_abusivo_de_memoria]</a>
+ <a href="ofuscando_strings.html">[ofuscando_strings]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

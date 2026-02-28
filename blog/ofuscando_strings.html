@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="ofuscando_strings" title="Ofuscando strings"/></span>
+<section id="section_ofuscando_strings">
+<p class="title">Ofuscando strings</p>
+<span class="title-heading">Caloni, 2010-08-30 computer blog</span>
+
+<p>Já fiz ofuscamento e embaralhamento de dados acho que umas três ou quatro vezes. Dessa vez, parti para o batidíssimo esquema de fazer o pré-processamento de um header com defines que irão virar estruturas reaproveitadas por uma função padrão que desofusca e ofusca aquela tripa de bytes em algo legível: a string original.</p>
+
+<p>Vamos ver um exemplo:</p>
+
+<pre>
+   #define MY_STR &quot;Essa é minha string do coração&quot;
+</pre>
+<p>Conseguimos capturar os três elementos desse define (um descartável) por um simples scanf:</p>
+
+<pre>
+   scanf(&quot;#define %s \&quot;%[^\&quot;]&quot;, def, str);
+</pre>
+<p>A função scanf retorna o número de argumentos capturados. Então se a coisa funcionou é só comparar com 2.</p>
+
+<p>Depois de capturado, imprimimos na saída (o arquivo pós-processado) uma estrutura que irá conter nosso amigo embaralhado:</p>
+
+<pre>
+   printf(&quot;struct ST_%s { byte key; size_t bufferSize; byte buffer[%d] }\n&quot;
+     &quot; %s = { %d, %d, { &quot;;
+   for( ; ; ) printf(Cada byte ofuscado);
+   printtf(&quot; } };\n&quot;);
+</pre>
+<p>Pronto. Agora o usuário da string precisa abri-la usando uma macro esperta que irá chamar uma função esperta para desofuscar a string e entregar o ponteiro de buffer devidamente "casteado":</p>
+
+<pre>
+   #include &quot;header-pos-processado.h&quot;
+   #define ABRE_VAR(var, type) (type) OpenVar( (GENERIC_STRUCT) var)
+   int main()
+   {
+     char* str = ABRE_VAR(MY_STR, char*);
+   }
+</pre>
+<p>Uma vez que a abertura se faz "inplace", ou seja, a memória da própria variável da estrutura original é alterada, pode-se fechar a variável novamente, se quiser, após o uso.</p>
+
+<pre>
+   FECHA_VAR(MY_STR);
+</pre>
+<p>A GENERIC_STRUCT do exemplo se trata apenas de um esqueleto para que todas as estruturas das 500 strings ofuscadas sejam entendidas a partir de um modelo. Sim, essa é uma solução usando linguagem C apenas, então não posso me dar ao luxo daqueles templates frescurentos.</p>
+
+<pre>
+   struct GENERIC_STRUCT
+   {
+     byte key;
+     size_t bufferSize;
+     byte buffer[1];
+   };
+</pre>
+<p>Como a string é ofuscada? Sei lá, use um XOR:</p>
+
+<pre>
+   for( size_t i = 0; i &lt; bufferSize; ++i )
+     buffer[i] ^= key;
+</pre>
+<p>Dessa forma abrir ou fechar a variável pode ser feito usando a mesma função.</p>
+
+<p>Alguém aí gostaria de uma explicação didática sobre o operador XOR?</p>
+
+<p>PS: Acho que, além das minhas palestras, meus artigos estão também parecendo um brainstorm.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="base64.html">[base64]</a>
+ <a href="novidades_no_windbg_7.html">[novidades_no_windbg_7]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>
