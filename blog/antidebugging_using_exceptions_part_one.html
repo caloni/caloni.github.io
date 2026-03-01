@@ -53,6 +53,7 @@ void WellDefinedFunction2( args );
 void WellDefinedFunction3( args );
 //...
 void WellDefinedFunctionN( args );
+
 // this thread stays forever waiting execution commands from some
 // well-defined function. the parameter that it receives is the function number
 void ExecutionThread()
@@ -64,19 +65,23 @@ void ExecutionThread()
       ExecuteWellDefinedFunction( functionNumber );
     }
 }
+
 // the well-defined functions script is an integer array indicating 
 // the number for the next function that is going to be called
 int FunctionsToBeCalled[] = { 3, 4, 1, 2, 34, 66, 982, n };
+
 int Start()
 {
     // 1. we create the thread that is going to run commands
     CreateThread( ExecutionThread );
+
     // 3. for each script item (each function number)
     for( int i = 0; i &lt; sizeof(FunctionsToBeCalled); ++i )
     {
       // 4. tells the thread to run the function number N
       TellExecutionThreadToExecuteWellDefinedFunction( FunctionToBeCalled[i] );
     }
+
     // 6. end of execution.
     return 0;
 } 
@@ -89,8 +94,10 @@ DWORD ExceptionFilterButExecuteWellDefinedFunction()
 {
     // 5. run some well-defined function by number
     ExecuteWellDefinedFunction( number );
+
     return EXCEPTION_EXECUTE_HANDLER; // goes to except code
 }
+
 // this thread stays forever waiting execution commands from a 
 // well-defined function. its &quot;parameter&quot; is the function number
 void ExecutionThread()
@@ -101,6 +108,7 @@ void ExecutionThread()
       __try
       {
         __asm int 3 // breakpoint exception
+
         // it stops the debugger if we have an attached debugger in
         // the process, or throws an exception if there is no one
       }
@@ -108,6 +116,7 @@ void ExecutionThread()
       {
         // it does nothing. here is NOT where is the code (obvious, huh?)
       }
+
       Sleep( someTime ); // give some time
     }
 } 
@@ -128,43 +137,54 @@ void ExecutionThread()
 @author Wanderley Caloni
 */
 #include &lt;windows.h&gt;
+
 #include &lt;iostream&gt;
 #include &lt;map&gt;
 #include &lt;sstream&gt;
+
 #include &lt;string&gt;
 #include &lt;stdlib.h&gt;
+
 using namespace std;
+
 // show available commands
 bool Help(const string&amp;)
 {
+
    cout &lt;&lt; &quot;AntiDebug Test Program\n&quot;
       &lt;&lt; &quot; Echo string to be printed\n&quot;
       &lt;&lt; &quot; System command [params]\n&quot;
       &lt;&lt; &quot; Quit\n\n&quot;;
    return true;
 }
+
 // run system/shell command
 bool System(const string&amp; cmd)
 {
    system(cmd.c_str());
    return true;
 }
+
 // print string to output
 bool Echo(const string&amp; str)
 {
    cout &lt;&lt; str &lt;&lt; endl;
    return true;
 }
+
 // quit program
 bool Quit(const string&amp;)
 {
    exit(0);
    return false;
 }
+
 // minifunctions array
 bool (* (g_miniFuncs[]) )(const string&amp;) = { Help, System, Echo, Quit };
+
 // &quot;minifunction -&gt; index&quot; mapping
 map&lt;string, int&gt; g_miniFuncIdx;
+
 // start minifunctions mapping
 void InitializeMiniFuncIdx()
 {
@@ -173,35 +193,48 @@ void InitializeMiniFuncIdx()
    g_miniFuncIdx[&quot;Echo&quot;] = 2;
    g_miniFuncIdx[&quot;Quit&quot;] = 3;
 }
+
 // last line read from input
 string g_currentLine;
+
 // how much time are we going to wait for the next line?
 const DWORD g_waitTime = 1000;
+
 // run minifunctions
 DWORD FilterException()
 {
    DWORD ret = EXCEPTION_CONTINUE_EXECUTION;
+
    if( ! g_currentLine.empty() )
    {
       istringstream line(g_currentLine);
       g_currentLine.clear();
+
       string function;
       string params;
+
       line &gt;&gt; function;
+
       getline(line, params);
+
       // 5. run some well-defined function by number
       if( ! g_miniFuncs[g_miniFuncIdx[function] ](params) )
          ret = EXCEPTION_CONTINUE_SEARCH;
    }
+
    return ret;
 }
+
 DWORD WINAPI AntiDebugThread(PVOID)
 {
    InitializeMiniFuncIdx(); // start minifunction mapping
+
    // 2. ad aeternum (or almost)
    while( true )
+
    {
       //FilterException();
+
       __try // the extern try waits for an exit command
       {
          __try // the intern try stays generating exceptions continuously
@@ -218,33 +251,43 @@ DWORD WINAPI AntiDebugThread(PVOID)
       {
          break; // get out from ad aeternum (to the limbo?)
       }
+
       Sleep(g_waitTime);
    }
+
    return ERROR_SUCCESS;
 }
+
 /** and God said: 'int main!'
 */
 int main()
 {
+
    DWORD ret = ERROR_SUCCESS;
    DWORD tid = 0;
    HANDLE antiDebugThr;
+
    // 1. we create the thread that is going to run the commands
    antiDebugThr = CreateThread(NULL, 0, AntiDebugThread, NULL, 0, &amp;tid);;
+
    if( antiDebugThr )
    {
       // 3. for each item in the script (function numbers)
       while( cin )
       {
          cout &lt;&lt; &quot;Type something\n&quot;;
+
          // 4. tells the thread to run the function number N
          getline(cin, g_currentLine);
+
          if( WaitForSingleObject(antiDebugThr, g_waitTime * 2) != WAIT_TIMEOUT )
             break;
       }
+
       GetExitCodeThread(antiDebugThr, &amp;ret);
       CloseHandle(antiDebugThr), antiDebugThr = NULL;
    }
+
    // 6. end of execution.
    return (int) ret;
 } 

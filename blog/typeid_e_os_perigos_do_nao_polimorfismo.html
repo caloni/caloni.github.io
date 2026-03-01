@@ -46,71 +46,81 @@ role="navigation" aria-label="main navigation">
 <p>Eis um exemplo singelo, sem dramatização (com dramatização == "500 linhas de código de produção além do código abaixo").</p>
 
 <pre>
-   #include &lt;iostream&gt;
-   #include &lt;typeinfo&gt;
-   using namespace std;
-   class Base
-   {
-   public:
-     Base()
-     {
-       cout &lt;&lt; &quot;Base()\n&quot;;
-       m_x = 0;
-     }
-     ~Base()
-     {
-       cout &lt;&lt; &quot;~Base()\n&quot;;
-     }
-     int m_x;
-   };
-   class Deriv : public Base
-   {
-   public:
-     Deriv()
-     {
-       cout &lt;&lt; &quot;Deriv()\n&quot;;
-       m_x = 1;
-       m_y = 0;
-     }
-     virtual ~Deriv()
-     {
-       cout &lt;&lt; &quot;~Deriv()\n&quot;;
-     }
-     int m_y;
-   };
-   void func(Base* b)
-   {
-     cout &lt;&lt; typeid(*b).name() &lt;&lt; '\n';
-   }
-   int main()
-   {
-     Base* b = new Deriv();
-     func(b);
-   } 
+#include &lt;iostream&gt;
+#include &lt;typeinfo&gt;
+
+using namespace std;
+
+class Base
+{
+public:
+  Base()
+  {
+    cout &lt;&lt; &quot;Base()\n&quot;;
+    m_x = 0;
+  }
+
+  ~Base()
+  {
+    cout &lt;&lt; &quot;~Base()\n&quot;;
+  }
+
+  int m_x;
+};
+
+class Deriv : public Base
+{
+public:
+  Deriv()
+  {
+    cout &lt;&lt; &quot;Deriv()\n&quot;;
+
+    m_x = 1;
+    m_y = 0;
+  }
+
+  virtual ~Deriv()
+  {
+    cout &lt;&lt; &quot;~Deriv()\n&quot;;
+  }
+
+  int m_y;
+};
+
+void func(Base* b)
+{
+  cout &lt;&lt; typeid(*b).name() &lt;&lt; '\n';
+}
+
+int main()
+{
+  Base* b = new Deriv();
+  func(b);
+} 
 </pre>
 <p>O typeid usado nesse exemplo será o estático, no estilo typeid(type), porque o tipo do objeto para a função é de "ponteiro para objeto de classe não-polimórfica", ou seja, sem nenhuma função virtual. É importante lembrar que o polimorfismo em C++ só é aplicado se houver razão para tal, pois na linguagem a regra é que "não existe sobrecarga de execução sem que o programador queira":</p>
 
 <pre>
-   &gt;./program
-   Base()
-   Deriv()
-   class Base
+&gt;./program
+Base()
+Deriv()
+class Base
 </pre>
 <p>Se o esperado pelo programador fosse um class Deriv na última linha da saída, ou seja, que o typeid utilizado fosse a versão dinâmica, então a nossa classe Base tem que ser polimórfica:</p>
 
 <pre>
-   virtual ~Base()
-   {
-     cout &lt;&lt; &quot;~Base()\n&quot;;
-   } 
+virtual ~Base()
+{
+  cout &lt;&lt; &quot;~Base()\n&quot;;
+} 
 </pre>
 <p>Esse é um erro equivalente ao chamar o operador delete usando o ponteiro recebido em func. Se isso fosse feito, seria chamado apenas o destrutor da classe Base. Por falar nisso, temos nesse exemplo um leak de memória (percebeu pela saída que os destrutores não são chamados?). Mas esse é um erro bem menos sutil que o visto pelo nosso amigo typeid amigo-da-onça ;).</p>
 
 <pre>
-   &gt;./program
-   Base()
-   Deriv()
-   class Deriv
+&gt;./program
+Base()
+Deriv()
+class Deriv
 </pre>
 </section>
 

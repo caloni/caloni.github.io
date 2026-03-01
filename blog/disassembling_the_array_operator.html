@@ -49,45 +49,49 @@ role="navigation" aria-label="main navigation">
 <p>Notice that the rules don't specify the order of expressions to access the array. In other words, it doesn't matter for the language if we use a pointer before the integer or an integer before the pointer.</p>
 
 <pre>
-   #include &lt;iostream&gt;
-   #include &lt;cassert&gt;
-   int main()
-   {
-     char q[] = &quot;Show me your Code, &quot;
-       &quot;and I'll tell you who you are.&quot;;
-     int i = 13;
-     std::cout 
-       &lt;&lt; &quot;And the language is: &quot; 
-       &lt;&lt; q [ i ] 
-       &lt;&lt; std::endl;
-     assert( q[i] == i[q] );
-     assert( q[13] == 13[q] );
-     assert( *(q + i) == &quot;That's C!&quot;[7] );
-     return 13[q] - &quot;CThings&quot;[0];
-   } 
+#include &lt;iostream&gt;
+#include &lt;cassert&gt;
+
+int main()
+{
+  char q[] = &quot;Show me your Code, &quot;
+    &quot;and I'll tell you who you are.&quot;;
+  int i = 13;
+  
+  std::cout 
+    &lt;&lt; &quot;And the language is: &quot; 
+    &lt;&lt; q [ i ] 
+    &lt;&lt; std::endl;
+  
+  assert( q[i] == i[q] );
+  assert( q[13] == 13[q] );
+  assert( *(q + i) == &quot;That's C!&quot;[7] );
+  
+  return 13[q] - &quot;CThings&quot;[0];
+} 
 </pre>
 <p>The `q[i]` bellow shows that we can use both orders and the code will compile successfully.</p>
 
 <pre>
-   std::cout 
-     &lt;&lt; &quot;And the language is: &quot; 
-     &lt;&lt; i [ q ] 
-     &lt;&lt; std::endl;
+std::cout 
+  &lt;&lt; &quot;And the language is: &quot; 
+  &lt;&lt; i [ q ] 
+  &lt;&lt; std::endl;
 </pre>
 <p>This code doesn't show how obscure we can be. If we use a constant integer replacing the i, by example, the code starts to be an <a href="http://www.ioccc.org/">IOCCC</a> participant:</p>
 
 <pre>
-   std::cout 
-     &lt;&lt; &quot;And the language is: &quot; 
-     &lt;&lt; 13 [ q ] 
-     &lt;&lt; std::endl;
+std::cout 
+  &lt;&lt; &quot;And the language is: &quot; 
+  &lt;&lt; 13 [ q ] 
+  &lt;&lt; std::endl;
 </pre>
 <p>Is this a valid code yet, right? The expression types are following the rule. It is easy to see if we always think about using the "universal match" *( (E1) + (E2) ). Even bizarre things like this are easy to realize:</p>
 
 <pre>
-   std::cout 
-     &lt;&lt; 8[&quot;Is this Code right?&quot;] 
-     &lt;&lt; std::endl;
+std::cout 
+  &lt;&lt; 8[&quot;Is this Code right?&quot;] 
+  &lt;&lt; std::endl;
 </pre>
 <p>Obs.: this kind of "obscure rule" hardly will pass in a code review since it is a useless feature. Be wise and don't use it in production code. This is just an amusing detail in the language specification scope. It can help in analysis, never in programming.</p>
 

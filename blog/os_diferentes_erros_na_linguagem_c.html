@@ -45,11 +45,11 @@ role="navigation" aria-label="main navigation">
 
 <p>Porém, para começar, só de falarmos em compilação já estamos pegando apenas um pedaço do todo, que é a geração de um programa executável em C. Tradicionalmente, dividimos esse processo em três passos:</p>
 
-<p>  1. Preprocessamento</p>
+<p>1. Preprocessamento</p>
 
-<p>  2. Compilação</p>
+<p>2. Compilação</p>
 
-<p>  3. Linkedição</p>
+<p>3. Linkedição</p>
 
 <p>Vamos dar uma olhada mais de perto em cada um deles e descobrir erros típicos de cada processo.</p>
 
@@ -58,49 +58,56 @@ role="navigation" aria-label="main navigation">
 <p>Essa parte do processo lida com substituição de texto e diretivas baseadas em arquivos e símbolos. Por exemplo, a diretiva de preprocessamento mais conhecida</p>
 
 <pre>
-   #include &lt;stdio.h&gt;
+#include &lt;stdio.h&gt;
 </pre>
 <p>faz com que todo o conteúdo do arquivo especificado seja incluído exatamente no ponto onde for colocada essa diretiva. Isso quer dizer que, antes sequer do código-fonte ser compilado, todo o conteúdo desse header padrão estará no corpo do arquivo C.</p>
 
 <p>Para evitar que o mesmo header seja incluído inúmeras vezes dentro da mesma unidade em C, causando assim erros de redefinição, existe outra diretiva muito usada para cercar esses arquivos públicos:</p>
 
 <pre>
-   #ifndef __MEUHEADER__ // se já estiver definido, caio fora até endif
-   #define __MEUHEADER__
-   // conteúdo do header
-   #endif // __MEUHEADER__
+#ifndef __MEUHEADER__ // se já estiver definido, caio fora até endif
+#define __MEUHEADER__
+
+// conteúdo do header
+
+#endif // __MEUHEADER__
 </pre>
 <p>Esse conjunto de duas diretivas, por si só, é capaz de gerar os mais criativos e bizarros erros de compilação em C. E estamos falando de erros que ocorrem antes que sequer seja iniciado o processo de compilação propriamente dito. Obviamente que os erros serão capturados durante a compilação, mas o motivo deles terem ocorrido foi um erro decorrente do processo de preprocessamento. Por exemplo, vamos supor que um determinado fonte necessita de uma declaração de função contida em meuheader.h:</p>
 
 <pre>
-   #include &quot;header-do-mal.h&quot;
-   #include &quot;meuheader.h&quot;
-   int func()
-   {
-      meuheaderFunc();
-   }
+#include &quot;header-do-mal.h&quot;
+#include &quot;meuheader.h&quot;
+
+int func()
+{
+   meuheaderFunc();
+}
 </pre>
 <p>Porém, num daqueles acasos da natureza, o header-do-mal.h define justamente o que não poderia definir jamais (obs.: e isso pode muito bem acontecer na vida real, se usamos definições muito comuns):</p>
 
 <pre>
-   #ifndef __HEADERDOMAL__
-   #define __HEADERDOMAL__
-    // tirei header da jogada, huahuahua (risos maléficos)
-   #define __MEUHEADER__
-   #endif // __HEADERDOMAL__
+#ifndef __HEADERDOMAL__
+#define __HEADERDOMAL__
+
+ // tirei header da jogada, huahuahua (risos maléficos)
+#define __MEUHEADER__
+
+#endif // __HEADERDOMAL__
 </pre>
 <p>Na hora do preprocessamento, o preprocessador não irá mais incluir o conteúdo dentro de header.h:</p>
 
 <pre>
-   #ifndef __MEUHEADER__ // se já estiver definido, caio fora até endif
-   #define __MEUHEADER__
-   int meuheaderFunc(); // talvez alguém precise disso
-   #endif // __MEUHEADER__
+#ifndef __MEUHEADER__ // se já estiver definido, caio fora até endif
+#define __MEUHEADER__
+
+int meuheaderFunc(); // talvez alguém precise disso
+
+#endif // __MEUHEADER__
 </pre>
 <p>Conseqüentemente, durante a compilação do código-fonte já preprocessado, sem a declaração da função meuheaderFunc, irá ocorrer o seguinte erro:</p>
 
 <pre>
-   error C3861: 'meuheaderFunc': identifier not found
+error C3861: 'meuheaderFunc': identifier not found
 </pre>
 <p>Isso em fontes pequenos é facilmente identificável. Em fontes maiores, é preciso ter um pouco mais de cuidado.</p>
 
@@ -115,24 +122,30 @@ role="navigation" aria-label="main navigation">
 <p>Na compilação você irá encontrar geralmente erros bem comportados, como conversão entre tipos, else sem if e esquecimento de pontuação ou parênteses.</p>
 
 <pre>
-   int cannotConvertError(const char* message)
-   {
-     int ret = message[0];
-     return ret;
-   }
-   int ret = cannotConvertError(3);
-   error C2664: 'cannotConvertError' : cannot convert parameter 1 from 'int' to 'const char *'
-   if( test() )
-     something;
-     something-else;
-   else
-     else-something;
-   error C2181: illegal else without matching if
-   while( (x &lt; z) &amp;&amp; func(x, func2(y) != 2 )
-   {
-     something;
-   }
-   error C2143: syntax error : missing ')' before '{'
+int cannotConvertError(const char* message)
+{
+  int ret = message[0];
+  return ret;
+}
+
+int ret = cannotConvertError(3);
+
+error C2664: 'cannotConvertError' : cannot convert parameter 1 from 'int' to 'const char *'
+
+if( test() )
+  something;
+  something-else;
+else
+  else-something;
+
+error C2181: illegal else without matching if
+
+while( (x &lt; z) &amp;&amp; func(x, func2(y) != 2 )
+{
+  something;
+}
+
+error C2143: syntax error : missing ')' before '{'
 </pre>
 <p>Claro, não estamos falando de erros relacionados a templates, que são um pesadelo à parte.</p>
 
@@ -142,11 +155,11 @@ role="navigation" aria-label="main navigation">
 
 <p>As características mais desejadas para corrigir erros nessa fase são:</p>
 
-<p>  1. Total conhecimento da fase do preprocessamento</p>
+<p>1. Total conhecimento da fase do preprocessamento</p>
 
-<p>  2. Total conhecimento da fase da compilação</p>
+<p>2. Total conhecimento da fase da compilação</p>
 
-<p>  3. Total conhecimento de níveis de escopo e assinatura de funções</p>
+<p>3. Total conhecimento de níveis de escopo e assinatura de funções</p>
 
 <p>Os dois primeiros itens são uma maldição previsível que deve-se carregar para todo o sempre. Se você não consegue entender o que aconteceu nas duas primeiras fases, dificilmente irá conseguir seguir adiante com essa empreitada. O terceiro item significa que deve-se levar em conta as bibliotecas que estamos usando, headers externos (com dependências externas), conflitos entre nomes, etc.</p>
 
@@ -163,8 +176,9 @@ role="navigation" aria-label="main navigation">
 <p>Entre esses erros, os mais comuns costumam se aproveitar de macros, como max, que usa mais de uma vez o parâmetro, que pode ser uma chamada com uma função. A função será chamada duas vezes, mesmo que aparentemente no código a chamada seja feita uma única vez:</p>
 
 <pre>
-   #define max(a, b) ( a &gt; b ? a : b )
-   int z = max( func(10), 30 );
+#define max(a, b) ( a &gt; b ? a : b )
+
+int z = max( func(10), 30 );
 </pre>
 <p>Um outro erro que já encontrei algumas vezes é quando a definição de uma classe tem um sizeof diferente do compilado em sua LIB, pela exclusão ou adição de novos membros. Isso pode (vai) fazer com que, durante a execução, a pilha seja corrompida, membros diferentes sejam acessados, entre outras traquinagens. Esses erros costumam acusar a falta de sincronismo entre os headers usados e suas reais implementações.</p>
 

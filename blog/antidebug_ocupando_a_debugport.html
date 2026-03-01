@@ -58,44 +58,50 @@ role="navigation" aria-label="main navigation">
 <p>No caso de se conectar em um processo já existente, é chamada a função da API DebugActiveProcess. A partir dessa chamada, se retornado sucesso, o processo que depura agora está liberado para ficar chamando continuamente a função API WaitForDebugEvent. E o código se resume a isto:</p>
 
 <pre>
-   void DebugLoop()
-   {
-     bool exitLoop = false;
-     while( ! exitLoop )
-     {
-       DEBUG_EVENT debugEvt;
-       WaitForDebugEvent(&amp;debugEvt, 
-         INFINITE);
-       switch( debugEvt.dwDebugEventCode )
-       {
-         // This one...
-         // That one...
-         // Process is going out.
-         case EXIT_PROCESS_DEBUG_EVENT:
-           exitLoop = true;
-           break;
-       }
-       // Unfreeze the thread who sent the debug event.
-       // Otherwise, it stays frozen forever!
-       ContinueDebugEvent(debugEvt.dwProcessId, 
-         debugEvt.dwThreadId, 
-         DBG_EXCEPTION_NOT_HANDLED);
-     }
-   } 
+void DebugLoop()
+{
+  bool exitLoop = false;
+
+  while( ! exitLoop )
+  {
+    DEBUG_EVENT debugEvt;
+
+    WaitForDebugEvent(&amp;debugEvt, 
+      INFINITE);
+
+    switch( debugEvt.dwDebugEventCode )
+    {
+      // This one...
+
+      // That one...
+
+      // Process is going out.
+      case EXIT_PROCESS_DEBUG_EVENT:
+        exitLoop = true;
+        break;
+    }
+
+    // Unfreeze the thread who sent the debug event.
+    // Otherwise, it stays frozen forever!
+    ContinueDebugEvent(debugEvt.dwProcessId, 
+      debugEvt.dwThreadId, 
+      DBG_EXCEPTION_NOT_HANDLED);
+  }
+} 
 </pre>
 <p>O detalhe interessante desse processo de comunicação depurador/depurado é que um processo só pode ser depurado por apenas UM depurador. Ou seja, enquanto houver um processo depurando outro, os outros processos só ficam na vontade.</p>
 
 <p>Partindo desse princípio, podemos imaginar uma proteção baseada nessa exclusividade, criando um processo protetor que conecta no processo protegido e o "depura". Fiz um código de exemplo que faz justamente isso: ele atacha em um processo para depurá-lo (basta passar o PID como parâmetro) e não deixa mais outro depurador ocupar a debug port. Os passos para testá-lo são:</p>
 
-<p>  1. Compilar o código.</p>
+<p>1. Compilar o código.</p>
 
-<p>  2. Executar o notepad (ou qualquer outra vítima).</p>
+<p>2. Executar o notepad (ou qualquer outra vítima).</p>
 
-<p>  3. Obter seu PID (Process ID).</p>
+<p>3. Obter seu PID (Process ID).</p>
 
-<p>  4. Executar o protetor passando o PID como parâmetro.</p>
+<p>4. Executar o protetor passando o PID como parâmetro.</p>
 
-<p>  5. Tentar "atachar" no processo através do Visual C++.</p>
+<p>5. Tentar "atachar" no processo através do Visual C++.</p>
 
 <p>Após o processo de attach, a porta de debug é ocupada, e a comunicação entre depurador e depurado é feita através do LPC. Abaixo uma pequena ilustração de como as coisas ocorrem:</p>
 

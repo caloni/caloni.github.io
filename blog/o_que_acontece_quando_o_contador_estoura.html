@@ -46,18 +46,22 @@ role="navigation" aria-label="main navigation">
 <p>Nada melhor que um código para ilustrar melhor esses dois ilustres acontecimentos:</p>
 
 <pre>
-   #include &lt;limits.h&gt;
-   #include &lt;iostream&gt;
-   int main()
-   {
-     int x = INT_MAX;
-     std::cout &lt;&lt; x &lt;&lt; std::endl;
-     x = x + 1;
-     std::cout &lt;&lt; x &lt;&lt; std::endl;
-   } 
-   Saída:
-    2147483647
-   -2147483648
+#include &lt;limits.h&gt;
+#include &lt;iostream&gt;
+
+int main()
+{
+  int x = INT_MAX;
+
+  std::cout &lt;&lt; x &lt;&lt; std::endl;
+  x = x + 1;
+  std::cout &lt;&lt; x &lt;&lt; std::endl;
+} 
+
+Saída:
+
+ 2147483647
+-2147483648
 </pre>
 <p>O indicador de que algo está errado é simples: como diabos foi um número positivo virar negativo, já que eu somei ao invés de subtrair? No entanto, computacionalmente parece extremamente correto: o próximo número após o maior valor positivo possível é o menor número negativo possível.</p>
 
@@ -66,23 +70,23 @@ role="navigation" aria-label="main navigation">
 <blockquote>Toda representação binária que tiver o bit mais significativo ligado (o bit mais à esquerda) significa um número negativo cujo valor absoluto se obtém invertendo-se o resto dos bits e adicionando um.</blockquote>
 <p>Quando o bit mais à esquerda não está ligado o valor absoluto é ele mesmo; ou seja, é um número positivo, incluindo o zero. Como vamos ver, isso facilita em muito os cálculos para o computador. Para nós, a coisa não fica lá muito difícil. Só precisamos lembrar que, em hexadecimal, todos os valores que tiverem o byte mais significativo igual ou maior que 8 (que é 1000 em binário) é negativo e temos que aplicar o método de complemento de dois para obter seu valor absoluto. Vejamos o valor -8, por exemplo:</p>
 
-<p>  1. Primeiro temos a representação real (em um byte): 1111 1000.</p>
+<p>1. Primeiro temos a representação real (em um byte): 1111 1000.</p>
 
-<p>  2. O bit mais significativo está ligado: é um número negativo. Descartamos o sinal, fica 111 1000.</p>
+<p>2. O bit mais significativo está ligado: é um número negativo. Descartamos o sinal, fica 111 1000.</p>
 
-<p>  3. Devemos agora inverter todos os bits: 111 1000 se torna 000 0111.</p>
+<p>3. Devemos agora inverter todos os bits: 111 1000 se torna 000 0111.</p>
 
-<p>  4. Por fim, somamos um: 000 0111 + 1 = 000 1000.</p>
+<p>4. Por fim, somamos um: 000 0111 + 1 = 000 1000.</p>
 
-<p>  5. Como vimos no parágrafo anterior, 000 1000, ou simplesmente 1000, é 8. Na verdade, -8!</p>
+<p>5. Como vimos no parágrafo anterior, 000 1000, ou simplesmente 1000, é 8. Na verdade, -8!</p>
 
 <p>O que significa, na notação complemento de dois, a representação onde estão todos os bits ligados, independente do número de bytes?</p>
 
 <p>Se alterarmos o código acima para imprimir na saída os números hexadecimais, obteremos a seguinte saída:</p>
 
 <pre>
-   7fffffff
-   80000000
+7fffffff
+80000000
 </pre>
 <p>E o mais legal é que agora sabemos que o primeiro número é o maior valor positivo possível nesse tamanho de int, pois possui todos os bits ligados exceto o bit de sinal. Já o segundo número, o primeiro incrementado de 1, possui todos os bits desligados exceto o bit de sinal: é o menor número negativo possível!</p>
 

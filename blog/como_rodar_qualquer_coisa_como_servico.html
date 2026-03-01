@@ -53,22 +53,23 @@ role="navigation" aria-label="main navigation">
 <p>Bem, o Bloco de Notas é a vítima padrão de testes. Logo, a linha a seguir provaria que é possível rodá-lo na conta de sistema:</p>
 
 <pre>
-   sc create Notepad binpath= &quot;%systemroot%\NOTEPAD.EXE&quot; type= interact type= own
+sc create Notepad binpath= &quot;%systemroot%\NOTEPAD.EXE&quot; type= interact type= own
 </pre>
 <p>Porém, como todo serviço, é esperado que ele se comunique com o Gerenciador de Serviços do Windows. Como o Bloco de Notas mal imagina que agora ele é um motta-fucka service, expira o timeout de inicialização e o SCM (Service Control Manager) mata o processo.</p>
 
 <pre>
-   &gt;net start notepad
-   The service is not responding to the control function.
-   More help is available by typing NET HELPMSG 2186.
+&gt;net start notepad
+The service is not responding to the control function.
+
+More help is available by typing NET HELPMSG 2186.
 </pre>
 <p>Como diria meu amigo <a href="http://codebehind.wordpress.com/">Thiago</a>, "não bom".</p>
 
 <p>Porém porém, o SCM não mata os processos filhos do processo-serviço. Bug? Feature? Gambi? Seja o que for, pode ser usado para iniciar o nosso querido msvcmon:</p>
 
 <pre>
-   set binpath=%systemroot%\system32\cmd.exe /c c:\Tools\msvcmon.exe -tcpip -anyuser -timeout -1
-   sc create Msvcmon binpath= &quot;%binpath%&quot; type= interact type= own
+set binpath=%systemroot%\system32\cmd.exe /c c:\Tools\msvcmon.exe -tcpip -anyuser -timeout -1
+sc create Msvcmon binpath= &quot;%binpath%&quot; type= interact type= own
 </pre>
 <p>Agora, quando iniciarmos o serviço Msvcmon, o processo cmd.exe será criado, que por sua vez irá rodar o msvcmon.exe que queríamos, e ficará esperando inocentemente pela sua "funesta morte" pelo SCM.</p>
 

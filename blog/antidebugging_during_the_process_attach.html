@@ -49,16 +49,20 @@ role="navigation" aria-label="main navigation">
 #include &lt;windows.h&gt;
 #include &lt;iostream&gt;
 #include &lt;assert.h&gt;
+
 using namespace std;
+
 /** This function is triggered when a debugger try to attach into our process.
 */
 void AntiAttachAbort()
 {
     // this is a test application, remember?
     MessageBox(NULL, &quot;Espertinho, hein?&quot;, &quot;AntiAttachDetector&quot;, MB_OK | MB_ICONERROR);
+
     // this is the end
     TerminateProcess(GetCurrentProcess(), -1);
 }
+
 /** This function installs  a trigger that is activated when a debugger try to attach.
 @see AntiAttachAbort.
 */
@@ -67,25 +71,32 @@ void InstallAntiAttach()
     PVOID attachBreak = GetProcAddress(
       GetModuleHandle(&quot;ntdll&quot;), // this dll is ALWAYS loaded
       &quot;DbgUiRemoteBreakin&quot;); // this function is ALWAYS called on the attach event
+
     assert(attachBreak); // attachBreak NEVER can be null
+
     // opcodes to run a jump to the function AntiAttachAbort
     BYTE jmpToAntiAttachAbort[] =
     { 0xB8, 0xCC, 0xCC, 0xCC, 0xCC,   // mov eax, 0xCCCCCCCC
     0xFF, 0xE0 };                     // jmp eax
+
     // we change 0xCCCCCCCC using a more useful address
     *reinterpret_cast&lt;PVOID*&gt;(&amp;jmpToAntiAttachAbort[1]) = AntiAttachAbort;
+
     DWORD oldProtect = 0;
+
     if( VirtualProtect(attachBreak, sizeof(jmpToAntiAttachAbort), 
       PAGE_EXECUTE_READWRITE, &amp;oldProtect) )
     {
       // if we can change the code page protection we put a jump to our code
       CopyMemory(attachBreak, 
         jmpToAntiAttachAbort, sizeof(jmpToAntiAttachAbort));
+
       // restore old protection
       VirtualProtect(attachBreak, sizeof(jmpToAntiAttachAbort), 
         oldProtect, &amp;oldProtect);
     }
 }
+
 /** In the beginning, God said: 'int main!'
 */
 int main()
@@ -98,15 +109,16 @@ int main()
 <p>To compile the code above, just call the compiler and linker normally. Obs.: We need the user32.lib in order to call MessageBox API:</p>
 
 <pre>
-   cl /c antiattach.cpp
-   link antiattach.obj user32.lib
-   antiattach.exe
-   Try to attach, if you can...
+cl /c antiattach.cpp
+link antiattach.obj user32.lib
+
+antiattach.exe
+Try to attach, if you can...
 </pre>
 <p>After the program has been running, every try to attach will show a detection message and program termination.</p>
 
 <pre>
-   windbg -pn antiattach.exe
+windbg -pn antiattach.exe
 </pre>
 <img src="/blog/img/antidebugging_during_the_process_attach_espertinho.png"/>
 
@@ -119,6 +131,7 @@ int main()
 BYTE jmpToAntiAttachAbort[] =
 { 0xB8, 0xCC, 0xCC, 0xCC, 0xCC,   // mov eax, 0xCCCCCCCC
 0xFF, 0xE0 };                     // jmp eax
+
 // we change 0xCCCCCCCC using a more useful address
 *reinterpret_cast&lt;PVOID*&gt;(&amp;jmpToAntiAttachAbort[1]) = AntiAttachAbort; 
 </pre>
@@ -126,9 +139,9 @@ BYTE jmpToAntiAttachAbort[] =
 
 <p>Alternative ways to do this are:</p>
 
-<p>  1. To declare a naked function in Visual Studio, to create an empty function just after, do some math to calculate the size of the function to be copied into another place (aware of Edit and Continue option).</p>
+<p>1. To declare a naked function in Visual Studio, to create an empty function just after, do some math to calculate the size of the function to be copied into another place (aware of Edit and Continue option).</p>
 
-<p>  2. To create a structure whose members are masked opcodes. This way, is possible in the constructor to receive the values and use it as a "mobile function".</p>
+<p>2. To create a structure whose members are masked opcodes. This way, is possible in the constructor to receive the values and use it as a "mobile function".</p>
 
 <p>Both have pros and cons. The cons are related with the environment dependency. In the first alternative is necessary to configure the project to disable "Edit and Continue" option, whilst in the second one is necessary to align 1 byte the structure.</p>
 

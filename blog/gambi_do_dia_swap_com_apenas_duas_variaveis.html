@@ -46,150 +46,177 @@ role="navigation" aria-label="main navigation">
 <p>Essa interessantíssima questão veio do meu amigo Kabloc: como trocar o valor entre duas variáveis do tipo int sem utilizar uma variável intermediária? O algoritmo ordinário para um swap entre tipos inteiros é:</p>
 
 <pre>
-   void normalSwap(int &amp;first, int&amp; second)
-   {
-     int third = first;
-     first = second;
-     second = third;
-   }
-   int main()
-   {
-     int first = 13;
-     int second = 42;
-     cout &lt;&lt; &quot;first: &quot; &lt;&lt; first 
-       &lt;&lt; &quot;, second: &quot; &lt;&lt; second &lt;&lt; endl;
-     normalSwap(first, second);
-     cout &lt;&lt; &quot;first: &quot; &lt;&lt; first 
-       &lt;&lt; &quot;, second: &quot; &lt;&lt; second &lt;&lt; endl;
-   } 
-   Saída:
-   first: 13, second: 42
-   first: 42, second: 13
+void normalSwap(int &amp;first, int&amp; second)
+{
+  int third = first;
+  first = second;
+  second = third;
+}
+
+int main()
+{
+  int first = 13;
+  int second = 42;
+
+  cout &lt;&lt; &quot;first: &quot; &lt;&lt; first 
+    &lt;&lt; &quot;, second: &quot; &lt;&lt; second &lt;&lt; endl;
+
+  normalSwap(first, second);
+
+  cout &lt;&lt; &quot;first: &quot; &lt;&lt; first 
+    &lt;&lt; &quot;, second: &quot; &lt;&lt; second &lt;&lt; endl;
+} 
+
+Saída:
+first: 13, second: 42
+first: 42, second: 13
 </pre>
 <p>Uma das soluções que eu conheço é utilizar o operador de ou exclusivo, o conhecido XOR. Esse operador binário tem a não pouco bizarra habilidade de armazenar dois padrões de bits dentro de um mesmo espaço de armazenamento. Se você tiver um dos dois padrões, conseguirá o segundo. Relembremos sua tabela verdade:</p>
 
 <pre>
-   void xorTable()
-   {
-     cout 
-       &lt;&lt; &quot;-----------\n&quot;
-       &lt;&lt; &quot; XOR Table\n&quot;
-       &lt;&lt; &quot;-----------\n&quot;
-       &lt;&lt; &quot;0 XOR 0 = &quot; &lt;&lt; ( 0 ^ 0 ) &lt;&lt; '\n'
-       &lt;&lt; &quot;1 XOR 0 = &quot; &lt;&lt; ( 1 ^ 0 ) &lt;&lt; '\n'
-       &lt;&lt; &quot;0 XOR 1 = &quot; &lt;&lt; ( 0 ^ 1 ) &lt;&lt; '\n'
-       &lt;&lt; &quot;1 XOR 1 = &quot; &lt;&lt; ( 1 ^ 1 ) &lt;&lt; '\n'
-     ;
-   } 
-   -----------
-    XOR Table
-   -----------
-   0 XOR 0 = 0
-   1 XOR 0 = 1
-   0 XOR 1 = 1
-   1 XOR 1 = 0
+void xorTable()
+{
+  cout 
+    &lt;&lt; &quot;-----------\n&quot;
+    &lt;&lt; &quot; XOR Table\n&quot;
+    &lt;&lt; &quot;-----------\n&quot;
+    &lt;&lt; &quot;0 XOR 0 = &quot; &lt;&lt; ( 0 ^ 0 ) &lt;&lt; '\n'
+    &lt;&lt; &quot;1 XOR 0 = &quot; &lt;&lt; ( 1 ^ 0 ) &lt;&lt; '\n'
+    &lt;&lt; &quot;0 XOR 1 = &quot; &lt;&lt; ( 0 ^ 1 ) &lt;&lt; '\n'
+    &lt;&lt; &quot;1 XOR 1 = &quot; &lt;&lt; ( 1 ^ 1 ) &lt;&lt; '\n'
+  ;
+} 
+
+-----------
+ XOR Table
+-----------
+0 XOR 0 = 0
+1 XOR 0 = 1
+0 XOR 1 = 1
+1 XOR 1 = 0
 </pre>
 <p>Ou seja, imagine que temos o valor 1 e o valor 0. Armazenando os dois juntos com XOR obtemos 1, já que:</p>
 
 <pre>
-   1 (primeiro padrão) XOR 0 (segundo padrão) = 1 (padrões juntos)
+1 (primeiro padrão) XOR 0 (segundo padrão) = 1 (padrões juntos)
 </pre>
 <p>Mais tarde, se quisermos obter o primeiro padrão, usamos o segundo:</p>
 
 <pre>
-   1 (padrões juntos) XOR 0 (segundo padrão) = 1 (primeiro padrão)
+1 (padrões juntos) XOR 0 (segundo padrão) = 1 (primeiro padrão)
 </pre>
 <p>Para obter o segundo padrão é só utilizar o primeiro obtido:</p>
 
 <pre>
-   1 (padrões juntos) XOR 1 (primeiro padrão) = 0 (segundo padrão)
+1 (padrões juntos) XOR 1 (primeiro padrão) = 0 (segundo padrão)
 </pre>
 <p>Calcule a mesma operação com as quatro combinações possíveis e verá que podemos sempre reaver os dados partindo de um dos padrões. Como o cálculo independe do número de bits, já que operadores bit a bit operam um bit de cada vez, podemos usar a mesma técnica para juntar dois inteiros, duas strings, dois "qualquer coisa armazenada numa seqüência de zeros e uns":</p>
 
 <pre>
-   template&lt;
-     typename T1, 
-     typename T2, 
-     typename T3
-   &gt;
-   void universalXor(
-     const T1&amp; first, 
-     const T2&amp; second, 
-     T3&amp; result
-   )
-   {
-     typedef unsigned char byte;
-     const byte* pFirst = 
-       reinterpret_cast&lt;const byte*&gt;
-       (&amp;first);
-     const byte* pSecond = 
-       reinterpret_cast&lt;const byte*&gt;
-       (&amp;second);
-     byte* pResult = 
-       reinterpret_cast&lt;byte*&gt;
-       (&amp;result);
-     for( size_t i = 0; 
-       i &lt; sizeof(first) 
-         &amp;&amp; i &lt; sizeof(second);
-       ++i )
-     {
-       pResult[i] = pFirst[i] ^ pSecond[i];
-     }
-   }
-   int main()
-   {
-     int x = 13, y = 42;
-     cout &lt;&lt; &quot;x: &quot; &lt;&lt; x 
-       &lt;&lt; &quot;, y: &quot; &lt;&lt; y &lt;&lt; '\n';
-     universalXor(x, y, x);
-     universalXor(x, y, y);
-     universalXor(x, y, x);
-     cout &lt;&lt; &quot;x: &quot; &lt;&lt; x 
-       &lt;&lt; &quot;, y: &quot; &lt;&lt; y &lt;&lt; &quot;\n\n&quot;;
-     char str1[50] = &quot;teste de xor&quot;;
-     char str2[50] = &quot;aceita strings!&quot;;
-     cout &lt;&lt; &quot;str1: &quot; &lt;&lt; str1 
-       &lt;&lt; &quot;, str2: &quot; &lt;&lt; str2 &lt;&lt; '\n';
-     universalXor(str1, str2, str1);
-     universalXor(str1, str2, str2);
-     universalXor(str1, str2, str1);
-     cout &lt;&lt; &quot;str1: &quot; &lt;&lt; str1 
-       &lt;&lt; &quot;, str2: &quot; &lt;&lt; str2 &lt;&lt; '\n';
-     return 0;
-   } 
-   Saída:
-   x: 13, y: 42
-   x: 42, y: 13
-   str1: teste de xor, str2: aceita strings!
-   str1: aceita strings!, str2: teste de xor
+template&lt;
+  typename T1, 
+  typename T2, 
+  typename T3
+&gt;
+void universalXor(
+  const T1&amp; first, 
+  const T2&amp; second, 
+  T3&amp; result
+)
+{
+  typedef unsigned char byte;
+
+  const byte* pFirst = 
+    reinterpret_cast&lt;const byte*&gt;
+    (&amp;first);
+
+  const byte* pSecond = 
+    reinterpret_cast&lt;const byte*&gt;
+    (&amp;second);
+
+  byte* pResult = 
+    reinterpret_cast&lt;byte*&gt;
+    (&amp;result);
+
+  for( size_t i = 0; 
+    i &lt; sizeof(first) 
+      &amp;&amp; i &lt; sizeof(second);
+    ++i )
+  {
+    pResult[i] = pFirst[i] ^ pSecond[i];
+  }
+}
+
+int main()
+{
+  int x = 13, y = 42;
+
+  cout &lt;&lt; &quot;x: &quot; &lt;&lt; x 
+    &lt;&lt; &quot;, y: &quot; &lt;&lt; y &lt;&lt; '\n';
+
+  universalXor(x, y, x);
+  universalXor(x, y, y);
+  universalXor(x, y, x);
+
+  cout &lt;&lt; &quot;x: &quot; &lt;&lt; x 
+    &lt;&lt; &quot;, y: &quot; &lt;&lt; y &lt;&lt; &quot;\n\n&quot;;
+
+  char str1[50] = &quot;teste de xor&quot;;
+  char str2[50] = &quot;aceita strings!&quot;;
+
+  cout &lt;&lt; &quot;str1: &quot; &lt;&lt; str1 
+    &lt;&lt; &quot;, str2: &quot; &lt;&lt; str2 &lt;&lt; '\n';
+
+  universalXor(str1, str2, str1);
+  universalXor(str1, str2, str2);
+  universalXor(str1, str2, str1);
+
+  cout &lt;&lt; &quot;str1: &quot; &lt;&lt; str1 
+    &lt;&lt; &quot;, str2: &quot; &lt;&lt; str2 &lt;&lt; '\n';
+
+  return 0;
+} 
+
+Saída:
+x: 13, y: 42
+x: 42, y: 13
+
+str1: teste de xor, str2: aceita strings!
+str1: aceita strings!, str2: teste de xor
 </pre>
 <p>Essa técnica é uma das mais básicas -- se não for a mais -- de criptografia simétrica. O primeiro padrão faz o papel de texto aberto, o segundo banca a senha e o terceiro será o texto encriptado. Para "desencriptar" o texto é necessária a senha (e se você souber qual o texto original, saberá a senha).</p>
 
 <p>Mas, voltando ao nosso problema original, podemos trocar duas variáveis inteiras usando a técnica do XOR. Em claro:</p>
 
 <pre>
-   #include &lt;iostream&gt;
-   using namespace std;
-   void anormalSwap(int &amp;first, 
-     int&amp; second)
-   {
-     first = first ^ second;
-     second = first ^ second;
-     first = first ^ second;
-   }
-   int main()
-   {
-     int first = 13;
-     int second = 42;
-     cout &lt;&lt; &quot;first: &quot; &lt;&lt; first 
-       &lt;&lt; &quot;, second: &quot; &lt;&lt; second &lt;&lt; endl;
-     anormalSwap(first, second);
-     cout &lt;&lt; &quot;first: &quot; &lt;&lt; first 
-       &lt;&lt; &quot;, second: &quot; &lt;&lt; second &lt;&lt; endl;
-   } 
-   Saída:
-   first: 13, second: 42
-   first: 42, second: 13
+#include &lt;iostream&gt;
+using namespace std;
+
+void anormalSwap(int &amp;first, 
+  int&amp; second)
+{
+  first = first ^ second;
+  second = first ^ second;
+  first = first ^ second;
+}
+
+int main()
+{
+  int first = 13;
+  int second = 42;
+
+  cout &lt;&lt; &quot;first: &quot; &lt;&lt; first 
+    &lt;&lt; &quot;, second: &quot; &lt;&lt; second &lt;&lt; endl;
+
+  anormalSwap(first, second);
+
+  cout &lt;&lt; &quot;first: &quot; &lt;&lt; first 
+    &lt;&lt; &quot;, second: &quot; &lt;&lt; second &lt;&lt; endl;
+} 
+
+Saída:
+first: 13, second: 42
+first: 42, second: 13
 </pre>
 <p>Bom, preciso dizer que isso é uma gambi das grossas? Preciso dizer que não uso isso no meu dia a dia, até porque swap é uma função já consagrada da STL chamada std::swap? Não? Então sem Postscript dessa vez. E sem <a href="http://www.google.com.br/search?q=boi+corneta+site%3Asualingua.com.br">bois-cornetas</a> =).</p>
 

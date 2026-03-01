@@ -48,21 +48,21 @@ role="navigation" aria-label="main navigation">
 <p>No WinDbg é possível definir um ou mais comandos que são executados quando um breakpoint é acionado. Esses comandos ficam entre aspas duplas e podem conter as mesmas coisas que digitamos na linha de comando. Alguns comandos, porém, são mais úteis que outros nesse contexto. Por exemplo, o comando ".echo". Podemos digitar .echo na linha de comando do WinDbg. O que acontece?</p>
 
 <pre>
-   0:000&gt; .echo O que acontece?
-   O que acontece?
+0:000&gt; .echo O que acontece?
+O que acontece?
 </pre>
 <p>Exatamente o que o comando se dispõe a fazer: imprimir seus argumentos na tela. E qual a vantagem nisso? Nenhuma, se estamos na linha de comando, mas muita se estivermos colocando um breakpoint onde queremos contar o número de vezes que passamos por lá, o comando tem serventia:</p>
 
 <pre>
-   0:000&gt; bp $exentry &quot;.echo Passou pelo main; g&quot;
-   0:000&gt; g
-   ModLoad: 5cb70000 5cb96000 ShimEng.dll
-   ModLoad: 774e0000 7761d000 ole32.dll
-   ...
-   ModLoad: 5ad70000 5ada8000 UxTheme.dll
-   Passou pelo main
-   ModLoad: 74720000 7476b000 MSCTF.dll
-   ...
+0:000&gt; bp $exentry &quot;.echo Passou pelo main; g&quot;
+0:000&gt; g
+ModLoad: 5cb70000 5cb96000 ShimEng.dll
+ModLoad: 774e0000 7761d000 ole32.dll
+...
+ModLoad: 5ad70000 5ada8000 UxTheme.dll
+Passou pelo main
+ModLoad: 74720000 7476b000 MSCTF.dll
+...
 </pre>
 <p>Se essa mensagem fosse exibida mais de uma vez, poderíamos supor que é possível existir algum tipo de infecção na execução do aplicativo, como quando o código inicial carrega o original e volta a executar o mesmo ponto.</p>
 
@@ -73,8 +73,8 @@ role="navigation" aria-label="main navigation">
 <p>Aprendi o comando j antes do .if, por isso acabo usando mais o primeiro, mas ambos possuem similaridades. O formato desse comando é exatamente como um "if-else":</p>
 
 <pre>
-   j Expression Command1 ; Command2
-   j Expression 'Command1' ; 'Command2'
+j Expression Command1 ; Command2
+j Expression 'Command1' ; 'Command2'
 </pre>
 <p>Se Expression for verdadeiro, Command1 será executado; do contrário, Command2 será. Se você não precisa do else basta usar um comando vazio ' '. A escolha é sua em usar aspas simples ou nada. Se usar aspas simples, é possível colocar mais de um comando, que foi o que eu fiz no else: '.echo *** GLOBAL HOOK ***; g'".</p>
 
@@ -83,11 +83,11 @@ role="navigation" aria-label="main navigation">
 <p>Lembram-se de nossa peregrinação pela pilha de chamadas quando fizemos um <a href="alterando_mensagem_de_erro_no_notepad.html">hook na função MessageBox</a> pelo WinDbg? Aqui é a mesma coisa, pois estou analisando um parâmetro passado na pilha (esp): o ID da thread para onde vai o hook.</p>
 
 <pre>
-   HHOOK SetWindowsHookEx(
-     int idHook,
-     HOOKPROC lpfn,
-     HINSTANCE hMod,
-     DWORD dwThreadId);
+HHOOK SetWindowsHookEx(
+  int idHook,
+  HOOKPROC lpfn,
+  HINSTANCE hMod,
+  DWORD dwThreadId);
 </pre>
 <p>Relembrando nosso passeio pela pilha, ao entrar em uma função stdcall, os primeiros 4 bytes são o endereço de retorno, os próximos o primeiro parâmetro e assim por diante. O que quer dizer que poi ( esp + (4 * 4) ). É o apontado do quarto parâmetro (4*4) que está sendo verificado. Concluindo, se o parâmetro dwThreadId for igual a zero, estamos diante de um hook global, e é o momento em que meu .echo vai exibir na tela "*** GLOBAL HOOK ***". Do contrário, a execução vai continuar silenciosamente.</p>
 

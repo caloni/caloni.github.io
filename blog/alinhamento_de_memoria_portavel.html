@@ -48,14 +48,16 @@ role="navigation" aria-label="main navigation">
 <p>A raiz do problema é que, dependendo do alinhamento usado pelo compilador, o sizeof de uma variável pode mudar de valor, mesmo que o tamanho útil não mude. Por exemplo, vamos supor que temos uma dada estrutura que iremos encriptar:</p>
 
 <pre>
-   struct S
-   {
-       /* 4 bytes */
-       int size;
-       /* 31 bytes */
-       char name[31];
-   };
-   /* 4 + 31 = 35 bytes */
+struct S
+{
+    /* 4 bytes */
+    int size;
+
+    /* 31 bytes */
+    char name[31];
+};
+
+/* 4 + 31 = 35 bytes */
 </pre>
 <p>Se usarmos a construção "sizeof(struct S)", podemos obter o valor 35 caso o alinhamento seja feito em 1 byte, ou podemos obter o valor 40 se o alinhamento estiver configurado em 8 bytes. E é aí que começa o problema.</p>
 
@@ -64,23 +66,25 @@ role="navigation" aria-label="main navigation">
 <p>Usando essas diretivas ao compilador nossa estrutura sempre terá 40 bytes ocupados na memória, pois o alinhamento foi forçado em 8 bytes. Existem aqueles compiladores que não suportam essa idéia da mesma forma, ou não suportam de jeito nenhum. Para esses casos, alguns desvios de comportamento são necessários. A grande pergunta é se isso é possível de ser feito de forma 100% padrão. E, pelo que eu pude constatar, é possível, sim:</p>
 
 <pre>
-   #include &lt;stdio.h&gt;
-   union Align
-   {
-     struct S
-     {
-       char buf[13];
-       int x;
-     }
-     t;
-     unsigned char align[
-       sizeof(struct S) % 8 
-       ?
-       (sizeof(struct S) / 8 + 1) * 8
-       :
-       (sizeof(struct S))
-     ];
-   };
+#include &lt;stdio.h&gt;
+
+union Align
+{
+  struct S
+  {
+    char buf[13];
+    int x;
+  }
+  t;
+
+  unsigned char align[
+    sizeof(struct S) % 8 
+    ?
+    (sizeof(struct S) / 8 + 1) * 8
+    :
+    (sizeof(struct S))
+  ];
+};
 </pre>
 <p>O código acima usa o conceito de união de estruturas (union) para fazer valer um alinhamento na marra (no caso, 8). Uma estrutura, como todos sabem, amontoa os seus membros um após o outro na memória. Dessa forma podemos tratar um bloco de memória com um leiaute que definimos com outros tipos. Em uma união, os membros não são amontoados um após o outro. Todos eles começam no mesmo ponto da memória. Eles se sobrescrevem. O tamanho da união sempre é o tamanho do seu maior membro, e não a soma de todos. É um tanto difícil de descrever esse leiaute, mas imagine que você tenha apenas uma posição na memória e queira chamá-la de vários nomes e tamanhos diferentes. Essa é a união.</p>
 
@@ -91,29 +95,30 @@ role="navigation" aria-label="main navigation">
 <p>Tudo que temos que saber para fazer o alinhamento é o tamanho normal de nosso tipo útil (struct S). A partir desse valor deduzimos o próximo número que seja múltiplo de 8, através da seguinte construção:</p>
 
 <pre>
-   sizeof(struct S) % 8 
-   ?
-   (sizeof(struct S) / 8 + 1) * 8
-   :
-   (sizeof(struct S))
+sizeof(struct S) % 8 
+?
+(sizeof(struct S) / 8 + 1) * 8
+:
+(sizeof(struct S))
 </pre>
 <p>Ou seja, se S já for múltiplo de 8 é o próprio valor. Se não for, então dividimos por 8 e multiplicamos pelo mesmo valor adicionado de um, o que nos retorna o próximo múltiplo.</p>
 
 <p>É lógico que, como se trata de uma construção onde temos completo domínio dos tipos e valores envolvidos, transformar isso em um template é "pedaço de torta".</p>
 
 <pre>
-   template&lt;typename T, int A&gt;
-   union UAlign
-   {
-     T t;
-     unsigned char align[
-       sizeof(T) % A
-       ?
-       (sizeof(T) / A + 1) * A
-       :
-       (sizeof(T))
-     ];
-   };
+template&lt;typename T, int A&gt;
+union UAlign
+{
+  T t;
+
+  unsigned char align[
+    sizeof(T) % A
+    ?
+    (sizeof(T) / A + 1) * A
+    :
+    (sizeof(T))
+  ];
+};
 </pre>
 <p>E essa é a melhor parte de descobrir um padrão em um tipo: o template nasce quase que naturalmente. A beleza da linguagem floresce.</p>
 

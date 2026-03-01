@@ -48,36 +48,41 @@ role="navigation" aria-label="main navigation">
 <p>Nessa segunda solução do nosso programa alocador de variáveis globais, pra variar, vamos utilizar uma classe. E pra entrar de vez no mundo POO vamos utilizar de quebra tratamento de erro orientado a exceções. Como vamos notar, aplicadas adequadamente, essas duas características da linguagem conseguirão um código mais simples de entender, embora não se possa dizer o mesmo da implementação "under the hood".</p>
 
 <pre>
-   /** Classe helper para as nossas funções de alocação de variáveis
-   compartilhadas com o mundo. */
-   template&lt;typename T&gt;
-   class SharedVar
-   {
-   public:
-     // se conseguir, parabéns; senão, retorna BUM!
-     SharedVar(PCTSTR varName)
-     {
-       m_memPointer = 0;
-       m_memHandle = AllocSharedVariable(&amp;m_memPointer, varName);
-       if( ! m_memHandle || ! m_memPointer )
-         throw GetLastError();
-     }
-     // libera recursos alocados para a variável
-     ~SharedVar()
-     {
-       FreeSharedVariable(m_memHandle, m_memPointer);
-     }
-     T&amp; operator * ()
-     {
-       return *m_memPointer;
-     }
-   private:
-     // não vamos nos preocupar com isso agora
-     SharedVar(const SharedVar&amp; obj);
-     SharedVar&amp; operator = (const SharedVar&amp; obj);
-     T* m_memPointer;
-     HANDLE m_memHandle;
-   }; 
+/** Classe helper para as nossas funções de alocação de variáveis
+compartilhadas com o mundo. */
+template&lt;typename T&gt;
+class SharedVar
+{
+public:
+  // se conseguir, parabéns; senão, retorna BUM!
+  SharedVar(PCTSTR varName)
+  {
+    m_memPointer = 0;
+    m_memHandle = AllocSharedVariable(&amp;m_memPointer, varName);
+
+    if( ! m_memHandle || ! m_memPointer )
+      throw GetLastError();
+  }
+
+  // libera recursos alocados para a variável
+  ~SharedVar()
+  {
+    FreeSharedVariable(m_memHandle, m_memPointer);
+  }
+
+  T&amp; operator * ()
+  {
+    return *m_memPointer;
+  }
+
+private:
+  // não vamos nos preocupar com isso agora
+  SharedVar(const SharedVar&amp; obj);
+  SharedVar&amp; operator = (const SharedVar&amp; obj);
+
+  T* m_memPointer;
+  HANDLE m_memHandle;
+}; 
 </pre>
 <p>Como podemos notar, em programação "nada se cria, tudo se reutiliza". Reutilização é boa quando podemos acrescentar características adicionais ao código sem deturpar seu objetivo original. E isso é bom.</p>
 
@@ -86,44 +91,50 @@ role="navigation" aria-label="main navigation">
 <p>Bem, como o código agora está em uma classe e o erro é baseado em exceção, o código cliente muda um pouco:</p>
 
 <pre>
-   /** Exemplo de como usar as funções de alocação de memória compartilhada
-   AllocSharedVariable, OpenSharedVariable e FreeSharedVariable.
-   */
-   int _tmain(int argc, PTSTR argv[])
-   {
-     try
-     {
-       // passou algum parâmetro: lê a variável compartilhada e exibe
-       if( argc &gt; 1 )
-       {
-         system(&quot;pause&quot;);
-         // array de 100 TCHARs
-         SharedVar&lt;TCHAR [100]&gt; sharedVar(_T(SHARED_VAR));
-         _tprintf(_T(&quot;Frase secreta: \'%s\'\n&quot;), *sharedVar);
-         _tprintf(_T(&quot;Pressione &lt;enter&gt; para retornar...&quot;));
-         getchar();
-       }
-       else // não passou parâmetro: escreve na variável 
-       // compartilhada e chama nova instância
-       {
-         // array de 100 TCHARs
-         SharedVar&lt;TCHAR [100]&gt; sharedVar(_T(SHARED_VAR));
-         PTSTR cmd = new TCHAR[ _tcslen(argv[0]) + 10 ];
-         _tcscpy(cmd, _T(&quot;\&quot;&quot;));
-         _tcscat(cmd, argv[0]);
-         _tcscat(cmd, _T(&quot;\&quot; 2&quot;));
-         _tcscpy(*sharedVar,
-         _T(&quot;Vassora de sa, vassora de su, vassora de tuturuturutu!&quot;));
-         _tsystem(cmd);
-         delete [] cmd;
-       }
-     }
-     catch(DWORD err)
-     {
-       _tprintf(_T(&quot;Erro %08X.\n&quot;), err);
-     }
-     return 0;
-   } 
+/** Exemplo de como usar as funções de alocação de memória compartilhada
+AllocSharedVariable, OpenSharedVariable e FreeSharedVariable.
+*/
+int _tmain(int argc, PTSTR argv[])
+{
+  try
+  {
+    // passou algum parâmetro: lê a variável compartilhada e exibe
+    if( argc &gt; 1 )
+    {
+      system(&quot;pause&quot;);
+
+      // array de 100 TCHARs
+      SharedVar&lt;TCHAR [100]&gt; sharedVar(_T(SHARED_VAR));
+
+      _tprintf(_T(&quot;Frase secreta: \'%s\'\n&quot;), *sharedVar);
+      _tprintf(_T(&quot;Pressione &lt;enter&gt; para retornar...&quot;));
+      getchar();
+    }
+    else // não passou parâmetro: escreve na variável 
+    // compartilhada e chama nova instância
+    {
+      // array de 100 TCHARs
+      SharedVar&lt;TCHAR [100]&gt; sharedVar(_T(SHARED_VAR));
+
+      PTSTR cmd = new TCHAR[ _tcslen(argv[0]) + 10 ];
+      _tcscpy(cmd, _T(&quot;\&quot;&quot;));
+      _tcscat(cmd, argv[0]);
+      _tcscat(cmd, _T(&quot;\&quot; 2&quot;));
+
+      _tcscpy(*sharedVar,
+      _T(&quot;Vassora de sa, vassora de su, vassora de tuturuturutu!&quot;));
+      _tsystem(cmd);
+
+      delete [] cmd;
+    }
+  }
+  catch(DWORD err)
+  {
+    _tprintf(_T(&quot;Erro %08X.\n&quot;), err);
+  }
+
+  return 0;
+} 
 </pre>
 <p>Existem duas mudanças significativas: 1. a variável sozinha já representa a memória compartilhada; 2. o tratamento de erro agora é centralizado em apenas um ponto. Se pra melhor ou pior, eu não sei. Tratamento de exceções e classes são duas "modernisses" que podem ou não se encaixar em um projeto de desenvolvimento. Tudo vai depender de tudo. Por isso a melhor saída depende de como será a entrada.</p>
 

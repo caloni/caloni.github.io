@@ -46,70 +46,77 @@ role="navigation" aria-label="main navigation">
 <p>É possível, apesar de bizarro, colocar um bloco try-catch em torno da lista de inicialização de variáveis de um construtor. Essa característica da linguagem permite que possamos capturar alguma exceção lançada por algum construtor de algum membro da classe. A construção em código ficaria no estilo abaixo:</p>
 
 <pre>
-   Class::Class() try : initialization-list
-   {
-       // Class constructor body
-   }
-   catch(...) // note: this IS right!
-   {
-       // do something about
-       // just like &quot;throw&quot; over here
-   }
+Class::Class() try : initialization-list
+{
+    // Class constructor body
+}
+catch(...) // note: this IS right!
+{
+    // do something about
+    // just like &quot;throw&quot; over here
+}
 </pre>
 <p>Apesar dessa capacidade, não conseguimos parar o lançamento da exceção. Após seu lançamento, caímos no bloco catch abaixo do corpo do construtor e a exceção é lançada novamente, como se houvesse uma intrução throw no final do catch.</p>
 
 <p>O exemplo abaixo demonstra um código de uma classe que captura a exceção durante a inicialização dos membros. Na seguida o catch da função main é executada, provando que a exceção de fato não é "salva" no primeiro bloco.</p>
 
 <pre>
-   #include &lt;iostream&gt;
-   /* This class explodes */
-   class Explode
-   {
-     public:
-       Explode(int x) 
-       {
-         m_x = x;
-         throw x;
-       }
-       void print()
-       {
-         std::cout &lt;&lt; &quot;The number: &quot; &lt;&lt; m_x &lt;&lt; std::endl;
-       }
-     private:
-       int m_x;
-   };
-   /* This class is going to be exploded */
-   class Victim
-   {
-     public:
-       Victim() try : m_explode(5)
-       {
-         std::cout &lt;&lt; &quot;You're supposed to NOT seeing this...\n&quot;;
-       }
-       catch(...) 
-       { 
-         std::cerr &lt;&lt; &quot;Something BAD hapenned\n&quot;;
-         std::cerr &lt;&lt; &quot;We're going to blow up\n&quot;;
-         // just like 'throw' over here
-       }
-       void print()
-       {
-         m_explode.print();
-       }
-     private:
-       Explode m_explode;
-   };
-   int main()
-   {
-     try
-     {
-       Victim vic;
-     }
-     catch(...)
-     {
-       std::cerr &lt;&lt; &quot;Something BAD BAD happenned...\n&quot;;
-     }
-   }
+#include &lt;iostream&gt;
+
+/* This class explodes */
+class Explode
+{
+  public:
+    Explode(int x) 
+    {
+      m_x = x;
+      throw x;
+    }
+
+    void print()
+    {
+      std::cout &lt;&lt; &quot;The number: &quot; &lt;&lt; m_x &lt;&lt; std::endl;
+    }
+
+  private:
+    int m_x;
+};
+
+/* This class is going to be exploded */
+class Victim
+{
+  public:
+    Victim() try : m_explode(5)
+    {
+      std::cout &lt;&lt; &quot;You're supposed to NOT seeing this...\n&quot;;
+    }
+    catch(...) 
+    { 
+      std::cerr &lt;&lt; &quot;Something BAD hapenned\n&quot;;
+      std::cerr &lt;&lt; &quot;We're going to blow up\n&quot;;
+      // just like 'throw' over here
+    }
+
+    void print()
+    {
+      m_explode.print();
+    }
+
+  private:
+    Explode m_explode;
+};
+
+int main()
+{
+  try
+  {
+    Victim vic;
+  }
+  catch(...)
+  {
+    std::cerr &lt;&lt; &quot;Something BAD BAD happenned...\n&quot;;
+  }
+}
 </pre>
 <p>Testei esse código nos seguintes compiladores:</p>
 
@@ -130,9 +137,9 @@ role="navigation" aria-label="main navigation">
 <p>A saída esperada é a seguinte:</p>
 
 <pre>
-   Something BAD hapenned
-   We're going to blow up
-   Something BAD BAD happenned...
+Something BAD hapenned
+We're going to blow up
+Something BAD BAD happenned...
 </pre>
 </section>
 

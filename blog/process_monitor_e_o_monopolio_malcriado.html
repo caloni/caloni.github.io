@@ -74,31 +74,32 @@ role="navigation" aria-label="main navigation">
 <p>A primeira busca retorna uma chave no registro referente às propriedades de joystick. Como não estou usando joysticks, podemos ignorar este erro por enquanto e passar adiante.</p>
 
 <pre>
-   MonopolyClassic.exe CreateFile  C:\Documents and ...\TikGames\Monopoly NAME COLLISION
-   MonopolyClassic.exe CreateFile  C:\Arquivos de programas\GameHouse\Monopoly Classic\Monopoly.log ACCESS DENIED
-   MonopolyClassic.exe QueryOpen  C:\Arquivos de programas\GameHouse\Monopoly Classic\DBGHELP.DLL NAME NOT FOUND
-   MonopolyClassic.exe RegOpenKey  HKLM\Software\Microsoft\...\DBGHELP.DLL NAME NOT FOUND
+MonopolyClassic.exe CreateFile  C:\Documents and ...\TikGames\Monopoly NAME COLLISION
+MonopolyClassic.exe CreateFile  C:\Arquivos de programas\GameHouse\Monopoly Classic\Monopoly.log ACCESS DENIED
+MonopolyClassic.exe QueryOpen  C:\Arquivos de programas\GameHouse\Monopoly Classic\DBGHELP.DLL NAME NOT FOUND
+MonopolyClassic.exe RegOpenKey  HKLM\Software\Microsoft\...\DBGHELP.DLL NAME NOT FOUND
 </pre>
 <p>O próximo erro diz respeito a uma tentativa de acesso ao arquivo Monopoly.log localizado no diretório de instalação do jogo, o que já é mais sugestivo. Podemos fazer um pequeno teste alterando o acesso desse arquivo.</p>
 
 <pre>
-   cacls Monopoly.log
-   Monopoly.log BUILTIN\Usuários:R
-                BUILTIN\Administradores:F
-                AUTORIDADE NT\SYSTEM:F
-                MITY\Caloni:F
+cacls Monopoly.log
+Monopoly.log BUILTIN\Usuários:R
+             BUILTIN\Administradores:F
+             AUTORIDADE NT\SYSTEM:F
+             MITY\Caloni:F
 </pre>
 <p>Como podemos ver, o que é muito natural, um arquivo dentro da pasta de instalação de programas permite acesso de somente leitura para usuários comuns a seus arquivos, inclusive o Monopoly.log. Para fazer o teste, podemos simplesmente adicionar controle total a apenas esse arquivo, e rodar novamente o jogo.</p>
 
 <pre>
-   cacls Monopoly.log /E /G Usuários:F
-   arquivo processado: Monopoly.log
-   cacls Monopoly.log
-   Monopoly.log BUILTIN\Usuários:F
-                BUILTIN\Administradores:F
-                AUTORIDADE NT\SYSTEM:F
-                MITY\Caloni:F
-   start monopolyclassic.exe
+cacls Monopoly.log /E /G Usuários:F
+arquivo processado: Monopoly.log
+
+cacls Monopoly.log
+Monopoly.log BUILTIN\Usuários:F
+             BUILTIN\Administradores:F
+             AUTORIDADE NT\SYSTEM:F
+             MITY\Caloni:F
+start monopolyclassic.exe
 </pre>
 <img src="/blog/img/process_monitor_e_o_monopolio_malcriado_monopoly_screenshot.jpg"/>
 
@@ -109,13 +110,13 @@ role="navigation" aria-label="main navigation">
 <img src="/blog/img/process_monitor_e_o_monopolio_malcriado_monopoly_procmon_find2.png"/>
 
 <pre>
-   MonopolyClassic.exe QueryStandardInformationFile C:\Documents ...\Monopoly\save.gcf SUCCESS
-   MonopolyClassic.exe ReadFile C:\Documents ...\Monopoly\save.gcf SUCCESS
-   MonopolyClassic.exe CloseFile C:\Documents ...\Monopoly\save.gcf SUCCESS
-   MonopolyClassic.exe CreateFile C:\Arquivos de programas\GameHouse\Monopoly Classic\Monopoly.log SUCCESS
-   MonopolyClassic.exe CreateFile C:\Arquivos de programas\GameHouse\Monopoly Classic SUCCESS
-   MonopolyClassic.exe CloseFile C:\Arquivos de programas\GameHouse\Monopoly Classic SUCCESS
-   MonopolyClassic.exe WriteFile C:\Arquivos de programas\GameHouse\Monopoly Classic\Monopoly.log SUCCESS
+MonopolyClassic.exe QueryStandardInformationFile C:\Documents ...\Monopoly\save.gcf SUCCESS
+MonopolyClassic.exe ReadFile C:\Documents ...\Monopoly\save.gcf SUCCESS
+MonopolyClassic.exe CloseFile C:\Documents ...\Monopoly\save.gcf SUCCESS
+MonopolyClassic.exe CreateFile C:\Arquivos de programas\GameHouse\Monopoly Classic\Monopoly.log SUCCESS
+MonopolyClassic.exe CreateFile C:\Arquivos de programas\GameHouse\Monopoly Classic SUCCESS
+MonopolyClassic.exe CloseFile C:\Arquivos de programas\GameHouse\Monopoly Classic SUCCESS
+MonopolyClassic.exe WriteFile C:\Arquivos de programas\GameHouse\Monopoly Classic\Monopoly.log SUCCESS
 </pre>
 <p>Moral da história: se algum dia você vier a escrever um programa inocente, deixe que pessoas inocentes consigam utilizá-lo.</p>
 

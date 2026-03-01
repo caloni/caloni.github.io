@@ -49,57 +49,57 @@ role="navigation" aria-label="main navigation">
 <p>O importante do Dependency Walker para o WinDbg é que com um editor é possível copiar todas as funções exibidas em sua interface para um editor, usar um pouco de regular expressions e criar uma batelada de breakpoints:</p>
 
 <pre>
-   ...
-   bp user32!GetDC &quot;.echo GetDC; g&quot;
-   bp user32!GetDesktopWindow &quot;.echo GetDesktopWindow; g&quot;
-   bp user32!GetDlgCtrlID &quot;.echo GetDlgCtrlID; g&quot;
-   bp user32!GetDlgItem &quot;.echo GetDlgItem; g&quot;
-   bp user32!GetDlgItemTextW &quot;.echo GetDlgItemTextW; g&quot;
-   bp user32!GetFocus &quot;.echo GetFocus; g&quot;
-   ...
+...
+bp user32!GetDC &quot;.echo GetDC; g&quot;
+bp user32!GetDesktopWindow &quot;.echo GetDesktopWindow; g&quot;
+bp user32!GetDlgCtrlID &quot;.echo GetDlgCtrlID; g&quot;
+bp user32!GetDlgItem &quot;.echo GetDlgItem; g&quot;
+bp user32!GetDlgItemTextW &quot;.echo GetDlgItemTextW; g&quot;
+bp user32!GetFocus &quot;.echo GetFocus; g&quot;
+...
 </pre>
 <p>O comando "bp" cria um breakpoint no endereço requisitado. O que está entre aspas são os comandos que você deseja executar quando o breakpoint for disparado. No caso, para todas as funções será impresso o seu nome (comando ".echo") e a execução irá continuar (comando "g"). Ao rodar o programa, as chamadas das funções são mostradas na saída do depurador:</p>
 
 <pre>
-   ...
-   GetDesktopWindow
-   GetDC
-   GetFocus
-   GetDlgItem
-   GetDC
-   GetDlgItem
-   GetDC
-   GetDlgItem
-   GetDC
-   GetDlgItemTextW
-   ...
+...
+GetDesktopWindow
+GetDC
+GetFocus
+GetDlgItem
+GetDC
+GetDlgItem
+GetDC
+GetDlgItem
+GetDC
+GetDlgItemTextW
+...
 </pre>
 <p>Lindo, não? Porém ainda podem estar sendo chamadas as funções obtidas pela segunda técnica, a do GetProcAddress. Para esse caso devemos ir um pouquinho mais fundo e rodar o executável duas vezes. Na primeira, coletamos as funções que são obtidas por essa técnica através do seguinte comando:</p>
 
 <pre>
-   bp kernel32!GetProcAddress &quot;da poi(esp + 8); g&quot;
+bp kernel32!GetProcAddress &quot;da poi(esp + 8); g&quot;
 </pre>
 <p>O comando "da" exibe o conteúdo de uma string em C (caracteres ANSI e terminada em zero) na memória. A memória no caso é o "apontado do valor contido no segundo parâmetro da pilha". Complicado? Nem tanto: lembre-se que o ESP aponta sempre pro endereço de retorno da função chamadora e os parâmetros são sempre empilhados na ordem inversa da declaração em C. Logo, se o protótipo de GetProcAddress é:</p>
 
 <pre>
-   FARPROC GetProcAddress(HMODULE hModule, LPCSTR lpProcName);
+FARPROC GetProcAddress(HMODULE hModule, LPCSTR lpProcName);
 </pre>
 <p>O último parâmetro empilhado (ESP+4) é o hModule, e o penúltimo (ESP+8) é o lpProcName, que é o lugar onde é passado o nome da função.</p>
 
 <p>Devemos lembrar de colocar esse breakpoint bem no início da execução e rodar o executável uma vez. Com isso coletamos o conjunto de nomes de funções usadas para chamar GetProcAddress:</p>
 
 <pre>
-   ...
-   746e29f8  &quot;ImmReleaseContext&quot;
-   746e2a30  &quot;ImmNotifyIME&quot;
-   746e2934  &quot;CtfImmEnterCoInitCountSkipMode&quot;
-   746e2978  &quot;CtfImmLeaveCoInitCountSkipMode&quot;
-   746e29bc  &quot;ImmGetDefaultIMEWnd&quot;
-   746e2a64  &quot;ImmSetConversionStatus&quot;
-   746e2aa0  &quot;ImmGetConversionStatus&quot;
-   746e2adc  &quot;ImmGetProperty&quot;
-   746e2b10  &quot;ImmGetOpenStatus&quot;
-   ...
+...
+746e29f8  &quot;ImmReleaseContext&quot;
+746e2a30  &quot;ImmNotifyIME&quot;
+746e2934  &quot;CtfImmEnterCoInitCountSkipMode&quot;
+746e2978  &quot;CtfImmLeaveCoInitCountSkipMode&quot;
+746e29bc  &quot;ImmGetDefaultIMEWnd&quot;
+746e2a64  &quot;ImmSetConversionStatus&quot;
+746e2aa0  &quot;ImmGetConversionStatus&quot;
+746e2adc  &quot;ImmGetProperty&quot;
+746e2b10  &quot;ImmGetOpenStatus&quot;
+...
 </pre>
 <p>Daí é só organizar a lista obtida em ordem alfabética, acabar com duplicidades e criar o mesmo tipo de breakpoint que foi usado para as funções estáticas (pode ser sem o nome da DLL porque, embora não recomendado, o WinDbg se vira para encontrar os símbolos). Depois de criados os comandos, rodamos novamente o executável e, logo no início, já colocamos todos os breakpoints das funções coletadas.</p>
 

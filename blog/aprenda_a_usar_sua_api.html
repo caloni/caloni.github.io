@@ -47,18 +47,22 @@ role="navigation" aria-label="main navigation">
 
 <pre>
 #include &lt;windows.h&gt;
+
 int main()
 {
     HANDLE hFile = CreateFile(&quot;c:\\tests\\myfile.txt&quot;, GENERIC_READ, 
       FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
+
     if( hFile )
     {
       DWORD read = 0;
       CHAR buffer[100];
+
       if( ReadFile(hFile, buffer, sizeof(buffer), &amp;read, NULL) )
       {
         WriteBuffer(buffer);
       }
+
       CloseHandle(hFile);
     }
 }
@@ -70,7 +74,7 @@ int main()
 <p>Sendo assim, o código acima deveria ser:</p>
 
 <pre>
-   if( hFile != INVALID_HANDLE_VALUE )
+if( hFile != INVALID_HANDLE_VALUE )
 </pre>
 <p>GetVersion também é uma função que muitos erraram. Erraram tanto que eles fizeram uma nova versão menos complicada. Como está escrito no MSDN: "The GetVersionEx function was developed because many existing applications err when examining the packed DWORD value returned by GetVersion, transposing the major and minor version numbers."</p>
 
@@ -97,14 +101,17 @@ int main()
 <pre>
 #include &lt;windows.h&gt;
 #include &lt;stdio.h&gt;
+
 int main()
 {
     DWORD winVer = GetVersion();
     BOOL isPlatformNT = winVer &gt;= 0x80000000 ? FALSE : TRUE;
+
     if( isPlatformNT )
       printf(&quot;Plataforma NT\n&quot;);
     else
       printf(&quot;Bem-vindo ao parque dos dinossauros!\n&quot;);
+
     return isPlatformNT ? 1 : 0;
 }
 </pre>

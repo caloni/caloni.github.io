@@ -52,7 +52,7 @@ role="navigation" aria-label="main navigation">
 <p>Para verificar a existência de todas as DLLs e funções necessárias para nosso programa podemos utilizar o mundialmente conhecido Dependency Walker:</p>
 
 <pre>
-   depends meu_executavel.exe
+depends meu_executavel.exe
 </pre>
 <img src="/blog/img/o_caso_da_funcao_de_delay_load_desaparecida_depends_meu_executavel.png"/>
 
@@ -68,19 +68,20 @@ role="navigation" aria-label="main navigation">
 <p>Essa LIB contém algumas funções-chave que o Visual Studio utiliza ser for usado o seguinte parâmetro de compilação:</p>
 
 <pre>
-   /delayload:iphlpapi.dll
+/delayload:iphlpapi.dll
 </pre>
 <p>A função principal se chama "__delayLoadHelper@8", ou seja, é uma função com convenção de chamada WINAPI (stdcall) que recebe dois parâmetros.</p>
 
 <p>Isso costuma sempre funcionar, sendo que tive uma grande surpresa com os seguintes erros de compilação na versão do programa que deve ser executada em Windows 95:</p>
 
 <pre>
-   --------------------Configuration: Project - Win32 Win95 Release--------------------
-   Linking...
-   iphlpapi.lib(iphlpapi.dll) : error LNK2001: unresolved external symbol ___delayLoadHelper@8
-   release/meu_executavel.exe : fatal error LNK1120: 1 unresolved externals
-   Error executing link.exe.
-   meu_executavel.exe - 3 error(s), 0 warning(s)
+--------------------Configuration: Project - Win32 Win95 Release--------------------
+Linking...
+iphlpapi.lib(iphlpapi.dll) : error LNK2001: unresolved external symbol ___delayLoadHelper@8
+release/meu_executavel.exe : fatal error LNK1120: 1 unresolved externals
+Error executing link.exe.
+
+meu_executavel.exe - 3 error(s), 0 warning(s)
 </pre>
 <p>Isso, é claro, depois de ter checado e rechecado a existência da LIB de Delay Load na lista de LIBs a serem lincadas:</p>
 
@@ -93,8 +94,8 @@ role="navigation" aria-label="main navigation">
 <p>Após localizar o local, podemos listar seus símbolos, mais precisamente a função "delayLoadHelper":</p>
 
 <pre>
-   C:\DDK\3790\lib\w2k\i386&gt;dumpbin /symbols delayimp.lib | grep delayLoadHelper
-   108 00000000 SECT3C notype ()    External     | ___delayLoadHelper2@8
+C:\DDK\3790\lib\w2k\i386&gt;dumpbin /symbols delayimp.lib | grep delayLoadHelper
+108 00000000 SECT3C notype ()    External     | ___delayLoadHelper2@8
 </pre>
 <p>A análise mostra que a função possui um "2" no final de seu nome, causando o erro de linque.</p>
 
@@ -102,9 +103,9 @@ role="navigation" aria-label="main navigation">
 
 <p>Para sanar o problema, existem duas coisas que podem ser feitas:</p>
 
-<p>  1. Usar a delayimp.lib antiga. Isso não exige nenhuma mudança no código.</p>
+<p>1. Usar a delayimp.lib antiga. Isso não exige nenhuma mudança no código.</p>
 
-<p>  2. Criar uma função delayLoadHelper como wrapper. Isso exige a escrita de código. O código-fonte dessa função está disponível no diretório Include do Visual Studio, e pode ser adaptada para versões antigas.</p>
+<p>2. Criar uma função delayLoadHelper como wrapper. Isso exige a escrita de código. O código-fonte dessa função está disponível no diretório Include do Visual Studio, e pode ser adaptada para versões antigas.</p>
 
 <p>Nessa sessão de depuração você aprendeu como usar o Process Monitor para rastrear arquivos usados na compilação e como listar símbolos de LIBs que são usadas para lincar o programa.</p>
 

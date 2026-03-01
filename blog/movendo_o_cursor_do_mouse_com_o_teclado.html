@@ -58,29 +58,39 @@ role="navigation" aria-label="main navigation">
 #include &lt;string&gt;
 #include &lt;map&gt;
 #include &lt;iostream&gt;
+
 using namespace std;
+
 // global state
 //
+
 POINT g_OldPos = { 0 };
 bool g_Hidden = false;
+
 int g_DisableX = 0;
 int g_DisableY = 0;
+
 // hotkeys IDs
 #define HK_HIDE  1
 #define HK_SHOW  2
 #define HK_EXIT  3
+
 // utilities
 //
+
 pair&lt;UINT, UINT&gt; ParseHotkey(const string&amp; text)
 {
     UINT mod = 0;
     UINT vk = 0;
+
     string s = text;
     for (auto&amp; c : s) c = toupper(c);
+
     if (s.find(&quot;WIN+&quot;) != string::npos) mod |= MOD_WIN;
     if (s.find(&quot;CTRL+&quot;) != string::npos) mod |= MOD_CONTROL;
     if (s.find(&quot;ALT+&quot;) != string::npos) mod |= MOD_ALT;
     if (s.find(&quot;SHIFT+&quot;) != string::npos) mod |= MOD_SHIFT;
+
     if (s.find(&quot;DEL&quot;) != string::npos) vk = VK_DELETE;
     else if (s.find(&quot;INS&quot;) != string::npos) vk = VK_INSERT;
     else if (s.find(&quot;END&quot;) != string::npos) vk = VK_END;
@@ -89,16 +99,20 @@ pair&lt;UINT, UINT&gt; ParseHotkey(const string&amp; text)
     else if (s.find(&quot;F2&quot;) != string::npos) vk = VK_F2;
     else
         vk = s.back(); // fallback: última letra
+
     return { mod, vk };
 }
+
 string ReadIniString(const char* section, const char* key, const char* def)
 {
     char buf[128];
     GetPrivateProfileStringA(section, key, def, buf, sizeof(buf), &quot;HideCursor.ini&quot;);
     return buf;
 }
+
 // mouse logic
 //
+
 void HideMouse()
 {
     if (!g_Hidden)
@@ -109,6 +123,7 @@ void HideMouse()
         cout &lt;&lt; &quot;[+] Mouse hidden\n&quot;;
     }
 }
+
 void ShowMouse()
 {
     if (g_Hidden)
@@ -118,26 +133,33 @@ void ShowMouse()
         cout &lt;&lt; &quot;[+] Mouse restored\n&quot;;
     }
 }
+
 int main()
 {
     cout &lt;&lt; &quot;HideCursor - keyboard mouse control\n&quot;;
+
     // ini reading
     g_DisableX = GetPrivateProfileIntA(&quot;HideCursor&quot;, &quot;DisableX&quot;, 600, &quot;HideCursor.ini&quot;);
     g_DisableY = GetPrivateProfileIntA(&quot;HideCursor&quot;, &quot;DisableY&quot;, 0, &quot;HideCursor.ini&quot;);
+
     string hkHide = ReadIniString(&quot;Hotkeys&quot;, &quot;Hide&quot;, &quot;WIN+DEL&quot;);
     string hkShow = ReadIniString(&quot;Hotkeys&quot;, &quot;Show&quot;, &quot;WIN+INS&quot;);
     string hkExit = ReadIniString(&quot;Hotkeys&quot;, &quot;Exit&quot;, &quot;WIN+END&quot;);
+
     auto [modHide, vkHide] = ParseHotkey(hkHide);
     auto [modShow, vkShow] = ParseHotkey(hkShow);
     auto [modExit, vkExit] = ParseHotkey(hkExit);
+
     // register global hotkeys
     RegisterHotKey(NULL, HK_HIDE, modHide, vkHide);
     RegisterHotKey(NULL, HK_SHOW, modShow, vkShow);
     RegisterHotKey(NULL, HK_EXIT, modExit, vkExit);
+
     cout &lt;&lt; &quot;Hotkeys:\n&quot;;
     cout &lt;&lt; &quot; Hide: &quot; &lt;&lt; hkHide &lt;&lt; endl;
     cout &lt;&lt; &quot; Show: &quot; &lt;&lt; hkShow &lt;&lt; endl;
     cout &lt;&lt; &quot; Exit: &quot; &lt;&lt; hkExit &lt;&lt; endl;
+
     // message loop
     MSG msg;
     while (GetMessage(&amp;msg, NULL, 0, 0))
@@ -158,10 +180,12 @@ int main()
             }
         }
     }
+
 exit_loop:
     UnregisterHotKey(NULL, HK_HIDE);
     UnregisterHotKey(NULL, HK_SHOW);
     UnregisterHotKey(NULL, HK_EXIT);
+
     return 0;
 }
 </pre>
@@ -171,6 +195,7 @@ exit_loop:
 [HideCursor]
 DisableX=600
 DisableY=0
+
 [Hotkeys]
 Hide=WIN+DEL
 Show=WIN+INS

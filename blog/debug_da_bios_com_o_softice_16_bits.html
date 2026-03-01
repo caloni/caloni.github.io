@@ -47,37 +47,37 @@ role="navigation" aria-label="main navigation">
 
 <p>Passado o desafio inicial de encontrar essa versão do SoftIce e saber usá-la, o resto é fácil:</p>
 
-<p>  1. Crie uma nova VMWare, Virtual PC, VMSbrubles configurada para bootar pelo disquete.</p>
+<p>1. Crie uma nova VMWare, Virtual PC, VMSbrubles configurada para bootar pelo disquete.</p>
 
-<p>  2. Formate dois disquetes de MS-DOS, FreeDos, Sbrubles-DOS.</p>
+<p>2. Formate dois disquetes de MS-DOS, FreeDos, Sbrubles-DOS.</p>
 
-<p>  3. Copie o setor de boot disponível no artigo do CP para o disquete usando o programa disponível em um dos disquetes.</p>
+<p>3. Copie o setor de boot disponível no artigo do CP para o disquete usando o programa disponível em um dos disquetes.</p>
 
-<p>  4. Copie o SoftIce no outro disquete.</p>
+<p>4. Copie o SoftIce no outro disquete.</p>
 
-<p>  5. Efetue o boot com o disquete do SoftIce.</p>
+<p>5. Efetue o boot com o disquete do SoftIce.</p>
 
-<p>  6. Execute o SoftIce (é só rodar, ele permanece residente e é ativado com Ctrl + D).</p>
+<p>6. Execute o SoftIce (é só rodar, ele permanece residente e é ativado com Ctrl + D).</p>
 
-<p>  7. Coloque um breakpoint na int 0x13 (disco) na função 2 (leitura) (faz-se assim: bpint 13 ah=2).</p>
+<p>7. Coloque um breakpoint na int 0x13 (disco) na função 2 (leitura) (faz-se assim: bpint 13 ah=2).</p>
 
-<p>  8. Troque o disquete do Softice pelo disquete com o setor de boot do artigo do CP.</p>
+<p>8. Troque o disquete do Softice pelo disquete com o setor de boot do artigo do CP.</p>
 
-<p>  9. Efetue novamente o boot na máquina em modo "quente" (usando o próprio SoftIce, comando boot).</p>
+<p>9. Efetue novamente o boot na máquina em modo "quente" (usando o próprio SoftIce, comando boot).</p>
 
-<p>  10. A execução deve ser paralisada exatamente no ponto onde o código da BIOS lê o setor de boot do seu disquete.</p>
+<p>10. A execução deve ser paralisada exatamente no ponto onde o código da BIOS lê o setor de boot do seu disquete.</p>
 
-<p>  11. Digite p ret e em seguida F10 ou T e seja feliz.</p>
+<p>11. Digite p ret e em seguida F10 ou T e seja feliz.</p>
 
 <p>Pelo softice 16 bits conseguimos parar a execução nas interrupções da BIOS e ainda especificar qual das funções será executada, definida no registrador AH; mais detalhes sobre layout de memória do 8086 no artigo do DQ (1).</p>
 
 <p>Quando o código da BIOS é executado, ele precisa, entre outras coisas, fazer três:</p>
 
-<p>  1. Encontrar o dispositivo padrão de boot.</p>
+<p>1. Encontrar o dispositivo padrão de boot.</p>
 
-<p>  2. Ler o primeiro setor desse dispositivo para o endereço 0x7C00.</p>
+<p>2. Ler o primeiro setor desse dispositivo para o endereço 0x7C00.</p>
 
-<p>  3. Entregar a execução para o código em 0x7C00.</p>
+<p>3. Entregar a execução para o código em 0x7C00.</p>
 
 <p>O item 2 é justamente o que utiliza essa interrupção para ler do disco. Eu prefiri colocar o breakpoint no item 2, mas nada impediria de você colocá-lo no item 3 e já iniciar a depuração no código do boot loader. Mas, como eu já passei por problemas encontrados no código da BIOS que impediam o sistema de entregar a execução para o setor de boot, já dei a dica de lambuja caso você também tenha a oportunidade de se divertir em um cliente depurando a BIOS de algum laptop desajustado.</p>
 

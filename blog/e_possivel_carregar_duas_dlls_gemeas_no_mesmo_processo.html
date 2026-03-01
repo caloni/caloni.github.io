@@ -52,12 +52,15 @@ role="navigation" aria-label="main navigation">
 <pre>
 #include &lt;windows.h&gt;
 #include &lt;stdio.h&gt;
+
 int main()
 {
     HMODULE dll1 = LoadLibrary(&quot;.\\DLL\\DLL.dll&quot;);
     HMODULE dll2 = LoadLibrary(&quot;.\\DLL.dll&quot;);
+
     printf(&quot;First DLL: %p\nSecond DLL: %p&quot;,
         dll1, dll2);
+
     return 0;
 }
 </pre>
@@ -65,6 +68,7 @@ int main()
 
 <pre>
 #include &lt;windows.h&gt;
+
 BOOL WINAPI DllMain(HINSTANCE inst, DWORD reason, PVOID reserv)
 {
     return TRUE;
@@ -75,56 +79,56 @@ BOOL WINAPI DllMain(HINSTANCE inst, DWORD reason, PVOID reserv)
 <p>No caso da DLL não existir ambos os retornos serão nulos, que é o natural e esperado quando a DLL não pode ser encontrada nos lugares especificados pelo sistema e pelo aplicativo.</p>
 
 <pre>
-   K:\Docs\Projects&gt;cl app.c
-   Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 14.00.50727.42 for 80x86
-   Copyright (C) Microsoft Corporation.  All rights reserved.
-   app.c
-   Microsoft (R) Incremental Linker Version 8.00.50727.42
-   Copyright (C) Microsoft Corporation.  All rights reserved.
-   /out:app.exe
-   app.obj
-   K:\Docs\Projects&gt;app
-   First DLL: 00000000
-   Second DLL: 00000000
+K:\Docs\Projects&gt;cl app.c
+Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 14.00.50727.42 for 80x86
+Copyright (C) Microsoft Corporation.  All rights reserved.
+app.c
+Microsoft (R) Incremental Linker Version 8.00.50727.42
+Copyright (C) Microsoft Corporation.  All rights reserved.
+/out:app.exe
+app.obj
+K:\Docs\Projects&gt;app
+First DLL: 00000000
+Second DLL: 00000000
 </pre>
 <p>No caso que a DLL existe apenas no caminho do aplicativo ela é carregada com sucesso se usado o caminho relativo, pois o caminho atual faz parte da lista de caminhos que o sistema percorre para encontrá-la. A primeira chamada deve falhar.</p>
 
 <pre>
-   K:\Docs\Projects&gt;cl /LD dll.c
-   Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 14.00.50727.42 for 80x86
-   Copyright (C) Microsoft Corporation.  All rights reserved.
-   dll.c
-   Microsoft (R) Incremental Linker Version 8.00.50727.42
-   Copyright (C) Microsoft Corporation.  All rights reserved.
-   /out:dll.dll
-   /dll
-   /implib:dll.lib
-   dll.obj
-   K:\Docs\Projects&gt;app
-   First DLL: 00000000
-   Second DLL: 10000000
+K:\Docs\Projects&gt;cl /LD dll.c
+Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 14.00.50727.42 for 80x86
+Copyright (C) Microsoft Corporation.  All rights reserved.
+dll.c
+Microsoft (R) Incremental Linker Version 8.00.50727.42
+Copyright (C) Microsoft Corporation.  All rights reserved.
+/out:dll.dll
+/dll
+/implib:dll.lib
+dll.obj
+K:\Docs\Projects&gt;app
+First DLL: 00000000
+Second DLL: 10000000
 </pre>
 <p>No caso problemático em que a DLL existe em ambos os lugares a mesma DLL é carregada em dois endereços distintos da memória do mesmo processo, o que pode causar sérios problemas dependendo do código envolvido.</p>
 
 <pre>
-   K:\Docs\Projects&gt;mkdir DLL
-   K:\Docs\Projects&gt;copy dll.dll DLL
-   1 arquivo(s) copiado(s).
-   K:\Docs\Projects&gt;app
-   First DLL: 10000000
-   Second DLL: 00350000
+K:\Docs\Projects&gt;mkdir DLL
+K:\Docs\Projects&gt;copy dll.dll DLL
+1 arquivo(s) copiado(s).
+K:\Docs\Projects&gt;app
+First DLL: 10000000
+Second DLL: 00350000
 </pre>
 <p>Apesar do mundo parecer injusto, temos uma segunda regra que podemos usar para aqueles casos onde a idiotisse já foi feita:</p>
 
 <p>Vamos supor que estamos no meio de uma mudança bem radical no produto e queremos ter certeza que qualquer chamada à nossa DLL irá invocar unicamente a que estiver dentro do caminho do produto (caminho atual). Para esse caso o Windows permite uma saída muito interessante, que é o uso de um arquivo com o nome do aplicativo mais o sufixo ".local". Se esse arquivo existir, de acordo com o MSDN, então qualquer chamada à DLL irá ter sempre a prioridade do caminho atual.</p>
 
 <pre>
-   K:\Docs\Projects&gt;copy con app.exe.local
-   ^Z
-   1 arquivo(s) copiado(s).
-   K:\Docs\Projects&gt;app
-   First DLL: 10000000
-   Second DLL: 10000000
+K:\Docs\Projects&gt;copy con app.exe.local
+^Z
+1 arquivo(s) copiado(s).
+K:\Docs\Projects&gt;app
+First DLL: 10000000
+Second DLL: 10000000
 </pre>
 <p>Tente evitar a replicação do mesmo arquivo em diversos lugares. Quando eu digo "mesmo arquivo" me refiro ao mesmo nome de DLL, embora não necessariamente a mesma versão. Isso pode evitar algumas dores de cabeça futuras. E muitas, muitas horas de depuração.</p>
 

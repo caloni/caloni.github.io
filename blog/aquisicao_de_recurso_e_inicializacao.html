@@ -44,26 +44,30 @@ role="navigation" aria-label="main navigation">
 <p>O título desse artigo é uma técnica presente no paradigma da programação em C++, razão pela qual não temos o operador finally. A idéia por trás dessa técnica é conseguirmos usar recursos representados por objetos locais de maneira que ao final da função esses objetos sejam destruídos e, junto com eles, os recursos que foram alocados. Podemos chamar de recursos aquele arquivo que necessita ser aberto para escrita, o bitmap que é exibido na tela, o ponteiro de uma interface COM, etc. O nosso exemplo é sobre arquivos:</p>
 
 <pre>
-   #include &lt;stdio.h&gt;
-   class File
-   {
-     public:
-     File(char* name)
-     {
-       m_file = fopen(name, &quot;r&quot;);
-     }
-     ~File()
-     {
-       fclose(m_file);
-     }
-     FILE* m_file;
-   };
-   int UseFile()
-   {
-     File config(&quot;config.txt&quot;);
-     // using config.txt
-     return 0; // config.m_file released
-   } 
+#include &lt;stdio.h&gt;
+
+class File
+{
+  public:
+  File(char* name)
+  {
+    m_file = fopen(name, &quot;r&quot;);
+  }
+
+  ~File()
+  {
+    fclose(m_file);
+  }
+
+  FILE* m_file;
+};
+
+int UseFile()
+{
+  File config(&quot;config.txt&quot;);
+  // using config.txt
+  return 0; // config.m_file released
+} 
 </pre>
 <p>Ignorei tratamento de erros e a dor de cabeça que é a discussão sobre inicializações dentro do construtor, matéria para um outro artigo. Fora os detalhes, o que temos é (1) uma classe que se preocupa em alocar os recursos que necessita e no seu fim desalocá-los, (2) uma função que usa um objeto dessa classe, alegremente apenas preocupada em usar e abusar do objeto. A demonstração da técnica reside no fato que a função não se preocupa em desalocar os recursos alocados pelo objeto config. Algo óbvio, desejável e esperado.</p>
 
@@ -72,48 +76,56 @@ role="navigation" aria-label="main navigation">
 <p>Por outro lado, ao usarmos objetos, devemos ter plena confiança nas suas capacidades de gerenciar os recursos que foram por eles alocados. Só assim se tem liberdade o suficiente para nos concentrarmos no código da função e solenemente ignorarmos a implementação da classe que estamos utilizando. Afinal, temos que considerar que muitas vezes o código-fonte não está disponível. Veja a mesma função com uma chance de desvio incondicional (o lançamento de uma exceção):</p>
 
 <pre>
-   void BlowUpFunction()
-   {
-     // things aren't that good, so...
-     throw Scatadush();
-   }
-   int UseFileEx()
-   {
-     File config(&quot;config.txt&quot;);
-     BlowUpFunction(); // exception thrown:
-                       // config.m_file is 
-                       // automagically released
-     return 0;
-   }
+void BlowUpFunction()
+{
+  // things aren't that good, so...
+  throw Scatadush();
+}
+
+int UseFileEx()
+{
+  File config(&quot;config.txt&quot;);
+  BlowUpFunction(); // exception thrown:
+                    // config.m_file is 
+                    // automagically released
+  return 0;
+}
 </pre>
 <p>Nesse exemplo tudo funciona, certo? Até se a exceção for lançada, o recurso será desalocado, pois o objeto é destruído. Isso ilustra como várias técnicas de C++ podem conviver harmoniosamente. Mais que isso, se ajudam mutuamente. O que seria das exceções se não existissem os construtores e destrutores? Da mesma forma, os recursos são alocados e desalocados baseado na premissa de construção e destruição de objetos. Por sua vez, essa premissa vale em qualquer situação, existindo ou não exceções.</p>
 
 <p>Agora, e se a exceção de BlowUpFunction é lançada e a classe File não está preparada para fechar o arquivo no destrutor? Esse é o caso da versão 2 de nossa classe File, logo abaixo. Apesar de ser a segunda versão ela foi piorada (acontece nas melhores famílias e classes):</p>
 
 <pre>
-   class File2
-   {
-   public:
-     void Open(char* name)
-     {
-       m_file = fopen(name, &quot;r&quot;);
-     }
-     void Close()
-     {
-       fclose(m_file);
-     }
-     FILE* m_file;
-   };
-   int UseFile2()
-   {
-     File2 config;
-     config.Open(&quot;config.txt&quot;);
-     BlowUpFunction(); // exception thrown:
-                       // the resource was 
-                       // NOT released
-     config.Close(); // resource released
-     return 0;
-   } 
+class File2
+{
+public:
+
+  void Open(char* name)
+  {
+    m_file = fopen(name, &quot;r&quot;);
+  }
+
+  void Close()
+  {
+    fclose(m_file);
+  }
+
+  FILE* m_file;
+};
+
+int UseFile2()
+{
+  File2 config;
+  config.Open(&quot;config.txt&quot;);
+
+  BlowUpFunction(); // exception thrown:
+                    // the resource was 
+                    // NOT released
+
+  config.Close(); // resource released
+
+  return 0;
+} 
 </pre>
 <p>Nesse caso o código de UseFile2 acaba deixando um recurso alocado por conta de uma exceção que ocorreu em uma função secundária chamada lá pelas tantas em um momento delicado demais para ocorrerem exceções. Note que o destrutor de File2 é chamado assim como o de File, só que este não libera os recursos do objeto. Ele não usa a técnica RAII (Resource Acquisition Is Initialization, ou como seria o título deste artigo em inglês).</p>
 

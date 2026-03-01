@@ -44,25 +44,25 @@ role="navigation" aria-label="main navigation">
 <p>Bom, parece que o "mother-fucker" wordpress ferrou com meu artigo sobre o Houaiss. Enquanto eu choro as pitangas aqui vai um outro artigo um pouco mais simples, mas igualmente interessante.</p>
 
 <blockquote>"Wanderley, tenho umas sugestões para teu blog.</blockquote>
-
 <blockquote>A primeira:</blockquote>
-
 <blockquote>Que tal analisar o código abaixo e dizer se compila ou não. Se não compilar, explicar porquê não compila. Se compilar, o que acontecerá e por quê."</blockquote>
 <p>O código é o que veremos abaixo:</p>
 
 <pre>
-   #include &lt;stdio.h&gt;
-   #include &lt;stdlib.h&gt;
-   void func()
-   {
-     *(int *)0 = 0;
-     return 0;
-   }
-   int main(int argc, char **argv)
-   {
-     func();
-     return 0;
-   } 
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+void func()
+{
+  *(int *)0 = 0;
+  return 0;
+}
+
+int main(int argc, char **argv)
+{
+  func();
+  return 0;
+} 
 </pre>
 <p>Bem, para testar a compilação basta compilar. Porém, se estivermos em uma entrevista, geralmente não existe nenhum compilador em um raio de uma sala de reunião senão seu próprio cérebro.</p>
 
@@ -71,36 +71,36 @@ role="navigation" aria-label="main navigation">
 <p>Por isso, vamos analisar passo a passo cada bloco de código e entender o que pode estar errado. Se não encontrarmos, iremos supor que está tudo certo.</p>
 
 <pre>
-   #include &lt;stdio.h&gt;
-   #include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
 </pre>
 <p>Dois includes padrões, ultranormal, nada de errado aqui.</p>
 
 <pre>
-   void func()
-   {
-     *(int *)0 = 0;
-     return 0;
-   }
+void func()
+{
+  *(int *)0 = 0;
+  return 0;
+}
 </pre>
 <p>Duas ressalvas aqui: a primeira quanto ao retorno da função é void, porém a função retorna um inteiro. Na linguagem C, isso funciona, no máximo um warning do compilador. Em C++, isso é erro brabo de tipagem.</p>
 
 <p>A segunda ressalva diz respeito à linha obscura, sintaticamente correta, mas cuja semântica iremos guardar para o final, já que ainda falta o main para analisar.</p>
 
 <pre>
-   int main(int argc, char **argv)
-   {
-       func();
-       return 0;
-   }
+int main(int argc, char **argv)
+{
+    func();
+    return 0;
+}
 </pre>
 <p>A clássica função inicial, nada de mais aqui. Retorna um int, e de fato retorna. Chama a função func, definida acima.</p>
 
 <p>A linha que guardamos para analisar contém uma operação de casting, atribuição e deferência, sendo o casting executado primeiro, operador unário que é, seguido pelo segundo operador unário, a deferência. Como sempre, a atribuição é uma das últimas. Descomprimida a expressão dessa linha, ficamos com algo parecido com as duas linhas abaixo:</p>
 
 <pre>
-   int* p = (int*) 0;
-   *p = 0;
+int* p = (int*) 0;
+*p = 0;
 </pre>
 <p>Não tem nada de errado em atribuir o valor 0 a um ponteiro, que é equivalente ao define NULL da biblioteca C (e C++). De acordo com a <a href="https://ftp.gnu.org/old-gnu/Manuals/glibc-2.2.5/html_node/Null-Pointer-Constant.html">referência GNU</a>, é recomendado o uso do define, mas nada impede utilizar o 0 "hardcoded".</p>
 
@@ -111,14 +111,14 @@ role="navigation" aria-label="main navigation">
 <p>Em código. Isso pode:</p>
 
 <pre>
-   int* p = 0; // atribuindo nulo a um ponteiro
-   int* p2 = p; // isso também pode
+int* p = 0; // atribuindo nulo a um ponteiro
+int* p2 = p; // isso também pode
 </pre>
 <p>Isso não pode:</p>
 
 <pre>
-   *p = 15; // nunca acessar ponteiros nulos
-   int x = *p; // isso também não pode, ler de um ponteiro nulo
+*p = 15; // nunca acessar ponteiros nulos
+int x = *p; // isso também não pode, ler de um ponteiro nulo
 </pre>
 <p>Dito isso, me sinto melhor =)</p>
 
@@ -131,14 +131,14 @@ role="navigation" aria-label="main navigation">
 <p>Nesse caso, se tratava de um programa que iria rodar em um microprocessador, daqueles que o <a href="http://dqsoft.blospot.com">DQ</a> costuma programar. Pois bem. Quando o dito cujo ligava era necessário chamar uma rotina que estava localizada exatamente no endereço 0. Para fazer isso, o código era o seguinte:</p>
 
 <pre>
-   ( * (void(*)()) 0 ) ();
+( * (void(*)()) 0 ) ();
 </pre>
 <p>Nada mais simples: um cast do endereço 0 (apesar de normalmente inválido, 0 pode ser convertido para endereço) para ponteiro de função que não recebe parâmetros e não retorna nada, seguido de deferência ("o apontado de") e chamada (a dupla final de parênteses). A linha acima é o equivalente às linhas abaixo:</p>
 
 <pre>
-   typedef void (*func_t)();
-   func_t func = (func_t) 0;
-   func();
+typedef void (*func_t)();
+func_t func = (func_t) 0;
+func();
 </pre>
 <p>É bem o que o autor diz depois de jogar esta expressão: "expressions like these strike terror into the hearts of C programmers". É lógico que isso não é bem verdade para as pessoas que acompanham este blogue =)</p>
 

@@ -50,31 +50,33 @@ role="navigation" aria-label="main navigation">
 <p>Para simplificar este cenário vamos imaginar duas threads iniciando com o mesmo código. Esse código incrementa um contador global até ele chegar a dez, quando a função retorna e as threads terminam.</p>
 
 <pre>
-   int count = 0;
-   increment() {
-     while( count &lt; 10 ) {
-       count++;
-       print(tid, count);
-     }
-   }
-   main() {
-     thread t1(increment);
-     thread t2(increment);
-   }
+int count = 0;
+
+increment() {
+  while( count &lt; 10 ) {
+    count++;
+    print(tid, count);
+  }
+}
+
+main() {
+  thread t1(increment);
+  thread t2(increment);
+}
 </pre>
 <p>O tid no pseudo-código acima é sinônimo para Thread ID, o identificador único de uma thread, que costuma ser um número. Para simplificar vamos dar ao id os apelidos de t1 e t2. Esta é uma possível saída do código acima, dependendo de quantos processadores e cores possui a máquina:</p>
 
 <pre>
-   t1 1
-   t1 2
-   t1 3
-   t1 4
-   t1 5
-   t1 6
-   t1 7
-   t1 8
-   t1 9
-   t1 10
+t1 1
+t1 2
+t1 3
+t1 4
+t1 5
+t1 6
+t1 7
+t1 8
+t1 9
+t1 10
 </pre>
 <p>Pelo jeito a primeira thread não deu chance para a outra executar. Isso acontece por causa do pequeno espaço de tempo que é necessário para realizar a tarefa de incrementar uma variável. É tão pequena a tarefa que nem foi suficiente para a primeira thread ficar sem tempo e a CPU mandar ela para o fim da fila. Por isso a segunda thread nunca chegou a incrementar o contador.</p>
 
@@ -85,115 +87,115 @@ role="navigation" aria-label="main navigation">
 <p>Se chamarmos a função para dormir no código da thread antes de voltar a incrementar o contador é possível que a segunda thread tenha chance de executar.</p>
 
 <pre>
-   increment() {
-     while( count &lt; 10 ) {
-       count++;
-       print(tid, count);
-       sleep();
-     }
-   }
+increment() {
+  while( count &lt; 10 ) {
+    count++;
+    print(tid, count);
+    sleep();
+  }
+}
 </pre>
 <p>Agora cada thread, depois de incrementar uma vez o contador, volta para o final da fila. Dessa forma vemos uma thread de cada vez incrementando o mesmo contador.</p>
 
 <pre>
-   t1 1
-   t2 2
-   t1 2
-   t2 3
-   t1 4
-   t2 4
-   t2 6
-   t2 7
-   t1 5
-   t1 8
-   t2 8
-   t2 9
-   t2 10
+t1 1
+t2 2
+t1 2
+t2 3
+t1 4
+t2 4
+t2 6
+t2 7
+t1 5
+t1 8
+t2 8
+t2 9
+t2 10
 </pre>
 <p>Peraí, o mesmo contador? Isso pode gerar problemas. Se duas threads tentarem incrementar o mesmo contador ao mesmo tempo, quem garante que elas não irão incrementar o mesmo valor? Bom, se você é bom observador já deve ter reparado que na execução acima ocorreu exatamente isso, com mais de uma thread incrementando o contador com o mesmo valor.</p>
 
 <p>Para forçar isso acontecer mais rápido e de maneira mais gritante podemos fazer a thread ir para o final da fila antes de incrementarmos e após pegarmos o valor atual do contador. Note que nesses testes a saída muda completamente dependendo de quantos processadores sua máquina tem. O resultado às vezes pode ser bem bizarro do que o visto nesse artigo. (1)</p>
 
 <pre>
-   increment() {
-     while( count &lt; 10 ) {
-       int c = count;
-       sleep();
-       c++;
-       print(tid, c);
-       count = c;
-     }
-   }
+increment() {
+  while( count &lt; 10 ) {
+    int c = count;
+    sleep();
+    c++;
+    print(tid, c);
+    count = c;
+  }
+}
 </pre>
 <p>O código acima pode gerar a seguinte saída:</p>
 
 <pre>
-   t1 1
-   t2 1
-   t1 2
-   t2 2
-   t1 3
-   t2 3
-   t1 4
-   t2 4
-   t1 5
-   t2 5
-   t2 6
-   t1 6
-   t2 7
-   t1 7
-   t1 8
-   t2 8
-   t2 9
-   t1 9
-   t2 10
-   t1 10
+t1 1
+t2 1
+t1 2
+t2 2
+t1 3
+t2 3
+t1 4
+t2 4
+t1 5
+t2 5
+t2 6
+t1 6
+t2 7
+t1 7
+t1 8
+t2 8
+t2 9
+t1 9
+t2 10
+t1 10
 </pre>
 <p>Explicando mais uma vez com mais detalhes: quando uma thread guarda o valor do contador na variável local e volta para o final da fila, ela deixa de armazenar o contador atualizado para apenas depois que todas as outras threads passarem na sua frente. Só que as outras threads também pegam o mesmo valor do contador, pois ele ainda não foi alterado. Quando chega a hora da segunda passada no guichê das CPUs, todas as threads incrementaram o mesmo valor do contador. Se houvesse apenas um processador em uma máquina o fluxo de execução do ponto de vista do processamento único para duas threads ficaria mais ou menos o seguinte (zzz é quando uma thread dorme):</p>
 
 <pre>
-   t1 c = count (0)
-   t1 zzz
-   t2 c = count (0)
-   t2 zzz
-   t1 c++ (1)
-   t2 c++ (1)
-   t1 print c (1)
-   t2 print c (1)
-   t1 count = c (1)
-   t2 count = c (1)
-   t1 c = count (1)
-   t1 zzz
-   t2 c = count (1)
-   t2 zzz
-   ...
+t1 c = count (0)
+t1 zzz
+t2 c = count (0)
+t2 zzz
+t1 c++ (1)
+t2 c++ (1)
+t1 print c (1)
+t2 print c (1)
+t1 count = c (1)
+t2 count = c (1)
+t1 c = count (1)
+t1 zzz
+t2 c = count (1)
+t2 zzz
+...
 </pre>
 <p>O exemplo acima forçou essa situação, mas é preciso lembrar que isso pode acontecer mesmo sem a thread dormir. É possível que o tempo da thread se esgote e ela pare de ser atendida justo na hora que iria salvar a variável c no contador global. Dessa forma, ela vai para o final da fila à força e, quando voltar a ser atendida, uma outra thread já terá lido o valor anterior para ela própria incrementar.</p>
 
 <p>O que gostaríamos que acontecesse para corrigir o problema é forçar a segunda thread a esperar antes que a primeira termine todo o processo de incrementar e salvar no contador global, o que resolveria o nosso problema (o wait no exemplo abaixo é uma thread aguardando e não fazendo nada):</p>
 
 <pre>
-   t1 c = count (0)
-   t1 zzz
-   t2 wait
-   t1 c++ (1)
-   t2 wait
-   t1 print c (1)
-   t2 wait
-   t1 count = c (1)
-   t2 wait
-   t1 ready
-   t2 c = count (1)
-   t1 wait
-   t2 c++ (2)
-   t1 wait
-   t2 print c (2)
-   t1 wait
-   t2 count = c (2)
-   t2 ready
-   t1 c = count (2)
-   t2 wait
-   ...
+t1 c = count (0)
+t1 zzz
+t2 wait
+t1 c++ (1)
+t2 wait
+t1 print c (1)
+t2 wait
+t1 count = c (1)
+t2 wait
+t1 ready
+t2 c = count (1)
+t1 wait
+t2 c++ (2)
+t1 wait
+t2 print c (2)
+t1 wait
+t2 count = c (2)
+t2 ready
+t1 c = count (2)
+t2 wait
+...
 </pre>
 <p>Esse wait do fluxo, ou seja, deixar a próxima thread aguardando a que chegou primeiro incrementar, pode ser obtido se utilizarmos um mecanismo de acesso exclusivo fornecido pelo sistema operacional. Uma outra história para contar, que chamarei de "A sala da fila das threads".</p>
 

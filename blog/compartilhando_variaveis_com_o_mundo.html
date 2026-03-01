@@ -46,23 +46,26 @@ role="navigation" aria-label="main navigation">
 <p>Era comum (talvez ainda seja) fazer um código assim:</p>
 
 <pre>
-   // aqui definimos uma nova seção (note o 'shared' usado como atributo)
-   #pragma section(&quot;shared&quot;, read, write, shared)
-   // um conjunto de variáveis agrupadas para facilitar o compartilhamento
-   struct EstruturaDoCoracao
-   {
-     int meuIntPreferido;
-     char meuCharAmigo;
-     double meuNumeroDePontoFlutuanteCamarada;
-   };
-   // uma instância da struct acima para podermos usar nos processos amigos
-   __declspec(allocate(&quot;shared&quot;)) EstruturaDoCoracao g_coracao;
-   int main()
-   {
-     g_coracao.meuCharAmigo = 'C';
-     g_coracao.meuIntPreferido = 42;
-     g_coracao.meuNumeroDePontoFlutuanteCamarada = 3.14159265358979323846264338;
-   } 
+// aqui definimos uma nova seção (note o 'shared' usado como atributo)
+#pragma section(&quot;shared&quot;, read, write, shared)
+
+// um conjunto de variáveis agrupadas para facilitar o compartilhamento
+struct EstruturaDoCoracao
+{
+  int meuIntPreferido;
+  char meuCharAmigo;
+  double meuNumeroDePontoFlutuanteCamarada;
+};
+
+// uma instância da struct acima para podermos usar nos processos amigos
+__declspec(allocate(&quot;shared&quot;)) EstruturaDoCoracao g_coracao;
+
+int main()
+{
+  g_coracao.meuCharAmigo = 'C';
+  g_coracao.meuIntPreferido = 42;
+  g_coracao.meuNumeroDePontoFlutuanteCamarada = 3.14159265358979323846264338;
+} 
 </pre>
 <p>Aquele pragma do começo garante que qualquer instância do mesmo executável, mas processos distintos, irão compartilhar qualquer variável definida dentro da seção "shared". O nome na verdade não importa muito - é apenas usado para clareza - , mas o atributo do final, sim.</p>
 
@@ -81,66 +84,76 @@ role="navigation" aria-label="main navigation">
 <p>Foi daí que eu fiz um conjunto de funções alfa-beta de compartilhamento de variáveis baseado em template e memória mapeada:</p>
 
 <pre>
-   #pragma once
-   #include &lt;windows.h&gt;
-   #include &lt;tchar.h&gt;
-   /** Aloca uma variável em memória mapeada, permitindo a qualquer processo
-   com direitos enxergá-la e alterá-la.
-   */
-   template&lt;typename T&gt;
-   HANDLE AllocSharedVariable(T** pVar, PCTSTR varName)
-   {
-     DWORD varSize = sizeof(T);
-     HANDLE ret = CreateFileMapping(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE,
-       0, varSize, varName);
-     if( ret )
-     {
-       *pVar = (T*) MapViewOfFile(ret, FILE_MAP_ALL_ACCESS, 0, 0, 0);
-       if( ! *pVar )
-       {
-         DWORD err = GetLastError();
-         CloseHandle(ret);
-         SetLastError(err);
-       }
-     }
-     else
-       *pVar = NULL;
-     return ret;
-   }
-   /** Abre uma variável que foi criada em memória mapeada, permitindo ao
-   processo atual enxergar e alterar uma variável criada por outro processo.
-   */
-   template&lt;typename T&gt;
-   HANDLE OpenSharedVariable(T** pVar, PCTSTR varName)
-   {
-     DWORD varSize = sizeof(T);
-     HANDLE ret = OpenFileMapping(FILE_MAP_ALL_ACCESS, FALSE, varName);
-     if( ret )
-     {
-       *pVar = (T*) MapViewOfFile(ret, FILE_MAP_READ | FILE_MAP_WRITE, 0, 0, varSize);
-       if( ! *pVar )
-       {
-       DWORD err = GetLastError();
-       CloseHandle(ret);
-       ret = NULL;
-       SetLastError(err);
-       }
-     }
-     else
-       *pVar = NULL;
-     return ret;
-   }
-   /** Libera visualização de uma variável em memória mapeada. Quando o último processo
-   liberar a última visualização, a variável é eliminada da memória.
-   */
-   template&lt;typename T&gt;
-   VOID FreeSharedVariable(HANDLE varH, T* pVar)
-   {
-     if( pVar )
-       UnmapViewOfFile(pVar);
-     if( varH )
-       CloseHandle(varH);
-   } 
+#pragma once
+#include &lt;windows.h&gt;
+#include &lt;tchar.h&gt;
+
+/** Aloca uma variável em memória mapeada, permitindo a qualquer processo
+com direitos enxergá-la e alterá-la.
+*/
+
+template&lt;typename T&gt;
+HANDLE AllocSharedVariable(T** pVar, PCTSTR varName)
+{
+  DWORD varSize = sizeof(T);
+  HANDLE ret = CreateFileMapping(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE,
+    0, varSize, varName);
+
+  if( ret )
+  {
+    *pVar = (T*) MapViewOfFile(ret, FILE_MAP_ALL_ACCESS, 0, 0, 0);
+
+    if( ! *pVar )
+    {
+      DWORD err = GetLastError();
+      CloseHandle(ret);
+      SetLastError(err);
+    }
+  }
+  else
+    *pVar = NULL;
+
+  return ret;
+}
+
+/** Abre uma variável que foi criada em memória mapeada, permitindo ao
+processo atual enxergar e alterar uma variável criada por outro processo.
+*/
+template&lt;typename T&gt;
+HANDLE OpenSharedVariable(T** pVar, PCTSTR varName)
+{
+  DWORD varSize = sizeof(T);
+  HANDLE ret = OpenFileMapping(FILE_MAP_ALL_ACCESS, FALSE, varName);
+
+  if( ret )
+  {
+    *pVar = (T*) MapViewOfFile(ret, FILE_MAP_READ | FILE_MAP_WRITE, 0, 0, varSize);
+
+    if( ! *pVar )
+    {
+    DWORD err = GetLastError();
+    CloseHandle(ret);
+    ret = NULL;
+    SetLastError(err);
+    }
+  }
+  else
+    *pVar = NULL;
+
+  return ret;
+}
+
+/** Libera visualização de uma variável em memória mapeada. Quando o último processo
+liberar a última visualização, a variável é eliminada da memória.
+*/
+template&lt;typename T&gt;
+VOID FreeSharedVariable(HANDLE varH, T* pVar)
+{
+  if( pVar )
+    UnmapViewOfFile(pVar);
+  if( varH )
+    CloseHandle(varH);
+} 
 </pre>
 <p>Como pode-se ver, o seu funcionamento é muito simples: uma função-template que recebe uma referência para um ponteiro de ponteiro do tipo da variável desejada, o seu nome global e retorna uma variável alocada na memória de cachê do sistema. Como contraparte existe uma função que abre essa memória baseada em seu nome e faz o cast (coversão de tipo) necessário. Ambas as chamadas devem chamar uma terceira função para liberar o recurso.</p>
 
@@ -149,48 +162,58 @@ role="navigation" aria-label="main navigation">
 <p>Ah, é mesmo! Fiz especialmente para o artigo:</p>
 
 <pre>
-   #define _CRT_SECURE_NO_DEPRECATE
-   #include &quot;ShareVar.h&quot;
-   #include &lt;windows.h&gt;
-   #include &lt;tchar.h&gt;
-   #include &lt;stdio.h&gt;
-   #define SHARED_VAR &quot;FraseSecreta&quot;
-   /** Exemplo de como usar as funções de alocação de memória compartilhada
-   AllocSharedVariable, OpenSharedVariable e FreeSharedVariable.
-   */
-   int _tmain(int argc, PTSTR argv[])
-   {
-     // passou algum parâmetro: lê a variável compartilhada e exibe
-     if( argc &gt; 1 )
-     {
-       system(&quot;pause&quot;);
-       TCHAR (*sharedVar)[100] = 0; // ponteiro para array de 100 TCHARs
-       HANDLE varH = AllocSharedVariable(&amp;sharedVar, _T(SHARED_VAR));
-       if( varH &amp;&amp; sharedVar )
-       {
-         _tprintf(_T(&quot;Frase secreta: '%s'n&quot;), *sharedVar);
-         _tprintf(_T(&quot;Pressione &lt;enter&gt; para retornar...&quot;));
-         getchar();
-       }
-     }
-     else // não passou parâmetro: escreve na variável 
-     // compartilhada e chama nova instância
-     {
-       TCHAR (*sharedVar)[100] = 0; // ponteiro para array de 100 TCHARs
-       HANDLE varH = AllocSharedVariable(&amp;sharedVar, _T(SHARED_VAR));
-       if( varH &amp;&amp; sharedVar )
-       {
-         PTSTR cmd = new TCHAR[ _tcslen(argv[0]) + 10 ];
-         _tcscpy(cmd, _T(&quot;\&quot;&quot;));
-         _tcscat(cmd, argv[0]);
-         _tcscat(cmd, _T(&quot;\&quot; 2&quot;));
-         _tcscpy(*sharedVar, _T(&quot;Tuintuintuclaim&quot;));
-         _tsystem(cmd);
-         delete [] cmd;
-       }
-     }
-     return 0;
-   } 
+#define _CRT_SECURE_NO_DEPRECATE
+#include &quot;ShareVar.h&quot;
+#include &lt;windows.h&gt;
+#include &lt;tchar.h&gt;
+
+#include &lt;stdio.h&gt;
+
+#define SHARED_VAR &quot;FraseSecreta&quot;
+
+/** Exemplo de como usar as funções de alocação de memória compartilhada
+AllocSharedVariable, OpenSharedVariable e FreeSharedVariable.
+*/
+int _tmain(int argc, PTSTR argv[])
+{
+  // passou algum parâmetro: lê a variável compartilhada e exibe
+
+  if( argc &gt; 1 )
+  {
+    system(&quot;pause&quot;);
+
+    TCHAR (*sharedVar)[100] = 0; // ponteiro para array de 100 TCHARs
+    HANDLE varH = AllocSharedVariable(&amp;sharedVar, _T(SHARED_VAR));
+
+    if( varH &amp;&amp; sharedVar )
+    {
+      _tprintf(_T(&quot;Frase secreta: '%s'n&quot;), *sharedVar);
+      _tprintf(_T(&quot;Pressione &lt;enter&gt; para retornar...&quot;));
+      getchar();
+    }
+  }
+  else // não passou parâmetro: escreve na variável 
+  // compartilhada e chama nova instância
+  {
+    TCHAR (*sharedVar)[100] = 0; // ponteiro para array de 100 TCHARs
+    HANDLE varH = AllocSharedVariable(&amp;sharedVar, _T(SHARED_VAR));
+
+    if( varH &amp;&amp; sharedVar )
+    {
+      PTSTR cmd = new TCHAR[ _tcslen(argv[0]) + 10 ];
+      _tcscpy(cmd, _T(&quot;\&quot;&quot;));
+      _tcscat(cmd, argv[0]);
+      _tcscat(cmd, _T(&quot;\&quot; 2&quot;));
+
+      _tcscpy(*sharedVar, _T(&quot;Tuintuintuclaim&quot;));
+      _tsystem(cmd);
+
+      delete [] cmd;
+    }
+  }
+
+  return 0;
+} 
 </pre>
 <p>Preciso lembrar que essa é uma versão inicial ainda, mas que pode muito bem ser melhorada. Duas idéias interessantes são: parametrizar a proteção da variável (através do SECURITY_ATTRIBUTES) e transformá-la em classe. Uma classe parece ser uma idéia bem popular. Afinal, tem tanta gente que só se consegue programar se o código estiver dentro de uma.</p>
 

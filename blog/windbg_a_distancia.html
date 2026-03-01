@@ -54,20 +54,21 @@ role="navigation" aria-label="main navigation">
 <p>No caso de VM ou máquina de teste do lado do desenvolvedor podemos supor que a máquina tem total acesso e controle do desenvolvedor. Tudo o que temos que fazer é iniciar um WinDbg na máquina-vítima e outro WinDbg na máquina-programador. O WinDbg da máquina-vítima deve ser iniciado no modo-servidor, enquanto o da máquina-programador no modo-cliente.</p>
 
 <pre>
-   windbg -server tcp:port=6666
-   windbg -remote tcp:server=maquina-vitima,port=6666
+windbg -server tcp:port=6666
+windbg -remote tcp:server=maquina-vitima,port=6666
 </pre>
 <p>A vantagem dessa técnica é que tanto o WinDbg da máquina-vítima quanto o da máquina-programador podem emitir comandos, e todos vêem os resultados. Uma possível desvantagem é que os símbolos devem estar disponíveis a partir da máquina-vítima.</p>
 
 <p>Se for necessário, é possível convidar mais gente pra festa, pois o WinDbg permite se transformar em uma instância servidora pelo comando .server, que possui a mesma sintaxe da linha de comando. Para a comunicação entre todos esses depuradores ambulantes um comando muito útil é o .echo.</p>
 
 <pre>
-   windbg -server tcp:port=6667 -remote tcp:server=maquina-vitima,port=6666
-   windbg -remote tcp:server=maquina-vitima,port=6666
-   0:000&gt;.server tcp:port=6667
-   MAQUINA-PROGRAMADOR66\caloni (tcp 222.234.235.236:1974) connected at Mon Mar 24 11:47:55 2008
-   0:000&gt;.echo E ae, galera? Como que a gente vai consertar essa &amp;%$*&amp;?
-   0:000&gt;.echo Putz, sei lá. Acho que vou tomar mais café...
+windbg -server tcp:port=6667 -remote tcp:server=maquina-vitima,port=6666
+windbg -remote tcp:server=maquina-vitima,port=6666
+
+0:000&gt;.server tcp:port=6667
+MAQUINA-PROGRAMADOR66\caloni (tcp 222.234.235.236:1974) connected at Mon Mar 24 11:47:55 2008
+0:000&gt;.echo E ae, galera? Como que a gente vai consertar essa &amp;%$*&amp;?
+0:000&gt;.echo Putz, sei lá. Acho que vou tomar mais café...
 </pre>
 <img src="/blog/img/windbg_a_distancia_windbg_remote.gif"/>
 
@@ -80,17 +81,17 @@ role="navigation" aria-label="main navigation">
 <p>Para iniciar o servidor de depuração e deixar as portas abertas para o depurador temos apenas que iniciar o processo dbgsrv.exe:</p>
 
 <pre>
-   dbgsrv -t tcp:port=6666
+dbgsrv -t tcp:port=6666
 </pre>
 <p>Para iniciar o processo depurador, a sintaxe é quase a mesma, só que no lugar de remote especificamos premote:</p>
 
 <pre>
-   windbg -premote tcp:server=maquina-vitima,port=6666
+windbg -premote tcp:server=maquina-vitima,port=6666
 </pre>
 <p>Caso não se saiba a porta usada para iniciar o servidor, ou queira-se listar todos os servidores disponíveis em uma determinada máquina, usa-se o comando -QR.</p>
 
 <pre>
-   cdb -QR \\maquina-vitima
+cdb -QR \\maquina-vitima
 </pre>
 <p>O exemplo acima utilizou uma conexão TCP para montar o ambiente de depuração remota, o que possibilita inclusive correção de problemas via internet. No entanto, nem sempre podemos nos dar ao luxo de abrir portas não-autorizadas, requisito mínimo para estabelecer a conexão com o depurador. Nesse caso, podemos configurar conexões pela porta serial, por pipes nomeados, por SSL. Se for realmente necessário usar a pilha TCP, mas o lado servidor possui um firewall, ainda assim é possível configurar este tipo de conexão com a opção clicon. Dessa forma, quem estabelece a conexão é o servidor, evitando que o cliente fique bloqueado de acessar o ambiente de depuração.</p>
 

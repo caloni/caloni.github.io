@@ -55,15 +55,19 @@ void InstallAntiAttach(void)
     BYTE *pBreakin;
     DWORD oldProtect;
     DWORD rel;
+
     hNtdll = GetModuleHandleA(&quot;ntdll.dll&quot;);
     if (!hNtdll)
         return;
+
     pBreakin = (BYTE *)GetProcAddress(
         hNtdll,
         &quot;DbgUiRemoteBreakin&quot;
     );
+
     if (!pBreakin)
         return;
+
     // make memory executable and writable
     VirtualProtect(
         pBreakin,
@@ -71,12 +75,16 @@ void InstallAntiAttach(void)
         PAGE_EXECUTE_READWRITE,
         &amp;oldProtect
     );
+
     // JMP rel32
     pBreakin[0] = 0xE9;
+
     // relative offset
     rel = (DWORD)AntiAttachAbort -
           (DWORD)pBreakin - 5;
+
     *(DWORD *)(pBreakin + 1) = rel;
+
     // restore protection
     VirtualProtect(
         pBreakin,
@@ -97,6 +105,7 @@ void WINAPI AntiAttachAbort(void)
         &quot;AntiAttach&quot;,
         MB_ICONERROR | MB_OK
     );
+
     ExitProcess(0);
 }
 </pre>
@@ -104,9 +113,9 @@ void WINAPI AntiAttachAbort(void)
 
 <p>Maneiras alternativas de fazer isso são:</p>
 
-<p>  1. Declarar uma função naked no Visual Studio, criar uma função vazia logo após e fazer continha de mais e menos para chegar ao tamanho que deve ser copiado.</p>
+<p>1. Declarar uma função naked no Visual Studio, criar uma função vazia logo após e fazer continha de mais e menos para chegar ao tamanho que deve ser copiado.</p>
 
-<p>  2. Criar uma estrutura cujos membros são opcodes disfarçados. Dessa forma é possível no construtor dessa estrutura preencher os valores corretamente e usá-la como uma "função móvel".</p>
+<p>2. Criar uma estrutura cujos membros são opcodes disfarçados. Dessa forma é possível no construtor dessa estrutura preencher os valores corretamente e usá-la como uma "função móvel".</p>
 
 <p>Ambas possuem prós e contras. Os contras estão relacionados com a dependência do ambiente. Na primeira alternativa é necessário configurar o projeto para desabilitar o "Edit and Continue", enquanto no segundo é necessário alinhar a estrutura em 1 byte.</p>
 

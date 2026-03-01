@@ -57,13 +57,13 @@ role="navigation" aria-label="main navigation">
 
 <p>A operação acima é realizada através de microinstruções bem sucintas:</p>
 
-<p>  1. Leia memória y para registrador 1</p>
+<p>1. Leia memória y para registrador 1</p>
 
-<p>  2. Leia memória z para registrador 2</p>
+<p>2. Leia memória z para registrador 2</p>
 
-<p>  3. Some valor de registrador 1 e 2 e coloque resultado no registrador 1</p>
+<p>3. Some valor de registrador 1 e 2 e coloque resultado no registrador 1</p>
 
-<p>  4. Carregue memória x com valor do registrador 1</p>
+<p>4. Carregue memória x com valor do registrador 1</p>
 
 <img src="/blog/img/basico_do_basico_assembly_N90ooMD.gif"/>
 
@@ -95,26 +95,26 @@ role="navigation" aria-label="main navigation">
 <p>As flags são bits que mudam de acordo com algumas instruções, principalmente as de comparação (vide cmp). Após a execução de comparação, o estado de determinadas flags junto da próxima instrução (que deverá ser um salto condicional) irá dizer para onde o programa irá pular sua execução. É assim que temos o if:</p>
 
 <pre>
-   if( x == 10 )
-     XEhIgualA10();
-   else
-     XEhDiferenteDe10();
+if( x == 10 )
+  XEhIgualA10();
+else
+  XEhDiferenteDe10();
 </pre>
 <p>O código acima seria representado em assembly mais ou menos como abaixo:</p>
 
-<p>  1. carrega valor de x no registrador 1</p>
+<p>1. carrega valor de x no registrador 1</p>
 
-<p>  2. compara registrador 1 com 10</p>
+<p>2. compara registrador 1 com 10</p>
 
-<p>  3. pula para 6 se for diferente</p>
+<p>3. pula para 6 se for diferente</p>
 
-<p>  4. chama XEhIgualA10</p>
+<p>4. chama XEhIgualA10</p>
 
-<p>  5. pula para 7</p>
+<p>5. pula para 7</p>
 
-<p>  6. chama XEhDiferenteDe10</p>
+<p>6. chama XEhDiferenteDe10</p>
 
-<p>  7. próxima instrução</p>
+<p>7. próxima instrução</p>
 
 <blockquote>Uma curiosidade interessante é a flag de comparação. Se o resultado da comparação disser que os dois elementos são iguais, a flag fica igual a zero, o que significa que os comparandos são idênticos. Se você reparar, a mesma semântica é utilizada na conhecida função strcmp, que retorna zero caso duas strings sejam idênticas. Isso faz sentido em ambos os lados, já que o resultado computacional geralmente deixa um rastro de diferença que é usado como retorno. Se esse rastro não existir, quer dizer que o que foi comparado é idêntico.</blockquote>
 <h4>Opcodes para aprender:</h4>
@@ -134,14 +134,16 @@ role="navigation" aria-label="main navigation">
 <h4>Pedaços de código que vale a pena estudar:</h4>
 
 <pre>
-   push ebp
-   mov epb, esp
-   push eax
-   mov ecx, dword ptr[variavel]
-   push 10
-   call funcao
-   cmp something
-   jne | jae | ...
+push ebp
+mov epb, esp
+
+push eax
+mov ecx, dword ptr[variavel]
+push 10
+call funcao
+
+cmp something
+jne | jae | ...
 </pre>
 <h4>O que é legal de fazer para treinar assembly</h4>
 

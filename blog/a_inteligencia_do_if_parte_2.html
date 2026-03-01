@@ -48,12 +48,13 @@ role="navigation" aria-label="main navigation">
 <p>É comum nas arquitetura o resultado de uma comparação ser igual a zero se os elementos são iguais e diferente de zero se são diferentes. O resultado, então, denota a diferença entre as memórias comparadas, e se não há diferença o resultado é zero.</p>
 
 <pre>
-   set memA, 1
-   set memB, 1
-   cmp memA, memB # ZF=0
-   set memA, 1
-   set memB, 0
-   cmp memA, memB # ZF=1
+set memA, 1
+set memB, 1
+cmp memA, memB # ZF=0
+
+set memA, 1
+set memB, 0
+cmp memA, memB # ZF=1
 </pre>
 <p>Mas como de fato comparar? Aí é que reside a mágica das portas lógicas e operações booleanas. A comparação acima pode ser feita com uma porta lógica XOR, o OU-eXclusivo, por exemplo, e o resultado pode ser obtido e armazenado se a saída for conectada a um flip-flop (um flip-flop, ou multivibrador biestável, é um circuito de computador capaz de armazenar o valor de 1 bit, o necessário para o nosso salto). Vamos por partes.</p>
 
@@ -68,22 +69,22 @@ role="navigation" aria-label="main navigation">
 <p>Um salto incondicional, como vimos na parte um, é um salto para um outro ponto no código que vai ser feito de qualquer forma. Pode ser uma instrução do processador saltar para um endereço definido em algum lugar da memória. O goto possui como destino o endereço X, sendo que X depende do que estiver em seu próprio endereço.</p>
 
 <pre>
-   001 set memA, 004
-   002 jump memA
-   003 code # not executed
-   004 code
-   005 ...
+001 set memA, 004
+002 jump memA
+003 code # not executed
+004 code
+005 ...
 </pre>
 <p>Agora, para executar o salto condicional, precisamos não apenas de um, mas de dois endereços de destino, cada um deles com um endereço de memória. Podemos definir o primeiro endereço como o armazenador do salto se a condição for falsa, e o segundo endereço se a condição for verdadeira.</p>
 
 <pre>
-   001 set memA, 006
-   002 set memB, 005
-   003 cmp memC, memD
-   004 jz memA
-   005 code # ZF=1
-   006 code # ZF=0
-   007 ...
+001 set memA, 006
+002 set memB, 005
+003 cmp memC, memD
+004 jz memA
+005 code # ZF=1
+006 code # ZF=0
+007 ...
 </pre>
 <p>Se os valores em memC e memD forem iguais a comparação feita na linha 003 deixará o ZF igual a 0 e portanto o comando jz (jump if zero, saltar se zero) irá realizar o salto para a linha 006, que é o endereço contido em memA. Caso contrário não será feito o salto, ou seja, a próxima instrução será a da linha 005, a mesma contida em memB.</p>
 
@@ -92,19 +93,19 @@ role="navigation" aria-label="main navigation">
 <p>Para isso continue imaginando o memB sendo usado como o endereço a ser usado caso a condição falhe. Esse endereço está localizado logo após o memA na memória. Se memA estiver em 080, memB estará em 081.</p>
 
 <pre>
-   080 memA # 006
-   081 memB # 005
+080 memA # 006
+081 memB # 005
 </pre>
 <p>Dessa forma, para executar o salto baseado em um resultado de 0 ou 1 (o Zero Flag) só temos que alterar o endereço da próxima instrução para o valor do endereço de comparação mais o valor de ZF, que pode ser 1 ou 0. Se for 0 será o próprio endereço da condição (memA), mas se for 1 será esse endereço mais 1 (ZF), ou seja, memB.</p>
 
 <pre>
-   001 set memA, 006
-   002 set memB, 005
-   003 cmp memC, memD # muda ZF
-   004 jump [memA + ZF]
-   005 code # ZF=1
-   006 code # ZF=0
-   007 ...
+001 set memA, 006
+002 set memB, 005
+003 cmp memC, memD # muda ZF
+004 jump [memA + ZF]
+005 code # ZF=1
+006 code # ZF=0
+007 ...
 </pre>
 <p>Lembre-se que essa é apenas uma demonstração de como pode funcionar um salto condicional através de cálculos matemáticos. De maneira alguma estou afirmando que é feito dessa forma. Aliás, existem inúmeras formas de realizar esse salto. Uma segunda solução seria adicionar a defasagem (offset) entre o endereço da próxima instrução e o endereço do salto. Meu objetivo foi apenas ilustrar que, dado um problema, pode haver várias soluções. Talvez mais para a frente veremos como é implementado um if em assembly, subindo mais um nível de abstração. Por enquanto estamos apenas trabalhando no nível filosófico. O mais importante de todos.</p>
 

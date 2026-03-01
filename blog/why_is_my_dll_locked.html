@@ -50,15 +50,19 @@ role="navigation" aria-label="main navigation">
 <pre>
 #include &lt;windows.h&gt;
 #include &lt;stdio.h&gt;
+
 DWORD WINAPI WorkerThread(LPVOID lpParam)
 {
     // Simulate some work
     Sleep(1000);
+
     // Anything that might touch loader state is deadly here
     // Even something innocent-looking like LoadLibrary
     LoadLibraryA(&quot;user32.dll&quot;);
+
     return 0;
 }
+
 BOOL WINAPI DllMain(HINSTANCE hinstDLL,
                     DWORD fdwReason,
                     LPVOID lpvReserved)
@@ -69,6 +73,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL,
     {
         HANDLE hThread;
         DWORD threadId;
+
         hThread = CreateThread(
             NULL,
             0,
@@ -77,6 +82,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL,
             0,
             &amp;threadId
         );
+
         if (hThread)
         {
             // 🚨 DEADLOCK HERE 🚨
@@ -86,27 +92,30 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL,
         }
         break;
     }
+
     case DLL_PROCESS_DETACH:
         break;
     }
+
     return TRUE;
 }
 </pre>
 <p>A simple victim of all this can be an executable using a poorly written DLL, just like the code above:</p>
 
 <pre>
-   int main()
-   {
-     printf(&quot;load dll&quot;);
-     HMODULE lockDll = LoadLibrary(_T(&quot;dll_lock.dll&quot;));
-     if( lockDll )
-     {
-       Sleep(2000);
-       printf(&quot;free dll&quot;);
-       FreeLibrary(lockDll), lockDll  = NULL;
-       printf(&quot;done&quot;);
-     }
-   }
+int main()
+{
+  printf(&quot;load dll&quot;);
+  HMODULE lockDll = LoadLibrary(_T(&quot;dll_lock.dll&quot;));
+
+  if( lockDll )
+  {
+    Sleep(2000);
+    printf(&quot;free dll&quot;);
+    FreeLibrary(lockDll), lockDll  = NULL;
+    printf(&quot;done&quot;);
+  }
+}
 </pre>
 <p>It is important to remember that a DllMain dependant code is a very, very bad thing. Nevertheless, there are some particular cases the only place to run our code is inside DllMain. In these cases, when detected, try to run a side by side communication with your locked thread using an event object (or equivalent) before it really returns. Using this craft the thread can warn the waiting thread that the important thing to be done is done, and the waiting thread can go to sleep and stop waiting forever locked threads.</p>
 

@@ -52,22 +52,22 @@ role="navigation" aria-label="main navigation">
 <p>Well, the Notepad is the default test victim. Soon, the following line would prove possible to run it in the system account:</p>
 
 <pre>
-   sc create Notepad binpath= &quot;%systemroot%\NOTEPAD.EXE&quot; type= interact type= own
+sc create Notepad binpath= &quot;%systemroot%\NOTEPAD.EXE&quot; type= interact type= own
 </pre>
 <p>However, as every service, it is supposed to communicate with the Windows Service Manager. Since Notepad even "knows" it is now a superpowerful service, the service initialization time is expired and SCM kills the process.</p>
 
 <pre>
-   &gt;net start notepad
-   The service is not responding to the control function.
-   More help is available by typing NET HELPMSG 2186.
+&gt;net start notepad
+The service is not responding to the control function.
+More help is available by typing NET HELPMSG 2186.
 </pre>
 <p>As would say my friend <a href="http://codebehind.wordpress.com">Thiago</a>, "not good".</p>
 
 <p>"Yet however", SCM doesn't kill the child processes from the service-process. Bug? Feature? Workaround? Whatever it is, it can be used to initiate our beloved msvcmon:</p>
 
 <pre>
-   set binpath=%systemroot%\system32\cmd.exe /c c:\Tools\msvcmon.exe -tcpip -anyuser -timeout -1
-   sc create Msvcmon binpath= &quot;%binpath%&quot; type= interact type= own
+set binpath=%systemroot%\system32\cmd.exe /c c:\Tools\msvcmon.exe -tcpip -anyuser -timeout -1
+sc create Msvcmon binpath= &quot;%binpath%&quot; type= interact type= own
 </pre>
 <p>Now, when we start Msvcmon service, the process cmd.exe will be create, that on the other hand will run the msvcmon.exe target process. Cmd in this case will only wait for its imminent death.</p>
 

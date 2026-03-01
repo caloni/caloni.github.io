@@ -58,70 +58,84 @@ role="navigation" aria-label="main navigation">
 <p>Falando assim, parece simples. Bom, na verdade é simples, mesmo. Tudo que você precisa para corrigir o programa do artigo anterior é criar um critical section e fazer com que as threads obtenham-no antes de mexer com o contador compartilhado.</p>
 
 <pre>
-   #include &lt;windows.h&gt;
-   #include &lt;stdio.h&gt;
-   #define MAX_COUNTER 10
-   int g_counter = 0;
-   CRITICAL_SECTION g_cs;
-   DWORD WINAPI Increment()
-   {
-     DWORD tid 
-       = GetCurrentThreadId();
-     while( g_counter &lt; MAX_COUNTER )
-     {
-       // esse é o começo de nossa 
-       // seção crítica
-       // só uma thread entra
-       // por vez por aqui
-       EnterCriticalSection(&amp;g_cs);
-       int temp = g_counter;
-       temp = temp + 1;
-       Sleep(0); // indo para 
-                 // o final da fila
-       g_counter = temp;
-       // esse é o fim de nossa 
-       // seção crítica
-       // a partir dessa chamada 
-       // outra thread pode 
-       // entrar pelo começo
-       LeaveCriticalSection(&amp;g_cs);
-       printf(&quot;Counter: %d&quot;
-         &quot;\t\tThread: %d\n&quot;, 
-         temp, 
-         tid);
-     }
-     return 0;
-   }
-   int main()
-   {
-     HANDLE threads[3];
-     DWORD tids[3];
-     // precisamos inicializar 
-     // nosso recurso de 
-     // seção crítica
-     InitializeCriticalSection(&amp;g_cs);
-     for( int i = 0; i &lt; 3; ++i )
-     {
-       threads[i] 
-         = CreateThread(NULL, 
-         0, 
-         IncrementGlobalCounter, 
-         0, 
-         0, 
-         &amp;tids[i]);
-       printf(&quot;Thread %i: %d\n&quot;, 
-         i, 
-         tids[i]);
-     }
-     // aguarda as threads
-     WaitForMultipleObjects(3, 
-       threads, 
-       TRUE, 
-       INFINITE);
-     // agora precisamos liberar o 
-     // recurso de seção crítica
-     DeleteCriticalSection(&amp;g_cs);
-   }
+#include &lt;windows.h&gt;
+#include &lt;stdio.h&gt;
+
+#define MAX_COUNTER 10
+
+int g_counter = 0;
+CRITICAL_SECTION g_cs;
+
+DWORD WINAPI Increment()
+{
+  DWORD tid 
+    = GetCurrentThreadId();
+
+  while( g_counter &lt; MAX_COUNTER )
+  {
+    // esse é o começo de nossa 
+    // seção crítica
+    // só uma thread entra
+    // por vez por aqui
+    EnterCriticalSection(&amp;g_cs);
+
+    int temp = g_counter;
+    temp = temp + 1;
+    Sleep(0); // indo para 
+              // o final da fila
+    g_counter = temp;
+
+    // esse é o fim de nossa 
+    // seção crítica
+    // a partir dessa chamada 
+    // outra thread pode 
+    // entrar pelo começo
+    LeaveCriticalSection(&amp;g_cs);
+
+    printf(&quot;Counter: %d&quot;
+      &quot;\t\tThread: %d\n&quot;, 
+      temp, 
+      tid);
+  }
+
+  return 0;
+}
+
+int main()
+{
+  HANDLE threads[3];
+  DWORD tids[3];
+
+  // precisamos inicializar 
+  // nosso recurso de 
+  // seção crítica
+  InitializeCriticalSection(&amp;g_cs);
+
+  for( int i = 0; i &lt; 3; ++i )
+  {
+    threads[i] 
+      = CreateThread(NULL, 
+      0, 
+      IncrementGlobalCounter, 
+      0, 
+      0, 
+      &amp;tids[i]);
+
+    printf(&quot;Thread %i: %d\n&quot;, 
+      i, 
+      tids[i]);
+  }
+
+  // aguarda as threads
+  WaitForMultipleObjects(3, 
+    threads, 
+    TRUE, 
+    INFINITE);
+
+  // agora precisamos liberar o 
+  // recurso de seção crítica
+  DeleteCriticalSection(&amp;g_cs);
+}
 </pre>
 <p>Para finalizar, algo para pensar: se uma thread só consegue um critical section depois que outra thread soltá-lo, o que acontece se essa outra thread estiver esperando por outro critical section que uma thread que aguarda estiver segurando?</p>
 

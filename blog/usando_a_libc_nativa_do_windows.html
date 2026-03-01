@@ -46,25 +46,26 @@ role="navigation" aria-label="main navigation">
 <p>Crie um novo projeto console Win32 vazio (File, New, Project, blá blá blá) e coloque um código de Hello, World nele. Configure para ele usar uma runtime estática e veja o tamanho do executável gerado.  Aqui após configurar um projeto ordinário que compila um executável console ordinário que não depende de runtimes novas (exceto a kernel32.dll) meu arquivo está com 96 KB.</p>
 
 <pre>
-   #include &lt;stdio.h&gt;
-   int main()
-   {
-     puts(&quot;oi, mundo!\n&quot;);
-   } 
+#include &lt;stdio.h&gt;
+
+int main()
+{
+  puts(&quot;oi, mundo!\n&quot;);
+} 
 </pre>
 <p>Desde o Windows 95, existe uma DLL na pasta de sistema chamada msvcrt.dll com a maioria das funções da libc disponíveis para link dinâmico (update 2026-02-20: sim, ela ainda está lá). Só que, com o uso padrão do Visual C++, é usada sempre a biblioteca que vem junto com o ambiente, com suas trocentas funções (e consequentes bytes enche-linguiça). Porém, é possível utilizar diretamente a msvcrt.dll distribuída no diretório do sistema se criarmos uma LIB de importação para ela.</p>
 
 <p>Tudo que você precisa fazer é gerar um msvcrt.def com as funções exportadas por essa dll usando o comando dumpbin.exe /exports msvcrt.dll e gerar uma lib de importação com o comando lib.exe passando no parâmetro /DEF o arquivo gerado. Abaixo um exemplo de como deve estar esse arquivo antes do comando lib /def:msvcrt.def:</p>
 
 <pre>
-   LIBRARY msvcrt
-   EXPORTS
-   _CrtCheckMemory
-   _CrtDbgBreak
-   ...
-   wprintf_s
-   wscanf
-   wscanf_s
+LIBRARY msvcrt
+EXPORTS
+_CrtCheckMemory
+_CrtDbgBreak
+...
+wprintf_s
+wscanf
+wscanf_s
 </pre>
 <p>Depois desse último passo geramos a LIB que precisávamos e agora só falta integrar com o projeto. Copie o msvcrt.lib para o diretório do projeto e configure no projeto esse arquivo na lista de LIBs a serem incluídas (Properties, Linker, Input, Additional Dependencies). Lembre-se de ignorar todas as LIBs padrão (Linker, Input, Ignore All Default Libraries). Para evitar unresolved external em frescuras de segurança ignore as firulas de checagem (C/C++, Code Generation, Buffer Security Check, e Basic Runtime Checks em Debug). Antes de mais nada deixe explícito o nome da função de entrada de seu programa para main, pois do contrário ele irá usar um bootstrap que inicia a libc (Linker, Advanced, Entry Point), compile e linke. E voilà!</p>
 

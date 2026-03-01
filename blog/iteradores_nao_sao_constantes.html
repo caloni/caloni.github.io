@@ -52,41 +52,42 @@ role="navigation" aria-label="main navigation">
 <p>Por exemplo, o tradicional código do exemplo abaixo contém o tradicional erro de iterador inválido:</p>
 
 <pre>
-   for( container::iterator it = obj.begin(); it != obj.end(); ++it )
-   {
-     if( it-&gt;member == 0 ) // condição para apagar elemento
-     {
-       obj.erase(it);  // a partir daqui it é inválido,
-                       // e não adianta incrementá-lo
-     }
-   }
+for( container::iterator it = obj.begin(); it != obj.end(); ++it )
+{
+  if( it-&gt;member == 0 ) // condição para apagar elemento
+  {
+    obj.erase(it);  // a partir daqui it é inválido,
+                    // e não adianta incrementá-lo
+  }
+}
 </pre>
 <p>Para operações como essa, o retorno geralmente nos dá uma dica de para onde vamos na varredura do contêiner. No caso do método erase, o retorno é o próximo iterador válido, ou o final (retornado pelo método end). Um código mais esperto gera um erro mais sutil:</p>
 
 <pre>
-   for( container::iterator it = obj.begin(); it != obj.end(); ++it )
-   {
-     if( it-&gt;member == 0 ) // condição para apagar elemento
-     {
-       it = obj.erase(it); // ótimo, atualizou it. só
-                           // que se ele for o final,
-                           // será incrementado
-     }
-   }
+for( container::iterator it = obj.begin(); it != obj.end(); ++it )
+{
+  if( it-&gt;member == 0 ) // condição para apagar elemento
+  {
+    it = obj.erase(it); // ótimo, atualizou it. só
+                        // que se ele for o final,
+                        // será incrementado
+  }
+}
 </pre>
 <p>Algo de errado irá acontecer se o elemento removido for o último localizado no contêiner. Porém, mesmo que não for, um item será pulado durante a iteração, pois o iterador apontando para o próximo elemento será incrementado antes de passar pelo loop.</p>
 
 <p>Esse é um erro comum para os acostumados com outros tipos de iteração (ex: ponteiros) e que não estudaram os princípios básicos da STL, entre eles o da reutilização de algoritmos. Se fosse usado este princípio, nada disso teria acontecido:</p>
 
 <pre>
-   struct remove_if_zero
-   {
-     bool operator() (ObjElement&amp; element)
-     {
-       return element-&gt;member == 0;
-     }
-   };
-   obj.remove_if( remove_if_zero() ); // pronto!
+struct remove_if_zero
+{
+  bool operator() (ObjElement&amp; element)
+  {
+    return element-&gt;member == 0;
+  }
+};
+
+obj.remove_if( remove_if_zero() ); // pronto!
 </pre>
 <p>Quando precisamos fazer algo nos elementos de um contêiner STL, é quase certo que existirá um algoritmo genérico para essa tarefa, seja no próprio contêiner ou na forma de função (`&lt;algorithm&gt;`). Nunca se esqueça disso na hora de desenvolver seus próprios algoritmos e não precisará reinventar a roda todos os dias.</p>
 

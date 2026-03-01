@@ -52,15 +52,19 @@ role="navigation" aria-label="main navigation">
 <pre>
 #include &lt;windows.h&gt;
 #include &lt;stdio.h&gt;
+
 DWORD WINAPI WorkerThread(LPVOID lpParam)
 {
     // Simulate some work
     Sleep(1000);
+
     // Anything that might touch loader state is deadly here
     // Even something innocent-looking like LoadLibrary
     LoadLibraryA(&quot;user32.dll&quot;);
+
     return 0;
 }
+
 BOOL WINAPI DllMain(HINSTANCE hinstDLL,
                     DWORD fdwReason,
                     LPVOID lpvReserved)
@@ -71,6 +75,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL,
     {
         HANDLE hThread;
         DWORD threadId;
+
         hThread = CreateThread(
             NULL,
             0,
@@ -79,6 +84,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL,
             0,
             &amp;threadId
         );
+
         if (hThread)
         {
             // 🚨 DEADLOCK HERE 🚨
@@ -88,27 +94,30 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL,
         }
         break;
     }
+
     case DLL_PROCESS_DETACH:
         break;
     }
+
     return TRUE;
 }
 </pre>
 <p>Uma simples vítima disso pode ser um pobre executável usando uma pobremente escrita DLL, assim como no código abaixo:</p>
 
 <pre>
-   int main()
-   {
-     printf(&quot;load dll&quot;);
-     HMODULE lockDll = LoadLibrary(_T(&quot;dll_lock.dll&quot;));
-     if( lockDll )
-     {
-       Sleep(2000);
-       printf(&quot;free dll&quot;);
-       FreeLibrary(lockDll), lockDll  = NULL;
-       printf(&quot;done&quot;);
-     }
-   }
+int main()
+{
+  printf(&quot;load dll&quot;);
+  HMODULE lockDll = LoadLibrary(_T(&quot;dll_lock.dll&quot;));
+
+  if( lockDll )
+  {
+    Sleep(2000);
+    printf(&quot;free dll&quot;);
+    FreeLibrary(lockDll), lockDll  = NULL;
+    printf(&quot;done&quot;);
+  }
+}
 </pre>
 <p>É importante sempre lembrar que a Microsoft acha feio, muito feio você ficar dependendo do DllMain pra fazer alguma coisa, mas admite que em alguns casos o único lugar onde podemos rodar código é no DllMain. Nesses casos -- e em alguns outros -- utilize uma comunicação paralela com sua thread travadona, por meio de um evento ou algo do gênero, antes que ela realmente saia. Com isso a thread pode ainda não ter saído, mas pode avisar a thread principal que o que ela precisava fazer já foi feito.</p>
 
