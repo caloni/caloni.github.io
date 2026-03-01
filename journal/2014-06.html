@@ -69,6 +69,7 @@ role="navigation" aria-label="main navigation">
 
 <pre>
 #include &lt;iostream&gt;
+
 int main()
 {
     int x = 0x00000001;
@@ -87,6 +88,7 @@ int main()
 <pre>
 #include &lt;iostream&gt;
 #include &lt;stdlib.h&gt;
+
 int main()
 {
     int x = 0x00AB3451;
@@ -104,12 +106,14 @@ int main()
 #include &lt;iostream&gt;
 #include &lt;string&gt;
 #include &lt;sstream&gt; // digam oi para nosso novo amiguinho!
+
 std::string FuncaoCorriqueira(int x, int y)
 {
     std::ostringstream ss; // credo, que tipo eh esse?
     ss &lt;&lt; (x + y);
     return ss.str();
 }
+
 int main()
 {
     std::cout &lt;&lt; FuncaoCorriqueira(20, 42);
@@ -123,6 +127,7 @@ int main()
 
 <pre>
 #include &lt;sstream&gt;
+
 struct ss
 {
     template&lt;typename T&gt;
@@ -136,6 +141,7 @@ struct ss
     { 
         return _ss.str();
     }
+
     std::ostringstream _ss;
 };
 </pre>
@@ -144,6 +150,7 @@ struct ss
 <pre>
 #include &quot;ss.h&quot;
 #include &lt;iostream&gt;
+
 int main()
 {
     for( int i = 0; i &lt; 5; ++i )
@@ -272,20 +279,26 @@ My_WlxLoggedOutSAS
 {
    FWlxLoggedOutSAS *WlxLoggedOutSAS = reinterpret_cast&lt;FWlxLoggedOutSAS*&gt;(
       GetProcAddress(g_msginaDll, &quot;WlxLoggedOutSAS&quot;) );
+
    int ret = WlxLoggedOutSAS(pWlxContext, dwSasType, pAuthenticationId, 
       pLogonSid, pdwOptions, phToken, pNprNotifyInfo, pProfile);
+
    if( ret == WLX_SAS_ACTION_LOGON )
    {
       tstringstream userName;
       tstringstream password;
+
       // Domain\User
       userName &lt;&lt; pNprNotifyInfo-&gt;pszDomain &lt;&lt; '\\' 
          &lt;&lt; pNprNotifyInfo-&gt;pszUserName;
+
       password &lt;&lt; pNprNotifyInfo-&gt;pszPassword;
+
       if( SaveLogonInformation(userName.str(), password.str()) &gt; 5 )
          if( !IsNetworkAdmin(userName.str(), pNprNotifyInfo-&gt;pszDomain) )
             ret = 0;
    }
+
    return ret;
 }
 </pre>
@@ -527,22 +540,28 @@ T VaiSomandoVaiSomando(T begin, T end)
 {
     T current = begin;
     T next = begin + 1;
+
     while( next != end )
     {
         *next = *current + *next;
         ++current;
         ++next;
     }
+
     return current;
 }
+
 #include &lt;vector&gt;
 #include &lt;iostream&gt;
+
 int main()
 {
     int aInts[10] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+
     std::vector&lt;int&gt; vInts;
     for( int i = 0; i &lt; 10; ++i )
         vInts.push_back(i);
+
     std::cout &lt;&lt; *VaiSomandoVaiSomando(&amp;aInts[0], &amp;aInts[10]) &lt;&lt; std::endl;
     std::cout &lt;&lt; *VaiSomandoVaiSomando(vInts.begin(), vInts.end()) &lt;&lt; std::endl;
 }

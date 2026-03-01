@@ -47,7 +47,6 @@ role="navigation" aria-label="main navigation">
 <span class="title-heading">Caloni, 2009-11-01 <a href="2009-09.html#transparente">&lt;</a><a href="quotes.html">quotes</a><a href="2009-12.html#fazer_nada">&gt;</a> <a href="2009-09.html#transparente">&lt;</a><a href="self.html">self</a><a href="2009-12.html#fazer_nada">&gt;</a> <a href="2009-09.html#transparente">&lt;</a><a href="now.html">now</a><a href="2009-12.html#fazer_nada">&gt;</a><a href="2009-11.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_futuro')"><sup>[copy]</sup></a></span>
 
 <blockquote>A qualidade da sua consciência determina o futuro que você vai viver.</blockquote>
-
 <blockquote>Tolle, Eckhart (O Poder do Agora, 1997)</blockquote>
 </section><hr/>
 
@@ -94,37 +93,40 @@ role="navigation" aria-label="main navigation">
 <p>A partir daí vários componentes do kernel serão carregados progressivamente. Só que a partir do momento que é chamada a rotina interna KiInitializeKernel o NTLDR não tem mais nada pra fazer: o kernel, em sua forma básica e primitiva, está carregado.</p>
 
 <pre>
-   windbg notepad
-   $$&gt;a&lt;&lt;a href=&quot;http://www.caloni.com.br/carregando-dlls-arbitrarias-pelo-windbg-parte-2&quot;&gt;scripts\loadlibrary.txt&lt;/a&gt; ntoskrnl.exe
-   0:000&gt; lm m nt*
-   start    end        module name
-   00400000 00629000   ntoskrnl   (pdb symbols)          c:\tools\symbols\ntkrnlmp.pdb\46DFBE2D3E484140A0909F7519B1700A2\ntkrnlmp.pdb
-   7c900000 7c9b6000   ntdll      (pdb symbols)          c:\tools\symbols\ntdll.pdb\6992F4DAF4B144068D78669D6CB5D2072\ntdll.pdb
-   0:000&gt; x ntoskrnl!KiInit*
-   005ef332 ntoskrnl!KiInitializePcr = &lt;no type information&gt;
-   005eefc0 ntoskrnl!KiInitQueuedSpinLocks = &lt;no type information&gt;
-   005ef1de ntoskrnl!KiInitSystem = &lt;no type information&gt;
-   00439ded ntoskrnl!KiInitializeTSS = &lt;no type information&gt;
-   005eadd2 ntoskrnl!KiInitializeKernel = &lt;no type information&gt;
-   0043aefb ntoskrnl!KiInitializeAbios = &lt;no type information&gt;
-   005e4add ntoskrnl!KiInitMachineDependent = &lt;no type information&gt;
-   0058faa4 ntoskrnl!KiInitializePAT = &lt;no type information&gt;
-   005dde52 ntoskrnl!KiInitializeTSS2 = &lt;no type information&gt;
-   004105e5 ntoskrnl!KiInitializeUserApc = &lt;no type information&gt;
-   00415619 ntoskrnl!KiInitializeContextThread = &lt;no type information&gt;
-   0043afdb ntoskrnl!KiInitializeAbiosGdtEntry = &lt;no type information&gt;
-   005dde01 ntoskrnl!KiInitializeMachineType = &lt;no type information&gt;
-   005e51f7 ntoskrnl!KiInitializeMTRR = &lt;no type information&gt;
-   0:000&gt; u ntoskrnl!KiInitializeKernel
-   ntoskrnl!KiInitializeKernel:
-   005eadd2 6a28            push    28h
-   005eadd4 68c0784300      push    offset ntoskrnl!KiDebugRegisterContextOffsets+0x3c (004378c0)
-   005eadd9 e8a510e2ff      call    ntoskrnl!_SEH_prolog (0040be83)
-   005eadde e8b531ffff      call    ntoskrnl!KiSetProcessorType (005ddf98)
-   005eade3 e8cfffffff      call    ntoskrnl!KiSetCR0Bits (005eadb7)
-   005eade8 e8d334ffff      call    ntoskrnl!KiIsNpxPresent (005de2c0)
-   005eaded 8845e7          mov     byte ptr [ebp-19h],al
-   005eadf0 64a11c000000    mov     eax,dword ptr fs:[0000001Ch]
+windbg notepad
+$$&gt;a&lt;&lt;a href=&quot;http://www.caloni.com.br/carregando-dlls-arbitrarias-pelo-windbg-parte-2&quot;&gt;scripts\loadlibrary.txt&lt;/a&gt; ntoskrnl.exe
+
+
+0:000&gt; lm m nt*
+start    end        module name
+00400000 00629000   ntoskrnl   (pdb symbols)          c:\tools\symbols\ntkrnlmp.pdb\46DFBE2D3E484140A0909F7519B1700A2\ntkrnlmp.pdb
+7c900000 7c9b6000   ntdll      (pdb symbols)          c:\tools\symbols\ntdll.pdb\6992F4DAF4B144068D78669D6CB5D2072\ntdll.pdb
+0:000&gt; x ntoskrnl!KiInit*
+005ef332 ntoskrnl!KiInitializePcr = &lt;no type information&gt;
+005eefc0 ntoskrnl!KiInitQueuedSpinLocks = &lt;no type information&gt;
+005ef1de ntoskrnl!KiInitSystem = &lt;no type information&gt;
+00439ded ntoskrnl!KiInitializeTSS = &lt;no type information&gt;
+005eadd2 ntoskrnl!KiInitializeKernel = &lt;no type information&gt;
+0043aefb ntoskrnl!KiInitializeAbios = &lt;no type information&gt;
+005e4add ntoskrnl!KiInitMachineDependent = &lt;no type information&gt;
+0058faa4 ntoskrnl!KiInitializePAT = &lt;no type information&gt;
+005dde52 ntoskrnl!KiInitializeTSS2 = &lt;no type information&gt;
+004105e5 ntoskrnl!KiInitializeUserApc = &lt;no type information&gt;
+00415619 ntoskrnl!KiInitializeContextThread = &lt;no type information&gt;
+0043afdb ntoskrnl!KiInitializeAbiosGdtEntry = &lt;no type information&gt;
+005dde01 ntoskrnl!KiInitializeMachineType = &lt;no type information&gt;
+005e51f7 ntoskrnl!KiInitializeMTRR = &lt;no type information&gt;
+
+0:000&gt; u ntoskrnl!KiInitializeKernel
+ntoskrnl!KiInitializeKernel:
+005eadd2 6a28            push    28h
+005eadd4 68c0784300      push    offset ntoskrnl!KiDebugRegisterContextOffsets+0x3c (004378c0)
+005eadd9 e8a510e2ff      call    ntoskrnl!_SEH_prolog (0040be83)
+005eadde e8b531ffff      call    ntoskrnl!KiSetProcessorType (005ddf98)
+005eade3 e8cfffffff      call    ntoskrnl!KiSetCR0Bits (005eadb7)
+005eade8 e8d334ffff      call    ntoskrnl!KiIsNpxPresent (005de2c0)
+005eaded 8845e7          mov     byte ptr [ebp-19h],al
+005eadf0 64a11c000000    mov     eax,dword ptr fs:[0000001Ch]
 </pre>
 <p>Veremos nos próximos capítulos como podemos nos aproveitar do ntoskrnl.exe para poder depurar o código a partir daí. Até lá.</p>
 

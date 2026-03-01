@@ -231,6 +231,7 @@ int main()
   int c = func(10, 20);
   return c;
 }
+
 func(int a, int b)
 {
   return a + b;
@@ -246,6 +247,7 @@ int main()
   int c = func(10);
   return c;
 }
+
 func(int a, int b)
 {
   return a + b;
@@ -255,15 +257,18 @@ func(int a, int b)
 
 <pre>
 func(int a, int b);
+
 int main()
 {
   int c = func(10);
   return c;
 }
+
 func(int a, int b)
 {
   return a + b;
 }
+
 error C2198: 'func': too few arguments for call
 </pre>
 <p>Em C++ com o mesmo código:</p>
@@ -277,11 +282,13 @@ error C4430: missing type specifier
 
 <pre>
 int func();
+
 int main()
 {
   int c = func();
   return c;
 }
+
 int func()
 {
   return 23;

@@ -132,17 +132,17 @@ role="navigation" aria-label="main navigation">
 <p>A linguagem Go na versão mais nova precisa que seja definida através da cgo, o backend C do ambiente de build da linguagem, uma função trampolim, que é uma função escrita em C que irá chamar uma função escrita em Go. Essa função pode ser passada como parâmetro de callback para uma biblioteca C que quando a biblioteca C chamar esse ponteiro de função ele irá atingir a função trampolim, que por sua vez, chama a função Go, que é onde queremos chegar depois de todo esse malabarismo.</p>
 
 <pre>
-   main
+main
+ |
+ C.set_callback
+  |
+  C.call_callback
+   |
+   g_callback*
     |
-    C.set_callback
+    GoCallback_cgo
      |
-     C.call_callback
-      |
-      g_callback*
-       |
-       GoCallback_cgo
-        |
-        GoCallback
+     GoCallback
 </pre>
 <p>Em resumo: o main em Go chama C.set_callback (função C exportada) passando o endereço do seu callback (em cgo) e em uma segunda chamada ou nessa mesma pede para chamar esse callback. O módulo em C pode ou não chamar essa função nessa thread ou mais tarde, através do ponteiro de função que estocou (g_callback). Ao chamá-la, ativará a função GoCallback_cgo, que por sua vez chamará GoCallback, essa sim, já no módulo Go (embora ambas estejam no mesmo executável, já que C e Go podem ser linkados juntos de maneira transparente.</p>
 
@@ -263,14 +263,17 @@ role="navigation" aria-label="main navigation">
 <p>Mas isso é uma coisa. Outra coisa é o try lock de pelúcia de um driver de uma empresa que trabalhei certa vez. Como havia situações onde o lock não era nunca liberado, e a thread estava rodando em um nível de interrupção que não poderia mais voltar, ou ela agendava uma execução menos prioritária ou obtia o lock. Mas baixar a prioridade não era uma opção para o programador MacGyver. Então o código acabou pegando o lock na marra.</p>
 
 <pre>
-   if( ! try_aquire_mutex() )
-   // dá um tempo...
-   if( ! try_aquire_mutex() )
-   // dá um tempo...
-   // ...
-   // ah, dane-se,
-   // eu vou pegar esse mutex!
-   aquire_mutex();
+if( ! try_aquire_mutex() )
+// dá um tempo...
+
+if( ! try_aquire_mutex() )
+// dá um tempo...
+
+// ...
+
+// ah, dane-se,
+// eu vou pegar esse mutex!
+aquire_mutex();
 </pre>
 </section><hr/>
 
@@ -437,20 +440,20 @@ role="navigation" aria-label="main navigation">
 <p>Não fui eu que escrevi o MessageBox... juro. E nesse caso não ter o código-fonte é a rotina do crackudo, que vai ter que explorar no assembly o funcionamento de um programa. Depuramos um que chama MessageBox alterando a mensagem exibida (em 32 bits). Foi legal essa diferença entre Ansi e Unicode que me perdi no começo, pois serviu para exemplificar questões de API que precisam ser conhecidas.</p>
 
 <pre>
-   void chama_eu()
-   {
-     MessageBox(NULL,
-       &quot;Welcome to &quot;
-       &quot;MBConf@Home2020&quot;,
-       &quot;MBConf2020&quot;, 
-       0);
-   }
+void chama_eu()
+{
+  MessageBox(NULL,
+    &quot;Welcome to &quot;
+    &quot;MBConf@Home2020&quot;,
+    &quot;MBConf2020&quot;, 
+    0);
+}
 </pre>
 <p>Abordamos o boot do Windows com NT, o uso do kd.exe por baixo dos panos do WinDbg (o DarkMode) e configuramos o cabo. Cabo? Cabo virtual, sargento. Usamos a VMWare, pré-configurada após alguns pesadelos de impressora se metendo no meio do caminho. Configuramos a porta serial, que é a melhor ever. E apontamos como named pipe para o WinDbg "de fora" conectar. Ou o kd.exe. As linhas abaixo são equivalentes.</p>
 
 <pre>
-   windbg.exe -b -k com:pipe,port=\\.\pipe\com_1,resets=0
-   kd.exe -b -k com:pipe,port=\\.\pipe\com_1,resets=0
+windbg.exe -b -k com:pipe,port=\\.\pipe\com_1,resets=0
+kd.exe -b -k com:pipe,port=\\.\pipe\com_1,resets=0
 </pre>
 <p>Para exemplificar a depuração de um serviço bem no início (ou fim) ou o load de processos antes dele existir checamos uma flag na gflags.exe da máquina depurada para que quando o notepad.exe subisse o ntsd fosse depurá-lo e passasse o controle para o debug do sistema. E com isso fechamos o círculo sagrado da depuração holística.</p>
 
@@ -539,38 +542,42 @@ role="navigation" aria-label="main navigation">
 <p>O código abaixo não é C++ moderno. É 98. Porém, ele já demonstra alguns problemas na linguagem que foram aumentados desde então. Não se sabe exatamente qual a tradução semântica de construções tão parecidas quanto o operador-função e o operador-cast. Enquanto o primeiro serve para transformar objetos em funções chamáveis o segundo serve para extrair tipos de maneira educada.</p>
 
 <pre>
-   struct T
-   {
-     explicit
-     operator int()
-     {
-       return 10;
-     }
-   };
-   int main()
-   {
-     T t;
-     // error: term does not
-     // evaluate to a function
-     // taking 0 arguments
-     t();
-     int i = (int) t;
-   }
+struct T
+{
+  explicit
+  operator int()
+  {
+    return 10;
+  }
+};
+
+int main()
+{
+  T t;
+
+  // error: term does not
+  // evaluate to a function
+  // taking 0 arguments
+  t();
+
+  int i = (int) t;
+}
 </pre>
 <p>O operador de cast só funciona se um cast estiver envolvido. Caso ele seja um método com explicit o cast precisa ser explícito como no exemplo. Se ele não fosse bastaria uma atribuição normal.</p>
 
 <pre>
-   int i = t;
+int i = t;
 </pre>
 <p>Ele não pode simplesmente ser chamado como um operador-função. Até porque podem haver vários deles. Enquanto o operador de função trabalha com overload nos parâmetros o operador de cast trabalha com o retorno. Uma vez eu fiz uma brincadeira que meu amigo Fernando tinha me pedido: como fazer <a href="2012-05.html#sobrecarga_de_funcao_as_avessas">sobrecarga de função pelo retorno</a>. Acredito que o exemplo desse post antigo possa exemplificar melhor o que quero dizer.</p>
 
 <p>Já a diferença sintática e semântica dos operadores de função e cast é sutil, quase inexistente. Como muitas coisas em C++ moderno:</p>
 
 <pre>
-   // cast-operator
-   operator int();
-   // function-operator
-   int operator();
+// cast-operator
+operator int();
+
+// function-operator
+int operator();
 </pre>
 </section><hr/>
 

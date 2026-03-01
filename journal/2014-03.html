@@ -331,7 +331,7 @@ role="navigation" aria-label="main navigation">
 <p class="title"><a href="2014-03.html#a_princesinha">#</a> A Princesinha</p>
 <span class="title-heading">Caloni, 2014-03-23 <a href="2014-03.html#o_mundo_imaginario_do_doutor_parnassus">&lt;</a><a href="cinema.html">cinema</a><a href="2014-03.html#inside_llewyn_davis_balada_de_um_homem_comum">&gt;</a> <a href="2014-03.html#o_mundo_imaginario_do_doutor_parnassus">&lt;</a><a href="movies.html">movies</a><a href="2014-03.html#inside_llewyn_davis_balada_de_um_homem_comum">&gt;</a><a href="2014-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_a_princesinha')"><sup>[copy]</sup></a></span>
 
-<p>É muito bom de vez em quando levar um tapa na cara dos gêneros menos "louváveis" como essa aventura/fantasia que abraça completamente o clima de conto de fadas. Dirigido pelo ainda jovem talento Alfonso Cuarón em 95, é um filme para chorar, com momentos dramáticos extremamente angustiantes, ainda que a heroína seja uma criança, mas que, depois de viver na Índia, é entregue aos cuidados de uma escola para garotas em Nova York para que seu pai viúvo sofra as agrúrias da guerra. </p>
+<p>É muito bom de vez em quando levar um tapa na cara dos gêneros menos "louváveis" como essa aventura/fantasia que abraça completamente o clima de conto de fadas. Dirigido pelo ainda jovem talento Alfonso Cuarón em 95, é um filme para chorar, com momentos dramáticos extremamente angustiantes, ainda que a heroína seja uma criança, mas que, depois de viver na Índia, é entregue aos cuidados de uma escola para garotas em Nova York para que seu pai viúvo sofra as agrúrias da guerra.</p>
 
 <p>Ainda assim, tive que escorrer minhas lágrimas também para as diferentes virtudes técnicas que encantam tanto ou até mais que a "historinha", como as transições inteligentes, sutis e significativas entre o mundo humano da guerra e faz-de-conta alimentado pela pequena Sara (Liesel Matthews) em uma escola cheia de regras. Note a troca de cenas entre uma carta manchada com lágrimas e sendo molhada pela chuva (e, na mesma cena, uma janela ensolarada e a cabana com trevas do lado de fora) ou o ataque aéreo ao fronte seguido de um apagar de velas fúnebre que prenuncia uma triste notícia.</p>
 
@@ -388,78 +388,82 @@ role="navigation" aria-label="main navigation">
 <p>Por exemplo, antes, tínhamos que fazer o seguinte malabarismo para mexer com arrays/vetores/listas:</p>
 
 <pre>
-   void NewYearMail(Person&amp; p)
-   {
-     p.age += 1;
-     SendMail(p);
-   }
-   int main()
-   {
-     vector&lt;Person&gt; people;
-     GetAnniversaries(people);
-     for_each(people.begin(),
-       people.end(),
-       NewYearMail);
-   }
+void NewYearMail(Person&amp; p)
+{
+  p.age += 1;
+  SendMail(p);
+}
+
+int main()
+{
+  vector&lt;Person&gt; people;
+  GetAnniversaries(people);
+  for_each(people.begin(),
+    people.end(),
+    NewYearMail);
+}
 </pre>
 <p>Imagine que para cada interação devíamos criar uma função que manipulasse os elementos do vetor.</p>
 
 <p>Uma alternativa que costumava utilizar era a de roubar na brincadeira e criar um tipo dentro da função (permitido) e dentro desse tipo criar uma função (permitido):</p>
 
 <pre>
-   int main()
-   {
-     struct NewYearMail
-     {
-       void operator()(Person&amp; p)
-       {
-         p.age += 1;
-         SendMail(p);
-       }
-     };
-   vector&lt;Person&gt; people;
-   GetAnniversaries(people);
-   for_each(people.begin(),
-     people.end(),
-     NewYearMail);
-   }
+int main()
+{
+  struct NewYearMail
+  {
+    void operator()(Person&amp; p)
+    {
+      p.age += 1;
+      SendMail(p);
+    }
+  };
+
+vector&lt;Person&gt; people;
+GetAnniversaries(people);
+for_each(people.begin(),
+  people.end(),
+  NewYearMail);
+}
 </pre>
 <p>Apesar disso gerar "internal compiler error" em muitos builds com o Visual Studio 2003 (e o rápido, mas anos noventa, Visual Studio 6) na maioria das vezes o código compilava e rodava sem problemas. No entanto, deixava um rastro sutil de gambi no ar, um resquício de inveja de Pascal permitir função dentro de função e C não.</p>
 
 <p>Agora isso não é mais necessário. Desde o Visual Studio 2010 (que eu uso) a Microsoft tem trabalhado essas novidades do padrão no compilador, e aos poucos podemos nos sentir mais confortáveis em usar essas modernices sem medo:</p>
 
 <pre>
-   int main()
-   {
-     vector&lt;Person&gt; people;
-     GetAnniversaries(people);
-     for_each(people.begin(), 
-       people.end(), 
-       [&amp;]
-       {
-         p.age += 1;
-         SendMail(p);
-       }
-     );
-   }
+int main()
+{
+  vector&lt;Person&gt; people;
+  GetAnniversaries(people);
+
+  for_each(people.begin(), 
+    people.end(), 
+    [&amp;]
+    {
+      p.age += 1;
+      SendMail(p);
+    }
+  );
+}
 </pre>
 <p>"Caraca, mas o que é esse código alienígena?", diria alguém como eu alguns anos atrás (talvez até meses). Bom, nada vem de graça em C++ e dessa vez houve algumas mudanças meio drásticas na sintaxe para acomodar o uso dessa lambida inline.</p>
 
 <pre>
-   int main()
-   {
-     int numbers[] = { 
-       1, 2, 3, 4, 5, 
-       6, 7, 8, 9, 10 };
-     for_each(&amp;numbers[0],
-       &amp;numbers[10],
-       [&amp;] // capture scope
-       (int n) // arguments
-       {
-         cout &lt;&lt; n &lt;&lt; ' ';
-       }
-     );
-   }
+int main()
+{
+  int numbers[] = { 
+    1, 2, 3, 4, 5, 
+    6, 7, 8, 9, 10 };
+
+  for_each(&amp;numbers[0],
+    &amp;numbers[10],
+    [&amp;] // capture scope
+    (int n) // arguments
+    {
+      cout &lt;&lt; n &lt;&lt; ' ';
+    }
+  );
+}
 </pre>
 <p>E não é só isso. Tem muito mais esquisitices de onde veio essa.</p>
 

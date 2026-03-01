@@ -62,196 +62,211 @@ role="navigation" aria-label="main navigation">
 <p>É sabido que esse serviço responde requisições de milhares de máquinas em um período curto de tempo, então por isso a primeira coisa que me atentei foi verificar quantas threads haviam:</p>
 
 <pre>
-   0:000&gt; ~*
-   .  0  Id: 4c8.30c Suspend: 1 Teb: 7ffde000 Unfrozen
-         Start: *** WARNING: Unable to verify checksum for Service.exe
-   *** ERROR: Module load completed but symbols could not be loaded for Service.exe
-   Service+0xc60c (0040c60c)
-         Priority: 0  Priority class: 32  Affinity: f
-      1  Id: 4c8.4d8 Suspend: 1 Teb: 7ffdd000 Unfrozen
-         Start: ADVAPI32!AccessCheckByTypeResultListAndAudit(...)
-         Priority: 0  Priority class: 32  Affinity: f
-      2  Id: 4c8.580 Suspend: 1 Teb: 7ffdc000 Unfrozen
-         Priority: 0  Priority class: 32  Affinity: f
-      3  Id: 4c8.adc Suspend: 1 Teb: 7ffd9000 Unfrozen
-         Start: rtutils!TraceServerThread (778321fe)
-         Priority: 0  Priority class: 32  Affinity: f
-      4  Id: 4c8.f1c Suspend: 1 Teb: 7ffa5000 Unfrozen
-         Start: rpcrt4!ThreadStartRoutine (77d37e70)
-         Priority: 0  Priority class: 32  Affinity: f
-   ...
-    1426  Id: 4c8.1464 Suspend: 1 Teb: 7fa0c000 Unfrozen
-         Start: rpcrt4!ThreadStartRoutine (77d37e70)
-         Priority: 0  Priority class: 32  Affinity: f
-    1427  Id: 4c8.144c Suspend: 1 Teb: 7fa0b000 Unfrozen
-         Start: rpcrt4!ThreadStartRoutine (77d37e70)
-         Priority: 0  Priority class: 32  Affinity: f
-    1428  Id: 4c8.12dc Suspend: 1 Teb: 7fa09000 Unfrozen
-         Start: rpcrt4!ThreadStartRoutine (77d37e70)
-         Priority: 0  Priority class: 32  Affinity: f
-    1429  Id: 4c8.1410 Suspend: 1 Teb: 7fa08000 Unfrozen
-         Start: rpcrt4!ThreadStartRoutine (77d37e70)
-         Priority: 0  Priority class: 32  Affinity: f
-    1430 Id: 4c8.143c Suspend: 1 Teb: 7fa06000 Unfrozen
-         Priority: 0  Priority class: 32  Affinity: f
+0:000&gt; ~*
+.  0  Id: 4c8.30c Suspend: 1 Teb: 7ffde000 Unfrozen
+      Start: *** WARNING: Unable to verify checksum for Service.exe
+*** ERROR: Module load completed but symbols could not be loaded for Service.exe
+Service+0xc60c (0040c60c)
+      Priority: 0  Priority class: 32  Affinity: f
+   1  Id: 4c8.4d8 Suspend: 1 Teb: 7ffdd000 Unfrozen
+      Start: ADVAPI32!AccessCheckByTypeResultListAndAudit(...)
+      Priority: 0  Priority class: 32  Affinity: f
+   2  Id: 4c8.580 Suspend: 1 Teb: 7ffdc000 Unfrozen
+      Priority: 0  Priority class: 32  Affinity: f
+   3  Id: 4c8.adc Suspend: 1 Teb: 7ffd9000 Unfrozen
+      Start: rtutils!TraceServerThread (778321fe)
+      Priority: 0  Priority class: 32  Affinity: f
+   4  Id: 4c8.f1c Suspend: 1 Teb: 7ffa5000 Unfrozen
+      Start: rpcrt4!ThreadStartRoutine (77d37e70)
+      Priority: 0  Priority class: 32  Affinity: f
+...
+ 1426  Id: 4c8.1464 Suspend: 1 Teb: 7fa0c000 Unfrozen
+      Start: rpcrt4!ThreadStartRoutine (77d37e70)
+      Priority: 0  Priority class: 32  Affinity: f
+ 1427  Id: 4c8.144c Suspend: 1 Teb: 7fa0b000 Unfrozen
+      Start: rpcrt4!ThreadStartRoutine (77d37e70)
+      Priority: 0  Priority class: 32  Affinity: f
+ 1428  Id: 4c8.12dc Suspend: 1 Teb: 7fa09000 Unfrozen
+      Start: rpcrt4!ThreadStartRoutine (77d37e70)
+      Priority: 0  Priority class: 32  Affinity: f
+ 1429  Id: 4c8.1410 Suspend: 1 Teb: 7fa08000 Unfrozen
+      Start: rpcrt4!ThreadStartRoutine (77d37e70)
+      Priority: 0  Priority class: 32  Affinity: f
+ 1430 Id: 4c8.143c Suspend: 1 Teb: 7fa06000 Unfrozen
+      Priority: 0  Priority class: 32  Affinity: f
 </pre>
 <p>São muitas.</p>
 
 <p>Analisar essa quantidade absurda de threads seria um saco. Além de inútil. Foi por isso deus inventou a função !uniqstack, que encontra automagicamente quais threads estão com a pilha duplicada.</p>
 
 <pre>
-   0:000&gt; !uniqstack
-   Processing 1431 threads, please wait
-   .  0  Id: 4c8.30c Suspend: 1 Teb: 7ffde000 Unfrozen
-         Start: Service+0xc60c (0040c60c)
-         Priority: 0  Priority class: 32  Affinity: f
-   ChildEBP RetAddr
-   0012f9f8 7c586381 NTDLL!ZwReadFile+0xb
-   0012fa6c 7c2dd578 KERNEL32!ReadFile+0x181
-   ...
-   0012fff0 00000000 KERNEL32!BaseProcessStart+0x3d
-   .  1  Id: 4c8.4d8 Suspend: 1 Teb: 7ffdd000 Unfrozen
-         Start: ADVAPI32!AccessCheckByTypeResultListAndAudit(...)
-         Priority: 0  Priority class: 32  Affinity: f
-   ChildEBP RetAddr
-   00cefec0 7c59a0a2 NTDLL!ZwWaitForSingleObject+0xb
-   ...
-   00cf000c 007a0000 0x1366e0
-   00cf000c 00000000 0x7a0000
-   .  2  Id: 4c8.580 Suspend: 1 Teb: 7ffdc000 Unfrozen
-         Priority: 0  Priority class: 32  Affinity: f
-   ChildEBP RetAddr
-   010efe24 77d59815 NTDLL!ZwReplyWaitReceivePortEx+0xb
-   ...
-   010effec 00000000 KERNEL32!BaseThreadStart+0x52
-   .  3  Id: 4c8.adc Suspend: 1 Teb: 7ffd9000 Unfrozen
-         Start: rtutils!TraceServerThread (778321fe)
-         Priority: 0  Priority class: 32  Affinity: f
-   ChildEBP RetAddr
-   0150fd20 7c59a26d NTDLL!ZwWaitForMultipleObjects+0xb
-   ...
-   0150ffec 00000000 KERNEL32!BaseThreadStart+0x52
-   ...
-   .1430  Id: 4c8.143c Suspend: 1 Teb: 7fa06000 Unfrozen
-         Priority: 0  Priority class: 32  Affinity: f
-   ChildEBP RetAddr
-   6665f0dc 7c59a0a2 NTDLL!ZwWaitForSingleObject+0xb
-   ...
-   6665ffec 00000000 KERNEL32!BaseThreadStart+0x52
-   Total threads: 1431
-   Duplicate callstacks: 1092 (windbg thread #s follow):
-   7, 9, 11, 12, 13, 14, 15, 17, 18, 20, 21, (...), 1428, 1429
+0:000&gt; !uniqstack
+Processing 1431 threads, please wait
+
+.  0  Id: 4c8.30c Suspend: 1 Teb: 7ffde000 Unfrozen
+      Start: Service+0xc60c (0040c60c)
+      Priority: 0  Priority class: 32  Affinity: f
+ChildEBP RetAddr
+0012f9f8 7c586381 NTDLL!ZwReadFile+0xb
+0012fa6c 7c2dd578 KERNEL32!ReadFile+0x181
+...
+0012fff0 00000000 KERNEL32!BaseProcessStart+0x3d
+
+.  1  Id: 4c8.4d8 Suspend: 1 Teb: 7ffdd000 Unfrozen
+      Start: ADVAPI32!AccessCheckByTypeResultListAndAudit(...)
+      Priority: 0  Priority class: 32  Affinity: f
+ChildEBP RetAddr
+00cefec0 7c59a0a2 NTDLL!ZwWaitForSingleObject+0xb
+...
+00cf000c 007a0000 0x1366e0
+00cf000c 00000000 0x7a0000
+
+.  2  Id: 4c8.580 Suspend: 1 Teb: 7ffdc000 Unfrozen
+      Priority: 0  Priority class: 32  Affinity: f
+ChildEBP RetAddr
+010efe24 77d59815 NTDLL!ZwReplyWaitReceivePortEx+0xb
+...
+010effec 00000000 KERNEL32!BaseThreadStart+0x52
+
+.  3  Id: 4c8.adc Suspend: 1 Teb: 7ffd9000 Unfrozen
+      Start: rtutils!TraceServerThread (778321fe)
+      Priority: 0  Priority class: 32  Affinity: f
+ChildEBP RetAddr
+0150fd20 7c59a26d NTDLL!ZwWaitForMultipleObjects+0xb
+...
+0150ffec 00000000 KERNEL32!BaseThreadStart+0x52
+...
+.1430  Id: 4c8.143c Suspend: 1 Teb: 7fa06000 Unfrozen
+      Priority: 0  Priority class: 32  Affinity: f
+ChildEBP RetAddr
+6665f0dc 7c59a0a2 NTDLL!ZwWaitForSingleObject+0xb
+...
+6665ffec 00000000 KERNEL32!BaseThreadStart+0x52
+
+Total threads: 1431
+Duplicate callstacks: 1092 (windbg thread #s follow):
+7, 9, 11, 12, 13, 14, 15, 17, 18, 20, 21, (...), 1428, 1429
 </pre>
 <p>Muitas threads duplicadas. Isso quer dizer que podemos nos focar na pilha de uma delas. Basta pegar uma.</p>
 
 <pre>
-   0:000&gt; ~1429 kv
-   ChildEBP 
-   RetAddr  Args to Child
-   6645f334 7c59a0a2 ... NTDLL!ZwWaitForSingleObject+0xb (FPO: [3,0,0])
-   6645f35c 7c57b40f ... KERNEL32!WaitForSingleObjectEx+0x71 (FPO: [Non-Fpo])
-   6645f36c 004054c3 ... KERNEL32!WaitForSingleObject+0xf (FPO: [2,0,0])
-   WARNING: Stack unwind information not available. Following frames may be wrong.
-   6645f690 004060ec ... Service+0x54c3 6645f764 77d79970 Service+0x60ec6645f788 
-   ...
-   77d96460 ... rpcrt4!Invoke+0x30
-   6645f7a0 77d9637a ... rpcrt4!NdrCallServerManager+0x15 (FPO: [4,0,2])
-   6645fa90 77d9076f ... rpcrt4!NdrStubCall+0x200 (FPO: [Non-Fpo])
-   6645faf4 7cef55fd ... rpcrt4!CStdStubBuffer_Invoke+0xc1 (FPO: [Non-Fpo])
-   6645fb38 7cef58d8 ... OLE32!SyncStubInvoke+0x61 (FPO: [Non-Fpo])
-   6645fb80 7ce8833d ... OLE32!StubInvoke+0xa8 (FPO: [Non-Fpo])
-   6645fbe4 7ce7a711 ... OLE32!CCtxComChnl::ContextInvoke+0xbb (FPO: [Non-Fpo])
-   6645fc00 7cef54e2 ... OLE32!MTAInvoke+0x18 (FPO: [Non-Fpo])
-   6645fc30 7cef5c06 ... OLE32!AppInvoke+0xb5 (FPO: [Non-Fpo])
-   6645fcf0 7cef3360 ... OLE32!ComInvokeWithLockAndIPID+0x297 (FPO: [Non-Fpo])
-   6645fd30 77d545b1 ... OLE32!ThreadInvoke+0x1b7 (FPO: [Non-Fpo])
-   6645fd68 77d39463 ... rpcrt4!DispatchToStubInC+0x32 (FPO: [Non-Fpo])
-   6645fdc0 77d39337 ... rpcrt4!RPC_INTERFACE::DispatchToStubWorker+0x100 (FPO: [Non-Fpo])
-   6645fde0 77d39603 ... rpcrt4!RPC_INTERFACE::DispatchToStub+0x5e (FPO: [Non-Fpo])
-   6645fe10 77d4740d ... rpcrt4!RPC_INTERFACE::DispatchToStubWithObject+0xa9 (FPO: [Non-Fpo])
-   6645fe44 77d47634 ... rpcrt4!OSF_SCALL::DispatchHelper+0xa1 (FPO: [Non-Fpo])
-   6645fe58 77d46f3b ... rpcrt4!OSF_SCALL::DispatchRPCCall+0x121 (FPO: [Non-Fpo])
-   6645fe90 77d466ac ... rpcrt4!OSF_SCALL::ProcessReceivedPDU+0x68f (FPO: [Non-Fpo])
-   6645feb0 77d48730 ... rpcrt4!OSF_SCALL::BeginRpcCall+0x183 (FPO: [Uses EBP] [2,0,4])
-   6645ff10 77d5154b ... rpcrt4!OSF_SCONNECTION::ProcessReceiveComplete+0x326 (FPO: [Non-Fpo])
-   6645ff20 77d516b8 ... rpcrt4!ProcessConnectionServerReceivedEvent+0x1b (FPO: [7,0,0])
-   6645ff74 77d514bd ... rpcrt4!LOADABLE_TRANSPORT::ProcessIOEvents+0xcd (FPO: [Non-Fpo])
-   6645ff78 77d3af8d ... rpcrt4!ProcessIOEventsWrapper+0x9 (FPO: [1,0,0])
-   6645ffa8 77d37e88 ... rpcrt4!BaseCachedThreadRoutine+0x4f (FPO: [Non-Fpo])
-   6645ffb4 7c57b3bc ... rpcrt4!ThreadStartRoutine+0x18 (FPO: [Non-Fpo])
-   6645ffec 00000000 ... KERNEL32!BaseThreadStart+0x52 (FPO: [Non-Fpo])
+0:000&gt; ~1429 kv
+
+ChildEBP 
+
+RetAddr  Args to Child
+6645f334 7c59a0a2 ... NTDLL!ZwWaitForSingleObject+0xb (FPO: [3,0,0])
+6645f35c 7c57b40f ... KERNEL32!WaitForSingleObjectEx+0x71 (FPO: [Non-Fpo])
+6645f36c 004054c3 ... KERNEL32!WaitForSingleObject+0xf (FPO: [2,0,0])
+WARNING: Stack unwind information not available. Following frames may be wrong.
+6645f690 004060ec ... Service+0x54c3 6645f764 77d79970 Service+0x60ec6645f788 
+...
+77d96460 ... rpcrt4!Invoke+0x30
+6645f7a0 77d9637a ... rpcrt4!NdrCallServerManager+0x15 (FPO: [4,0,2])
+6645fa90 77d9076f ... rpcrt4!NdrStubCall+0x200 (FPO: [Non-Fpo])
+6645faf4 7cef55fd ... rpcrt4!CStdStubBuffer_Invoke+0xc1 (FPO: [Non-Fpo])
+6645fb38 7cef58d8 ... OLE32!SyncStubInvoke+0x61 (FPO: [Non-Fpo])
+6645fb80 7ce8833d ... OLE32!StubInvoke+0xa8 (FPO: [Non-Fpo])
+6645fbe4 7ce7a711 ... OLE32!CCtxComChnl::ContextInvoke+0xbb (FPO: [Non-Fpo])
+6645fc00 7cef54e2 ... OLE32!MTAInvoke+0x18 (FPO: [Non-Fpo])
+6645fc30 7cef5c06 ... OLE32!AppInvoke+0xb5 (FPO: [Non-Fpo])
+6645fcf0 7cef3360 ... OLE32!ComInvokeWithLockAndIPID+0x297 (FPO: [Non-Fpo])
+6645fd30 77d545b1 ... OLE32!ThreadInvoke+0x1b7 (FPO: [Non-Fpo])
+6645fd68 77d39463 ... rpcrt4!DispatchToStubInC+0x32 (FPO: [Non-Fpo])
+6645fdc0 77d39337 ... rpcrt4!RPC_INTERFACE::DispatchToStubWorker+0x100 (FPO: [Non-Fpo])
+6645fde0 77d39603 ... rpcrt4!RPC_INTERFACE::DispatchToStub+0x5e (FPO: [Non-Fpo])
+6645fe10 77d4740d ... rpcrt4!RPC_INTERFACE::DispatchToStubWithObject+0xa9 (FPO: [Non-Fpo])
+6645fe44 77d47634 ... rpcrt4!OSF_SCALL::DispatchHelper+0xa1 (FPO: [Non-Fpo])
+6645fe58 77d46f3b ... rpcrt4!OSF_SCALL::DispatchRPCCall+0x121 (FPO: [Non-Fpo])
+6645fe90 77d466ac ... rpcrt4!OSF_SCALL::ProcessReceivedPDU+0x68f (FPO: [Non-Fpo])
+6645feb0 77d48730 ... rpcrt4!OSF_SCALL::BeginRpcCall+0x183 (FPO: [Uses EBP] [2,0,4])
+6645ff10 77d5154b ... rpcrt4!OSF_SCONNECTION::ProcessReceiveComplete+0x326 (FPO: [Non-Fpo])
+6645ff20 77d516b8 ... rpcrt4!ProcessConnectionServerReceivedEvent+0x1b (FPO: [7,0,0])
+6645ff74 77d514bd ... rpcrt4!LOADABLE_TRANSPORT::ProcessIOEvents+0xcd (FPO: [Non-Fpo])
+6645ff78 77d3af8d ... rpcrt4!ProcessIOEventsWrapper+0x9 (FPO: [1,0,0])
+6645ffa8 77d37e88 ... rpcrt4!BaseCachedThreadRoutine+0x4f (FPO: [Non-Fpo])
+6645ffb4 7c57b3bc ... rpcrt4!ThreadStartRoutine+0x18 (FPO: [Non-Fpo])
+6645ffec 00000000 ... KERNEL32!BaseThreadStart+0x52 (FPO: [Non-Fpo])
 </pre>
 <p>Através das funções de RPC e OLE32 podemos concluir que se trata de uma chamada direta para uma interface COM. Bom, existem centenas de métodos e dezenas de interfaces nesse serviço, tornando mais fácil tentar desmontar a chamada inicial que o rpcrt4 faz ao nosso módulo.</p>
 
 <pre>
-   0:000&gt; ub 77d79970
-   rpcrt4!Invoke+0x20:
-   77d79960 fd              std
-   77d79961 f3a5            rep movs dword ptr es:[edi],dword ptr [esi]
-   77d79963 8b45f4          mov     eax,dword ptr [ebp-0Ch]
-   77d79966 50              push    eax
-   77d79967 669d            popf
-   77d79969 669d            popf
-   77d7996b 8b4508          mov     eax, dword ptr [ebp+8]
-   77d7996e ffd0            call    eax
+0:000&gt; ub 77d79970
+
+rpcrt4!Invoke+0x20:
+77d79960 fd              std
+77d79961 f3a5            rep movs dword ptr es:[edi],dword ptr [esi]
+77d79963 8b45f4          mov     eax,dword ptr [ebp-0Ch]
+77d79966 50              push    eax
+77d79967 669d            popf
+77d79969 669d            popf
+77d7996b 8b4508          mov     eax, dword ptr [ebp+8]
+77d7996e ffd0            call    eax
 </pre>
 <p>Nossa função é obtida em ebp+8. Podemos obter esse endereço pelo campo ChildEBP da função em questão.</p>
 
 <pre>
-   0:000&gt; dd 6645f788 +8 l1 6645f790  00406061
-   0:000&gt; uf 00406061
-   Service+0x6061:
-   00406061 55              push    ebp
-   00406062 8bec            mov     ebp,esp
-   00406064 81ecc8000000    sub     esp,0C8h
-   0040606a 833db09f410000 cmp dword ptr [Service+0x19fb0 (00419fb0)],0
-   00406071 751b            jne     Service+0x608e (0040608e)
-   Service+0x6073:
-   00406073 6a00            push    0
-   00406075 6860514100      push    offset Service+0x15160 (00415160)
-   0040607a b9609e4100      mov     ecx,offset Service+0x19e60 (00419e60)
-   0040607f e822080000      call    Service+0x68a6 (004068a6)
-   00406084 8b4514          mov     eax,dword ptr [ebp+14h]
-   00406087 66c7002f00      mov word ptr [eax],2Fh
-   0040608c eb65            jmp     Service+0x60f3 (004060f3)
-   Service+0x608e:
-   0040608e 56              push    esi
-   0040608f 8b7508          mov     esi,dword ptr [ebp+8]
-   00406092 837e5200        cmp     dword ptr [esi+52h],0
-   00406096 7430            je      Service+0x60c8 (004060c8)
-   Service+0x6098:
-   00406098 8d8538ffffff    lea     eax,[ebp-0C8h]
-   0040609e 6830514100      push    offset Service+0x15130 (00415130)
-   004060a3 50              push    eax
-   004060a4 e85f4d0000      call    Service+0xae08 (0040ae08)
-   004060a9 59              pop     ecx
-   004060aa 59              pop     ecx
-   004060ab 6a00            push    0
-   004060ad 8d8538ffffff    lea     eax,[ebp-0C8h]
-   004060b3 50              push    eax
-   004060b4 b9609e4100      mov     ecx,offset Service+0x19e60 (00419e60)
-   004060b9 e8e8070000      call    Service+0x68a6 (004068a6)
-   004060be 8b4514          mov     eax,dword ptr [ebp+14h]
-   004060c1 66c7000a40      mov     word ptr [eax],400Ah
-   004060c6 eb2a            jmp     Service+0x60f2 (004060f2)
-   Service+0x60c8:
-   004060c8 6804010000      push    104h
-   004060cd 8d868c010000    lea     eax,[esi+18Ch]
-   004060d3 50              push    eax
-   004060d4 ff750c          push    dword ptr [ebp+0Ch]
-   004060d7 ff158c304100    call    dword ptr [Service+0x1308c (0041308c)]
-   004060dd 668b4510        mov     ax,word ptr [ebp+10h]
-   004060e1 8bce            mov     ecx,esi
-   004060e3 66894648        mov     word ptr [esi+48h],ax
-   004060e7 e892f2ffff      call    Service+0x537e (0040537e)
-   004060ec 8b4d14          mov     ecx,dword ptr [ebp+14h]
-   004060ef 668901          mov     word ptr [ecx],ax
-   Service+0x60f2:
-   004060f2 5e              pop     esi
-   Service+0x60f3:
-   004060f3 33c0            xor     eax,eax
-   004060f5 c9              leave
-   004060f6 c21000          ret     10h
+0:000&gt; dd 6645f788 +8 l1 6645f790  00406061
+0:000&gt; uf 00406061
+Service+0x6061:
+00406061 55              push    ebp
+00406062 8bec            mov     ebp,esp
+00406064 81ecc8000000    sub     esp,0C8h
+0040606a 833db09f410000 cmp dword ptr [Service+0x19fb0 (00419fb0)],0
+00406071 751b            jne     Service+0x608e (0040608e)
+
+Service+0x6073:
+00406073 6a00            push    0
+00406075 6860514100      push    offset Service+0x15160 (00415160)
+0040607a b9609e4100      mov     ecx,offset Service+0x19e60 (00419e60)
+0040607f e822080000      call    Service+0x68a6 (004068a6)
+00406084 8b4514          mov     eax,dword ptr [ebp+14h]
+00406087 66c7002f00      mov word ptr [eax],2Fh
+
+0040608c eb65            jmp     Service+0x60f3 (004060f3)
+
+Service+0x608e:
+0040608e 56              push    esi
+0040608f 8b7508          mov     esi,dword ptr [ebp+8]
+00406092 837e5200        cmp     dword ptr [esi+52h],0
+00406096 7430            je      Service+0x60c8 (004060c8)
+
+Service+0x6098:
+00406098 8d8538ffffff    lea     eax,[ebp-0C8h]
+0040609e 6830514100      push    offset Service+0x15130 (00415130)
+004060a3 50              push    eax
+004060a4 e85f4d0000      call    Service+0xae08 (0040ae08)
+004060a9 59              pop     ecx
+004060aa 59              pop     ecx
+004060ab 6a00            push    0
+004060ad 8d8538ffffff    lea     eax,[ebp-0C8h]
+004060b3 50              push    eax
+004060b4 b9609e4100      mov     ecx,offset Service+0x19e60 (00419e60)
+004060b9 e8e8070000      call    Service+0x68a6 (004068a6)
+004060be 8b4514          mov     eax,dword ptr [ebp+14h]
+004060c1 66c7000a40      mov     word ptr [eax],400Ah
+004060c6 eb2a            jmp     Service+0x60f2 (004060f2)
+
+Service+0x60c8:
+004060c8 6804010000      push    104h
+004060cd 8d868c010000    lea     eax,[esi+18Ch]
+004060d3 50              push    eax
+004060d4 ff750c          push    dword ptr [ebp+0Ch]
+004060d7 ff158c304100    call    dword ptr [Service+0x1308c (0041308c)]
+004060dd 668b4510        mov     ax,word ptr [ebp+10h]
+004060e1 8bce            mov     ecx,esi
+004060e3 66894648        mov     word ptr [esi+48h],ax
+004060e7 e892f2ffff      call    Service+0x537e (0040537e)
+004060ec 8b4d14          mov     ecx,dword ptr [ebp+14h]
+004060ef 668901          mov     word ptr [ecx],ax
+
+Service+0x60f2:
+004060f2 5e              pop     esi
+
+Service+0x60f3:
+004060f3 33c0            xor     eax,eax
+004060f5 c9              leave
+004060f6 c21000          ret     10h
 </pre>
 <p>Note como a função compara algo com zero. Caso não seja zero ela continua. Caso contrário ela vai para um ponto que chama uma função interna e move um código de erro para um ponteiro recebido como parâmetro, o que é muito normal, se lembrarmos que as funções COM de um programa em C devem retornar o código da chamada no retorno (S_OK) e o código de erro em um lResult da vida.</p>
 
@@ -283,6 +298,7 @@ STDMETHODIMP CService::Open(&lt;params&gt;, PLONG *pctReturn)
 STDMETHODIMP CService::Open(BYTE *fileName, COUNT keyNo, COUNT *pctReturn)
 {
     char szMsg[200];
+
     // Verifica se o banco de dados foi inicializado
     if (!_Main.m_bDBInitialized)
     {
@@ -290,6 +306,7 @@ STDMETHODIMP CService::Open(BYTE *fileName, COUNT keyNo, COUNT *pctReturn)
       *pctReturn = FINT_ERR;
       return S_OK;
     }
+
     // Verifica se o arquivo já foi aberto
     if (m_pData)
     {
@@ -304,17 +321,18 @@ STDMETHODIMP CService::Open(BYTE *fileName, COUNT keyNo, COUNT *pctReturn)
 <p>Para confirmar que não estamos sonhando, podemos dar uma olhada no parâmetro passado para a função Log antes do código retornar. A memória deverá conter uma string idêntica a do código-fonte.</p>
 
 <pre>
-   Service+0x6073:
-   00406073 6a00            push    0
-   00406075 6860514100      push    offset Service+0x15160 (00415160)
-   0040607a b9609e4100      mov     ecx,offset Service+0x19e60 (00419e60)
-   0040607f e822080000      call Service+0x68a6 (004068a6)
-   00406084 8b4514          mov     eax,dword ptr [ebp+14h]
-   00406087 66c7002f00      mov     word ptr [eax],2Fh
-   0040608c eb65            jmp     Service+0x60f3 (004060f3)
-   0:000&gt; da 00415160
-   00415160  &quot;Error opening file before databa&quot;
-   00415180  &quot;se to be initialized.&quot;
+Service+0x6073:
+00406073 6a00            push    0
+00406075 6860514100      push    offset Service+0x15160 (00415160)
+0040607a b9609e4100      mov     ecx,offset Service+0x19e60 (00419e60)
+0040607f e822080000      call Service+0x68a6 (004068a6)
+00406084 8b4514          mov     eax,dword ptr [ebp+14h]
+00406087 66c7002f00      mov     word ptr [eax],2Fh
+0040608c eb65            jmp     Service+0x60f3 (004060f3)
+
+0:000&gt; da 00415160
+00415160  &quot;Error opening file before databa&quot;
+00415180  &quot;se to be initialized.&quot;
 </pre>
 <p>E, agora sim, encontramos o culpado!</p>
 
@@ -477,127 +495,129 @@ STDMETHODIMP CService::Open(BYTE *fileName, COUNT keyNo, COUNT *pctReturn)
 <h4>1. NotMyFaultEither.exe.mdmp - Stack Trash</h4>
 
 <pre>
-   0:000&gt; kv
-   ChildEBP RetAddr  Args to Child
-   0012b200 7c90df3c 7c8025db 000000e8 00000000 ntdll!KiFastSystemCallRet
-   0012b204 7c8025db 000000e8 00000000 0012b238 ntdll!NtWaitForSingleObject+0xc
-   0012b268 7c802542 000000e8 000493e0 00000000 kernel32!WaitForSingleObjectEx+0xa8
-   0012b27c 6998ada6 000000e8 000493e0 003a0043 kernel32!WaitForSingleObject+0x12
-   0012bd70 6998aff1 000000c4 00000568 000000d0 faultrep!InternalGenerateMinidumpEx+0x335
-   0012bd9c 6998b50a 000000c4 00000568 0012c698 faultrep!InternalGenerateMinidump+0x75
-   0012c678 69986652 000000c4 00000568 0012c698 faultrep!InternalGenFullAndTriageMinidumps+0x8a
-   0012dea0 69987d3d 0012df18 0015c300 00000000 faultrep!ReportFaultDWM+0x4e5
-   0012e398 699882d8 0040a1dc 0012f1e0 ffffffff faultrep!StartManifestReportImmediate+0x268
-   0012f404 7c8643c6 0040a1dc ffffffff 0012fc24 faultrep!ReportFault+0x55a
-   Unable to load image C:\Documents and Settings\Administrador\Desktop\NotMyFaultEither.exe
-   *** WARNING: Unable to verify timestamp for NotMyFaultEither.exe
-   *** ERROR: Module load completed but symbols could not be loaded for NotMyFaultEither.exe
-   0012f678 004018aa 0040a1dc e280eec4 1d7f113b kernel32!UnhandledExceptionFilter+0x55b
-   WARNING: Stack unwind information not available. Following frames may be wrong.
-   0012f9ac 00401357 dededede dededede dededede NotMyFaultEither+0x18aa
-   0012fbe8 dededede dededede dededede dededede NotMyFaultEither+0x1357
-   0012fbec dededede dededede dededede dededede 0xdededede
-   0012fbf4 dededede dededede dededede dededede 0xdededede
-   ...
+0:000&gt; kv
+ChildEBP RetAddr  Args to Child
+0012b200 7c90df3c 7c8025db 000000e8 00000000 ntdll!KiFastSystemCallRet
+0012b204 7c8025db 000000e8 00000000 0012b238 ntdll!NtWaitForSingleObject+0xc
+0012b268 7c802542 000000e8 000493e0 00000000 kernel32!WaitForSingleObjectEx+0xa8
+0012b27c 6998ada6 000000e8 000493e0 003a0043 kernel32!WaitForSingleObject+0x12
+0012bd70 6998aff1 000000c4 00000568 000000d0 faultrep!InternalGenerateMinidumpEx+0x335
+0012bd9c 6998b50a 000000c4 00000568 0012c698 faultrep!InternalGenerateMinidump+0x75
+0012c678 69986652 000000c4 00000568 0012c698 faultrep!InternalGenFullAndTriageMinidumps+0x8a
+0012dea0 69987d3d 0012df18 0015c300 00000000 faultrep!ReportFaultDWM+0x4e5
+0012e398 699882d8 0040a1dc 0012f1e0 ffffffff faultrep!StartManifestReportImmediate+0x268
+0012f404 7c8643c6 0040a1dc ffffffff 0012fc24 faultrep!ReportFault+0x55a
+Unable to load image C:\Documents and Settings\Administrador\Desktop\NotMyFaultEither.exe
+*** WARNING: Unable to verify timestamp for NotMyFaultEither.exe
+*** ERROR: Module load completed but symbols could not be loaded for NotMyFaultEither.exe
+0012f678 004018aa 0040a1dc e280eec4 1d7f113b kernel32!UnhandledExceptionFilter+0x55b
+WARNING: Stack unwind information not available. Following frames may be wrong.
+0012f9ac 00401357 dededede dededede dededede NotMyFaultEither+0x18aa
+0012fbe8 dededede dededede dededede dededede NotMyFaultEither+0x1357
+0012fbec dededede dededede dededede dededede 0xdededede
+0012fbf4 dededede dededede dededede dededede 0xdededede
+...
 </pre>
 <p>Como foi visto na palestra, uma pilha nesse estado demonstra claramente alguma variável que estourou e corrompeu o resto da pilha de chamadas. Na hora de voltar para a função chamadora, o endereço usado foi o endereço reescrito por lixo, e daí temos o "crash-pattern" Stack Trash.</p>
 
 <h4>2. NotMyFaultEither.mdmp - Dead Lock</h4>
 
 <pre>
-   0:000&gt; kv
-   ChildEBP RetAddr  Args to Child
-   0012f900 7c90df3c 7c8025db 0000007c 00000000 ntdll!KiFastSystemCallRet
-   0012f904 7c8025db 0000007c 00000000 00000000 ntdll!NtWaitForSingleObject+0xc
-   0012f968 7c802542 0000007c ffffffff 00000000 kernel32!WaitForSingleObjectEx+0xa8
-   0012f97c 00401176 0000007c ffffffff 00000111 kernel32!WaitForSingleObject+0x12
-   WARNING: Stack unwind information not available. Following frames may be wrong.
-   0012f9c0 7c910202 00000002 001506e8 00150000 NotMyFaultEither+0x1176
-   0012f9f8 7e3746d3 01010050 00000000 00000000 ntdll!RtlpAllocateFromHeapLookaside+0x42
-   0012fa5c 7e382672 01010050 01100068 7e3a4716 user32!DrawStateW+0x5cd
-   0012fae8 7e382c75 001563ac 01010050 00000003 user32!xxxBNDrawText+0x313
-   0012fb20 002d0036 00000000 00000020 0012fb3c user32!xxxDrawButton+0xbb
-   0012fb30 7e3799d8 0000800a 0012fbc8 7e375ba2 0x2d0036
-   0012fb3c 7e375ba2 0000800a 002d0036 fffffffc user32!NotifyWinEvent+0xd
-   0012fbc8 00000000 002d0036 004011b0 dcbaabcd user32!ButtonWndProcWorker+0x79b
-   0:000&gt; !handle 0000007c
-   Handle 0000007c
-     Type           Thread
-   0:000&gt; ~* kv
-   .  0  Id: 5e4.39c Suspend: 0 Teb: 7ffdd000 Unfrozen
-   ChildEBP RetAddr  Args to Child
-   0012f900 7c90df3c 7c8025db 0000007c 00000000 ntdll!KiFastSystemCallRet
-   0012f904 7c8025db 0000007c 00000000 00000000 ntdll!NtWaitForSingleObject+0xc
-   0012f968 7c802542 0000007c ffffffff 00000000 kernel32!WaitForSingleObjectEx+0xa8
-   0012f97c 00401176 0000007c ffffffff 00000111 kernel32!WaitForSingleObject+0x12
-   WARNING: Stack unwind information not available. Following frames may be wrong.
-   0012f9c0 7c910202 00000002 001506e8 00150000 NotMyFaultEither+0x1176
-   0012f9f8 7e3746d3 01010050 00000000 00000000 ntdll!RtlpAllocateFromHeapLookaside+0x42
-   0012fa5c 7e382672 01010050 01100068 7e3a4716 user32!DrawStateW+0x5cd
-   0012fae8 7e382c75 001563ac 01010050 00000003 user32!xxxBNDrawText+0x313
-   0012fb20 002d0036 00000000 00000020 0012fb3c user32!xxxDrawButton+0xbb
-   0012fb30 7e3799d8 0000800a 0012fbc8 7e375ba2 0x2d0036
-   0012fb3c 7e375ba2 0000800a 002d0036 fffffffc user32!NotifyWinEvent+0xd
-   0012fbc8 00000000 002d0036 004011b0 dcbaabcd user32!ButtonWndProcWorker+0x79b
-      1  Id: 5e4.6a4 Suspend: 0 Teb: 7ffdc000 Unfrozen
-   ChildEBP RetAddr  Args to Child
-   00b8ff10 7c90df3c 7c91b22b 00000080 00000000 ntdll!KiFastSystemCallRet
-   00b8ff14 7c91b22b 00000080 00000000 00000000 ntdll!NtWaitForSingleObject+0xc
-   00b8ff9c 7c901046 0040e940 004010e0 0040e940 ntdll!RtlpWaitForCriticalSection+0x132
-   00b8ffa4 004010e0 0040e940 00000000 00000000 ntdll!RtlEnterCriticalSection+0x46
-   WARNING: Stack unwind information not available. Following frames may be wrong.
-   00b8ffec 00000000 004010c0 0012f99c 00000000 NotMyFaultEither+0x10e0
-   0:000&gt; !cs 0040e940
-   -----------------------------------------
-   Critical section   = 0x0040e940 (NotMyFaultEither+0xE940)
-   DebugInfo          = 0x00154498
-   LOCKED
-   LockCount          = 0x1
-   OwningThread       = 0x0000039c
-   RecursionCount     = 0x1
-   LockSemaphore      = 0x80
-   SpinCount          = 0x00000000
+0:000&gt; kv
+ChildEBP RetAddr  Args to Child
+0012f900 7c90df3c 7c8025db 0000007c 00000000 ntdll!KiFastSystemCallRet
+0012f904 7c8025db 0000007c 00000000 00000000 ntdll!NtWaitForSingleObject+0xc
+0012f968 7c802542 0000007c ffffffff 00000000 kernel32!WaitForSingleObjectEx+0xa8
+0012f97c 00401176 0000007c ffffffff 00000111 kernel32!WaitForSingleObject+0x12
+WARNING: Stack unwind information not available. Following frames may be wrong.
+0012f9c0 7c910202 00000002 001506e8 00150000 NotMyFaultEither+0x1176
+0012f9f8 7e3746d3 01010050 00000000 00000000 ntdll!RtlpAllocateFromHeapLookaside+0x42
+0012fa5c 7e382672 01010050 01100068 7e3a4716 user32!DrawStateW+0x5cd
+0012fae8 7e382c75 001563ac 01010050 00000003 user32!xxxBNDrawText+0x313
+0012fb20 002d0036 00000000 00000020 0012fb3c user32!xxxDrawButton+0xbb
+0012fb30 7e3799d8 0000800a 0012fbc8 7e375ba2 0x2d0036
+0012fb3c 7e375ba2 0000800a 002d0036 fffffffc user32!NotifyWinEvent+0xd
+0012fbc8 00000000 002d0036 004011b0 dcbaabcd user32!ButtonWndProcWorker+0x79b
+0:000&gt; !handle 0000007c
+Handle 0000007c
+  Type           Thread
+0:000&gt; ~* kv
+
+.  0  Id: 5e4.39c Suspend: 0 Teb: 7ffdd000 Unfrozen
+ChildEBP RetAddr  Args to Child
+0012f900 7c90df3c 7c8025db 0000007c 00000000 ntdll!KiFastSystemCallRet
+0012f904 7c8025db 0000007c 00000000 00000000 ntdll!NtWaitForSingleObject+0xc
+0012f968 7c802542 0000007c ffffffff 00000000 kernel32!WaitForSingleObjectEx+0xa8
+0012f97c 00401176 0000007c ffffffff 00000111 kernel32!WaitForSingleObject+0x12
+WARNING: Stack unwind information not available. Following frames may be wrong.
+0012f9c0 7c910202 00000002 001506e8 00150000 NotMyFaultEither+0x1176
+0012f9f8 7e3746d3 01010050 00000000 00000000 ntdll!RtlpAllocateFromHeapLookaside+0x42
+0012fa5c 7e382672 01010050 01100068 7e3a4716 user32!DrawStateW+0x5cd
+0012fae8 7e382c75 001563ac 01010050 00000003 user32!xxxBNDrawText+0x313
+0012fb20 002d0036 00000000 00000020 0012fb3c user32!xxxDrawButton+0xbb
+0012fb30 7e3799d8 0000800a 0012fbc8 7e375ba2 0x2d0036
+0012fb3c 7e375ba2 0000800a 002d0036 fffffffc user32!NotifyWinEvent+0xd
+0012fbc8 00000000 002d0036 004011b0 dcbaabcd user32!ButtonWndProcWorker+0x79b
+
+   1  Id: 5e4.6a4 Suspend: 0 Teb: 7ffdc000 Unfrozen
+ChildEBP RetAddr  Args to Child
+00b8ff10 7c90df3c 7c91b22b 00000080 00000000 ntdll!KiFastSystemCallRet
+00b8ff14 7c91b22b 00000080 00000000 00000000 ntdll!NtWaitForSingleObject+0xc
+00b8ff9c 7c901046 0040e940 004010e0 0040e940 ntdll!RtlpWaitForCriticalSection+0x132
+00b8ffa4 004010e0 0040e940 00000000 00000000 ntdll!RtlEnterCriticalSection+0x46
+WARNING: Stack unwind information not available. Following frames may be wrong.
+00b8ffec 00000000 004010c0 0012f99c 00000000 NotMyFaultEither+0x10e0
+0:000&gt; !cs 0040e940
+-----------------------------------------
+Critical section   = 0x0040e940 (NotMyFaultEither+0xE940)
+DebugInfo          = 0x00154498
+LOCKED
+LockCount          = 0x1
+OwningThread       = 0x0000039c
+RecursionCount     = 0x1
+LockSemaphore      = 0x80
+SpinCount          = 0x00000000
 </pre>
 <p>A thread ativa no momento do dump aguardava por outra thread. Listando todas as threads do processo temos a primeira e a segunda, que tenta entrar em um critical section. Quando vemos que aquele CS estava sendo bloqueado pela primeira thread vemos claramente se tratar de um dead lock.</p>
 
 <h4>3. NotMyFaultEither_100808_172407.dmp - Access Violation</h4>
 
 <pre>
-   0:000&gt; kv
-   ChildEBP RetAddr  Args to Child
-   WARNING: Stack unwind information not available. Following frames may be wrong.
-   0012f9cc 7e37f916 01010052 005a0049 0012f9f4 NotMyFaultEither+0x10a3
-   0012fa58 7e37f991 01010052 00000043 01100076 user32!ClientFrame+0xe0
-   0012fa7c 7e382909 01010052 0012fa98 00000000 user32!DrawFocusRect+0x40
-   0012fae8 7e382c75 00156304 01010052 00000003 user32!xxxBNDrawText+0x3e9
-   0012fb20 001100a0 00000000 00000020 0012fb3c user32!xxxDrawButton+0xbb
-   0012fb30 7e3799d8 0000800a 0012fbc8 7e375ba2 0x1100a0
-   0012fb3c 7e375ba2 0000800a 001100a0 fffffffc user32!NotifyWinEvent+0xd
-   0012fbc8 00000000 001100a0 004010f0 dcbaabcd user32!ButtonWndProcWorker+0x79b
-   0:000&gt; ? eax+edx
-   Evaluate expression: 0 = 00000000
-   0:000&gt; u
-   NotMyFaultEither+0x10a3:
-   004010a3 66890c02        mov     word ptr [edx+eax],cx
-   004010a7 83c002          add     eax,2
-   004010aa 6685c9          test    cx,cx
+0:000&gt; kv
+ChildEBP RetAddr  Args to Child
+WARNING: Stack unwind information not available. Following frames may be wrong.
+0012f9cc 7e37f916 01010052 005a0049 0012f9f4 NotMyFaultEither+0x10a3
+0012fa58 7e37f991 01010052 00000043 01100076 user32!ClientFrame+0xe0
+0012fa7c 7e382909 01010052 0012fa98 00000000 user32!DrawFocusRect+0x40
+0012fae8 7e382c75 00156304 01010052 00000003 user32!xxxBNDrawText+0x3e9
+0012fb20 001100a0 00000000 00000020 0012fb3c user32!xxxDrawButton+0xbb
+0012fb30 7e3799d8 0000800a 0012fbc8 7e375ba2 0x1100a0
+0012fb3c 7e375ba2 0000800a 001100a0 fffffffc user32!NotifyWinEvent+0xd
+0012fbc8 00000000 001100a0 004010f0 dcbaabcd user32!ButtonWndProcWorker+0x79b
+0:000&gt; ? eax+edx
+Evaluate expression: 0 = 00000000
+0:000&gt; u
+NotMyFaultEither+0x10a3:
+004010a3 66890c02        mov     word ptr [edx+eax],cx
+004010a7 83c002          add     eax,2
+004010aa 6685c9          test    cx,cx
 </pre>
 <p>O disassemble da instrução inválida tenta escrever claramente em cima do endereço zerado (edx + eax). Dessa forma fica fácil saber que esse tipo de escrita não é permitido, constituindo nosso famosíssimo AV.</p>
 
 <h4>4. NotMyFaultEither_100808_175404.dmp - Exception not Handled</h4>
 
 <pre>
-   eax=00000000 ebx=00000111 ecx=7c91003d edx=00010000 esi=00330120 edi=7e374dfa
-   eip=7c90120e esp=0012f9a0 ebp=00000001 iopl=0         nv up ei pl zr na pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
-   ntdll!DbgBreakPoint:
-   7c90120e cc              int     3
-   0:000&gt; kv
-   ChildEBP RetAddr  Args to Child
-   0012f99c 004011ec 0012fc24 004010d0 0012fbe8 ntdll!DbgBreakPoint (FPO: [0,0,0])
-   WARNING: Stack unwind information not available. Following frames may be wrong.
-   0012f9cc 7e37f916 01010054 005a0049 0012f9f4 NotMyFaultEither+0x11ec
-   0012fa58 7e37f991 01010054 00000043 01100076 user32!ClientFrame+0xe0
+eax=00000000 ebx=00000111 ecx=7c91003d edx=00010000 esi=00330120 edi=7e374dfa
+eip=7c90120e esp=0012f9a0 ebp=00000001 iopl=0         nv up ei pl zr na pe nc
+cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
+ntdll!DbgBreakPoint:
+7c90120e cc              int     3
+0:000&gt; kv
+ChildEBP RetAddr  Args to Child
+0012f99c 004011ec 0012fc24 004010d0 0012fbe8 ntdll!DbgBreakPoint (FPO: [0,0,0])
+WARNING: Stack unwind information not available. Following frames may be wrong.
+0012f9cc 7e37f916 01010054 005a0049 0012f9f4 NotMyFaultEither+0x11ec
+0012fa58 7e37f991 01010054 00000043 01100076 user32!ClientFrame+0xe0
 </pre>
 <p>Esse foi meio de brinde. Uma exceção de breakpoint (int 3, ntdll!DbgBreakPoint) lançada sem um depurador atachado implica em derrubamento do processo, pois é uma exceção como outra qualquer. O programador deve ter esquecido um DebugBreak ou algo que o valha no código de produção, que acabou sendo executado.</p>
 
@@ -639,40 +659,52 @@ STDMETHODIMP CService::Open(BYTE *fileName, COUNT keyNo, COUNT *pctReturn)
 
 <pre>
 /** @file OnCrash
+
 @brief Exemplo de como capturar exceções no seu programa.
+
 @author Wanderley Caloni &lt;wanderley.caloni@gmail.com&gt;
 @date 2010-08
 */
 #include &lt;windows.h&gt;
 #include &lt;dbghelp.h&gt;
 #include &lt;time.h&gt;
+
 #pragma comment(lib, &quot;dbghelp.lib&quot;)
+
 LONG WINAPI CrashHandler(_EXCEPTION_POINTERS* ExceptionInfo)
 {
     LONG ret = EXCEPTION_CONTINUE_SEARCH;
     MINIDUMP_EXCEPTION_INFORMATION minidumpInfo;
+
     minidumpInfo.ClientPointers = FALSE;
     minidumpInfo.ThreadId = GetCurrentThreadId();
     minidumpInfo.ExceptionPointers = ExceptionInfo;
+
     HANDLE hFile = CreateFile(&quot;OnCrash.dmp&quot;, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, 0, NULL);
+
     if( hFile != INVALID_HANDLE_VALUE )
     {
       MINIDUMP_TYPE dumpType = MiniDumpNormal;
+
       if( MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), 
         hFile, MiniDumpNormal, &amp;minidumpInfo, NULL, NULL) )
       {
         ret = EXCEPTION_EXECUTE_HANDLER;
       }
+
       CloseHandle(hFile);
     }
+
     return ret;
 }
+
 DWORD WINAPI CrashThread(PVOID)
 {
     int* x = 0;
     *x = 13;
     return 0;
 }
+
 int main()
 {
     SetUnhandledExceptionFilter(CrashHandler);
@@ -737,53 +769,57 @@ int main()
 <p>Vamos ver um exemplo:</p>
 
 <pre>
-   #define MY_STR &quot;Essa é minha string do coração&quot;
+#define MY_STR &quot;Essa é minha string do coração&quot;
 </pre>
 <p>Conseguimos capturar os três elementos desse define (um descartável) por um simples scanf:</p>
 
 <pre>
-   scanf(&quot;#define %s \&quot;%[^\&quot;]&quot;, def, str);
+scanf(&quot;#define %s \&quot;%[^\&quot;]&quot;, def, str);
 </pre>
 <p>A função scanf retorna o número de argumentos capturados. Então se a coisa funcionou é só comparar com 2.</p>
 
 <p>Depois de capturado, imprimimos na saída (o arquivo pós-processado) uma estrutura que irá conter nosso amigo embaralhado:</p>
 
 <pre>
-   printf(&quot;struct ST_%s { byte key; size_t bufferSize; byte buffer[%d] }\n&quot;
-     &quot; %s = { %d, %d, { &quot;;
-   for( ; ; ) printf(Cada byte ofuscado);
-   printtf(&quot; } };\n&quot;);
+printf(&quot;struct ST_%s { byte key; size_t bufferSize; byte buffer[%d] }\n&quot;
+  &quot; %s = { %d, %d, { &quot;;
+
+for( ; ; ) printf(Cada byte ofuscado);
+
+printtf(&quot; } };\n&quot;);
 </pre>
 <p>Pronto. Agora o usuário da string precisa abri-la usando uma macro esperta que irá chamar uma função esperta para desofuscar a string e entregar o ponteiro de buffer devidamente "casteado":</p>
 
 <pre>
-   #include &quot;header-pos-processado.h&quot;
-   #define ABRE_VAR(var, type) (type) OpenVar( (GENERIC_STRUCT) var)
-   int main()
-   {
-     char* str = ABRE_VAR(MY_STR, char*);
-   }
+#include &quot;header-pos-processado.h&quot;
+
+#define ABRE_VAR(var, type) (type) OpenVar( (GENERIC_STRUCT) var)
+
+int main()
+{
+  char* str = ABRE_VAR(MY_STR, char*);
+}
 </pre>
 <p>Uma vez que a abertura se faz "inplace", ou seja, a memória da própria variável da estrutura original é alterada, pode-se fechar a variável novamente, se quiser, após o uso.</p>
 
 <pre>
-   FECHA_VAR(MY_STR);
+FECHA_VAR(MY_STR);
 </pre>
 <p>A GENERIC_STRUCT do exemplo se trata apenas de um esqueleto para que todas as estruturas das 500 strings ofuscadas sejam entendidas a partir de um modelo. Sim, essa é uma solução usando linguagem C apenas, então não posso me dar ao luxo daqueles templates frescurentos.</p>
 
 <pre>
-   struct GENERIC_STRUCT
-   {
-     byte key;
-     size_t bufferSize;
-     byte buffer[1];
-   };
+struct GENERIC_STRUCT
+{
+  byte key;
+  size_t bufferSize;
+  byte buffer[1];
+};
 </pre>
 <p>Como a string é ofuscada? Sei lá, use um XOR:</p>
 
 <pre>
-   for( size_t i = 0; i &lt; bufferSize; ++i )
-     buffer[i] ^= key;
+for( size_t i = 0; i &lt; bufferSize; ++i )
+  buffer[i] ^= key;
 </pre>
 <p>Dessa forma abrir ou fechar a variável pode ser feito usando a mesma função.</p>
 

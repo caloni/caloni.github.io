@@ -265,6 +265,7 @@ public:
    void MeuOutroMetodo();
    int MinhaPropriedade;
 };
+
 void MinhaClasse::MeuMetodo()
 {
    MinhaPropriedade = 42; // ou seja: this-&gt;MinhaPropriedade = 42;
@@ -276,6 +277,7 @@ void MinhaClasse::MeuMetodo()
 <pre>
 WIN32_FIND_DATA findData;
 HANDLE findH = FindFirstFile(&quot;*.txt&quot;, &amp;findData);
+
 if( findH != INVALID_HANDLE_VALUE )
 {
    if( findData.dwFileAttributes &amp; FILE_ATTRIBUTE_ENCRYPTED )
@@ -300,6 +302,7 @@ struct MinhaClasse
 {
     int MinhaPropriedade;
 };
+
 void MinhaClasse_MeuMetodo(MinhaClasse* pThis)
 {
    pThis-&gt;MinhaPropriedade = 42;
@@ -327,6 +330,7 @@ bool MinhaFuncao(int x, int y)
 {
     return x == y;
 }
+
 int main()
 {
     bool (*PMinhaFuncao)(int, int) = MinhaFuncao;
@@ -340,6 +344,7 @@ struct MinhaClasse
 {
     int MinhaPropriedade;
 };
+
 void MinhaClasse_MeuMetodo(MinhaClasse* pThis)
 {
    pThis-&gt;MinhaPropriedade = 42;
@@ -350,27 +355,34 @@ void MinhaClasse_MeuMetodo(MinhaClasse* pThis)
 
 <pre>
 #include &lt;stdio.h&gt;
+
 struct MinhaClasse
 {
     int MinhaPropriedade;
     void (*MeuMetodo)(MinhaClasse*);
     void (*MeuOutroMetodo)(MinhaClasse*);
 };
+
 void MinhaClasse_MeuMetodo(MinhaClasse* pThis)
 {
     pThis-&gt;MeuOutroMetodo(pThis);
 }
+
 void MinhaClasse_MeuOutroMetodo(MinhaClasse* pThis)
 {
     pThis-&gt;MinhaPropriedade = 42;
 }
+
 int main()
 {
     MinhaClasse obj;
+
     obj.MinhaPropriedade = 0;
+
     // precisamos iniciar os &quot;métodos&quot; em C; em C++ é automágico
     obj.MeuMetodo = MinhaClasse_MeuMetodo; 
     obj.MeuOutroMetodo = MinhaClasse_MeuOutroMetodo;
+
     obj.MeuMetodo(&amp;obj);
     printf(&quot;MinhaPropriedade = %d&quot;, obj.MinhaPropriedade);
 }
@@ -414,6 +426,7 @@ int main()
 <pre>
 ClasseCpp obj;
 obj.Metodo(); // passando this implicitamente
+
 ClasseC obj;
 obj.Metodo = ClasseC_Metodo;
 obj.Metodo(&amp;obj); // passando this explicitamente
@@ -422,6 +435,7 @@ obj.Metodo(&amp;obj); // passando this explicitamente
 
 <pre>
 #include &lt;iostream&gt;
+
 class MinhaClasse
 {
     public:
@@ -435,6 +449,7 @@ class MinhaClasse
         }
         int MinhaPropriedade;
 };
+
 class MinhaClasseVersao75 : public MinhaClasse
 {
     public:
@@ -443,12 +458,15 @@ class MinhaClasseVersao75 : public MinhaClasse
             MinhaPropriedade = 75;
         }
 };
+
 int main()
 {
     MinhaClasse obj;
     MinhaClasseVersao75 obj2;
+
     obj.MeuMetodo();
     obj2.MeuMetodo();
+
     std::cout &lt;&lt; &quot;MinhaPropriedade (obj) = &quot; &lt;&lt; obj.MinhaPropriedade &lt;&lt; std::endl;
     std::cout &lt;&lt; &quot;MinhaPropriedade (obj2) = &quot; &lt;&lt; obj2.MinhaPropriedade &lt;&lt; std::endl;
 }
@@ -459,37 +477,48 @@ int main()
 
 <pre>
 #include &lt;stdio.h&gt;
+
 struct MinhaVTable;
+
 struct MinhaClasse
 {
     const MinhaVTable* VTable;
     int MinhaPropriedade;
 };
+
 struct MinhaVTable
 {
     void (*MeuMetodo)(MinhaClasse*);
     void (*MeuOutroMetodo)(MinhaClasse*);
 };
+
 void MinhaClasse_MeuMetodo(MinhaClasse* pThis)
 {
     pThis-&gt;VTable-&gt;MeuOutroMetodo(pThis);
 }
+
 void MinhaClasse_MeuOutroMetodo(MinhaClasse* pThis)
 {
     pThis-&gt;MinhaPropriedade = 42;
 }
+
 void MinhaClasse_MeuOutroMetodoVersao75(MinhaClasse* pThis)
 {
     pThis-&gt;MinhaPropriedade = 75;
 }
+
 static const MinhaVTable g_minhaVTableOriginal = { MinhaClasse_MeuMetodo, MinhaClasse_MeuOutroMetodo };
+
 static const MinhaVTable g_minhaVTableVersao75 = { MinhaClasse_MeuMetodo, MinhaClasse_MeuOutroMetodoVersao75 };
+
 int main()
 {
     MinhaClasse obj = { &amp;g_minhaVTableOriginal };
     MinhaClasse obj2 = { &amp;g_minhaVTableVersao75 };
+
     obj.VTable-&gt;MeuMetodo(&amp;obj);
     obj2.VTable-&gt;MeuMetodo(&amp;obj2);
+
     printf(&quot;MinhaPropriedade (obj) = %d\n&quot;, obj.MinhaPropriedade);
     printf(&quot;MinhaPropriedade (obj2) = %d\n&quot;, obj2.MinhaPropriedade);
 }
@@ -544,16 +573,20 @@ int main()
 
 <pre>
 #include &lt;iostream&gt;
+
 using namespace std;
+
 template&lt;typename T&gt;
 bool Compare(T&amp; var1, T&amp; var2)
 {
     return var1 &lt; var2;
 }
+
 int main()
 {
     int x = 24, y = 42;
     double dx = 100.0, dy = 10.0;
+
     cout &lt;&lt; &quot;x is &quot; &lt;&lt; ( Compare(x, y) ? &quot;lesser&quot; : &quot;bigger&quot; ) &lt;&lt; &quot; than y\n&quot;;
     cout &lt;&lt; &quot;dx is &quot; &lt;&lt; ( Compare(dx, dy) ? &quot;lesser&quot; : &quot;bigger&quot; ) &lt;&lt; &quot; than dy\n&quot;;
 }
@@ -623,6 +656,7 @@ typedef struct _LIST_ENTRY {
   struct _LIST_ENTRY  *Flink;
   struct _LIST_ENTRY  *Blink;
 } LIST_ENTRY, *PLIST_ENTRY;
+
 struct MeuElemento
 {
     int x;
@@ -631,7 +665,9 @@ struct MeuElemento
     double d;
     float f;
 };
+
 LIST_ENTRY g_head;
+
 int main()
 {
     InitializeListHead(&amp;g_head);
@@ -670,11 +706,14 @@ T* ContainingRecord(PLIST_ENTRY pEntry)
 
 <pre>
 #include &lt;iostream&gt;
+
 using namespace std;
+
 typedef struct _LIST_ENTRY {
   struct _LIST_ENTRY  *Flink;
   struct _LIST_ENTRY  *Blink;
 } LIST_ENTRY, *PLIST_ENTRY;
+
 struct MeuElemento
 {
     int x;
@@ -683,18 +722,22 @@ struct MeuElemento
     double d;
     float f;
 };
+
 LIST_ENTRY g_head;
+
 template&lt;typename T&gt;
 T* ContainingRecord(PLIST_ENTRY pEntry)
 {
     return ( reinterpret_cast&lt;T*&gt;( (char*)(pEntry) - (size_t)(&amp;((T*)0)-&gt;entry)) );
 }
+
 int main()
 {
     auto newElem = new MeuElemento();
     newElem-&gt;x = 42;
     g_head.Flink = &amp;newElem-&gt;entry; // inserindo um elemento
     auto elem = ContainingRecord&lt;MeuElemento&gt;(g_head.Flink);
+
     cout &lt;&lt; &quot;X is &quot; &lt;&lt; elem-&gt;x &lt;&lt; endl;
 }
 </pre>
@@ -712,7 +755,7 @@ int main()
 
 <p>E há apenas um diretor capaz de falar sobre todas essas coisas e não soar superficial, exagerado ou, pior, desequilibrar a equação entre violência, dominação, sexo, moral e uma certa dose de esoterismo. Esse alguém é David Lynch (Cidade dos Sonhos, O Homem Elefante). Sua narrativa pouco convencional nos entrega uma obra-prima que investiga a fundo a psique humana da curiosidade e explora seus personagens ao máximo.</p>
 
-<p>O herói aqui é Jeffrey Beaumont (Kyle MacLachlan), um inocente e jovem rapaz atraído por sua própria curiosidade mórbida. Após ir visitar seu pai no hospital, encontra por acidente uma orelha humana em um terreno baldio. Ele faz o que deve: entrega à polícia. Porém, a curiosidade vai além e ele tenta obter mais informações do detetive responsável pelo caso (George Dickerson) através de sua doce e ingênua filha Sandy (Laura Dern). São todos moradores do bairro em uma cidade pequena, o que é propício para que casos isolados da polícia aos poucos unam-se em apenas um, que gira em torno de Dorothy Vallens (Isabella Rossellini), uma enigmática cantora que recebe o título de Lady Blue e que está na lista de suspeitos de um assassinato não resolvido. </p>
+<p>O herói aqui é Jeffrey Beaumont (Kyle MacLachlan), um inocente e jovem rapaz atraído por sua própria curiosidade mórbida. Após ir visitar seu pai no hospital, encontra por acidente uma orelha humana em um terreno baldio. Ele faz o que deve: entrega à polícia. Porém, a curiosidade vai além e ele tenta obter mais informações do detetive responsável pelo caso (George Dickerson) através de sua doce e ingênua filha Sandy (Laura Dern). São todos moradores do bairro em uma cidade pequena, o que é propício para que casos isolados da polícia aos poucos unam-se em apenas um, que gira em torno de Dorothy Vallens (Isabella Rossellini), uma enigmática cantora que recebe o título de Lady Blue e que está na lista de suspeitos de um assassinato não resolvido.</p>
 
 <p>Logo "Blue Velvet" (Veludo Azul) não só faz parte da inspirada trilha sonora do filme, mas também do repertório e do figurino da cantora. E logo vemos que isso não é coincidência, mas uma relação doentia com uma pessoa violenta. O ritmo do filme é lento e vai sempre revelando mais detalhes, e nos convidando para essa curiosidade mórbida. Mais do que eu falei estragaria as melhores surpresas, mas tenha em mente que o vilão do filme (Dennis Hopper como Frank Booth) é surreal, talvez sobrenatural, e faz parceria de insanidade com Alex de Laranja Mecânica. É como se o vilão de Stanley Kubrick envelhecesse e se tornasse mais explosivo. Não, me corrijo: Frank Booth talvez seja um dos maiores vilões no Cinema, e ele tem um jeito único de te deixar inquieto.</p>
 
@@ -896,6 +939,7 @@ C:\WINDOWS\system32\ntdll.dll -
 ntdll!DbgBreakPoint:
 7c90120e cc              int     3
 0:001&gt; !logexts.logi 
+
 Windows API Logging Extensions  v3.01
 Parsing the manifest files...
 Location: C:\Temp\DbgTools(x86)\winext\manifest\main.h
@@ -1023,6 +1067,7 @@ Detached
 <pre>
 git init
 bzr fast-export --plain . | git fast-import
+
 12:03:59 Calculating the revisions to include ...
 12:03:59 Starting export of 2681 revisions ...
 12:04:05 Skipping empty dir Tools/Desenv in rev 

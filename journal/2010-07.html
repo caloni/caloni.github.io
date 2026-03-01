@@ -49,11 +49,8 @@ role="navigation" aria-label="main navigation">
 <span class="title-heading">Caloni, 2010-07-01 <a href="2010-06.html#transformacao">&lt;</a><a href="quotes.html">quotes</a><a href="2017-02.html#sem_oxigenio">&gt;</a> <a href="2010-06.html#transformacao">&lt;</a><a href="self.html">self</a><a href="2017-03.html#mastery_the_key_to_success_and_long_term_fulfillment">&gt;</a> <a href="2010-06.html#transformacao">&lt;</a><a href="now.html">now</a><a href="2022-10.html#o_reino_da_consciencia">&gt;</a><a href="2010-07.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_religiao')"><sup>[copy]</sup></a></span>
 
 <blockquote>Você precisa da natureza como sua mestra para ajudar a religar-se com o Ser.</blockquote>
-
 <blockquote>Esquecemos o que as pedras, as plantas e os animais ainda sabem.</blockquote>
-
 <blockquote>Você é o conhecimento, a consciência através da qual tudo é conhecido.</blockquote>
-
 <blockquote>Eckhart Tolle (O Poder do Silêncio, 2004)</blockquote>
 </section><hr/>
 
@@ -76,33 +73,34 @@ role="navigation" aria-label="main navigation">
 <p>Como meus leitores são muito espertos vou partir para o momento após rodarmos um notepad.exe:</p>
 
 <pre>
-   kd&gt; !process 0 0 notepad.exe
-   PROCESS 81681be0  SessionId: 0  Cid: 0598    Peb: 7ffd7000  ParentCid: 0200
-       DirBase: 08740260  ObjectTable: e18ee8d8  HandleCount:  29.
-       Image: notepad.exe
-   kd&gt; .process /i 81681be0
-   You need to continue execution (press 'g' &lt;enter&gt;) for the context
-   to be switched. When the debugger breaks in again, you will be in
-   the new process context.
-   kd&gt; g
-   Break instruction exception - code 80000003 (first chance)
-   nt!RtlpBreakWithStatusInstruction:
-   80527bdc cc              int     3
-   kd&gt; .reload /user
-   Loading User Symbols
-   .......................
-   kd&gt; bp user32!MessageBoxExW
-   kd&gt; g
-   Breakpoint 0 hit
-   USER32!MessageBoxExW:
-   001b:7e3a0838 8bff            mov     edi,edi
-   kd&gt; du poi(esp+8)
-   0007cfb8  &quot;naoexistetralala.txt.Arquivo não&quot;
-   0007cff8  &quot; encontrado..Verifique se o nome&quot;
-   0007d038  &quot; do arquivo correto foi especifi&quot;
-   0007d078  &quot;cado.&quot;
-   kd&gt; ezu poi(esp+8) &quot;Esse arquivo não existe! Mas é muito mané, não é mesmo?&quot;
-   kd&gt; g
+kd&gt; !process 0 0 notepad.exe
+PROCESS 81681be0  SessionId: 0  Cid: 0598    Peb: 7ffd7000  ParentCid: 0200
+    DirBase: 08740260  ObjectTable: e18ee8d8  HandleCount:  29.
+    Image: notepad.exe
+
+kd&gt; .process /i 81681be0
+You need to continue execution (press 'g' &lt;enter&gt;) for the context
+to be switched. When the debugger breaks in again, you will be in
+the new process context.
+kd&gt; g
+Break instruction exception - code 80000003 (first chance)
+nt!RtlpBreakWithStatusInstruction:
+80527bdc cc              int     3
+kd&gt; .reload /user
+Loading User Symbols
+.......................
+kd&gt; bp user32!MessageBoxExW
+kd&gt; g
+Breakpoint 0 hit
+USER32!MessageBoxExW:
+001b:7e3a0838 8bff            mov     edi,edi
+kd&gt; du poi(esp+8)
+0007cfb8  &quot;naoexistetralala.txt.Arquivo não&quot;
+0007cff8  &quot; encontrado..Verifique se o nome&quot;
+0007d038  &quot; do arquivo correto foi especifi&quot;
+0007d078  &quot;cado.&quot;
+kd&gt; ezu poi(esp+8) &quot;Esse arquivo não existe! Mas é muito mané, não é mesmo?&quot;
+kd&gt; g
 </pre>
 <p>O screenshot diz tudo:</p>
 
@@ -127,9 +125,9 @@ role="navigation" aria-label="main navigation">
 <p>Enquanto isso, continuo descobrindo maravilhas do WinDbg. Essa semana fiquei brincando de colocar breakpoint em user-mode, mas depurando o kernel, como fizeram os rapazes do Ntdebugging. A conclusão é que ele vale para todos os aplicativos abertos. Tente com o MessageBox!</p>
 
 <pre>
-   !process 0 0 notepad.exe
-   .reload /user
-   bp user32!MessageBoxW
+!process 0 0 notepad.exe
+.reload /user
+bp user32!MessageBoxW
 </pre>
 <p>Mas devaneio. Talvez outra boa qualidade de um bom programador.</p>
 

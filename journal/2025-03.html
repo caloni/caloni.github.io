@@ -50,7 +50,6 @@ role="navigation" aria-label="main navigation">
 <span class="title-heading">Caloni, 2025-03-06 <a href="2025-02.html#we_are_all_thought">&lt;</a><a href="quotes.html">quotes</a><a href="2025-05.html#o_segundo_cerebro">&gt;</a> <a href="2025-02.html#we_are_all_thought">&lt;</a><a href="philosophy.html">philosophy</a><a href="2025-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_symbolical_presentations_of_universal_ideas')"><sup>[copy]</sup></a></span>
 
 <blockquote>THE Tarot embodies symbolical presentations of universal ideas, behind which lie all the implicits of the human mind, and it is in this sense that they contain secret doctrine.</blockquote>
-
 <blockquote>Arthur Edward Waite (The Pictorial Key To The Tarot)</blockquote>
 </section><hr/>
 
@@ -116,11 +115,13 @@ role="navigation" aria-label="main navigation">
 ID_101 BIN &quot;resources\\binary.dll&quot;
 ID_102 BIN &quot;resources\\binary.exe&quot;
 //...
+
 const std::vector&lt;ResourceIdFileName&gt; Resources =
 { 
   { ID_101, &quot;binary.dll&quot; },
   { ID_102, &quot;binary.exe&quot; },
   //...
+
 bool ExtractResourceToFile(const ResourceIdFileName&amp; resource)
 {
     HMODULE hModule = GetModuleHandle(NULL);
@@ -151,18 +152,23 @@ bool ExtractResourceToFile(const ResourceIdFileName&amp; resource)
 <pre>
 #include &lt;windows.h&gt;
 #include &lt;dbghelp.h&gt;
+
 #include &lt;algorithm&gt;
 #include &lt;cstdint&gt;
 #include &lt;filesystem&gt;
 #include &lt;iostream&gt;
 #include &lt;string&gt;
 #include &lt;vector&gt;
+
 #pragma comment(lib, &quot;dbghelp.lib&quot;)
+
 namespace fs = std::filesystem;
+
 int main()
 {
     const fs::path RootPath = fs::path(&quot;resources&quot;);
     auto isBinary = [](const fs::path&amp; path) { return path.extension() == &quot;.exe&quot; || path.extension() == &quot;.dll&quot; || path.extension() == &quot;.sys&quot;; };
+
     ::SymInitialize(::GetCurrentProcess(), NULL, FALSE);
     try
     {
@@ -183,6 +189,7 @@ int main()
                     {
                         std::cout &lt;&lt; &quot;Image file downloaded to &quot; &lt;&lt; downloadedImagePath &lt;&lt; std::endl;
                     }
+
                     char downloadedPdbPath[MAX_PATH + 1] = { 0 };
                     if (::SymFindFileInPath(GetCurrentProcess(), NULL, imageFileInfo.pdbfile,
                         &amp;imageFileInfo.guid, imageFileInfo.age, 0, SSRVOPT_GUIDPTR,

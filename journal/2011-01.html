@@ -79,45 +79,52 @@ role="navigation" aria-label="main navigation">
 <p>Pois é. As coisas nem sempre acabam sendo como o esperado. Se você possuir uma LIB, por exemplo, e nela existirem duas funções, como abaixo, e você se limitar a usar em seu programa apenas a primeira, todas as dependências da segunda também irão parar no executável final.</p>
 
 <pre>
-   #include &quot;LibMod.h&quot;
-   #include &lt;windows.h&gt;
-   #include &lt;Tlhelp32.h&gt;
-   #include &lt;stdio.h&gt;
-   // Essa função é usada pelo nosso App
-   int UsingOldApis()
-   {
-       DWORD ver = GetVersion(); // API paleozoica, OK.
-       return int( (DWORD)(LOBYTE(LOWORD(ver))) );
-   }
-   // Essa função NÃO é usada pelo nosso App
-   void UsingNewApis()
-   {
-       // Opa: função moderninha!!
-       if( HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL) )
-       {
-         PROCESSENTRY32 procEntry;
-         // Tudo bem, nosso App não vai usar essa função.
-         if( Process32First(snapshot, &amp;procEntry) )
-         {
-           printf(&quot;Process list:\n&quot;);
-           do
-           {
-             printf(&quot;%s\n&quot;, procEntry.szExeFile);
-           }
-           while( Process32Next(snapshot, &amp;procEntry) );
-         }
-         CloseHandle(snapshot);
-       }
-   }
-   #include &quot;LibMod.h&quot;
-   #include &lt;stdio.h&gt;
-   #include &lt;stdlib.h&gt;
-   int main()
-   {
-       // Usando apenas funções paleozoicas, certo?
-       printf(&quot;Our Major OS version is %d\n&quot;, UsingOldApis() );
-       system(&quot;pause&quot;);
-   }
+#include &quot;LibMod.h&quot;
+#include &lt;windows.h&gt;
+#include &lt;Tlhelp32.h&gt;
+#include &lt;stdio.h&gt;
+
+// Essa função é usada pelo nosso App
+int UsingOldApis()
+{
+    DWORD ver = GetVersion(); // API paleozoica, OK.
+    return int( (DWORD)(LOBYTE(LOWORD(ver))) );
+}
+
+// Essa função NÃO é usada pelo nosso App
+void UsingNewApis()
+{
+    // Opa: função moderninha!!
+    if( HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL) )
+    {
+      PROCESSENTRY32 procEntry;
+
+      // Tudo bem, nosso App não vai usar essa função.
+      if( Process32First(snapshot, &amp;procEntry) )
+      {
+        printf(&quot;Process list:\n&quot;);
+
+        do
+        {
+          printf(&quot;%s\n&quot;, procEntry.szExeFile);
+        }
+        while( Process32Next(snapshot, &amp;procEntry) );
+      }
+
+      CloseHandle(snapshot);
+    }
+}
+
+#include &quot;LibMod.h&quot;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main()
+{
+    // Usando apenas funções paleozoicas, certo?
+    printf(&quot;Our Major OS version is %d\n&quot;, UsingOldApis() );
+    system(&quot;pause&quot;);
+}
 </pre>
 <h4>Por que isso ocorre?</h4>
 
@@ -134,17 +141,21 @@ role="navigation" aria-label="main navigation">
 #include &lt;windows.h&gt;
 #include &lt;Tlhelp32.h&gt;
 #include &lt;stdio.h&gt;
+
 // Essa função é usada pelo nosso App
 int UsingOldApis()
 {
     DWORD ver = GetVersion(); // API paleozoica, OK.
     return int( (DWORD)(LOBYTE(LOWORD(ver))) );
 }
+
  
+
 #include &quot;LibMod.h&quot;
 #include &lt;windows.h&gt;
 #include &lt;Tlhelp32.h&gt;
 #include &lt;stdio.h&gt;
+
 // Essa função NÃO é usada pelo nosso App
 void UsingNewApis()
 {
@@ -152,16 +163,19 @@ void UsingNewApis()
     if( HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL) )
     {
       PROCESSENTRY32 procEntry;
+
       // Tudo bem, nosso App não vai usar essa função.
       if( Process32First(snapshot, &amp;procEntry) )
       {
         printf(&quot;Process list:\n&quot;);
+
         do
         {
           printf(&quot;%s\n&quot;, procEntry.szExeFile);
         }
         while( Process32Next(snapshot, &amp;procEntry) );
       }
+
       CloseHandle(snapshot);
     }
 }
@@ -380,7 +394,7 @@ void UsingNewApis()
 
 <p>Sua trajetória, porém, carrega uma nuvem tenebrosa que paira sobre quem quer que atravesse o seu caminho. Para as pessoas e para o espectador, ele aparece sempre pelos cantos e na penumbra, sorrateiramente, exatamente como os odores que persegue. A fotografia, de pouco contrastre, facilita sua "identificação" nos cenários esquivos construídos para suas principais aparições.</p>
 
-<p>Dotado de pouca sorte, mas ao mesmo tempo de uma persistência inabalável em se manter vivo, Jean-Baptiste não chega a ser um heroi, nem um anti-heroi. Entretanto, se não torcemos por ele, pelo menos, assistindo a seus inescrupulosos atos, encontramos em sua história os motivos que o fazem agir, o que são por si só suficientes para estabelecer uma conexão com o personagem. </p>
+<p>Dotado de pouca sorte, mas ao mesmo tempo de uma persistência inabalável em se manter vivo, Jean-Baptiste não chega a ser um heroi, nem um anti-heroi. Entretanto, se não torcemos por ele, pelo menos, assistindo a seus inescrupulosos atos, encontramos em sua história os motivos que o fazem agir, o que são por si só suficientes para estabelecer uma conexão com o personagem.</p>
 
 <p>Apenas essa "empatia" já seria um feito notável. Entretanto, em seu final catártico, chegamos a visualizar uma nova dimensão criada, aumentando como em uma lupa o significado daquela sociedade histérica e moralmente reprimida. A sensação que fica é que ele é a cura nascida a partir da própria necessidade de se libertar.</p>
 

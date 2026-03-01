@@ -73,6 +73,7 @@ role="navigation" aria-label="main navigation">
 
 <pre>
 #include &lt;iostream&gt;
+
 class C
 {
 public:
@@ -81,6 +82,7 @@ public:
       std::cout &lt;&lt; &quot;C::method\n&quot;;
     }
 };
+
 class D : public C
 {
 public:
@@ -89,29 +91,33 @@ public:
       std::cout &lt;&lt; &quot;D::method\n&quot;;
     }
 };
+
 void func(C* c)
 {
         c-&gt;method(); 
 }
+
 int main()
 {
         D d;
         func(&amp;d); // passa endereço de C &quot;dentro de D&quot;
 }
-   Saída
-   =====
-   C::method
+Saída
+=====
+
+
+C::method
 </pre>
 <p>No exemplo acima, a chamada feita em func irá chamar o método da classe C, mesmo que a classe D tenha sobrescrito esse método. O programador semi-experiente deve pensar "lógico, ela não é virtual!", e está certo, assim como qualquer pessoa que decora essas formulazinhas de vestibular.</p>
 
 <p>Para criarmos polimorfismo de verdade, precisamos declarar o método em C como virtual:</p>
 
 <pre>
-   class C
-   {
-   public:
-           virtual void method();
-   };
+class C
+{
+public:
+        virtual void method();
+};
 </pre>
 <p>Agora sim, a chamada em func irá ser para D::method.</p>
 
@@ -126,15 +132,18 @@ int main()
 <p>Façamos um pequeno teste para comprovar o que falamos. Vamos escancarar a chamada feita a partir de uma instância de D e a partir de uma instância de C. Nada que um WinDbg não resolva de braços cruzados:</p>
 
 <pre>
-   int main()
-   {
-           D d;
-           C c;
-           func(&amp;d);
-           func(&amp;c);
-   }
-   cl /Zi vtable3.cpp
-   windbg vtable3.exe
+int main()
+{
+        D d;
+        C c;
+
+        func(&amp;d);
+        func(&amp;c);
+}
+
+
+cl /Zi vtable3.cpp
+windbg vtable3.exe
 </pre>
 <img src="/journal/img/vtable_vtable2.png"/>
 
@@ -171,7 +180,6 @@ int main()
 <p>No meio dos meus artigos pendentes, encontrei esse, de Luiz Rocha, que fala sobre a dificuldade de entender o que seria Base64:</p>
 
 <blockquote>Salve Caloni,</blockquote>
-
 <blockquote>Já leio o seu site a algum tempo. Realmente acho complicado, alguns eu nem entendo =D.  Mais eh o seguinte, eu estou montando um projeto, mas eu não entendo nada de trabalhar com binários. Então pesquisei na internet, e achei um algoritmo que pode me ajudar, [na lógica]. É o base64 mas eu não entendi como ele converte e desconverte em binário. Será que vc pode me ajudar, obrigado!!</blockquote>
 <p>Não é a primeira pessoa que pede informações sobre algo específico demais para explicar (para isso existe a <a href="http://en.wikipedia.org/wiki/Base64">Wikipedia</a> e o <a href="http://www.google.com/search?q=base64">Google</a>, não?). No meio da minha escrita, percebi que já havia escrito sobre os fundamentos do conhecimento por trás da criação do Base64, conhecimento esse, acredito eu, todo programador que quer sair do lugar com os próprios pés deve ter.</p>
 
@@ -281,17 +289,17 @@ int main()
 
 <p>Por isso, para evitar ser abarrotado de notícias, mantenho a seguinte organização de categorias:</p>
 
-<p>  1. Notícias: todos os feeds que cospem milhares de entradas. Organizo por "mágica" e leio apenas os que ficarem no topo. Ao final, clico no famigerado "Mark all as read" e fim de história.</p>
+<p>1. Notícias: todos os feeds que cospem milhares de entradas. Organizo por "mágica" e leio apenas os que ficarem no topo. Ao final, clico no famigerado "Mark all as read" e fim de história.</p>
 
-<p>  2. Diário: leituras imediatas, que não requerem mais que cinco minutos, como a tirinha do Dilbert e minhas pesquisas cadastradas no Google.</p>
+<p>2. Diário: leituras imediatas, que não requerem mais que cinco minutos, como a tirinha do Dilbert e minhas pesquisas cadastradas no Google.</p>
 
-<p>  3. Semanal: leitura um pouco mais demorada, para quando tiver mais que 10 minutos sobrando.</p>
+<p>3. Semanal: leitura um pouco mais demorada, para quando tiver mais que 10 minutos sobrando.</p>
 
-<p>  4. Amigos: todos os feeds das pessoas que eu conheço e acompanho.</p>
+<p>4. Amigos: todos os feeds das pessoas que eu conheço e acompanho.</p>
 
-<p>  5. Pessoal: meus próprios feeds, para reler o que eu escrevi e capturar "o outro lado da comunicação" (você, leitor).</p>
+<p>5. Pessoal: meus próprios feeds, para reler o que eu escrevi e capturar "o outro lado da comunicação" (você, leitor).</p>
 
-<p>  6. Fóruns: mensagens do grupo de programação C++, por exemplo. Está no final da lista porque posso dedicar um pouco do fim-de-semana para ler a evolução dos tópicos, ou até colaborar quando tiver algum conhecimento a acrescentar.</p>
+<p>6. Fóruns: mensagens do grupo de programação C++, por exemplo. Está no final da lista porque posso dedicar um pouco do fim-de-semana para ler a evolução dos tópicos, ou até colaborar quando tiver algum conhecimento a acrescentar.</p>
 
 <p>Além disso, os Shared Itens estão configurados como Start page, sendo que tudo que eu anotar durante minha navegação deve ser lida quando eu abro o Reader (incluindo minhas anotações).</p>
 
@@ -436,42 +444,42 @@ int main()
 <p>E o melhor de tudo: não há segredo. Tudo que precisa fazer é instalar o Bazaar e fazer um get/co com o endereço do branch SVN que o plugin se vira sozinho para detectar que se trata do Subversion. (Se for um branch protegido, o usuário e senha serão pedidos durante o processo).</p>
 
 <pre>
-   C:\Projetos&gt;bzr co http://subversion.assembla.com/svn/caloni/ caloni
-   Initialising Subversion metadata cache in C:\Users\Caloni\AppData\Local\svn-cache\sbrubles.
-   C:\Projetos&gt;cd caloni
-   C:\Projetos\caloni&gt;bzr qlog
-   C:\Projetos\caloni&gt;bzr get . ..\caloni.local
-   Branched 2 revision(s).
-   C:\Projetos\caloni&gt;cd ..\caloni.local
-   C:\Projetos\caloni.local&gt;vim readme.txt
-   C:\Projetos\caloni.local&gt;bzr ci -m &quot;Commit local&quot;
-   Committing to: C:/Projetos/caloni.local/modified readme.txt
-   Committed revision 3.
-   C:\Projetos\caloni.local&gt;vim readme.txt
-   C:\Projetos\caloni.local&gt;bzr ci -m &quot;Commit local&quot;
-   Committing to: C:/Projetos/caloni.local/modified readme.txt
-   Committed revision 4.
-   C:\Projetos\caloni.local&gt;vim readme.txt
-   C:\Projetos\caloni.local&gt;bzr ci -m &quot;Commit local&quot;
-   Committing to: C:/Projetos/caloni.local/modified readme.txt
-   Committed revision 5.
-   C:\Projetos\caloni.local&gt;cd ..\caloni
-   C:\Projetos\caloni&gt;bzr merge ..\caloni.local
-    M  readme.txt
-   All changes applied successfully.
-   C:\Projetos\caloni&gt;bzr st
-   modified:  readme.txt
-   pending merge tips: (use -v to see all merge revisions)  
-   Wanderley Caloni 2011-03-23 Commit local
-   C:\Projetos\caloni&gt;bzr ci -m &quot;Commit pro servidor&quot;
-   Committing to: http://subversion.assembla.com/svn/caloni
-   modified readme.txtHTTP subversion.assembla.com 
-   username: caloni
-   &lt;http://subversion.assembla.com:80&gt; 
-   Restricted Area caloni 
-   password:
-   Committed revision 3.
-   C:\Projetos\caloni&gt;bzr qlog
+C:\Projetos&gt;bzr co http://subversion.assembla.com/svn/caloni/ caloni
+Initialising Subversion metadata cache in C:\Users\Caloni\AppData\Local\svn-cache\sbrubles.
+C:\Projetos&gt;cd caloni
+C:\Projetos\caloni&gt;bzr qlog
+C:\Projetos\caloni&gt;bzr get . ..\caloni.local
+Branched 2 revision(s).
+C:\Projetos\caloni&gt;cd ..\caloni.local
+C:\Projetos\caloni.local&gt;vim readme.txt
+C:\Projetos\caloni.local&gt;bzr ci -m &quot;Commit local&quot;
+Committing to: C:/Projetos/caloni.local/modified readme.txt
+Committed revision 3.
+C:\Projetos\caloni.local&gt;vim readme.txt
+C:\Projetos\caloni.local&gt;bzr ci -m &quot;Commit local&quot;
+Committing to: C:/Projetos/caloni.local/modified readme.txt
+Committed revision 4.
+C:\Projetos\caloni.local&gt;vim readme.txt
+C:\Projetos\caloni.local&gt;bzr ci -m &quot;Commit local&quot;
+Committing to: C:/Projetos/caloni.local/modified readme.txt
+Committed revision 5.
+C:\Projetos\caloni.local&gt;cd ..\caloni
+C:\Projetos\caloni&gt;bzr merge ..\caloni.local
+ M  readme.txt
+All changes applied successfully.
+C:\Projetos\caloni&gt;bzr st
+modified:  readme.txt
+pending merge tips: (use -v to see all merge revisions)  
+Wanderley Caloni 2011-03-23 Commit local
+C:\Projetos\caloni&gt;bzr ci -m &quot;Commit pro servidor&quot;
+Committing to: http://subversion.assembla.com/svn/caloni
+modified readme.txtHTTP subversion.assembla.com 
+username: caloni
+&lt;http://subversion.assembla.com:80&gt; 
+Restricted Area caloni 
+password:
+Committed revision 3.
+C:\Projetos\caloni&gt;bzr qlog
 </pre>
 <img src="/journal/img/bazaar_com_subversion_bazaar_subversion.png"/>
 

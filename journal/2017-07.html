@@ -419,6 +419,7 @@ nssm.exe install Msvsmon msvsmon.exe /timeout 999999 /anyuser /silent /noauth
 <pre>
 #include &lt;iostream&gt;
 #include &lt;windows.h&gt;
+
 int main()
 {
     if( HMODULE dll = LoadLibraryA(&quot;DLL&quot;) )
@@ -442,10 +443,12 @@ int main()
 <pre>
 #include &quot;DLL.h&quot;
 #include &lt;iostream&gt;
+
 void DLL_Start()
 {
     std::cout &lt;&lt; &quot;DLL started\n&quot;;
 }
+
 void DLL_Stop()
 {
     std::cout &lt;&lt; &quot;DLL stopped\n&quot;;
@@ -471,6 +474,7 @@ cmd /k ipconfig | find &quot;192&quot;
 
 <pre>
 #include &lt;windows.h&gt;
+
 void DLL_Start()
 {
     while( ! IsDebuggerPresent() )
@@ -536,6 +540,7 @@ rem pronto; agora é só rodar o result.log como bat
 
 <pre>
 import auth
+
 client = auth.authenticate()
 f = open('images.txt')
 imgs = f.readlines()

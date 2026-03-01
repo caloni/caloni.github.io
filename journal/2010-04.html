@@ -78,101 +78,131 @@ role="navigation" aria-label="main navigation">
 <p>Resumidamente, é um !analyze mais esperto com o algoritmo heurístico do Visual Basic .NET. Assim que for aberto um dump de tela azul e carregados os símbolos e o caminho dos fontes, a nova versão do !analyze irá verificar os valores do BugCheck gerado e, caso seja detectado que o problema está em seu driver, irá sugerir uma correção na sua função que estiver na pilha.</p>
 
 <pre>
-   Microsoft (R) Windows Debugger Version 6.9.0003.113 X86
-   Copyright (c) Microsoft Corporation. All rights reserved.
-   Loading Dump File [C:\Tests\BSOD\BugCheck7F\2010-03-24ClientMemory.dmp]
-   Kernel Complete Dump File: Full address space is available
-   ************************************************************
-   WARNING: Dump file has been truncated.  Data may be missing.
-   ************************************************************
-   Symbol search path is: SRV*c:\tools\symbols*http://msdl.microsoft.com/download/symbols
-   Executable search path is:
-   Windows XP Kernel Version 2600 (Service Pack 3) MP (2 procs) Free x86 compatible
-   Product: WinNt, suite: TerminalServer SingleUserTS
-   Built by: 2600.xpsp_sp3_gdr.090804-1435
-   Kernel base = 0x804d7000 PsLoadedModuleList = 0x8055d720
-   Debug session time: Wed Mar 24 17:51:39.216 2010 (GMT-3)
-   System Uptime: 0 days 0:05:23.843
-   Loading Kernel Symbols
-   .........................................................................................
-   Loading User Symbols
-   ............
-   Loading unloaded module list
-   ..........................
-   *******************************************************************************
-   *                                                                             *
-   *                        Bugcheck Analysis                                    *
-   *                                                                             *
-   *******************************************************************************
-   Use !analyze -v to get detailed debugging information.
-   BugCheck 7F, {d, 0, 0, 0}
-   *** ERROR: Symbol file could not be found.  Defaulted to export symbols for MyDriver.sys -
-   *** ERROR: Symbol file could not be found.  Defaulted to export symbols for mfehidk.sys -
-   Probably caused by : MyDriver.sys ( MyDriver!KeBugCheckTest+2b )
-   Followup: MachineOwner
-   ---------
-   0: kd&gt; !analyze -v
-   *******************************************************************************
-   *                                                                             *
-   *                        Bugcheck Analysis                                    *
-   *                                                                             *
-   *******************************************************************************
-   UNEXPECTED_KERNEL_MODE_TRAP (7f)
-   This means a trap occurred in kernel mode, and it's a trap of a kind
-   that the kernel isn't allowed to have/catch (bound trap) or that
-   is always instant death (double fault).  The first number in the
-   bugcheck params is the number of the trap (8 = double fault, etc)
-   Consult an Intel x86 family manual to learn more about what these
-   traps are. Here is a *portion* of those codes:
-   If kv shows a taskGate
-           use .tss on the part before the colon, then kv.
-   Else if kv shows a trapframe
-           use .trap on that value
-   Else
-           .trap on the appropriate frame will show where the trap was taken
-           (on x86, this will be the ebp that goes with the procedure KiTrap)
-   Endif
-   kb will then show the corrected stack.
-   Arguments:
-   Arg1: 0000000d, EXCEPTION_GP_FAULT
-   Arg2: 00000000
-   Arg3: 00000000
-   Arg4: 00000000
-   Debugging Details:
-   ------------------
-   BUGCHECK_STR:  0x7f_d
-   DEFAULT_BUCKET_ID:  DRIVER_FAULT
-   PROCESS_NAME:  cmd.eze
-   LAST_CONTROL_TRANSFER:  from 80564dd2 to 80544e7b
-   STACK_TEXT:
-   a7f4b6a4 80564dd2 badb0d00 89679eb0 a7f40000 nt!KiSystemFatalException+0xf
-   a7f4b774 ba182d80 e23bb528 00000002 a7f4b86c nt!NonPagedPoolDescriptor+0xb2
-   WARNING: Stack unwind information not available. Following frames may be wrong.
-   a7f4b870 804ef19f 8a03a2e0 89665008 8972c838 MyDriver!KeBugCheckTest+0x2b
-   a7f4b880 b9da1876 89665008 8a0f3a80 00000000 nt!IopfCallDriver+0x31
-   ...
-   a7f4b940 b9c55e4d 00000002 896651e0 8972c838 mfehidk+0x9128
-   a7f4b9d8 b9c70ef5 cccccccc 8a03b9f8 8a033ab0 mfehidk+0x9e4d
-   0012f918 4ad02d98 0014efc0 00150b00 00000000 cmd!ExecPgm+0x22b
-   ...
-   0012fff0 00000000 4ad05046 00000000 78746341 kernel32!BaseProcessStart+0x23
-   STACK_COMMAND:  kb
-   FOLLOWUP_IP:
-   MyDriver!KeBugCheckTest+0x2b
-   ba182d80 668945a4        mov     word ptr [ebp-5Ch],ax
-   SYMBOL_STACK_INDEX:  2
-   SYMBOL_NAME:  MyDriver!KeBugCheckTest+0x2b
-   FOLLOWUP_NAME:  MachineOwner
-   MODULE_NAME: MyDriver
-   IMAGE_NAME:  MyDriver.sys
-   DEBUG_FLR_IMAGE_TIMESTAMP:  4baa49d3
-   BugCheck Fix Tip:
-   -----------------
-   Try to remove the spin lock aquisition in MyDriver!KeBugCheckTest+2a. By doing this,
-   the kernel IRQL priority system will not be in starvation mode.
-   Tip Code: C:\Tests\MyDriver\dispatch-funcs.cpp+345
-   Followup: MachineOwner
-   ---------
+Microsoft (R) Windows Debugger Version 6.9.0003.113 X86
+Copyright (c) Microsoft Corporation. All rights reserved.
+
+Loading Dump File [C:\Tests\BSOD\BugCheck7F\2010-03-24ClientMemory.dmp]
+Kernel Complete Dump File: Full address space is available
+
+************************************************************
+WARNING: Dump file has been truncated.  Data may be missing.
+************************************************************
+Symbol search path is: SRV*c:\tools\symbols*http://msdl.microsoft.com/download/symbols
+Executable search path is:
+Windows XP Kernel Version 2600 (Service Pack 3) MP (2 procs) Free x86 compatible
+Product: WinNt, suite: TerminalServer SingleUserTS
+Built by: 2600.xpsp_sp3_gdr.090804-1435
+Kernel base = 0x804d7000 PsLoadedModuleList = 0x8055d720
+Debug session time: Wed Mar 24 17:51:39.216 2010 (GMT-3)
+System Uptime: 0 days 0:05:23.843
+Loading Kernel Symbols
+.........................................................................................
+Loading User Symbols
+............
+Loading unloaded module list
+..........................
+
+
+*******************************************************************************
+*                                                                             *
+*                        Bugcheck Analysis                                    *
+*                                                                             *
+*******************************************************************************
+
+Use !analyze -v to get detailed debugging information.
+
+BugCheck 7F, {d, 0, 0, 0}
+
+*** ERROR: Symbol file could not be found.  Defaulted to export symbols for MyDriver.sys -
+*** ERROR: Symbol file could not be found.  Defaulted to export symbols for mfehidk.sys -
+Probably caused by : MyDriver.sys ( MyDriver!KeBugCheckTest+2b )
+
+Followup: MachineOwner
+---------
+
+
+0: kd&gt; !analyze -v
+*******************************************************************************
+*                                                                             *
+*                        Bugcheck Analysis                                    *
+*                                                                             *
+*******************************************************************************
+
+UNEXPECTED_KERNEL_MODE_TRAP (7f)
+This means a trap occurred in kernel mode, and it's a trap of a kind
+that the kernel isn't allowed to have/catch (bound trap) or that
+is always instant death (double fault).  The first number in the
+bugcheck params is the number of the trap (8 = double fault, etc)
+Consult an Intel x86 family manual to learn more about what these
+traps are. Here is a *portion* of those codes:
+If kv shows a taskGate
+        use .tss on the part before the colon, then kv.
+Else if kv shows a trapframe
+        use .trap on that value
+Else
+        .trap on the appropriate frame will show where the trap was taken
+        (on x86, this will be the ebp that goes with the procedure KiTrap)
+Endif
+kb will then show the corrected stack.
+Arguments:
+Arg1: 0000000d, EXCEPTION_GP_FAULT
+Arg2: 00000000
+Arg3: 00000000
+Arg4: 00000000
+
+
+Debugging Details:
+------------------
+BUGCHECK_STR:  0x7f_d
+
+DEFAULT_BUCKET_ID:  DRIVER_FAULT
+
+
+PROCESS_NAME:  cmd.eze
+
+
+LAST_CONTROL_TRANSFER:  from 80564dd2 to 80544e7b
+
+STACK_TEXT:
+a7f4b6a4 80564dd2 badb0d00 89679eb0 a7f40000 nt!KiSystemFatalException+0xf
+a7f4b774 ba182d80 e23bb528 00000002 a7f4b86c nt!NonPagedPoolDescriptor+0xb2
+WARNING: Stack unwind information not available. Following frames may be wrong.
+a7f4b870 804ef19f 8a03a2e0 89665008 8972c838 MyDriver!KeBugCheckTest+0x2b
+a7f4b880 b9da1876 89665008 8a0f3a80 00000000 nt!IopfCallDriver+0x31
+...
+a7f4b940 b9c55e4d 00000002 896651e0 8972c838 mfehidk+0x9128
+a7f4b9d8 b9c70ef5 cccccccc 8a03b9f8 8a033ab0 mfehidk+0x9e4d
+0012f918 4ad02d98 0014efc0 00150b00 00000000 cmd!ExecPgm+0x22b
+...
+0012fff0 00000000 4ad05046 00000000 78746341 kernel32!BaseProcessStart+0x23
+
+STACK_COMMAND:  kb
+
+FOLLOWUP_IP:
+MyDriver!KeBugCheckTest+0x2b
+ba182d80 668945a4        mov     word ptr [ebp-5Ch],ax
+
+SYMBOL_STACK_INDEX:  2
+
+SYMBOL_NAME:  MyDriver!KeBugCheckTest+0x2b
+
+FOLLOWUP_NAME:  MachineOwner
+
+MODULE_NAME: MyDriver
+
+IMAGE_NAME:  MyDriver.sys
+
+DEBUG_FLR_IMAGE_TIMESTAMP:  4baa49d3
+
+BugCheck Fix Tip:
+-----------------
+Try to remove the spin lock aquisition in MyDriver!KeBugCheckTest+2a. By doing this,
+the kernel IRQL priority system will not be in starvation mode.
+
+Tip Code: C:\Tests\MyDriver\dispatch-funcs.cpp+345
+
+Followup: MachineOwner
+---------
 </pre>
 <p>Existem um pouco de polêmica em torno dessa funcionalidade. Alguns dizem que ela vai mais atrapalhar do que ajudar os programadores de kernel com a vinda de <a href="http://groups.google.com/group/ccppbrasil/msg/f1f6d52aa167c1ab?dmode=source">analistas de sistemas Júnior programando filtros de file system</a> sem a menor discrepância entre o que é um IRP assíncrono e uma ISR. Outros dizem que existirá uma versão paga do WinDbg com essa funcionalidade, nos mesmos moldes do Visual Studio 2010, que virá com a depuração reversa no Enterprise. Essas especulações só o tempo dirá se são verdade ou não. Se eu tiver que pagar mais caro por essas features, o lobby na empresa onde eu trabalho está garantido.</p>
 
@@ -200,7 +230,6 @@ role="navigation" aria-label="main navigation">
 <span class="title-heading">Caloni, 2010-04-01 <a href="2010-03.html#aceite">&lt;</a><a href="quotes.html">quotes</a><a href="2010-05.html#momento_seguinte">&gt;</a> <a href="2010-02.html#arvore">&lt;</a><a href="self.html">self</a><a href="2010-05.html#momento_seguinte">&gt;</a> <a href="2010-02.html#arvore">&lt;</a><a href="now.html">now</a><a href="2010-05.html#momento_seguinte">&gt;</a><a href="2010-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_a_voz')"><sup>[copy]</sup></a></span>
 
 <blockquote>Perceba que a voz existe e que não é você. Liberdade é reconhecer-se como a consciência por trás da voz.</blockquote>
-
 <blockquote>Eckhart Tolle (O Poder do Silêncio, 2004)</blockquote>
 </section><hr/>
 
@@ -309,11 +338,11 @@ role="navigation" aria-label="main navigation">
 <p>Vejamos um exemplo típico desse pequeno Frankenstein semântico:</p>
 
 <pre>
-   typedef struct _MINHASTRUCT {
-      int x;
-      int y;
-   }
-   MINHASTRUCT, *LPMINHASTRUCT;
+typedef struct _MINHASTRUCT {
+   int x;
+   int y;
+}
+MINHASTRUCT, *LPMINHASTRUCT;
 </pre>
 <p>Bom, eu nem sei por onde começar. Talvez pelo conceito de typedef.</p>
 
@@ -322,43 +351,51 @@ role="navigation" aria-label="main navigation">
 <p>Um typedef, basicamente, é um apelido. Você informa um tipo e define "outro tipo".</p>
 
 <pre>
-   typedef tipo apelido;
+typedef tipo apelido;
 </pre>
 <p>O tipo é tudo que fica entre o typedef e o novo nome, que deve ser um identificador válido na linguagem. Por exemplo, a empresa onde trabalho fez um typedef informal do meu nome:</p>
 
 <pre>
-   typedef Wanderley Caloni Wandeco;
+typedef Wanderley Caloni Wandeco;
 </pre>
 <p>Se, futuramente, eu sair da empresa e entrar outro "Wanderley alguma-coisa", será possível usar o apelido novamente, bastando alterar o typedef:</p>
 
 <pre>
-   typedef Wanderley Cardoso Wandeco;
+typedef Wanderley Cardoso Wandeco;
 </pre>
 <p>Bom, "outro tipo" é forma de dizer. Isso é uma descrição errônea em muitos livros. De fato, o compilador enxerga o mesmo tipo com outro nome, daí chamarmos o typedef de apelido, mesmo.</p>
 
 <pre>
 /** @file dois_apelidos.cpp */
 #include &lt;iostream&gt;
+
 using namespace std;
+
 struct Struct
 {
    int x;
    int y;
 };
+
 typedef Struct Struct1;
 typedef Struct Struct2;
+
 int main()
 {
    Struct1 s1;
    Struct2 s2;
+
    cout &lt;&lt; typeid(s1).name() &lt;&lt; endl;
    cout &lt;&lt; typeid(s2).name() &lt;&lt; endl;
 }
+
 C:\Tests&gt;cl /EHsc dois_apelidos.cpp
 ...
 /out:dois_apelidos.exe
 dois_apelidos.obj
+
 C:\Tests&gt;dois_apelidos.exe
+
 struct Struct struct Struct
 </pre>
 <h4>Granularidade dos tipos</h4>
@@ -366,39 +403,43 @@ struct Struct struct Struct
 <p>Tipos simples são fáceis de entender porque possuem seus símbolos no mesmo lugar:</p>
 
 <pre>
-   int x;
-   char c;
-   long p;
+int x;
+char c;
+long p;
 </pre>
 <p>Já os tipos um pouco mais complicados permite alguma mudança aqui e acolá:</p>
 
 <pre>
-   int* x;
-   char * y;
-   long * p;
+int* x;
+char * y;
+long * p;
 </pre>
 <p>Essa liberdade da linguagem, mesmo sendo um recurso útil, pode ser bem nocivo dependendo de quem olha o código:</p>
 
 <pre>
-   int x, y; // dois inteiros
-   int * x, y; // um ponteiro para inteiro e um inteiro
-   int x, *y; // um inteiro e um ponteiro para inteiro
-   int *x, y; // um ponteiro para inteiro e um inteiro
+int x, y; // dois inteiros
+int * x, y; // um ponteiro para inteiro e um inteiro
+int x, *y; // um inteiro e um ponteiro para inteiro
+int *x, y; // um ponteiro para inteiro e um inteiro
 </pre>
 <p>Em algumas formas da sintaxe, além de ser inevitável, gera bastante desconfiança:</p>
 
 <pre>
-   // Um ponteiro para função que recebe dois inteiros e não retorna nada.
-   typedef void (* FP)(int, int) ;
-   // Um ponteiro para função que recebe dois inteiros e não retorna nada.
-   void (*)(int, int);
-   // Um cast para ponteiro para função que recebe dois inteiros e não retorna nada.
-   ( ( void (*)(int, int)) pf )(x, y);
+// Um ponteiro para função que recebe dois inteiros e não retorna nada.
+typedef void (* FP)(int, int) ;
+
+// Um ponteiro para função que recebe dois inteiros e não retorna nada.
+void (*)(int, int);
+
+// Um cast para ponteiro para função que recebe dois inteiros e não retorna nada.
+( ( void (*)(int, int)) pf )(x, y);
 #include &lt;iostream&gt;
+
 void func(int x, int y)
 {
    std::cout &lt;&lt; x &lt;&lt; '-' &lt;&lt; y &lt;&lt; '\n';
 }
+
 int main()
 {
    void* pf = func;
@@ -412,15 +453,18 @@ int main()
 <pre>
 /** @file structs.cpp */
 struct MyStruct { int x, y; };
+
 void func1()
 {
    struct MyStruct ms;
    //...
 }
+
 void func2(struct MyStruct msa)
 {
    //...
 }
+
 int main()
 {
    struct MyStruct ms;
@@ -430,30 +474,33 @@ int main()
 <p>Para evitar toda essa digitação, os programadores usavam um pequeno truque criando um apelido para a estrutura, e usavam o apelido no lugar da struct (apesar de ambas representarem a mesma coisa).</p>
 
 <pre>
-   struct MyStruct { int x, y; };
-   typedef struct MyStruct MS;
+struct MyStruct { int x, y; };
+typedef struct MyStruct MS;
 </pre>
 <p>ou</p>
 
 <pre>
-   typedef struct MyStruct { int x, y; } MS;
-   struct MyStruct ms1; // ainda prolixo
-   MS ms2; // mais simples
+typedef struct MyStruct { int x, y; } MS;
+struct MyStruct ms1; // ainda prolixo
+MS ms2; // mais simples
 </pre>
 <p>Com a definição da linguagem C++ padrão, e mais moderna, essa antiguidade foi removida, apesar de ainda suportada. Era possível usar apenas o nome do struct como seu tipo:</p>
 
 <pre>
 /** @file structs.cpp */
 struct MyStruct { int x, y; };
+
 void func1()
 {
    /*struct*/ MyStruct ms;
    //...
 }
+
 void func2(/*struct*/ MyStruct msa)
 {
    //...
 }
+
 int main()
 {
    /*struct*/ MyStruct ms;
@@ -463,11 +510,11 @@ int main()
 <p>Porém, isso vai um pouco além de quando a Microsoft começou a fazer código para seu sistema operacional. Naquela época, o padrão ainda estava se formando e existia mais ou menos um consenso de como seria a linguagem C++ (sem muitas alterações do que de fato a linguagem C já era). De qualquer forma, a linguagem C imperava bem mais que C++. Dessa forma, já era bem formada a ideia de como declarar uma struct: a forma antiga.</p>
 
 <pre>
-   typedef struct _MINHASTRUCT {
-      int x;
-      int y;
-   }
-   MINHASTRUCT, *LPMINHASTRUCT;
+typedef struct _MINHASTRUCT {
+   int x;
+   int y;
+}
+MINHASTRUCT, *LPMINHASTRUCT;
 </pre>
 <p>Além do uso controverso do sublinhado para nomear entidades (que no padrão foi recomendado que se reservasse aos nomes internos da biblioteca-padrão) e do uso de MAÍUSCULAS_NO_NOME (historicamente atribuído a nomes definidos no pré-processador), o uso do typedef atracado a um struct era muito difundido. E ficou ainda mais depois que a API do Windows foi publicada com essas definições.</p>
 
@@ -483,11 +530,14 @@ struct MinhaStruct {
    int x;
    int y;
 };
+
 // muitas linhas abaixo...
+
 void func(MinhaStruct* ms)
 {
    // asterisco significa ponteiro para MinhaStruct!
 }
+
 int main()
 {
    MinhaStruct ms;
@@ -509,11 +559,14 @@ typedef struct _MINHASTRUCT {
    int y;
 }
 MINHASTRUCT, *LPMINHASTRUCT;
+
 // muitas linhas abaixo...
+
 void func(LPMINHASTRUCT ms)
 {
    // o que diabos é um LP, mesmo?
 }
+
 int main()
 {
    MINHASTRUCT ms;
@@ -545,19 +598,21 @@ int main()
 <p>Esse artigo continua a explicação sobre <a href="2010-04.html#typedef_arcaico">os typedefs arcaicos</a>, já que ainda falta explicar por que diabos os ponteiros da Microsoft começam com LP. Tentei explicar para <a href="2008-12.html#basico_do_basico_ponteiros">minha pupila</a> que, por ser código dos anos 80, as pessoas usavam LP para tudo, pois os CDs ainda não estavam tão difundidos.</p>
 
 <pre>
-   /** @brief Para instanciar um Bozo. @date 1982-02-21 */ 
-   typedef struct _BOZO { 
-      char helloMsg[100]; /* definir para &quot;alô, criançada, o bozo chegou...&quot; */ 
-      float currentTime; /* definir para 5e60 */ 
-   }
-    BOZO, *LPBOZO;
-   /** @brief Para instanciar um Pokemon. @date 1996-03-01 */ 
-   typedef struct _PIKACHU 
-   { 
-    char helloMsg[100]; // setar para &quot;pika, pika pikachuuuuuuu...&quot; 
-    int pokemonID; // setar para 24 
-   }
-   PIKACHU, *CDPIKACHU;
+/** @brief Para instanciar um Bozo. @date 1982-02-21 */ 
+typedef struct _BOZO { 
+   char helloMsg[100]; /* definir para &quot;alô, criançada, o bozo chegou...&quot; */ 
+   float currentTime; /* definir para 5e60 */ 
+}
+ BOZO, *LPBOZO;
+
+
+/** @brief Para instanciar um Pokemon. @date 1996-03-01 */ 
+typedef struct _PIKACHU 
+{ 
+ char helloMsg[100]; // setar para &quot;pika, pika pikachuuuuuuu...&quot; 
+ int pokemonID; // setar para 24 
+}
+PIKACHU, *CDPIKACHU;
 </pre>
 <p>Não colou. Então vou tentar explicar do jeito certo.</p>
 
@@ -602,9 +657,9 @@ int main()
 <p>Com toda essa analogia, fica fácil perceber que o Windows não cabe em uma rua só. Seus aplicativos precisam de muitas ruas para rodar. Isso exige que todos seus ponteiros sejam long, pois do contrário o Juquinha estará entregando as cartas sempre nos endereços errados. Dessa forma, foi estipulado o typedef arcaico padrão para todos os tipos da API que usasse LP (Long Pointer) como prefixo:</p>
 
 <pre>
-   typedef unsigned long WORD, *LPDWORD;
-   typedef const char* LPCSTR;
-   typedef &lt;coloque-seu-tipo-aqui&gt; APELIDO, *LPAPELIDO;
+typedef unsigned long WORD, *LPDWORD;
+typedef const char* LPCSTR;
+typedef &lt;coloque-seu-tipo-aqui&gt; APELIDO, *LPAPELIDO;
 </pre>
 <p>E é por isso que, historicamente, todos os ponteiros para os apelidos da API Win32 possuem sua contraparte LP.</p>
 
@@ -615,9 +670,9 @@ int main()
 <p>De uns anos pra cá, existem novos typedefs nos headers que permitem o uso dos apelidos Win32 apenas com um P inicial.</p>
 
 <pre>
-   typedef unsigned long WORD, *LPDWORD, *PDWORD;
-   typedef const char *LPCSTR, *PCSTR;
-   typedef &lt;coloque-seu-tipo-aqui&gt; APELIDO, *LPAPELIDO, *PAPELIDO;
+typedef unsigned long WORD, *LPDWORD, *PDWORD;
+typedef const char *LPCSTR, *PCSTR;
+typedef &lt;coloque-seu-tipo-aqui&gt; APELIDO, *LPAPELIDO, *PAPELIDO;
 </pre>
 <p>A escolha é livre. Assim como com o typedef arcaico.</p>
 

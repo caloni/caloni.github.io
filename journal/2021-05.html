@@ -106,33 +106,38 @@ role="navigation" aria-label="main navigation">
 <p>Já ligada abra um prompt de comando elevado e use os seguintes comandos do bcdedit para configurar um boot de debug. Lembre-se que o IP deve ser o IP da sua máquina host do seu adaptador de rede real (wi-fi ou cabo). Executando um ipconfig você consegue pegar ele.</p>
 
 <pre>
-   &gt;bcdedit /copy {current} /d &quot;KDNet port 50035&quot;
-   The entry was successfully copied to {dd896c2e-fccb-11e8-9cb7-d481d7c30c24}
-   &gt;bcdedit /default {dd896c2e-fccb-11e8-9cb7-d481d7c30c24}
-   &gt; bcdedit /set {default} debug yes
-   The operation completed successfully.
-   &gt; bcdedit /dbgsettings net hostip:192.168.1.120 port:50035 newkey
-   Key=g3mx1h96o5j9.tbdbyy05hfu7.10tkqaj5agj7e.xttvshlq4zsr
+&gt;bcdedit /copy {current} /d &quot;KDNet port 50035&quot;
+The entry was successfully copied to {dd896c2e-fccb-11e8-9cb7-d481d7c30c24}
+
+&gt;bcdedit /default {dd896c2e-fccb-11e8-9cb7-d481d7c30c24}
+
+&gt; bcdedit /set {default} debug yes
+The operation completed successfully.
+
+&gt; bcdedit /dbgsettings net hostip:192.168.1.120 port:50035 newkey
+Key=g3mx1h96o5j9.tbdbyy05hfu7.10tkqaj5agj7e.xttvshlq4zsr
 </pre>
 <p>Verificando as configurações:</p>
 
 <pre>
-   &gt; bcdedit /dbgsettings
-   key         g3mx1h96o5j9.tbdbyy05hfu7.10tkqaj5agj7e.xttvshlq4zsr
-   debugtype   NET
-   hostip      192.168.1.120
-   port        50035
+&gt; bcdedit /dbgsettings
+key         g3mx1h96o5j9.tbdbyy05hfu7.10tkqaj5agj7e.xttvshlq4zsr
+debugtype   NET
+hostip      192.168.1.120
+port        50035
 </pre>
 <p>Com tudo isso configurado é possível ir na máquina host e rodar o kd.exe:</p>
 
 <pre>
-   &gt; kd.exe -k net:port=50035,key=g3mx1h96o5j9.tbdbyy05hfu7.10tkqaj5agj7e.xttvshlq4zsr
-   Microsoft (R) Windows Debugger Version 10.0.18362.1 AMD64
-   Copyright (c) Microsoft Corporation. All rights reserved.
-   Using NET for debugging
-   Opened WinSock 2.0
-   Kernel Debug Target Status: [no_debuggee]; Retries: [0] times in last [7] seconds.
-   Waiting to reconnect...
+&gt; kd.exe -k net:port=50035,key=g3mx1h96o5j9.tbdbyy05hfu7.10tkqaj5agj7e.xttvshlq4zsr
+
+Microsoft (R) Windows Debugger Version 10.0.18362.1 AMD64
+Copyright (c) Microsoft Corporation. All rights reserved.
+
+Using NET for debugging
+Opened WinSock 2.0
+Kernel Debug Target Status: [no_debuggee]; Retries: [0] times in last [7] seconds.
+Waiting to reconnect...
 </pre>
 <p>Ele vai ficar nessa de aguardar até a máquina target estar disponível, ou seja, bootando na configuração debug configurada para debug de kernel pela rede nesse IP. Lembre-se de que antes de tudo isso a porta usada deve estar acessível pelo firewall e host e target devem estar pelo menos se pingando. Verifique antes de tentar conectar.</p>
 

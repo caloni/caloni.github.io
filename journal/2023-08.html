@@ -146,25 +146,19 @@ role="navigation" aria-label="main navigation">
 
 <p>Buscando no registro pelo nome dessa interface existe uma entrada em `HKEY_CLASSES_ROOT\Interface\{b5decd05-58ef-4cd3-ae25-d177bcbcea9e}` aonde existe uma subkey `ProxyStubClsid32`. Essa subkey, de acordo com o MSDN, é usado para traduzir um IID -- ID de Interface -- para um CLSID -- ID de classe. Nas palavras do MSDN (em inglês, por favor): "Maps an IID to a CLSID in 32-bit proxy DLLs".</p>
 
-
 <blockquote>If you add interfaces, you must use this entry to register them (32-bit systems) so that OLE can find the appropriate remoting code to establish interprocess communication.</blockquote>
-
 <p>Eu acredito que a mesma lógica se aplica a ambientes de 64 bits, que é o caso do Windows 10 onde estou analisando.</p>
 
 <p>Então esse ID é um CLSID para o código de um proxy que irá me ajudar a chamar esta interface `IUserDeviceRegManagerStatics`. Tudo bem, vamos lá. O valor default dentro dessa subkey é `{65704743-2513-4987-9fc9-826bbedde743}` e eu devo fazer a busca por este ID dentro de `HKEY_CLASSES_ROOT\CLSID`, já que se trata de um ID de classe. Eu encontro. O valor default dessa chave diz "UserDeviceRegistration", então eu penso ser este o cara que estou procurando.</p>
 
 <p>Existe uma chave `InProcServer32` dentro desta chave. Novamente vamos à documentação, e de acordo com o MSDN:</p>
 
-
 <blockquote>Registers a 32-bit in-process server and specifies the threading model of the apartment the server can run in.</blockquote>
-
 <p>Isso faz todo o sentido, porque o valor default para esta mesma chave é "C:\Windows\System32\UserDeviceRegistration.dll"  e existe uma string `ThreadingModel` também especificando "Both". Olhando para as funções exportadas por esta DLL `UserDeviceRegistration.dll` são listadas as bem conhecidas `DllCanUnloadNow`, `DllGetActivationFactory` e `DllGetClassObject`. Isso é bê-a-bá de COM. O código que eu quero usar deve carregar esta DLL e chamar `DllGetActivationFactory` ou `DllGetClassObject` para obter um ponteiro para uma classe implementando esta interface ou um proxy para chamar esta classe remotamente.</p>
 
 <p>Ao analisar pelo OleView pela `IUserDeviceRegManagerStatics` não há uma biblioteca de tipos com os nomes dos métodos e argumentos. Existe uma vtable genérica com algumas procedures chamadas "Proc1", "Proc2" e assim por diante. Já que desde minha sessão de debugging anterior eu vi um monte de funções RPC sendo chamadas eu irei assumir que `UserDeviceRegistration!DllGetActivationFactory` está sendo chamada. E, mais uma vez, de acordo com o MSDN, este entry point:</p>
 
-
 <blockquote>Retrieves the activation factory from a DLL that contains activatable Windows Runtime classes.</blockquote>
-
 <p>That's a bingo! Windows Runtime classes é o que estou procurando mesmo. Como eu já estudei anteriormente, isso bate com o retorno desta função: um ponteiro para a interface `IActivationFactory`. A entrada deste argumento é uma `HSTRING`, que é uma nova string definida pela Windows Runtime para strings imutáveis das linguagens mais populares, como C# e JS. E, mais uma vez, isso explica porque em minhas sessões de debug observei um monte de chamadas a `WindowsDeleteString`. Quando você começa a fazer reversa começa a ouvir ecos de sessões passadas para conseguir montar o quebra-cabeças.</p>
 
 <p>Com tudo isso que descobri resolvi colocar um breakpoint no evento de load desta DLL.</p>
@@ -297,7 +291,7 @@ bp AAD_Core!Windows::Internal::UserDeviceRegistration::IUserDeviceRegManagerStat
 
 <p>Com isso eu consigo aplicar a leitura deste arquivo pelo script awk em um passo só. De quebra, as mudanças sistêmicas no blogue serão muito mais fáceis.</p>
 
-<p>2. Usar um arquivo por mês na escrita.</p>
+<p>1. Usar um arquivo por mês na escrita.</p>
 
 <p>Esse foi o maior economizador de tempo. Gerar 4000 novas entradas no file system do Windows estava custando caro, em torno de um minuto. Transformar isso em uns 300 arquivos fez a escrita levar de dois a três segundos!</p>
 
@@ -391,12 +385,15 @@ bp AAD_Core!Windows::Internal::UserDeviceRegistration::IUserDeviceRegManagerStat
 <pre>
 #include &lt;winstring.h&gt;
 #include &lt;string&gt;
+
 using namespace std;
+
 int main()
 {
     wstring str = L&quot;my hstring&quot;;
     HSTRING hstr = NULL;
     HRESULT hr = WindowsCreateString(str.c_str(), (UINT32) str.size(), &amp;hstr);
+
     if( SUCCEEDED( hr ) )
     {
         UINT32 hstrLen = WindowsGetStringLen(hstr);
@@ -411,13 +408,16 @@ int main()
         }
         hr = WindowsDeleteString(hstr);
     }
+
     HSTRING_HEADER hstrHeader = {};
     HSTRING hstr3 = NULL;
     hr = WindowsCreateStringReference(str.c_str(), (UINT32) str.size(), &amp;hstrHeader, &amp;hstr3);
+
     if( SUCCEEDED( hr ) )
     {
         hr = WindowsDeleteString(hstr3);
     }
+
     return hr;
 }
 </pre>
@@ -426,16 +426,21 @@ int main()
 <pre>
 UINT32 hstrLen = WindowsGetStringLen(hstr);
 00007FFC84D8BBE7  mov         eax,dword ptr [rcx+4]  
+
 PCWSTR rawHstr = WindowsGetStringRawBuffer(hstr, &amp;hstrLen);
 00007FFC84D22345  mov         rax,qword ptr [rcx+10h]  
+
 BOOL isEmpty = WindowsIsStringEmpty(hstr);
 00007FFC84D23019  mov         edx,dword ptr [rcx+4]  
 00007FFC84D2301C  test        edx,edx  
 00007FFC84D2301E  sete        al  
+
 hr = WindowsDuplicateString(hstr, &amp;hstr2);
 00007FFC84D1789A  lock inc    dword ptr [rcx+18h]
+
 hr = WindowsDeleteString(hstr2);
 00007FFC84D176A8  lock xadd   dword ptr [rcx+18h],eax
+
 hr = WindowsCreateStringReference(...
 layout:
 0x0000009C0230F848  00000001
@@ -642,7 +647,6 @@ struct HSTRING {
 <span class="title-heading">Caloni, 2023-08-30 <a href="2023-04.html#edsger_dijkstra_without_pencil_and_paper">&lt;</a><a href="quotes.html">quotes</a><a href="2023-09.html#the_dogmatic_the_academic_the_sceptic">&gt;</a><a href="2023-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_em_sua_propria_companhia_seneca')"><sup>[copy]</sup></a></span>
 
 <blockquote>"Nada, a meu ver, é melhor prova de uma mente bem ordenada do que a capacidade de um homem parar exatamente onde está e passar algum tempo em sua própria companhia."</blockquote>
-
 <blockquote>Sêneca e a Mente Ordenada</blockquote>
 </section><hr/>
 

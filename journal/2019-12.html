@@ -269,17 +269,17 @@ role="navigation" aria-label="main navigation">
 <p>Existem dois servidores: Server A e Server B. A conexão de rede entre Server A e Server B é instável (com uma razão alta de perda de pacotes). Dessa forma, nós gostaríamos de estabilizar um túnel multipath entre Server A e Server B, esperando que a conexão entre ambos se torne mais confiável, diminuindo a razão entre perda e envio de pacotes. Com o broadcast dos pacotes por vários caminhos o resultado a longo prazo é uma comunicação cuja performance é prioridade.</p>
 
 <pre>
-   Server A
-    |- mpclient
-       |- bridge 1
-          |- mpserver
-             |- Server B
-       |- bridge 2
-          |- mpserver
-             |- Server B
-       |- bridge 3
-          |- mpserver
-             |- Server B
+Server A
+ |- mpclient
+    |- bridge 1
+       |- mpserver
+          |- Server B
+    |- bridge 2
+       |- mpserver
+          |- Server B
+    |- bridge 3
+       |- mpserver
+          |- Server B
 </pre>
 <p>Mpclient é a parte cliente do mptunnel que roda no Server A. Você deve dizer a ele a informação dos servidores bridge. Uma vez que é iniciado, o mpclient abre uma porta local UDP para escutar e redirecionar qualquer pacote de e para os servidores bridge.</p>
 
@@ -300,32 +300,32 @@ role="navigation" aria-label="main navigation">
 <p>Dentro do repositório deste post há como exemplo de um modelo cliente e servidor em UDP, udpclient.c e udpserver.c. Eles se comunicam de um lado para outro enviando mensagens de hello com um número na frente que é incrementado pelo servidor.</p>
 
 <pre>
-   udpclient      udpserver
-   |                      |
-   |--- 1 hello cli -----&gt;|
-   |                      |
-   |&lt;-- 2 hello srv ------|
-   |                      |
-   |--- 2 hello cli -----&gt;|
-   |                      |
-   |&lt;-- 3 hello srv ------|
-   |                      |
-   |--- 3 hello cli -----&gt;|
-   |                      |
-   |&lt;-- 4 hello srv ------|
-   |                      |
-   |......................|
-   |                      |
+udpclient      udpserver
+|                      |
+|--- 1 hello cli -----&gt;|
+|                      |
+|&lt;-- 2 hello srv ------|
+|                      |
+|--- 2 hello cli -----&gt;|
+|                      |
+|&lt;-- 3 hello srv ------|
+|                      |
+|--- 3 hello cli -----&gt;|
+|                      |
+|&lt;-- 4 hello srv ------|
+|                      |
+|......................|
+|                      |
 </pre>
 <p>Agora eu quero conectar em meu udpserver, mas a conexão é instável e a razão de perda de pacotes é alta, gerando um throughput muito pequeno. Para aumentar o throughput, ou seja, diminuir a perda de pacote, eu posso rodar um MPUDP para o servidor e estabilizar uma "conexão" UDP através da redundância das bridges.</p>
 
 <p>O udpserver está em listen na porta 6666 UDP e eu executo o mpserver no servidor da seguinte forma: "mpserver 2000 localhost 6666". Localmente executo o mpclient da seguinte forma: "mpclient 4000 client.mpclient.conf". Abaixo está o conteúdo do arquivo client.mpclient.conf:</p>
 
 <pre>
-   # mptunnel
-   localhost 4001
-   localhost 4002
-   localhost 4003
+# mptunnel
+localhost 4001
+localhost 4002
+localhost 4003
 </pre>
 <p>Em cada "servidor bridge" (no exemplo está tudo local, mas não precisaria) use socat para redirecionar os pacotes: "socat udp-listen:4001 udp4:localhost:2000", "socat udp-listen:4002 udp4:localhost:2000", "socat udp-listen:4003 udp4:localhost:2000".</p>
 
@@ -361,11 +361,11 @@ role="navigation" aria-label="main navigation">
 
 <h2>Bugs e observações</h2>
 
-<p>Mptunnel adiciona alguma informação de controle dentro dos pacotes, incluindo informação síncrona. O mpserver e o mpclient devem ser iniciados ao mesmo tempo. Se o mpclient ou o mpserver terminar, você terá que reiniciar ambos para restabelecer o túnel.  </p>
+<p>Mptunnel adiciona alguma informação de controle dentro dos pacotes, incluindo informação síncrona. O mpserver e o mpclient devem ser iniciados ao mesmo tempo. Se o mpclient ou o mpserver terminar, você terá que reiniciar ambos para restabelecer o túnel.</p>
 
-<p>Atualmente você pode especificar apenas um único host alvo. Alguém sabe se existe uma biblioteca C de proxy SOCKS5? Penso que ao tornar o mpclient como um servidor proxy SOCKS irá torná-lo mais fácil de usar.  </p>
+<p>Atualmente você pode especificar apenas um único host alvo. Alguém sabe se existe uma biblioteca C de proxy SOCKS5? Penso que ao tornar o mpclient como um servidor proxy SOCKS irá torná-lo mais fácil de usar.</p>
 
-<p>Mptunnel não encripta os pacotes por padrão, apesar de ter essa opção, pois isso irá diminuir o throughput. Em alguns testes o throughput atual é 3Mbps enquanto usando três túneis com criptografia, e após desabilitar a criptografia o throughput sobe para 300Mbps. Se você ainda quiser que o mptunnel encripte os pacotes, defina a variável de ambiente MPTUNNELENCRYPT=1.  </p>
+<p>Mptunnel não encripta os pacotes por padrão, apesar de ter essa opção, pois isso irá diminuir o throughput. Em alguns testes o throughput atual é 3Mbps enquanto usando três túneis com criptografia, e após desabilitar a criptografia o throughput sobe para 300Mbps. Se você ainda quiser que o mptunnel encripte os pacotes, defina a variável de ambiente MPTUNNELENCRYPT=1.</p>
 
 <p>Para compilar o mptunnel, a biblioteca libev é um requisito. Para uma uma solução similar para multipath UDP em TCP dê uma olhada no projeto <a href="https://github.com/zehome/MLVPN.">mlvpn</a>.</p>
 

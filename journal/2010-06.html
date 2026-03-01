@@ -49,7 +49,6 @@ role="navigation" aria-label="main navigation">
 <span class="title-heading">Caloni, 2010-06-01 <a href="2010-05.html#momento_seguinte">&lt;</a><a href="quotes.html">quotes</a><a href="2010-07.html#religiao">&gt;</a> <a href="2010-05.html#momento_seguinte">&lt;</a><a href="self.html">self</a><a href="2010-07.html#religiao">&gt;</a> <a href="2010-05.html#momento_seguinte">&lt;</a><a href="now.html">now</a><a href="2010-07.html#religiao">&gt;</a><a href="2010-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_transformacao')"><sup>[copy]</sup></a></span>
 
 <blockquote>Apenas testemunhe seu estado interior: a transformação e a liberdade virão.</blockquote>
-
 <blockquote>Eckhart Tolle (O Poder do Silêncio, 2004)</blockquote>
 </section><hr/>
 
@@ -62,13 +61,15 @@ role="navigation" aria-label="main navigation">
 <p>Padrão C (ISO/IEC 9899:1990)</p>
 
 <pre>
-   6.5.3 type-qualifier
-    const
-    volatile
-   Padrão C++ (ISO/IEC 14882:1998)
-   cv-qualifier
-    const
-    volatile
+6.5.3 type-qualifier
+ const
+ volatile
+
+Padrão C++ (ISO/IEC 14882:1998)
+
+cv-qualifier
+ const
+ volatile
 </pre>
 <h4>Qualificadores de tipo</h4>
 
@@ -79,7 +80,7 @@ role="navigation" aria-label="main navigation">
 <p>Uma variável const não pode ser alterada pelo programa durante sua execução, apenas durante sua inicialização:</p>
 
 <pre>
-   const float pi = 3.14; // até onde sabemos, pi não irá mudar neste Universo
+const float pi = 3.14; // até onde sabemos, pi não irá mudar neste Universo
 </pre>
 <p>No exemplo acima, o valor de pi não pode mais ser alterado. Só que repare que ele foi, em determinado momento, alterado com um valor constante: na sua inicialização. Isso quer dizer que:</p>
 
@@ -88,9 +89,9 @@ role="navigation" aria-label="main navigation">
 <p>Pi não é um define do pré-processador que irá virar uma constante literal (3.14, por exemplo).</p>
 
 <pre>
-   // eu posso endereçar uma constante,
-   // desde que qualifique corretamente meu ponteiro
-   const float* ppi = &amp; pi;
+// eu posso endereçar uma constante,
+// desde que qualifique corretamente meu ponteiro
+const float* ppi = &amp; pi;
 </pre>
 <img src="/journal/img/const_e_volatile_V6eR9ln.png"/>
 
@@ -103,24 +104,28 @@ role="navigation" aria-label="main navigation">
 <p>Eu costumo usar variáveis const no lugar de defines. Além de ganhar na tipagem as constantes não precisam ser necessariamente globais, nem acessíveis por outros módulos. Um outro uso muito comum é criar variáveis locais que você sabe que não devem ser alteráveis por ninguém, como o tamanho de matrizes primitivas.</p>
 
 <pre>
-   namespace Math
-   {
-       const float Pi = 3.14;
-   }
-   //...
-   int func1(int x)
-   {
-       float calc = x * Math::Pi;
-       return calc;
-   }
-   //...
-   int func2(int y)
-   {
-       const size_t PathSize = MAX_PATH * 2;
-       //...
-       char path[PathSize];
-       //...
-   }
+namespace Math
+{
+    const float Pi = 3.14;
+}
+
+//...
+
+int func1(int x)
+{
+    float calc = x * Math::Pi;
+    return calc;
+}
+
+//...
+
+int func2(int y)
+{
+    const size_t PathSize = MAX_PATH * 2;
+    //...
+    char path[PathSize];
+    //...
+}
 </pre>
 <h4>Volatile</h4>
 
@@ -141,8 +146,8 @@ role="navigation" aria-label="main navigation">
 <p>É possível que exista uma variável que não pode ser modificada pelo seu programa, mas é modificada pelo sistema, de forma que ela é uma mutante!</p>
 
 <pre>
-   /// endereça o relógio do sistema, atualizado a cada 1/100 milissegundos
-   const volatile int* g_systemClock = (const volatile int*) 0x7689B9D4;
+/// endereça o relógio do sistema, atualizado a cada 1/100 milissegundos
+const volatile int* g_systemClock = (const volatile int*) 0x7689B9D4;
 </pre>
 <img src="/journal/img/const_e_volatile_4zUSxmJ.jpg"/>
 

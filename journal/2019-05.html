@@ -292,22 +292,27 @@ role="navigation" aria-label="main navigation">
 
 <pre>
 #include &quot;CalculatorTabajara.h&quot;
+
 int soma(int x, int y)
 {
     return x + y;
 }
+
 int subtrai(int x, int y)
 {
     return x - y;
 }
+
 int multiplica(int x, int y)
 {
     return x * y;
 }
+
 int divide(int x, int y)
 {
     return x / y;
 }
+
 int main()
 {
 }
@@ -322,7 +327,9 @@ int main()
 #include &quot;pch.h&quot;
 #include &quot;CppUnitTest.h&quot;
 #include &quot;..\CalculatorTabajara.h&quot;
+
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+
 namespace UnitTest1
 {
     TEST_CLASS(UnitTest1)
@@ -334,16 +341,19 @@ namespace UnitTest1
         int z = soma(3, 2);
         Assert::AreEqual(z, 5);
       }
+
       TEST_METHOD(TestaSubtracao)
       {
         int z = subtrai(3, 2);
         Assert::AreEqual(z, 1);
       }
+
       TEST_METHOD(TestaMultiplicacao)
       {
         int z = multiplica(3, 2);
         Assert::AreEqual(z, 6);
       }
+
       TEST_METHOD(TestaDivisao)
       {
         int z = divide(3, 2);
@@ -381,12 +391,14 @@ namespace UnitTest1
 <pre>
 namespace Microsoft{ namespace VisualStudio {namespace CppUnitTestFramework
 {
+
     struct ClassMetadata
     {
       const wchar_t *tag;
       const unsigned char *helpMethodName;
       const unsigned char *helpMethodDecoratedName;
     };
+
     struct MethodMetadata
     {
       const wchar_t *tag;
@@ -396,6 +408,7 @@ namespace Microsoft{ namespace VisualStudio {namespace CppUnitTestFramework
       const wchar_t *sourceFile;
       int lineNo;
     };
+
     struct ModuleAttributeMetadata
     {
       enum AttributeType { MODULE_ATTRIBUTE };
@@ -441,13 +454,13 @@ namespace Microsoft{ namespace VisualStudio {namespace CppUnitTestFramework
 
 <p>E aqui está a linguagem C com sua elegância, minimalismo e a filosofia "just works", por mais ou menos 50 anos.</p>
 
-<p>Estava pesquisando sobre bibliotecas de corrotinas em C e encontrei a <a href="http://dotat.at/cgi/~fanf/dotat/~fanf/dotat/git/picoro.git">Picoro</a>, de Tony Finch. O repositório pode ser baixado em git://git.chiark.greenend.org.uk/~fanf/picoro.git. Três coisas me encantaram nela: </p>
+<p>Estava pesquisando sobre bibliotecas de corrotinas em C e encontrei a <a href="http://dotat.at/cgi/~fanf/dotat/~fanf/dotat/git/picoro.git">Picoro</a>, de Tony Finch. O repositório pode ser baixado em git://git.chiark.greenend.org.uk/~fanf/picoro.git. Três coisas me encantaram nela:</p>
 
-<p> 1. portabilidade (fácil de testar em qualquer arquitetura).</p>
+<p>1. portabilidade (fácil de testar em qualquer arquitetura).</p>
 
-<p> 1. simplificade (um header e um .c com menos de 200 linhas, e a maioria são comentários).</p>
+<p>2. simplificade (um header e um .c com menos de 200 linhas, e a maioria são comentários).</p>
 
-<p> 1. manutenção (o último commit é de 2010, ou seja, ninguém mais mexeu nela por nove anos).</p>
+<p>3. manutenção (o último commit é de 2010, ou seja, ninguém mais mexeu nela por nove anos).</p>
 
 <p>Ela é uma biblioteca feita para resolver o problema mais básico de toda corrotina: troca de contexto. Isso é feito de maneira descentralizada, embora ela inicie com uma corrotina principal: a primeira que constrói uma corrotina. A partir dessa é possível criar outras e dar resume em qualquer uma delas que não tenha terminado.</p>
 
@@ -460,6 +473,7 @@ namespace Microsoft{ namespace VisualStudio {namespace CppUnitTestFramework
 <pre>
 #include &quot;..\picoro\picoro.h&quot;
 #include &lt;stdio.h&gt;
+
 void* mycoroutine(void* arg)
 {
     int* counter = (int*) arg;
@@ -470,20 +484,24 @@ void* mycoroutine(void* arg)
     (*counter) += 1;
     return arg;
 }
+
 int main()
 {
     int counter = 0;
     int i;
     coro coroutines[3];
     int maxi = sizeof(coroutines) / sizeof(coro);
+
     for (i = 0; i &lt; maxi; ++i)
       coroutines[i] = coroutine(mycoroutine);
+
     for (i = 0; i &lt; maxi; ++i)
       resume(coroutines[i], &amp;counter);
     for (i = 0; i &lt; maxi; ++i)
       resume(coroutines[i], &amp;counter);
     for (i = 0; i &lt; maxi; ++i)
       resume(coroutines[i], &amp;counter);
+
     printf(&quot;final counter: %d\n&quot;, counter);
     return 0;
 }
@@ -504,65 +522,65 @@ int main()
 
 <ul><li>Professional activities performed in a state of distraction-free concentration that push you cognitive capabilities to their limit. These efforts create new value, improve your skill, and are hard to replicate.</li>
 
-<li>Flow can be produced by small things that cause active enjoyment rather than passive pleasure. </li>
+<li>Flow can be produced by small things that cause active enjoyment rather than passive pleasure.</li>
 
-<li>The flow session, that can be supported by deep work, has an impact on our self. The self grows with each challenge and with each opportunity we can improve ourselves as human being. The improvements of the self and the fulfilled activities on the way can lead to a satisfied and meaningful life. </li>
+<li>The flow session, that can be supported by deep work, has an impact on our self. The self grows with each challenge and with each opportunity we can improve ourselves as human being. The improvements of the self and the fulfilled activities on the way can lead to a satisfied and meaningful life.</li>
 
-<li>"The ability to perform deep work is becoming increasingly rare at exactly the same time it is becoming increasingly valuable in our economy. As a consequence, the few who cultivate this skill, and then make it the core of their working life, will thrive." </li>
+<li>"The ability to perform deep work is becoming increasingly rare at exactly the same time it is becoming increasingly valuable in our economy. As a consequence, the few who cultivate this skill, and then make it the core of their working life, will thrive."</li>
 
-<li>Whenever you repeat something, a circuit in the brain will fire oftentimes and strengthen the skill like a muscle in your brain. You improve your self. </li>
+<li>Whenever you repeat something, a circuit in the brain will fire oftentimes and strengthen the skill like a muscle in your brain. You improve your self.</li>
 
-<li>He sees the solution in becoming independent of external rewards. These rewards have to be substituted for internal rewards. For instance, life long learning, achieving worthwhile challenges or the fulfillment in helping others. Only then a human being is in full control of the self. In full control of happiness and sadness. </li>
+<li>He sees the solution in becoming independent of external rewards. These rewards have to be substituted for internal rewards. For instance, life long learning, achieving worthwhile challenges or the fulfillment in helping others. Only then a human being is in full control of the self. In full control of happiness and sadness.</li>
 
-<li>You need to use an "arsenal of routines and rituals designed with the science of limited willpower in mind to maximize the amount of deep work". Smart routines make it possible to make less decisions and to do less balancing of different tasks. </li>
+<li>You need to use an "arsenal of routines and rituals designed with the science of limited willpower in mind to maximize the amount of deep work". Smart routines make it possible to make less decisions and to do less balancing of different tasks.</li>
 
-<li>The journalistic philosophy is the last and most advanced philosophy. In that approach you can rapidly switch between shallow to deep work. Yet we know that a disadvantage of multitasking is the usage of our finite willpower. That's why the approach is only for advanced deep workers. Cal Newport says that "[it] require[s] a sense of confidence in your work." and that "[it] requires a conviction that what you are doing is important and will succeed". You can support the philosophy by preparing your deep work schedule in advance. It will help you to preserve your willpower. </li>
+<li>The journalistic philosophy is the last and most advanced philosophy. In that approach you can rapidly switch between shallow to deep work. Yet we know that a disadvantage of multitasking is the usage of our finite willpower. That's why the approach is only for advanced deep workers. Cal Newport says that "[it] require[s] a sense of confidence in your work." and that "[it] requires a conviction that what you are doing is important and will succeed". You can support the philosophy by preparing your deep work schedule in advance. It will help you to preserve your willpower.</li>
 
-<li>Whenever you are going deep, you have to ritualize it. There are 3 basics to assist your deep work session: time, support and metrics. </li>
+<li>Whenever you are going deep, you have to ritualize it. There are 3 basics to assist your deep work session: time, support and metrics.</li>
 
-<li>You can operate similar to a business. For instance, imagine a software product that gets an additional feature. The team will come up with a minimum viable product (MVP) for the feature. But the MVP needs planning. A MVP has by definition a minimum yet valuable outcome. The same planning you would need for your own outcome. You have to "identify a small number of ambitious outcomes". </li>
+<li>You can operate similar to a business. For instance, imagine a software product that gets an additional feature. The team will come up with a minimum viable product (MVP) for the feature. But the MVP needs planning. A MVP has by definition a minimum yet valuable outcome. The same planning you would need for your own outcome. You have to "identify a small number of ambitious outcomes".</li>
 
-<li>I can recommend to read the book The One Thing by Gary Keller. It gives a clear guidance how you can deploy short term objectives that contribute to long term goals. </li>
+<li>I can recommend to read the book The One Thing by Gary Keller. It gives a clear guidance how you can deploy short term objectives that contribute to long term goals.</li>
 
-<li>To track progress enables you to gather feedback about your efforts. Are you on track? Did you have a bad week? Maybe it is time to recalibrate your efforts based on the feedback. </li>
+<li>To track progress enables you to gather feedback about your efforts. Are you on track? Did you have a bad week? Maybe it is time to recalibrate your efforts based on the feedback.</li>
 
-<li>The attention restoration theory (ART) claims that directed attention is a finite resource. If it exhausts, you will struggle to concentrate. It can be seen quite similar to the finite amount of willpower. The conclusion is that your deep work time per day is limited. </li>
+<li>The attention restoration theory (ART) claims that directed attention is a finite resource. If it exhausts, you will struggle to concentrate. It can be seen quite similar to the finite amount of willpower. The conclusion is that your deep work time per day is limited.</li>
 
-<li>You need time to rest. Therefore you can deploy productive meditations - that's how Cal Newport calls it - where you do physical work (fitness workout, house cleaning) and no mental work. Apart from that research says that spending time in nature improves your ability to concentrate. </li>
+<li>You need time to rest. Therefore you can deploy productive meditations - that's how Cal Newport calls it - where you do physical work (fitness workout, house cleaning) and no mental work. Apart from that research says that spending time in nature improves your ability to concentrate.</li>
 
-<li>End your day with a Shutdown Ritual </li>
+<li>End your day with a Shutdown Ritual</li>
 
-<li>the Zeigarnik Effect . It is "the ability of incomplete tasks to dominate our attention". You unconscious mind might help you to solve a problem until your next workday starts (Take a Nap). </li>
+<li>the Zeigarnik Effect . It is "the ability of incomplete tasks to dominate our attention". You unconscious mind might help you to solve a problem until your next workday starts (Take a Nap).</li>
 
-<li>Give your goals a hard deadline that is lesser than your estimated time. The shallow work will become dispensable when you have less time for the task at hand. </li>
+<li>Give your goals a hard deadline that is lesser than your estimated time. The shallow work will become dispensable when you have less time for the task at hand.</li>
 
-<li>Research shows that a trained memory improves your ability to concentrate. </li>
+<li>Research shows that a trained memory improves your ability to concentrate.</li>
 
-<li>The schedule can be used to guide your working day. However you shouldn't forcefully stick to the schedule. It should only guide you, but you can adjust it during the day. It should leave opportunities for improvisation and encourage spontaneity. </li>
+<li>The schedule can be used to guide your working day. However you shouldn't forcefully stick to the schedule. It should only guide you, but you can adjust it during the day. It should leave opportunities for improvisation and encourage spontaneity.</li>
 
-<li>Deep work can be used as a technique to get into a state of flow. The state of flow can be your path in life to accomplish happiness, to be in control of your life and to be independent of social rewards. It can also be your path to accomplish challenges in your professional life. </li>
+<li>Deep work can be used as a technique to get into a state of flow. The state of flow can be your path in life to accomplish happiness, to be in control of your life and to be independent of social rewards. It can also be your path to accomplish challenges in your professional life.</li>
 
-<li>Without consciousness we would know what happens around us, but we couldn't give it any value. </li>
+<li>Without consciousness we would know what happens around us, but we couldn't give it any value.</li>
 
-<li>A person can make himself happy regardless of the circumstances surrounding him. It depends on the direction of your attention. </li>
+<li>A person can make himself happy regardless of the circumstances surrounding him. It depends on the direction of your attention.</li>
 
-<li>"After each episode of flow a person becomes more of a unique individual, less predictable, possessed of rarer skills". The self can grow when there is order in consciousness. </li>
+<li>"After each episode of flow a person becomes more of a unique individual, less predictable, possessed of rarer skills". The self can grow when there is order in consciousness.</li>
 
-<li>Mihaly Csikszentmihalyi sees enjoyment as another component in our life. Enjoyment, in contrast to pleasure, can generate a flow experience. For instance, you can eat food with pleasure, because it is a need of your body. Or you can eat food with enjoyment. Mihaly takes a gourmet as an example for a person who enjoys to eat. The gourmet understands each ingredient in a meal and can focus attention to its different sensations. It is an accomplishment to bring up the attention and to experience the diversities in a meal. </li>
+<li>Mihaly Csikszentmihalyi sees enjoyment as another component in our life. Enjoyment, in contrast to pleasure, can generate a flow experience. For instance, you can eat food with pleasure, because it is a need of your body. Or you can eat food with enjoyment. Mihaly takes a gourmet as an example for a person who enjoys to eat. The gourmet understands each ingredient in a meal and can focus attention to its different sensations. It is an accomplishment to bring up the attention and to experience the diversities in a meal.</li>
 
-<li>It can happen in a competition too. The challenge can be an enjoyment. But only when you concentrate on the activity itself rather than beating your opponent or impressing the audience. The self will grow only when you want to perfect a skill rather than earning external rewards. It is when "the person is paying attention to the activity for its own sake; when it is not, the attention is focused on its consequences". </li>
+<li>It can happen in a competition too. The challenge can be an enjoyment. But only when you concentrate on the activity itself rather than beating your opponent or impressing the audience. The self will grow only when you want to perfect a skill rather than earning external rewards. It is when "the person is paying attention to the activity for its own sake; when it is not, the attention is focused on its consequences".</li>
 
-<li>The state of flow leaves no space for disorder in consciousness. It removes the awareness of the daily life, your worries and dreams, and you lose the sense of your self. The time in and after the state of flow can be seen as paradox. The self doesn't grow during the flow session itself, but after it. </li>
+<li>The state of flow leaves no space for disorder in consciousness. It removes the awareness of the daily life, your worries and dreams, and you lose the sense of your self. The time in and after the state of flow can be seen as paradox. The self doesn't grow during the flow session itself, but after it.</li>
 
-<li>The irony is that oftentimes work is easier to enjoy than free time. Activities at work have the conditions to experience flow. Free time on the other hand is unstructured. It is a greater effort to shape it and to find and perform flow activities. </li>
+<li>The irony is that oftentimes work is easier to enjoy than free time. Activities at work have the conditions to experience flow. Free time on the other hand is unstructured. It is a greater effort to shape it and to find and perform flow activities.</li>
 
-<li>On a human beings highest potential, a person is able to translate threats into enjoyable challenges. It supports a person to stay in harmony and to live a satisfied life. The word autotelic derives from the Greek words auto and telos which mean self and goal. An autotelic experience describes a self-contained activity. It is an activity solely performed for the intrinsic rewards which strengthens the self. Flow is an autotelic experience. </li>
+<li>On a human beings highest potential, a person is able to translate threats into enjoyable challenges. It supports a person to stay in harmony and to live a satisfied life. The word autotelic derives from the Greek words auto and telos which mean self and goal. An autotelic experience describes a self-contained activity. It is an activity solely performed for the intrinsic rewards which strengthens the self. Flow is an autotelic experience.</li>
 
-<li>When experience is intrinsically rewarding life is justified in the present, instead of being held hostage to a hypothetical future gain." </li>
+<li>When experience is intrinsically rewarding life is justified in the present, instead of being held hostage to a hypothetical future gain."</li>
 
-<li>"The autotelic individual grows beyond the limits of individuality by investing psychic energy [attention] in a system in which she is included. Because of this union of the person and the system, the self emerges at a higher level of complexity." </li>
+<li>"The autotelic individual grows beyond the limits of individuality by investing psychic energy [attention] in a system in which she is included. Because of this union of the person and the system, the self emerges at a higher level of complexity."</li>
 
-<li>"Flow drives individuals to creativity and outstanding achievement. The necessity to develop increasingly refined skills to sustain enjoyment is what lies behind the evolution of culture." </li>
+<li>"Flow drives individuals to creativity and outstanding achievement. The necessity to develop increasingly refined skills to sustain enjoyment is what lies behind the evolution of culture."</li>
 
 <li>"If you give your mind something meaningful to do throughout all your waking hours, you'll end the day more fulfilled, and begin the next one more relaxed []" by Cal Newport.</li></ul>
 
@@ -780,15 +798,18 @@ struct MyClass
     int x, y;
     void (*method)(int);
 };
+
 void method(int x)
 {
 }
+
 struct MyClass NewMyClass()
 {
     struct MyClass ret = { 0, 0 };
     ret.method = &amp;method;
     return ret;
 }
+
 int main()
 {
     struct MyClass obj = NewMyClass();
@@ -803,24 +824,29 @@ struct MyClass
     int x, y;
     void (*method)(int);
 };
+
 void method(int x)
 {
 }
+
 struct MyClass NewMyClass()
 {
     struct MyClass ret = { 0, 0 };
     ret.method = &amp;method;
     return ret;
 }
+
 void method2(int x)
 {
 }
+
 struct MyClass NewMyClass2()
 {
     struct MyClass ret = NewMyClass();
     ret.method = &amp;method2;
     return ret;
 }
+
 int main()
 {
     struct MyClass obj = NewMyClass2();
@@ -831,15 +857,19 @@ int main()
 
 <pre>
 #include &lt;stdio.h&gt;
+
 typedef struct SCalc
 {
     int (*sum)(int, int);
     int (*mult)(struct SCalc*, int, int);
+
 } Calc;
+
 int calc_sum(int x, int y)
 {
     return x + y;
 }
+
 int calc_mult(Calc* calc, int x, int y)
 {
     int ret = 0;
@@ -848,6 +878,7 @@ int calc_mult(Calc* calc, int x, int y)
         ret = calc-&gt;sum(ret, y);
     return ret;
 }
+
 Calc CalcNew()
 {
     Calc calc;
@@ -855,6 +886,7 @@ Calc CalcNew()
     calc.mult = &amp;calc_mult;
     return calc;
 }
+
 int main()
 {
     Calc calc = CalcNew();
@@ -870,15 +902,19 @@ int main()
 <pre>
 #include &lt;stdio.h&gt;
 #include &lt;stdlib.h&gt;
+
 typedef struct SCalc
 {
     int (*sum)(int, int);
     int (*mult)(struct SCalc*, int, int);
+
 } Calc;
+
 int calc_sum(int x, int y)
 {
     return x + y;
 }
+
 int calc_mult(Calc* calc, int x, int y)
 {
     int ret = 0;
@@ -887,6 +923,7 @@ int calc_mult(Calc* calc, int x, int y)
         ret = calc-&gt;sum(ret, y);
     return ret;
 }
+
 Calc CalcNew()
 {
     Calc calc;
@@ -894,6 +931,7 @@ Calc CalcNew()
     calc.mult = &amp;calc_mult;
     return calc;
 }
+
 int calc_cat(int x, int y)
 {
     char buf[100];
@@ -902,12 +940,14 @@ int calc_cat(int x, int y)
     ret = atoi(buf);
     return ret;
 }
+
 Calc BizarreCalcNew()
 {
     Calc calc = CalcNew();
     calc.sum = &amp;calc_cat;
     return calc;
 }
+
 int main()
 {
     Calc calc = BizarreCalcNew();
@@ -942,6 +982,7 @@ int main()
 /* defclass(foo, cclass_instance); */
 typedef struct foo_instance { cclass_instance type; } foo_instance;
 static foo_instance foo = { &quot;foo&quot; };
+
 /* defclass(bar, foo); */
 typedef struct bar_instance { cclass_instance type; } bar_instance; 
 static bar_instance bar = { &quot;bar&quot; };
@@ -957,27 +998,34 @@ static bar_instance bar = { &quot;bar&quot; };
 #include &lt;stdarg.h&gt;
 #include &lt;string.h&gt;
 #include &lt;gmodule.h&gt;
+
 typedef GPtrArray Argv;
+
 typedef struct _Method
 {
     void* fun;
     Argv* argv;
 } Method;
+
 typedef void (*FP_Argv0)();
 typedef void (*FP_Argv1)(cclass_instance*);
 typedef void (*FP_Argv2)(cclass_instance*, cclass_instance*);
 typedef void (*FP_Argv3)(cclass_instance*, cclass_instance*, cclass_instance*);
+
 typedef GHashTable ClassMap;
 typedef GPtrArray Methods;
 typedef GHashTable MethodMap;
+
 static ClassMap* g_classes;
 static MethodMap* g_methods;
 static Methods* g_calledMethods;
+
 void cdefgeneric_initialize()
 {
     g_classes = g_hash_table_new(g_str_hash, g_str_equal);
     g_methods = g_hash_table_new(g_str_hash, g_str_equal);
 }
+
 Method* method_new(void* fun, Argv* argv)
 {
     Method* ret = (Method*)malloc(sizeof(Method));
@@ -988,17 +1036,20 @@ Method* method_new(void* fun, Argv* argv)
     }
     return ret;
 }
+
 Argv* method_free(Method* method, gboolean free_seg)
 {
     Argv* ret = free_seg ? g_ptr_array_free(method-&gt;argv, TRUE), NULL : method-&gt;argv;
     free(method);
     return ret;
 }
+
 const char* defclass(const char* name, const char* deriv)
 {
     gboolean insertOk = g_hash_table_insert(g_classes, (gpointer*)name, (gpointer*)deriv);
     return name;
 }
+
 #define extractargv(argv, argc) \
       va_list vl; \
       va_start(vl, argc); \
@@ -1007,6 +1058,7 @@ const char* defclass(const char* name, const char* deriv)
         cclass_instance* arg = va_arg(vl, cclass_instance*); \
         g_ptr_array_add(argv, arg); \
       }
+
 void defmethod(const char* name, void* fun, int argc, ...)
 {
     Method* method = method_new(fun, NULL);
@@ -1019,10 +1071,12 @@ void defmethod(const char* name, void* fun, int argc, ...)
     }
     g_ptr_array_add(methods, method);
 }
+
 void callmethod(const char* name, Method* method)
 {
     g_ptr_array_add(g_calledMethods, (gpointer) method-&gt;fun);
     cclass_instance** argv = (cclass_instance * *)method-&gt;argv-&gt;pdata;
+
     if (method-&gt;argv-&gt;len == 0)
     {
       FP_Argv0 fun = (FP_Argv0)method-&gt;fun;
@@ -1044,6 +1098,7 @@ void callmethod(const char* name, Method* method)
       fun(argv[0], argv[1], argv[2]);
     }
 }
+
 Method* find_method_by_fun(const char* name, void* fun)
 {
     Method* method = NULL;
@@ -1065,10 +1120,12 @@ Method* find_method_by_fun(const char* name, void* fun)
     }
     return method;
 }
+
 int calcdistance_arg(cclass_instance* arg, cclass_instance* underpromo)
 {
     int ret = 0;
     char* promo = (char*)arg-&gt;type;
+
     while (strcmp(promo, underpromo-&gt;type) != 0)
     {
       promo = (char*)g_hash_table_lookup(g_classes, (gpointer*)promo);
@@ -1079,8 +1136,10 @@ int calcdistance_arg(cclass_instance* arg, cclass_instance* underpromo)
       }
       ++ret;
     }
+
     return ret;
 }
+
 int calcdistance(cclass_instance** args, cclass_instance** underpromo, int len)
 {
     int ret = 0;
@@ -1092,10 +1151,12 @@ int calcdistance(cclass_instance** args, cclass_instance** underpromo, int len)
     }
     return ret;
 }
+
 void call_next_method(const char* name, int argc, ...)
 {
     Method* method = method_new(NULL, NULL);
     extractargv(method-&gt;argv, argc);
+
     int nextdist = 666;
     Methods* methods = (Methods*)g_hash_table_lookup(g_methods, name);
     if (methods)
@@ -1106,6 +1167,7 @@ void call_next_method(const char* name, int argc, ...)
         Method* m = ((Method * *)methods-&gt;pdata)[i];
         gboolean alreadyCalled = FALSE;
         guint cms = 0;
+
         while (cms &lt; g_calledMethods-&gt;len)
         {
           void* fun = ((void **)g_calledMethods-&gt;pdata)[cms];
@@ -1116,11 +1178,14 @@ void call_next_method(const char* name, int argc, ...)
           }
           ++cms;
         }
+
         if ( ! alreadyCalled)
         {
           int dist = -1;
+
           if (method-&gt;argv-&gt;len == m-&gt;argv-&gt;len)
             dist = calcdistance((cclass_instance * *)method-&gt;argv-&gt;pdata, (cclass_instance * *)m-&gt;argv-&gt;pdata, method-&gt;argv-&gt;len);
+
           if (dist &gt;= 0 &amp;&amp; dist &lt; nextdist)
           {
             if (dist &lt; nextdist)
@@ -1130,17 +1195,22 @@ void call_next_method(const char* name, int argc, ...)
             }
           }
         }
+
         ++i;
       }
+
       if (method-&gt;fun)
         callmethod(name, method);
     }
 }
+
 void call(const char* name, int argc, ...)
 {
     g_calledMethods = g_ptr_array_new();
+
     Method* method = method_new(NULL, NULL);
     extractargv(method-&gt;argv, argc);
+
     int nextdist = 666;
     Methods* methods = g_hash_table_lookup(g_methods, name);
     if (methods)
@@ -1150,8 +1220,10 @@ void call(const char* name, int argc, ...)
       {
         Method* m = ((Method * *)methods-&gt;pdata)[i];
         int dist = -1;
+
         if (method-&gt;argv-&gt;len == m-&gt;argv-&gt;len)
           dist = calcdistance((cclass_instance * *)method-&gt;argv-&gt;pdata, (cclass_instance * *)m-&gt;argv-&gt;pdata, method-&gt;argv-&gt;len);
+
         if (dist &gt;= 0 &amp;&amp; dist &lt; nextdist)
         {
           if (dist &lt; nextdist)
@@ -1160,11 +1232,14 @@ void call(const char* name, int argc, ...)
             nextdist = dist;
           }
         }
+
         ++i;
       }
+
       if (method-&gt;fun)
         callmethod(name, method);
     }
+
     method_free(method, TRUE);
 }
 </pre>
@@ -1177,32 +1252,39 @@ void call(const char* name, int argc, ...)
 <pre>
 #include &quot;cclos.h&quot;
 #include &lt;stdio.h&gt;
+
 /* defclass(foo, cclass_instance); */
 typedef struct foo_instance { cclass_instance type; } foo_instance;
 static foo_instance foo = { &quot;foo&quot; };
+
 /* defclass(bar, foo); */
 typedef struct bar_instance { cclass_instance type; } bar_instance; 
 static bar_instance bar = { &quot;bar&quot; };
+
 void test_dispatch()
 {
     bar_instance x = bar;
     bar_instance y = bar;
     call(&quot;thing&quot;, 2, &amp;x, &amp;y);
 }
+
 void thing_foo_foo(cclass_instance* x, cclass_instance* y)
 {
     printf(&quot;Both are of type FOO\n&quot;);
 }
+
 void thing_bar_foo(cclass_instance* x, cclass_instance* y)
 {
     printf(&quot;X is BAR, Y is FOO. Next...\n&quot;);
     call_next_method(&quot;thing&quot;, 2, x, y);
 }
+
 void thing_foo_bar(cclass_instance* x, cclass_instance* y)
 {
     printf(&quot;X is FOO, Y is BAR. Next...\n&quot;);
     call_next_method(&quot;thing&quot;, 2, x, y);
 }
+
 int main()
 {
     cdefgeneric_initialize();
@@ -1435,173 +1517,180 @@ int main()
 <p>O uso mais simples dessa importante construção da linguagem é pular de um ponto para outro do código em que esses pontos não estão diretamente relacionados, como geralmente ocorre, como sair de um laço, não entrar em um if ou selecionar um case do switch (lembrando que no caso do case do switch ele é no fundo um goto disfarçado).</p>
 
 <pre>
-   if( argc != 5 )
-       goto usage;
-   /*
-   do something 
-   do something else
-   more to do
-   and more
-   and more
-   and more
-   and more
-   too much lines
-   ...
-   finished
-   */
-   return 0;
-   usage:
-   printf(&quot;How to use: ...&quot;);
-   return 1;
+if( argc != 5 )
+    goto usage;
+
+/*
+do something 
+do something else
+more to do
+and more
+and more
+and more
+and more
+too much lines
+...
+finished
+*/
+return 0;
+
+usage:
+printf(&quot;How to use: ...&quot;);
+return 1;
 </pre>
 <p>Claro que esse uso é trivial demais para valer a pena uma troca de fluxo tão desestruturada. Há formas mais úteis de desviar o fluxo padrão. No exemplo acima bastaria colocar todo o código que se segue dentro do grupo pertencente ao if e o goto seria desnecessário.</p>
 
 <p>Mas, por exemplo, imagine que precisamos nos desfazer de recursos na ordem inversa ao qual vão sendo adquiridos. Pode-se aninhar indefinidamente ifs ou usar um bloco de código de unwinding que vai fechando os recursos na ordem inversa e inicia sua chamada dependendo de onde ocorreu o erro. Código é melhor para ilustrar:</p>
 
 <pre>
-   FILE *f1, *f2, *f3, *f4, *f5;
-   if( ! (f1 = fopen()) )
-     goto end;
-   if( ! (f2 = fopen()) )
-     goto end_f1;
-   if( ! (f3 = fopen()) )
-     goto end_f2;
-   if( ! (f4 = fopen()) )
-     goto end_f3;
-   if( ! (f5 = fopen()) )
-     goto end_f4;
-   /*
-   code
-   ...
-   code
-   */
-   printf(&quot;closing f5\n&quot;);
-   fclose(f5);
-   end_f4: 
-     fclose(f4);
-   end_f3: 
-     fclose(f3);
-   end_f2: 
-     fclose(f2);
-   end_f1: 
-     fclose(f1);
-   end: ;
+FILE *f1, *f2, *f3, *f4, *f5;
+
+if( ! (f1 = fopen()) )
+  goto end;
+if( ! (f2 = fopen()) )
+  goto end_f1;
+if( ! (f3 = fopen()) )
+  goto end_f2;
+if( ! (f4 = fopen()) )
+  goto end_f3;
+if( ! (f5 = fopen()) )
+  goto end_f4;
+
+/*
+code
+...
+code
+*/
+
+printf(&quot;closing f5\n&quot;);
+fclose(f5);
+end_f4: 
+  fclose(f4);
+end_f3: 
+  fclose(f3);
+end_f2: 
+  fclose(f2);
+end_f1: 
+  fclose(f1);
+end: ;
 </pre>
 <p>Esse ponto-e-virgula final se deve ao fato que os labels do goto rotulam um comando; logo, se ha um label, deve haver um comando logo depois (mesmo que seja nulo, no caso de ponto-e-virgula). Esse estilo de liberação de recursos é muito usado em códigos de kernel e software mais básico, pois simplifica a visualização e aumenta a flexibilidade. Compare com a versão estruturada:</p>
 
 <pre>
-   if( f1 = fopen() )
-   {
-     if( f2 = fopen() )
-     {
-       if( f3 = fopen() )
-       {
-         if( f4 = fopen() )
-         {
-           if( f5 = fopen() )
-           {
-             /*
-                code
-                ...
-                code
-              */
-             fclose(f5);
-           }
-           fclose(f4);
-         }
-         fclose(f3);
-       }
-       fclose(f2);
-     }
-     fclose(f1);
-   }
+if( f1 = fopen() )
+{
+  if( f2 = fopen() )
+  {
+    if( f3 = fopen() )
+    {
+      if( f4 = fopen() )
+      {
+        if( f5 = fopen() )
+        {
+          /*
+             code
+             ...
+             code
+           */
+          fclose(f5);
+        }
+        fclose(f4);
+      }
+      fclose(f3);
+    }
+    fclose(f2);
+  }
+  fclose(f1);
+}
 </pre>
 <p>Aliás, esse uso do goto é a maneira de aplicar RAII em C (Resource acquisition is initialization). Implícito em linguagens como C++ e seus destrutores de objetos, em C é você que precisa fazer a faxina. E se a bagunça foi feita da direita pra esquerda a faxina deve ser feita da esquerda pra direita.</p>
 
 <p>Esse uso super-aninhado do código me lembra do exemplo clássico de sair de muitos loops aninhados. Apenas por didática, vamos citá-lo:</p>
 
 <pre>
-   for( ; ; )
-   {
-     for( ; ; )
-     {
-       for( ; ; )
-       {
-         if( condition )
-           goto outer_world;
-       }
-     }
-   }
-   outer_world: ;
+for( ; ; )
+{
+  for( ; ; )
+  {
+    for( ; ; )
+    {
+      if( condition )
+        goto outer_world;
+    }
+  }
+}
+
+outer_world: ;
 </pre>
 <p>Comentei no começo do texto que os cases do switch são labels de goto disfarçados. E são mesmo. Um dos algoritmos mais famosos de transformação de loop chamado Duff's device junta um do-while com switch e realiza uma cópia de buffer com um número de bytes variável:</p>
 
 <pre>
-   send(to, from, count)
-   register short *to, *from;
-   register count;
-   {
-     register n = (count + 7) / 8;
-     switch (count % 8) {
-     case 0: do { *to = *from++;
-     case 7: *to = *from++;
-     case 6: *to = *from++;
-     case 5: *to = *from++;
-     case 4: *to = *from++;
-     case 3: *to = *from++;
-     case 2: *to = *from++;
-     case 1: *to = *from++;
-       } while (--n &gt; 0);
-     }
-   }
+send(to, from, count)
+register short *to, *from;
+register count;
+{
+  register n = (count + 7) / 8;
+  switch (count % 8) {
+  case 0: do { *to = *from++;
+  case 7: *to = *from++;
+  case 6: *to = *from++;
+  case 5: *to = *from++;
+  case 4: *to = *from++;
+  case 3: *to = *from++;
+  case 2: *to = *from++;
+  case 1: *to = *from++;
+    } while (--n &gt; 0);
+  }
+}
 </pre>
 <p>O que está acontecendo no código acima: é possível inserir qualquer tipo de mudança de fluxo dentro do switch. Duff aproveitou essa particularidade da linguagem para produzir jumps que poderiam ser feitos em assembly. Dependendo do resto da divisão por oito o salto é realizado para um case diferente, que executará parte do laço até o while comparador final. A vantagem desse tipo de abordagem é que evita-se sair da programação estruturada, e muito menos precisa-se apelar para o assembly.</p>
 
 <p>Esse código também seria possível de ser feito com o goto clássico, mas note que nesse caso ele fica mais verboso, pois é necessário fazer um if diferente para cada condição.</p>
 
 <pre>
-   register n = (count + 7) / 8;
-   if (count % 8 == 0 ) 
-     goto case_0;
-   if (count % 8 == 7 ) 
-     goto case_7;
-   if (count % 8 == 6 ) 
-     goto case_6;
-   if (count % 8 == 5 ) 
-     goto case_5;
-   if (count % 8 == 4 ) 
-     goto case_4;
-   if (count % 8 == 3 ) 
-     goto case_3;
-   if (count % 8 == 2 ) 
-     goto case_2;
-   if (count % 8 == 1 ) 
-     goto case_1;
-   case_0: do { *to++ = *from++;
-   case_7: *to++ = *from++;
-   case_6: *to++ = *from++;
-   case_5: *to++ = *from++;
-   case_4: *to++ = *from++;
-   case_3: *to++ = *from++;
-   case_2: *to++ = *from++;
-   case_1: *to++ = *from++;
-   } while (--n &gt; 0);
+register n = (count + 7) / 8;
+if (count % 8 == 0 ) 
+  goto case_0;
+if (count % 8 == 7 ) 
+  goto case_7;
+if (count % 8 == 6 ) 
+  goto case_6;
+if (count % 8 == 5 ) 
+  goto case_5;
+if (count % 8 == 4 ) 
+  goto case_4;
+if (count % 8 == 3 ) 
+  goto case_3;
+if (count % 8 == 2 ) 
+  goto case_2;
+if (count % 8 == 1 ) 
+  goto case_1;
+case_0: do { *to++ = *from++;
+case_7: *to++ = *from++;
+case_6: *to++ = *from++;
+case_5: *to++ = *from++;
+case_4: *to++ = *from++;
+case_3: *to++ = *from++;
+case_2: *to++ = *from++;
+case_1: *to++ = *from++;
+} while (--n &gt; 0);
 </pre>
 <p>Caso você tenha estranhada a definição inicial da função, ela é como se definia os argumentos em linguagem C antes do padrão ANSI, com os nomes e logo em seguida a declaração das variáveis como se fossem locais (porque de fato elas são, embora sua inicialização seja feita antes da chamada). Como este código data dos anos 80 e como o padrão só foi finalizado em 89, percebe-se que ainda se usava o formato antigo no código.</p>
 
 <p>Passemos para o próximo uso: código infinito. Esse é um uso clássico, e diferente do uso degenerado de laços em que a condição é sempre verdadeira (while(true), for(;;)) usando o goto fica bem-documentado que o objetivo é ficar eternamente nesse loop. Um laço infinito que eu me lembro é quando dá tela azul no Windows. O código-fonte do kernel era algo mais ou menos assim:</p>
 
 <pre>
-   gerarDump();
-   mudarParaVga();
-   while( true )
-     ; /* that's all, folks */
+gerarDump();
+mudarParaVga();
+
+while( true )
+  ; /* that's all, folks */
 </pre>
 <p>Os programadores usaram o apelo clássico do while. Sem motivo, pois goto é usado direto como RAII (já explicado acima). A maneira procedural de fazer seria assim:</p>
 
 <pre>
-   infinite:
-   goto infinite;
+infinite:
+goto infinite;
 </pre>
 <p>Isso lembra outra utilidade do goto que você pode anotar no seu caderninho: ele pode voltar o fluxo, de baixo para cima. Esse último exemplo é um dos programas C mais lindos do universo. Sua única instrução é o comando rotulado por infinite e referencia ele mesmo. É quase o salto incondicional do assembly, materializado na linguagem mais elegante jamais criada em nossa realidade.</p>
 

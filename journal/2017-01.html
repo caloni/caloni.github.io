@@ -163,6 +163,7 @@ role="navigation" aria-label="main navigation">
 <pre>
 &quot; No Vim não é necessário digitar o comando completo; note que esse wildcard busca pastas recursivamente
 :vimg /regex/ \Projects\SomeProject\**\*.cpp
+
 &quot; Isso busca em todos os buffers abertos cujo arquivo tem a extensão de C++
 :grep regex *.cpp
 </pre>
@@ -500,6 +501,7 @@ if (!ReadFile(hFile,
    else
       // Operation has completed immediately.
       fOverlapped = FALSE;
+
    if (fOverlapped)
    {
       // Wait for the operation to complete before continuing.
@@ -643,7 +645,9 @@ if (!ReadFile(hFile,
 1&gt;  ContainerManager.cpp
 1&gt;  Command.cpp
 1&gt;  Generating Code...
-[tiodb]: https://github.com/tiodb1&gt;  tioserver.vcxproj -&gt; C:\Projects\tiodb\server\tio\..\..\bin\x64\Debug\tio.exe
+
+[tiodb]: https://github.com/tiodb
+1&gt;  tioserver.vcxproj -&gt; C:\Projects\tiodb\server\tio\..\..\bin\x64\Debug\tio.exe
 1&gt;  tioserver.vcxproj -&gt; ..\..\bin\x64\Debug\tio.pdb (Full PDB)
 ========== Rebuild All: 1 succeeded, 0 failed, 0 skipped ==========
 </pre>
@@ -679,16 +683,20 @@ int socket_receive(SOCKET socket, void* buffer, int len, const unsigned* timeout
     int received = 0;
     time_t start;
     int time_left;
+
 #if _WIN32
     FD_SET recvset;
     struct timeval tv;
 #endif
+
 #ifdef _DEBUG
     memset(char_buffer, 0xFF, len);
 #endif
+
     // se esse if não for verdadeiro, start fica com valor indefinido
     if(timeout_in_seconds)
       start = time(NULL);
+
     while(received &lt; len)
     {
       if(timeout_in_seconds)

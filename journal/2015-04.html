@@ -284,7 +284,9 @@ role="navigation" aria-label="main navigation">
 <pre>
 void func()
 {
+
 }
+
 int main()
 {
    func(&quot;sbrubles&quot;);
@@ -321,15 +323,19 @@ char* sbrubles; /* isso é um argumento de entrada */
 
 <pre>
 int soma(int argc, ...);
+
 int main()
 {
     int resultado = soma(5, 2, 3, 4, 5, 6);
 }
+
 // soma.cpp
 #include &lt;stdarg.h&gt;
+
 int soma(int argc, ...)
 {
     int ret = 0;
+
     va_list vl;
     va_start(vl, argc);
     while( --argc )
@@ -337,6 +343,7 @@ int soma(int argc, ...)
         int next = va_arg(vl, int);
         ret += next;
     }
+
     return ret;
 }
 </pre>
@@ -347,11 +354,13 @@ int soma(int argc, ...)
 {
     int ret = 0;
     int* argv = &amp;argc + 1;
+
     while ( argc-- )
     {
       int next = *argv++;
       ret += next;
     }
+
     return ret;
 }
 </pre>

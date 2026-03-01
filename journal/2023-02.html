@@ -193,7 +193,9 @@ role="navigation" aria-label="main navigation">
 
 <pre>
 #include &lt;iostream&gt;
+
 using namespace std;
+
 string compress(string input)
 {
     string orInput;
@@ -209,17 +211,21 @@ string compress(string input)
                 {
                     ++end;
                 }
+
                 input.erase(i, end - i);
                 --i;
             }
         }
     } while (orInput != input);
+
     return input;
 }
+
 int main()
 {
     string input = &quot;235554431&quot;;
     string output = compress(input);
+
     cout &lt;&lt; &quot;input: &quot; &lt;&lt; input &lt;&lt; '\n'
         &lt;&lt; &quot;output: &quot; &lt;&lt; output &lt;&lt; endl;
 }
@@ -234,7 +240,9 @@ output: 21
 
 <pre>
 #include &lt;iostream&gt;
+
 using namespace std;
+
 string compress(string input)
 {
     for (size_t i = 0; i &lt; input.size() - 1; ++i)
@@ -246,17 +254,21 @@ string compress(string input)
             {
                 ++end;
             }
+
             input.erase(i, end - i);
             i = -1;
             continue;
         }
     }
+
     return input;
 }
+
 int main()
 {
     string input = &quot;235554431&quot;;
     string output = compress(input);
+
     cout &lt;&lt; &quot;input: &quot; &lt;&lt; input &lt;&lt; '\n'
         &lt;&lt; &quot;output: &quot; &lt;&lt; output &lt;&lt; endl;
 }

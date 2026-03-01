@@ -322,6 +322,7 @@ int main(int argc, const char **argv)
 {
     MyClass obj;
     HRESULT hr = obj.init();
+
     if ( SUCCEEDED(hr) )
     {
         if ( args have &quot;cmd1&quot; )
@@ -343,6 +344,7 @@ class MyClass
 {
 public:
     HRESULT m_result = S_OK;
+
     HRESULT init();
     HRESULT cmd1();
     HRESULT cmd2();
@@ -365,14 +367,17 @@ public:
 
 <pre>
 #include &lt;map&gt;
+
 int main(int argc, const char **argv)
 {
     MyMap cmds;
+
     if ( SUCCEEDED(init()) )
     {
         cmds[args];
     }
 }
+
 HRESULT init();
 HRESULT cmd1();
 HRESULT cmd2();
@@ -416,6 +421,7 @@ HRESULT cmd2();
 
 <pre>
 #include &lt;Windows.h&gt;
+
 int main(int argc, char* argv[])
 {
     DWORD ret = ERROR_SUCCESS;
@@ -428,9 +434,11 @@ int main(int argc, char* argv[])
     saAttr.nLength = sizeof(SECURITY_ATTRIBUTES);
     saAttr.bInheritHandle = TRUE;
     saAttr.lpSecurityDescriptor = NULL;
+
     si.dwFlags = STARTF_USESTDHANDLES;
     si.hStdOutput = CreateFileA(&quot;cmd.log&quot;, GENERIC_WRITE, FILE_SHARE_READ, &amp;sa, CREATE_ALWAYS, 0, NULL);
     si.hStdError = si.hStdOutput;
+
     if( si.hStdOutput != NULL &amp;&amp; si.hStdOutput != INVALID_HANDLE_VALUE )
     {
         if (CreateProcessA(NULL, cmd, NULL, NULL, TRUE, CREATE_NEW_CONSOLE, NULL, NULL, &amp;si, &amp;pi))
@@ -439,6 +447,7 @@ int main(int argc, char* argv[])
             CloseHandle(pi.hThread);
             CloseHandle(pi.hProcess);
         }
+
         CloseHandle(si.hStdOutput);
     }
 }

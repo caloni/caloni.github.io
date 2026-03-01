@@ -398,12 +398,16 @@ public:
     /// Factory para base de dados específica.
     /// @param database Pode ser &quot;sqlite&quot; ou &quot;oledb&quot;.
     static DBAccess* CreateDBAccess(const std::string&amp; database);
+
     typedef std::string ColumnName;
     typedef std::vector&lt;std::string&gt; Rows;
     typedef std::map&lt;ColumnName, Rows&gt; RowSet;
+
     virtual ~DBAccess() { }
+
     virtual bool Connect(const std::string&amp; connectionString) = 0;
     virtual bool Disconnect() = 0;
+
     /// Executa uma instrução SQL e retorna opcionalmente os resultados (se for uma query).
     virtual bool Execute(const std::string&amp; command, RowSet* response = 0) = 0;
 };
@@ -704,12 +708,12 @@ IDBCreateCommand* pIDBCreateCommand;
 <p>E se você está preocupado com o foco muito no código, e não nos resultados para seu cliente, existe até um "capítulo" sobre gerência, a "Gerência, C*zão":</p>
 
 <blockquote>Para fazer Gerência, C*zão, você deve fazer o seguinte:</blockquote>
+<p>1. Ache o que os clientes querem perguntando para eles.</p>
 
-<blockquote>1. Ache o que os clientes querem perguntando para eles.</blockquote>
+<p>2. Arrume a bota que os Programadores Filhos da Chuva precisam fazer.</p>
 
-<blockquote>2. Arrume a bota que os Programadores Filhos da Chuva precisam fazer.</blockquote>
+<p>3. Fale para os Programadores Filhos da Chuva quando as botas que eles fizeram não está boa o suficiente para vender.</p>
 
-<blockquote>3. Fale para os Programadores Filhos da Chuva quando as botas que eles fizeram não está boa o suficiente para vender.</blockquote>
 <p>Simples e conciso. Acho que até a gerência deve conseguir se lembrar desses três passos.</p>
 
 <h3>O que há de errado com metologias Bazinga?</h3>

@@ -100,7 +100,7 @@ role="navigation" aria-label="main navigation">
 
 <p>A edição é ágil, fluida, e ao avançar cria closes absurdos e uma qualidade sofrível das imagens trazem a realidade para um nível naturalista. A trilha sonora começa diegética, dentro daquele universo, e vai se alastrando pelas cenas, como memórias. Trilhas sonoras da vida, assim como os diálogos, assim como as faces daquelas pessoas, que personalizam a vida em seu básico, instintivo; a poesia do existir.</p>
 
-<p>Os diretores Bia Lessa e Dany Roland, empenhados também em realizar fotografia, roteiro e edição (com a ajuda de Julia Bernstein), agradecem ao final pelo documentário-mestre do Brasil, Eduardo Coutinho. Não à toa. Os idealizadores captaram a inteligência emocional de Coutinho em um trabalho simples, mas poderoso, que consegue extrair palavras da vida que são tão comuns, mas tão poderosas. </p>
+<p>Os diretores Bia Lessa e Dany Roland, empenhados também em realizar fotografia, roteiro e edição (com a ajuda de Julia Bernstein), agradecem ao final pelo documentário-mestre do Brasil, Eduardo Coutinho. Não à toa. Os idealizadores captaram a inteligência emocional de Coutinho em um trabalho simples, mas poderoso, que consegue extrair palavras da vida que são tão comuns, mas tão poderosas.</p>
 
 <p>De um grupo de mulheres esperando os homens para carregar um caixão à noite da avó falecida até um grupo de crianças comentando uma briga recente entre meninas, Então Morri abraça a vida de um jeito que não é possível largar. Acompanhamos a sequência exata de um filme rebobinando, desde a morte até o nascimento, como espectadores que se conectam com aquela película quase sem filtros.</p>
 
@@ -420,7 +420,7 @@ role="navigation" aria-label="main navigation">
 
 <p>Um milagre acontece. E está um bom ano para milagres em animação. Trolls, assim como Angry Birds como adaptação de games e Zootopia como a contemporaneidade da vida social, consegue se tornar um exemplo ainda melhor de como pegar um fiapo de argumento -- brinquedos feios da década de 80/90 -- e transformar em uma ode à felicidade, à referência de uma era, ao retorno da simples e não-cínica vida comum.</p>
 
-<p>Para isso ele conta com uma quantidade monstruosa de canções famosas de várias décadas em vários formatos, que fazem o percurso histórico do dance e do pop através das simpáticas figuras de um grupo de pequenas criaturas que cantam, dançam e se abraçam de hora em hora -- essa basicamente é a cultura deles -- sempre incentivados por sua amada princesa, que conta as histórias de seu povo através de recortes fofinhos, e seu leal rei, que não abandona ninguém quando sua aldeia é invadida por terríveis "gigantes" (para eles) chamados de Bergens. </p>
+<p>Para isso ele conta com uma quantidade monstruosa de canções famosas de várias décadas em vários formatos, que fazem o percurso histórico do dance e do pop através das simpáticas figuras de um grupo de pequenas criaturas que cantam, dançam e se abraçam de hora em hora -- essa basicamente é a cultura deles -- sempre incentivados por sua amada princesa, que conta as histórias de seu povo através de recortes fofinhos, e seu leal rei, que não abandona ninguém quando sua aldeia é invadida por terríveis "gigantes" (para eles) chamados de Bergens.</p>
 
 <p>A sequência de fuga é narrada como um épico, com uma trilha grandiosa e todo o peso que isso acarreta. Isso não impede que logo os Trolls se recuperem e voltem a contar os minutos até o próximo abraço coletivo. De certa forma, a luta pela felicidade torna o grupo sempre unido.</p>
 
@@ -635,55 +635,61 @@ role="navigation" aria-label="main navigation">
 <p>Stroustrup não fez tudo do zero, nem fez tudo de uma vez. A primeira necessidade era apenas criar uma abstração já existente na linguagem C, mas que ainda não havia sido integrada à sintaxe: o contexto de uma estrutura, que se assemelha a uma proto-classe, ou para alguns já é até uma classe, pois possui membros e métodos:</p>
 
 <pre>
-   class Cpp
-   {
-     int x;
-     int GetX();
-   };
-   int Cpp::GetX()
-   {
-     return x;
-   }
-   void Func(Cpp cpp)
-   {
-     int y = 33 + cpp.GetX();
-   }
-   int main()
-   {
-       Cpp cpp;
-       cpp.x = 42;
-       Func(cpp);
-   }
+class Cpp
+{
+  int x;
+  int GetX();
+};
+
+int Cpp::GetX()
+{
+  return x;
+}
+
+void Func(Cpp cpp)
+{
+  int y = 33 + cpp.GetX();
+}
+
+int main()
+{
+    Cpp cpp;
+    cpp.x = 42;
+    Func(cpp);
+}
 </pre>
 <p>A grande sacada é que no meio de toda essa sintaxe de chamada de método havia a passagem de um parâmetro escondido, o this, que se referia a uma instância específica da classe: um objeto.</p>
 
 <pre>
-   int Cpp::GetX()
-   {
-     return this-&gt;x;
-   }
+int Cpp::GetX()
+{
+  return this-&gt;x;
+}
 </pre>
 <p>Isso equivaleria a uma struct em C com funções que recebessem um this adaptado:</p>
 
 <pre>
-   struct C
-   {
-     int x;
-   };
-   int C_GetX(C* pThis)
-   {
-     return pThis-&gt;x;
-   }
-   void Func(C c)
-   {
-     int y = 33 + C_GetX(&amp;c);
-   }
-   int main()
-   {
-     struct C c;
-     c.x = 42;
-     Func(c);
-   }
+struct C
+{
+  int x;
+};
+
+int C_GetX(C* pThis)
+{
+  return pThis-&gt;x;
+}
+
+void Func(C c)
+{
+  int y = 33 + C_GetX(&amp;c);
+}
+
+int main()
+{
+  struct C c;
+  c.x = 42;
+  Func(c);
+}
 </pre>
 <p>Esse tipo de abstração nem é tão complicada assim. O ojetivo eram vários: conseguir proteger os membros de acesso indevido, abstrair o comportamento de um objeto. Com o tempo Stroustrup foi realmente criando algo de novo e muito mais difícil de se manter em C. Algo para um próximo post =)</p>
 
@@ -706,18 +712,22 @@ DWORD ClassicHandleLeak()
 {
     DWORD ret = 0;
     HKEY hKey;
+
     if ( RegOpenKeyEx(HKEY_LOCAL_MACHINE, L&quot;Software\\Something&quot;, 
       0, GENERIC_READ, &amp;hKey) == ERROR_SUCCESS )
     {
       DWORD retSz = sizeof(ret);
+
       if (RegQueryValueEx(hKey, L&quot;SomeValue&quot;, NULL, NULL, 
         (PBYTE) &amp;ret, &amp;retSz) == ERROR_SUCCESS)
       {
         // success!
         return ret;
       }
+
       RegCloseKey(hKey);
     }
+
     return ret;
 }
 </pre>

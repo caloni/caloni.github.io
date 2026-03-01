@@ -154,35 +154,46 @@ role="navigation" aria-label="main navigation">
 <pre>
 C:\Temp\projectX&gt;git pull
 Already up-to-date.
+
 C:\Temp\projectX&gt;git branch
 * dev
   master
+
 C:\Temp\projectX&gt;gvim main.cpp
+
 C:\Temp\projectX&gt;git add main.cpp
+
 C:\Temp\projectX&gt;git ci -m &quot;ISS-4 Changing test function return type to int.&quot;
 [dev 7f0121b] ISS-4 Changing test function return type to int.
  1 file changed, 2 insertions(+), 1 deletion(-)
+
 C:\Temp\projectX&gt;git status
 On branch dev
 Your branch is ahead of 'origin/dev' by 1 commit.
   (use &quot;git push&quot; to publish your local commits)
 nothing to commit, working tree clean
+
 C:\Temp\projectX&gt;
 </pre>
 <p>Se a política de pull request estiver sendo usada, faça isso em um branch à parte, mas já mande para o reviewer aprovar o branch como se fosse um commit apenas e de preferência pronto para o rebase (o que não deve ser nem um problema se for uma mudança pontual).</p>
 
 <pre>
 C:\Temp\projectX&gt;gvim main.cpp
+
 C:\Temp\projectX&gt;git co -b ISS-5-changing-test-return-value
 M       main.cpp
 Switched to a new branch 'ISS-5-changing-test-return-value'
+
 C:\Temp\projectX&gt;git add main.cpp
+
 C:\Temp\projectX&gt;git ci -m &quot;ISS-5 Changing test return value&quot;
 [ISS-5-changing-test-return-value 38df69c] ISS-5 Changing test return value
  1 file changed, 1 insertion(+), 1 deletion(-)
+
 C:\Temp\projectX&gt;git status
 On branch ISS-5-changing-test-return-value
 nothing to commit, working tree clean
+
 C:\Temp\projectX&gt;git push origin ISS-5-changing-test-return-value
 Counting objects: 6, done.
 Delta compression using up to 8 threads.
@@ -201,38 +212,52 @@ C:\Temp\projectX&gt;git branch
   ISS-5-changing-test-return-value
 * dev
   master
+
 C:\Temp\projectX&gt;git co -b ISS-6-very-hard-hacking
 Switched to a new branch 'ISS-6-very-hard-hacking'
+
 C:\Temp\projectX&gt;gvim main.cpp
 C:\Temp\projectX&gt;git add main.cpp
+
 C:\Temp\projectX&gt;git ci -m &quot;Starting to test return 42.&quot;
 [ISS-6-very-hard-hacking e09cf24] Starting to test return 42.
  1 file changed, 1 insertion(+), 1 deletion(-)
+
 C:\Temp\projectX&gt;gvim main.cpp
 C:\Temp\projectX&gt;git add main.cpp
+
 C:\Temp\projectX&gt;git ci -m &quot;Created backup test.
 [ISS-6-very-hard-hacking 80a7f71] Created backup test.
  1 file changed, 5 insertions(+)
+
 C:\Temp\projectX&gt;gvim main.cpp
 C:\Temp\projectX&gt;git add main.cpp
+
 C:\Temp\projectX&gt;git ci -m &quot;Deleted backup function test.&quot;
 [ISS-6-very-hard-hacking 9620226] Deleted backup function test.
  1 file changed, 5 deletions(-)
+
 C:\Temp\projectX&gt;gvim main.cpp
 C:\Temp\projectX&gt;git add main.cpp
+
 C:\Temp\projectX&gt;git ci -m &quot;Screwing around.&quot;
 [ISS-6-very-hard-hacking 18d3afa] Screwing around.
  1 file changed, 2 deletions(-)
+
 C:\Temp\projectX&gt;gvim main.cpp
 C:\Temp\projectX&gt;git add main.cpp
+
 C:\Temp\projectX&gt;git ci -m &quot;Getting old version back.&quot;
 [ISS-6-very-hard-hacking f2a63d1] Getting old version back.
  1 file changed, 2 insertions(+)
+
 C:\Temp\projectX&gt;gvim main.cpp
 C:\Temp\projectX&gt;git add main.cpp
+
 C:\Temp\projectX&gt;git ci -m &quot;Small fix after unit tests.&quot;
 [ISS-6-very-hard-hacking e612339] Small fix after unit tests.
  1 file changed, 1 insertion(+), 1 deletion(-)
+
 C:\Temp\projectX&gt;git log --oneline
 e612339 Small fix after unit tests.
 f2a63d1 Getting old version back.
@@ -252,6 +277,7 @@ bff8edf ISS-1 First version.
 <pre>
 C:\Temp\projectX&gt;git merge dev
 Already up-to-date.
+
 C:\Temp\projectX&gt;git rebase -i dev
 </pre>
 <p>Nesse momento o git irá abrir o editor com os commits trabalhados. Você deverá escolher quais operações fazer com cada commit. Se o objetivo é empacotar tudo, geralmente é pick no primeiro e squash em todos os outros:</p>
@@ -269,22 +295,34 @@ squash e612339 Small fix after unit tests.
 <pre>
 # This is a combination of 6 commits.
 # The first commit's message is:
+
 Starting to test return 42.
+
 # This is the commit message #2:
+
 Created backup test.
+
 # This is the commit message #3:
+
 Deleted backup function test.
+
 # This is the commit message #4:
+
 Screwing around.
+
 # This is the commit message #5:
+
 Getting old version back.
+
 # This is the commit message #6:
+
 Small fix after unit tests.
 </pre>
 <p>Nisso:</p>
 
 <pre>
 ISS-6 A very hard hacking, tested and ready to merge.
+
 This hack involved several operations:
  - Starting to test return 42.
  - Created backup test.
@@ -298,27 +336,37 @@ C:\Temp\projectX&gt;git log
 commit b4de47231f090e897053f4e9d19ea66c88d1f1fa
 Author: Wanderley Caloni &lt;wanderley.caloni@gmail.com&gt;
 Date:   Sat Feb 4 10:59:18 2017 -0200
+
     ISS-6 A very hard hacking, tested and ready to merge.
+
     This hack involved several operations:
      - Starting to test return 42.
      - Created backup test.
      - Deleted backup function test.
      - Small fix after unit tests.
+
 commit 7f0121baac183eb1a832575781cca5d6e6a5489c
 Author: Wanderley Caloni &lt;wanderley.caloni@gmail.com&gt;
 Date:   Sat Feb 4 10:51:54 2017 -0200
+
     ISS-4 Changing test function return type to int.
+
 commit 97222ec4578f9a4bced847266739b18f933178f3
 Author: Wanderley Caloni &lt;wanderley.caloni@gmail.com&gt;
 Date:   Sat Feb 4 10:50:29 2017 -0200
+
     ISS-3 Testing something new.
+
 commit 49d28aa7faa02ff327ae9fac93676abad18ad0f3
 Author: Wanderley Caloni &lt;wanderley.caloni@gmail.com&gt;
 Date:   Sat Feb 4 10:49:26 2017 -0200
+
     ISS-2 Insertind comments and whatever.
+
 commit bff8edf06e4a30480088a9a33c9b0c2ca5b6e0b3
 Author: Wanderley Caloni &lt;wanderley.caloni@gmail.com&gt;
 Date:   Sat Feb 4 10:47:11 2017 -0200
+
     ISS-1 First version.
 </pre>
 <h3>O que aprendemos aqui</h3>
@@ -475,7 +523,10 @@ gvim server\tio\tioserver.vcxproj
 <pre>
 1&gt;------ Build started: Project: tioclientdll, Configuration: Debug x64 ------
 2&gt;------ Build started: Project: tioserver, Configuration: Debug x64 ------
-[tiodb]: https://github.com/tiodb/tiodb[tiodb] e após baixar todos os pacotes do [NuGet]: https://docs.microsoft.com/pt-br/nuget/consume-packages/overview-and-workflow
+
+[tiodb]: https://github.com/tiodb/tiodb
+
+[tiodb] e após baixar todos os pacotes do [NuGet]: https://docs.microsoft.com/pt-br/nuget/consume-packages/overview-and-workflow
 2&gt;  tioserver.vcxproj -&gt; C:\Projects\tiocoin\tiodb\server\tio\..\..\bin\x64\Debug\tio.exe
 2&gt;  tioserver.vcxproj -&gt; ..\..\bin\x64\Debug\tio.pdb (Full PDB)
 ========== Build: 2 succeeded, 0 failed, 3 up-to-date, 0 skipped ==========
@@ -536,7 +587,7 @@ gvim server\tio\tioserver.vcxproj
 
 <li>Carlos Eduardo Gesser</li>
 
-<li>Expertise Solutions </li>
+<li>Expertise Solutions</li>
 
 <li>Fabio Galuppo</li>
 
@@ -710,7 +761,7 @@ gvim server\tio\tioserver.vcxproj
 
 <p>A Jovem Rainha tem vários assuntos para tratar durante o conturbado reinado da rainha Cristina no império sueco do século 17, mas não consegue se adequar ao tom mais apropriado. Se em alguns momentos gera o humor incidental da típica loucura dos monarcas, em outros tenta puxar a grandiosidade dos acontecimentos históricos, e no meio do caminho flerta perigosamente com um episódio de seriado de TV.</p>
 
-<p>Enquanto a efervescência de conhecimento na Europa gerava mais e mais conteúdo científico e filosófico, seu braço fora do domínio da Igreja Católica -- incluindo a Suécia -- se mantinha preso ao conceito de determinismo de Lutero, fundador do protestantismo. É nesse clima que seu rei falecido é mantido por dois anos embalsamado pela insana rainha, enquanto uma jovem princesa de seis anos finalmente ocupa o papel de futura monarca (quando atingir a maioridade). Seu tutor a tenta manter na doutrina protestante, mas a enxurrada de conhecimento a leva em direção a René Descartes, filósofo da época que estava desconstruindo nossa forma de enxergar a realidade. </p>
+<p>Enquanto a efervescência de conhecimento na Europa gerava mais e mais conteúdo científico e filosófico, seu braço fora do domínio da Igreja Católica -- incluindo a Suécia -- se mantinha preso ao conceito de determinismo de Lutero, fundador do protestantismo. É nesse clima que seu rei falecido é mantido por dois anos embalsamado pela insana rainha, enquanto uma jovem princesa de seis anos finalmente ocupa o papel de futura monarca (quando atingir a maioridade). Seu tutor a tenta manter na doutrina protestante, mas a enxurrada de conhecimento a leva em direção a René Descartes, filósofo da época que estava desconstruindo nossa forma de enxergar a realidade.</p>
 
 <p>Considerada uma das mulheres mais instruídas de sua época, Cristina, nutria desde sua infância e adolescência o interesse por livres pensadores, particularmente tocada pela maneira de René Descartes em enxergar as emoções humanas, ela o adota como princípio para seu país, em um conturbado discurso de posse, voltado para a instrução de um povo ainda iletrado e isolado das descobertas científicas da Europa. Porém, estes planos estão longe do que é esperado de umA monarcA, como podemos observar pela busca incessante de seus pretendentes; não só pela sede de poder, mas pelo puro pragmatismo político: sem um herdeiro, o futuro do reino fica nas mãos da caprichosa rainha. Sendo assim, sua função mais importante seria ter um filho, algo que ela renega já que está apaixonada por uma condessa, condecorada como sua dama de companhia. Ou seja, nem de longe as religiões da época poderiam nutrir a sede de conhecimento que Cristina tinha pelas emoções humanas; não tanto quanto seu filósofo francês favorito.</p>
 
@@ -847,6 +898,7 @@ try
 {
     tio::Connection conn;
     conn.Connect(server, port);
+
     if (args.find(&quot;--build&quot;) != args.end())
     {
         tio::containers::list&lt;string&gt; transactionsBuilder;
@@ -870,17 +922,21 @@ try
         transactionsMonitor.subscribe([]
                 {
                 int eventCode = stoi(containerEvt);
+
                 switch (eventCode)
                 {
                 case TIO_COMMAND_PING:
                 cout &lt;&lt; &quot;Ping!\n&quot;;
                 break;
+
                 case TIO_EVENT_SNAPSHOT_END:
                 cout &lt;&lt; &quot;Snapshot end\n&quot;;
                 break;
+
                 case TIO_COMMAND_PUSH_BACK:
                 cout &lt;&lt; &quot;New transaction &quot; &lt;&lt; value &lt;&lt; &quot; inserted\n&quot;;
                 break;
+
                 default:
                 cout &lt;&lt; &quot;Unknown event &quot; &lt;&lt; hex &lt;&lt; eventCode &lt;&lt; &quot; with key &quot; &lt;&lt; dec &lt;&lt; key &lt;&lt; &quot; and with value &quot; &lt;&lt; value;
                 break;
@@ -899,6 +955,7 @@ try
         for( size_t transactionIdx = 0; transactionIdx &lt; transactionsReader.size(); ++transactionIdx )
             cout &lt;&lt; &quot;Transaction &quot; &lt;&lt; transactionsReader.at(transactionIdx) &lt;&lt; endl;
     }
+
     break; // just testing and developing...
 }
 catch (tio::tio_exception&amp; e)
@@ -1031,31 +1088,32 @@ catch (...)
 <blockquote>Eu costumava ser muito desagradável em julgar os outros, "Ela é realmente esperta" ou "Ele é tão estúpido". Então eu aprendi muito com meu primeiro mentor. Ele me ensinou que frequentemente não há muita diferença entre alguém que parece esperto e alguém que não. Talvez ninguém gastou tempo suficiente com um deles. Talvez eles tenham outros desafios, como família, saúde ou circunstâncias. Talvez eles sejam um peixe fora d'água, gastando muito tempo em coisas que não o interessam. Ou talve eles pareçam burros porque eles realmente acreditam que o são. Foi dito a eles tantas vezes que agora eles acreditam.</blockquote>
 <h4>Finalmente Sênior!</h4>
 
-<blockquote>- O que faz um programador sênior? Ótima pergunta. Pergunte para n programadores e você obterá n^2 respostas. Isso pode ser facilmente o assunto para outro post ou até um livro. Saindo do topo da minha cabeça em nenhuma ordem particular:</blockquote>
+<ul><li>O que faz um programador sênior? Ótima pergunta. Pergunte para n programadores e você obterá n^2 respostas. Isso pode ser facilmente o assunto para outro post ou até um livro. Saindo do topo da minha cabeça em nenhuma ordem particular:</li>
 
-<blockquote>- entender o problema em mãos antes de escrever qualquer código</blockquote>
+<li>entender o problema em mãos antes de escrever qualquer código</li>
 
-<blockquote>- usar a ferramenta certa para o trabalho certo</blockquote>
+<li>usar a ferramenta certa para o trabalho certo</li>
 
-<blockquote>- seguir padrões aceitos e protocolos sem sacrificar a criatividade</blockquote>
+<li>seguir padrões aceitos e protocolos sem sacrificar a criatividade</li>
 
-<blockquote>- nomeia variáveis e funções como de fato serão para o próximo programador</blockquote>
+<li>nomeia variáveis e funções como de fato serão para o próximo programador</li>
 
-<blockquote>- antecipa o que pode dar errado antes de confiar em um depurador ou testes</blockquote>
+<li>antecipa o que pode dar errado antes de confiar em um depurador ou testes</li>
 
-<blockquote>- entende a arquitetura implícita e como melhor utilizá-la</blockquote>
+<li>entende a arquitetura implícita e como melhor utilizá-la</li>
 
-<blockquote>- nunca escreve o mesmo código duas vezes</blockquote>
+<li>nunca escreve o mesmo código duas vezes</li>
 
-<blockquote>- nunca escreve em 150 linhas o que poderia ser escrito em 100</blockquote>
+<li>nunca escreve em 150 linhas o que poderia ser escrito em 100</li>
 
-<blockquote>- Código ruim: não-comentado. Medíocre: comentado. Bom: não precisa de comentários.</blockquote>
+<li>Código ruim: não-comentado. Medíocre: comentado. Bom: não precisa de comentários.</li>
 
-<blockquote>- entende o ciclo de vida do código inteiro e o escreve para durar</blockquote>
+<li>entende o ciclo de vida do código inteiro e o escreve para durar</li>
 
-<blockquote>- tem pena da pobre alma que tem que mantê-lo e deixa uma dica ou duas</blockquote>
+<li>tem pena da pobre alma que tem que mantê-lo e deixa uma dica ou duas</li>
 
-<blockquote>- escreve de maneira flexível para ser facilmente mudado antes que o projeto termine.</blockquote>
+<li>escreve de maneira flexível para ser facilmente mudado antes que o projeto termine.</li></ul>
+
 </section><hr/>
 
 
@@ -1065,7 +1123,6 @@ catch (...)
 <span class="title-heading">Caloni, 2017-02-20 <a href="2017-02.html#a_mesma_mente_einstein">&lt;</a><a href="quotes.html">quotes</a><a href="2019-09.html#o_trabalho_voltaire">&gt;</a><a href="2017-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_um_lance_a_frente_capablanca')"><sup>[copy]</sup></a></span>
 
 <blockquote>"Eu só vejo um lance à frente, mas é sempre o correto."</blockquote>
-
 <blockquote>Jose Raul Capablanca</blockquote>
 </section><hr/>
 
@@ -1076,7 +1133,6 @@ catch (...)
 <span class="title-heading">Caloni, 2017-02-20 <a href="2017-02.html#o_menor_problema_possivel">&lt;</a><a href="quotes.html">quotes</a><a href="2017-02.html#um_lance_a_frente_capablanca">&gt;</a><a href="2017-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_a_mesma_mente_einstein')"><sup>[copy]</sup></a></span>
 
 <blockquote>"Você não pode resolver um problema com a mesma mente que a criou."</blockquote>
-
 <blockquote>Albert Einstein</blockquote>
 </section><hr/>
 
@@ -1087,7 +1143,6 @@ catch (...)
 <span class="title-heading">Caloni, 2017-02-20 <a href="2017-02.html#sem_oxigenio">&lt;</a><a href="quotes.html">quotes</a><a href="2017-02.html#a_mesma_mente_einstein">&gt;</a><a href="2017-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_o_menor_problema_possivel')"><sup>[copy]</sup></a></span>
 
 <blockquote>"Foque no menor problema possível que você pode resolver cuja solução será potencialmente útil."</blockquote>
-
 <blockquote>David Cohen</blockquote>
 </section><hr/>
 
@@ -1098,7 +1153,6 @@ catch (...)
 <span class="title-heading">Caloni, 2017-02-20 <a href="2010-07.html#religiao">&lt;</a><a href="quotes.html">quotes</a><a href="2017-02.html#o_menor_problema_possivel">&gt;</a><a href="2017-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_sem_oxigenio')"><sup>[copy]</sup></a></span>
 
 <blockquote>"Cada momento que você está trabalhando em algo sem estar na arena pública, esse algo está na verdade morrendo, privado do oxigênio do mundo real."</blockquote>
-
 <blockquote>Matt Mullenweb</blockquote>
 </section><hr/>
 

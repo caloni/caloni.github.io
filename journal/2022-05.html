@@ -199,9 +199,7 @@ role="navigation" aria-label="main navigation">
 <p>Eu gostei desse café. Peguei da última vez que estávamos voltando de viagem de Minas e passamos em Espírito Santo do Pinhal, onde há uma cafeteria cheia de cafés gourmet da região. Foi lá que conhecemos o ótimo Loretto, BTW. Esse a moça falou que era o que eu estava procurando: sem as frescuras do gourmet (aquele gosto meio enjoativo), um pouco de corpo e amargor. Esse está na medida certa. Acabei de abrir e é de meio quilo, então ainda posso experimentar bastante com tempos de infusão, quantidade de pó e moagem, mas o padrão aeropress entrega um copo balanceado, não muito murro no estômago nem muito insosso como moagens mais claras (esta é média). Curioso que a embalagem praticamente toda está em francês. Eis alguns trechos:</p>
 
 <blockquote>L'alliance unique des meilleurs arabicas du Brésil</blockquote>
-
 <blockquote>Élaboré à partir de l'alliance de cafés pur arabica spécialement sélectionnés, le café Cooparaiso Espresso offre saveur, arôme et douceur dans le plus parfait des équilibres.</blockquote>
-
 <blockquote>Cultivé au coeur des hauts plauteaux du Minas Gerais, le goût exceptionnel et profond de ce café au corps marqué, ravira les palais les plus exigeants.</blockquote>
 <p>Ou seja, a mesma lenga-lenga dos textos de embalagens brazucas, mas em francês. Chique, não?</p>
 
@@ -310,23 +308,29 @@ role="navigation" aria-label="main navigation">
 # teste da entrevista de goiaba em bash
 #
 ordenar_numeros() {
+
         maior=0
         menor=$1
         media=$(echo &quot;scale=2; ( $1 + $2 + $3 ) / 3&quot; | bc -l)
         #media=$(( ($1 + $2 + $3) / 3 ))
         numeros=($1 $2 $3)
+
         for i in &quot;${numeros[@]}&quot;; do
+
                 if [ $i -le $menor ]
                 then
                         menor=$i
                 fi
+
                 if [ $i -ge $maior ]
                 then
                         maior=$i
                 fi
         done
+
         echo maior=$maior, menor=$menor, media=$media
 }
+
 ordenar_numeros $1 $2 $3
 </pre>
 <p>Como você deve ter percebido lendo o primeiro script da sua vida variáveis em bash script começam com `$`. As variáveis de `$0` a `$9` são os argumentos do programa, mas de resto pode ser um nome qualquer e usado em qualquer lugar, mas caso você precise tornar o nome não-ambíguo é importante colocar entre chaves:</p>
@@ -359,6 +363,7 @@ set -e
 
 <pre>
 trap cleanup EXIT
+
 cl_stack=()
 cleanup() {
     for ((i=${#cl_stack[@]}-1;i&gt;=0;i--)); do
@@ -388,6 +393,7 @@ fi
 
 <pre>
 [ -z $1 ] &amp;&amp; usage
+
 if [ $1 = &quot;-b&quot; ]; then
   do_boot=y
   shift
@@ -424,11 +430,11 @@ uid=$(stat -c %u ${mountdir}/data/file 2&gt; /dev/null)
 <p>A saída de erro é o file descriptor 2, e por isso foi usada a construção `2&gt;` em vez do simples `&gt;`, que redirecionaria o file descriptor 1, que é a saída padrão. O file descriptor 0, caso não tenha adivinhado ainda, é a entrada padrão, que pode ser obtida com a flechinha invertida `&lt;`. Resumo:</p>
 
 <pre>
-   | sinal | nome    | file descriptor |
-   | ----- | ------- | --------------- |
-   | &lt;     | stdin   | 0               |
-   | &gt;     | stdout  | 1               |
-   | 2&gt;    | stderr  | 2               |
+| sinal | nome    | file descriptor |
+| ----- | ------- | --------------- |
+| &lt;     | stdin   | 0               |
+| &gt;     | stdout  | 1               |
+| 2&gt;    | stderr  | 2               |
 </pre>
 <p>Você deve estar se perguntando se é possível usar outros file descriptors além do 2. Sim, você pode. Abaixo de 10 é mais ou menos seguro utilizar para file descriptors temporários. Acima de 10 é possível que entre em conflito com file descriptors dos próprios comandos sendo executados ou fds do sistema.</p>
 
@@ -528,192 +534,192 @@ case $1 in
 <h3>Alguns comandos úteis do Linux para se divertir</h3>
 
 <pre>
-   | comando     | descrição                                                                |
-   | ----------- | ------------------------------------------------------------------------ |
-   | [           | para construir testes direto do shell                                    |
-   | antiword    | para ler arquivos do Word                                                |
-   | arch        | imprime a arquitetura (e.g. x86_64)                                      |
-   | awk         | linguagem para interpretar texto                                         |
-   | b2sum       | checksum                                                                 |
-   | base32      | parser para base32                                                       |
-   | base64      | parser para base64                                                       |
-   | basename    | nome de arquivo sem path                                                 |
-   | basenc      | coda/decoda de várias bases                                              |
-   | bash        | abre sessão bash                                                         |
-   | brotli      | compressor de arquivos texto                                             |
-   | bunzip2     | descompressor de arquivos                                                |
-   | bz-sth      | compressão de arquivos                                                   |
-   | cat         | exibe conteúdo de arquivo                                                |
-   | chattr      | modifica atributos de arquivos                                           |
-   | chgrp       | modifica grupo associado a arquivos                                      |
-   | chmod       | modifica flags de arquivos                                               |
-   | chown       | modifica proprietário de arquivos                                        |
-   | chroot      | modifica diretório root                                                  |
-   | cksum       | checksum                                                                 |
-   | clear       | limpa tela                                                               |
-   | cmp         | compara arquivos                                                         |
-   | column      | formatação de tabelas                                                    |
-   | comm        | compara arquivos ordenados                                               |
-   | connect     | commando de relay via proxy                                              |
-   | cp          | copia arquivos                                                           |
-   | curl        | acessa recursos web                                                      |
-   | cut         | recorta texto                                                            |
-   | d2u         | dos2unix                                                                 |
-   | dash        | outro bash                                                               |
-   | date        | imprime data/hora atual                                                  |
-   | dd          | copia arquivo com conversão                                              |
-   | df          | mostra espaço usado em disco                                             |
-   | diff[3]     | comparador de arquivos                                                   |
-   | dir         | listagem de arquivos                                                     |
-   | dirname     | nome do diretório de um arquivo                                          |
-   | dos2unix    | converte final de linha                                                  |
-   | du          | uso de espaço por arquivos em diretório                                  |
-   | dumpsexp    | dump hexa de arquivos binários                                           |
-   | echo        | imprime mensagem na saída                                                |
-   | env         | variáveis de ambiente                                                    |
-   | envsubst    | substituição de variáveis de ambiente                                    |
-   | ex          | editor vim no modo ex                                                    |
-   | expand      | expande tabs para espaços                                                |
-   | expr        | avalia expressões                                                        |
-   | factor      | fatora números                                                           |
-   | false       | retorna false (duh), aka 1 (vide bash true/false)                        |
-   | fido2-sth   | coisas de autenticação/criptografia                                      |
-   | file        | identifica tipo de arquivo                                               |
-   | find        | encontra arquivos                                                        |
-   | fmt         | formata arquivos (código-fonte, etc)                                     |
-   | fold        | formata texto para limitar máximo de colunas                             |
-   | funzip      | descompacta gzip                                                         |
-   | gawk        | versão GNU do awk                                                        |
-   | getconf     | retorna configurações do sistema via variáveis POSIX                     |
-   | getopt      | parser de parâmetros de linha de comando (para scripts)                  |
-   | gettext     | tradução de mensagens do sistema                                         |
-   | gpg-sth     | comandos relacionados a PGP da GNU                                       |
-   | grep        | busca padrões em texto                                                   |
-   | groups      | lista grupos de usuário                                                  |
-   | gzip        | compacta dados usando algoritmo gzip                                     |
-   | head        | equivalente ao tail, mas do começo                                       |
-   | hmac256     | gerador de hash                                                          |
-   | hostname    | mostra nome da máquina                                                   |
-   | iconv       | converte entre diferentes encodings                                      |
-   | id          | mostra ids do usuário e grupo                                            |
-   | infocmp     | compara terminfo (conf de terminais) diferentes                          |
-   | infotocap   | conversão de terminfo para termcap                                       |
-   | join        | junta linhas de dois arquivos em campos comuns (e.g. ID Name)            |
-   | kbxutil     | gerenciador de chaves criptográficas                                     |
-   | kill        | mata processo                                                            |
-   | ldd         | exibe dependências de módulo (executável ou dll)                         |
-   | less        | paginador de saída com navegação                                         |
-   | link        | cria links simbólicos                                                    |
-   | ln          | cria hard links                                                          |
-   | locale      | imprime informação de localização                                        |
-   | logname     | nome de login usado                                                      |
-   | ls          | lista diretórios e arquivos                                              |
-   | lsattr      | lista atributos junto dos arquivos e pastas                              |
-   | lzmadec     | descomprime arquivos no formato .lzma                                    |
-   | mac2unix    | formata final de linha                                                   |
-   | md5sum      | gera hash md5                                                            |
-   | minidumper  | gera dumps de memória (win32)                                            |
-   | mintty      | abre terminal TTY                                                        |
-   | mkdir       | cria diretório                                                           |
-   | mkgroup     | lista grupos do sistema                                                  |
-   | mkpasswd    | gera arquivo de senhas                                                   |
-   | mktemp      | cria nome de arquivo temporário único                                    |
-   | mount       | monta unidades                                                           |
-   | mv          | move arquivos e pastas                                                   |
-   | nano        | editor simples                                                           |
-   | nettle-hash | gerador de hashs (várias)                                                |
-   | nice        | ajusta afinidade do processo                                             |
-   | nl          | cria hard links                                                          |
-   | nohup       | ignora sinais de hangup para processo                                    |
-   | nproc       | fala quantos processadores temos                                         |
-   | numfmt      | formatador numérico                                                      |
-   | od          | escreve saída de arquivo em octal                                        |
-   | odt2txt     | converte openoffice para texto                                           |
-   | openssl     | shell com funções criptográficas                                         |
-   | passwd      | troca senha                                                              |
-   | paste       | junta diferentes arquivos na horizontal                                  |
-   | patch       | aplica patchs em arquivos texto                                          |
-   | pdftotext   | converte PDF para texto                                                  |
-   | perl        | linguagem de script para tratamento de texto                             |
-   | pldd        | lista objetos compartilhados na memória do processo                      |
-   | pr          | pagina texto para impressão                                              |
-   | printenv    | imprime variáveis de ambiente                                            |
-   | printf      | função printf do C para scripts                                          |
-   | ps          | lista processos                                                          |
-   | pwd         | diretório atual                                                          |
-   | readlink    | imprime o valor de um link simbólico                                     |
-   | realpath    | resolve nome de arquivo para absoluto                                    |
-   | regtool     | gerencia registro do Windows                                             |
-   | reset       | reinicia sessão                                                          |
-   | rm          | apaga arquivos                                                           |
-   | rmdir       | apaga pastas                                                             |
-   | scp         | copia arquivos remotos                                                   |
-   | sdiff       | diff horizontal                                                          |
-   | sed         | manipulador de streams de texto                                          |
-   | seq         | imprime sequências numéricas                                             |
-   | setfacl     | modifica ACLs de arquivos                                                |
-   | sftp        | client FTP                                                               |
-   | sh          | abre novo shell                                                          |
-   | sha-sth     | vários hashs SHA                                                         |
-   | shred       | sobrescreve arquivo várias vezes para torná-lo irrecuperável             |
-   | shuf        | embaralha linhas de arquivo aleatoriamente                               |
-   | sleep       | dorme por um tempo                                                       |
-   | sort        | ordena linhas                                                            |
-   | split       | divide arquivo em pedaços                                                |
-   | ssh-sht     | funções de SSH                                                           |
-   | ssh         | client SSH                                                               |
-   | sshd        | serviço SSH                                                              |
-   | ssp         | gerador de dados de profiling a nível de instrução assembly              |
-   | stat        | imprime estado de arquivos                                               |
-   | strace      | rastreia chamadas de sistema e signals de processo                       |
-   | stty        | muda ou mostra características do terminal                               |
-   | sum         | imprime checksum de arquivos                                             |
-   | tabs        | verificador de tabs em código-fonte                                      |
-   | tac         | cat invertido                                                            |
-   | tail        | head invertido                                                           |
-   | tar         | junta arquivos em um só (para ser compactado)                            |
-   | tee         | copia entrada para arquivos ou saída padrão                              |
-   | tic         | traduz informações do terminal de um formato fonte para o compilado      |
-   | tig         | git com navegação                                                        |
-   | timeout     | executa programa com tempo limite para terminar (ou é morto)             |
-   | touch       | toca em arquivos (bad boy)                                               |
-   | tr          | traduz, comprime ou apaga caracteres                                     |
-   | true        | programa que sempre sai com sucesso =)                                   |
-   | truncate    | aumenta ou diminui arquivos para tamanho especificado                    |
-   | trust       | gerenciador de certificados                                              |
-   | tty         | imprime nome do terminal conectado                                       |
-   | tzset       | mostra fuso horário atual                                                |
-   | u2d         | unix 2 dos                                                               |
-   | umount      | desmonta unidades                                                        |
-   | uname       | imprime informações como processador, máquina, so                        |
-   | unexpand    | converte espaços para tabs                                               |
-   | uniq        | elimina linhas duplicadas (desde que ordenadas)                          |
-   | unix2dos    | altera finais de linha                                                   |
-   | unix2mac    | altera finais de linha                                                   |
-   | unlink      | remove link simbólico                                                    |
-   | unxz        | comprime e descomprime dados no formato .xz                              |
-   | unzip       | descompacta arquivos no formato zip                                      |
-   | unzipsfx    | descompactador embutido                                                  |
-   | vdir        | ls com listagem de flags, tamanho, etc                                   |
-   | vim         | editor simples                                                           |
-   | vimdiff     | mesmo editor simples, mas com comparação de arquivos                     |
-   | wc          | contador de palavras                                                     |
-   | which       | identifica onde está o comando usado                                     |
-   | who         | mostra quais os usuários logados                                         |
-   | whoami      | mostra quem eu sou (filosófico)                                          |
-   | whouses     | mostra quem está usando                                                  |
-   | xargs       | inicia programa com argumentos lidos da entrada padrão                   |
-   | xmlwf       | valida XML                                                               |
-   | xxd         | dump hexadecimal                                                         |
-   | xz          | comprime arquivos no formato... er... xz?                                |
-   | xzcat       | mostra arquivos comprimidos no formato... er... xz?                      |
-   | xzdec       | descompacta arquivos do formato xz                                       |
-   | yat2m       | extrai man pages de dentro de um Texinfo                                 |
-   | yes         | imprime para sempre yes! yes! yes! (útil para aceitar sempre perguntas)  |
-   | zipcmp      | comparador de zips                                                       |
-   | zipinfo     | informações sobre um zip                                                 |
-   | zipmerge    | merge de arquivos zip                                                    |
-   | ziptool     | mais alguma coisa que dá para fazer com zips                             |
+| comando     | descrição                                                                |
+| ----------- | ------------------------------------------------------------------------ |
+| [           | para construir testes direto do shell                                    |
+| antiword    | para ler arquivos do Word                                                |
+| arch        | imprime a arquitetura (e.g. x86_64)                                      |
+| awk         | linguagem para interpretar texto                                         |
+| b2sum       | checksum                                                                 |
+| base32      | parser para base32                                                       |
+| base64      | parser para base64                                                       |
+| basename    | nome de arquivo sem path                                                 |
+| basenc      | coda/decoda de várias bases                                              |
+| bash        | abre sessão bash                                                         |
+| brotli      | compressor de arquivos texto                                             |
+| bunzip2     | descompressor de arquivos                                                |
+| bz-sth      | compressão de arquivos                                                   |
+| cat         | exibe conteúdo de arquivo                                                |
+| chattr      | modifica atributos de arquivos                                           |
+| chgrp       | modifica grupo associado a arquivos                                      |
+| chmod       | modifica flags de arquivos                                               |
+| chown       | modifica proprietário de arquivos                                        |
+| chroot      | modifica diretório root                                                  |
+| cksum       | checksum                                                                 |
+| clear       | limpa tela                                                               |
+| cmp         | compara arquivos                                                         |
+| column      | formatação de tabelas                                                    |
+| comm        | compara arquivos ordenados                                               |
+| connect     | commando de relay via proxy                                              |
+| cp          | copia arquivos                                                           |
+| curl        | acessa recursos web                                                      |
+| cut         | recorta texto                                                            |
+| d2u         | dos2unix                                                                 |
+| dash        | outro bash                                                               |
+| date        | imprime data/hora atual                                                  |
+| dd          | copia arquivo com conversão                                              |
+| df          | mostra espaço usado em disco                                             |
+| diff[3]     | comparador de arquivos                                                   |
+| dir         | listagem de arquivos                                                     |
+| dirname     | nome do diretório de um arquivo                                          |
+| dos2unix    | converte final de linha                                                  |
+| du          | uso de espaço por arquivos em diretório                                  |
+| dumpsexp    | dump hexa de arquivos binários                                           |
+| echo        | imprime mensagem na saída                                                |
+| env         | variáveis de ambiente                                                    |
+| envsubst    | substituição de variáveis de ambiente                                    |
+| ex          | editor vim no modo ex                                                    |
+| expand      | expande tabs para espaços                                                |
+| expr        | avalia expressões                                                        |
+| factor      | fatora números                                                           |
+| false       | retorna false (duh), aka 1 (vide bash true/false)                        |
+| fido2-sth   | coisas de autenticação/criptografia                                      |
+| file        | identifica tipo de arquivo                                               |
+| find        | encontra arquivos                                                        |
+| fmt         | formata arquivos (código-fonte, etc)                                     |
+| fold        | formata texto para limitar máximo de colunas                             |
+| funzip      | descompacta gzip                                                         |
+| gawk        | versão GNU do awk                                                        |
+| getconf     | retorna configurações do sistema via variáveis POSIX                     |
+| getopt      | parser de parâmetros de linha de comando (para scripts)                  |
+| gettext     | tradução de mensagens do sistema                                         |
+| gpg-sth     | comandos relacionados a PGP da GNU                                       |
+| grep        | busca padrões em texto                                                   |
+| groups      | lista grupos de usuário                                                  |
+| gzip        | compacta dados usando algoritmo gzip                                     |
+| head        | equivalente ao tail, mas do começo                                       |
+| hmac256     | gerador de hash                                                          |
+| hostname    | mostra nome da máquina                                                   |
+| iconv       | converte entre diferentes encodings                                      |
+| id          | mostra ids do usuário e grupo                                            |
+| infocmp     | compara terminfo (conf de terminais) diferentes                          |
+| infotocap   | conversão de terminfo para termcap                                       |
+| join        | junta linhas de dois arquivos em campos comuns (e.g. ID Name)            |
+| kbxutil     | gerenciador de chaves criptográficas                                     |
+| kill        | mata processo                                                            |
+| ldd         | exibe dependências de módulo (executável ou dll)                         |
+| less        | paginador de saída com navegação                                         |
+| link        | cria links simbólicos                                                    |
+| ln          | cria hard links                                                          |
+| locale      | imprime informação de localização                                        |
+| logname     | nome de login usado                                                      |
+| ls          | lista diretórios e arquivos                                              |
+| lsattr      | lista atributos junto dos arquivos e pastas                              |
+| lzmadec     | descomprime arquivos no formato .lzma                                    |
+| mac2unix    | formata final de linha                                                   |
+| md5sum      | gera hash md5                                                            |
+| minidumper  | gera dumps de memória (win32)                                            |
+| mintty      | abre terminal TTY                                                        |
+| mkdir       | cria diretório                                                           |
+| mkgroup     | lista grupos do sistema                                                  |
+| mkpasswd    | gera arquivo de senhas                                                   |
+| mktemp      | cria nome de arquivo temporário único                                    |
+| mount       | monta unidades                                                           |
+| mv          | move arquivos e pastas                                                   |
+| nano        | editor simples                                                           |
+| nettle-hash | gerador de hashs (várias)                                                |
+| nice        | ajusta afinidade do processo                                             |
+| nl          | cria hard links                                                          |
+| nohup       | ignora sinais de hangup para processo                                    |
+| nproc       | fala quantos processadores temos                                         |
+| numfmt      | formatador numérico                                                      |
+| od          | escreve saída de arquivo em octal                                        |
+| odt2txt     | converte openoffice para texto                                           |
+| openssl     | shell com funções criptográficas                                         |
+| passwd      | troca senha                                                              |
+| paste       | junta diferentes arquivos na horizontal                                  |
+| patch       | aplica patchs em arquivos texto                                          |
+| pdftotext   | converte PDF para texto                                                  |
+| perl        | linguagem de script para tratamento de texto                             |
+| pldd        | lista objetos compartilhados na memória do processo                      |
+| pr          | pagina texto para impressão                                              |
+| printenv    | imprime variáveis de ambiente                                            |
+| printf      | função printf do C para scripts                                          |
+| ps          | lista processos                                                          |
+| pwd         | diretório atual                                                          |
+| readlink    | imprime o valor de um link simbólico                                     |
+| realpath    | resolve nome de arquivo para absoluto                                    |
+| regtool     | gerencia registro do Windows                                             |
+| reset       | reinicia sessão                                                          |
+| rm          | apaga arquivos                                                           |
+| rmdir       | apaga pastas                                                             |
+| scp         | copia arquivos remotos                                                   |
+| sdiff       | diff horizontal                                                          |
+| sed         | manipulador de streams de texto                                          |
+| seq         | imprime sequências numéricas                                             |
+| setfacl     | modifica ACLs de arquivos                                                |
+| sftp        | client FTP                                                               |
+| sh          | abre novo shell                                                          |
+| sha-sth     | vários hashs SHA                                                         |
+| shred       | sobrescreve arquivo várias vezes para torná-lo irrecuperável             |
+| shuf        | embaralha linhas de arquivo aleatoriamente                               |
+| sleep       | dorme por um tempo                                                       |
+| sort        | ordena linhas                                                            |
+| split       | divide arquivo em pedaços                                                |
+| ssh-sht     | funções de SSH                                                           |
+| ssh         | client SSH                                                               |
+| sshd        | serviço SSH                                                              |
+| ssp         | gerador de dados de profiling a nível de instrução assembly              |
+| stat        | imprime estado de arquivos                                               |
+| strace      | rastreia chamadas de sistema e signals de processo                       |
+| stty        | muda ou mostra características do terminal                               |
+| sum         | imprime checksum de arquivos                                             |
+| tabs        | verificador de tabs em código-fonte                                      |
+| tac         | cat invertido                                                            |
+| tail        | head invertido                                                           |
+| tar         | junta arquivos em um só (para ser compactado)                            |
+| tee         | copia entrada para arquivos ou saída padrão                              |
+| tic         | traduz informações do terminal de um formato fonte para o compilado      |
+| tig         | git com navegação                                                        |
+| timeout     | executa programa com tempo limite para terminar (ou é morto)             |
+| touch       | toca em arquivos (bad boy)                                               |
+| tr          | traduz, comprime ou apaga caracteres                                     |
+| true        | programa que sempre sai com sucesso =)                                   |
+| truncate    | aumenta ou diminui arquivos para tamanho especificado                    |
+| trust       | gerenciador de certificados                                              |
+| tty         | imprime nome do terminal conectado                                       |
+| tzset       | mostra fuso horário atual                                                |
+| u2d         | unix 2 dos                                                               |
+| umount      | desmonta unidades                                                        |
+| uname       | imprime informações como processador, máquina, so                        |
+| unexpand    | converte espaços para tabs                                               |
+| uniq        | elimina linhas duplicadas (desde que ordenadas)                          |
+| unix2dos    | altera finais de linha                                                   |
+| unix2mac    | altera finais de linha                                                   |
+| unlink      | remove link simbólico                                                    |
+| unxz        | comprime e descomprime dados no formato .xz                              |
+| unzip       | descompacta arquivos no formato zip                                      |
+| unzipsfx    | descompactador embutido                                                  |
+| vdir        | ls com listagem de flags, tamanho, etc                                   |
+| vim         | editor simples                                                           |
+| vimdiff     | mesmo editor simples, mas com comparação de arquivos                     |
+| wc          | contador de palavras                                                     |
+| which       | identifica onde está o comando usado                                     |
+| who         | mostra quais os usuários logados                                         |
+| whoami      | mostra quem eu sou (filosófico)                                          |
+| whouses     | mostra quem está usando                                                  |
+| xargs       | inicia programa com argumentos lidos da entrada padrão                   |
+| xmlwf       | valida XML                                                               |
+| xxd         | dump hexadecimal                                                         |
+| xz          | comprime arquivos no formato... er... xz?                                |
+| xzcat       | mostra arquivos comprimidos no formato... er... xz?                      |
+| xzdec       | descompacta arquivos do formato xz                                       |
+| yat2m       | extrai man pages de dentro de um Texinfo                                 |
+| yes         | imprime para sempre yes! yes! yes! (útil para aceitar sempre perguntas)  |
+| zipcmp      | comparador de zips                                                       |
+| zipinfo     | informações sobre um zip                                                 |
+| zipmerge    | merge de arquivos zip                                                    |
+| ziptool     | mais alguma coisa que dá para fazer com zips                             |
 </pre>
 <h2>Debugging</h2>
 
@@ -748,12 +754,14 @@ maior=3, menor=1, media=2.00
 
 <pre>
 for i in &quot;${numeros[@]}&quot;; do
+
   set -x # activate debugging from here
   if [ $i -le $menor ]
   then
           menor=$i
   fi
   set +x # stop debugging from here
+
   if [ $i -ge $maior ]
 bash sort-number.sh 1 2 3
 + '[' 1 -le 1 ']'

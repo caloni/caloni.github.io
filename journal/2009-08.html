@@ -49,7 +49,6 @@ role="navigation" aria-label="main navigation">
 <span class="title-heading">Caloni, 2009-08-01 <a href="2009-07.html#estado">&lt;</a><a href="quotes.html">quotes</a><a href="2009-09.html#transparente">&gt;</a> <a href="2009-07.html#estado">&lt;</a><a href="self.html">self</a><a href="2009-09.html#transparente">&gt;</a> <a href="2009-07.html#estado">&lt;</a><a href="now.html">now</a><a href="2009-09.html#transparente">&gt;</a><a href="2009-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_irritacao')"><sup>[copy]</sup></a></span>
 
 <blockquote>A mais leve irritação é significativa e precisa ser conhecida e observada.</blockquote>
-
 <blockquote>Tolle, Eckhart (O Poder do Agora, 1997)</blockquote>
 </section><hr/>
 
@@ -64,18 +63,18 @@ role="navigation" aria-label="main navigation">
 <p>Ele pode ser usado na situação mais comum: o programa trava/quebra em um cliente específico e/ou em um momento específico que pode acontecer em cinco segundos ou daqui a quinze horas. Como você não pode ficar monitorando o tempo todo a execução do programa (haja indexadores no PerfMon!) então você precisa de alguém que monitore por você. Como seres humanos costumam ter deficit de atenção muito facilmente você vai lá no cliente (ou pede para alguém ir) e executa o AdPlus, que dá conta do recado:</p>
 
 <pre>
-   AdPlus.vbs -crash -sc notepad.exe
+AdPlus.vbs -crash -sc notepad.exe
 </pre>
 <p>Esse notepad, viu! Sempre ele!</p>
 
 <p>Bom, vamos fazer alguma brincadeira de desmontar para ver seu funcionamento. Com o notepad recém-aberto por esse comando, vamos abrir outro depurador em modo de visualização e alterar alguma chamada-chave para quebrar propositadamente. Isso deve fazer o truque:</p>
 
 <pre>
-   windbg -pv -pn notepad.exe
-   a user32!MessageBoxW
-   jmp 0
-   .detach
-   q
+windbg -pv -pn notepad.exe
+a user32!MessageBoxW
+jmp 0
+.detach
+q
 </pre>
 <p>Após isso só precisamos abrir um arquivo qualquer que não existe e o notepad deve explodir. Depois desse lapso de memória o AdPlus irá gerar dois "dumpões" e um "dumpinho" para você com o primeiro comando deste post. O dumpinho é a exceção de first chance, que ele iria gerar de qualquer forma se houvesse uma exceção capturada pelo programa. É apenas um minidump. Os outros dois dumpões são o momento da exceção second chance, o que quer dizer que é antes da casa cair, e o segundo é quando a casa já caiu e o processo pegou suas coisas e já tá indo embora. A partir do second chance podemos visualizar a cagada feita pelo nosso WinDbg de passagem.</p>
 
@@ -203,9 +202,9 @@ role="navigation" aria-label="main navigation">
 
 <p>Quando o computador é ligado, o código da BIOS realiza duas operações vitais antes de continuar:</p>
 
-<p>  1. Ver se todos os componentes de hardware estão bem;</p>
+<p>1. Ver se todos os componentes de hardware estão bem;</p>
 
-<p>  2. Ver quem é o dispositivo que inicia o sistema operacional.</p>
+<p>2. Ver quem é o dispositivo que inicia o sistema operacional.</p>
 
 <p>Esse segundo item é o que veremos agora.</p>
 
@@ -223,19 +222,19 @@ role="navigation" aria-label="main navigation">
 
 <p>Agora chegamos em todos os passos iniciais realizados antes de entrar em cena o S.O.:</p>
 
-<p>  1. O firmware da placa-mãe, conhecida como BIOS, verifica se o hardware básico está funcionando;</p>
+<p>1. O firmware da placa-mãe, conhecida como BIOS, verifica se o hardware básico está funcionando;</p>
 
-<p>  2. Em seguida, o mesmo código procura pelo dispositivo iniciável que irá dar início ao processo de boot;</p>
+<p>2. Em seguida, o mesmo código procura pelo dispositivo iniciável que irá dar início ao processo de boot;</p>
 
-<p>  3. Se for um HD, então o primeiro setor físico desse HD será carregado em memória e executado;</p>
+<p>3. Se for um HD, então o primeiro setor físico desse HD será carregado em memória e executado;</p>
 
-<p>  4. Esse primeiro setor se chama MBR e contém uma tabela com até quatro entradas de partições no disco;</p>
+<p>4. Esse primeiro setor se chama MBR e contém uma tabela com até quatro entradas de partições no disco;</p>
 
-<p>  5. O código da MBR procura pela partição ativa onde deve estar o sistema operacional;</p>
+<p>5. O código da MBR procura pela partição ativa onde deve estar o sistema operacional;</p>
 
-<p>  6. Assim como a BIOS, a MBR carrega na memória o primeiro setor da partição ativa e executa;</p>
+<p>6. Assim como a BIOS, a MBR carrega na memória o primeiro setor da partição ativa e executa;</p>
 
-<p>  7. A partir daí temos o código de um possível sistema operacional rodando.</p>
+<p>7. A partir daí temos o código de um possível sistema operacional rodando.</p>
 
 <p>Todos os componentes principais desse boot podem ser visualizados de uma forma bem macro na figura abaixo.</p>
 

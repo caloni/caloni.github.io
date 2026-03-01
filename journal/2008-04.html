@@ -54,8 +54,7 @@ role="navigation" aria-label="main navigation">
 <p class="title"><a href="2008-04.html#reflexo">#</a> Reflexo</p>
 <span class="title-heading">Caloni, 2008-04-01 <a href="2008-03.html#conhecer_a_mente">&lt;</a><a href="quotes.html">quotes</a><a href="2008-05.html#sofrimento">&gt;</a> <a href="2008-03.html#conhecer_a_mente">&lt;</a><a href="self.html">self</a><a href="2008-05.html#sofrimento">&gt;</a> <a href="2008-03.html#conhecer_a_mente">&lt;</a><a href="now.html">now</a><a href="2008-05.html#sofrimento">&gt;</a><a href="2008-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_reflexo')"><sup>[copy]</sup></a></span>
 
-<blockquote>O padrão do pensamento cria um reflexo amplificado de si mesmo. </blockquote>
-
+<blockquote>O padrão do pensamento cria um reflexo amplificado de si mesmo.</blockquote>
 <blockquote>Tolle, Eckhart (O Poder do Agora, 1997)</blockquote>
 </section><hr/>
 
@@ -70,70 +69,77 @@ role="navigation" aria-label="main navigation">
 <p>É possível, apesar de bizarro, colocar um bloco try-catch em torno da lista de inicialização de variáveis de um construtor. Essa característica da linguagem permite que possamos capturar alguma exceção lançada por algum construtor de algum membro da classe. A construção em código ficaria no estilo abaixo:</p>
 
 <pre>
-   Class::Class() try : initialization-list
-   {
-       // Class constructor body
-   }
-   catch(...) // note: this IS right!
-   {
-       // do something about
-       // just like &quot;throw&quot; over here
-   }
+Class::Class() try : initialization-list
+{
+    // Class constructor body
+}
+catch(...) // note: this IS right!
+{
+    // do something about
+    // just like &quot;throw&quot; over here
+}
 </pre>
 <p>Apesar dessa capacidade, não conseguimos parar o lançamento da exceção. Após seu lançamento, caímos no bloco catch abaixo do corpo do construtor e a exceção é lançada novamente, como se houvesse uma intrução throw no final do catch.</p>
 
 <p>O exemplo abaixo demonstra um código de uma classe que captura a exceção durante a inicialização dos membros. Na seguida o catch da função main é executada, provando que a exceção de fato não é "salva" no primeiro bloco.</p>
 
 <pre>
-   #include &lt;iostream&gt;
-   /* This class explodes */
-   class Explode
-   {
-     public:
-       Explode(int x) 
-       {
-         m_x = x;
-         throw x;
-       }
-       void print()
-       {
-         std::cout &lt;&lt; &quot;The number: &quot; &lt;&lt; m_x &lt;&lt; std::endl;
-       }
-     private:
-       int m_x;
-   };
-   /* This class is going to be exploded */
-   class Victim
-   {
-     public:
-       Victim() try : m_explode(5)
-       {
-         std::cout &lt;&lt; &quot;You're supposed to NOT seeing this...\n&quot;;
-       }
-       catch(...) 
-       { 
-         std::cerr &lt;&lt; &quot;Something BAD hapenned\n&quot;;
-         std::cerr &lt;&lt; &quot;We're going to blow up\n&quot;;
-         // just like 'throw' over here
-       }
-       void print()
-       {
-         m_explode.print();
-       }
-     private:
-       Explode m_explode;
-   };
-   int main()
-   {
-     try
-     {
-       Victim vic;
-     }
-     catch(...)
-     {
-       std::cerr &lt;&lt; &quot;Something BAD BAD happenned...\n&quot;;
-     }
-   }
+#include &lt;iostream&gt;
+
+/* This class explodes */
+class Explode
+{
+  public:
+    Explode(int x) 
+    {
+      m_x = x;
+      throw x;
+    }
+
+    void print()
+    {
+      std::cout &lt;&lt; &quot;The number: &quot; &lt;&lt; m_x &lt;&lt; std::endl;
+    }
+
+  private:
+    int m_x;
+};
+
+/* This class is going to be exploded */
+class Victim
+{
+  public:
+    Victim() try : m_explode(5)
+    {
+      std::cout &lt;&lt; &quot;You're supposed to NOT seeing this...\n&quot;;
+    }
+    catch(...) 
+    { 
+      std::cerr &lt;&lt; &quot;Something BAD hapenned\n&quot;;
+      std::cerr &lt;&lt; &quot;We're going to blow up\n&quot;;
+      // just like 'throw' over here
+    }
+
+    void print()
+    {
+      m_explode.print();
+    }
+
+  private:
+    Explode m_explode;
+};
+
+int main()
+{
+  try
+  {
+    Victim vic;
+  }
+  catch(...)
+  {
+    std::cerr &lt;&lt; &quot;Something BAD BAD happenned...\n&quot;;
+  }
+}
 </pre>
 <p>Testei esse código nos seguintes compiladores:</p>
 
@@ -154,9 +160,9 @@ role="navigation" aria-label="main navigation">
 <p>A saída esperada é a seguinte:</p>
 
 <pre>
-   Something BAD hapenned
-   We're going to blow up
-   Something BAD BAD happenned...
+Something BAD hapenned
+We're going to blow up
+Something BAD BAD happenned...
 </pre>
 </section><hr/>
 
@@ -185,31 +191,36 @@ role="navigation" aria-label="main navigation">
 <p>Dessa forma, podemos começar a construir nosso interpretador de arquivos do Houaiss em seu formato básico.</p>
 
 <pre>
-   #include &lt;iostream&gt;
-   #include &lt;string&gt;
-   int main()
-   {
-     char cmd; // comando da linha atualmente lida
-     string line; // linha atualmente lida
-     int count = 0; // contador de palavras
-     while( getline(cin, line) )
-     {
-       cmd = line[0]; // guardamos o comando
-       line.erase(0, 1); // tiramos o comando da linha
-       format(line); // formatação da linha (explicações adiante)
-       switch( cmd ) // que comando é esse?
-       {
-       case '*': // verbete
-         ++count;
-         cout &lt;&lt; '\n' &lt;&lt; line &lt;&lt; '\n';
-         break;
-       case ':': // definição
-         cout &lt;&lt; line &lt;&lt; &quot;&lt;br&gt;\n&quot;;
-         break;
-       }
-     }
-     return 0;
-   }
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+int main()
+{
+  char cmd; // comando da linha atualmente lida
+  string line; // linha atualmente lida
+  int count = 0; // contador de palavras
+
+  while( getline(cin, line) )
+  {
+    cmd = line[0]; // guardamos o comando
+    line.erase(0, 1); // tiramos o comando da linha
+    format(line); // formatação da linha (explicações adiante)
+
+    switch( cmd ) // que comando é esse?
+    {
+    case '*': // verbete
+      ++count;
+      cout &lt;&lt; '\n' &lt;&lt; line &lt;&lt; '\n';
+      break;
+
+    case ':': // definição
+      cout &lt;&lt; line &lt;&lt; &quot;&lt;br&gt;\n&quot;;
+      break;
+    }
+  }
+
+  return 0;
+}
 </pre>
 <p>Simples e funcional. Com esse código já é possível extrair o básico que precisamos de um dicionário: os vocábulos e suas definições.</p>
 
@@ -218,48 +229,60 @@ role="navigation" aria-label="main navigation">
 <p>A formatação segue o estilo já identificado, de forma que podemos aos poucos montar um interpretador de formatação para HTML, que é o formato reconhecido pelo Babylon Builder. Podemos seguir o seguinte molde, chamado no exemplo de código anterior:</p>
 
 <pre>
-   void format(string&amp; str)
-   {
-     string::size_type pos1 = 0;
-     string::size_type pos2 = 0;
-     while( (pos1 = str.find('&lt;')) != string::npos )
-       str.replace(pos1, 1, &quot;&lt;&quot;);
-     while( (pos1 = str.find('&gt;')) != string::npos )
-       str.replace(pos1, 1, &quot;&gt;&quot;);
-     while( (pos1 = str.find('{')) != string::npos )
-     {
-       if( pos1 &amp;&amp; str[pos1 - 1] == '\\' ) // caractere de escape
-         str.replace(pos1 - 1, 2, &quot;{&quot;);
-       else
-       {
-         string subStr;
-         pos2 = str.find('}', pos1);
-         if( pos2 != string::npos )
-           subStr = str.substr(pos1 + 1, pos2 - pos1 - 1);
-         else
-           subStr = str.substr(pos1 + 1);
-         istringstream is(subStr);
-         string fmt;
-         string word;
-         is &gt;&gt; fmt;
-         getline(is, word);
-         if( word[0] == ' ' )
-         word.erase(0, 1);
-         if( fmt.find(&quot;\\i&quot;) != string::npos )
-           word = &quot;&lt;i&gt;&quot; + word + &quot;&lt;/i&gt;&quot;;
-         if( fmt.find(&quot;\\b&quot;) != string::npos )
-           word = &quot;&lt;b&gt;&quot; + word + &quot;&lt;/b&gt;&quot;;
-         if( fmt.find(&quot;\\f20&quot;) != string::npos )
-           word = &quot;&quot; + word + &quot;&quot;;
-         if( fmt.find(&quot;\\super&quot;) != string::npos )
-           word = &quot;&quot; + word + &quot;&quot;;
-         if( pos2 != string::npos )
-           str.replace(pos1, pos2 - pos1 + 1, word);
-         else
-           str.replace(pos1, pos2, word);
-       }
-     }
-   }
+void format(string&amp; str)
+{
+  string::size_type pos1 = 0;
+  string::size_type pos2 = 0;
+
+  while( (pos1 = str.find('&lt;')) != string::npos )
+    str.replace(pos1, 1, &quot;&lt;&quot;);
+
+  while( (pos1 = str.find('&gt;')) != string::npos )
+    str.replace(pos1, 1, &quot;&gt;&quot;);
+
+  while( (pos1 = str.find('{')) != string::npos )
+  {
+    if( pos1 &amp;&amp; str[pos1 - 1] == '\\' ) // caractere de escape
+      str.replace(pos1 - 1, 2, &quot;{&quot;);
+    else
+    {
+      string subStr;
+
+      pos2 = str.find('}', pos1);
+
+      if( pos2 != string::npos )
+        subStr = str.substr(pos1 + 1, pos2 - pos1 - 1);
+      else
+        subStr = str.substr(pos1 + 1);
+
+      istringstream is(subStr);
+
+      string fmt;
+      string word;
+      is &gt;&gt; fmt;
+      getline(is, word);
+      if( word[0] == ' ' )
+      word.erase(0, 1);
+
+      if( fmt.find(&quot;\\i&quot;) != string::npos )
+        word = &quot;&lt;i&gt;&quot; + word + &quot;&lt;/i&gt;&quot;;
+
+      if( fmt.find(&quot;\\b&quot;) != string::npos )
+        word = &quot;&lt;b&gt;&quot; + word + &quot;&lt;/b&gt;&quot;;
+
+      if( fmt.find(&quot;\\f20&quot;) != string::npos )
+        word = &quot;&quot; + word + &quot;&quot;;
+
+      if( fmt.find(&quot;\\super&quot;) != string::npos )
+        word = &quot;&quot; + word + &quot;&quot;;
+
+      if( pos2 != string::npos )
+        str.replace(pos1, pos2 - pos1 + 1, word);
+      else
+        str.replace(pos1, pos2, word);
+    }
+  }
+}
 </pre>
 <p>Algumas partes ainda estão feias, eu sei. Mas, ei, isso é um código de ráquer, não é mesmo? Além do mais, se isso não é desculpa suficiente, estamos trabalhando em uma versão beta.</p>
 
@@ -288,8 +311,8 @@ role="navigation" aria-label="main navigation">
 <p>Para quem está começando, recomendo usar um depurador simples, 16 bits e que existe em todo e qualquer Windows: o debug. Já usado para depurar a MBR <a href="2008-03.html#depuracao_da_mbr">aqui no bloque</a>, poderá agora ser usado para ensinar alguns princípios da plataforma de uma maneira indolor. Basta iniciá-lo na linha de comando:</p>
 
 <pre>
-   debug
-   -
+debug
+-
 </pre>
 <p>Os comandos mais úteis são o r (ver ou alterar registradores), o t/p (executar passo-a-passo), o d (exibir memória), o u (desmontar assembly) e o a (montar assembly). Ah, não se esquecendo do ? (ajuda).</p>
 
@@ -298,94 +321,100 @@ role="navigation" aria-label="main navigation">
 <p>Outro ensinamento bem interessante diz respeito à pilha. Aprendemos sempre que a pilha cresce de cima pra baixo, ou seja, de endereços superiores para valores mais baixos. Também vimos que os registradores responsáveis por controlar a memória da pilha são o sp (stack pointer) e o ss (stack segment). Pois bem. Vamos fazer alguns testes para ver isso acontecer.</p>
 
 <pre>
-   -r
-   AX=0000  BX=0000  CX=0000  DX=0000  SP=FFEE  BP=0000  SI=0000  DI=0000
-   DS=0CF9  ES=0CF9  SS=0CF9  CS=0CF9  IP=0100   NV UP EI PL NZ NA PO NC
-   0CF9:0100 69            DB      69
-   -r ss
-   SS 0CF9
-   :9000
-   -r sp
-   SP FFEE
-   :ffff
-   -r
-   AX=0000  BX=0000  CX=0000  DX=0000  SP=FFFF  BP=0000  SI=0000  DI=0000
-   DS=0CF9  ES=0CF9  SS=9000  CS=0CF9  IP=0100   NV UP EI PL NZ NA PO NC
-   0CF9:0100 69            DB      69
-   -a
-   0CF9:0100 mov ax, 1234
-   0CF9:0103 push ax
-   0CF9:0104 inc ax
-   0CF9:0105 push ax
-   0CF9:0106 inc ax
-   0CF9:0107 push ax
-   0CF9:0108
-   -u
-   0CF9:0100 B83412        MOV     AX,1234
-   0CF9:0103 50            PUSH    AX
-   0CF9:0104 40            INC     AX
-   0CF9:0105 50            PUSH    AX
-   0CF9:0106 40            INC     AX
-   0CF9:0107 50            PUSH    AX
-   0CF9:0108 6C            DB      6C
-   ...
-   AX=1234  BX=0000  CX=0000  DX=0000  SP=FFFF  BP=0000  SI=0000  DI=0000
-   DS=0CF9  ES=0CF9  SS=9000  CS=0CF9  IP=0103   NV UP EI PL NZ NA PO NC
-   0CF9:0103 50            PUSH    AX
-   -t
-   AX=1234  BX=0000  CX=0000  DX=0000  SP=FFFD  BP=0000  SI=0000  DI=0000
-   DS=0CF9  ES=0CF9  SS=9000  CS=0CF9  IP=0104   NV UP EI PL NZ NA PO NC
-   0CF9:0104 40            INC     AX
-   -t
-   AX=1235  BX=0000  CX=0000  DX=0000  SP=FFFD  BP=0000  SI=0000  DI=0000
-   DS=0CF9  ES=0CF9  SS=9000  CS=0CF9  IP=0105   NV UP EI PL NZ NA PE NC
-   0CF9:0105 50            PUSH    AX
-   -t
-   AX=1235  BX=0000  CX=0000  DX=0000  SP=FFFB  BP=0000  SI=0000  DI=0000
-   DS=0CF9  ES=0CF9  SS=9000  CS=0CF9  IP=0106   NV UP EI PL NZ NA PE NC
-   0CF9:0106 40            INC     AX
-   -t
-   AX=1236  BX=0000  CX=0000  DX=0000  SP=FFFB  BP=0000  SI=0000  DI=0000
-   DS=0CF9  ES=0CF9  SS=9000  CS=0CF9  IP=0107   NV UP EI PL NZ NA PE NC
-   0CF9:0107 50            PUSH    AX
-   -t
-   AX=1236  BX=0000  CX=0000  DX=0000  SP=FFF9  BP=0000  SI=0000  DI=0000
-   DS=0CF9  ES=0CF9  SS=9000  CS=0CF9  IP=0108   NV UP EI PL NZ NA PE NC
-   0CF9:0108 6C            DB      6C
-   -d 9000:fff9
-   9000:FFF0                             36 12 35 12 34 12 00            6.5.4..
-   -
+-r
+AX=0000  BX=0000  CX=0000  DX=0000  SP=FFEE  BP=0000  SI=0000  DI=0000
+DS=0CF9  ES=0CF9  SS=0CF9  CS=0CF9  IP=0100   NV UP EI PL NZ NA PO NC
+0CF9:0100 69            DB      69
+-r ss
+SS 0CF9
+:9000
+-r sp
+SP FFEE
+:ffff
+-r
+AX=0000  BX=0000  CX=0000  DX=0000  SP=FFFF  BP=0000  SI=0000  DI=0000
+DS=0CF9  ES=0CF9  SS=9000  CS=0CF9  IP=0100   NV UP EI PL NZ NA PO NC
+0CF9:0100 69            DB      69
+-a
+0CF9:0100 mov ax, 1234
+0CF9:0103 push ax
+0CF9:0104 inc ax
+0CF9:0105 push ax
+0CF9:0106 inc ax
+0CF9:0107 push ax
+0CF9:0108
+-u
+0CF9:0100 B83412        MOV     AX,1234
+0CF9:0103 50            PUSH    AX
+0CF9:0104 40            INC     AX
+0CF9:0105 50            PUSH    AX
+0CF9:0106 40            INC     AX
+0CF9:0107 50            PUSH    AX
+0CF9:0108 6C            DB      6C
+...
+AX=1234  BX=0000  CX=0000  DX=0000  SP=FFFF  BP=0000  SI=0000  DI=0000
+DS=0CF9  ES=0CF9  SS=9000  CS=0CF9  IP=0103   NV UP EI PL NZ NA PO NC
+0CF9:0103 50            PUSH    AX
+-t
+
+AX=1234  BX=0000  CX=0000  DX=0000  SP=FFFD  BP=0000  SI=0000  DI=0000
+DS=0CF9  ES=0CF9  SS=9000  CS=0CF9  IP=0104   NV UP EI PL NZ NA PO NC
+0CF9:0104 40            INC     AX
+-t
+
+AX=1235  BX=0000  CX=0000  DX=0000  SP=FFFD  BP=0000  SI=0000  DI=0000
+DS=0CF9  ES=0CF9  SS=9000  CS=0CF9  IP=0105   NV UP EI PL NZ NA PE NC
+0CF9:0105 50            PUSH    AX
+-t
+
+AX=1235  BX=0000  CX=0000  DX=0000  SP=FFFB  BP=0000  SI=0000  DI=0000
+DS=0CF9  ES=0CF9  SS=9000  CS=0CF9  IP=0106   NV UP EI PL NZ NA PE NC
+0CF9:0106 40            INC     AX
+-t
+
+AX=1236  BX=0000  CX=0000  DX=0000  SP=FFFB  BP=0000  SI=0000  DI=0000
+DS=0CF9  ES=0CF9  SS=9000  CS=0CF9  IP=0107   NV UP EI PL NZ NA PE NC
+0CF9:0107 50            PUSH    AX
+-t
+
+AX=1236  BX=0000  CX=0000  DX=0000  SP=FFF9  BP=0000  SI=0000  DI=0000
+DS=0CF9  ES=0CF9  SS=9000  CS=0CF9  IP=0108   NV UP EI PL NZ NA PE NC
+0CF9:0108 6C            DB      6C
+-d 9000:fff9
+9000:FFF0                             36 12 35 12 34 12 00            6.5.4..
+-
 </pre>
 <p>Como vemos, ao empilhar coisas na pilha, o valor do registrador sp diminui. E ao fazermos um dump do valor de sp conseguimos ver os valores empilhados anteriormente. Isso é muito útil na hora de depurarmos chamadas de funções. Por exemplo, no velho teste do Windbg x Bloco de notas:</p>
 
 <pre>
-   windbg notepad
-   0:000&gt; bp user32!MessageBoxW
-   0:000&gt; g
-   ModLoad: 5cfd0000 5cff6000   C:\WINDOWS\system32\ShimEng.dll
-   ModLoad: 596f0000 598ba000   C:\WINDOWS\AppPatch\AcGenral.DLL
-   ModLoad: 76b20000 76b4e000   C:\WINDOWS\system32\WINMM.dll
-   ModLoad: 774c0000 775fd000   C:\WINDOWS\system32\ole32.dll
-   ...
-   ModLoad: 10000000 10030000   C:\Arquivos de programas\Babylon\Babylon-Pro\CAPTLIB.DLL
-   ModLoad: 74c40000 74c6c000   C:\WINDOWS\system32\OLEACC.dll
-   ModLoad: 76050000 760b5000   C:\WINDOWS\system32\MSVCP60.dll
-   Breakpoint 0 hit
-   eax=00000001 ebx=00000000 ecx=000a7884 edx=00000000 esi=000b2850 edi=0000000a
-   eip=7e3b630a esp=0007f6d8 ebp=0007f6f4 iopl=0         nv up ei pl nz na po nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000202
-   USER32!MessageBoxW:
-   7e3b630a 8bff            mov     edi,edi
-   0:000&gt; dd esp L5
-   0007f6d8  01001fc4 00010226 000b2850 000a7ac2 ; ret   handle message caption
-   0007f6e8  00000033                            ; mb_ok
-   0:000&gt; du 000b2850
-   000b2850  &quot;O texto do arquivo Sem título fo&quot;
-   000b2890  &quot;i alterado...Deseja salvar as al&quot;
-   000b28d0  &quot;terações?&quot;
-   0:000&gt; ezu 000b2850 &quot;Tem certeza que deseja salvar esse artigo de merda?&quot;
-   0:000&gt; g
-   ModLoad: 75f50000 7604d000   C:\WINDOWS\system32\BROWSEUI.dll
+windbg notepad
+
+0:000&gt; bp user32!MessageBoxW
+0:000&gt; g
+ModLoad: 5cfd0000 5cff6000   C:\WINDOWS\system32\ShimEng.dll
+ModLoad: 596f0000 598ba000   C:\WINDOWS\AppPatch\AcGenral.DLL
+ModLoad: 76b20000 76b4e000   C:\WINDOWS\system32\WINMM.dll
+ModLoad: 774c0000 775fd000   C:\WINDOWS\system32\ole32.dll
+...
+ModLoad: 10000000 10030000   C:\Arquivos de programas\Babylon\Babylon-Pro\CAPTLIB.DLL
+ModLoad: 74c40000 74c6c000   C:\WINDOWS\system32\OLEACC.dll
+ModLoad: 76050000 760b5000   C:\WINDOWS\system32\MSVCP60.dll
+Breakpoint 0 hit
+eax=00000001 ebx=00000000 ecx=000a7884 edx=00000000 esi=000b2850 edi=0000000a
+eip=7e3b630a esp=0007f6d8 ebp=0007f6f4 iopl=0         nv up ei pl nz na po nc
+cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000202
+USER32!MessageBoxW:
+7e3b630a 8bff            mov     edi,edi
+0:000&gt; dd esp L5
+0007f6d8  01001fc4 00010226 000b2850 000a7ac2 ; ret   handle message caption
+0007f6e8  00000033                            ; mb_ok
+0:000&gt; du 000b2850
+000b2850  &quot;O texto do arquivo Sem título fo&quot;
+000b2890  &quot;i alterado...Deseja salvar as al&quot;
+000b28d0  &quot;terações?&quot;
+0:000&gt; ezu 000b2850 &quot;Tem certeza que deseja salvar esse artigo de merda?&quot;
+0:000&gt; g
+ModLoad: 75f50000 7604d000   C:\WINDOWS\system32\BROWSEUI.dll
 </pre>
 <img src="/journal/img/aprendendo_assembly_com_o_depurador_windbgxnotepad.png"/>
 
@@ -428,41 +457,47 @@ role="navigation" aria-label="main navigation">
 <p>O princípio de uso de uma ferramenta distribuída é muito simples: se você tiver um diretório de projeto já criado, basta, dentro dessa pasta, iniciar o repositório de fontes.</p>
 
 <pre>
-   &gt; hg init
+&gt; hg init
 </pre>
 <p>Após isso, será criada uma pasta com o nome .hg. Dentro dela é armazenado todo o histórico dos fontes. Podemos inicialmente adicionar os arquivos do projeto existente e fazer o primeiro commit, que irá começar a controlar os arquivos adicionados dentro dessa pasta e subpastas:</p>
 
 <pre>
-   &gt; hg add
-   adding Header.h
-   adding Main.cpp
-   adding Project.cpp
-   adding Project.vcproj
-   &gt; hg commit -m &quot;Primeira versao&quot;
+&gt; hg add
+adding Header.h
+adding Main.cpp
+adding Project.cpp
+adding Project.vcproj
+
+&gt; hg commit -m &quot;Primeira versao&quot;
 </pre>
 <p>Se o programa não disse nada ao efetuar o commit, é porque está tudo certo. Agora podemos controlar as mudanças de nosso código usando o comando status. Para vermos o histórico usamos o comando log.</p>
 
 <pre>
-   &gt; hg log
-   changeset:   0:e9246bcf2107
-   tag:         tip
-   user:        Wanderley Caloni &lt;wanderley.caloni@gmail.com&gt;
-   date:        Tue Apr 15 09:05:27 2008 -0300
-   summary:     Primeira versao
-   &gt; echo bla bla bla &gt;&gt; Main.cpp
-   &gt; hg status
-   M Main.cpp
-   &gt; hg commit -m &quot;Alterado algumas coisas&quot;
-   &gt; hg log
-   changeset:   1:829b081df653
-   tag:         tip
-   user:        Wanderley Caloni &lt;wanderley.caloni@gmail.com&gt;
-   date:        Tue Apr 15 09:06:29 2008 -0300
-   summary:     Alterado algumas coisas
-   changeset:   0:e9246bcf2107
-   user:        Wanderley Caloni &lt;wanderley.caloni@gmail.com&gt;
-   date:        Tue Apr 15 09:05:27 2008 -0300
-   summary:     Primeira versao
+&gt; hg log
+changeset:   0:e9246bcf2107
+tag:         tip
+user:        Wanderley Caloni &lt;wanderley.caloni@gmail.com&gt;
+date:        Tue Apr 15 09:05:27 2008 -0300
+summary:     Primeira versao
+
+&gt; echo bla bla bla &gt;&gt; Main.cpp
+
+&gt; hg status
+M Main.cpp
+
+&gt; hg commit -m &quot;Alterado algumas coisas&quot;
+
+&gt; hg log
+changeset:   1:829b081df653
+tag:         tip
+user:        Wanderley Caloni &lt;wanderley.caloni@gmail.com&gt;
+date:        Tue Apr 15 09:06:29 2008 -0300
+summary:     Alterado algumas coisas
+
+changeset:   0:e9246bcf2107
+user:        Wanderley Caloni &lt;wanderley.caloni@gmail.com&gt;
+date:        Tue Apr 15 09:05:27 2008 -0300
+summary:     Primeira versao
 </pre>
 <p>Como vimos, ao alterar um arquivo controlado este é mostrado pelo comando status como alterado (o M na frente do Main.cpp). Também existem controles para cópia e exclusão de arquivos.</p>
 
@@ -539,78 +574,99 @@ role="navigation" aria-label="main navigation">
 <p>Caloni: Escrevi um textículo sobre o assunto da escolha, mas não visando o mercado:</p>
 
 <pre>
-   /**
-   * @title Por que C++
-   * @author Wanderley Caloni Jr
-   * @date 31.01.2005
-   */
-   É natural que um programador
-   tenha preferência
-   por uma linguagem.
-   Geralmente por motivos pessoais
-   que se refletem em
-   suas características.
-   Eu, por exemplo,
-   tenho vários motivos
-   para amar essa linguagem.
-   Todas as vantagens
-   da linguagem C
-   estão embutidas em C++.
-   E sem aquele papo erudito
-   que deve-se programar em OO
-   para ser C++.
-   Por ser multiparadigma,
-   ela também suporta o melhor da
-   programação procedural e estruturada.
-   C++ é unânime e reconhecida
-   no mundo todo como de uso geral.
-   Dificilmente você vai encontrar
-   um algoritmo
-   que não exista em C++.
-   Pode parecer bobagem, mas coisas como
-   operador de incremento e
-   valor em todas expressões
-   permitem que se faça muita coisa
-   com poucas linhas.
-   Isso a torna muito expressiva.
-   Em outras palavras, você pode juntar
-   várias expressões numa só,
-   e esse conjunto será também uma expressão.
-   Em C++ você é o culpado de qualquer coisa
-   de bom e ruim
-   que aconteça no seu programa.
-   Você tem que seguir
-   poucas regras
-   e tem que ser responsável
-   no que faz.
-   C++ não te ajuda a
-   seguir um bom modelo de programação
-   com restrições embutidas.
-   Isso a torna difícil para iniciantes,
-   mas conforme aumenta a experiência,
-   maior o prazer em programar,
-   pelas responsabilidades embutidas.
-   A possibilidade de compilar e rodar
-   o seu código
-   em vários ambientes
-   é uma característica
-   útil e agradável.
-   No meu caso só é agradável,
-   pois dificilmente faço
-   código portável (apesar das
-   boas noções que tenho
-   sobre o assunto).
-   Por fim,
-   pode não ser importante em muitos casos,
-   mas já é do instinto do programador
-   o desejo pela eficiência.
-   E nada como programar numa linguagem
-   extremamente eficiente
-   em tempo de execução
-   para se sentir feliz
-   de ver o código rodando.
-   FIM
-   []s
+/**
+* @title Por que C++
+* @author Wanderley Caloni Jr
+* @date 31.01.2005
+*/
+
+É natural que um programador
+tenha preferência
+por uma linguagem.
+
+Geralmente por motivos pessoais
+que se refletem em
+suas características.
+
+Eu, por exemplo,
+tenho vários motivos
+para amar essa linguagem.
+
+Todas as vantagens
+da linguagem C
+estão embutidas em C++.
+
+E sem aquele papo erudito
+que deve-se programar em OO
+para ser C++.
+
+Por ser multiparadigma,
+ela também suporta o melhor da
+programação procedural e estruturada.
+
+C++ é unânime e reconhecida
+no mundo todo como de uso geral.
+
+Dificilmente você vai encontrar
+um algoritmo
+que não exista em C++.
+
+Pode parecer bobagem, mas coisas como
+operador de incremento e
+valor em todas expressões
+permitem que se faça muita coisa
+com poucas linhas.
+
+Isso a torna muito expressiva.
+
+Em outras palavras, você pode juntar
+várias expressões numa só,
+e esse conjunto será também uma expressão.
+
+Em C++ você é o culpado de qualquer coisa
+de bom e ruim
+que aconteça no seu programa.
+
+Você tem que seguir
+poucas regras
+e tem que ser responsável
+no que faz.
+
+C++ não te ajuda a
+seguir um bom modelo de programação
+com restrições embutidas.
+
+Isso a torna difícil para iniciantes,
+mas conforme aumenta a experiência,
+maior o prazer em programar,
+pelas responsabilidades embutidas.
+
+A possibilidade de compilar e rodar
+o seu código
+em vários ambientes
+é uma característica
+útil e agradável.
+
+No meu caso só é agradável,
+pois dificilmente faço
+código portável (apesar das
+boas noções que tenho
+sobre o assunto).
+
+Por fim,
+pode não ser importante em muitos casos,
+mas já é do instinto do programador
+o desejo pela eficiência.
+
+E nada como programar numa linguagem
+extremamente eficiente
+em tempo de execução
+para se sentir feliz
+de ver o código rodando.
+    
+FIM
+    
+[]s
 </pre>
 <p>Strauss -- Legal. Vou colocar minha água mercadológica no feijão e <a href="http://www.1bit.com.br/content.1bit/weblog/ode_cpp">colocar no site</a>.</p>
 
@@ -710,13 +766,14 @@ role="navigation" aria-label="main navigation">
 <p>Para azar da minha pessoa, o guia simples e rápido de instalação do Bazaar não funcionava para minha distribuição Linux. Na verdade, funciona. Porém, é instalada uma versão tão antiga (0.91!) que o formato do banco de dados já se tornou incompatível.</p>
 
 <pre>
-   #yum info bzr
-   ...
-   Available Packages
-   Name     : bzr
-   Arch     : i386
-   Version  : 0.91
-   ...
+#yum info bzr
+...
+
+Available Packages
+Name     : bzr
+Arch     : i386
+Version  : 0.91
+...
 </pre>
 <p>O pior, no entanto, foi tentar encontrar uma solução para o problema. Fiz mil e uma pesquisas com palavras-chave que nem imaginava que seria capaz de formular. E nada. A princípio minha idéia era apenas atualizar a lista de pacotes do repositório gerenciado pelo yum, o gerenciador de pacotes oficial do Fedora. Entre minhas buscas, encontrei os seguintes itens:</p>
 
@@ -732,19 +789,25 @@ role="navigation" aria-label="main navigation">
 <p>Uia! E não é que é mais simples, mesmo?</p>
 
 <pre>
-   #wget https://launchpad.net/bzr/1.3/1.3.1/+download/bzr-1.3.1.tar.gz
-   #tar -zxvf bzr-1.3.1.tar.gz /* ele teve que me explicar esse comando singelo */
-   #cd bzr-1.3.1
-   #cat INSTALL
-   Installation
-   ------------
-   When upgrading using setup.py, it is recommended that you first delete the
-   bzrlib directory from the install target.
-   To install bzr as a user, run
-     python setup.py install --home ~
-   To install system-wide, run (as root)
-     python setup.py install
-   #python setup.py install
+#wget https://launchpad.net/bzr/1.3/1.3.1/+download/bzr-1.3.1.tar.gz
+#tar -zxvf bzr-1.3.1.tar.gz /* ele teve que me explicar esse comando singelo */
+#cd bzr-1.3.1
+#cat INSTALL
+
+Installation
+------------
+When upgrading using setup.py, it is recommended that you first delete the
+bzrlib directory from the install target.
+
+To install bzr as a user, run
+
+  python setup.py install --home ~
+
+To install system-wide, run (as root)
+
+  python setup.py install
+
+#python setup.py install
 </pre>
 <p>E foi isso! É a segunda vez que tento fazer algo simples no Linux e me dou mal. Com certeza os dias futuros serão melhores. Mas me bate aquela sensação que as coisas poderiam já estar em um nível mais fácil de se mexer. Opinião pessoal.</p>
 

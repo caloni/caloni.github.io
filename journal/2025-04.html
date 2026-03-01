@@ -110,13 +110,17 @@ role="navigation" aria-label="main navigation">
 
 <pre>
 /** Multiple peers Wireguard calculation.
+
 Wireguard does not support overlapping allowed ips for multiple peers. To
 cover all possible ips excluding others for secondary peers some
 calculation is needed to mount the allowed ips list derived from 0.0.0.0.
+
 @author Wanderley Caloni &lt;wanderleycaloni@gmail.com&gt;
 @date 2024-08
 */
+
 using System.Net;
+
 public class Program
 {
     private static void CalculateWireguardAllowedIps(ref HashSet&lt;IPNetwork2&gt; list, IPNetwork2 ip, IPNetwork2 remove)
@@ -156,6 +160,7 @@ public class Program
         foreach (IPNetwork2 remove in ipsToRemove)
         {
             var localIpsToAdd = new HashSet&lt;IPNetwork2&gt;(ipsToAdd);
+
             foreach (IPNetwork2 add in localIpsToAdd)
             {
                 if (add.Overlap(remove))
@@ -189,21 +194,25 @@ public class Program
             if (split.Count == 2)
             {
                 bool overlapLeft = false, overlapRight = false;
+
                 foreach(IPNetwork2 notIp in notAddTheseIps)
                 {
                     if (split[0].Overlap(notIp))
                     {
                         overlapLeft = true;
                     }
+
                     if (split[1].Overlap(notIp))
                     {
                         overlapRight = true;
                     }
+
                     if( overlapLeft &amp;&amp; overlapRight)
                     {
                         break;
                     }
                 }
+
                 if (overlapLeft)
                 {
                     AddAllowedIp(ref allowedIps, split[0], ref notAddTheseIps);
@@ -212,6 +221,7 @@ public class Program
                 {
                     allowedIps.Add(split[0]);
                 }
+
                 if (overlapRight)
                 {
                     AddAllowedIp(ref allowedIps, split[1], ref notAddTheseIps);
@@ -223,12 +233,14 @@ public class Program
             }
         }
     }
+
     public static int Main(string[] args)
     {
         HashSet&lt;IPNetwork2&gt; twoPeersHashSet = new HashSet&lt;IPNetwork2&gt;();
         IPNetwork2 allAllowedIPs = new IPNetwork2(IPAddress.Parse(&quot;0.0.0.0&quot;), 0);
         IPNetwork2 removeIP = new IPNetwork2(IPAddress.Parse(&quot;66.22.190.0&quot;), 32);
         CalculateWireguardAllowedIps(ref twoPeersHashSet, allAllowedIPs, removeIP);
+
         HashSet&lt;IPNetwork2&gt; multiplePeersHashSet = new HashSet&lt;IPNetwork2&gt;();
         HashSet&lt;IPNetwork2&gt; ipsToRemove = new HashSet&lt;IPNetwork2&gt;();
         //ipsToRemove.Add(new IPNetwork2(IPAddress.Parse(&quot;66.22.190.0&quot;), 32));
@@ -236,8 +248,10 @@ public class Program
         //ipsToRemove.Add(new IPNetwork2(IPAddress.Parse(&quot;66.22.190.1&quot;), 32));
         //ipsToRemove.Add(new IPNetwork2(IPAddress.Parse(&quot;66.22.188.0&quot;), 32));
         AddAllowedIp(ref multiplePeersHashSet, allAllowedIPs, ref ipsToRemove);
+
         var inMultipleExceptTwoPeers = multiplePeersHashSet.Except(twoPeersHashSet).ToHashSet();
         var inTwoPeersExceptMultiple = twoPeersHashSet.Except(multiplePeersHashSet).ToHashSet();
+
         Console.WriteLine(&quot;In multiple peers except two peers:&quot;);
         foreach (var ip in inMultipleExceptTwoPeers)
         {
@@ -248,6 +262,7 @@ public class Program
             }
             Console.WriteLine(s);
         }
+
         Console.WriteLine(&quot;In two peers except multiple peers:&quot;);
         foreach (var ip in inTwoPeersExceptMultiple)
         {
@@ -258,8 +273,11 @@ public class Program
             }
             Console.WriteLine(s);
         }
+
         return 0;
     }
+
+
 }
 </pre>
 </section><hr/>
@@ -300,7 +318,9 @@ site Os Programadores.
 @date 2020-06
 @see https://osprogramadores.com/desafios/d05/
 */
+
 #include &lt;boost/iostreams/device/mapped_file.hpp&gt;
+
 #include &lt;fstream&gt;
 #include &lt;iomanip&gt;
 #include &lt;iostream&gt;
@@ -312,13 +332,17 @@ site Os Programadores.
 #include &lt;thread&gt;
 #include &lt;unordered_map&gt;
 #include &lt;vector&gt;
+
 using namespace std;
+
 typedef long long int LongInteger;
+
 struct Chunk 
 {
 	const char* begin;
 	const char* end;
 };
+
 struct Employee 
 {
 	Chunk name;
@@ -327,6 +351,7 @@ struct Employee
 	Chunk area;
 	bool surname_max = false;
 };
+
 struct Area
 {
 	string name;
@@ -336,6 +361,7 @@ struct Area
 	LongInteger total_employees = 0;
 	LongInteger total_salaries = 0;
 };
+
 struct ParseChunk
 {
 	shared_ptr&lt;thread&gt; thread_chunk;
@@ -343,6 +369,7 @@ struct ParseChunk
 	map&lt;string, Area&gt; areas;
 	unordered_map&lt;string, vector&lt;Employee&gt;&gt; surname_max;
 };
+
 template&lt;typename Cmp&gt;
 inline bool compare_exchange_employees(vector&lt;const Area*&gt;&amp; lst_change, const Area&amp; area_cmp, Cmp cmp)
 {
@@ -357,6 +384,7 @@ inline bool compare_exchange_employees(vector&lt;const Area*&gt;&amp; lst_change
 	else lst_change = vector&lt;const Area*&gt;{ &amp;area_cmp };
 	return false;
 }
+
 template&lt;typename Cmp&gt;
 inline bool compare_exchange_salary(vector&lt;Employee&gt;&amp; lst_change, const Employee&amp; employee, Cmp cmp)
 {
@@ -371,6 +399,7 @@ inline bool compare_exchange_salary(vector&lt;Employee&gt;&amp; lst_change, cons
 	else lst_change = vector&lt;Employee&gt;{ employee };
 	return false;
 }
+
 template&lt;typename Cmp&gt;
 inline bool compare_exchange_salary(vector&lt;Employee&gt;&amp; lst_change, const vector&lt;Employee&gt;&amp; lst_cmp, Cmp cmp)
 {
@@ -388,6 +417,7 @@ inline bool compare_exchange_salary(vector&lt;Employee&gt;&amp; lst_change, cons
 	else lst_change = lst_cmp;
 	return false;
 }
+
 void parse(ParseChunk* data)
 {
 	Employee employee;
@@ -407,6 +437,7 @@ void parse(ParseChunk* data)
 	};
 	const char* curr = mystrchr(data-&gt;data_chunk.begin, '&quot;');
 	const char* end;
+
 	while (curr &amp;&amp; curr &lt; data-&gt;data_chunk.end)
 	{
 		switch (curr[1])
@@ -418,59 +449,78 @@ void parse(ParseChunk* data)
 			curr = mystrchr(mystrchr(curr + 1, ':') + 1, '&quot;') + 1;
 			end = mystrchr(curr, '&quot;');
 			employee.name = Chunk{ curr, end };
+
 			curr = end + 11;
 			curr = mystrchr(mystrchr(curr + 1, ':') + 1, '&quot;') + 1;
 			end = mystrchr(curr, '&quot;');
 			employee.surname = Chunk{ curr, end };
+
 			curr = end + 9;
 			curr = mystrchr(curr + 1, ':') + 1;
 			end = mystrchr(curr, '.') + 3;
 			employee.salary = myatoi(curr, end);
+
 			curr = end + 6;
 			curr = mystrchr(mystrchr(curr + 1, ':') + 1, '&quot;') + 1;
 			end = mystrchr(curr, '&quot;');
 			employee.area = Chunk{ curr, end };
+
 			curr = end + 1;
 			curr = mystrchr(curr, '}');
+
 			area_name = string(employee.area.begin, employee.area.end);
 			area = &amp;data-&gt;areas[area_name];
+
 			compare_exchange_salary(area-&gt;area_max, employee, greater&lt;LongInteger&gt;());
 			compare_exchange_salary(area-&gt;area_min, employee, less&lt;LongInteger&gt;());
+
 			surname = string(employee.surname.begin, employee.surname.end);
 			employees = &amp;data-&gt;surname_max[surname];
 			compare_exchange_salary(*employees, employee, greater&lt;LongInteger&gt;());
+
 			++area-&gt;total_employees;
 			area-&gt;total_salaries += employee.salary;
+
 			break;
+
+
 		case 'c': // area
 			curr += 6;
 			curr = mystrchr(mystrchr(curr + 1, ':') + 1, '&quot;') + 1;
 			end = mystrchr(curr, '&quot;');
 			area_name = string(curr, end);
+
 			curr = end + 6;
 			curr = mystrchr(mystrchr(curr + 1, ':') + 1, '&quot;') + 1;
 			end = mystrchr(curr, '&quot;');
 			data-&gt;areas[area_name].name = string(curr, end);
+
 			curr = end + 1;
 			curr = mystrchr(curr, '}');
 			break;
 		}
+
 		curr = mystrchr(curr + 1, '&quot;');
 	}
 }
+
 int main(int argc, char* argv[])
 {
 	if (argc == 2)
 	{
 		const char* fileName = argv[1];
+
 		boost::iostreams::mapped_file_source fileMap;
 		fileMap.open(fileName);
 		if (fileMap.is_open())
 		{
 			const char* data = fileMap.data();
+
 			size_t cores = std::thread::hardware_concurrency();
 			size_t chunkSize = fileMap.size() / cores;
+
 			vector&lt;ParseChunk&gt; chunks(cores);
+
 			for( size_t i = 0; i &lt; cores; ++i )
 			{
 				const char* begin = data + (i * chunkSize);
@@ -478,11 +528,14 @@ int main(int argc, char* argv[])
 				chunks[i].data_chunk = Chunk{ begin, end };
 				chunks[i].thread_chunk = make_shared&lt;thread&gt;(parse, &amp;chunks[i]);
 			}
+
 			ParseChunk total;
 			Area global;
+
 			for (const auto&amp; chunk : chunks)
 			{
 				chunk.thread_chunk-&gt;join();
+
 				for (const auto&amp; area : chunk.areas)
 				{
 					Area&amp; total_area = total.areas[area.first];
@@ -493,6 +546,7 @@ int main(int argc, char* argv[])
 					if( area.second.name.size() )
 						total_area.name = area.second.name;
 				}
+
 				for (const auto&amp; surname_max : chunk.surname_max )
 				{
 					const string&amp; surname = surname_max.first;
@@ -501,7 +555,9 @@ int main(int argc, char* argv[])
 					total_surname.begin()-&gt;surname_max = exchange;
 				}
 			}
+
 			vector&lt;const Area*&gt; most_employees, least_employees;
+
 			for (auto&amp; area : total.areas)
 			{
 				if (area.second.total_employees)
@@ -516,12 +572,14 @@ int main(int argc, char* argv[])
 				}
 			}
 			global.avg_salary = ( double(global.total_salaries) / 100.0 ) / double(global.total_employees);
+
 			auto out_salary = [](LongInteger salary) -&gt; string
 			{
 				ostringstream os;
 				os &lt;&lt; (salary / 100) &lt;&lt; '.' &lt;&lt; setfill('0') &lt;&lt; setw(2) &lt;&lt; (salary % 100);
 				return os.str();
 			};
+
 			for (const auto&amp; emp : global.area_max)
 				cout &lt;&lt; &quot;global_max|&quot; &lt;&lt; string(emp.name.begin, emp.name.end) &lt;&lt; ' ' &lt;&lt; string(emp.surname.begin, emp.surname.end) &lt;&lt; '|' &lt;&lt; out_salary(emp.salary) &lt;&lt; '\n';
 			for (const auto&amp; emp : global.area_min)
@@ -549,6 +607,7 @@ int main(int argc, char* argv[])
 						cout &lt;&lt; &quot;last_name_max|&quot; &lt;&lt; surname &lt;&lt; '|' &lt;&lt; string(emp.name.begin, emp.name.end) &lt;&lt; ' ' &lt;&lt; surname &lt;&lt; '|' &lt;&lt; out_salary(emp.salary) &lt;&lt; '\n';
 				}
 			}
+
 			fileMap.close();
 		}
 	}
@@ -566,18 +625,23 @@ int main(int argc, char* argv[])
 <pre>
 #include &lt;windows.h&gt;
 #include &lt;dbghelp.h&gt;
+
 #include &lt;algorithm&gt;
 #include &lt;cstdint&gt;
 #include &lt;filesystem&gt;
 #include &lt;iostream&gt;
 #include &lt;string&gt;
 #include &lt;vector&gt;
+
 #pragma comment(lib, &quot;dbghelp.lib&quot;)
+
 namespace fs = std::filesystem;
+
 int main()
 {
     const fs::path RootPath = fs::path(&quot;resources&quot;);
     auto isBinary = [](const fs::path&amp; path) { return path.extension() == &quot;.exe&quot; || path.extension() == &quot;.dll&quot; || path.extension() == &quot;.sys&quot;; };
+
     ::SymInitialize(::GetCurrentProcess(), NULL, FALSE);
     try
     {
@@ -598,6 +662,7 @@ int main()
                     {
                         std::cout &lt;&lt; &quot;Image file downloaded to &quot; &lt;&lt; downloadedImagePath &lt;&lt; std::endl;
                     }
+
                     char downloadedPdbPath[MAX_PATH + 1] = { 0 };
                     if (::SymFindFileInPath(GetCurrentProcess(), NULL, imageFileInfo.pdbfile,
                         &amp;imageFileInfo.guid, imageFileInfo.age, 0, SSRVOPT_GUIDPTR,
@@ -632,33 +697,41 @@ int main()
 <pre>
 #include &lt;detours.h&gt;
 #include &lt;windows.h&gt;
+
 using namespace std;
+
 decltype(SendMessageA)* Orig_SendMessageA = ::SendMessageA;
 decltype(SendMessageW)* Orig_SendMessageW = ::SendMessageW;
+
 LRESULT WINAPI Hook_SendMessageA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
 LRESULT WINAPI Hook_SendMessageW(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+
 struct Hook
 {
     PVOID&amp; original;
     PVOID hook;
 };
+
 static Hook g_installedHooks[] =
 {
     { (PVOID&amp;)Orig_SendMessageA, Hook_SendMessageA },
     { (PVOID&amp;)Orig_SendMessageW, Hook_SendMessageW },
 };
+
 LRESULT WINAPI Hook_SendMessageA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
     LRESULT l = Orig_SendMessageA(hWnd, Msg, wParam, lParam);
     printf(&quot;Hook_SendMessageA %x %d&quot;, hWnd, Msg);
     return l;
 }
+
 LRESULT WINAPI Hook_SendMessageW(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
     LRESULT l = Orig_SendMessageW(hWnd, Msg, wParam, lParam);
     printf(&quot;Hook_SendMessageW %x %d&quot;, hWnd, Msg);
     return l;
 }
+
 static void InstallHooks()
 {
     DetourRestoreAfterWith();
@@ -670,6 +743,7 @@ static void InstallHooks()
     }
     DetourTransactionCommit();
 }
+
 static void UninstallHooks()
 {
     DetourTransactionBegin();
@@ -680,6 +754,7 @@ static void UninstallHooks()
     }
     DetourTransactionCommit();
 }
+
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReserved)
 {
     if (DetourIsHelperProcess())

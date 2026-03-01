@@ -61,33 +61,35 @@ role="navigation" aria-label="main navigation">
 <p>Definir que estamos programando para XP ou superior:</p>
 
 <pre>
-   #define _WIN32_WINNT 0x0600
+#define _WIN32_WINNT 0x0600
 </pre>
 <p>Inserir suporte a linques na biblioteca de controles comuns:</p>
 
 <pre>
-   INITCOMMONCONTROLSEX icc = { sizeof(icc), ICC_LINK_CLASS }; 
-   InitCommonControlsEx(&amp;icc);
+INITCOMMONCONTROLSEX icc = { sizeof(icc), ICC_LINK_CLASS }; 
+InitCommonControlsEx(&amp;icc);
 </pre>
 <p>Usar o CreateWindow com a classe certa, fazer markup html dentro do título e cuidar das mensagens de click e enter no controle:</p>
 
 <pre>
-   CreateWindowEx(0, WC_LINK, 
-       L&quot;&lt;a href=\&quot;http://www.caloni.com.br\&quot;&gt;This site rocks!&lt;/a&gt;&quot;, 
-       WS_VISIBLE | WS_CHILD | WS_TABSTOP, ...);
-   //...
-   case WM_NOTIFY:
-     switch( ((LPNMHDR)lParam)-&gt;code )
-     {
-     case NM_CLICK:
-     case NM_RETURN:
-     {
-       PNMLINK pNMLink = (PNMLINK)lParam;
-       LITEM item = pNMLink-&gt;item;
-       if( (((LPNMHDR)lParam)-&gt;hwndFrom == st_linkHwnd[hWndDlg]) )
-       {
-         // codigo util
-       }
+CreateWindowEx(0, WC_LINK, 
+    L&quot;&lt;a href=\&quot;http://www.caloni.com.br\&quot;&gt;This site rocks!&lt;/a&gt;&quot;, 
+    WS_VISIBLE | WS_CHILD | WS_TABSTOP, ...);
+
+//...
+
+case WM_NOTIFY:
+  switch( ((LPNMHDR)lParam)-&gt;code )
+  {
+  case NM_CLICK:
+  case NM_RETURN:
+  {
+    PNMLINK pNMLink = (PNMLINK)lParam;
+    LITEM item = pNMLink-&gt;item;
+    if( (((LPNMHDR)lParam)-&gt;hwndFrom == st_linkHwnd[hWndDlg]) )
+    {
+      // codigo util
+    }
 </pre>
 <p>Você que não está fazendo subclassing de janelas existe outra técnica que você pode utilizar: arrastar-e-soltar o controle do seu ToolBox. Qual é a graça?</p>
 
@@ -100,13 +102,14 @@ role="navigation" aria-label="main navigation">
 <p>A partir do Vista temos uma nova API para fazer isso. E é muito simples:</p>
 
 <pre>
-   BOOL WINAPI ShutdownBlockReasonCreate( 
-     __in  HWND hWnd, 
-     __in  LPCWSTR pwszReason 
-   );   
-   BOOL WINAPI ShutdownBlockReasonDestroy( 
-     __in  HWND hWnd 
-   );
+BOOL WINAPI ShutdownBlockReasonCreate( 
+  __in  HWND hWnd, 
+  __in  LPCWSTR pwszReason 
+);   
+
+BOOL WINAPI ShutdownBlockReasonDestroy( 
+  __in  HWND hWnd 
+);
 </pre>
 <p>Quando ao receber a famigerada WM_QUERYENDSESSION, basta retornar FALSE. O Windows faz o resto.</p>
 
@@ -126,7 +129,7 @@ role="navigation" aria-label="main navigation">
 
 <p>Além disso, Rodriguez mantém sua personalidade em seu novo filme, como seu lado machista "nonsense" onde todas as mulheres do filme querem estar e dar para Machete, ou ao criar super-heróis tão unidimensionais e absurdos quanto a freira e a caolha, que faz com que nunca nos importemos com eles.</p>
 
-<p>A situação é tão inverossímil que na luta final entre Seagal e Machete as suas duas musas ficam discutindo se ele irá ganhar ou não, concluindo que sim, pois ele é o Machete (!?). Não contente com tamanha falta de originalidade, colocam o senador justamente na fronteira, sendo morto como se fosse um imigrante. </p>
+<p>A situação é tão inverossímil que na luta final entre Seagal e Machete as suas duas musas ficam discutindo se ele irá ganhar ou não, concluindo que sim, pois ele é o Machete (!?). Não contente com tamanha falta de originalidade, colocam o senador justamente na fronteira, sendo morto como se fosse um imigrante.</p>
 
 <p>No final ainda dá indícios (mesmo que cômicos) de ter duas continuações. Tomara que não.</p>
 
@@ -247,15 +250,15 @@ role="navigation" aria-label="main navigation">
 <p>O resto da função funciona mais ou menos como o sprintf, cuspindo a mensagem-modelo em uma saída formatada de acordo com os parâmetros de entrada.</p>
 
 <pre>
-   DWORD WINAPI FormatMessage(
-      __in      DWORD dwFlags,
-      __in_opt  LPCVOID lpSource,
-      __in      DWORD dwMessageId,
-      __in      DWORD dwLanguageId,
-      __out     LPTSTR lpBuffer,
-      __in      DWORD nSize,
-      __in_opt  va_list *Arguments
-   );
+DWORD WINAPI FormatMessage(
+   __in      DWORD dwFlags,
+   __in_opt  LPCVOID lpSource,
+   __in      DWORD dwMessageId,
+   __in      DWORD dwLanguageId,
+   __out     LPTSTR lpBuffer,
+   __in      DWORD nSize,
+   __in_opt  va_list *Arguments
+);
 </pre>
 <h4>Flags</h4>
 
@@ -269,9 +272,9 @@ role="navigation" aria-label="main navigation">
 
 <p>O parâmetro mais polêmico é o que possui vários significados. No caso de lpSource, existem dois significados possíveis:</p>
 
-<p>  1. FORMAT_MESSAGE_FROM_HMODULE. Ele é um HANDLE para um módulo.</p>
+<p>1. FORMAT_MESSAGE_FROM_HMODULE. Ele é um HANDLE para um módulo.</p>
 
-<p>  2. FORMAT_MESSAGE_FROM_STRING. Ele é um ponteiro para string.</p>
+<p>2. FORMAT_MESSAGE_FROM_STRING. Ele é um ponteiro para string.</p>
 
 <p>Isso explica por que essas duas flags são exclusivas: ou uma ou outra. Mesmo que a flag FORMAT_MESSAGE_FROM_SYSTEM seja usada, a função tentará achar a definição da mensagem no módulo especificado por lpSource primeiro, antes de ir buscar nas tabelas do sistema.</p>
 
@@ -316,7 +319,7 @@ role="navigation" aria-label="main navigation">
 <p>Pensou que acabaria por aqui? E qual o significado das sequências de escape dentro da mensagem-modelo? O formato básico para inserção de um argumento segue o seguinte padrão:</p>
 
 <pre>
-   %n!&lt;format-string&gt;!
+%n!&lt;format-string&gt;!
 </pre>
 <p>Onde n é o número que identifica o argumento, como já vimos, e `format-string` é um espaço reservado para identificarmos o tipo do argumento e como ele aparecerá na mensagem de saída.</p>
 
@@ -335,35 +338,38 @@ role="navigation" aria-label="main navigation">
 <p>Esse também é um bônus da MSDN, que te presenteia com exemplos de código tão fantasiosos quanto a própria função, veja o primeiro exemplo, por exemplo:</p>
 
 <pre>
-   #include windows.h
-   #include stdio.h
-   void main(void)
-   {
-       // %1!.s! refers back to the first insertion string in pMessage
-       // %4 refers back to the second insertion string in pMessage
-       // %5!s! refers back to the third insertion string in pMessage
-       LPWSTR pMessage = L%1!.s! %4 %5!s!;
-       DWORD_PTR pArgs[] = { (DWORD_PTR)4,
-         (DWORD_PTR)2,
-         (DWORD_PTR)LBill,
-         (DWORD_PTR)LBob,
-         (DWORD_PTR)6, (DWORD_PTR)LBill
-         };
-       const DWORD size = 100+1;
-       WCHAR buffer[size];
-       if (!FormatMessage(FORMAT_MESSAGE_FROM_STRING | FORMAT_MESSAGE_ARGUMENT_ARRAY,
-         pMessage, 
-         0,
-         buffer, 
-         size, 
-         (va_list)pArgs))
-       {
-           wprintf(LFormat message failed with 0x%xn, GetLastError());
-           return;
-       }
-        Buffer contains   Bi Bob   Bill.
-       wprintf(LFormatted message %sn, buffer);
-   }
+#include windows.h
+#include stdio.h
+
+void main(void)
+{
+    // %1!.s! refers back to the first insertion string in pMessage
+    // %4 refers back to the second insertion string in pMessage
+    // %5!s! refers back to the third insertion string in pMessage
+    LPWSTR pMessage = L%1!.s! %4 %5!s!;
+    DWORD_PTR pArgs[] = { (DWORD_PTR)4,
+      (DWORD_PTR)2,
+      (DWORD_PTR)LBill,
+      (DWORD_PTR)LBob,
+      (DWORD_PTR)6, (DWORD_PTR)LBill
+      };
+    const DWORD size = 100+1;
+    WCHAR buffer[size];
+
+    if (!FormatMessage(FORMAT_MESSAGE_FROM_STRING | FORMAT_MESSAGE_ARGUMENT_ARRAY,
+      pMessage, 
+      0,
+      buffer, 
+      size, 
+      (va_list)pArgs))
+    {
+        wprintf(LFormat message failed with 0x%xn, GetLastError());
+        return;
+    }
+
+     Buffer contains   Bi Bob   Bill.
+    wprintf(LFormatted message %sn, buffer);
+}
 </pre>
 <p>Depois ele chega a reimplementar o exemplo usando va_list, o que é muito interessante, mas... bom, deixa pra lá. Vamos fazer nosso próprio teste.</p>
 
@@ -372,49 +378,55 @@ role="navigation" aria-label="main navigation">
 <p>Esse é o uso clássico: precisamos de uma descrição de um código de erro para o usuário; um código Win32. A chamada para esse tipo de uso pode ser encapsulada em uma função mais simples:</p>
 
 <pre>
-   #define _CRT_SECURE_NO_WARNINGS // quanta frescura...
-   #include &lt;tchar.h&gt;
-   #include &lt;windows.h&gt;
-   #include &lt;string&gt;
-   using namespace std;
-   wstring GetErrorDescription(DWORD errNumber)
-   {
-       wstring ret;
-       bool msgOk = false;
-       LPVOID lpMsgBuf = NULL;
-       if( FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER // aloque pra mim (não sei o tamanho)
-         | FORMAT_MESSAGE_FROM_SYSTEM // descrição do erro está no sistema
-         | FORMAT_MESSAGE_IGNORE_INSERTS, // ignora os inserts pra não sofrer com hackerzinhos
-         NULL, // sem fonte:
-         errNumber, // a fonte é o código de erro
-         MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // idioma padrão
-         (LPTSTR)&amp;lpMsgBuf,// isso é um ponteiro para um ponteiro para um buffer que será alocado
-         0, // nada disso
-         NULL // e nem disso
-         ) &gt; 0 ) // maior que zero quer dizer &quot;beleza!&quot;
-       {
-         if( lpMsgBuf ) // só pra...
-         {
-           ret = (PCWSTR) lpMsgBuf; // ok, vamos usar essa string
-           msgOk = true;
-           LocalFree(lpMsgBuf); // não precisamos mais da memória alocada
-         }
-       }
-       if( ! msgOk ) // alguma coisa não deu certo
-       {
-         wchar_t msgBuf[100]; // o suficiente
-         _snwprintf(msgBuf, 100, L&quot;Unknown error (code %d)&quot;, errNumber);
-         ret = msgBuf;
-       }
-       return ret;
-   }
-   int CALLBACK wWinMain(HINSTANCE, HINSTANCE, PWSTR errNumberStr, int)
-   {
-       int errNumber = _wtoi(errNumberStr);
-       wstring errDesc = GetErrorDescription(errNumber);
-       MessageBox(NULL, errDesc.c_str(), L&quot;GetLastError&quot;, MB_OK | MB_ICONINFORMATION);
-       return errNumber;
-   }
+#define _CRT_SECURE_NO_WARNINGS // quanta frescura...
+#include &lt;tchar.h&gt;
+#include &lt;windows.h&gt;
+#include &lt;string&gt;
+
+using namespace std;
+
+wstring GetErrorDescription(DWORD errNumber)
+{
+    wstring ret;
+    bool msgOk = false;
+    LPVOID lpMsgBuf = NULL;
+
+    if( FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER // aloque pra mim (não sei o tamanho)
+      | FORMAT_MESSAGE_FROM_SYSTEM // descrição do erro está no sistema
+      | FORMAT_MESSAGE_IGNORE_INSERTS, // ignora os inserts pra não sofrer com hackerzinhos
+      NULL, // sem fonte:
+      errNumber, // a fonte é o código de erro
+      MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // idioma padrão
+      (LPTSTR)&amp;lpMsgBuf,// isso é um ponteiro para um ponteiro para um buffer que será alocado
+      0, // nada disso
+      NULL // e nem disso
+      ) &gt; 0 ) // maior que zero quer dizer &quot;beleza!&quot;
+    {
+      if( lpMsgBuf ) // só pra...
+      {
+        ret = (PCWSTR) lpMsgBuf; // ok, vamos usar essa string
+        msgOk = true;
+        LocalFree(lpMsgBuf); // não precisamos mais da memória alocada
+      }
+    }
+
+    if( ! msgOk ) // alguma coisa não deu certo
+    {
+      wchar_t msgBuf[100]; // o suficiente
+      _snwprintf(msgBuf, 100, L&quot;Unknown error (code %d)&quot;, errNumber);
+      ret = msgBuf;
+    }
+
+    return ret;
+}
+
+int CALLBACK wWinMain(HINSTANCE, HINSTANCE, PWSTR errNumberStr, int)
+{
+    int errNumber = _wtoi(errNumberStr);
+    wstring errDesc = GetErrorDescription(errNumber);
+    MessageBox(NULL, errDesc.c_str(), L&quot;GetLastError&quot;, MB_OK | MB_ICONINFORMATION);
+    return errNumber;
+}
 </pre>
 <img src="/journal/img/formatmessage_para_dumies_rnrw5UN.png"/>
 

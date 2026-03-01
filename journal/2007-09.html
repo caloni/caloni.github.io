@@ -56,7 +56,6 @@ role="navigation" aria-label="main navigation">
 <span class="title-heading">Caloni, 2007-09-01 <a href="2007-08.html#dogmas">&lt;</a><a href="quotes.html">quotes</a><a href="2007-10.html#tedio">&gt;</a> <a href="2007-08.html#dogmas">&lt;</a><a href="self.html">self</a><a href="2007-10.html#tedio">&gt;</a> <a href="2007-08.html#dogmas">&lt;</a><a href="now.html">now</a><a href="2007-10.html#tedio">&gt;</a><a href="2007-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_preconceito')"><sup>[copy]</sup></a></span>
 
 <blockquote>Reduzir uma pessoa a um conceito já é uma forma de violência.</blockquote>
-
 <blockquote>Tolle, Eckhart (O Poder do Agora, 1997)</blockquote>
 </section><hr/>
 
@@ -88,15 +87,15 @@ role="navigation" aria-label="main navigation">
 <p>Todo programa inicia com uma thread que roda seu int main. A criação de uma nova thread é feita através da chamada da função API CreateThread.</p>
 
 <pre>
-   void StartBruteForceThread()
-   {
-     g_bruteForceThread = CreateThread(NULL, 
-       0, 
-       BruteForceThread, 
-       NULL, 
-       0, 
-       &amp;g_bruteForceThreadId);
-   }
+void StartBruteForceThread()
+{
+  g_bruteForceThread = CreateThread(NULL, 
+    0, 
+    BruteForceThread, 
+    NULL, 
+    0, 
+    &amp;g_bruteForceThreadId);
+}
 </pre>
 <p>Para quem está acompanhando <a href="2020-09.html#historia_do_windows">a série de artigos sobre o Windows</a> deve lembrar que assim como na criação de janelas, na criação de uma thread é passada uma função de callback. Só que diferente de uma função de janela, essa função não é executada na mesma thread que criou a janela, mas é um novo "int main" para uma nova linha de execução, que irá rodar em paralelo com a primeira. Essa segunda linha de execução termina quando retornamos dessa função, que no nosso exemplo é nunca, mas poderia ser quando fosse terminada sua tarefa.</p>
 
@@ -133,16 +132,16 @@ role="navigation" aria-label="main navigation">
 <p>Porém, eis que chega o final de ano e pergunto para o meu amigo o que ele vai fazer.</p>
 
 <pre>
-   -- &quot;Processamento de Dados!&quot;
-   -- &quot;Hummm... computadores.&quot;
-   -- &quot;Isso!&quot;
+-- &quot;Processamento de Dados!&quot;
+-- &quot;Hummm... computadores.&quot;
+-- &quot;Isso!&quot;
 </pre>
 <p>Mas que coisa, hein. Balancei, balancei, e acabei mudando minha decisão do início do ano: iria tentar o curso de PD.</p>
 
 <p>E foi assim. Fizemos o vestibulinho. Meu amigo não passou, mas a família dele tinha recursos, colocou ele em uma escola técnica particular. Eu também não passei. A nota de corte era 38. Tirei 37. Por um ponto fiquei sem opções de estudo. Então procurei por vagas em escolas técnicas. Minha mãe encontrou uma, onde existiam dois cursos: magistério e contabilidade.</p>
 
 <pre>
-   -- &quot;Magistério é legal. E se não for legal, pelo menos tem um monte de mulher.&quot;
+-- &quot;Magistério é legal. E se não for legal, pelo menos tem um monte de mulher.&quot;
 </pre>
 <p>Mas dessa vez meu lado numérico falou mais alto, e acabei ficando na sala mais chata. Prestei para contabilidade. Passei fácil.</p>
 
@@ -157,7 +156,7 @@ role="navigation" aria-label="main navigation">
 <p>Naquele momento, meu lado letrado foi mais forte.</p>
 
 <pre>
-   -- &quot;Quero ser escritor, logo, vou fazer letras. Deve ser bem legal! Mas se não for bem legal, pelo menos tem um monte de mulher.&quot;
+-- &quot;Quero ser escritor, logo, vou fazer letras. Deve ser bem legal! Mas se não for bem legal, pelo menos tem um monte de mulher.&quot;
 </pre>
 <p>E comecei a estudar para o vestibular. Apenas um vestibular. Fuvest. Se não passasse ficaria a Deus dará. O que me importunava bastante àquela época da vida: depois de 13 anos de escola eu havia ficado um tanto condicionado a comparecer em sala de aula todos os dias de semana da minha vida.</p>
 
@@ -166,7 +165,7 @@ role="navigation" aria-label="main navigation">
 <p>Mas terminei. E passei. E de repente lá estava eu no antro da perdição, o início de tudo: FFLCH (lê-se "fefeléche"). E o subsolo era de fato um antro: xadrez, MPB, sebos, discussões filosóficas e muita fumaça. No meio das revoluções estratégicas do pessoal do CAELL eu me sentia extremamente "humanizado", seja lá o que isso for. E, sim, pela primeira vez na vida, milhares de mulheres interessantes passarelavam pelos corredores dos pensadores da palavra.</p>
 
 <pre>
-   -- &quot;Viva a linguística!&quot;
+-- &quot;Viva a linguística!&quot;
 </pre>
 <p>Tudo estaria bem na cabeça daquele promissor "professor de português das escolas da rede pública de ensino" se não fosse o meu lado numérico.</p>
 
@@ -212,15 +211,19 @@ void InstallAntiAttach(void)
     BYTE *pBreakin;
     DWORD oldProtect;
     DWORD rel;
+
     hNtdll = GetModuleHandleA(&quot;ntdll.dll&quot;);
     if (!hNtdll)
         return;
+
     pBreakin = (BYTE *)GetProcAddress(
         hNtdll,
         &quot;DbgUiRemoteBreakin&quot;
     );
+
     if (!pBreakin)
         return;
+
     // make memory executable and writable
     VirtualProtect(
         pBreakin,
@@ -228,12 +231,16 @@ void InstallAntiAttach(void)
         PAGE_EXECUTE_READWRITE,
         &amp;oldProtect
     );
+
     // JMP rel32
     pBreakin[0] = 0xE9;
+
     // relative offset
     rel = (DWORD)AntiAttachAbort -
           (DWORD)pBreakin - 5;
+
     *(DWORD *)(pBreakin + 1) = rel;
+
     // restore protection
     VirtualProtect(
         pBreakin,
@@ -254,6 +261,7 @@ void WINAPI AntiAttachAbort(void)
         &quot;AntiAttach&quot;,
         MB_ICONERROR | MB_OK
     );
+
     ExitProcess(0);
 }
 </pre>
@@ -261,9 +269,9 @@ void WINAPI AntiAttachAbort(void)
 
 <p>Maneiras alternativas de fazer isso são:</p>
 
-<p>  1. Declarar uma função naked no Visual Studio, criar uma função vazia logo após e fazer continha de mais e menos para chegar ao tamanho que deve ser copiado.</p>
+<p>1. Declarar uma função naked no Visual Studio, criar uma função vazia logo após e fazer continha de mais e menos para chegar ao tamanho que deve ser copiado.</p>
 
-<p>  2. Criar uma estrutura cujos membros são opcodes disfarçados. Dessa forma é possível no construtor dessa estrutura preencher os valores corretamente e usá-la como uma "função móvel".</p>
+<p>2. Criar uma estrutura cujos membros são opcodes disfarçados. Dessa forma é possível no construtor dessa estrutura preencher os valores corretamente e usá-la como uma "função móvel".</p>
 
 <p>Ambas possuem prós e contras. Os contras estão relacionados com a dependência do ambiente. Na primeira alternativa é necessário configurar o projeto para desabilitar o "Edit and Continue", enquanto no segundo é necessário alinhar a estrutura em 1 byte.</p>
 
@@ -332,26 +340,30 @@ void WINAPI AntiAttachAbort(void)
 <p>O título desse artigo é uma técnica presente no paradigma da programação em C++, razão pela qual não temos o operador finally. A idéia por trás dessa técnica é conseguirmos usar recursos representados por objetos locais de maneira que ao final da função esses objetos sejam destruídos e, junto com eles, os recursos que foram alocados. Podemos chamar de recursos aquele arquivo que necessita ser aberto para escrita, o bitmap que é exibido na tela, o ponteiro de uma interface COM, etc. O nosso exemplo é sobre arquivos:</p>
 
 <pre>
-   #include &lt;stdio.h&gt;
-   class File
-   {
-     public:
-     File(char* name)
-     {
-       m_file = fopen(name, &quot;r&quot;);
-     }
-     ~File()
-     {
-       fclose(m_file);
-     }
-     FILE* m_file;
-   };
-   int UseFile()
-   {
-     File config(&quot;config.txt&quot;);
-     // using config.txt
-     return 0; // config.m_file released
-   } 
+#include &lt;stdio.h&gt;
+
+class File
+{
+  public:
+  File(char* name)
+  {
+    m_file = fopen(name, &quot;r&quot;);
+  }
+
+  ~File()
+  {
+    fclose(m_file);
+  }
+
+  FILE* m_file;
+};
+
+int UseFile()
+{
+  File config(&quot;config.txt&quot;);
+  // using config.txt
+  return 0; // config.m_file released
+} 
 </pre>
 <p>Ignorei tratamento de erros e a dor de cabeça que é a discussão sobre inicializações dentro do construtor, matéria para um outro artigo. Fora os detalhes, o que temos é (1) uma classe que se preocupa em alocar os recursos que necessita e no seu fim desalocá-los, (2) uma função que usa um objeto dessa classe, alegremente apenas preocupada em usar e abusar do objeto. A demonstração da técnica reside no fato que a função não se preocupa em desalocar os recursos alocados pelo objeto config. Algo óbvio, desejável e esperado.</p>
 
@@ -360,48 +372,56 @@ void WINAPI AntiAttachAbort(void)
 <p>Por outro lado, ao usarmos objetos, devemos ter plena confiança nas suas capacidades de gerenciar os recursos que foram por eles alocados. Só assim se tem liberdade o suficiente para nos concentrarmos no código da função e solenemente ignorarmos a implementação da classe que estamos utilizando. Afinal, temos que considerar que muitas vezes o código-fonte não está disponível. Veja a mesma função com uma chance de desvio incondicional (o lançamento de uma exceção):</p>
 
 <pre>
-   void BlowUpFunction()
-   {
-     // things aren't that good, so...
-     throw Scatadush();
-   }
-   int UseFileEx()
-   {
-     File config(&quot;config.txt&quot;);
-     BlowUpFunction(); // exception thrown:
-                       // config.m_file is 
-                       // automagically released
-     return 0;
-   }
+void BlowUpFunction()
+{
+  // things aren't that good, so...
+  throw Scatadush();
+}
+
+int UseFileEx()
+{
+  File config(&quot;config.txt&quot;);
+  BlowUpFunction(); // exception thrown:
+                    // config.m_file is 
+                    // automagically released
+  return 0;
+}
 </pre>
 <p>Nesse exemplo tudo funciona, certo? Até se a exceção for lançada, o recurso será desalocado, pois o objeto é destruído. Isso ilustra como várias técnicas de C++ podem conviver harmoniosamente. Mais que isso, se ajudam mutuamente. O que seria das exceções se não existissem os construtores e destrutores? Da mesma forma, os recursos são alocados e desalocados baseado na premissa de construção e destruição de objetos. Por sua vez, essa premissa vale em qualquer situação, existindo ou não exceções.</p>
 
 <p>Agora, e se a exceção de BlowUpFunction é lançada e a classe File não está preparada para fechar o arquivo no destrutor? Esse é o caso da versão 2 de nossa classe File, logo abaixo. Apesar de ser a segunda versão ela foi piorada (acontece nas melhores famílias e classes):</p>
 
 <pre>
-   class File2
-   {
-   public:
-     void Open(char* name)
-     {
-       m_file = fopen(name, &quot;r&quot;);
-     }
-     void Close()
-     {
-       fclose(m_file);
-     }
-     FILE* m_file;
-   };
-   int UseFile2()
-   {
-     File2 config;
-     config.Open(&quot;config.txt&quot;);
-     BlowUpFunction(); // exception thrown:
-                       // the resource was 
-                       // NOT released
-     config.Close(); // resource released
-     return 0;
-   } 
+class File2
+{
+public:
+
+  void Open(char* name)
+  {
+    m_file = fopen(name, &quot;r&quot;);
+  }
+
+  void Close()
+  {
+    fclose(m_file);
+  }
+
+  FILE* m_file;
+};
+
+int UseFile2()
+{
+  File2 config;
+  config.Open(&quot;config.txt&quot;);
+
+  BlowUpFunction(); // exception thrown:
+                    // the resource was 
+                    // NOT released
+
+  config.Close(); // resource released
+
+  return 0;
+} 
 </pre>
 <p>Nesse caso o código de UseFile2 acaba deixando um recurso alocado por conta de uma exceção que ocorreu em uma função secundária chamada lá pelas tantas em um momento delicado demais para ocorrerem exceções. Note que o destrutor de File2 é chamado assim como o de File, só que este não libera os recursos do objeto. Ele não usa a técnica RAII (Resource Acquisition Is Initialization, ou como seria o título deste artigo em inglês).</p>
 
@@ -438,23 +458,28 @@ void WINAPI AntiAttachAbort(void)
 <p>Agora vamos sair da teoria e tentar fazer as coisas mais ou menos parecidas na prática. O nosso sorteado desse artigo foi o IMalloc, a interface de alocação de memória do COM, que existe desde a época em que não se sabia direito pra que esse tal de COM iria servir. O IMalloc é definido como se segue:</p>
 
 <pre>
-   MIDL_INTERFACE(&quot;00000002-0000-0000-C000-000000000046&quot;)
-   IMalloc : public IUnknown
-   {
-     public:
-     virtual void *STDMETHODCALLTYPE Alloc( 
-       /* [in] */ SIZE_T cb) = 0;
-     virtual void *STDMETHODCALLTYPE Realloc( 
-       /* [in] */ void *pv,
-       /* [in] */ SIZE_T cb) = 0;
-     virtual void STDMETHODCALLTYPE Free( 
-       /* [in] */ void *pv) = 0;
-     virtual SIZE_T STDMETHODCALLTYPE GetSize( 
-       /* [in] */ void *pv) = 0;
-     virtual int STDMETHODCALLTYPE DidAlloc( 
-       void *pv) = 0;
-     virtual void STDMETHODCALLTYPE HeapMinimize(void) = 0;
-   };
+MIDL_INTERFACE(&quot;00000002-0000-0000-C000-000000000046&quot;)
+IMalloc : public IUnknown
+{
+  public:
+  virtual void *STDMETHODCALLTYPE Alloc( 
+    /* [in] */ SIZE_T cb) = 0;
+
+  virtual void *STDMETHODCALLTYPE Realloc( 
+    /* [in] */ void *pv,
+    /* [in] */ SIZE_T cb) = 0;
+
+  virtual void STDMETHODCALLTYPE Free( 
+    /* [in] */ void *pv) = 0;
+
+  virtual SIZE_T STDMETHODCALLTYPE GetSize( 
+    /* [in] */ void *pv) = 0;
+
+  virtual int STDMETHODCALLTYPE DidAlloc( 
+    void *pv) = 0;
+
+  virtual void STDMETHODCALLTYPE HeapMinimize(void) = 0;
+};
 </pre>
 <p>Nesse experimento, como iremos interceptar quando alguém aloca ou desaloca memória, nossos alvos são os métodos Alloc e Free. Para saber onde eles estão na tabela, é só contar, começando pelos métodos do IUnknown, que é de quem o IMalloc deriva. Se houvessem mais derivações teríamos que contar da primeira interface até a última. Portanto: QueryInterface um, AddRef dois, Release três, Alloc quatro, Realloc cinco, Free seis. OK. Contar foi a parte mais fácil.</p>
 
@@ -463,116 +488,121 @@ void WINAPI AntiAttachAbort(void)
 <p>Nesse exemplo iremos obter o ponteiro através de um aplicativo de teste trivial, ignorando todas aquelas proteções antidebugging que podem estar presentes no momento da reversa, feitos por alguém que lê meu blog (quanta pretensão!):</p>
 
 <pre>
-   /** @brief A stupid sample to 
-     show WinDbg COM hooking! */
-   #include &lt;windows.h&gt;
-   #include &lt;objbase.h&gt;
-   #include &lt;objidl.h&gt;
-   int main()
-   {
-     CoInitialize(NULL);
-     IMalloc* malloc = 0;
-     if( CoGetMalloc(1, &amp;malloc) == 0 )
-     {
-       if( void* pAlloc 
-         = malloc-&gt;Alloc(0x1000) )
-       {
-         malloc-&gt;Free(pAlloc);
-       }
-       malloc-&gt;Release();
-     }
-     CoUninitialize();
-   } 
+/** @brief A stupid sample to 
+  show WinDbg COM hooking! */
+#include &lt;windows.h&gt;
+#include &lt;objbase.h&gt;
+#include &lt;objidl.h&gt;
+ 
+int main()
+{
+  CoInitialize(NULL);
+  IMalloc* malloc = 0;
+
+  if( CoGetMalloc(1, &amp;malloc) == 0 )
+  {
+    if( void* pAlloc 
+      = malloc-&gt;Alloc(0x1000) )
+    {
+      malloc-&gt;Free(pAlloc);
+    }
+
+    malloc-&gt;Release();
+  }
+
+  CoUninitialize();
+} 
 </pre>
 <p>Vamos fazer de conta que é desnecessário dizer como se compila o fonte acima.</p>
 
 <pre>
-   cl /c imalloc-hook.cpp
-   link imalloc-hook.obj ole32.lib
+cl /c imalloc-hook.cpp
+link imalloc-hook.obj ole32.lib
 </pre>
 <p>Agora é só depurar!</p>
 
 <p>Abra o WinDbg. Na opção "File, Open Executable" selecionamos a nossa vítima, cujo nome você escolhe na hora de compilar o fonte acima. Aqui ele irá chamar imalloc-hook.exe. A seguir, colocamos um breakpoint na função da ole32, mandamos rodar, e esperamos a parada do código:</p>
 
 <pre>
-   0:000&gt; bp ole32!CoGetMalloc
-   0:000&gt; bl
-   0 e 774ddcf8 0001 (0001) 0:**** ole32!CoGetMalloc
-   0:000&gt; g
-   Breakpoint 0 hit
-   ModLoad: 76360000 7637d000 C:\WINDOWS\system32\IMM32.DLL
-   ...
-   ModLoad: 746e0000 7472b000 C:\WINDOWS\system32\MSCTF.dll
-   eax=0012ff7c ebx=00000000 ecx=775e67f0 edx=775e67f0 esi=00000001 edi=00403374
-   eip=774ddcf8 esp=0012ff70 ebp=0012ffc0 iopl=0 nv up ei pl zr na pe nc
-   cs=001b ss=0023 ds=0023 es=0023 fs=003b gs=0000 efl=00000246
-   ole32!CoGetMalloc:
-   774ddcf8 8bff mov edi,edi
+0:000&gt; bp ole32!CoGetMalloc
+0:000&gt; bl
+0 e 774ddcf8 0001 (0001) 0:**** ole32!CoGetMalloc
+0:000&gt; g
+Breakpoint 0 hit
+ModLoad: 76360000 7637d000 C:\WINDOWS\system32\IMM32.DLL
+...
+ModLoad: 746e0000 7472b000 C:\WINDOWS\system32\MSCTF.dll
+eax=0012ff7c ebx=00000000 ecx=775e67f0 edx=775e67f0 esi=00000001 edi=00403374
+eip=774ddcf8 esp=0012ff70 ebp=0012ffc0 iopl=0 nv up ei pl zr na pe nc
+cs=001b ss=0023 ds=0023 es=0023 fs=003b gs=0000 efl=00000246
+ole32!CoGetMalloc:
+774ddcf8 8bff mov edi,edi
 </pre>
 <p>Maravilha. Alguém chamou a função que queríamos (quem será?). Agora podemos dar uma olhada na pilha e no protótipo da CoGetMalloc:</p>
 
 <pre>
-   HRESULT CoGetMalloc(DWORD dwMemContext, LPMALLOC *ppMalloc);
-   0:000&gt; dd esp L3
-   0012ff70 0040101d 00000001 0012ff7c
-   0:000&gt; dd poi(esp+8) L1
-   0012ff7c  00000000
+HRESULT CoGetMalloc(DWORD dwMemContext, LPMALLOC *ppMalloc);
+
+0:000&gt; dd esp L3
+0012ff70 0040101d 00000001 0012ff7c
+0:000&gt; dd poi(esp+8) L1
+0012ff7c  00000000
 </pre>
 <p>Como podemos ver nos parâmetros da pilha o nosso chamador passou certinho o valor 1 no campo reservado e um ponteiro no segundo parâmetro para uma área onde, se der tudo certo, será escrito o endereço de um IMalloc, que podemos chamar carinhosamente de this. De início vemos que a variável está zerada. Agora vamos executar a função até a saída e examinar os resultados.</p>
 
 <pre>
-   0:000&gt; bp /1 /c @$csp @$ra;g
-   Breakpoint 1 hit
-   eax=00000000 ebx=00000000 ecx=775e6034 edx=775e67f0 esi=00000001 edi=00403374
-   eip=0040101d esp=0012ff7c ebp=0012ffc0 iopl=0         nv up ei pl zr na pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
-   IMalloc+0x101d:
-   0040101d 85c0         test    eax,eax
-   0:000&gt; dd 0012ff7c L1  ; o endereço da variável
-   0012ff7c  775e6034     ; o endereço da interface
-   0:000&gt; dd 775e6034 L1  ; onde está a vtable?
-   775e6034  775e600c     ; o endereço da vtable
-   0:000&gt; dd 775e600c
-   775e600c  77562cfb 774dcf29 774dcf29 774dd00d ; a vtable ! ! !
-   775e601c  774dd665 774dcfe8 774dd400 77562d46 ; a vtable ! ! !
-   775e602c  77562d6e 775e6034 775e600c 774c0000 ; a vtable ! ! !
-   775e603c  00000000 00000000 00154d70 774cbff4
-   775e604c  00000000 00000000 00000000 00000000
-   ...
+0:000&gt; bp /1 /c @$csp @$ra;g
+Breakpoint 1 hit
+eax=00000000 ebx=00000000 ecx=775e6034 edx=775e67f0 esi=00000001 edi=00403374
+eip=0040101d esp=0012ff7c ebp=0012ffc0 iopl=0         nv up ei pl zr na pe nc
+cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
+IMalloc+0x101d:
+0040101d 85c0         test    eax,eax
+0:000&gt; dd 0012ff7c L1  ; o endereço da variável
+0012ff7c  775e6034     ; o endereço da interface
+0:000&gt; dd 775e6034 L1  ; onde está a vtable?
+775e6034  775e600c     ; o endereço da vtable
+0:000&gt; dd 775e600c
+775e600c  77562cfb 774dcf29 774dcf29 774dd00d ; a vtable ! ! !
+775e601c  774dd665 774dcfe8 774dd400 77562d46 ; a vtable ! ! !
+775e602c  77562d6e 775e6034 775e600c 774c0000 ; a vtable ! ! !
+775e603c  00000000 00000000 00154d70 774cbff4
+775e604c  00000000 00000000 00000000 00000000
+...
 </pre>
 <p>E não é que tudo deu certo? A variável foi preenchida, e partir dela demos uma espiadela nos endereços das funções da vtable. Nós pegamos o valor da variável que foi preenchida (o endereço da interface) e obtemos os seus primeiros 4 bytes (o endereço da vtable) e listamos o seu conteúdo (a própria vtable!). Agora basta usarmos o resultados de nossas contagens lá em cima e colocarmos os breakpoints nas funções corretas. E mandar rodar. E analisar os resultados.</p>
 
 <pre>
-   0:000&gt; bp 774dd00d &quot;.echo IMalloc::Alloc&quot;
-   0:000&gt; bp 774dcfe8 &quot;.echo IMalloc::Free&quot;
-   0:000&gt; g
-   IMalloc::Alloc
-   eax=775e6034 ebx=00000000 ecx=775e600c edx=774dd00d esi=00000001 edi=00403374
-   eip=774dd00d esp=0012ff70 ebp=0012ffc0 iopl=0         nv up ei pl zr na pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
-   ole32!IsValidIid+0xe4:
-   774dd00d 8bff            mov     edi,edi
-   0:000&gt; dd esp L3
-   0012ff70  00401031 775e6034 00001000 ; o this é nosso, e foi pedido para alocar 4KB (0x1000)
-   0:000&gt; bp /1 /c @$csp @$ra;g ; Step Out para pegar o retorno
-   Breakpoint 3 hit
-   eax=001597f0 ebx=00000000 ecx=7c9106eb edx=00150608 esi=00000001 edi=00403374
-   eip=00401031 esp=0012ff7c ebp=0012ffc0 iopl=0         nv up ei pl nz na pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000206
-   IMalloc+0x1031:
-   00401031 85c0            test    eax,eax
-   0:000&gt; reax
-   eax=001597f0 ; esse é o endereço da memória alocada
-   g
-   IMalloc::Free
-   eax=774dcfe8 ebx=00000000 ecx=775e6034 edx=775e600c esi=00000001 edi=00403374
-   eip=774dcfe8 esp=0012ff70 ebp=0012ffc0 iopl=0         nv up ei pl nz na pe nc
-   cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000206
-   ole32!IsValidIid+0xbf:
-   774dcfe8 8bff            mov     edi,edi
-   0:000&gt; dd esp L3
-   0012ff70  00401041 775e6034 001597f0 ; nosso this e endereço alocado (pedindo pra desalocar)
-   g ; é isso aí
+0:000&gt; bp 774dd00d &quot;.echo IMalloc::Alloc&quot;
+0:000&gt; bp 774dcfe8 &quot;.echo IMalloc::Free&quot;
+0:000&gt; g
+IMalloc::Alloc
+eax=775e6034 ebx=00000000 ecx=775e600c edx=774dd00d esi=00000001 edi=00403374
+eip=774dd00d esp=0012ff70 ebp=0012ffc0 iopl=0         nv up ei pl zr na pe nc
+cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
+ole32!IsValidIid+0xe4:
+774dd00d 8bff            mov     edi,edi
+0:000&gt; dd esp L3
+0012ff70  00401031 775e6034 00001000 ; o this é nosso, e foi pedido para alocar 4KB (0x1000)
+0:000&gt; bp /1 /c @$csp @$ra;g ; Step Out para pegar o retorno
+Breakpoint 3 hit
+eax=001597f0 ebx=00000000 ecx=7c9106eb edx=00150608 esi=00000001 edi=00403374
+eip=00401031 esp=0012ff7c ebp=0012ffc0 iopl=0         nv up ei pl nz na pe nc
+cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000206
+IMalloc+0x1031:
+00401031 85c0            test    eax,eax
+0:000&gt; reax
+eax=001597f0 ; esse é o endereço da memória alocada
+g
+IMalloc::Free
+eax=774dcfe8 ebx=00000000 ecx=775e6034 edx=775e600c esi=00000001 edi=00403374
+eip=774dcfe8 esp=0012ff70 ebp=0012ffc0 iopl=0         nv up ei pl nz na pe nc
+cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000206
+ole32!IsValidIid+0xbf:
+774dcfe8 8bff            mov     edi,edi
+0:000&gt; dd esp L3
+0012ff70  00401041 775e6034 001597f0 ; nosso this e endereço alocado (pedindo pra desalocar)
+g ; é isso aí
 </pre>
 <p>Note que a função pode eventualmente ser chamada internamente (pelo próprio objeto) ou até por outro objeto que não estamos interessados em interceptar (lembre-se que os métodos de uma classe são compartilhados por todos os objetos). Por isso é importante sempre dar uma olhada no primeiro parâmetro, que é o this que obtemos primeiramente.</p>
 
@@ -591,19 +621,19 @@ void WINAPI AntiAttachAbort(void)
 <p>O erro mais comum de todos é a passagem de tipo na string de formatação diferente da variável passada:</p>
 
 <pre>
-   void f(wchar_t* arg)
-   {
-    printf(&quot;%s&quot;, arg);
-    return 0;
-   }
+void f(wchar_t* arg)
+{
+ printf(&quot;%s&quot;, arg);
+ return 0;
+}
 </pre>
 <p>Isso costuma ser mais comum quando existem centenas de milhares de parâmetros na chamada, o que confunde o programador (e o leitor de certos blogues especializados em confundir). Imagine um  printf em que a string de formatação é algo como "%s%d%s%f%s%d%f%d%s%f%s%d". Agora imagine os parâmetros passados e a necessidade dos tipos baterem um a um. É, você entendeu o drama.</p>
 
 <p>O segundo erro que me lembro que costuma dar muitos problemas é a passagem de tipo inteiro de tamanho diferente:</p>
 
 <pre>
-   char ch = getc();
-   printf(&quot;%d&quot;, ch);
+char ch = getc();
+printf(&quot;%d&quot;, ch);
 </pre>
 <p>É mais sutil, também costuma confundir no meio de vários parâmetros, e pode ser detectado utilizando a técnica de transformar tudo em assembly, pois com isso temos dica de tipagem ao empilhar os argumentos na saída do arquivo asm. É claro que hoje em dia existem compiladores muito espertos, que detectam na hora o que você está digitando e a cagada que isso vai dar depois de compilado. Mas, assumindo que você não tem toda essa tecnologia ao seu dispor, ou está mesmo interessado em entender como as coisas funcionam, e não apenas seguir o manual do seu ambiente de desenvolvimento preferido, essa é uma maneira interessante de analisar o que ocorre com o seu código. Agora, a pergunta que não quer calar: por que isso acontece?</p>
 
@@ -612,9 +642,9 @@ void WINAPI AntiAttachAbort(void)
 <p>Dica: se você encontrar problemas de crash ou corrompimento de pilha e houver um printf ou derivados, como funções de logs que confiam no printf, experimente desabilitar a chamada dessas funções e ver se o problema permanece. Isso pode ser feito pelo preprocessador:</p>
 
 <pre>
-   #define printf
-   #define sprintf
-   #define LOG
+#define printf
+#define sprintf
+#define LOG
 </pre>
 <p>Ao definir os nomes das funções usadas para nada não haverá a chamada da função, apesar do código compilar exatamente igual, exceto a chamada. Ou seja, se houver problemas em algum printf ele sumirá. A partir daí é só ir comentando e descomentando as partes do código até encontrar.</p>
 
@@ -635,15 +665,19 @@ void WINAPI AntiAttachAbort(void)
 <pre>
 #include &lt;windows.h&gt;
 #include &lt;stdio.h&gt;
+
 DWORD WINAPI WorkerThread(LPVOID lpParam)
 {
     // Simulate some work
     Sleep(1000);
+
     // Anything that might touch loader state is deadly here
     // Even something innocent-looking like LoadLibrary
     LoadLibraryA(&quot;user32.dll&quot;);
+
     return 0;
 }
+
 BOOL WINAPI DllMain(HINSTANCE hinstDLL,
                     DWORD fdwReason,
                     LPVOID lpvReserved)
@@ -654,6 +688,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL,
     {
         HANDLE hThread;
         DWORD threadId;
+
         hThread = CreateThread(
             NULL,
             0,
@@ -662,6 +697,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL,
             0,
             &amp;threadId
         );
+
         if (hThread)
         {
             // 🚨 DEADLOCK HERE 🚨
@@ -671,27 +707,30 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL,
         }
         break;
     }
+
     case DLL_PROCESS_DETACH:
         break;
     }
+
     return TRUE;
 }
 </pre>
 <p>A simple victim of all this can be an executable using a poorly written DLL, just like the code above:</p>
 
 <pre>
-   int main()
-   {
-     printf(&quot;load dll&quot;);
-     HMODULE lockDll = LoadLibrary(_T(&quot;dll_lock.dll&quot;));
-     if( lockDll )
-     {
-       Sleep(2000);
-       printf(&quot;free dll&quot;);
-       FreeLibrary(lockDll), lockDll  = NULL;
-       printf(&quot;done&quot;);
-     }
-   }
+int main()
+{
+  printf(&quot;load dll&quot;);
+  HMODULE lockDll = LoadLibrary(_T(&quot;dll_lock.dll&quot;));
+
+  if( lockDll )
+  {
+    Sleep(2000);
+    printf(&quot;free dll&quot;);
+    FreeLibrary(lockDll), lockDll  = NULL;
+    printf(&quot;done&quot;);
+  }
+}
 </pre>
 <p>It is important to remember that a DllMain dependant code is a very, very bad thing. Nevertheless, there are some particular cases the only place to run our code is inside DllMain. In these cases, when detected, try to run a side by side communication with your locked thread using an event object (or equivalent) before it really returns. Using this craft the thread can warn the waiting thread that the important thing to be done is done, and the waiting thread can go to sleep and stop waiting forever locked threads.</p>
 
@@ -715,11 +754,11 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL,
 
 <p>Para as pessoas que chegam nesse nível de necessidade, existem basicamente duas escolhas:</p>
 
-<p>  1. Permanecer no mundo Microsoft e usar MFC + Win32 API, passando a programar na linguagem em que foi feito o Windows (C/C++).</p>
+<p>1. Permanecer no mundo Microsoft e usar MFC + Win32 API, passando a programar na linguagem em que foi feito o Windows (C/C++).</p>
 
-<p>  2. Tentar usar o Delphi, a evolução do Turbo Pascal para Windows, da Borland, que pode ser considerado mais flexível que o VB, mas ainda assim usa uma linguagem alienígena (no sentido de que ainda não é a linguagem nativa do SO).</p>
+<p>2. Tentar usar o Delphi, a evolução do Turbo Pascal para Windows, da Borland, que pode ser considerado mais flexível que o VB, mas ainda assim usa uma linguagem alienígena (no sentido de que ainda não é a linguagem nativa do SO).</p>
 
-<p>  3. Mudar de sistema operacional e esquecer esse negócio de loop de mensagens (eu disse duas escolhas, certo?)</p>
+<p>3. Mudar de sistema operacional e esquecer esse negócio de loop de mensagens (eu disse duas escolhas, certo?)</p>
 
 <p>Bom, eis que surge o C++ Builder: uma ferramenta idêntica ao Delphi, contudo que oferece a linguagem C++ para que todas aquelas pessoas recém-saídas da faculdade e ansiosas por entrar no mercado de trabalho esqueçam aquele papo de Pascal e passem a usar a linguagem da indústria. Pelo jeito, era mais ou menos essa a visão da Borland quando lançaram o produto.</p>
 
@@ -732,11 +771,11 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL,
 
 <p>Mas desde que o mundo gerenciado veio à tona, para instalar esse singelo produto da Borland você vai precisar de alguns pré-requisitos da Microsoft:</p>
 
-<p>  1. Microsoft .NET Framework SDK 1.1</p>
+<p>1. Microsoft .NET Framework SDK 1.1</p>
 
-<p>  2. Visual J# .NET Redistributable Package 1.1</p>
+<p>2. Visual J# .NET Redistributable Package 1.1</p>
 
-<p>  3. Microsoft XML 4.0 SP2 Parser and SDK</p>
+<p>3. Microsoft XML 4.0 SP2 Parser and SDK</p>
 
 <p>Se for necessária mais alguma instalação, não se preocupe: o Borland Turbo C++ Instalation Wizard irá te avisar no momento da instalação, que deverá ser a última a ser realizada.</p>
 

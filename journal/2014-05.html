@@ -136,32 +136,43 @@ por Wanderley Caloni (wanderley.caloni@gmail.com).
 #include&lt;algorithm&gt;
 #include&lt;vector&gt;
 #include&lt;time.h&gt;
+
 using namespace std;
+
 // as variáveis monossilábicas...
 int w[1001], C[1001][1001], O[1001];
+
 // Note que uma delas (C) é uma tabela gigantesca:
+
 // 1     2    3     4   ...  1001
 // 2
 // 3
 // ...
 // 1001
+
 // tabela verdade?
 bool v[1001];
+
 struct A
 {  
     int ord, R;
+
     bool operator &lt;(const A &amp;p)const
     {
       return R &lt; p.R;
     }
 }
 p[1000];
+
 int main()
 {
     freopen(&quot;input.txt&quot;, &quot;r&quot;, stdin);
     freopen(&quot;output.txt&quot;, &quot;w&quot;, stdout);
+
     int i, TC, T, n, j;
+
     srand((unsigned)time(NULL)); // mexendo o saco de bingo...
+
     // a parte mais demorada: construir um contador gigante estilo 
     // Excel com 3 milhões de iterações
     for (i = 0; i &lt; 3000000; i++)
@@ -171,24 +182,29 @@ int main()
       {
         w[j] = j;
       }
+
       // 2. Realizamos o algorimo ruim.
       for (j = 0; j &lt; 1000; j++)
       {
         swap(w[j], w[rand() % 1000]);
       }
+
       // 3. Pesamos o resultado do algoritmo ruim.
       for (j = 0; j &lt; 1000; j++)
       {
         C[j][w[j]]++;
       }
     }
+
     // agora a parte &quot;fácil&quot;...
+
     // ler número de casos de teste (sempre 120)
     scanf(&quot;%d&quot;, &amp;TC);
     for (T = 1; T &lt;= TC; T++) // iterar por cada linha
     {
       scanf(&quot;%d&quot;, &amp;n);
       p[T].ord = T; // guardando sua posição
+
       // lendo os números de todos os casos
       for (i = 0; i &lt; n; i++)
       {
@@ -196,10 +212,12 @@ int main()
         p[T].R += C[i][O[i]]; // mas gravando o peso de cada posição (cálculo de 3M)
       }
     }
+
     // ordenando pelo peso de cada posição
     sort(p + 1, p + TC + 1);
     for (i = 1; i &lt;= 60; i++)
       v[p[i].ord] = true; // metade tem que ser bom (a melhor metade)
+
     for (i = 1; i &lt;= TC; i++)
     {
       printf(&quot;Case #%d: &quot;, i);
@@ -380,9 +398,11 @@ int main()
 struct MinhaEstrutura
 {
 };
+
 class MinhaClasse
 {
 };
+
 int main()
 {
     MinhaEstrutura me;
@@ -402,10 +422,12 @@ struct MinhaEstrutura
 {
     MinhaEstrutura() {}
 };
+
 class MinhaClasse
 {
     MinhaClasse() {}
 };
+
 int main()
 {
     MinhaEstrutura me;
@@ -424,6 +446,7 @@ int main()
 
 <pre>
 #include &lt;iostream&gt;
+
 struct MinhaEstrutura
 {
     MinhaEstrutura()
@@ -432,10 +455,12 @@ struct MinhaEstrutura
         y = 2;
         c = 'C';
     }
+
     int x;
     int y;
     char c;
 };
+
 int main()
 {
     MinhaEstrutura me;
@@ -448,16 +473,19 @@ int main()
 
 <pre>
 #include &lt;iostream&gt;
+
 struct MinhaEstrutura
 {
     MinhaEstrutura() { x = 0; y = 2; c = 'C'; }
     int x; int y; char c;
 };
+
 std::ostream&amp; operator &lt;&lt; (std::ostream&amp; os, const MinhaEstrutura&amp; me)
 {
     std::cout &lt;&lt; &quot;x: &quot; &lt;&lt; me.x &lt;&lt; &quot;, y: &quot; &lt;&lt; me.y &lt;&lt; &quot;, c: &quot; &lt;&lt; me.c;
     return os;
 }
+
 int main()
 {
     MinhaEstrutura me;

@@ -220,7 +220,7 @@ role="navigation" aria-label="main navigation">
 
 <p>Mas este também é um filme sobre uma relação de "amizade" curiosa que nasce entre pupila e mestre, em que tudo o que eles dizem, seja nos treinamentos de retórica ou na "vida real", pode não ser realmente o que sentem ou pensam. Dessa forma, o subtexto deveria ser usado para que o espectador consiga detectar o que está sendo dito de verdade, mas não é assim. O que acontece é que o filme pega o livro A Arte de Ter Razão, o guia indecoroso de como ganhar argumentos a qualquer custo do filósofo Arthur Schopenhauer (uma criatura certamente estranha, como pontua o professor). Ao mesmo tempo, o filme acerta ao demonstrar, como em um inocente jogo de detetive entre a aluna e seus amigos, que a argumentação existe em qualquer lugar onde seres humanos estejam a se comunicar usando palavras.</p>
 
-<p>No que voltamos às celebridades literárias mostradas no começo do filme. Para eles não são as ideias tão importantes quanto as palavras. Um deles diz que são as palavras que fazem nascer as ideias, e com isso ele quer dizer que no fundo, no fundo, o que importa mesmo na argumentação é saber dominar as palavras com maestria. E a verdade que fique em um canto da sala. O filme não nos diz abertamente que é isso o que ele faz ao montar uma historinha de faz-de-conta em uma Paris idealizada de acordo com teorias sociais em voga. Mas se for, então retiro tudo que disse sobre seus valores: você me pegou em cheio. </p>
+<p>No que voltamos às celebridades literárias mostradas no começo do filme. Para eles não são as ideias tão importantes quanto as palavras. Um deles diz que são as palavras que fazem nascer as ideias, e com isso ele quer dizer que no fundo, no fundo, o que importa mesmo na argumentação é saber dominar as palavras com maestria. E a verdade que fique em um canto da sala. O filme não nos diz abertamente que é isso o que ele faz ao montar uma historinha de faz-de-conta em uma Paris idealizada de acordo com teorias sociais em voga. Mas se for, então retiro tudo que disse sobre seus valores: você me pegou em cheio.</p>
 
 <p>Está tudo dito! (I rest my case.)</p>
 
@@ -318,16 +318,20 @@ role="navigation" aria-label="main navigation">
 
 <pre>
 D:\&gt;cd deploy
+
 D:\deploy&gt;virtualenv python27
 New python executable in D:\deploy\python27\Scripts\python.exe
 Installing setuptools, pip, wheel...done.
+
 D:\deploy&gt;
 </pre>
 <p>Depois instalamos os requisitos de nosso pacote fictício:</p>
 
 <pre>
 D:\deploy&gt;python27\Scripts\activate.bat
+
 (python27) D:\deploy&gt;pushd d:\src\MyFictionalPackage
+
 (python27) d:\src\MyFictionalPackage&gt;pip install -r requirements.txt
 Collecting cx-Freeze==5.1.1 (from -r requirements.txt (line 1))
   Using cached https://files.pythonhosted.org/packages/ba/d7/e5a699abbc04df31d28750bd4f7715f75452c57c6ea7f05acff0bc26873d/cx_Freeze-5.1.1-cp27-cp27m-win32.whl
@@ -340,6 +344,7 @@ Collecting six==1.11.0 (from -r requirements.txt (line 4))
 Requirement already satisfied: setuptools in d:\deploy\python27\lib\site-packages (from protobuf==3.6.0-&gt;-r requirements.txt (line 2)) (40.0.0)
 Installing collected packages: cx-Freeze, six, protobuf, pyodbc
 Successfully installed cx-Freeze-5.1.1 protobuf-3.6.0 pyodbc-4.0.23 six-1.11.0
+
 (python27) d:\src\MyFictionalPackage&gt;
 </pre>
 <p>Agora vem a hora do erro. O protobuf que foi instalado possui um pequeno bug que impede que o build_exe obtenha essa dependência corretamente na hora de gerar o executável:</p>
@@ -369,6 +374,7 @@ Traceback (most recent call last):
   File &quot;D:\deploy\python27\lib\site-packages\cx_Freeze\finder.py&quot;, line 351, in _ImportModule
     raise ImportError(&quot;No module named %r&quot; % name)
 ImportError: No module named 'google.protobuf'
+
 (python27) d:\src\MyFictionalPackage&gt;
 </pre>
 <p>Para fazer funcionar há um pequeno patch: criar um arquivo __init__.py dentro da pasta google onde está instalado o pacote do protobuf:</p>
@@ -377,25 +383,32 @@ ImportError: No module named 'google.protobuf'
 (python27) d:\src\MyFictionalPackage&gt;dir d:\deploy\python27\Lib\site-packages\google
  Volume in drive D is SYSTEM
  Volume Serial Number is 5C08-36EE
+
  Directory of d:\deploy\python27\Lib\site-packages\google
+
 14/07/2018  14:15    &lt;DIR&gt;          .
 14/07/2018  14:15    &lt;DIR&gt;          ..
 14/07/2018  14:15    &lt;DIR&gt;          protobuf
                0 File(s)              0 bytes
                3 Dir(s)  102.341.001.216 bytes free
+
 (python27) d:\src\MyFictionalPackage&gt;copy con d:\deploy\python27\Lib\site-packages\google\__init__.py
 ^Z
         1 file(s) copied.
+
 (python27) d:\src\MyFictionalPackage&gt;dir d:\deploy\python27\Lib\site-packages\google
  Volume in drive D is SYSTEM
  Volume Serial Number is 5C08-36EE
+
  Directory of d:\deploy\python27\Lib\site-packages\google
+
 14/07/2018  14:19    &lt;DIR&gt;          .
 14/07/2018  14:19    &lt;DIR&gt;          ..
 14/07/2018  14:15    &lt;DIR&gt;          protobuf
 14/07/2018  14:19                 0 __init__.py
                1 File(s)              0 bytes
                3 Dir(s)  102.341.001.216 bytes free
+
 (python27) d:\src\MyFictionalPackage&gt;
 </pre>
 <p>Após essa pequena operação já será possível gerar o executável com sucesso:</p>
@@ -408,6 +421,7 @@ copying C:\WINDOWS\SYSTEM32\python27.dll -&gt; build\exe.win32-2.7\python27.dll
 *** WARNING *** unable to create version resource
 install pywin32 extensions first
 writing zip file build\exe.win32-2.7\lib\library.zip
+
   Name                      File
   ----                      ----
 m BUILD_CONSTANTS
@@ -434,6 +448,7 @@ m warnings                  D:\deploy\python27\lib\warnings.py
 m weakref                   c:\programs\python27\Lib\weakref.py
 m zipimport
 m zlib
+
 Missing modules:
 ? _emx_link imported from os
 ? ce imported from os
@@ -454,6 +469,7 @@ Missing modules:
 ? riscosenviron imported from os
 ? riscospath imported from os
 This is not necessarily a problem - the modules may not be needed on this platform.
+
 copying c:\programs\python27\DLLs\_hashlib.pyd -&gt; build\exe.win32-2.7\lib\_hashlib.pyd
 copying C:\WINDOWS\SYSTEM32\python27.dll -&gt; build\exe.win32-2.7\lib\python27.dll
 copying c:\programs\python27\DLLs\_socket.pyd -&gt; build\exe.win32-2.7\lib\_socket.pyd
@@ -462,6 +478,7 @@ copying c:\programs\python27\DLLs\bz2.pyd -&gt; build\exe.win32-2.7\lib\bz2.pyd
 copying D:\deploy\python27\lib\site-packages\pyodbc.pyd -&gt; build\exe.win32-2.7\lib\pyodbc.pyd
 copying c:\programs\python27\DLLs\select.pyd -&gt; build\exe.win32-2.7\lib\select.pyd
 copying c:\programs\python27\DLLs\unicodedata.pyd -&gt; build\exe.win32-2.7\lib\unicodedata.pyd
+
 (python27) d:\src\MyFictionalPackage&gt;
 </pre>
 <p>Agora ao listarmos os executáveis gerados encontraremos nosso amigo fictício:</p>
@@ -469,6 +486,7 @@ copying c:\programs\python27\DLLs\unicodedata.pyd -&gt; build\exe.win32-2.7\lib\
 <pre>
 (python27) d:\src\MyFictionalPackage&gt;dir /s /b *.exe
 d:\src\MyFictionalPackage\build\exe.win32-2.7\MyFictionalPackage.exe
+
 (python27) d:\src\MyFictionalPackage&gt;
 </pre>
 <p>Nota: conteúdo do arquivo setup.py:</p>
@@ -477,20 +495,24 @@ d:\src\MyFictionalPackage\build\exe.win32-2.7\MyFictionalPackage.exe
 import sys
 import os
 from cx_Freeze import setup, Executable
+
 exe = [
         Executable('MyFictionalPackage.py')
 ]
+
 option = { 'build_exe' : {
         'path' : sys.path.append(os.getcwd()),
         'includes' : ['google.protobuf', 'pkgutil', 'pyodbc', 'decimal'],
     }
 }
+
 setup(name = &quot;teste_cx_Freeze&quot;,
         version = &quot;0.1&quot;,
         description = &quot;&quot;,
         options = option,
         executables=exe
 )
+
 (python27) d:\src\MyFictionalPackage&gt;
 </pre>
 </section><hr/>
@@ -731,54 +753,54 @@ copy /Y calibre_template_begin.html+calibre_template_entries.html+calibre_templa
 
 <p>Por exemplo, ele detalha a diferença entre texto e subtexto, e se a maioria dos roteiristas soubesse essa diferença não teríamos tantos trabalhos medíocres por aí. Olhe seu ótimo exemplo:</p>
 
-<blockquote>Texto: um taxista trabalha no turno da noite e exposto aos perigos da profissão vai aos poucos perdendo sua sanidade mental até tornar-se uma pessoa totalmente agressiva e vingativa. Qual seria um possível subtexto para esta história? Solidão. </blockquote>
+<blockquote>Texto: um taxista trabalha no turno da noite e exposto aos perigos da profissão vai aos poucos perdendo sua sanidade mental até tornar-se uma pessoa totalmente agressiva e vingativa. Qual seria um possível subtexto para esta história? Solidão.</blockquote>
 <p>Outro detalhe primordial do trabalho de um roteirista é ter em mãos seu storyline e seu argumento, e Bayão mais uma vez ressalta as diferença envolvidas:</p>
 
-<blockquote>Geralmente perguntam ao roteirista qual a história do seu roteiro. Eles querem ouvir o storyline, a isca. Um storyline bem construído é um convite à leitura de um roteiro, enquanto que em um storyline pouco atraente leva um roteiro para a gaveta. </blockquote>
-<blockquote>Já o argumento tem uma função diferente. O texto corrido dá uma sensação ao leitor de estar lendo um pequeno romance, o que facilita muito para quem é pouco familiarizado com o formato do roteiro cinematográfico. Ele também é muito útil na pré-produção, pois já que é mais detalhado que o storyline, oferece mais dados aos profissionais das outras áreas, como por exemplo, os cenógrafos, figurinistas... A partir do argumento também é possível calcular aproximadamente os custos da produção. </blockquote>
+<blockquote>Geralmente perguntam ao roteirista qual a história do seu roteiro. Eles querem ouvir o storyline, a isca. Um storyline bem construído é um convite à leitura de um roteiro, enquanto que em um storyline pouco atraente leva um roteiro para a gaveta.</blockquote>
+<blockquote>Já o argumento tem uma função diferente. O texto corrido dá uma sensação ao leitor de estar lendo um pequeno romance, o que facilita muito para quem é pouco familiarizado com o formato do roteiro cinematográfico. Ele também é muito útil na pré-produção, pois já que é mais detalhado que o storyline, oferece mais dados aos profissionais das outras áreas, como por exemplo, os cenógrafos, figurinistas... A partir do argumento também é possível calcular aproximadamente os custos da produção.</blockquote>
 <p>Além disso, gosto de livros que conseguem extrair da experiência do autor elixires de simplicidade: os axiomas. O processo para se chegar até ele é doloroso, mas o resultado é útil para o leitor, e simples de capturar a sua importância, mesmo que nenhum de nós consiga chegar no mesmo resultado. Você precisa sentir ao longo dos anos para chegar a esta conclusão:</p>
 
-<blockquote>O roteirista que cultiva o hábito de escrever roteiros assim deve constantemente se lembrar que o seu roteiro vai ser visto e não lido. </blockquote>
+<blockquote>O roteirista que cultiva o hábito de escrever roteiros assim deve constantemente se lembrar que o seu roteiro vai ser visto e não lido.</blockquote>
 <p>Citando um trabalho recortado em frases curtas:</p>
 
-<blockquote>Um objetivo importante a ser atingido por um roteirista é o de conseguir prender a atenção do leitor. Descrições onde o texto é seqüencial e contínuo convida à leitura, enquanto que um texto com freqüentes interrupções (simulando uma série de enquadramentos) dispersa o leitor. </blockquote>
+<blockquote>Um objetivo importante a ser atingido por um roteirista é o de conseguir prender a atenção do leitor. Descrições onde o texto é seqüencial e contínuo convida à leitura, enquanto que um texto com freqüentes interrupções (simulando uma série de enquadramentos) dispersa o leitor.</blockquote>
 <p>Em seguida, dando um bom exemplo de alternativa de descrição de cena:</p>
 
-<blockquote>As palavras fluem naturalmente e levam o leitor a ver a cena como se ele estivesse assistindo-a na tela do cinema. </blockquote>
+<blockquote>As palavras fluem naturalmente e levam o leitor a ver a cena como se ele estivesse assistindo-a na tela do cinema.</blockquote>
 <p>Ele também não pega leve com roteiros preguiçosos, e se você for cinéfilo o suficiente vai entender com todas as letras quando ele diz:</p>
 
-<blockquote>Se vai abrir a boca, que diga algo inesperado, se vai ficar calado, que faça algo revelador. O importante é que o seu personagem seja único. </blockquote>
+<blockquote>Se vai abrir a boca, que diga algo inesperado, se vai ficar calado, que faça algo revelador. O importante é que o seu personagem seja único.</blockquote>
 <p>E voltando para o lado pragmático, ele ressalta várias vezes que a função do roteirista não é a de dirigir o filme, atuar no elenco, vestir as roupas ou escolher as músicas que farão parte do trabalho cinematográfico. Este é um trabalho coletivo, e muito não está sob o nosso controle. Portanto:</p>
 
-<blockquote>Responda: quando num filme câmeras de cinema estão espalhadas pela história? Quase nunca, certo? Então nada de câmeras no roteiro. O roteirista deve escrever apenas o que vai estar na tela da forma mais visual possível. </blockquote>
+<blockquote>Responda: quando num filme câmeras de cinema estão espalhadas pela história? Quase nunca, certo? Então nada de câmeras no roteiro. O roteirista deve escrever apenas o que vai estar na tela da forma mais visual possível.</blockquote>
 <p>Por fim, ele convida o leitor a acordar para a vida. Se tem algo que ele e outros escritores sabem, é que não é de uma salinha enfumaçada que saem as brilhantes ideias que populam as mentes dos cineastas:</p>
 
-<blockquote>Por isso é preciso sensibilidade para observar o mundo ao redor. Transforme seus olhos em pequenas câmeras e comece, a partir de agora, a registrar tudo que puder. E guarde estas imagens com você, pois estas são as verdadeiras ferramentas de um roteirista, que querendo ou não escreve sobre o mundo que conhece, vê, sente e sonha. </blockquote>
+<blockquote>Por isso é preciso sensibilidade para observar o mundo ao redor. Transforme seus olhos em pequenas câmeras e comece, a partir de agora, a registrar tudo que puder. E guarde estas imagens com você, pois estas são as verdadeiras ferramentas de um roteirista, que querendo ou não escreve sobre o mundo que conhece, vê, sente e sonha.</blockquote>
 <p>"Um bom roteiro pode se tornar um filme ruim, mas um roteiro ruim nunca poderá ser um bom filme." -- ditado antigo no cinema.</p>
 
 <p>Talvez essa seja a parte mais valiosa deste livrinho. Com livros e links para o leitor dar continuidade, segue a listagem das mais interessantes (omiti os órgãos governamentais porque who cares e uns links quebrados ou de conteúdo duvidoso):</p>
 
 <p>Livros:</p>
 
-<ul><li>FIELD, Syd. Manual do roteiro. 1.ed. Trad. De Álvaro Ramos. Rio de Janeiro. Objetiva, 1996. </li>
+<ul><li>FIELD, Syd. Manual do roteiro. 1.ed. Trad. De Álvaro Ramos. Rio de Janeiro. Objetiva, 1996.</li>
 
-<li>McKEE, Robert. Story: substance, structure, style and the principles of screenwriting. New York. Regan books, 1997. </li>
+<li>McKEE, Robert. Story: substance, structure, style and the principles of screenwriting. New York. Regan books, 1997.</li>
 
-<li>WALTER, Richard. Screenwriting. New York. Plume, 1988. </li></ul>
+<li>WALTER, Richard. Screenwriting. New York. Plume, 1988.</li></ul>
 
 <p>Links:</p>
 
-<ul><li>IMSDB http://www.imsdb.com/ Banco de roteiros com lançamentos recentes do cinema americano. Em inglês. </li>
+<ul><li>IMSDB http://www.imsdb.com/ Banco de roteiros com lançamentos recentes do cinema americano. Em inglês.</li>
 
-<li>ROTEIRO DE CINEMA http://www.roteirodecinema.com.br/ Um dos mais completos websites para roteiristas do Brasil. Recheado de notícias, dicas, links e roteiros para cinema e TV. </li>
+<li>ROTEIRO DE CINEMA http://www.roteirodecinema.com.br/ Um dos mais completos websites para roteiristas do Brasil. Recheado de notícias, dicas, links e roteiros para cinema e TV.</li>
 
-<li>CURTAGORA http://www.curtagora.com/ Uma iniciativa cultural da Interrogação Filmes em parceria com a Mnemocine tem o objetivo de levantar dados sobre a produção audiovisual nacional nos formatos de curta e média metragem durante os últimos 20 anos. Uma ferramenta e tanto para quem quer colocar seu trabalho no mapa. Dê uma conferida. </li>
+<li>CURTAGORA http://www.curtagora.com/ Uma iniciativa cultural da Interrogação Filmes em parceria com a Mnemocine tem o objetivo de levantar dados sobre a produção audiovisual nacional nos formatos de curta e média metragem durante os últimos 20 anos. Uma ferramenta e tanto para quem quer colocar seu trabalho no mapa. Dê uma conferida.</li>
 
-<li>SCRIPTS-O-RAMA http://www.script-o-rama.com Os melhores roteiros vindos da terra do tio Sam, incluindo clássicos de Hitchcock e Kubrick. </li>
+<li>SCRIPTS-O-RAMA http://www.script-o-rama.com Os melhores roteiros vindos da terra do tio Sam, incluindo clássicos de Hitchcock e Kubrick.</li>
 
-<li>CRIAÇÃO DE ROTEIROS http://www.roteirista.com/ Aqui você chega até o roteirista Hugo Moss e seus grupos de criação, seu conceituado curso online e o concurso que promove trimestralmente com o objetivo de estimular roteiristas de todas as idades. </li>
+<li>CRIAÇÃO DE ROTEIROS http://www.roteirista.com/ Aqui você chega até o roteirista Hugo Moss e seus grupos de criação, seu conceituado curso online e o concurso que promove trimestralmente com o objetivo de estimular roteiristas de todas as idades.</li>
 
-<li>ASSOCIAÇÃO CULTURAL KINOFORUM http://www.kinoforum.org/ Investe na difusão da produção audiovisual e do cinema independente na América Latina e é responsável pelo Festival Internacional de Curtas-Metragens. Destaca também um guia de festivais muito completo. </li>
+<li>ASSOCIAÇÃO CULTURAL KINOFORUM http://www.kinoforum.org/ Investe na difusão da produção audiovisual e do cinema independente na América Latina e é responsável pelo Festival Internacional de Curtas-Metragens. Destaca também um guia de festivais muito completo.</li>
 
 <li>CURTA O CURTA http://www.curtaocurta.com.br/ Buscando sanar a falta de espaço para o curta-metragem nos cinemas e na televisão, surge o site Curta o Curta, onde o usuário pode assistir aos mais interessantes curtas, discutir sobre o cinema nacional, participar de promoções e até incluir seu próprio filme, fazendo da Internet um canal direto com o espectador.</li></ul>
 
@@ -796,10 +818,10 @@ copy /Y calibre_template_begin.html+calibre_template_entries.html+calibre_templa
 
 <p>Seguem alguns trechos aleatórios:</p>
 
-<blockquote>Já o Incidente Inicial, que vamos tratar aqui, é um pouco mais sutil. Ele vai introduzir o conflito na história, mas sem amarrar o protagonista nesse conflito ainda. </blockquote>
-<blockquote>Pensa comigo. Que graça teria criar um grande conflito na sua história, se o personagem pudesse simplesmente falar "não quero saber de problemas, vou pra casa" e a história acabasse aí? Eu te respondo. Não teria graça nenhuma. Se o leitor não souber por quê seu protagonista está passando por todo o sufoco do conflito central, a empatia vai ser quebrada na mesma hora. O leitor vai achar que seu personagem é idiota ou masoquista. </blockquote>
-<blockquote>O Ponto de Aperto é um truque de ritmo. Ele existe pra dar uma quebrada na sequência de cenas da história e reforçar o perigo que existe. </blockquote>
-<blockquote>É a primeira metade da história que vai cimentar a relação entre humano e personagem. </blockquote>
+<blockquote>Já o Incidente Inicial, que vamos tratar aqui, é um pouco mais sutil. Ele vai introduzir o conflito na história, mas sem amarrar o protagonista nesse conflito ainda.</blockquote>
+<blockquote>Pensa comigo. Que graça teria criar um grande conflito na sua história, se o personagem pudesse simplesmente falar "não quero saber de problemas, vou pra casa" e a história acabasse aí? Eu te respondo. Não teria graça nenhuma. Se o leitor não souber por quê seu protagonista está passando por todo o sufoco do conflito central, a empatia vai ser quebrada na mesma hora. O leitor vai achar que seu personagem é idiota ou masoquista.</blockquote>
+<blockquote>O Ponto de Aperto é um truque de ritmo. Ele existe pra dar uma quebrada na sequência de cenas da história e reforçar o perigo que existe.</blockquote>
+<blockquote>É a primeira metade da história que vai cimentar a relação entre humano e personagem.</blockquote>
 <p>Pois é, são aleatórios mesmo. Eu não vou ficar anotando um livro desses, senão vou acabar anotando o livro inteiro. Minha dica: o leia de uma só vez, deixe esfriar, e depois que for começar a escrever, releia novamente.</p>
 
 </section><hr/>

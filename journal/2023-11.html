@@ -99,11 +99,13 @@ The application can then mount the hive privately using the RegLoadAppKey
 function (specifying the REG_PROCESS_APPKEY flag prevents other
 applications from accessing the same hive). Internally, the function
 performs the following operations:
+
 1. Creates a random GUID and assigns it to a private namespace,
 in the form of \Registry\A\&lt;Random Guid&gt;. (\Registry forms
 the NT kernel registry namespace, described in the “The
 registry namespace and operation” section later in this
 chapter.)
+
 2. Converts the DOS path of the specified hive file name in NT
 format and calls the NtLoadKeyEx native API with the proper
 set of parameters.
@@ -126,6 +128,7 @@ NTSYSCALLAPI NTSTATUS NTAPI NtLoadKeyEx(POBJECT_ATTRIBUTES TargetKey,
   ACCESS_MASK DesiredAccess,
   PHANDLE RootHandle,
   PIO_STATUS_BLOCK IoStatus);
+
 typedef struct _OBJECT_ATTRIBUTES {
   ULONG Length;
   HANDLE RootDirectory;
@@ -134,12 +137,15 @@ typedef struct _OBJECT_ATTRIBUTES {
   PVOID SecurityDescriptor;
   PVOID SecurityQualityOfService;
 } OBJECT_ATTRIBUTES;
+
 typedef OBJECT_ATTRIBUTES *POBJECT_ATTRIBUTES;
+
 typedef struct _UNICODE_STRING {
   USHORT Length;
   USHORT MaximumLength;
   PWSTR Buffer;
 } UNICODE_STRING, *PUNICODE_STRING;
+
 ; o apontado do segundo parâmetro mais offset 0x10
 ; o apontado deste mais o offset de dois ints (8 bytes)
 ; a string unicode para o qual ele aponta
@@ -153,9 +159,9 @@ typedef struct _UNICODE_STRING {
 <p>ergo:</p>
 
 <pre>
-   &quot;C:\ProgramData\Microsoft\Windows\AppRepository\Packages\
-   Microsoft.AAD.BrokerPlugin_1000.19041.3570.0_neutral_neutral_cw5n1h2txyewy\
-   ActivationStore.dat&quot;
+&quot;C:\ProgramData\Microsoft\Windows\AppRepository\Packages\
+Microsoft.AAD.BrokerPlugin_1000.19041.3570.0_neutral_neutral_cw5n1h2txyewy\
+ActivationStore.dat&quot;
 </pre>
 <p>Podemos copiar este arquivo em um Windows com direitos de administração, abrir o regedit, abrir a chave USERS e escolher a opção "Load hive". Selecione o arquivo e voilà.</p>
 

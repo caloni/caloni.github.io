@@ -147,43 +147,49 @@ role="navigation" aria-label="main navigation">
 
 <p>Isso vale para qualquer projeto que você esteja trabalhando. Pela linha de comando, navegue até o diretório do projeto. Digite os comandos abaixo seguidos de enter:</p>
 
-<p>  1. bzr init</p>
+<p>1. bzr init</p>
 
-<p>  2. bzr add</p>
+<p>2. bzr add</p>
 
-<p>  3. bzr commit -m "Primeiro commit no controle de fonte"</p>
+<p>3. bzr commit -m "Primeiro commit no controle de fonte"</p>
 
 <p>Pronto! Você está oficialmente com seu projeto dentro de um controle de fonte.</p>
 
 <pre>
-   C:\Users\Caloni\Documents\Projetos&gt;cd MeuProjeto
-   C:\Users\Caloni\Documents\Projetos\MeuProjeto&gt;bzr init
-   Created a standalone tree (format: 2a)
-   C:\Users\Caloni\Documents\Projetos\MeuProjeto&gt;bzr add
-   adding MeuProjeto.cpp
-   adding MeuProjeto.h
-   C:\Users\Caloni\Documents\Projetos\MeuProjeto&gt;bzr commit -m &quot;Primeiro commit no controle de fonte&quot;
-   Committing to: C:/Users/Caloni/Documents/Projetos/MeuProjeto/
-   added MeuProjeto.cpp
-   added MeuProjeto.h
-   Committed revision 1.
-   C:\Users\Caloni\Documents\Projetos\MeuProjeto&gt;
+C:\Users\Caloni\Documents\Projetos&gt;cd MeuProjeto
+
+C:\Users\Caloni\Documents\Projetos\MeuProjeto&gt;bzr init
+Created a standalone tree (format: 2a)
+
+C:\Users\Caloni\Documents\Projetos\MeuProjeto&gt;bzr add
+adding MeuProjeto.cpp
+adding MeuProjeto.h
+
+C:\Users\Caloni\Documents\Projetos\MeuProjeto&gt;bzr commit -m &quot;Primeiro commit no controle de fonte&quot;
+Committing to: C:/Users/Caloni/Documents/Projetos/MeuProjeto/
+added MeuProjeto.cpp
+added MeuProjeto.h
+Committed revision 1.
+
+C:\Users\Caloni\Documents\Projetos\MeuProjeto&gt;
 </pre>
 <p>Os passos seguintes seguem o mesmo padrão, exceto o passo 1, que é substituído pelo seu trabalho:</p>
 
-<p>  1. trabalho</p>
+<p>1. trabalho</p>
 
-<p>  2. bzr add</p>
+<p>2. bzr add</p>
 
-<p>  3. bzr commit -m "Comentário sobre modificação que fiz"</p>
+<p>3. bzr commit -m "Comentário sobre modificação que fiz"</p>
 
 <pre>
-   C:\Users\Caloni\Documents\Projetos\MeuProjeto&gt;vim MeuProjeto.cpp
-   C:\Users\Caloni\Documents\Projetos\MeuProjeto&gt;bzr add
-   C:\Users\Caloni\Documents\Projetos\MeuProjeto&gt;bzr commit -m &quot;Corrigido bug de nao exibir cores&quot;
-   Committing to: C:/Users/Caloni/Documents/Projetos/MeuProjeto/
-   modified MeuProjeto.cpp
-   Committed revision 2.
+C:\Users\Caloni\Documents\Projetos\MeuProjeto&gt;vim MeuProjeto.cpp
+
+C:\Users\Caloni\Documents\Projetos\MeuProjeto&gt;bzr add
+
+C:\Users\Caloni\Documents\Projetos\MeuProjeto&gt;bzr commit -m &quot;Corrigido bug de nao exibir cores&quot;
+Committing to: C:/Users/Caloni/Documents/Projetos/MeuProjeto/
+modified MeuProjeto.cpp
+Committed revision 2.
 </pre>
 <h4>É só isso?</h4>
 
@@ -256,13 +262,13 @@ role="navigation" aria-label="main navigation">
 <img src="/journal/img/suporte_tecnico_IGR3VJC.png"/>
 
 <pre>
-   &quot;&lt;Mensagem do cliente&gt; - A classe não dá suporte para automação&quot;
+&quot;&lt;Mensagem do cliente&gt; - A classe não dá suporte para automação&quot;
 </pre>
 <p>Abaixo um exemplo simples para ter uma ideia em JS:</p>
 
 <pre>
-   var win = window.open( 'minha_url_do_coracao.htm' );
-   win.focus(); // aqui dá o erro
+var win = window.open( 'minha_url_do_coracao.htm' );
+win.focus(); // aqui dá o erro
 </pre>
 <p>A primeira coisa que se faz nesse caso é pesquisar no Google por pessoas que já tiveram esse problema. A <a href="http://www.google.com/search?q=class+does+not+support+automation">maioria</a> dizia ser necessária registrar novamente as DLLs do navegador/shell, coisa que fizemos à exaustão e não resolveu o problema. Também imaginamos haver relação com a versão da SDocVw.dll que estava alocada na lista de assemblies .NET cacheados, o chamado GAC. Ou seja, já estávamos viajando geral.</p>
 
@@ -306,24 +312,24 @@ role="navigation" aria-label="main navigation">
 
 <p>Foi esse o procedimento seguido:</p>
 
-<p>  1. Criar snapshot com o estado inalterado do registro.</p>
+<p>1. Criar snapshot com o estado inalterado do registro.</p>
 
-<p>  2. Apagar metade do registro original exportado (máquina real).</p>
+<p>2. Apagar metade do registro original exportado (máquina real).</p>
 
-<p>  3. Arrastar metade do registro original e importá-lo (apaga chaves).</p>
+<p>3. Arrastar metade do registro original e importá-lo (apaga chaves).</p>
 
-<p>  4. Importar registro danificado do cliente (já na VM).</p>
+<p>4. Importar registro danificado do cliente (já na VM).</p>
 
-<p>  5. Se deu erro de novo, repassar os passos 2 a 3.</p>
+<p>5. Se deu erro de novo, repassar os passos 2 a 3.</p>
 
-<p>  6. Se não deu erro, testar os passos 3 e 4 com a outra metade.</p>
+<p>6. Se não deu erro, testar os passos 3 e 4 com a outra metade.</p>
 
 <img src="/journal/img/suporte_tecnico_hhxZgqZ.png"/>
 
 <p>Essa série de passos foi reproduzida em menos de uma hora até chegarmos a apenas uma linha no registro:</p>
 
 <pre>
-   [-HKEY_CLASSES_ROOT\CLSID\{C5598E60-B307-11D1-B27D-006008C3FBFB}]
+[-HKEY_CLASSES_ROOT\CLSID\{C5598E60-B307-11D1-B27D-006008C3FBFB}]
 </pre>
 <p>Que se revelou pertencer à DLL <a href="http://www.google.com.br/search?q=dispex.dll">dispex.dll</a>:</p>
 
@@ -336,8 +342,8 @@ role="navigation" aria-label="main navigation">
 <p>Porém, ao usar o Method 1 (registrar novamente a DLL) o problema foi resolvido. Exportei o registro antes e depois da operação e por algum motivo a máquina do cliente estava com o GUID das interfaces IDispatchEx e IObjectIdentity adulteradas:</p>
 
 <pre>
-   Antes: C5598E60-B307-11D1-B27D-006008C3FBFB}
-   Depois: 10E2414A-EC59-49D2-BC51-5ADD2C36FEBC}
+Antes: C5598E60-B307-11D1-B27D-006008C3FBFB}
+Depois: 10E2414A-EC59-49D2-BC51-5ADD2C36FEBC}
 </pre>
 <p>Realizei o mesmo teste com nossa DLL que gerou o problema inicial e descobri que não houve mudanças nessa parte do registro por conta dela.</p>
 
@@ -413,26 +419,29 @@ role="navigation" aria-label="main navigation">
 <p>Com toda a calma do mundo, você saca o seu netbook, baixa a versão homologada do controle de fonte e descobre facilmente o problema, gerando um patch e recompilando o projeto.</p>
 
 <pre>
-   #include &lt;windows.h&gt;
-   #include &lt;stdio.h&gt;
-   #include &lt;time.h&gt;
-   #include &lt;stdlib.h&gt;
-   void DoProcess()
-   {
-       int nextNumber = rand() % 1000;
-       //bool even = nextNumber % 2;
-       bool even = !(nextNumber % 2);
-       printf(&quot;%d =&gt; %s\n&quot;, nextNumber, even ? &quot;even&quot; : &quot;odd&quot;);
-   }
-   int main()
-   {
-       srand( time(0) );
-       while( true )
-       {
-         DoProcess();
-         Sleep(3000);
-       }
-   }
+#include &lt;windows.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;time.h&gt;
+#include &lt;stdlib.h&gt;
+
+void DoProcess()
+{
+    int nextNumber = rand() % 1000;
+    //bool even = nextNumber % 2;
+    bool even = !(nextNumber % 2);
+    printf(&quot;%d =&gt; %s\n&quot;, nextNumber, even ? &quot;even&quot; : &quot;odd&quot;);
+}
+
+int main()
+{
+    srand( time(0) );
+
+    while( true )
+    {
+      DoProcess();
+      Sleep(3000);
+    }
+}
 </pre>
 <p>Feliz da vida, avisa o seu chefe que a única coisa que precisam trocar é o serviço crítico. Parar, trocar o arquivo, reiniciar o serviço. Simples.</p>
 
@@ -448,35 +457,36 @@ role="navigation" aria-label="main navigation">
 <p>Analisando o disassembly da função nova e antiga podemos perceber que o tamanho delas não mudou (bom sinal), mas o uso dos registradores e a lógica interna teve uma alteração significativa (mau sinal):</p>
 
 <pre>
-   Função antiga: bool even = nextNumber % 2;
-   test    edx,edx
-   setne   al
-   mov     byte ptr [ebp-1],al
-   movzx   ecx,byte ptr [ebp-1]
-   test    ecx,ecx
-   je      criticalservice!DoProcess+0x3f (0040105f)
-   Função nova: bool even = !(nextNumber % 2);
-   neg     edx
-   sbb     edx,edx
-   inc     edx
-   mov     byte ptr [ebp-1],dl
-   movzx   eax,byte ptr [ebp-1]
-   test    eax,eax
-   je      criticalservice!DoProcess+0x3f (0040105f)
+Função antiga: bool even = nextNumber % 2;
+test    edx,edx
+setne   al
+mov     byte ptr [ebp-1],al
+movzx   ecx,byte ptr [ebp-1]
+test    ecx,ecx
+je      criticalservice!DoProcess+0x3f (0040105f)
+
+Função nova: bool even = !(nextNumber % 2);
+neg     edx
+sbb     edx,edx
+inc     edx
+mov     byte ptr [ebp-1],dl
+movzx   eax,byte ptr [ebp-1]
+test    eax,eax
+je      criticalservice!DoProcess+0x3f (0040105f)
 </pre>
 <p>Podemos começar escrevendo a função nova da memória do processo de teste para um arquivo, e lendo em seguida para cima da função antiga. Só que para isso temos que nos certificar que os endereços que referenciam para fora da função sejam os mesmos. Nesse caso, felizmente, são.</p>
 
 <pre>
-   0:001&gt; .writemem c:\tests\newfunc.dat criticalservice!DoProcess 0040107e
-   Writing 5f bytes.
+0:001&gt; .writemem c:\tests\newfunc.dat criticalservice!DoProcess 0040107e
+Writing 5f bytes.
 </pre>
 <p>Em seguida iremos sobrescrever a função antiga no processo em execução. Para evitar crashes é vital que tenhamos certeza que a função não estará sendo executada nesse momento. No nosso caso basta aguardar a entrada na função Sleep da API, que dorme por 3 segundos, tempo suficiente para a atualização.</p>
 
 <img src="/journal/img/patch_de_emergencia_bMI63Ka.png"/>
 
 <pre>
-   0:000&gt; .readmem c:\tests\newfunc.dat criticalservice!DoProcess 0040107e
-   Reading 5f bytes.
+0:000&gt; .readmem c:\tests\newfunc.dat criticalservice!DoProcess 0040107e
+Reading 5f bytes.
 </pre>
 <p>Atualizada a função, apenas nos lembramos de renomear o arquivo antigo e atualizar o novo para evitar reativar o problema. Agora podemos voltar para a apreciação das belezas da natureza...</p>
 
@@ -497,83 +507,91 @@ role="navigation" aria-label="main navigation">
 <p>Uma solução alternativa para isso é alocar um novo pedaço de memória para a versão corrigida e trocar o endereço de chamada na função main.</p>
 
 <pre>
-   windbg criticalservice3.exe
-   0:000&gt; uf DoProcess
-   criticalservice3!DoProcess [s:\docs\artigos\criticalservice3.cpp @ 8]:
-       8 00401020 55              push    ebp
-      ...
-      12 0040107d 5d              pop     ebp
-      12 0040107e c3              ret
-   0:000&gt; .writemem DoProcess.func 00401020 0040107e
-   Writing 5f bytes.
-   windbg -pvr -pn criticalservice2.exe
-   0:000&gt; .dvalloc 0x5f
-   Allocated 1000 bytes starting at 00030000
-   0:000&gt; .readmem DoProcess.func 00030000 L5f
-   Reading 5f bytes.
-   0:000&gt; uf 00030000
-   00030000 55              push    ebp
+windbg criticalservice3.exe
+
+0:000&gt; uf DoProcess
+criticalservice3!DoProcess [s:\docs\artigos\criticalservice3.cpp @ 8]:
+    8 00401020 55              push    ebp
    ...
-   0003005d 5d              pop     ebp
-   0003005e c3              ret
+   12 0040107d 5d              pop     ebp
+   12 0040107e c3              ret
+0:000&gt; .writemem DoProcess.func 00401020 0040107e
+Writing 5f bytes.
+
+
+windbg -pvr -pn criticalservice2.exe
+
+0:000&gt; .dvalloc 0x5f
+Allocated 1000 bytes starting at 00030000
+0:000&gt; .readmem DoProcess.func 00030000 L5f
+Reading 5f bytes.
+0:000&gt; uf 00030000
+00030000 55              push    ebp
+...
+0003005d 5d              pop     ebp
+0003005e c3              ret
 </pre>
 <p>Antes de trocarmos o endereço dentro do main precisamos "consertar" a função copiada. Ela está usando as funções globais rand e printf, e as chamadas usam offsets relativos. Como agora a função está em outro offset, temos que reconstruir as chamadas:</p>
 
 <pre>
-   00401026 e8da000000      call    criticalservice3!rand (00401105)
-   00030006 e8da000000      call    000300e5
-   0:000&gt; a 00030006
-   00030006 call 0x00401105
-   call 0x00401105
-   0003000b 
-   00401073 e852000000      call    criticalservice3!printf (004010ca)
-   00030053 e852000000      call    000300aa
-   0:000&gt; a 00030053
-   00030053 call 0x004010ca
-   call 0x004010ca
-   00030058
+00401026 e8da000000      call    criticalservice3!rand (00401105)
+00030006 e8da000000      call    000300e5
+
+0:000&gt; a 00030006
+00030006 call 0x00401105
+call 0x00401105
+0003000b 
+
+00401073 e852000000      call    criticalservice3!printf (004010ca)
+00030053 e852000000      call    000300aa
+
+0:000&gt; a 00030053
+00030053 call 0x004010ca
+call 0x004010ca
+00030058
 </pre>
 <p>Agora a função está pronta para ser usada.</p>
 
 <pre>
-   0:000&gt; uf 00030000
-   00030000 55              push    ebp
-   00030001 8bec            mov     ebp,esp
-   00030003 83ec0c          sub     esp,0Ch
-   00030006 e8fa103d00      call    criticalservice2!rand (00401105)
-   0003000b 99              cdq
-   ...
-   0003004e 6828a04000      push    offset criticalservice2!GetSystemInfo
-   00030053 e872103d00      call    criticalservice2!printf (004010ca)
-   00030058 83c40c          add     esp,0Ch
-   0003005b 8be5            mov     esp,ebp
-   0003005d 5d              pop     ebp
-   0003005e c3              ret
-   0:000&gt; uf main
-   criticalservice2!main [s:\docs\artigos\criticalservice2.cpp @ 16]:
-      16 00401080 55              push    ebp
-   ...
-   criticalservice2!main+0x1f [s:\docs\artigos\criticalservice2.cpp @ 21]:
-      21 0040109f e861ffffff      call    criticalservice2!ILT+0(?DoProcessYAXXZ) (00401005)
-      22 004010a4 ebf0            jmp     criticalservice2!main+0x16 (00401096)
+0:000&gt; uf 00030000
+00030000 55              push    ebp
+00030001 8bec            mov     ebp,esp
+00030003 83ec0c          sub     esp,0Ch
+00030006 e8fa103d00      call    criticalservice2!rand (00401105)
+0003000b 99              cdq
+...
+0003004e 6828a04000      push    offset criticalservice2!GetSystemInfo
+00030053 e872103d00      call    criticalservice2!printf (004010ca)
+00030058 83c40c          add     esp,0Ch
+0003005b 8be5            mov     esp,ebp
+0003005d 5d              pop     ebp
+0003005e c3              ret
+
+0:000&gt; uf main
+criticalservice2!main [s:\docs\artigos\criticalservice2.cpp @ 16]:
+   16 00401080 55              push    ebp
+...
+criticalservice2!main+0x1f [s:\docs\artigos\criticalservice2.cpp @ 21]:
+   21 0040109f e861ffffff      call    criticalservice2!ILT+0(?DoProcessYAXXZ) (00401005)
+   22 004010a4 ebf0            jmp     criticalservice2!main+0x16 (00401096)
 </pre>
 <p>É nessa parte que trocaremos o endereço o endereço 00401005 pela memória alocada. Note que essa escrita é muito rápida e o programa lê esse endereço por muito pouco tempo se compararmos com todas as intruções que são executadas. No entanto, essa escrita não é atômica, e mesmo que as chances sejam extremamente remotas, ainda assim pode haver uma colisão no acesso à essa parte.</p>
 
 <p>É salutar rezar por 10 segundos.</p>
 
 <pre>
-   0:000&gt; a 0040109f
-   0040109f call 0x00030000
-   call 0x00030000
-   004010a4
+0:000&gt; a 0040109f
+0040109f call 0x00030000
+call 0x00030000
+004010a4
 </pre>
 <p>E voilà! A partir do momento em que digitei o call seguido de enter, a função nova já começou a operar em cima do processo ainda rodando. Se quisermos voltar a função antiga, sem problemas:</p>
 
 <pre>
-   0:000&gt; a 0040109f
-   0040109f call 0x00401005
-   call 0x00401005
-   004010a4
+0:000&gt; a 0040109f
+0040109f call 0x00401005
+call 0x00401005
+004010a4
 </pre>
 <p>Não façam isso em casa, crianças ;)</p>
 
@@ -705,7 +723,7 @@ role="navigation" aria-label="main navigation">
 
 <p>O uso da montagem a partir de filmagens de diversas origens, como as câmeras das corridas e vídeos amadores dos bastidores das equipes, faz com que a narrativa adote uma estrutura de mosaico que funciona com uma fluidez admirável, ainda mais ao percebermos que nada daquilo foi produzido para o filme. Junto da história temos uma trilha sonora básica e muitas vezes apagada, sendo exatamente essas duas características que a tornam tão efetiva, pois nunca se coloca à frente do que virá, mas que sempre acompanha o mais importante: o estado de espírito do protagonista.</p>
 
-<p>O final, pausado e reflexivo, remete a uma dramatização criada em filmes de ficção, e que aqui assume essa postura de forma bem competente, transformando até mesmo as tomadas mais sensacionalistas da televisão de urgência como se fosse uma cena de despedida previamente escrita em algum roteiro (como as cenas aéreas, propositadamente em câmera lenta, do carro acidentado). </p>
+<p>O final, pausado e reflexivo, remete a uma dramatização criada em filmes de ficção, e que aqui assume essa postura de forma bem competente, transformando até mesmo as tomadas mais sensacionalistas da televisão de urgência como se fosse uma cena de despedida previamente escrita em algum roteiro (como as cenas aéreas, propositadamente em câmera lenta, do carro acidentado).</p>
 
 <p>Por fim, mesmo que a direção e montagem apenas mantivessem o pulso firme na construção da narrativa, teríamos no máximo um relato histórico bem feito. No entanto, existe ainda um esforço consciente e elaborado em construir ao mesmo tempo a psique do seu personagem-título, acompanhar seus erros e acertos que irão culminar na evolução do seu próprio caráter. É na busca incessante pelo seus objetivos que o documentário converge para drama, que personagem vira protagonista, que protagonista torna-se herói.</p>
 

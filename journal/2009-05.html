@@ -48,7 +48,6 @@ role="navigation" aria-label="main navigation">
 <span class="title-heading">Caloni, 2009-05-01 <a href="2009-04.html#nao_resistencia">&lt;</a><a href="quotes.html">quotes</a><a href="2009-06.html#mascaras">&gt;</a> <a href="2009-04.html#nao_resistencia">&lt;</a><a href="self.html">self</a><a href="2009-06.html#mascaras">&gt;</a> <a href="2009-04.html#nao_resistencia">&lt;</a><a href="now.html">now</a><a href="2009-06.html#mascaras">&gt;</a><a href="2009-05.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_dependencia')"><sup>[copy]</sup></a></span>
 
 <blockquote>Com o desaparecimento da dependência não há mais medo de perdas.</blockquote>
-
 <blockquote>Tolle, Eckhart (O Poder do Agora, 1997)</blockquote>
 </section><hr/>
 
@@ -183,7 +182,7 @@ role="navigation" aria-label="main navigation">
 <p>Compilação automática geralmente está disponível nas ferramentas de desenvolvimento. Se você estiver usando o Visual Studio, por exemplo, é possível fazer isso com uma linha:</p>
 
 <pre>
-   devenv minha-solução.sln /Rebuild Release
+devenv minha-solução.sln /Rebuild Release
 </pre>
 <p>Se não for exatamente o que você precisa, basta fazer uma <a href="http://www.google.com/search?q=visual%20studio%20automatic%20build">pesquisa de quinze minutos</a> e encontrar os parâmetros corretos. O objetivo é: eu rodo esse comando em cima do projeto inteiro em uma máquina zerada e ele simplesmente compila.</p>
 
@@ -192,15 +191,16 @@ role="navigation" aria-label="main navigation">
 <p>É lógico que ter apenas um solution ou workspace para guardar projetos médios e grandes é inviável. Demora para carregar no ambiente e possuem dezenas de dependências. Isso já foi tentado duas vezes nas duas empresas em que trabalhei e não funcionou. Talvez por isso seja necessário criar um script que rode o comando acima para todas as soluções do projeto, o que não muda muito o modus operandi da coisa:</p>
 
 <pre>
-   call :Build ..\Libraries\Libraries.sln
-   call :Build ..\Services\Services.sln
-   call :Build ..\Drivers\Drivers.sln
-   call :Build ..\Tools\Tools.sln
-   goto :eof
-   :Build
-   echo %1...
-   devenv &quot;%1&quot; /Rebuild Release
-   exit /b %errorlevel%
+call :Build ..\Libraries\Libraries.sln
+call :Build ..\Services\Services.sln
+call :Build ..\Drivers\Drivers.sln
+call :Build ..\Tools\Tools.sln
+goto :eof
+
+:Build
+echo %1...
+devenv &quot;%1&quot; /Rebuild Release
+exit /b %errorlevel%
 </pre>
 <p>Note que meu script usa a estrutura padronizada dos diretórios de um projeto, onde cada tipo de componente tem sua pasta e solução.</p>
 

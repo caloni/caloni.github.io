@@ -198,16 +198,19 @@ role="navigation" aria-label="main navigation">
 
 <pre>
 #include &lt;iostream&gt;
+
 int func2()
 {
     std::cout &lt;&lt; &quot;Func2 called\n&quot;;
     return 21;
 }
+
 int func()
 {
     static int st_x = func2();
     return st_x * 2;
 }
+
 int main()
 {
     std::cout &lt;&lt; &quot;Passing by...\n&quot;;
@@ -217,34 +220,43 @@ int main()
 c:\Projects\caloni\projects&gt;cl /EHsc static_local_sample.cpp
 Microsoft (R) C/C++ Optimizing Compiler Version 19.12.25827 for x86
 Copyright (C) Microsoft Corporation.  All rights reserved.
+
 static_local_sample.cpp
 Microsoft (R) Incremental Linker Version 14.12.25827.0
 Copyright (C) Microsoft Corporation.  All rights reserved.
+
 /out:static_local_sample.exe
 static_local_sample.obj
+
 c:\Projects\caloni\projects&gt;
+
 c:\Projects\caloni\projects&gt;static_local_sample.exe
 Passing by...
 Func2 called
 Func returns 42
 Exiting...
+
 c:\Projects\caloni\projects&gt;
 </pre>
 <p>Note que mesmo trocando static int para static const int a mesma coisa acontece. Apenas conseguimos forçar a inicialização antes do main quando há alguma variável global (static ou não) que chame a função.</p>
 
 <pre>
 #include &lt;iostream&gt;
+
 int func2()
 {
     std::cout &lt;&lt; &quot;Func2 called\n&quot;;
     return 21;
 }
+
 int func()
 {
     static int st_x = func2();
     return st_x * 2;
 }
+
 static const int g_x = func();
+
 int main()
 {
     std::cout &lt;&lt; &quot;Passing by...\n&quot;;
@@ -254,16 +266,20 @@ int main()
 c:\Projects\caloni\projects&gt;cl /EHsc static_local_sample.cpp
 Microsoft (R) C/C++ Optimizing Compiler Version 19.12.25827 for x86
 Copyright (C) Microsoft Corporation.  All rights reserved.
+
 static_local_sample.cpp
 Microsoft (R) Incremental Linker Version 14.12.25827.0
 Copyright (C) Microsoft Corporation.  All rights reserved.
+
 /out:static_local_sample.exe
 static_local_sample.obj
+
 c:\Projects\caloni\projects&gt;static_local_sample.exe
 Func2 called
 Passing by...
 Func returns 42
 Exiting...
+
 c:\Projects\caloni\projects&gt;
 </pre>
 <p>O problema disso é que é possível que duas threads chamem func() "ao mesmo tempo", gerando uma dupla inicialização caso a implementação da libc não seja thread-safe. E a menos que o padrão especifique que essa inicialização deva ser thread safe, melhor fazer as coisas direito.</p>
@@ -274,12 +290,15 @@ c:\Projects\caloni\projects&gt;
 c:\Projects\caloni\projects&gt;cl /EHsc /Zi static_local_sample.cpp
 Microsoft (R) C/C++ Optimizing Compiler Version 19.12.25827 for x86
 Copyright (C) Microsoft Corporation.  All rights reserved.
+
 static_local_sample.cpp
 Microsoft (R) Incremental Linker Version 14.12.25827.0
 Copyright (C) Microsoft Corporation.  All rights reserved.
+
 /out:static_local_sample.exe
 /debug
 static_local_sample.obj
+
 c:\Projects\caloni\projects&gt;windbg static_local_sample.exe
 static_local_sample!func [c:\projects\caloni\projects\static_local_sample.cpp @ 10]:
    10 000fe410 55              push    ebp
@@ -299,12 +318,14 @@ static_local_sample!func [c:\projects\caloni\projects\static_local_sample.cpp @ 
    11 000fe441 a128b01a00      mov     eax,dword ptr [static_local_sample!st_x+0x4 (001ab028)]
    11 000fe446 3b8204010000    cmp     eax,dword ptr [edx+104h]
    11 000fe44c 7e3b            jle     static_local_sample!func+0x79 (000fe489) ((( compara para ver se chama inicialização ou não )))
+
 static_local_sample!func+0x3e [c:\projects\caloni\projects\static_local_sample.cpp @ 11]:
    11 000fe44e 6828b01a00      push    offset static_local_sample!st_x+0x4 (001ab028)
    11 000fe453 e8a736ffff      call    static_local_sample!ILT+2810(__Init_thread_header) (000f1aff)
    11 000fe458 83c404          add     esp,4
    11 000fe45b 833d28b01a00ff  cmp     dword ptr [static_local_sample!st_x+0x4 (001ab028)],0FFFFFFFFh
    11 000fe462 7525            jne     static_local_sample!func+0x79 (000fe489)
+
 static_local_sample!func+0x54 [c:\projects\caloni\projects\static_local_sample.cpp @ 11]:
    11 000fe464 c745fc00000000  mov     dword ptr [ebp-4],0
    11 000fe46b e8bb37ffff      call    static_local_sample!ILT+3110(?func2YAHXZ) (000f1c2b) ((( note a chamada a func2 )))
@@ -313,6 +334,7 @@ static_local_sample!func+0x54 [c:\projects\caloni\projects\static_local_sample.c
    11 000fe47c 6828b01a00      push    offset static_local_sample!st_x+0x4 (001ab028)
    11 000fe481 e89443ffff      call    static_local_sample!ILT+6165(__Init_thread_footer) (000f281a)
    11 000fe486 83c404          add     esp,4
+
 static_local_sample!func+0x79 [c:\projects\caloni\projects\static_local_sample.cpp @ 12]:
    12 000fe489 a124b01a00      mov     eax,dword ptr [static_local_sample!st_x (001ab024)] ((( a partir da segunda chamada tudo começa aqui )))
    12 000fe48e d1e0            shl     eax,1

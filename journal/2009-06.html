@@ -48,7 +48,6 @@ role="navigation" aria-label="main navigation">
 <span class="title-heading">Caloni, 2009-06-01 <a href="2009-05.html#dependencia">&lt;</a><a href="quotes.html">quotes</a><a href="2009-07.html#estado">&gt;</a> <a href="2009-05.html#dependencia">&lt;</a><a href="self.html">self</a><a href="2009-07.html#estado">&gt;</a> <a href="2009-05.html#dependencia">&lt;</a><a href="now.html">now</a><a href="2009-07.html#estado">&gt;</a><a href="2009-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_mascaras')"><sup>[copy]</sup></a></span>
 
 <blockquote>Qualquer mudança que você faça é apenas uma máscara.</blockquote>
-
 <blockquote>Tolle, Eckhart (O Poder do Agora, 1997)</blockquote>
 </section><hr/>
 
@@ -65,17 +64,17 @@ role="navigation" aria-label="main navigation">
 <p>Falava-se que o bug havia sido gerado ao trocar uma vírgula por um ponto em um loop escrito em FORTRAN. Apesar de não ter sido esse o causador da falha do computador da nave do projeto Mariner, ele existiu de fato em outro projeto da NASA, o Mercury. A linha fatal no caso era essa:</p>
 
 <pre>
-   DO 17 I = 1. 10
+DO 17 I = 1. 10
 </pre>
 <p>É óbvio que a intenção do programador foi fazer um loop até o label 17 dez vezes, pois a instrução para isso é:</p>
 
 <pre>
-   DO 17 I = 1, 10
+DO 17 I = 1, 10
 </pre>
 <p>Mas pela troca da vírgula pelo ponto, e como em FORTRAN os caracteres de espaço não são significativos, a linha com o bug não representa mais um loop, mas uma atribuição a uma variável chamada "DO17I":</p>
 
 <pre>
-   DO17I = 1.10
+DO17I = 1.10
 </pre>
 <p>Esse detalhe esdrúxulo de uma das linguagens mais famosas da época nos leva a crer que antigamente os programadores deveriam estar muito mais atentos durante a digitação de código do que os programadores de hoje em dia, com seus ambientes com verificação sintática embutida. Existe inclusive um texto humorístico de longa data comparando programadores de verdade e programadores de linguagens estruturadas como PASCAL recém-saídos da faculdade, carinhosamente citados no texto como "Quiche Eaters" (comedores de pastelão).</p>
 
@@ -84,58 +83,59 @@ role="navigation" aria-label="main navigation">
 <p>Batata entre os iniciantes:</p>
 
 <pre>
-   if( isActived &amp;&amp; isTimeToLaunch );
-     doTheStuff();
+if( isActived &amp;&amp; isTimeToLaunch );
+  doTheStuff();
 </pre>
 <p>Dizem que até Brian Kernighan criticava:</p>
 
 <pre>
-   switch( value )
-   {
-     case 10: 
-       evaluateSentence();
-     case 11: 
-       elevenException();
-   }
+switch( value )
+{
+  case 10: 
+    evaluateSentence();
+
+  case 11: 
+    elevenException();
+}
 </pre>
 <p>Programado no notepad:</p>
 
 <pre>
-   value = 12;              /* agora somos obrigados a atualizar a variável rates
-   rates = value * 8;       /* nunca apague esta linha! */
+value = 12;              /* agora somos obrigados a atualizar a variável rates
+rates = value * 8;       /* nunca apague esta linha! */
 </pre>
 <p>Mais um "top beginner":</p>
 
 <pre>
-   if( newValue = 20 )
-     doSpecificStuff();
+if( newValue = 20 )
+  doSpecificStuff();
 </pre>
 <p>Infelizmente isso é muito comum:</p>
 
 <pre>
-   int calcPayment()
-   {
-     if( testing == true ) return 1000;
-     else if( newValue &gt; 500 ) return 1500;
-   }
+int calcPayment()
+{
+  if( testing == true ) return 1000;
+  else if( newValue &gt; 500 ) return 1500;
+}
 </pre>
 <p>O perigo dos brackets opcionais:</p>
 
 <pre>
-   if( value == 12 )
-     //func();
-   doSpecificStuff();
+if( value == 12 )
+  //func();
+doSpecificStuff();
 </pre>
 <p>Dessa coleção de problemas, o compilador nos brinda com dois warnings:</p>
 
 <pre>
-   warning C4390: &quot;;&quot;: empty controlled statement found; is this the intent?
-   warning C4715: &quot;calcPayment&quot;: not all control paths return a value
+warning C4390: &quot;;&quot;: empty controlled statement found; is this the intent?
+warning C4715: &quot;calcPayment&quot;: not all control paths return a value
 </pre>
 <p>Em nível 4 (o padrão de um projeto é 3) há um warning adicional:</p>
 
 <pre>
-   warning C4706: assignment within conditional expression
+warning C4706: assignment within conditional expression
 </pre>
 <p>Agora imagine o número de horas noturnas em frente ao micro que você não poderia ter economizado em sua vida se aumentasse o nível de warning e lêsse-os de vez em quando? =)</p>
 
@@ -144,30 +144,33 @@ role="navigation" aria-label="main navigation">
 <p>Colaborando com a lista de bugs difíceis de achar do artigo ai vai código/piadinha:</p>
 
 <pre>
-   /** 
-    * The Hitch Hiker&quot;s Guide to the Galaxy 
-    * The Answer to Life, the Universe, and Everything
-    */
-   #include &lt;iostream&gt;
-   #define SIX    1 + 5
-   #define NINE   8 + 1
-   using namespace std;
-   int main(void) {
-       cout &lt;&lt; &quot;The Answer to Life, &quot;
-               &quot;the Universe, &quot;
-               &quot;and Everything is &quot; 
-            &lt;&lt; SIX * NINE 
-            &lt;&lt; endl;
-       return EXIT_SUCCESS;
-   }
+/** 
+ * The Hitch Hiker&quot;s Guide to the Galaxy 
+ * The Answer to Life, the Universe, and Everything
+ */
+#include &lt;iostream&gt;
+
+#define SIX    1 + 5
+#define NINE   8 + 1
+
+using namespace std;
+
+int main(void) {
+    cout &lt;&lt; &quot;The Answer to Life, &quot;
+            &quot;the Universe, &quot;
+            &quot;and Everything is &quot; 
+         &lt;&lt; SIX * NINE 
+         &lt;&lt; endl;
+    return EXIT_SUCCESS;
+}
 </pre>
 <p>Esse não é pego pelos alertas dos compiladores (pelo menos não pelos que eu uso)... É um bom motivo para usar const no lugar de define em alguns casos, ou no mínimo cercar o define por parênteses "(" e ")"</p>
 
 <p>Outro bug muito comum entre iniciantes é o de templates aninhados, apesar de que compiladores mais novos lidam melhor com o bug e trazem mensagens de erro mais claras:</p>
 
 <pre>
-   list&lt;list&lt;int&gt;&gt;  // inválido no caso, é assumido o operador de stream &quot;&gt;&gt;&quot;
-   list&lt;list&lt;int&gt; &gt; // válido
+list&lt;list&lt;int&gt;&gt;  // inválido no caso, é assumido o operador de stream &quot;&gt;&gt;&quot;
+list&lt;list&lt;int&gt; &gt; // válido
 </pre>
 </section><hr/>
 

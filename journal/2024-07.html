@@ -68,7 +68,9 @@ role="navigation" aria-label="main navigation">
 <pre>
 struct Adapter1 { static const int Size = 10; };
 struct Adapter2 { static const int NoSize = 10; };
+
 template&lt;typename Adapter&gt; struct Size { int size() { return Adapter::Size; } };
+
 int main() { }
 </pre>
 <p>Vai quebrar em que linha? Resposta: nenhuma. Isso porque não há uma instanciação de nenhum template Size e o compilador não tem código algum para validar. Tudo que ele sabe é que, uma vez instanciado Size seu tipo Adapter precisa ter um membro chamado Size compatível com um inteiro para que o método size() seja um código válido.</p>
@@ -82,7 +84,7 @@ int main()
     int sz2 = a2.size(); // error C2039: 'Size': is not a member of 'Adapter2'
 }
 </pre>
-<p>Agora, sim. O código existe; não é mais apenas um "gabarito", termo que foi a tradução de template na primeira edição de A Linguagem de Programação C++ (agora até que faz sentido esse termo). E enquanto Size&lt;Adapter1&gt; gera um código 100% correto Size&lt;Adapter2&gt; não, pois seu único membro não se chama Size.</p>
+<p>Agora, sim. O código existe; não é mais apenas um "gabarito", termo que foi a tradução de template na primeira edição de A Linguagem de Programação C++ (agora até que faz sentido esse termo). E enquanto Size gera um código 100% correto Size não, pois seu único membro não se chama Size.</p>
 
 </section><hr/>
 
@@ -129,9 +131,7 @@ int main()
 <p>Um pouco mais agitada que a temporada anterior, continua cozinhando em Banho Maria os desdobramentos da primeira, embora com um aproveitamento melhor do orçamento. Dragões crescidos e milhares de soldados soam verossímil em 2013. Encucado, perguntei para a IA a comparação de budget:</p>
 
 <blockquote>Game of Thrones: around $10-15 million per episode</blockquote>
-
 <blockquote>Lord of the Rings (trilogy): around $94 million per film (or around $31 million per episode, assuming 3 episodes per film)</blockquote>
-
 <blockquote>The Rings of Power (Amazon Prime series): around $465 million for the first season (or around $52 million per episode, assuming 9 episodes per season)</blockquote>
 <p>O que torna ainda as obras baseadas em Tolkien relativamente mais caras que a série baseada nos livros de George R. Martim. E pelo menos os filmes de Peter Jackson com uma atuação muito melhor, bem escritos e dirigidos.</p>
 
@@ -228,7 +228,8 @@ int main()
 <blockquote>Growing food is a biological process, but we’ve taken this biological process and turned it into a chemical one.</blockquote>
 <blockquote>In our modern industrial food system, cows eat mainly grass. There is a widely held belief that cattle consume large amounts of grain and that this is effectively “taking food away” from what could otherwise feed humans, but this is incorrect. We’ll look at this topic in depth later in the book, but for now, we want</blockquote>
 <blockquote>The saying “A chicken in every pot” has been erroneously attributed to 1928 presidential candidate Herbert Hoover. In fact, a group of supporters of Hoover’s political campaign coined this phrase, but the promise was alluring: before the intensification of our food system, there was not extra grain available to raise chickens en masse as is common practice today. The bulk of animal products consumed came from grazing animals, for reasons that are hopefully becoming clearer. Eating chicken today is inextricably linked with modern industrial farming practices that are unsustainable in the long term.</blockquote>
-<blockquote>1. If climate change is of concern (and it should be), interventions should reduce net greenhouse gas levels. If possible, the intervention should even present an option for reversing this process. 2. As much as possible, the energy needed to raise our food should come from the sun, not fossil fuel inputs, and our methods should support complex, resilient ecosystems. The exact methods used will have to change around the world—it should come as no surprise that a solution suited to the Mongolian steppe is likely to look different from one suited to the interior of the Amazon—but interventions should be critically assessed with the criterion of energy inputs versus outputs in mind. 3. Recommended dietary practices and food production methods must consider the limited window humanity has with regards to topsoil. There is little debate that should topsoil largely disappear, so shall we. 4. While we are considering biodiversity, it behooves us to also value cultural diversity. The current monocrop industrial food process has effectively crushed traditional food systems, replacing them both at the production and consumption levels with what is arguably a less diverse, less nutritious diet. Is it reasonable for a few wealthy, largely white vegan-centric activists to push a global food agenda that would make verboten every other food system on the planet?</blockquote>
+<p>1. If climate change is of concern (and it should be), interventions should reduce net greenhouse gas levels. If possible, the intervention should even present an option for reversing this process. 2. As much as possible, the energy needed to raise our food should come from the sun, not fossil fuel inputs, and our methods should support complex, resilient ecosystems. The exact methods used will have to change around the world—it should come as no surprise that a solution suited to the Mongolian steppe is likely to look different from one suited to the interior of the Amazon—but interventions should be critically assessed with the criterion of energy inputs versus outputs in mind. 3. Recommended dietary practices and food production methods must consider the limited window humanity has with regards to topsoil. There is little debate that should topsoil largely disappear, so shall we. 4. While we are considering biodiversity, it behooves us to also value cultural diversity. The current monocrop industrial food process has effectively crushed traditional food systems, replacing them both at the production and consumption levels with what is arguably a less diverse, less nutritious diet. Is it reasonable for a few wealthy, largely white vegan-centric activists to push a global food agenda that would make verboten every other food system on the planet?</p>
+
 <blockquote>Fossil fuels come from “ancient” carbon that has been locked underground for millions of years, and when it is extracted, it’s adding new carbon to the atmosphere, which lasts thousands of years. In the case of cattle, they are transforming existing carbon, in the form of grass and other fibrous materials, into methane as part of their digestive process. Methane is then belched out, and after about ten years is broken back down into water and carbon dioxide molecules. The CO2 and H2O are cycled back to grow more grass, and the cycle continues.</blockquote>
 <blockquote>According to a paper published in the Journal of Animal Science, in presettlement America, methane emissions were about 82 percent of current emissions from farmed and wild ruminants.</blockquote>
 <blockquote>Prior to 1999 there was a strong relationship between change in atmospheric methane concentrations and the world ruminant populations. However, since 1999 this strong relation has disappeared. This change in relationship between the atmosphere and ruminant numbers suggests that the role of ruminants in greenhouse gases may be less significant than originally thought, with other sources and sinks playing a larger role in global methane accounting.</blockquote>
@@ -495,11 +496,17 @@ int main()
 # Asciidoc the worst?
 date: 2024-07-15
 tags: books
+
 Tentei por um tempo assimilar a ideia de usar o formato asciidoc como o padrão para meu novo arquivo-fonte do blog e de futuros livros.
+
 Markdown já está pronto para ter uma definição não-ambígua, o [CommonMark].
+
 O que ele não tem que é necessário para a construção de um livro são metadados (como a data e as tags vista acima), notas de rodapé &lt;sup&gt;(1)&lt;/sup&gt; e [referências] cruzadas &lt;sup&gt;(2)&lt;/sup&gt; para índices remissivos. A boa notícia é que isso nem é tão difícil assim de integrar graças à flexibilidade do uso de links:
-[CommonMark]: https://commonmark.org/(1):# &quot;Esta é a única maneira quase universal dessas notas em MD, mas até que não é tão ruim assim.&quot;
-[referências]:#(2):# &quot;A referência acima serve apenas para documentar o desejo de uma entrada em um índice remissivo com outras menções à mesma palavra.&quot;
+
+[CommonMark]: https://commonmark.org/
+(1):# &quot;Esta é a única maneira quase universal dessas notas em MD, mas até que não é tão ruim assim.&quot;
+[referências]:#
+(2):# &quot;A referência acima serve apenas para documentar o desejo de uma entrada em um índice remissivo com outras menções à mesma palavra.&quot;
 </pre>
 <p>As vantagens do Markdown como lingua franca ultrapassam em muito a teórica robustez de um padrão como Asciidoc que está muito longe de ser suportado amplamente. E há um motivo para isso: ele abrange muitas formas de estruturar texto e dá muito trabalho para textos curtos. MD acaba sendo um equilíbrio sensato entre o que é usado no dia-a-dia da comunicação textual da internet e alguma forma de escalar formatação e estrutura em textos maiores e complexos.</p>
 
@@ -534,6 +541,7 @@ class A {
     // code to be tested
   }
 }
+
 Test() {
 A a;
 a.init();
@@ -550,7 +558,6 @@ a.init();
 <p>Esses resultados da internet me fazem pensar que estou indo no caminho errado (se não é comum, tá errado).</p>
 
 <blockquote>Fabio: Se ele é um wrapper por que você não faz a classe crua do zero onde fica tudo sequencial e passa ele para a classe final.</blockquote>
-
 <blockquote>Caloni: Boa!</blockquote>
 <p>Você, caro urso, me deu uma ideia: simplificar a interface de start do `TimeWrapper` (esse é o nome da classe no basecode) e usar o resultado como uma implementação dummy, mas acho que já pensei num jeito de resolver que é ligeiramente diferente: ao final da tarefa ele chama um `timer.Restart` e daí é só ir acumulando estado.</p>
 
@@ -574,7 +581,6 @@ _timer.Raise(m =&gt; m.Elapsed += null, new EventArgs() as ElapsedEventArgs);
 <span class="title-heading">Caloni, 2024-07-17 <a href="2024-04.html#when_a_movies_not_worth_seeing_twice">&lt;</a><a href="quotes.html">quotes</a><a href="2024-07.html#why_you_should_take_steps_to_eliminate_grains_from_your_diet">&gt;</a> <a href="2024-07.html#mielina">&lt;</a><a href="self.html">self</a><a href="2024-07.html#a_arte_de_ler_o_taro_para_si_mesmo_weber_courtney">&gt;</a><a href="2024-07.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_uma_maquina_bioquimica')"><sup>[copy]</sup></a></span>
 
 <blockquote>"Seu corpo é uma máquina bioquímica, você pode produzir a química e o estado que você quiser, sem usar drogas, que viciam e danificam as células. Aprenda sobre respirações, meditação e outras técnicas para que você viva o estado que procura de maneira saudável, sem depender de nada ou de ninguém. Em frente meu amigo, tenho certeza de que o mundo voltará a ser colorido para você."</blockquote>
-
 <blockquote>Rafael Leite (Xadrez Brasil)</blockquote>
 </section><hr/>
 

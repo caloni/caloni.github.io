@@ -211,7 +211,7 @@ role="navigation" aria-label="main navigation">
 
 <p>Esse é um filme sabotado por sua própria doçura e leveza. E, mesmo assim, se não tivesse o seu final, poderíamos estar diante de um drama melancólico. Apesar de ter participações de outros personagens em pé de igualdade, a história principal gira em torno de George (Alfred Molina), Ben (John Lithgow) e o casamento dos dois: uma linda cerimônia que reuniu toda a família para celebrar uma união já existente há 40 anos. Infelizmente, ela é o estopim para os problemas que o casal terá que enfrentar.</p>
 
-<p>A Igreja, como de costume, tem que zelar pelos seus valores retrógrados e incompatíveis com a felicidade do maduro casal, e mesmo George sendo um cristão praticante ela é obrigada a dispensá-lo do coral onde leciona, o que coloca o casal em dificuldades financeiras. Ironias à parte, o padre já sabia de tudo há muito tempo, mas tem que tomar as devidas providências quando o fato acaba sendo publicado em uma rede social. </p>
+<p>A Igreja, como de costume, tem que zelar pelos seus valores retrógrados e incompatíveis com a felicidade do maduro casal, e mesmo George sendo um cristão praticante ela é obrigada a dispensá-lo do coral onde leciona, o que coloca o casal em dificuldades financeiras. Ironias à parte, o padre já sabia de tudo há muito tempo, mas tem que tomar as devidas providências quando o fato acaba sendo publicado em uma rede social.</p>
 
 <p>Os parentes, obviamente transtornados, tentam acolher Ben e George da melhor maneira possível enquanto eles procuram um novo lar. É quando descobrimos que a relação amorosa do casal não é o "estranho" do título, como uma ideia pré-concebida sobre filmes de temática gay. Isso nem é mais uma novidade na família, como dois simpáticos e inusitados policiais podem provar. O "amor" do título é o que se manifesta em cada um dos envolvidos. É a maneira torta com que uma sobrinha prefere não comentar o quão incômodo é o tio a desconcentrando o dia inteiro com suas conversas. É a paciência de George tendo que conviver com incessantes reuniões e festas em torno da sua cama improvisada: o sofá da sala. É a comovente carta com que George se despede de seus alunos, se livrando de qualquer sentimento de rancor ao som de Chopin.</p>
 
@@ -344,45 +344,56 @@ role="navigation" aria-label="main navigation">
 #pragma once
 #include &lt;string&gt;
 #include &lt;vector&gt;
+
 typedef std::vector&lt;std::string&gt; InstalledSoftwareList;
 int getInstalledSoftware(InstalledSoftwareList&amp;);
+
 /** library.cpp
 */
 #include &quot;library.h&quot;
 #include &lt;windows.h&gt; // aqui precisamos do windows para as funções de registro
 #include &lt;tchar.h&gt; // suporte a unicode condicional
+
 #define SW_ROOT_KEY &quot;SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall&quot;
 #define SW_DISPLAY_NAME &quot;DisplayName&quot;
+
 /** Retorna o número de elementos em um array. */
 template&lt;typename T, size_t Sz&gt;
 DWORD SizeofArray(const T(&amp;arr)[Sz]) { return Sz; }
+
 /** Retorna lista com descrição de cada programa instalado no sistema. */
 int getInstalledSoftware(InstalledSoftwareList&amp; installedSoftware)
 {
    HKEY swRoot = NULL;
    DWORD err = RegOpenKeyEx(HKEY_LOCAL_MACHINE, _T(SW_ROOT_KEY), 0, KEY_READ, &amp;swRoot);
+
    if( err == ERROR_SUCCESS )
    {
       DWORD swIndex = 0;
       TCHAR swKeyName[MAX_PATH] = _T(&quot;&quot;);
+
       // para cada chave dentro da raiz de programas instalados
       while( (err = RegEnumKey(swRoot, swIndex++, swKeyName, SizeofArray(swKeyName))) 
          == ERROR_SUCCESS )
       {
          HKEY swCurrent = NULL;
          err = RegOpenKeyEx(swRoot, swKeyName, 0, KEY_READ, &amp;swCurrent);
+
          if( err == ERROR_SUCCESS )
          {
             CHAR swDisplay[MAX_PATH] = &quot;&quot;; // vamos obter a string já em mb
             DWORD swDisplaySz = SizeofArray(swDisplay);
+
             if( (err = RegQueryValueExA(swCurrent, SW_DISPLAY_NAME, 0, NULL, 
                reinterpret_cast&lt;PBYTE&gt;(swDisplay), &amp;swDisplaySz)) == ERROR_SUCCESS )
             {
                installedSoftware.push_back(swDisplay);
             }
+
             RegCloseKey(swCurrent);
          }
       }
+
       // se não tem mais itens, então não é um erro
       if( err == ERROR_NO_MORE_ITEMS )
          err = ERROR_SUCCESS;
@@ -390,28 +401,36 @@ int getInstalledSoftware(InstalledSoftwareList&amp; installedSoftware)
    }
    return int(err);
 }
+
 /** console.cpp
 */
 #include &quot;../library/library.h&quot; // include da nossa lib
 #include &lt;algorithm&gt;
 #include &lt;iostream&gt;
+
 using namespace std;
+
 int main()
 {
    int ret;
    InstalledSoftwareList swList;
+
    cout &lt;&lt; &quot;MSVC Mutant - v. beta\n&quot;
       &lt;&lt; &quot;by Wanderley Caloni (www.caloni.com.br)\n\n&quot;;
+
    // obtém a lista de programas instalados e exibe na tela
    ret = getInstalledSoftware(swList);
+
    if( ret == 0 )
    {
       cout &lt;&lt; &quot;Programs installed on your system\n&quot;
          &lt;&lt; &quot;=================================\n&quot;;
       copy(swList.begin(), swList.end(), ostream_iterator&lt;string&gt;(cout, &quot;\n&quot;));
+
    }
    else
       cout &lt;&lt; &quot;Error &quot; &lt;&lt; ret &lt;&lt; &quot; trying to list installed programs.\n&quot;;
+
    return ret;
 }
 </pre>
@@ -420,13 +439,14 @@ int main()
 <p>Primeiramente, modifico a configuração padrão dos dois projetos para não depender da DLL de runtime do VC. Isso está em Project, Properties, C/C++, Code Generation, Runtime Library. Depois executo em uma máquina virtual sem as runtimes do VC8 instaladas:</p>
 
 <pre>
-   MSVC Mutant - v. beta
-   by Wanderley Caloni (www.caloni.com.br)
-   Programs installed on your system
-   =================================
-   Windows XP Service Pack 2
-   WebFldrs XP
-   VMware Tools
+MSVC Mutant - v. beta
+by Wanderley Caloni (www.caloni.com.br)
+
+Programs installed on your system
+=================================
+Windows XP Service Pack 2
+WebFldrs XP
+VMware Tools
 </pre>
 <p>Perfeito. Exatamente o que eu queria: um executável console que não dependesse de DLL nenhuma exceto as que já estão instaladas em um Windows ordinário.</p>
 
@@ -440,51 +460,59 @@ int main()
 /** library.h
 */
 int doesNothing();
+
 /** library.cpp
 */
+
 /** Essa função não faz nada. Quer dizer, ela retorna 0. Mas é só isso. */
 int doesNothing()
 {
    return 0;
 }
+
 /** console.cpp
 */
 #include &quot;../library/library.h&quot; // include da nossa lib
+
 int main()
 {
    int ret;
+
    // não faz nada. bom, chama uma função. mas isso é quase nada.
    ret = doesNothing();
+
    return ret;
 }
-   Linking
-   =======
-   library.lib(library.obj) : warning LNK4049: locally 
-    defined symbol __invalid_parameter_noinfo imported
-   Running
-   =======
-   O sistema no pode executar o programa especificado.
-   Depends
-   =======
-   Error: The Side-by-Side configuration information in &quot;blablabla\CONSOLE.EXE&quot; 
-    contains errors.
-   Falha na inicialização do aplicativo devido a configuração incorreta.
-   A reinstalação do aplicativo pode resolver o problema (14001).
+Linking
+=======
+library.lib(library.obj) : warning LNK4049: locally 
+ defined symbol __invalid_parameter_noinfo imported
+
+Running
+=======
+O sistema no pode executar o programa especificado.
+
+Depends
+=======
+Error: The Side-by-Side configuration information in &quot;blablabla\CONSOLE.EXE&quot; 
+ contains errors.
+Falha na inicialização do aplicativo devido a configuração incorreta.
+A reinstalação do aplicativo pode resolver o problema (14001).
 </pre>
 <p>Agora sim, a mutação fez efeito! Temos um aplicativo que não depende da DLL de runtime, mas que no meio das n LIBs que ele utiliza existe uma configurada com a dependência. Ignorando a msvcrt.lib e um warning na compilação encontramos uma mensagem de erro um tanto exdrúxula.</p>
 
 <p>Até agora, a maneira que eu tenho utilizado para rastrear esse problema é não ignorar a msvcrt e ir tirando as dependências das LIBs pouco a pouco, até que ocorra o erro de símbolo duplicado. Algo assim:</p>
 
 <pre>
-   MSVCRT.lib(ti_inst.obj) : error LNK2005: &quot;private: __thiscall 
-    type_info::type_info(class type_info const &amp;)&quot; (??0type_info@@AAE@ABV0@@Z) 
-    already defined in LIBCMT.lib(typinfo.obj)
-   MSVCRT.lib(ti_inst.obj) : error LNK2005: &quot;private: class type_info &amp; __thiscall 
-    type_info::operator=(class type_info const &amp;)&quot; (??4type_info@@AAEAAV0@ABV0@@Z) 
-    already defined in LIBCMT.lib(typinfo.obj)
-   LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; 
-    use /NODEFAULTLIB:library
-   Blablabla\console.exe : fatal error LNK1169: one or more multiply defined symbols found
+MSVCRT.lib(ti_inst.obj) : error LNK2005: &quot;private: __thiscall 
+ type_info::type_info(class type_info const &amp;)&quot; (??0type_info@@AAE@ABV0@@Z) 
+ already defined in LIBCMT.lib(typinfo.obj)
+MSVCRT.lib(ti_inst.obj) : error LNK2005: &quot;private: class type_info &amp; __thiscall 
+ type_info::operator=(class type_info const &amp;)&quot; (??4type_info@@AAEAAV0@ABV0@@Z) 
+ already defined in LIBCMT.lib(typinfo.obj)
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; 
+ use /NODEFAULTLIB:library
+Blablabla\console.exe : fatal error LNK1169: one or more multiply defined symbols found
 </pre>
 <p>Se você tiver realmente 3 * 10 ^ 666 de LIBs, boa sorte =).</p>
 
@@ -512,7 +540,7 @@ int main()
 
 <p>"Como se Fosse a Primeira Vez versão thriller". Pelo menos essa era a ideia inicial. Acordamos pela primeira vez junto da assustada Christine (Nicole Kidman) abraçada com alguém desconhecido em um quarto estranho. Ela ouve do seu marido Ben (Colin Firth) que sofre de um tipo de amnésia que a faz esquecer o dia anterior. Essa rotina acontece há tanto tempo que sua mente jovem estranha seu rosto envelhecido no espelho. Já conhecendo essa história me surpreende como essas pessoas nunca tentaram passar uma noite em claro para ver o que acontece.</p>
 
-<p>Apesar de ficar mais ou menos claro que sua condição foi causada por um ataque extremamente violento, seu novo neuropsicológo (Mark Strong) confia em um tratamento baseado em diário de vídeos que Christine passa a fazer todos os dias, o que se torna um tiro no pé do roteiro, pois além de ser irreal sua capacidade de recuperar diariamente tantas informações de sua vida e conseguir ao mesmo tempo manter sua sanidade, logo sua doença crônica já não cumpre qualquer papel na narrativa: tudo se resume em recordar o que aconteceu no dia traumático. Vindo de uma pessoa com problemas de memória se torna um prato cheio de criações fantasiosas que, sem imaginação, partem para o velho clichê de "quem é o culpado". </p>
+<p>Apesar de ficar mais ou menos claro que sua condição foi causada por um ataque extremamente violento, seu novo neuropsicológo (Mark Strong) confia em um tratamento baseado em diário de vídeos que Christine passa a fazer todos os dias, o que se torna um tiro no pé do roteiro, pois além de ser irreal sua capacidade de recuperar diariamente tantas informações de sua vida e conseguir ao mesmo tempo manter sua sanidade, logo sua doença crônica já não cumpre qualquer papel na narrativa: tudo se resume em recordar o que aconteceu no dia traumático. Vindo de uma pessoa com problemas de memória se torna um prato cheio de criações fantasiosas que, sem imaginação, partem para o velho clichê de "quem é o culpado".</p>
 
 <p>E por falar em clichê, o diretor e roteirista Rowan Joffe (Um Homem Misterioso) explora o gênero da pior maneira, e com a ajuda da trilha sonora reforça em exagero um clima de desesperança e sustos infantis. A fotografia de dias sempre cinzentos se sai melhor, pintando um quadro repetitivo e sufocante, cuja elegante exceção é um encontro especial que se passa em um dia ensolarado e não por acaso em Greenwich: marco zero tradicional na contagem do tempo.</p>
 
@@ -681,23 +709,14 @@ int main()
 <p>Portanto, segue o email, e uma pequena lembrança. Que a sabedoria do Alberto esteja de alguma forma infectando o Universo e que seus átomos em milhões ou bilhões de anos reconstruam mais Albertos para espalhar inteligência e bom senso por todo o mundo.</p>
 
 <blockquote>Olá Caloni,</blockquote>
-
-<blockquote>Por um acaso, antes de adicionar seu site-blog no bookmark  do meu blog, fui dar uma olhada no about do seu site e fiquei surpreso como temos pontos em comuns em nossos perfis... com sutis diferenças... </blockquote>
-
-<blockquote>Vc começou a programar com o Quick Basic, eu também programei com o Quick Basic mas comecei com o Gw-Basic em 1990, depois fui pro Basica IBM, depois fui pro Cobol mas como eu trabalhava com DBase III Plus logo fui ficando curioso em como automatizar alguns procedimentos e fiz meus primeiros PRG e com o tempo fui automatizado... migrei coisas para o Cobol, Clipper, Joiner, fiz vários experimentos com C, C++ mas em 1999 eu acabei partindo para área de infra-estrutura onde fiquei por + de 2 anos... Neste meio tempo, mais por curiosidade e por consequencia natural da montagem de um Z80 em clube, cheguei a programar em ASM e C para Z80; que acabaram me levando ao PIC... </blockquote>
-
-<blockquote>Sempre gostei do SCUA, achei muito curioso o fato de vc ter trabalhado lá, pois sempre tive um pé na área de segurança, tanto que meu TCC foi de graduação, pós em Engenharia de Software e o de uma pós-graduação em Security no IBPI (aí já é muito óbvio) foi de segurança... </blockquote>
-
+<blockquote>Por um acaso, antes de adicionar seu site-blog no bookmark  do meu blog, fui dar uma olhada no about do seu site e fiquei surpreso como temos pontos em comuns em nossos perfis... com sutis diferenças...</blockquote>
+<blockquote>Vc começou a programar com o Quick Basic, eu também programei com o Quick Basic mas comecei com o Gw-Basic em 1990, depois fui pro Basica IBM, depois fui pro Cobol mas como eu trabalhava com DBase III Plus logo fui ficando curioso em como automatizar alguns procedimentos e fiz meus primeiros PRG e com o tempo fui automatizado... migrei coisas para o Cobol, Clipper, Joiner, fiz vários experimentos com C, C++ mas em 1999 eu acabei partindo para área de infra-estrutura onde fiquei por + de 2 anos... Neste meio tempo, mais por curiosidade e por consequencia natural da montagem de um Z80 em clube, cheguei a programar em ASM e C para Z80; que acabaram me levando ao PIC...</blockquote>
+<blockquote>Sempre gostei do SCUA, achei muito curioso o fato de vc ter trabalhado lá, pois sempre tive um pé na área de segurança, tanto que meu TCC foi de graduação, pós em Engenharia de Software e o de uma pós-graduação em Security no IBPI (aí já é muito óbvio) foi de segurança...</blockquote>
 <blockquote>Quase trabalhei para a OpenCS, você trabalha pra eles; achei isto muito interessante!</blockquote>
-
-<blockquote>Como centenas, acho que como alguns milhares de profissionais eu já estudei no IBTA; fiz Network Academy e quase fiz uma pós lá; não fiz por pouco. </blockquote>
-
-<blockquote>Tenho programas espalhadas por aí, que nem sei se ainda são todos utilizados, em Cobol, Clipper, Joiner, SmallTalk (sim é isto mesmo, olhando para trás nem eu acredito nisto) assim como Java, pois é... VB 6, Web Pages em Perl, PHP, ASP, JSP e ultimamente em Python.  Depois de um tempo meio fora, voltei a programar em C e ASM por causa de um súbito retorno ao envolvimento com microcontroladores à uns 4 anos atrás, e aí foi pintando o interesse em desenvolver em C para Linux, então-se voltei ao C++; porém agora com uma base muito mais solida de programação do que 10 anos antes... E tem sido à C++ no qual tenho me dedicado nos últimos 3 anos; tenho que confessar que o que andei fazendo em VB nos últimos anos foi apenas pq eu não sabia como fazer exatamente em C++ ou (ouve casos) que por pressa e falta de suporte a bibliotecas específicas para C++ (dá para acreditar?) e é isto... não nego que tenho muito o que aprender em matéria de C++, e pretendo! </blockquote>
-
-<blockquote>Também não nego que já andei dando minhas cacetadas com Visual Objects (argh), Delphi, Clipper com Max e FiveWin, Lisp, RPG (por pura casualidade) além de Korn Script (também por força da ocasição), VBScript, JSCript, JavaScript (conseqüência natural ao se mexer com ASP e PHP; Java a princípio por curiosidade, depois por questão de sobrevivência e ultimamente apenas por comodidade ao mexer com J2ME.... </blockquote>
-
+<blockquote>Como centenas, acho que como alguns milhares de profissionais eu já estudei no IBTA; fiz Network Academy e quase fiz uma pós lá; não fiz por pouco.</blockquote>
+<blockquote>Tenho programas espalhadas por aí, que nem sei se ainda são todos utilizados, em Cobol, Clipper, Joiner, SmallTalk (sim é isto mesmo, olhando para trás nem eu acredito nisto) assim como Java, pois é... VB 6, Web Pages em Perl, PHP, ASP, JSP e ultimamente em Python.  Depois de um tempo meio fora, voltei a programar em C e ASM por causa de um súbito retorno ao envolvimento com microcontroladores à uns 4 anos atrás, e aí foi pintando o interesse em desenvolver em C para Linux, então-se voltei ao C++; porém agora com uma base muito mais solida de programação do que 10 anos antes... E tem sido à C++ no qual tenho me dedicado nos últimos 3 anos; tenho que confessar que o que andei fazendo em VB nos últimos anos foi apenas pq eu não sabia como fazer exatamente em C++ ou (ouve casos) que por pressa e falta de suporte a bibliotecas específicas para C++ (dá para acreditar?) e é isto... não nego que tenho muito o que aprender em matéria de C++, e pretendo!</blockquote>
+<blockquote>Também não nego que já andei dando minhas cacetadas com Visual Objects (argh), Delphi, Clipper com Max e FiveWin, Lisp, RPG (por pura casualidade) além de Korn Script (também por força da ocasição), VBScript, JSCript, JavaScript (conseqüência natural ao se mexer com ASP e PHP; Java a princípio por curiosidade, depois por questão de sobrevivência e ultimamente apenas por comodidade ao mexer com J2ME....</blockquote>
 <blockquote>Bem... de qualquer forma, seu blog está no meu bookmark... e é isto aí!  Estarei na DevTech...</blockquote>
-
 <blockquote>Att []'s..</blockquote>
 </section><hr/>
 
@@ -733,7 +752,7 @@ int main()
 
 <p>E hoje em dia, com tantos recursos digitais, convenhamos: não é pedir demais. Ainda mais encabeçado por grandes nomes como Arnold Schwarzenegger, Mel Gibson, Antonio Banderas, Harrison Ford e, claro, Sylvester Stallone. Porém, depois de três filmes, os fãs de Cinema como eu ainda aguardam ansiosamente por uma história que tenha o mínimo de razão para existir e por sequências de ação que não se limitem em derrubar o esconderijo secreto de um ditador que usa um auto-retrato ridículo espalhado por todos os cantos (ainda que derrubar um portão com um trem em alta velocidade seja um negócio bem divertido).</p>
 
-<p>Dessa vez a trupe ganha um novo membro especialista em facas: o óbvio Wesley Snipes. Conhecido pela série Blade, ele faz parte da primeira brincadeira interna que apenas serve para nos tirar do filme e nos lembrar que o que vemos não são personagens, mas os trejeitos de atores conhecidos. Uma pena é que justo as brincadeiras que funcionam, como a rivalidade entre "Blade" e o inglês Jason Statham, não são levadas adiante. A impressão que fica é que o roteiro foi moldado e retorcido de acordo com as exigências de cada super-star e suas breves aparições. </p>
+<p>Dessa vez a trupe ganha um novo membro especialista em facas: o óbvio Wesley Snipes. Conhecido pela série Blade, ele faz parte da primeira brincadeira interna que apenas serve para nos tirar do filme e nos lembrar que o que vemos não são personagens, mas os trejeitos de atores conhecidos. Uma pena é que justo as brincadeiras que funcionam, como a rivalidade entre "Blade" e o inglês Jason Statham, não são levadas adiante. A impressão que fica é que o roteiro foi moldado e retorcido de acordo com as exigências de cada super-star e suas breves aparições.</p>
 
 <p>No entanto, há uma tentativa de história aí, sendo um dos lados bons da série a sua constante renovação de diretores. Mel Gibson faz o papel de Stonebanks, um vilão sem escrúpulos -- pelo menos olhando para seu dossiê -- e convenientemente é o próximo alvo dos Mercenários. O que "Sly" descobre é que Gibson foi um dia um membro da equipe, mas decidiu se rebelar para lucrar mais, embora agora seja traidor da sua pátria. Vendo mercenários discutindo sobre honra e patriotismo deixa claro que o forte em Os Mercenários 3 não são as discussões políticas. Ainda bem.</p>
 
@@ -758,24 +777,26 @@ int main()
 <p>Como esse padrão de bits nunca muda de tamanho, todas as rotinas da biblioteca recebiam e retornavam sempre valores do mesmo tamanho na memória. Isso na linguagem C quer dizer que o char da época ocupava o mesmo tamanho que um int. Existia inclusive uma função que retornava o caractere de uma string na posição especificada:</p>
 
 <pre>
-   // the i-th character 
-   // of the string is returned
-   c = char( string, i );
+// the i-th character 
+// of the string is returned
+c = char( string, i );
 </pre>
 <p>Sim! Char era uma função, um conversor de "tipos". No entanto a própria variável que armazenava um char tinha o tamanho de qualquer objeto da linguagem. Esse é o motivo pelo qual, tradicionalmente, as seguintes funções recebem e retornam ints em C:</p>
 
 <pre>
-   // read a character 
-   // from stdin
-   int getchar( void );
-   // writes a character 
-   // to stdout
-   int putchar( int c );
-   // sets buffers to a 
-   // specified character
-   void *memset( void *dest, 
-     int c, 
-     size_t count );
+// read a character 
+// from stdin
+int getchar( void );
+
+// writes a character 
+// to stdout
+int putchar( int c );
+
+// sets buffers to a 
+// specified character
+void *memset( void *dest, 
+  int c, 
+  size_t count );
 </pre>
 </section><hr/>
 

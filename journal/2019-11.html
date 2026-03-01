@@ -679,41 +679,44 @@ role="navigation" aria-label="main navigation">
 <p>Vejamos como seria um bootstrap.bat:</p>
 
 <pre>
-   @echo off
-   if not exist vcpkg (
-     git clone https://vcpkg.git
-   ) else (
-     echo vcpkg detected
-   )
-   if not exist vcpkg\vcpkg.exe (
-     pushd vcpkg
-     call bootstrap-vcpkg.bat
-     popd
-   ) else (
-     echo vcpkg detected
-   )
-   if exist vcpkg\vcpkg.exe (
-     pushd vcpkg
-     vcpkg update
-     vcpkg install pkg1
-     vcpkg install pkg2
-     vcpkg install pkgN
-     vcpkg integrate install
-     popd
-   )
+@echo off
+
+if not exist vcpkg (
+  git clone https://vcpkg.git
+) else (
+  echo vcpkg detected
+)
+
+if not exist vcpkg\vcpkg.exe (
+  pushd vcpkg
+  call bootstrap-vcpkg.bat
+  popd
+) else (
+  echo vcpkg detected
+)
+
+if exist vcpkg\vcpkg.exe (
+  pushd vcpkg
+  vcpkg update
+  vcpkg install pkg1
+  vcpkg install pkg2
+  vcpkg install pkgN
+  vcpkg integrate install
+  popd
+)
 </pre>
 <p>Com esse script na pasta raiz do seu projeto ele irá criar uma subpasta chamada vcpkg e após realizar as operações descritas acima integrar ao Visual Studio. Dessa forma quando for compilar o projeto os includes e libs já estarão disponíveis para que ele funcione, mesmo diretamente de uma máquina limpa.</p>
 
 <p>Esse script pode ser integrado à lib principal do projeto ou o projeto da solution que primeiro deve compilar (porque todos dependem dele). Para isso existe o Pre-Build Event nas configurações de um projeto do Visual Studio. Os comandos que estiverem lá serão executados sempre antes da compilação.</p>
 
 <pre>
-   &lt;PreBuildEvent&gt;
-     &lt;Command&gt;
-       pushd $(SolutionDir)
-       call bootstrap.bat
-       popd
-     &lt;/Command&gt;
-   &lt;/PreBuildEvent&gt;
+&lt;PreBuildEvent&gt;
+  &lt;Command&gt;
+    pushd $(SolutionDir)
+    call bootstrap.bat
+    popd
+  &lt;/Command&gt;
+&lt;/PreBuildEvent&gt;
 </pre>
 <p>O único passo não-descrito neste artigo é baixar o projeto e iniciar o build, tarefas triviais de integração.</p>
 

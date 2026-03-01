@@ -80,6 +80,7 @@ role="navigation" aria-label="main navigation">
 #include &lt;memory&gt;
 #include &lt;string&gt;
 #include &lt;iostream&gt;
+
 struct Person
 {
     Person() { std::cout &lt;&lt; &quot;Person created\n&quot;; }
@@ -89,27 +90,34 @@ struct Person
     int age;
     std::string phone;
 };
+
 typedef std::shared_ptr&lt;Person&gt; PersonRef;
+
 PersonRef CreatePerson()
 {
     return PersonRef(new Person);
 }
+
 void GetName(PersonRef person)
 {
     person-&gt;name = &quot;Carl&quot;;
 }
+
 void GetSurName(PersonRef person)
 {
     person-&gt;surname = &quot;Sagan&quot;;
 }
+
 void GetAge(PersonRef person)
 {
     person-&gt;age = 79;
 }
+
 void GetPhone(PersonRef person)
 {
     person-&gt;phone = &quot;+01 042 4242-4242&quot;;
 }
+
 void PrintPerson(PersonRef person)
 {
     std::cout &lt;&lt; &quot;Name: &quot; &lt;&lt; person-&gt;name &lt;&lt; &quot; &quot; &lt;&lt; person-&gt;surname
@@ -117,6 +125,7 @@ void PrintPerson(PersonRef person)
         &lt;&lt; &quot;\nPhone: &quot; &lt;&lt; person-&gt;phone
         &lt;&lt; std::endl;
 }
+
 void CreateAndPrintPerson()
 {
     PersonRef person = CreatePerson();
@@ -126,6 +135,7 @@ void CreateAndPrintPerson()
     GetPhone(person);
     PrintPerson(person);
 }
+
 int main()
 {
     CreateAndPrintPerson();
@@ -142,49 +152,49 @@ int main()
 <p>Bem, nesse caso, "welcome... to the desert... of the double":</p>
 
 <pre>
-   &lt;code&gt;------ Build started: Project: VS2003, Configuration: Debug Win32 ------
-   Compiling...
-   usando-shared-ptr.cpp
-   shared-ptr.cpp(15) : error C2039: 'shared_ptr' : is not a member of 'std'
-   shared-ptr.cpp(15) : error C2143: syntax error : missing ';' before '&lt;'
-   shared-ptr.cpp(18) : error C2146: syntax error : missing ';' before identifier 'CreatePerson'
-   shared-ptr.cpp(18) : error C2501: 'PersonRef' : missing storage-class or type specifiers
-   shared-ptr.cpp(20) : error C2064: term does not evaluate to a function taking 1 arguments
-   shared-ptr.cpp(20) : warning C4508: 'CreatePerson' : function should return a value; 'void' return type assumed
-   shared-ptr.cpp(23) : error C2146: syntax error : missing ')' before identifier 'person'
-   shared-ptr.cpp(23) : error C2182: 'GetName' : illegal use of type 'void'
-   shared-ptr.cpp(23) : error C2059: syntax error : ')'
-   shared-ptr.cpp(24) : error C2143: syntax error : missing ';' before '{'
-   shared-ptr.cpp(24) : error C2447: '{' : missing function header (old-style formal list?)
-   shared-ptr.cpp(28) : error C2146: syntax error : missing ')' before identifier 'person'
-   shared-ptr.cpp(28) : error C2182: 'GetSurName' : illegal use of type 'void'
-   shared-ptr.cpp(28) : error C2059: syntax error : ')'
-   shared-ptr.cpp(29) : error C2143: syntax error : missing ';' before '{'
-   shared-ptr.cpp(29) : error C2447: '{' : missing function header (old-style formal list?)
-   shared-ptr.cpp(33) : error C2146: syntax error : missing ')' before identifier 'person'
-   shared-ptr.cpp(33) : error C2182: 'GetAge' : illegal use of type 'void'
-   shared-ptr.cpp(33) : error C2059: syntax error : ')'
-   shared-ptr.cpp(34) : error C2143: syntax error : missing ';' before '{'
-   shared-ptr.cpp(34) : error C2447: '{' : missing function header (old-style formal list?)
-   shared-ptr.cpp(38) : error C2146: syntax error : missing ')' before identifier 'person'
-   shared-ptr.cpp(38) : error C2182: 'GetPhone' : illegal use of type 'void'
-   shared-ptr.cpp(38) : error C2059: syntax error : ')'
-   shared-ptr.cpp(39) : error C2143: syntax error : missing ';' before '{'
-   shared-ptr.cpp(39) : error C2447: '{' : missing function header (old-style formal list?)
-   shared-ptr.cpp(43) : error C2146: syntax error : missing ')' before identifier 'person'
-   shared-ptr.cpp(43) : error C2182: 'PrintPerson' : illegal use of type 'void'
-   shared-ptr.cpp(43) : error C2059: syntax error : ')'
-   shared-ptr.cpp(44) : error C2143: syntax error : missing ';' before '{'
-   shared-ptr.cpp(44) : error C2447: '{' : missing function header (old-style formal list?)
-   shared-ptr.cpp(53) : error C2146: syntax error : missing ';' before identifier 'person'
-   shared-ptr.cpp(53) : error C2065: 'person' : undeclared identifier
-   shared-ptr.cpp(54) : error C3861: 'person': identifier not found, even with argument-dependent lookup
-   shared-ptr.cpp(55) : error C3861: 'person': identifier not found, even with argument-dependent lookup
-   shared-ptr.cpp(56) : error C3861: 'person': identifier not found, even with argument-dependent lookup
-   shared-ptr.cpp(57) : error C3861: 'person': identifier not found, even with argument-dependent lookup
-   shared-ptr.cpp(58) : error C3861: 'person': identifier not found, even with argument-dependent lookup
-   VS2003 - 37 error(s), 1 warning(s)
-   &lt;/code&gt;
+&lt;code&gt;------ Build started: Project: VS2003, Configuration: Debug Win32 ------
+Compiling...
+usando-shared-ptr.cpp
+shared-ptr.cpp(15) : error C2039: 'shared_ptr' : is not a member of 'std'
+shared-ptr.cpp(15) : error C2143: syntax error : missing ';' before '&lt;'
+shared-ptr.cpp(18) : error C2146: syntax error : missing ';' before identifier 'CreatePerson'
+shared-ptr.cpp(18) : error C2501: 'PersonRef' : missing storage-class or type specifiers
+shared-ptr.cpp(20) : error C2064: term does not evaluate to a function taking 1 arguments
+shared-ptr.cpp(20) : warning C4508: 'CreatePerson' : function should return a value; 'void' return type assumed
+shared-ptr.cpp(23) : error C2146: syntax error : missing ')' before identifier 'person'
+shared-ptr.cpp(23) : error C2182: 'GetName' : illegal use of type 'void'
+shared-ptr.cpp(23) : error C2059: syntax error : ')'
+shared-ptr.cpp(24) : error C2143: syntax error : missing ';' before '{'
+shared-ptr.cpp(24) : error C2447: '{' : missing function header (old-style formal list?)
+shared-ptr.cpp(28) : error C2146: syntax error : missing ')' before identifier 'person'
+shared-ptr.cpp(28) : error C2182: 'GetSurName' : illegal use of type 'void'
+shared-ptr.cpp(28) : error C2059: syntax error : ')'
+shared-ptr.cpp(29) : error C2143: syntax error : missing ';' before '{'
+shared-ptr.cpp(29) : error C2447: '{' : missing function header (old-style formal list?)
+shared-ptr.cpp(33) : error C2146: syntax error : missing ')' before identifier 'person'
+shared-ptr.cpp(33) : error C2182: 'GetAge' : illegal use of type 'void'
+shared-ptr.cpp(33) : error C2059: syntax error : ')'
+shared-ptr.cpp(34) : error C2143: syntax error : missing ';' before '{'
+shared-ptr.cpp(34) : error C2447: '{' : missing function header (old-style formal list?)
+shared-ptr.cpp(38) : error C2146: syntax error : missing ')' before identifier 'person'
+shared-ptr.cpp(38) : error C2182: 'GetPhone' : illegal use of type 'void'
+shared-ptr.cpp(38) : error C2059: syntax error : ')'
+shared-ptr.cpp(39) : error C2143: syntax error : missing ';' before '{'
+shared-ptr.cpp(39) : error C2447: '{' : missing function header (old-style formal list?)
+shared-ptr.cpp(43) : error C2146: syntax error : missing ')' before identifier 'person'
+shared-ptr.cpp(43) : error C2182: 'PrintPerson' : illegal use of type 'void'
+shared-ptr.cpp(43) : error C2059: syntax error : ')'
+shared-ptr.cpp(44) : error C2143: syntax error : missing ';' before '{'
+shared-ptr.cpp(44) : error C2447: '{' : missing function header (old-style formal list?)
+shared-ptr.cpp(53) : error C2146: syntax error : missing ';' before identifier 'person'
+shared-ptr.cpp(53) : error C2065: 'person' : undeclared identifier
+shared-ptr.cpp(54) : error C3861: 'person': identifier not found, even with argument-dependent lookup
+shared-ptr.cpp(55) : error C3861: 'person': identifier not found, even with argument-dependent lookup
+shared-ptr.cpp(56) : error C3861: 'person': identifier not found, even with argument-dependent lookup
+shared-ptr.cpp(57) : error C3861: 'person': identifier not found, even with argument-dependent lookup
+shared-ptr.cpp(58) : error C3861: 'person': identifier not found, even with argument-dependent lookup
+VS2003 - 37 error(s), 1 warning(s)
+&lt;/code&gt;
 </pre>
 <p>Pois é, 37 erros. Depois perguntam por que as pessoas ficam com medo de programar em C++...</p>
 
@@ -192,8 +202,11 @@ int main()
 
 <pre>
 #include &lt;boost/shared_ptr.hpp&gt;
+
 //...
+
 typedef boost::shared_ptr&lt;Person&gt; PersonRef;
+
 //...
 </pre>
 <p>ATENÇÃO! Nos meus testes a única versão funcionando com o VS2003 foi a 1.47. Mas já é alguma coisa</p>
@@ -204,6 +217,7 @@ typedef boost::shared_ptr&lt;Person&gt; PersonRef;
 
 <pre>
 #pragma once
+
 // Não façam isso em casa! Usem modelo de smart pointers já construídos (como o do boost).
 template&lt;typename T&gt;
 class shared_ptr
@@ -212,16 +226,19 @@ public:
     shared_ptr() : m_p(), m_counter()
     {
     }
+
     shared_ptr(T* p) 
       : m_p(p), m_counter(new int(1)) 
     {
     }
+
     shared_ptr(const shared_ptr&amp; left)
       : m_p(left.m_p), m_counter(left.m_counter)
     {
       if( m_counter )
         ++*m_counter;
     }
+
     shared_ptr&amp; operator = (const shared_ptr&amp; left)
     {
       if( m_p )
@@ -238,6 +255,7 @@ public:
         ++*m_counter;
       m_p = left.m_p;
     }
+
     ~shared_ptr()
     {
       if( --*m_counter == 0 )
@@ -248,17 +266,22 @@ public:
         m_p = 0;
       }
     }
+
     T* operator -&gt; ()
     {
       return m_p;
     }
+
 private:
     int* m_counter;
     T* m_p;
 };
 #include &quot;shared_ptr.h&quot;
+
 //...
+
 typedef shared_ptr&lt;Person&gt; PersonRef;
+
 //...
 </pre>
 <p>E é isso. A lição de hoje é: quem quer, arruma um jeito. Quem não quer, uma desculpa.</p>

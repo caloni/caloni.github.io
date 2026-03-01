@@ -75,7 +75,6 @@ role="navigation" aria-label="main navigation">
 <span class="title-heading">Caloni, 2010-02-01 <a href="2010-01.html#rotina">&lt;</a><a href="quotes.html">quotes</a><a href="2010-03.html#aceite">&gt;</a> <a href="2010-01.html#rotina">&lt;</a><a href="self.html">self</a><a href="2010-04.html#a_voz">&gt;</a> <a href="2010-01.html#rotina">&lt;</a><a href="now.html">now</a><a href="2010-04.html#a_voz">&gt;</a><a href="2010-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_arvore')"><sup>[copy]</sup></a></span>
 
 <blockquote>Ao se concentrar no presente, pôde perceber uma árvore sem o enquadramento da mente. A mente não pode conhecer a árvore. Só o Ser conhece diretamente.</blockquote>
-
 <blockquote>Tolle, Eckhart (O Poder do Agora, 1997)</blockquote>
 </section><hr/>
 
@@ -111,23 +110,23 @@ role="navigation" aria-label="main navigation">
 <p>Para quem não conhece macros, saiba que elas são muito úteis. Às vezes até mais úteis que "regexes", pois não é necessário pensar muito na expressão a ser usada. Macros apenas repetem os movimentos do teclado que fazemos enquanto as estamos gravando. Por exemplo, eu tenho o meu monte de linhas de registro assim:</p>
 
 <pre>
-   HKLM\SOFTWARE\Microsoft\Cryptography\RNG
-   HKLM\SOFTWARE\Microsoft\Cryptography\RNG\Seed
-   HKCR\AppID\{EE62DE09-3A23-46DB-8FA2-266088F329CD}
-   HKCR\AppID\{EE62DE09-3A23-46DB-8FA2-266088F329CD}\(Default)
-   HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Browser Helper Objects\{C322BA70-E3E7-4737-821C-D25378A3F830}
-   HKCR\CLSID\{684E2452-19E1-42CC-9C93-A83044BA1AF2}
-   HKCR\CLSID\{684E2452-19E1-42CC-9C93-A83044BA1AF2}\Programmable
-   ...
+HKLM\SOFTWARE\Microsoft\Cryptography\RNG
+HKLM\SOFTWARE\Microsoft\Cryptography\RNG\Seed
+HKCR\AppID\{EE62DE09-3A23-46DB-8FA2-266088F329CD}
+HKCR\AppID\{EE62DE09-3A23-46DB-8FA2-266088F329CD}\(Default)
+HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Browser Helper Objects\{C322BA70-E3E7-4737-821C-D25378A3F830}
+HKCR\CLSID\{684E2452-19E1-42CC-9C93-A83044BA1AF2}
+HKCR\CLSID\{684E2452-19E1-42CC-9C93-A83044BA1AF2}\Programmable
+...
 </pre>
 <p>Quero transformar cada linha em um comando find. Iniciou a gravação da macro no início da primeira linha e digito o seguinte (em pseudo-alguma-coisa):</p>
 
 <p>find, espaço, abre aspas, end, fecha aspas, espaço, ierestore.txt, linha abaixo, home</p>
 
 <pre>
-   find &quot;HKLM\SOFTWARE\Microsoft\Cryptography\RNG&quot; ierestore.txt
-   HKLM\SOFTWARE\Microsoft\Cryptography\RNG\Seed
-   HKCR\AppID\{EE62DE09-3A23-46DB-8FA2-266088F329CD}
+find &quot;HKLM\SOFTWARE\Microsoft\Cryptography\RNG&quot; ierestore.txt
+HKLM\SOFTWARE\Microsoft\Cryptography\RNG\Seed
+HKCR\AppID\{EE62DE09-3A23-46DB-8FA2-266088F329CD}
 </pre>
 <p>Pronto. Parar macro. Terei que repetir isso dois milhões de vezes até o final do arquivo. Ora, então mando o Notepad++ repetir a minha macro até o final do arquivo e adio minha tendinite para os próximos anos.</p>
 
@@ -142,40 +141,40 @@ role="navigation" aria-label="main navigation">
 <p>Terminada a operação, abrimos o terceiro arquivo, retiramos as entradas insignificantes (por exemplo, o gerador de sementes de números randômicos) e os cabeçalhos do comando, algo bem fácil já que se trata do mesmo arquivo.</p>
 
 <pre>
-   ---------- IERESTORE.TXT
-   ...
+---------- IERESTORE.TXT
+...
 </pre>
 <p>A próxima tarefa seria analisar cada entrada e ver se ela é relevante. Essa parte foi manual, mas, encontrado um padrão, listamos rapidamente o que poderia estar dando errado e criamos uma lista de entradas para exportar do registro "sadio" a fim de gerar um .REG que corrigiria sistemas danificados.</p>
 
 <p>Algumas passadas no Notepad++ para eliminar linhas duplicadas e algumas passadas pelo cérebro para eliminar chaves redundantes (chave dentro de chave) e tcharam!</p>
 
 <pre>
-   ...
-   HKCR\Interface\{3050F2E3-98B5-11CF-BB82-00AA00BDCE0B}
-   HKCR\Interface\{3050F2E5-98B5-11CF-BB82-00AA00BDCE0B}
-   HKCR\Interface\{3050F32D-98B5-11CF-BB82-00AA00BDCE0B}
-   HKCR\Interface\{3050F357-98B5-11CF-BB82-00AA00BDCE0B}
-   HKCR\Interface\{3050F35C-98B5-11CF-BB82-00AA00BDCE0B}
-   HKCR\Interface\{3050F37E-98B5-11CF-BB82-00AA00BDCE0B}
-   HKCR\Interface\{3050F38C-98B5-11CF-BB82-00AA00BDCE0B}
-   ...
+...
+HKCR\Interface\{3050F2E3-98B5-11CF-BB82-00AA00BDCE0B}
+HKCR\Interface\{3050F2E5-98B5-11CF-BB82-00AA00BDCE0B}
+HKCR\Interface\{3050F32D-98B5-11CF-BB82-00AA00BDCE0B}
+HKCR\Interface\{3050F357-98B5-11CF-BB82-00AA00BDCE0B}
+HKCR\Interface\{3050F35C-98B5-11CF-BB82-00AA00BDCE0B}
+HKCR\Interface\{3050F37E-98B5-11CF-BB82-00AA00BDCE0B}
+HKCR\Interface\{3050F38C-98B5-11CF-BB82-00AA00BDCE0B}
+...
 </pre>
 <p>O próximo passo para nossa obra-prima é outra macro que irá reproduzir o comando reg, que pode realizar operações no registro do Windows.</p>
 
 <pre>
-   ...
-   reg export HKCR\Interface\{3050F240-98B5-11CF-BB82-00AA00BDCE0B} 3050F240-98B5-11CF-BB82-00AA00BDCE0B.reg
-   reg export HKCR\Interface\{3050F25A-98B5-11CF-BB82-00AA00BDCE0B} 3050F25A-98B5-11CF-BB82-00AA00BDCE0B.reg
-   reg export HKCR\Interface\{3050F25E-98B5-11CF-BB82-00AA00BDCE0B} 3050F25E-98B5-11CF-BB82-00AA00BDCE0B.reg
-   reg export HKCR\Interface\{3050F2E3-98B5-11CF-BB82-00AA00BDCE0B} 3050F2E3-98B5-11CF-BB82-00AA00BDCE0B.reg
-   reg export HKCR\Interface\{3050F2E5-98B5-11CF-BB82-00AA00BDCE0B} 3050F2E5-98B5-11CF-BB82-00AA00BDCE0B.reg
-   reg export HKCR\Interface\{3050F32D-98B5-11CF-BB82-00AA00BDCE0B} 3050F32D-98B5-11CF-BB82-00AA00BDCE0B.reg
-   ...
+...
+reg export HKCR\Interface\{3050F240-98B5-11CF-BB82-00AA00BDCE0B} 3050F240-98B5-11CF-BB82-00AA00BDCE0B.reg
+reg export HKCR\Interface\{3050F25A-98B5-11CF-BB82-00AA00BDCE0B} 3050F25A-98B5-11CF-BB82-00AA00BDCE0B.reg
+reg export HKCR\Interface\{3050F25E-98B5-11CF-BB82-00AA00BDCE0B} 3050F25E-98B5-11CF-BB82-00AA00BDCE0B.reg
+reg export HKCR\Interface\{3050F2E3-98B5-11CF-BB82-00AA00BDCE0B} 3050F2E3-98B5-11CF-BB82-00AA00BDCE0B.reg
+reg export HKCR\Interface\{3050F2E5-98B5-11CF-BB82-00AA00BDCE0B} 3050F2E5-98B5-11CF-BB82-00AA00BDCE0B.reg
+reg export HKCR\Interface\{3050F32D-98B5-11CF-BB82-00AA00BDCE0B} 3050F32D-98B5-11CF-BB82-00AA00BDCE0B.reg
+...
 </pre>
 <p>E o último passo é juntar toda essa galera em um arquivo só.</p>
 
 <pre>
-   copy *.reg ierestore.reg
+copy *.reg ierestore.reg
 </pre>
 <p>Claro, não se esqueça de retirar os cabeçalhos duplicados (Windows Registry Editor Version X.XX). E Voilà! Fácil, não? Não?! Bom, então é por isso que eu sou bem pago =)</p>
 
@@ -194,25 +193,26 @@ role="navigation" aria-label="main navigation">
 <p>Para exibir a lista de comandos "amigáveis", digite no prompt os comandos do Bazaar filtrando-os para os que começam com "q":</p>
 
 <pre>
-   bzr help commands | grep ^q.*
-   qadd                 GUI for adding files or directories. [qbzr]
-   qannotate            Show the origin of each line in a file. [qbzr]
-   qbranch              Create a new copy of a branch. [qbzr]
-   qbrowse              Show inventory. [qbzr]
-   qcat                 View the contents of a file as of a given revision. [qbzr]
-   qcommit              GUI for committing revisions. [qbzr]
-   qconfig              Configure Bazaar. [qbzr]
-   qdiff                Show differences in working tree in a GUI window. [qbzr]
-   qgetnew              Creates a new working tree (either a checkout or full branch) [qbzr]
-   qgetupdates          Fetches external changes into the working tree [qbzr]
-   qinfo                 [qbzr]
-   qinit                Initializes a new (possibly shared) repository. [qbzr]
-   qlog                 Show log of a repository, branch, file, or directory in a Qt window. [qbzr]
-   qmerge               Perform a three-way merge. [qbzr]
-   qpull                Turn this branch into a mirror of another branch. [qbzr]
-   qpush                Update a mirror of this branch. [qbzr]
-   qrevert              Revert changes files. [qbzr]
-   qtag                 Edit tags. [qbzr]
+bzr help commands | grep ^q.*
+
+qadd                 GUI for adding files or directories. [qbzr]
+qannotate            Show the origin of each line in a file. [qbzr]
+qbranch              Create a new copy of a branch. [qbzr]
+qbrowse              Show inventory. [qbzr]
+qcat                 View the contents of a file as of a given revision. [qbzr]
+qcommit              GUI for committing revisions. [qbzr]
+qconfig              Configure Bazaar. [qbzr]
+qdiff                Show differences in working tree in a GUI window. [qbzr]
+qgetnew              Creates a new working tree (either a checkout or full branch) [qbzr]
+qgetupdates          Fetches external changes into the working tree [qbzr]
+qinfo                 [qbzr]
+qinit                Initializes a new (possibly shared) repository. [qbzr]
+qlog                 Show log of a repository, branch, file, or directory in a Qt window. [qbzr]
+qmerge               Perform a three-way merge. [qbzr]
+qpull                Turn this branch into a mirror of another branch. [qbzr]
+qpush                Update a mirror of this branch. [qbzr]
+qrevert              Revert changes files. [qbzr]
+qtag                 Edit tags. [qbzr]
 </pre>
 <p>Os que eu mais uso no dia-a-dia são:</p>
 

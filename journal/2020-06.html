@@ -181,21 +181,22 @@ awk '/test/ { print }'
 awk '{ if( $0 ~ &quot;test&quot; ) print }'
 awk '{ if( $0 ~ &quot;test&quot; ) print $2 }'
 </pre>
-
 <blockquote>Awk maintains a delicate balance between being a line-oriented utility like grep and a full programming language. - Andy Oram</blockquote>
-
 <h2>Program</h2>
 
 <p>Um Hello World interessante do AWK é imprimir a lista de arquivos e seus proprietários de uma pasta se baseando no comando `ls -l`. Isso demonstra os conceitos básicos da linguagem e ainda é útil.</p>
 
 <pre>
 pattern { action }
+
 BEGIN { print &quot;START&quot; }
       { print         }
 END   { print &quot;STOP&quot;  }
+
 BEGIN { print &quot;File\tOwner&quot;}
 { print $9, &quot;\t&quot;, $3}
 END { print &quot; - DONE -&quot; }
+
 ls -l | awk '{ print $9, &quot;\t&quot;, $3}'
 </pre>
 <h2>How to run</h2>

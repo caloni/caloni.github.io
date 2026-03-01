@@ -57,7 +57,6 @@ role="navigation" aria-label="main navigation">
 <span class="title-heading">Caloni, 2008-06-01 <a href="2008-05.html#sofrimento">&lt;</a><a href="quotes.html">quotes</a><a href="2008-07.html#corpo">&gt;</a> <a href="2008-05.html#sofrimento">&lt;</a><a href="self.html">self</a><a href="2008-07.html#corpo">&gt;</a> <a href="2008-05.html#sofrimento">&lt;</a><a href="now.html">now</a><a href="2008-07.html#corpo">&gt;</a><a href="2008-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_nada_importa')"><sup>[copy]</sup></a></span>
 
 <blockquote>Tudo inspira respeito, mas nada importa.</blockquote>
-
 <blockquote>Tolle, Eckhart (O Poder do Agora, 1997)</blockquote>
 </section><hr/>
 
@@ -158,7 +157,7 @@ role="navigation" aria-label="main navigation">
 <p>Como o Bazaar foi feito integrado com o Launchpad, também é possível usar um comando bem mais fácil:</p>
 
 <pre>
-   bzr branch lp:project_name
+bzr branch lp:project_name
 </pre>
 <p>Assim como é possível usar comandos de repositório, também é possível navegar pelo histórico de mudanças do projeto simplesmente usando os linques acima no navegador de sua preferência. E é nessa hora que começa a ficar interessante publicar seu projeto na web. Por falar nisso, que tal aprender como criar seu próprio projeto no Launchpad?</p>
 
@@ -166,17 +165,17 @@ role="navigation" aria-label="main navigation">
 
 <p>Dessa forma os passos são os seguintes:</p>
 
-<p> 1. Criar um login</p>
+<p>1. Criar um login</p>
 
-<p> 2. Registrar um projeto</p>
+<p>2. Registrar um projeto</p>
 
-<p> 3. Criar um par de chaves através do PuTTYgen</p>
+<p>3. Criar um par de chaves através do PuTTYgen</p>
 
-<p> 4. Atualizar no cadastro do saite (item "Update SSH keys")</p>
+<p>4. Atualizar no cadastro do saite (item "Update SSH keys")</p>
 
-<p> 5. Usar o Pageant para carregar a chave privada na memória</p>
+<p>5. Usar o Pageant para carregar a chave privada na memória</p>
 
-<p> 6. Use os comandos do Bazaar passando o usuário e o branch: bzr branch lp:~seu-usuario/projeto/branch</p>
+<p>6. Use os comandos do Bazaar passando o usuário e o branch: bzr branch lp:~seu-usuario/projeto/branch</p>
 
 <p>Simples e direto. E funciona!</p>
 
@@ -193,12 +192,12 @@ role="navigation" aria-label="main navigation">
 <p>Uma diferença que eu considero crucial na linguagem C/C++ é a questão da declaração/definição (em inglês, declaration/definition). É a diferença entre esses dois conceitos que permite, por exemplo, que sejam criadas estruturas prontas para serem conectadas a listas ligadas:</p>
 
 <pre>
-   struct Element
-   {
-      int x;
-      int y;
-      Element* next;
-   };
+struct Element
+{
+   int x;
+   int y;
+   Element* next;
+};
 </pre>
 <p>Por outro lado, e mais importante ainda, é ela que permite que as funções sejam organizadas em unidades de tradução (cpps) distintas para depois se unirem durante o link, mesmo que entre elas exista uma relação de dependência indissociável:</p>
 
@@ -215,36 +214,40 @@ role="navigation" aria-label="main navigation">
 <p>Da mesma forma, uma declaração em C/C++ nos permite moldar como será alguma coisa na memória, sem no entanto ocupar nem um mísero byte no seu programa:</p>
 
 <pre>
-   /* tamanho em memória: zero bytes */
-   int func(int x, int y, int z);
-   struct Teste
-   {
-     /* tamanho em memória: zero bytes */
-     char bufao[0x100000]; 
-     /* tamanho em memória: zero bytes */
-     int intao[0xffffff];
-   };
-   /* tamanho em memória: adivinha! */
-   extern int x;
+/* tamanho em memória: zero bytes */
+int func(int x, int y, int z);
+
+struct Teste
+{
+  /* tamanho em memória: zero bytes */
+  char bufao[0x100000]; 
+  /* tamanho em memória: zero bytes */
+  int intao[0xffffff];
+};
+
+/* tamanho em memória: adivinha! */
+extern int x;
 </pre>
 <p>Por outro lado, a definição, o hardware da história, sempre ocupará alguma coisa na memória RAM, o que, de certa forma, permite que você chute uma variável (embora muitas outras também irão para o saco).</p>
 
 <pre>
-   /* tamanho em memória: */
-   int func(int x, int y, int z)
-   {
-     int ret = x + y + z; /* alguns _asm add + */
-     return ret;          /* um _asm ret */
-   }
-   /* tamanho em memória: 
-      0x100000 + 0xffffff * 4 
-      = 1048576 bytes
-   */
-   Teste tst;
-   /* tamanho em memória: 
-      sizeof(int) bytes
-   */
-   int x;
+/* tamanho em memória: */
+int func(int x, int y, int z)
+{
+  int ret = x + y + z; /* alguns _asm add + */
+  return ret;          /* um _asm ret */
+}
+
+/* tamanho em memória: 
+   0x100000 + 0xffffff * 4 
+   = 1048576 bytes
+*/
+Teste tst;
+
+/* tamanho em memória: 
+   sizeof(int) bytes
+*/
+int x;
 </pre>
 <p>Dessa comparação só existe uma pegadinha: uma definição também é uma declaração. Por exemplo, nos exemplos acima, além de definir func, tst e x, o código também informa ao compilador que existe uma função chamada func, que existe uma variável tst do tipo Teste e uma variável x do tipo int.</p>
 
@@ -255,22 +258,23 @@ role="navigation" aria-label="main navigation">
 <p>Então por que diabos a separação declaração/definição consegue definir coisas como listas ligadas, como no código acima? A resposta é um pouco ambígua, mas representa regra essencial na sintaxe da linguagem: após a definição do nome e do tipo de declaração envolvida podemos referenciá-la como declaração, ou seja, não ferindo a limitação de que não sabemos o tamanho de uma variável do tipo declarado. Dessa forma, é perfeitamente legal definirmos um ponteiro para uma estrutura que ainda não se sabe muita coisa, além de que é uma estrutura:</p>
 
 <pre>
-   /* atenção: declaração apenas! */
-   struct Estrutura;
-   /* ponteiro para declaração: 
-      não sabemos o tamanho ainda
-   */
-   Estrutura* st;
+/* atenção: declaração apenas! */
+struct Estrutura;
+
+/* ponteiro para declaração: 
+   não sabemos o tamanho ainda
+*/
+Estrutura* st;
 </pre>
 <p>Dessa forma, o começo de uma definição de estrutura já declara o nome da estrutura antes de terminar a declaração do tipo inteiro. Bizarro, não? De qualquer forma, isso permite a construção clássica de lista ligada:</p>
 
 <pre>
-   /* a partir daqui Estrutura já está visível */
-   struct Estrutura
-   {
-     /* recursividade? é apenas um ponteiro! */
-     Estrutura* st;
-   };
+/* a partir daqui Estrutura já está visível */
+struct Estrutura
+{
+  /* recursividade? é apenas um ponteiro! */
+  Estrutura* st;
+};
 </pre>
 <p>Se vermos pelo lado prático, de qualquer forma seria impossível definir uma variável dentro dela mesma, pois isso geraria uma recursão infinita de definições, e, como sabemos, os recurso da máquina são finitos.</p>
 
@@ -299,89 +303,105 @@ role="navigation" aria-label="main navigation">
 <p>Pra criar uma Standalone Tree, tudo que precisamos é usar o comando init de dentro da pasta a ser controlada, quando é criado um repositório local. Adicionamos arquivos para o repositório com o comando add, e finalizamos nossa primeira versão com o comando commit.</p>
 
 <pre>
-   C:\Tests&gt;cd project1
-   C:\Tests\project1&gt;bzr init
-   C:\Tests\project1&gt;bzr add
-   added AUTHORS
-   added COPYING
-   added COPYRIGHT
-   added ChangeLog
-   added ChangeLog.2
-   added FAQ
-   ...
-   added winboard/extends/infboard/main.c
-   added winboard/extends/infboard/msvc.mak
-   added winboard/extends/infboard/support.c
-   C:\Tests\project1&gt;bzr commit -m &quot;Comentario sobre a revisao&quot;
-   Committing to: C:/Tests/project1/
-   added AUTHORS
-   added COPYING
-   added COPYRIGHT
-   added ChangeLog
-   added ChangeLog.2
-   added FAQ
-   ...
-   added winboard/extends/infboard/main.c
-   added winboard/extends/infboard/msvc.mak
-   added winboard/extends/infboard/support.c
-   Committed revision 1.
-   C:\Tests\project1&gt;
+C:\Tests&gt;cd project1
+
+C:\Tests\project1&gt;bzr init
+
+C:\Tests\project1&gt;bzr add
+added AUTHORS
+added COPYING
+added COPYRIGHT
+added ChangeLog
+added ChangeLog.2
+added FAQ
+...
+added winboard/extends/infboard/main.c
+added winboard/extends/infboard/msvc.mak
+added winboard/extends/infboard/support.c
+
+C:\Tests\project1&gt;bzr commit -m &quot;Comentario sobre a revisao&quot;
+Committing to: C:/Tests/project1/
+added AUTHORS
+added COPYING
+added COPYRIGHT
+added ChangeLog
+added ChangeLog.2
+added FAQ
+...
+added winboard/extends/infboard/main.c
+added winboard/extends/infboard/msvc.mak
+added winboard/extends/infboard/support.c
+Committed revision 1.
+
+C:\Tests\project1&gt;
 </pre>
 <p>Feito. A partir daí temos um repositório onde podemos realizar o comando commit sempre que quisermos marcar um snapshot em nosso código-fonte.</p>
 
 <p>Se quisermos fazer uma alteração muito grande em nosso pequeno projeto seria melhor termos outro diretório onde trabalhar antes de realizar o commit na versão estável. Para isso podemos usar o comando branch, que cria uma nova pasta com todo o histórico da pasta inicial até esse ponto. Os históricos em um branch estão duplicados em ambas as pastas, e portanto são independentes. Você pode apagar a pasta original ou a secundária que terá o backup inteiro no novo branch.</p>
 
 <pre>
-   C:\Tests\project1&gt;cd ..
-   C:\Tests&gt;bzr branch project1 project1-changing
-   Branched 1 revision(s).
-   C:\Tests&gt;cd project1-changing
-   C:\Tests\project1-changing&gt;
+C:\Tests\project1&gt;cd ..
+
+C:\Tests&gt;bzr branch project1 project1-changing
+Branched 1 revision(s).
+
+C:\Tests&gt;cd project1-changing
+
+C:\Tests\project1-changing&gt;
 </pre>
 <p>Criar um novo branch totalmente duplicado pode se tornar um desperdício enorme de espaço em disco (e tempo). Para isso foi criado o conceito de Shared Repository, que basicamente é um diretório acima dos branchs que trata de organizar as revisões em apenas um só lugar, com a vantagem de otimizar o espaço. Nesse caso, antes de criar o projeto, poderíamos usar o comando init-repo na pasta mãe de nosso projeto, e depois continuar com o processo de init dentro da pasta do projeto.</p>
 
 <pre>
-   C:\&gt;bzr init-repo Tests
-   C:\&gt;cd Tests
-   C:\Tests&gt;bzr init project1
-   C:\Tests&gt;cd project1
-   C:\Tests\project1&gt;bzr add
-   added AUTHORS
-   added COPYING
-   added COPYRIGHT
-   added ChangeLog
-   added ChangeLog.2
-   added FAQ
-   ...
-   added winboard/extends/infboard/main.c
-   added winboard/extends/infboard/msvc.mak
-   added winboard/extends/infboard/support.c
-   C:\Tests\project1&gt;bzr commit -m &quot;Comentario sobre a revisao&quot;
-   Committing to: C:/Tests/project1/
-   added AUTHORS
-   added COPYING
-   added COPYRIGHT
-   added ChangeLog
-   added ChangeLog.2
-   added FAQ
-   ...
-   added winboard/extends/infboard/main.c
-   added winboard/extends/infboard/msvc.mak
-   added winboard/extends/infboard/support.c
-   Committed revision 1.
-   C:\Tests\project1&gt;
+C:\&gt;bzr init-repo Tests
+
+C:\&gt;cd Tests
+
+C:\Tests&gt;bzr init project1
+
+C:\Tests&gt;cd project1
+
+C:\Tests\project1&gt;bzr add
+added AUTHORS
+added COPYING
+added COPYRIGHT
+added ChangeLog
+added ChangeLog.2
+added FAQ
+...
+added winboard/extends/infboard/main.c
+added winboard/extends/infboard/msvc.mak
+added winboard/extends/infboard/support.c
+
+C:\Tests\project1&gt;bzr commit -m &quot;Comentario sobre a revisao&quot;
+Committing to: C:/Tests/project1/
+added AUTHORS
+added COPYING
+added COPYRIGHT
+added ChangeLog
+added ChangeLog.2
+added FAQ
+...
+added winboard/extends/infboard/main.c
+added winboard/extends/infboard/msvc.mak
+added winboard/extends/infboard/support.c
+Committed revision 1.
+
+C:\Tests\project1&gt;
 </pre>
 <p>Se compararmos o tamanho, veremos que o repositório compartilhado é que detém a maior parte dos arquivos, enquanto agora o ".bzr" que está na pasta do projeto possui apenas dados de controle. A mesma coisa irá acontecer com qualquer branch criado dentro da pasta de repositório compartilhado.</p>
 
 <p>Mas já criamos nossos dois branches cheios de arquivos, certo? Certo. Como já fizemos isso, devemos criar uma nova pasta como repositório compartilhado e criar dois novos branches dentro dessa pasta, cópias dos dois branches gordinhos:</p>
 
 <pre>
-   C:\Tests&gt;bzr init-repo project1-repo
-   C:\Tests&gt;bzr branch project1 project1-repo\project1
-   Branched 1 revision(s).
-   C:\Tests&gt;bzr branch project1-changing project1-repo\project-changing
-   Branched 1 revision(s).
-   C:\Tests&gt;
+C:\Tests&gt;bzr init-repo project1-repo
+
+C:\Tests&gt;bzr branch project1 project1-repo\project1
+Branched 1 revision(s).
+
+C:\Tests&gt;bzr branch project1-changing project1-repo\project-changing
+Branched 1 revision(s).
+
+C:\Tests&gt;
 </pre>
 <p>Isso irá recriar esses dois branches como os originais, mas com a metade do espaço em disco, pois seus históricos estarão compartilhados na pasta project1-repo.</p>
 
@@ -390,22 +410,27 @@ role="navigation" aria-label="main navigation">
 <p>Os comandos para usar o Bazaar à SubVersion são os mesmos do SubVersion: checkout e commit. No entanto, um checkout irá fazer com que seu commit crie a nova revisão primeiro no seu servidor (branch principal) e depois localmente. Se você não deseja criar um histórico inteiro localmente, pode criar um checkout leve (parâmetro --lightweight), que apenas contém arquivos de controle. No entanto, se o servidor de fontes não estiver disponível, você não será capaz de ações que dependam dele, como ver o histórico ou fazer commits.</p>
 
 <pre>
-   C:\Tests\client&gt;bzr checkout ..\server\project1
-   C:\Tests\client&gt;cd project1
-   C:\Tests\client\project1&gt;echo &quot;New changes&quot; &gt;&gt; FAQ
-   C:\Tests\client\project1&gt;bzr commit -m &quot;New changes comment&quot;
-   Committing to: C:/Tests/server/project1/
-   modified FAQ
-   Committed revision 2.
-   C:\Tests\client\project1&gt;bzr log -l 1 ..\..\server\project1
-   ------------------------------------------------------------
-   revno: 2
-   committer: Wanderley Caloni &lt;wanderley.caloni@gmail.com&gt;
-   branch nick: project1
-   timestamp: Sun 2008-06-08 19:52:17 -0300
-   message:
-     New changes comment
-   C:\Tests\client\project1&gt;
+C:\Tests\client&gt;bzr checkout ..\server\project1
+
+C:\Tests\client&gt;cd project1
+
+C:\Tests\client\project1&gt;echo &quot;New changes&quot; &gt;&gt; FAQ
+
+C:\Tests\client\project1&gt;bzr commit -m &quot;New changes comment&quot;
+Committing to: C:/Tests/server/project1/
+modified FAQ
+Committed revision 2.
+
+C:\Tests\client\project1&gt;bzr log -l 1 ..\..\server\project1
+------------------------------------------------------------
+revno: 2
+committer: Wanderley Caloni &lt;wanderley.caloni@gmail.com&gt;
+branch nick: project1
+timestamp: Sun 2008-06-08 19:52:17 -0300
+message:
+  New changes comment
+
+C:\Tests\client\project1&gt;
 </pre>
 <p>Na verdade, o Bazaar vai além, e permite que um branch/checkout específico seja conectado e desconectado em qualquer repositório válido. Para isso são usados os comandos bind e unbind. Um branch conectado faz commits remotos e locais, enquanto um branch unbinded faz commits apenas locais. É possível mudar esse comportamento com o parâmetro --local, e atualizar o branch local com o comando update.</p>
 
@@ -426,15 +451,15 @@ role="navigation" aria-label="main navigation">
 <p>No placar, as coisas ficaram mais ou menos distribuídas:</p>
 
 <pre>
-   Assunto      Artigos
-   ===========  =======
-   Programação  10
-   C++          31
-   Windows      11
-   Depuração    10
-   WinDbg       18
-   Dicas        27
-   Código       15
+Assunto      Artigos
+===========  =======
+Programação  10
+C++          31
+Windows      11
+Depuração    10
+WinDbg       18
+Dicas        27
+Código       15
 </pre>
 <p>Sobre os visitantes, eles ainda são uma incógnita. Relacho meu, admito. Não faço nem uma simples pesquisa para saber se a maioria está no nível iniciante Juquinha ou avançado "The Guy". Prometo melhorar isso no segundo ano. Em números houve um crescimento de 711 visitantes únicos em janeiro de 2007 para 5223 em maio de 2008.</p>
 
@@ -443,11 +468,11 @@ role="navigation" aria-label="main navigation">
 <p>Por outro lado, alguns dados são muito interessantes, pois podem moldar o futuro de um blogueiro profissional (não é o meu caso), como os resultados mais-mais do google:</p>
 
 <pre>
-   Palavras     Buscas
-   ===========  =======
-   softice      86
-   windbg       27
-   caloni       26
+Palavras     Buscas
+===========  =======
+softice      86
+windbg       27
+caloni       26
 </pre>
 <p>No entanto, saber que o topo da lista é formado por buscas por "softice" não irá me fazer escrever mais artigos sobre esse depurador mais do <a href="2007-07.html#introducao_ao_softice">que eu já escrevi</a>, até porque já é um depurador morto usado hoje em dia em raríssimos casos (no meu caso). Se você quer craquear um programa, mesmo que isso seja contra a lei, aprenda WinDbg que você ganha mais!</p>
 
@@ -478,123 +503,144 @@ role="navigation" aria-label="main navigation">
 <p>Para instalar o plugin do rebase, basta baixá-lo e copiar sua pasta extraída com um nome válido no Python (rebase, por exemplo). A partir daí os comandos do plugin estão disponíveis no prompt do Bazaar, assim como a instalação de qualquer plugin que cria novos comandos.</p>
 
 <pre>
-   &gt;bzr help commands
-   add             Add specified files or directories.
-   annotate        Show the origin of each line in a file.
-   bind            Convert the current branch into a checkout of the supplied branch.
-   branch          Create a new copy of a branch.
-   ...
-   push            Update a mirror of this branch.
-   rebase          Re-base a branch. [rebase]
-   rebase-abort    Abort an interrupted rebase [rebase]
-   rebase-continue Continue an interrupted rebase after resolving conflicts [rebase]
-   rebase-todo     Print list of revisions that still need to be replayed as part of the  [rebase]
-   reconcile       Reconcile bzr metadata in a branch.
-   reconfigure     Reconfigure the type of a bzr directory.
-   register-branch Register a branch with launchpad.net. [launchpad]
-   remerge         Redo a merge.
-   remove          Remove files or directories.
-   remove-tree     Remove the working tree from a given branch/checkout.
-   renames         Show list of renamed files.
-   replay          Replay commits from another branch on top of this one. [rebase]
-   resolve         Mark a conflict as resolved.
-   revert          Revert files to a previous revision.
-   ...
-   whoami          Show or set bzr user id.
+&gt;bzr help commands
+add             Add specified files or directories.
+annotate        Show the origin of each line in a file.
+bind            Convert the current branch into a checkout of the supplied branch.
+branch          Create a new copy of a branch.
+...
+push            Update a mirror of this branch.
+rebase          Re-base a branch. [rebase]
+rebase-abort    Abort an interrupted rebase [rebase]
+rebase-continue Continue an interrupted rebase after resolving conflicts [rebase]
+rebase-todo     Print list of revisions that still need to be replayed as part of the  [rebase]
+reconcile       Reconcile bzr metadata in a branch.
+reconfigure     Reconfigure the type of a bzr directory.
+register-branch Register a branch with launchpad.net. [launchpad]
+remerge         Redo a merge.
+remove          Remove files or directories.
+remove-tree     Remove the working tree from a given branch/checkout.
+renames         Show list of renamed files.
+replay          Replay commits from another branch on top of this one. [rebase]
+resolve         Mark a conflict as resolved.
+revert          Revert files to a previous revision.
+...
+whoami          Show or set bzr user id.
 </pre>
 <p>O comando que usamos foi o replay, que não é comando principal do plugin, mas que resolve esse problema de maneira quase satisfatória. Como era tudo o que tínhamos, valeu a pena.</p>
 
 <p>O processo que usei foi de usar esse comando n vezes para buscar revisões de um branch e colocar no outro. Um grande problema com ele é que ao encontrar merges no branch origem ele se perde e o usuário tem que fazer as modificações "na mão". Deu um pouco de trabalho, mas conseguimos migrar nossos commits mais importantes e deixar o projeto inteiro, Linux+Windows, em um branch só.</p>
 
 <pre>
-   C:\Tests&gt;bzr init linux
-   C:\Tests&gt;cd linux
-   C:\Tests\linux&gt;copy con lnx
-   linux
-   ^Z
-           1 arquivo(s) copiado(s).
-   C:\Tests\linux&gt;bzr add
-   added lnx
-   C:\Tests\linux&gt;bzr commit -m &quot;Linux 1&quot;
-   Committing to: C:/Tests/linux/
-   added lnx
-   Committed revision 1.
-   C:\Tests\linux&gt;copy con lnx2
-   linux2
-   ^Z
-           1 arquivo(s) copiado(s).
-   C:\Tests\linux&gt;bzr add
-   added lnx2
-   C:\Tests\linux&gt;bzr commit -m &quot;Linux 2&quot;
-   Committing to: C:/Tests/linux/
-   added lnx2
-   Committed revision 2.
-   C:\Tests\linux&gt;cd ..
-   C:\Tests&gt;bzr init windows
-   C:\Tests&gt;cd windows
-   C:\Tests\windows&gt;copy con win1
-   windows
-   ^Z
-           1 arquivo(s) copiado(s).
-   C:\Tests\windows&gt;bzr add
-   added win1
-   C:\Tests\windows&gt;bzr commit -m &quot;Windows 1&quot;
-   Committing to: C:/Tests/windows/
-   added win1
-   Committed revision 1.
-   C:\Tests\windows&gt;copy con win2
-   windows2
-   ^Z
-           1 arquivo(s) copiado(s).
-   C:\Tests\windows&gt;bzr add
-   added win2
-   C:\Tests\windows&gt;bzr commit -m &quot;Windows 2&quot;
-   Committing to: C:/Tests/windows/
-   added win2
-   Committed revision 2.
-   C:\Tests\linux&gt;cd ..
-   C:\Tests&gt;cd linux
-   C:\Tests\linux&gt;bzr replay ..\windows -r1..2
-   All changes applied successfully.
-   Committing to: C:/Tests/linux/
-   added win1
-   Committed revision 3.
-   All changes applied successfully.
-   Committing to: C:/Tests/linux/
-   added win2
-   Committed revision 4.
-   C:\Tests\linux&gt;bzr log
-   ------------------------------------------------------------
-   revno: 4
-   committer: Wanderley Caloni &lt;wanderley.caloni@gmail.com&gt;
-   branch nick: windows
-   timestamp: Mon 2008-06-16 07:17:10 -0300
-   message:
-     Windows 2
-   ------------------------------------------------------------
-   revno: 3
-   committer: Wanderley Caloni &lt;wanderley.caloni@gmail.com&gt;
-   branch nick: windows
-   timestamp: Mon 2008-06-16 07:16:52 -0300
-   message:
-     Windows 1
-   ------------------------------------------------------------
-   revno: 2
-   committer: Wanderley Caloni &lt;wanderley.caloni@gmail.com&gt;
-   branch nick: linux
-   timestamp: Mon 2008-06-16 07:16:24 -0300
-   message:
-     Linux 2
-   ------------------------------------------------------------
-   revno: 1
-   committer: Wanderley Caloni &lt;wanderley.caloni@gmail.com&gt;
-   branch nick: linux
-   timestamp: Mon 2008-06-16 07:16:01 -0300
-   message:
-     Linux 1
-   C:\Tests\linux&gt;ls
-   lnx  lnx2  win1  win2
-   C:\Tests\linux&gt;
+C:\Tests&gt;bzr init linux
+
+C:\Tests&gt;cd linux
+
+C:\Tests\linux&gt;copy con lnx
+linux
+^Z
+        1 arquivo(s) copiado(s).
+
+C:\Tests\linux&gt;bzr add
+added lnx
+
+C:\Tests\linux&gt;bzr commit -m &quot;Linux 1&quot;
+Committing to: C:/Tests/linux/
+added lnx
+Committed revision 1.
+
+C:\Tests\linux&gt;copy con lnx2
+linux2
+^Z
+        1 arquivo(s) copiado(s).
+
+C:\Tests\linux&gt;bzr add
+added lnx2
+
+C:\Tests\linux&gt;bzr commit -m &quot;Linux 2&quot;
+Committing to: C:/Tests/linux/
+added lnx2
+Committed revision 2.
+
+C:\Tests\linux&gt;cd ..
+
+C:\Tests&gt;bzr init windows
+
+C:\Tests&gt;cd windows
+
+C:\Tests\windows&gt;copy con win1
+windows
+^Z
+        1 arquivo(s) copiado(s).
+
+C:\Tests\windows&gt;bzr add
+added win1
+
+C:\Tests\windows&gt;bzr commit -m &quot;Windows 1&quot;
+Committing to: C:/Tests/windows/
+added win1
+Committed revision 1.
+
+C:\Tests\windows&gt;copy con win2
+windows2
+^Z
+        1 arquivo(s) copiado(s).
+C:\Tests\windows&gt;bzr add
+added win2
+
+C:\Tests\windows&gt;bzr commit -m &quot;Windows 2&quot;
+Committing to: C:/Tests/windows/
+added win2
+Committed revision 2.
+
+C:\Tests\linux&gt;cd ..
+
+C:\Tests&gt;cd linux
+
+C:\Tests\linux&gt;bzr replay ..\windows -r1..2
+All changes applied successfully.
+Committing to: C:/Tests/linux/
+added win1
+Committed revision 3.
+All changes applied successfully.
+Committing to: C:/Tests/linux/
+added win2
+Committed revision 4.
+
+C:\Tests\linux&gt;bzr log
+------------------------------------------------------------
+revno: 4
+committer: Wanderley Caloni &lt;wanderley.caloni@gmail.com&gt;
+branch nick: windows
+timestamp: Mon 2008-06-16 07:17:10 -0300
+message:
+  Windows 2
+------------------------------------------------------------
+revno: 3
+committer: Wanderley Caloni &lt;wanderley.caloni@gmail.com&gt;
+branch nick: windows
+timestamp: Mon 2008-06-16 07:16:52 -0300
+message:
+  Windows 1
+------------------------------------------------------------
+revno: 2
+committer: Wanderley Caloni &lt;wanderley.caloni@gmail.com&gt;
+branch nick: linux
+timestamp: Mon 2008-06-16 07:16:24 -0300
+message:
+  Linux 2
+------------------------------------------------------------
+revno: 1
+committer: Wanderley Caloni &lt;wanderley.caloni@gmail.com&gt;
+branch nick: linux
+timestamp: Mon 2008-06-16 07:16:01 -0300
+message:
+  Linux 1
+
+C:\Tests\linux&gt;ls
+lnx  lnx2  win1  win2
+
+C:\Tests\linux&gt;
 </pre>
 <p>O resultado:</p>
 
@@ -615,14 +661,16 @@ role="navigation" aria-label="main navigation">
 <p>A raiz do problema é que, dependendo do alinhamento usado pelo compilador, o sizeof de uma variável pode mudar de valor, mesmo que o tamanho útil não mude. Por exemplo, vamos supor que temos uma dada estrutura que iremos encriptar:</p>
 
 <pre>
-   struct S
-   {
-       /* 4 bytes */
-       int size;
-       /* 31 bytes */
-       char name[31];
-   };
-   /* 4 + 31 = 35 bytes */
+struct S
+{
+    /* 4 bytes */
+    int size;
+
+    /* 31 bytes */
+    char name[31];
+};
+
+/* 4 + 31 = 35 bytes */
 </pre>
 <p>Se usarmos a construção "sizeof(struct S)", podemos obter o valor 35 caso o alinhamento seja feito em 1 byte, ou podemos obter o valor 40 se o alinhamento estiver configurado em 8 bytes. E é aí que começa o problema.</p>
 
@@ -631,23 +679,25 @@ role="navigation" aria-label="main navigation">
 <p>Usando essas diretivas ao compilador nossa estrutura sempre terá 40 bytes ocupados na memória, pois o alinhamento foi forçado em 8 bytes. Existem aqueles compiladores que não suportam essa idéia da mesma forma, ou não suportam de jeito nenhum. Para esses casos, alguns desvios de comportamento são necessários. A grande pergunta é se isso é possível de ser feito de forma 100% padrão. E, pelo que eu pude constatar, é possível, sim:</p>
 
 <pre>
-   #include &lt;stdio.h&gt;
-   union Align
-   {
-     struct S
-     {
-       char buf[13];
-       int x;
-     }
-     t;
-     unsigned char align[
-       sizeof(struct S) % 8 
-       ?
-       (sizeof(struct S) / 8 + 1) * 8
-       :
-       (sizeof(struct S))
-     ];
-   };
+#include &lt;stdio.h&gt;
+
+union Align
+{
+  struct S
+  {
+    char buf[13];
+    int x;
+  }
+  t;
+
+  unsigned char align[
+    sizeof(struct S) % 8 
+    ?
+    (sizeof(struct S) / 8 + 1) * 8
+    :
+    (sizeof(struct S))
+  ];
+};
 </pre>
 <p>O código acima usa o conceito de união de estruturas (union) para fazer valer um alinhamento na marra (no caso, 8). Uma estrutura, como todos sabem, amontoa os seus membros um após o outro na memória. Dessa forma podemos tratar um bloco de memória com um leiaute que definimos com outros tipos. Em uma união, os membros não são amontoados um após o outro. Todos eles começam no mesmo ponto da memória. Eles se sobrescrevem. O tamanho da união sempre é o tamanho do seu maior membro, e não a soma de todos. É um tanto difícil de descrever esse leiaute, mas imagine que você tenha apenas uma posição na memória e queira chamá-la de vários nomes e tamanhos diferentes. Essa é a união.</p>
 
@@ -658,29 +708,30 @@ role="navigation" aria-label="main navigation">
 <p>Tudo que temos que saber para fazer o alinhamento é o tamanho normal de nosso tipo útil (struct S). A partir desse valor deduzimos o próximo número que seja múltiplo de 8, através da seguinte construção:</p>
 
 <pre>
-   sizeof(struct S) % 8 
-   ?
-   (sizeof(struct S) / 8 + 1) * 8
-   :
-   (sizeof(struct S))
+sizeof(struct S) % 8 
+?
+(sizeof(struct S) / 8 + 1) * 8
+:
+(sizeof(struct S))
 </pre>
 <p>Ou seja, se S já for múltiplo de 8 é o próprio valor. Se não for, então dividimos por 8 e multiplicamos pelo mesmo valor adicionado de um, o que nos retorna o próximo múltiplo.</p>
 
 <p>É lógico que, como se trata de uma construção onde temos completo domínio dos tipos e valores envolvidos, transformar isso em um template é "pedaço de torta".</p>
 
 <pre>
-   template&lt;typename T, int A&gt;
-   union UAlign
-   {
-     T t;
-     unsigned char align[
-       sizeof(T) % A
-       ?
-       (sizeof(T) / A + 1) * A
-       :
-       (sizeof(T))
-     ];
-   };
+template&lt;typename T, int A&gt;
+union UAlign
+{
+  T t;
+
+  unsigned char align[
+    sizeof(T) % A
+    ?
+    (sizeof(T) / A + 1) * A
+    :
+    (sizeof(T))
+  ];
+};
 </pre>
 <p>E essa é a melhor parte de descobrir um padrão em um tipo: o template nasce quase que naturalmente. A beleza da linguagem floresce.</p>
 
@@ -703,12 +754,15 @@ role="navigation" aria-label="main navigation">
 <pre>
 #include &lt;windows.h&gt;
 #include &lt;stdio.h&gt;
+
 int main()
 {
     HMODULE dll1 = LoadLibrary(&quot;.\\DLL\\DLL.dll&quot;);
     HMODULE dll2 = LoadLibrary(&quot;.\\DLL.dll&quot;);
+
     printf(&quot;First DLL: %p\nSecond DLL: %p&quot;,
         dll1, dll2);
+
     return 0;
 }
 </pre>
@@ -716,6 +770,7 @@ int main()
 
 <pre>
 #include &lt;windows.h&gt;
+
 BOOL WINAPI DllMain(HINSTANCE inst, DWORD reason, PVOID reserv)
 {
     return TRUE;
@@ -726,56 +781,56 @@ BOOL WINAPI DllMain(HINSTANCE inst, DWORD reason, PVOID reserv)
 <p>No caso da DLL não existir ambos os retornos serão nulos, que é o natural e esperado quando a DLL não pode ser encontrada nos lugares especificados pelo sistema e pelo aplicativo.</p>
 
 <pre>
-   K:\Docs\Projects&gt;cl app.c
-   Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 14.00.50727.42 for 80x86
-   Copyright (C) Microsoft Corporation.  All rights reserved.
-   app.c
-   Microsoft (R) Incremental Linker Version 8.00.50727.42
-   Copyright (C) Microsoft Corporation.  All rights reserved.
-   /out:app.exe
-   app.obj
-   K:\Docs\Projects&gt;app
-   First DLL: 00000000
-   Second DLL: 00000000
+K:\Docs\Projects&gt;cl app.c
+Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 14.00.50727.42 for 80x86
+Copyright (C) Microsoft Corporation.  All rights reserved.
+app.c
+Microsoft (R) Incremental Linker Version 8.00.50727.42
+Copyright (C) Microsoft Corporation.  All rights reserved.
+/out:app.exe
+app.obj
+K:\Docs\Projects&gt;app
+First DLL: 00000000
+Second DLL: 00000000
 </pre>
 <p>No caso que a DLL existe apenas no caminho do aplicativo ela é carregada com sucesso se usado o caminho relativo, pois o caminho atual faz parte da lista de caminhos que o sistema percorre para encontrá-la. A primeira chamada deve falhar.</p>
 
 <pre>
-   K:\Docs\Projects&gt;cl /LD dll.c
-   Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 14.00.50727.42 for 80x86
-   Copyright (C) Microsoft Corporation.  All rights reserved.
-   dll.c
-   Microsoft (R) Incremental Linker Version 8.00.50727.42
-   Copyright (C) Microsoft Corporation.  All rights reserved.
-   /out:dll.dll
-   /dll
-   /implib:dll.lib
-   dll.obj
-   K:\Docs\Projects&gt;app
-   First DLL: 00000000
-   Second DLL: 10000000
+K:\Docs\Projects&gt;cl /LD dll.c
+Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 14.00.50727.42 for 80x86
+Copyright (C) Microsoft Corporation.  All rights reserved.
+dll.c
+Microsoft (R) Incremental Linker Version 8.00.50727.42
+Copyright (C) Microsoft Corporation.  All rights reserved.
+/out:dll.dll
+/dll
+/implib:dll.lib
+dll.obj
+K:\Docs\Projects&gt;app
+First DLL: 00000000
+Second DLL: 10000000
 </pre>
 <p>No caso problemático em que a DLL existe em ambos os lugares a mesma DLL é carregada em dois endereços distintos da memória do mesmo processo, o que pode causar sérios problemas dependendo do código envolvido.</p>
 
 <pre>
-   K:\Docs\Projects&gt;mkdir DLL
-   K:\Docs\Projects&gt;copy dll.dll DLL
-   1 arquivo(s) copiado(s).
-   K:\Docs\Projects&gt;app
-   First DLL: 10000000
-   Second DLL: 00350000
+K:\Docs\Projects&gt;mkdir DLL
+K:\Docs\Projects&gt;copy dll.dll DLL
+1 arquivo(s) copiado(s).
+K:\Docs\Projects&gt;app
+First DLL: 10000000
+Second DLL: 00350000
 </pre>
 <p>Apesar do mundo parecer injusto, temos uma segunda regra que podemos usar para aqueles casos onde a idiotisse já foi feita:</p>
 
 <p>Vamos supor que estamos no meio de uma mudança bem radical no produto e queremos ter certeza que qualquer chamada à nossa DLL irá invocar unicamente a que estiver dentro do caminho do produto (caminho atual). Para esse caso o Windows permite uma saída muito interessante, que é o uso de um arquivo com o nome do aplicativo mais o sufixo ".local". Se esse arquivo existir, de acordo com o MSDN, então qualquer chamada à DLL irá ter sempre a prioridade do caminho atual.</p>
 
 <pre>
-   K:\Docs\Projects&gt;copy con app.exe.local
-   ^Z
-   1 arquivo(s) copiado(s).
-   K:\Docs\Projects&gt;app
-   First DLL: 10000000
-   Second DLL: 10000000
+K:\Docs\Projects&gt;copy con app.exe.local
+^Z
+1 arquivo(s) copiado(s).
+K:\Docs\Projects&gt;app
+First DLL: 10000000
+Second DLL: 10000000
 </pre>
 <p>Tente evitar a replicação do mesmo arquivo em diversos lugares. Quando eu digo "mesmo arquivo" me refiro ao mesmo nome de DLL, embora não necessariamente a mesma versão. Isso pode evitar algumas dores de cabeça futuras. E muitas, muitas horas de depuração.</p>
 
@@ -794,22 +849,22 @@ BOOL WINAPI DllMain(HINSTANCE inst, DWORD reason, PVOID reserv)
 <p>Nosso padrão de diretórios utiliza um repositório compartilhado e dentro, na mesma ramificação, os branches. O branch principal tem o mesmo nome do projeto. Isso na máquina de um desenvolvedor ficaria:</p>
 
 <pre>
-   c:\src\project1
-     |
-     -- project1  (branch principal)
-     |
-     -- bug-da-tela-azul (branch secundário e temporário)
-     |
-     -- nova-tela-de-login (branch secundário e temporário)
+c:\src\project1
+  |
+  -- project1  (branch principal)
+  |
+  -- bug-da-tela-azul (branch secundário e temporário)
+  |
+  -- nova-tela-de-login (branch secundário e temporário)
 </pre>
 <p>No servidor de fontes geralmente teremos apenas o branch principal, apesar de que o desenvolvimento em paralelo seja permitido:</p>
 
 <pre>
-   c:\src\project1
-     |
-     -- project1  (branch principal)
-     |
-     -- 2.4.1 (branch secundário em desenvolvimento paralelo)
+c:\src\project1
+  |
+  -- project1  (branch principal)
+  |
+  -- 2.4.1 (branch secundário em desenvolvimento paralelo)
 </pre>
 <h4>Segundo passo: projeto-modelo</h4>
 
@@ -818,35 +873,35 @@ BOOL WINAPI DllMain(HINSTANCE inst, DWORD reason, PVOID reserv)
 <p>Resumindo: todos os projetos novos são branches do projeto-modelo.</p>
 
 <pre>
-   bzr init-repo _template
-   cd _template
-   bzr init _template
-   hack hack hack
-   bzr commit -m &quot;Primeira versao de nosso projeto-modelo&quot;
+bzr init-repo _template
+cd _template
+bzr init _template
+hack hack hack
+bzr commit -m &quot;Primeira versao de nosso projeto-modelo&quot;
 </pre>
 <p>Como podemos ver acima, o projeto modelo segue o mesmo padrão de repositório compartilhado. Os projetos que criarmos serão baseados nesse projeto modelo, mas em outro repositório compartilhado.</p>
 
 <pre>
-   bzr init-repo novo-projeto
-   bzr branch _template\_template novo-projeto\novo-projeto
-   cd novo-projeto\novo-projeto
-   hack hack hack
-   bzr commit -m &quot;Primeira versao de nosso novo projeto&quot;
+bzr init-repo novo-projeto
+bzr branch _template\_template novo-projeto\novo-projeto
+cd novo-projeto\novo-projeto
+hack hack hack
+bzr commit -m &quot;Primeira versao de nosso novo projeto&quot;
 </pre>
 <p>A ramificação dos projetos estará sempre no mesmo lugar, independente da pasta raiz.</p>
 
 <pre>
-   c:\src\--_template
-     |  |
-     |  -- _template
-     |
-     -- novo-projeto
-     |  |
-     |  -- novo-projeto
+c:\src\--_template
+  |  |
+  |  -- _template
+  |
+  -- novo-projeto
+  |  |
+  |  -- novo-projeto
+  |
+  -- mais-um-projeto
      |
      -- mais-um-projeto
-        |
-        -- mais-um-projeto
 </pre>
 <h4>Terceiro passo: elegendo um servidor</h4>
 
@@ -855,8 +910,8 @@ BOOL WINAPI DllMain(HINSTANCE inst, DWORD reason, PVOID reserv)
 <p>O repositório do servidor pode ser criado com a opção que não cria o diretório de trabalho, que é onde os programadores mexem no código-fonte. Sendo um servidor, o código-fonte não é necessário, só a base de dados:</p>
 
 <pre>
-   bzr init-repo --no-trees novo-projeto
-   bar branch \\desenvolvedor\src\novo-projeto\novo-projeto novo-projeto\novo-projeto
+bzr init-repo --no-trees novo-projeto
+bar branch \\desenvolvedor\src\novo-projeto\novo-projeto novo-projeto\novo-projeto
 </pre>
 <h4>Quarto passo: tornando disponível o servidor</h4>
 
@@ -865,7 +920,7 @@ BOOL WINAPI DllMain(HINSTANCE inst, DWORD reason, PVOID reserv)
 <p>Para manter o Bazaar eternamente rodando, usamos <a href="http://www.driverentry.com.br/blog/2007/02/prog2svc-servio-sem-trabalho.html">o programa do DriverEntry</a> que transforma qualquer coisa no formato de um serviço <a href="http://en.wikipedia.org/wiki/Wonder_Twins">de gelo</a>.</p>
 
 <pre>
-   prog2svc -add Bazaar &quot;c:\program files\Bazaar\bzr.exe serve --allow-writes --diretory=c:\src&quot;
+prog2svc -add Bazaar &quot;c:\program files\Bazaar\bzr.exe serve --allow-writes --diretory=c:\src&quot;
 </pre>
 <p>Ou não sei usar direito esse programa ou ele não permite uso de aspas no nome do aplicativo junto de argumentos. Por isso tive que editar o registro onde ele fica para colocar aspas duplas em torno do bzr.exe.</p>
 
@@ -876,10 +931,10 @@ BOOL WINAPI DllMain(HINSTANCE inst, DWORD reason, PVOID reserv)
 <p>Agora qualquer usuário da rede consegue fazer updates e commits. Um desenvolvedor novo faria o seguinte comando:</p>
 
 <pre>
-   bzr init-repo projeto
-   bzr branch bzr://servidor/projeto projeto\projeto
+bzr init-repo projeto
+bzr branch bzr://servidor/projeto projeto\projeto
 </pre>
-<p>Note que o usuário do Bazaar não é obrigado a criar um repositório compartilhado. Esse foi um padrão definido aqui e não necessariamente é o melhor. </p>
+<p>Note que o usuário do Bazaar não é obrigado a criar um repositório compartilhado. Esse foi um padrão definido aqui e não necessariamente é o melhor.</p>
 
 <h4>Quinto passo: ensinando as pessoas a usar</h4>
 
@@ -890,7 +945,7 @@ BOOL WINAPI DllMain(HINSTANCE inst, DWORD reason, PVOID reserv)
 <p>É aquele que prefere fazer tudo localmente e só depois, bem depois, mandar seus commits para o servidor. Nesse caso o comando para começar a programar é branch.</p>
 
 <pre>
-   bzr branch bzr://servidor/projeto projeto\projeto
+bzr branch bzr://servidor/projeto projeto\projeto
 </pre>
 <p>Nesse esquema o servidor e a máquina do desenvolvedor não trocam idéia se ele não quiser. Quando quiser, pode usar os comandos push, pull e merge. O push coloca coisas novas no servidor; o pull puxa coisas novas do servidor, e o merge é necessário quando existem conflitos entre as mudanças no fonte. Mais sobre conflitos em um futuro artigo.</p>
 
@@ -899,32 +954,32 @@ BOOL WINAPI DllMain(HINSTANCE inst, DWORD reason, PVOID reserv)
 <p>É o cara que quer sempre atualizar todas as modificações que ele faz imediatamente colocadas no servidor. Tudo bem. É só trabalhar no modo Source Safe (ou Subversion) com o comando checkout:</p>
 
 <pre>
-   bzr checkout bzr://servidor/projeto projeto\projeto
+bzr checkout bzr://servidor/projeto projeto\projeto
 </pre>
 <p>Um checkout funciona como o branch, só que faz um bind (ligação) com o servidor. O que quer dizer que qualquer commit feito localmente irá parar imediatamente também no servidor, a não ser que seja usado o parâmetro --local.</p>
 
 <pre>
-   bzr commit -m &quot;Eu sei que isso vai ser feito aqui e no servidor&quot;
-   bzr commit --local -m &quot;Apenas umas mudancinhas; depois jogo no servidor&quot;
+bzr commit -m &quot;Eu sei que isso vai ser feito aqui e no servidor&quot;
+bzr commit --local -m &quot;Apenas umas mudancinhas; depois jogo no servidor&quot;
 </pre>
 <p>O modo checkout permite usar o comando update para ver se existem mudanças entre a máquina local e o servidor, diferente do modo standalone, onde o update apenas compara com o branch local e o diretório de trabalho.</p>
 
 <pre>
-   bzr update
+bzr update
 </pre>
 <h4>Desenvolvedor polivalente</h4>
 
 <p>Como eu havia dito, uma coisa não exclui outra. Se você está trabalhando em um branch e deseja se conectar ao servidor para atualizar mudanças, basta usar o comando bind.</p>
 
 <pre>
-   bzr bind bzr://servidor/projeto projeto\projeto
+bzr bind bzr://servidor/projeto projeto\projeto
 </pre>
 <p>O branch começará a trabalhar como um checkout.</p>
 
 <p>O contrário, que é fazer um checkout ficar desconectado é conseguido pelo comando unbind.</p>
 
 <pre>
-   bzr unbind
+bzr unbind
 </pre>
 <p>Todos os novos commits serão feitos apenas localmente.</p>
 
@@ -933,18 +988,18 @@ BOOL WINAPI DllMain(HINSTANCE inst, DWORD reason, PVOID reserv)
 <p>Esses esquemas de conectado e desconectado podem ser usados no modo cliente x servidor ou tudo em uma máquina só. Por exemplo, uma série de mudanças em um projeto pode ser feito em um outro branch desconectado:</p>
 
 <pre>
-   bzr branch projeto novo-branch
+bzr branch projeto novo-branch
 </pre>
 <p>Os commits de "novo-branch" não serão replicados para o branch "projeto".</p>
 
 <p>No entanto, se é uma série de mudanças que devem ser colocadas imediatamente no branch principal, pode-se usar checkout.</p>
 
 <pre>
-   bzr checkout projeto novo-branch
+bzr checkout projeto novo-branch
 </pre>
 <p>Existem diversas outras formas de usar o Bazaar, e isso está sob o controle do desenvolvedor. O importante para quem está migrando é saber definir alguns padrões (onde é o servidor principal, ramificação dos projetos) e o resto é só programar, exatamente como antes.</p>
 
-<p>Para os "SourceSafers" de plantão: o Bazaar funciona como o Subversion sem locks, ou seja, todo mundo pode alterar qualquer fonte a qualquer hora. Isso significa que para começar a trabalhar basta começar a programar. Os commits podem ser feitos a qualquer hora, resolvidos os poucos conflitos que podem ocorrer se existirem pessoas mexendo nos mesmos fontes que você. </p>
+<p>Para os "SourceSafers" de plantão: o Bazaar funciona como o Subversion sem locks, ou seja, todo mundo pode alterar qualquer fonte a qualquer hora. Isso significa que para começar a trabalhar basta começar a programar. Os commits podem ser feitos a qualquer hora, resolvidos os poucos conflitos que podem ocorrer se existirem pessoas mexendo nos mesmos fontes que você.</p>
 
 </section><hr/>
 
@@ -973,14 +1028,14 @@ BOOL WINAPI DllMain(HINSTANCE inst, DWORD reason, PVOID reserv)
 <p>A primeira coisa a saber sobre comentários de documentação é que eles devem vir sempre ANTES do elemento que estamos comentando. Por exemplo, uma classe:</p>
 
 <pre>
-   /** Nova classe de exemplo
-   *
-   * Essa classe é um exemplo de como utilizar o Doxygen
-   */
-   class ClasseDeExemplo
-   {
-      // ...
-   };
+/** Nova classe de exemplo
+*
+* Essa classe é um exemplo de como utilizar o Doxygen
+*/
+class ClasseDeExemplo
+{
+   // ...
+};
 </pre>
 <p>Note que o comentário inicia com um duplo asterisco "/**". Isso indica ao Doxygen que vem documentação por aí.</p>
 
@@ -989,35 +1044,35 @@ BOOL WINAPI DllMain(HINSTANCE inst, DWORD reason, PVOID reserv)
 <p>Também existe um outro formato bem popular, usado pelo pessoal do Java, que são os comentários que se iniciam com três barras:</p>
 
 <pre>
-   ///
-   /// Nova classe de exemplo
-   ///
-   /// Essa classe é um exemplo de como utilizar o Doxygen
-   /// E esse comentário é equivalente ao anterior
-   ///
-   class ClasseDeExemplo
-   {
-      // ...
-   };
+///
+/// Nova classe de exemplo
+///
+/// Essa classe é um exemplo de como utilizar o Doxygen
+/// E esse comentário é equivalente ao anterior
+///
+class ClasseDeExemplo
+{
+   // ...
+};
 </pre>
 <p>Além desse estilo de comentário, existem campos-chave que podemos colocar. Para definir um campo-chave, uma forma válida é usar o arroba seguido do seu nome, e a descrição. Eis um exemplo cheio deles:</p>
 
 <pre>
-   /** @brief Função de exemplo
-   *
-   * Essa função tem por objetivo exemplificar o uso do Doxygen
-   *
-   * @param firstParam Serve como primeiro parâmetro da função
-   * @param[out] anotherParam Esse é outro parâmetro que recebemos
-   *
-   * @return Se der erro, retorna -1. Se der tudo certo, 0.
-   *
-   * @remarks Essa função não pode ser chamada antes de ChamaEuPrimeiro.
-   */
-   int FuncaoDeExemplo(int firstParam, int anotherParam)
-   {
-      // ...
-   }
+/** @brief Função de exemplo
+*
+* Essa função tem por objetivo exemplificar o uso do Doxygen
+*
+* @param firstParam Serve como primeiro parâmetro da função
+* @param[out] anotherParam Esse é outro parâmetro que recebemos
+*
+* @return Se der erro, retorna -1. Se der tudo certo, 0.
+*
+* @remarks Essa função não pode ser chamada antes de ChamaEuPrimeiro.
+*/
+int FuncaoDeExemplo(int firstParam, int anotherParam)
+{
+   // ...
+}
 </pre>
 <p>Vejamos:</p>
 
@@ -1049,27 +1104,35 @@ BOOL WINAPI DllMain(HINSTANCE inst, DWORD reason, PVOID reserv)
 
 <pre>
 #include &lt;iostream&gt;
+
 using namespace std;
+
 int main()
 {
     cout &lt;&lt; typeid( int ).name() &lt;&lt; endl;
+
     int x;
     cout &lt;&lt; typeid( x ).name() &lt;&lt; endl;
+
     cout &lt;&lt; typeid( 2 + 2 ).name() &lt;&lt; endl;
 }
-   C:\Tests&gt;cl typeid.cpp
-   Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 15.00.21022.08 for 80x86
-   Copyright (C) Microsoft Corporation.  All rights reserved.
-   /out:typeid.exe
-   typeid.obj
-   C:\Tests&gt;typeid.exe
-   int
+C:\Tests&gt;cl typeid.cpp
+Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 15.00.21022.08 for 80x86
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+/out:typeid.exe
+typeid.obj
+
+C:\Tests&gt;typeid.exe
+int
 </pre>
 <p>Dessa forma, podemos nos aproveitar do fato que todo método não-estático possui a variável implícita this, do tipo "ponteiro constante para T", onde T é o tipo da classe que contém o método sendo chamado.</p>
 
 <pre>
 #include &lt;iostream&gt;
+
 using namespace std;
+
 class MyClass
 {
     public:
@@ -1078,24 +1141,31 @@ class MyClass
         cout &lt;&lt; typeid(*this).name() &lt;&lt; &quot;::MyMethod&quot; &lt;&lt; endl;
       }
 };
+
 int main()
 {
     MyClass myc;
+
     myc.MyMethod();
 }
-   C:\Tests&gt;cl typeid-class.cpp
-   Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 15.00.21022.08 for 80x86
-   Copyright (C) Microsoft Corporation.  All rights reserved.
-   /out:typeid-class.exe
-   typeid-class.obj
-   C:\Tests&gt;typeid-class.exe
-   class MyClass::MyMethod
+C:\Tests&gt;cl typeid-class.cpp
+Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 15.00.21022.08 for 80x86
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+/out:typeid-class.exe
+typeid-class.obj
+
+C:\Tests&gt;typeid-class.exe
+
+class MyClass::MyMethod
 </pre>
 <p>Com classes não-polimórficas a coisa parece não ter muita utilidade. No entanto, essa mesma técnica pode ser aplicada em classes derivadas, uma vez que o operador typeid pode trabalhar em tempo de execução:</p>
 
 <pre>
 #include &lt;iostream&gt;
+
 using namespace std;
+
 class MyClass
 {
     public:
@@ -1104,22 +1174,29 @@ class MyClass
         cout &lt;&lt; typeid(*this).name() &lt;&lt; &quot;::MyMethod&quot; &lt;&lt; endl;
       }
 };
+
 class MyDerivatedClass1 : public MyClass { };
+
 class MyDerivatedClass2 : public MyClass { };
+
 int main()
 {
     MyClass* myc1 = new MyDerivatedClass1;
     MyClass* myc2 = new MyDerivatedClass2;
+
     myc1-&gt;MyMethod();
     myc2-&gt;MyMethod();
 }
-   C:\Tests&gt;cl typeid-class2.cpp
-   Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 15.00.21022.08 for 80x86
-   Copyright (C) Microsoft Corporation.  All rights reserved.
-   /out:typeid-class2.exe
-   typeid-class2.obj
-   C:\Tests&gt;typeid-class2.exe
-   class MyDerivatedClass1::MyMethod class MyDerivatedClass2::MyMethod
+C:\Tests&gt;cl typeid-class2.cpp
+Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 15.00.21022.08 for 80x86
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+/out:typeid-class2.exe
+typeid-class2.obj
+
+C:\Tests&gt;typeid-class2.exe
+
+class MyDerivatedClass1::MyMethod class MyDerivatedClass2::MyMethod
 </pre>
 <p>Apenas se lembre de ter de fato uma classe polimórfica (eu consegui isso tornando MyMethod uma função virtual). Do contrário você pode <a href="2007-10.html#typeid_e_os_perigos_do_nao_polimorfismo">ter problemas</a>.</p>
 

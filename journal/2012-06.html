@@ -428,9 +428,12 @@ role="navigation" aria-label="main navigation">
 #include &lt;algorithm&gt;
 #include &lt;stdlib.h&gt;
 #include &lt;time.h&gt;
+
 using namespace std;
+
 list&lt;DWORD&gt; g_ticks;
 list&lt;LONG&gt; g_increments;
+
 DWORD WINAPI Ticks(PVOID)
 {
     for( int i = 1; i &lt;= 100; ++i )
@@ -441,9 +444,11 @@ DWORD WINAPI Ticks(PVOID)
     }
     return 0;
 }
+
 DWORD WINAPI Increment(PVOID)
 {
     static LONG st_prevIncrement = 0;
+
     for( int i = 1; i &lt;= 100; ++i )
     {
         LONG increment = InterlockedIncrement(&amp;st_prevIncrement);
@@ -452,30 +457,38 @@ DWORD WINAPI Increment(PVOID)
     }
     return 0;
 }
+
 int main()
 {
     const size_t threadsCount = 20;
     HANDLE threads[threadsCount];
+
     srand((unsigned int) time(0));
+
     for( size_t i = 0; i &lt; threadsCount / 2; ++i )
         threads[i] = CreateThread(NULL, 0, Ticks, NULL, 0, NULL);
     for( size_t i = threadsCount / 2; i &lt; threadsCount; ++i )
         threads[i] = CreateThread(NULL, 0, Increment, NULL, 0, NULL);
+
     WaitForMultipleObjects(threadsCount, threads, TRUE, INFINITE);
+
     for( auto it = g_ticks.begin(); it != g_ticks.end(); ++it )
     {
         DWORD tick = *it;
         size_t tickOccurrence = count(g_ticks.begin(), g_ticks.end(), tick);
+
         if( tickOccurrence &gt; 1 )
         {
             cout &lt;&lt; &quot;Ocorrencia de tick duplicado!\n&quot;;
             break;
         }
     }
+
     for( auto it = g_increments.begin(); it != g_increments.end(); ++it )
     {
         DWORD tick = *it;
         size_t incrementOccurrence = count(g_increments.begin(), g_increments.end(), tick);
+
         if( incrementOccurrence &gt; 1 )
         {
             cout &lt;&lt; &quot;Ocorrencia de incremento duplicado!\n&quot;;

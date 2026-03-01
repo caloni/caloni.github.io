@@ -372,9 +372,13 @@ python -m SimpleHTTPServer
 <pre>
 import SimpleHTTPServer
 import SocketServer
+
 PORT = 8000
+
 Handler = SimpleHTTPServer.SimpleHTTPRequestHandler
+
 httpd = SocketServer.TCPServer((&quot;&quot;, PORT), Handler)
+
 print &quot;serving at port&quot;, PORT
 httpd.serve_forever()
 </pre>
@@ -383,6 +387,7 @@ httpd.serve_forever()
 <pre>
 from distutils.core import setup
 import py2exe
+
 setup(console=['fileserver.py'])
 </pre>
 <p>Pelo prompt de comando executar o seguinte comando que irá gerar a pasta dist:</p>
@@ -413,7 +418,9 @@ powershell wget http://127.0.0.1:8000/Procmon.exe -OutFile Procmon.exe
 c:\Temp\bitforge\wget&gt;dir
  Volume in drive C is SYSTEM
  Volume Serial Number is 5C08-36EE
+
  Directory of c:\Temp\bitforge\wget
+
 23/03/2017  13:25    &lt;DIR&gt;          .
 23/03/2017  13:25    &lt;DIR&gt;          ..
 03/09/2008  17:49         1.177.600 libeay32.dll
@@ -421,6 +428,7 @@ c:\Temp\bitforge\wget&gt;dir
 06/05/2005  16:52           103.424 libintl3.dll
 03/09/2008  17:49           232.960 libssl32.dll
 31/12/2008  11:03           449.024 wget.exe
+
 c:\Temp\bitforge\wget&gt;wget http://127.0.0.1:8000/Procmon.exe
 SYSTEM_WGETRC = c:/progra~1/wget/etc/wgetrc
 syswgetrc = c:/progra~1/wget/etc/wgetrc
@@ -429,8 +437,11 @@ Connecting to 127.0.0.1:8000... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: 2046608 (2,0M) [application/x-msdownload]
 Saving to: `Procmon.exe'
+
 100%[===================================================================================================================================&gt;] 2.046.608   --.-K/s   in 0,006s
+
 2017-03-23 13:44:13 (348 MB/s) - `Procmon.exe' saved [2046608/2046608]
+
 c:\Temp\bitforge\wget&gt;
 </pre>
 <p>E assim com poucas linhas de código já é possível iniciar um client/servidor via http que fornece arquivos de atualização. A própria versão do pacote e detalhes podem estar disponíveis na mesma pasta.</p>

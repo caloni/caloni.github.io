@@ -248,103 +248,104 @@ role="navigation" aria-label="main navigation">
 <p>O salto simples e direto permite a organização do código em subrotinas. Subrotinas permitem o reaproveitamento de código com parâmetros de entrada distintos, o que economiza memória, mas computacionalmente é "inútil", já que pode ser implementado simplesmente pela repetição das mesmas subrotinas. O que eu quero dizer é que, do ponto de vista da execução, a mesma seqüência de instruções será executada. Pense no fluxo de execução de uma rotina que chama várias vezes a mesma subrotina:</p>
 
 <pre>
-   sub:
-     code
-     ret
-   routine:
-     code
-     call sub
-     code
-     call sub
-     code
-     call sub
+sub:
+  code
+  ret
+
+routine:
+  code
+  call sub
+  code
+  call sub
+  code
+  call sub
 </pre>
 <p>Ela é, na prática, equivalente a uma rotina que contém várias cópias da subrotina na memória, uma seguida da outra.</p>
 
 <pre>
-   routine:
-     code
-     sub:
-       code
-     code
-     sub:
-       code
-     code
-     sub:
-       code
+routine:
+  code
+  sub:
+    code
+  code
+  sub:
+    code
+  code
+  sub:
+    code
 </pre>
 <p>A grande sacada computacional não são subrotinas. O real motivo pelo qual hoje os computadores são tão úteis para os seres humanos é a invenção de um conceito chamado salto condicional. Ou seja, não é um salto certo, mas um salto que será executado caso a condição sob a qual ele está subordinado for verdadeira:</p>
 
 <pre>
-   code
-   if cond:
-     call sub
-   code
-   if cond:
-     call sub
-   code
-   if cond:
-     call sub
-   code
+code
+if cond:
+  call sub
+code
+if cond:
+  call sub
+code
+if cond:
+  call sub
+code
 </pre>
 <p>Os saltos condicionais, vulgarmente conhecidos como if, permitiram às linguagens de programação possuírem construções de execução mais sofisticadas: laços, iterações e seleção de caso. Claro que no fundo todas essas construções não passam de um conjunto formado por saltos condicionais e incondicionais. Peguemos o while e seu bloco, por exemplo. A construção em uma linguagem de programação possui uma condicional seguido de um bloco de código que se repete enquanto a condicional for verdadeira:</p>
 
 <pre>
-   while cond:
-     code
+while cond:
+  code
 </pre>
 <p>Enquanto para o programador dessa fictícia linguagem existe um controle de execução no início que determina quando o código deixará de ser executado repetidamente, para o compilador o while não passa de um salto no final do bloco para o começo de um if.</p>
 
 <pre>
-   label:
-   if cond:
-     code
-     jump label
+label:
+if cond:
+  code
+  jump label
 </pre>
 <p>O for, por outro lado, possui tradicionalmente em seu início três operações: inicialização, condição e incremento. O código começa executando a inicialização e verifica a condição uma primeira vez. Após executado o bloco de código condicionado ao for, o incremento será executado, e mais uma vez a condição verificada. Caso a condição seja verdadeira novamente o bloco de código volta a executar, para no final executar o incremento e verificar a condição, e assim por diante.</p>
 
 <pre>
-   for: i = 0; i &lt; 10; i++
-     code
+for: i = 0; i &lt; 10; i++
+  code
 </pre>
 <p>Do ponto de vista do compilador, que irá transformar esta lógica em código de máquina, o for não passa de um contador que é incrementado a cada iteração com um salto incondiconal no final do bloco de código executado.</p>
 
 <pre>
-   i = 0
-   label:
-     if i &lt; 10:
-       code
-       i++
-       jump label
+i = 0
+label:
+  if i &lt; 10:
+    code
+    i++
+    jump label
 </pre>
 <p>O switch-case, ou seleção, filtra um determinado valor em comparações de igualdade, a condição, em série. Quando é encontrada alguma igualdade verdadeira o código atrelado é executado e o código imediatamente seguinte ao switch é executado. Opcionalmente o bloco inteiro após uma seleção é ignorado.</p>
 
 <pre>
-   switch i:
-     case 0:
-       code
-     case 1:
-       code
-     case 2:
-       code
-     default:
-       code
+switch i:
+  case 0:
+    code
+  case 1:
+    code
+  case 2:
+    code
+  default:
+    code
 </pre>
 <p>Essa lógica embutida nas linguagens de programação são convertidas pelo compilador em vários ifs seguidos e unidos por um else, o que torna a comparação exclusiva. No final de cada bloco de código existe um salto incondicional para o final da construção.</p>
 
 <pre>
-   if i = 0:
-     code
-     jump label
-   elif i = 1:
-     code
-     jump label
-   elif i = 2:
-     code
-     jump label
-   else:
-     code
-   label:
+if i = 0:
+  code
+  jump label
+elif i = 1:
+  code
+  jump label
+elif i = 2:
+  code
+  jump label
+else:
+  code
+label:
 </pre>
 <p>Neste artigo vimos como todas as construções de uma linguagem de programação, independente do seu nível, podem ser convertidas em um conjunto de saltos, condicionais e incondicionais. Em um próximo artigo veremos como o salto condicional verdadeiramente funciona, e como pode ser implementado usando apenas operações matemáticas. Afinal, matemática básica é o bloco lógico mais básico que temos em um computador. Qualquer computador.</p>
 
@@ -372,7 +373,7 @@ role="navigation" aria-label="main navigation">
 
 <li>NTSD: depurador que roda em user mode, da mesma forma que o CDB, mas também pode ser usado como um redirecionador de comandos para o depurador de kernel (logo abaixo). Existem algumas diferenças sutis entre esses dois depuradores (como o fato do NTSD não criar janelas quando usado como redirecionador), mas são diferenças que se aprendem no dia-a-dia.</li>
 
-<li>KD: depurador que roda em kernel mode, pode analisar dados do sistema local ou depurar um sistema remoto conectado através de um cabo serial ou por meio de um pipe criado por uma máquina virtual. </li></ul>
+<li>KD: depurador que roda em kernel mode, pode analisar dados do sistema local ou depurar um sistema remoto conectado através de um cabo serial ou por meio de um pipe criado por uma máquina virtual.</li></ul>
 
 <p>Existem outros métodos mais avançados ainda para conseguir depurar uma máquina tão tão distante, por exemplo.</p>
 
@@ -385,40 +386,44 @@ role="navigation" aria-label="main navigation">
 <p>Para exemplificar um uso prático dessas ferramentas vamos usar o Logger para descobrir quais funções API estão sendo chamadas constantemente por um cavalo de tróia, uma coisa um tanto comum em ataques a bancos. Para tornar as coisas mais reais ainda vamos utilizar o código-fonte de um suposto cavalo de tróia usado em minhas apresentações:</p>
 
 <pre>
-   #include &lt;windows.h&gt;
-   #include &lt;shlwapi.h&gt;
-   int WINAPI WinMain(...)
-   {
-     CHAR wndTxt[MAX_PATH];
-     while( true )
-     {
-       HWND fgWin = GetForegroundWindow();
-       wndTxt[0] = 0;
-       if( GetWindowText(...) )
-       {
-         if( StrStrI(wndTxt, &quot;Fict Bank&quot;) )
-         {
-           MessageBox(fgWin, 
-             &quot;Hi! Like to be under attack?&quot;,
-             &quot;Free Trojan&quot;, 
-             MB_OK);
-           break;
-         }
-       }
-     }
-     ExitProcess(ERROR_SUCCESS);
-   } 
+#include &lt;windows.h&gt;
+#include &lt;shlwapi.h&gt;
+
+int WINAPI WinMain(...)
+{
+  CHAR wndTxt[MAX_PATH];
+
+  while( true )
+  {
+    HWND fgWin = GetForegroundWindow();
+    wndTxt[0] = 0;
+
+    if( GetWindowText(...) )
+    {
+      if( StrStrI(wndTxt, &quot;Fict Bank&quot;) )
+      {
+        MessageBox(fgWin, 
+          &quot;Hi! Like to be under attack?&quot;,
+          &quot;Free Trojan&quot;, 
+          MB_OK);
+        break;
+      }
+    }
+  }
+
+  ExitProcess(ERROR_SUCCESS);
+} 
 </pre>
 <p>Para compilar esse programa, você só precisa digitar os seguintes comandos em um console do Visual Studio:</p>
 
 <pre>
-   cl /c freetrojan.cpp
-   link freetrojan.obj user32.lib shlwapi.lib
+cl /c freetrojan.cpp
+link freetrojan.obj user32.lib shlwapi.lib
 </pre>
 <p>O logger.exe possui uma extensão que pode ser usada pelo WinDbg para usar os mesmos comandos a partir do depurador. Mas para tornar as coisas mais fáceis nesse primeiro contato iremos iniciar o programa através do próprio executável:</p>
 
 <pre>
-   logger freetrojan.exe
+logger freetrojan.exe
 </pre>
 <p>Irá aparecer uma janela onde selecionamos o conjunto de APIs que serão capturadas. Podemos manter todas as categorias selecionadas e mandar rodar usando o botão "Go". Aguarde o programa executar por um tempo para termos um pouco de dados para analisar. Em minhas análises reais eu geralmente deixo ele atacar, seja no sítio real do banco ou em uma armadilha. Depois do ataque posso confirmar qual a API que ele utilizou. Se quiser fazer isso nesse teste basta criar uma janela que contenha o texto "Fict Bank" em seu título. Após isso, podemos finalizar o processo pelo Gerenciador de Tarefas.</p>
 
@@ -454,45 +459,49 @@ role="navigation" aria-label="main navigation">
 <p>Notice that the rules don't specify the order of expressions to access the array. In other words, it doesn't matter for the language if we use a pointer before the integer or an integer before the pointer.</p>
 
 <pre>
-   #include &lt;iostream&gt;
-   #include &lt;cassert&gt;
-   int main()
-   {
-     char q[] = &quot;Show me your Code, &quot;
-       &quot;and I'll tell you who you are.&quot;;
-     int i = 13;
-     std::cout 
-       &lt;&lt; &quot;And the language is: &quot; 
-       &lt;&lt; q [ i ] 
-       &lt;&lt; std::endl;
-     assert( q[i] == i[q] );
-     assert( q[13] == 13[q] );
-     assert( *(q + i) == &quot;That's C!&quot;[7] );
-     return 13[q] - &quot;CThings&quot;[0];
-   } 
+#include &lt;iostream&gt;
+#include &lt;cassert&gt;
+
+int main()
+{
+  char q[] = &quot;Show me your Code, &quot;
+    &quot;and I'll tell you who you are.&quot;;
+  int i = 13;
+  
+  std::cout 
+    &lt;&lt; &quot;And the language is: &quot; 
+    &lt;&lt; q [ i ] 
+    &lt;&lt; std::endl;
+  
+  assert( q[i] == i[q] );
+  assert( q[13] == 13[q] );
+  assert( *(q + i) == &quot;That's C!&quot;[7] );
+  
+  return 13[q] - &quot;CThings&quot;[0];
+} 
 </pre>
 <p>The `q[i]` bellow shows that we can use both orders and the code will compile successfully.</p>
 
 <pre>
-   std::cout 
-     &lt;&lt; &quot;And the language is: &quot; 
-     &lt;&lt; i [ q ] 
-     &lt;&lt; std::endl;
+std::cout 
+  &lt;&lt; &quot;And the language is: &quot; 
+  &lt;&lt; i [ q ] 
+  &lt;&lt; std::endl;
 </pre>
 <p>This code doesn't show how obscure we can be. If we use a constant integer replacing the i, by example, the code starts to be an <a href="http://www.ioccc.org/">IOCCC</a> participant:</p>
 
 <pre>
-   std::cout 
-     &lt;&lt; &quot;And the language is: &quot; 
-     &lt;&lt; 13 [ q ] 
-     &lt;&lt; std::endl;
+std::cout 
+  &lt;&lt; &quot;And the language is: &quot; 
+  &lt;&lt; 13 [ q ] 
+  &lt;&lt; std::endl;
 </pre>
 <p>Is this a valid code yet, right? The expression types are following the rule. It is easy to see if we always think about using the "universal match" *( (E1) + (E2) ). Even bizarre things like this are easy to realize:</p>
 
 <pre>
-   std::cout 
-     &lt;&lt; 8[&quot;Is this Code right?&quot;] 
-     &lt;&lt; std::endl;
+std::cout 
+  &lt;&lt; 8[&quot;Is this Code right?&quot;] 
+  &lt;&lt; std::endl;
 </pre>
 <p>Obs.: this kind of "obscure rule" hardly will pass in a code review since it is a useless feature. Be wise and don't use it in production code. This is just an amusing detail in the language specification scope. It can help in analysis, never in programming.</p>
 
@@ -541,12 +550,13 @@ role="navigation" aria-label="main navigation">
 <p>É comum nas arquitetura o resultado de uma comparação ser igual a zero se os elementos são iguais e diferente de zero se são diferentes. O resultado, então, denota a diferença entre as memórias comparadas, e se não há diferença o resultado é zero.</p>
 
 <pre>
-   set memA, 1
-   set memB, 1
-   cmp memA, memB # ZF=0
-   set memA, 1
-   set memB, 0
-   cmp memA, memB # ZF=1
+set memA, 1
+set memB, 1
+cmp memA, memB # ZF=0
+
+set memA, 1
+set memB, 0
+cmp memA, memB # ZF=1
 </pre>
 <p>Mas como de fato comparar? Aí é que reside a mágica das portas lógicas e operações booleanas. A comparação acima pode ser feita com uma porta lógica XOR, o OU-eXclusivo, por exemplo, e o resultado pode ser obtido e armazenado se a saída for conectada a um flip-flop (um flip-flop, ou multivibrador biestável, é um circuito de computador capaz de armazenar o valor de 1 bit, o necessário para o nosso salto). Vamos por partes.</p>
 
@@ -561,22 +571,22 @@ role="navigation" aria-label="main navigation">
 <p>Um salto incondicional, como vimos na parte um, é um salto para um outro ponto no código que vai ser feito de qualquer forma. Pode ser uma instrução do processador saltar para um endereço definido em algum lugar da memória. O goto possui como destino o endereço X, sendo que X depende do que estiver em seu próprio endereço.</p>
 
 <pre>
-   001 set memA, 004
-   002 jump memA
-   003 code # not executed
-   004 code
-   005 ...
+001 set memA, 004
+002 jump memA
+003 code # not executed
+004 code
+005 ...
 </pre>
 <p>Agora, para executar o salto condicional, precisamos não apenas de um, mas de dois endereços de destino, cada um deles com um endereço de memória. Podemos definir o primeiro endereço como o armazenador do salto se a condição for falsa, e o segundo endereço se a condição for verdadeira.</p>
 
 <pre>
-   001 set memA, 006
-   002 set memB, 005
-   003 cmp memC, memD
-   004 jz memA
-   005 code # ZF=1
-   006 code # ZF=0
-   007 ...
+001 set memA, 006
+002 set memB, 005
+003 cmp memC, memD
+004 jz memA
+005 code # ZF=1
+006 code # ZF=0
+007 ...
 </pre>
 <p>Se os valores em memC e memD forem iguais a comparação feita na linha 003 deixará o ZF igual a 0 e portanto o comando jz (jump if zero, saltar se zero) irá realizar o salto para a linha 006, que é o endereço contido em memA. Caso contrário não será feito o salto, ou seja, a próxima instrução será a da linha 005, a mesma contida em memB.</p>
 
@@ -585,19 +595,19 @@ role="navigation" aria-label="main navigation">
 <p>Para isso continue imaginando o memB sendo usado como o endereço a ser usado caso a condição falhe. Esse endereço está localizado logo após o memA na memória. Se memA estiver em 080, memB estará em 081.</p>
 
 <pre>
-   080 memA # 006
-   081 memB # 005
+080 memA # 006
+081 memB # 005
 </pre>
 <p>Dessa forma, para executar o salto baseado em um resultado de 0 ou 1 (o Zero Flag) só temos que alterar o endereço da próxima instrução para o valor do endereço de comparação mais o valor de ZF, que pode ser 1 ou 0. Se for 0 será o próprio endereço da condição (memA), mas se for 1 será esse endereço mais 1 (ZF), ou seja, memB.</p>
 
 <pre>
-   001 set memA, 006
-   002 set memB, 005
-   003 cmp memC, memD # muda ZF
-   004 jump [memA + ZF]
-   005 code # ZF=1
-   006 code # ZF=0
-   007 ...
+001 set memA, 006
+002 set memB, 005
+003 cmp memC, memD # muda ZF
+004 jump [memA + ZF]
+005 code # ZF=1
+006 code # ZF=0
+007 ...
 </pre>
 <p>Lembre-se que essa é apenas uma demonstração de como pode funcionar um salto condicional através de cálculos matemáticos. De maneira alguma estou afirmando que é feito dessa forma. Aliás, existem inúmeras formas de realizar esse salto. Uma segunda solução seria adicionar a defasagem (offset) entre o endereço da próxima instrução e o endereço do salto. Meu objetivo foi apenas ilustrar que, dado um problema, pode haver várias soluções. Talvez mais para a frente veremos como é implementado um if em assembly, subindo mais um nível de abstração. Por enquanto estamos apenas trabalhando no nível filosófico. O mais importante de todos.</p>
 

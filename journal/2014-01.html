@@ -267,18 +267,23 @@ void RemoveIfLolita(int* ages, int size)
 #include &lt;algorithm&gt;
 #include &lt;iostream&gt;
 #include &lt;vector&gt;
+
 using namespace std;
+
 void RemoveIfLolita(int* ages, int size)
 {
     remove_if(ages, ages + size, [&amp;] { return age &lt; 18; } );
 }
+
 void RemoveIfLolita(vector&lt;int&gt;&amp; ages)
 {
     remove_if(ages.begin(), ages.end(), [&amp;] { return age &lt; 18; } );
 }
+
 int main()
 {
     vector&lt;int&gt; ages;
+
     ages.push_back(10);
     ages.push_back(21);
     ages.push_back(66);
@@ -290,9 +295,11 @@ int main()
     ages.push_back(12);
     ages.push_back(20);
     ages.push_back(13);
+
     RemoveIfLolita(ages);
     cout &lt;&lt; &quot;Vector (&quot; &lt;&lt; ages.size() &lt;&lt; &quot;):\n&quot;;
     for_each(ages.begin(), ages.end(), [&amp;] { cout &lt;&lt; age &lt;&lt; endl; });
+
     int newAges[] = { 10, 21, 66, 18, 16, 15, 8, 24, 12, 20, 13, 13 };
     const int newAgesSz = (int) ( sizeof(newAges) / sizeof(int) );
     RemoveIfLolita(newAges, newAgesSz);
@@ -330,20 +337,25 @@ ForwardIterator remove_if (ForwardIterator first, ForwardIterator last,
 #include &lt;algorithm&gt;
 #include &lt;iostream&gt;
 #include &lt;vector&gt;
+
 using namespace std;
+
 int RemoveIfLolita(int* ages, int size)
 {
     auto newEnd = remove_if(ages, ages + size, [&amp;] { return age &lt; 18; } );
     return newEnd - ages;
 }
+
 void RemoveIfLolita(vector&lt;int&gt;&amp; ages)
 {
     auto newEnd = remove_if(ages.begin(), ages.end(), [&amp;] { return age &lt; 18; } );
     ages.resize(distance(ages.begin(), newEnd));
 }
+
 int main()
 {
     vector&lt;int&gt; ages;
+
     ages.push_back(10);
     ages.push_back(21);
     ages.push_back(66);
@@ -355,9 +367,11 @@ int main()
     ages.push_back(12);
     ages.push_back(20);
     ages.push_back(13);
+
     RemoveIfLolita(ages);
     cout &lt;&lt; &quot;Vector (&quot; &lt;&lt; ages.size() &lt;&lt; &quot;):\n&quot;;
     for_each(ages.begin(), ages.end(), [&amp;] { cout &lt;&lt; age &lt;&lt; endl; });
+
     int newAges[] = { 10, 21, 66, 18, 16, 15, 8, 24, 12, 20, 13, 13 };
     int newAgesSz = (int) ( sizeof(newAges) / sizeof(int) );
     newAgesSz = RemoveIfLolita(newAges, newAgesSz);

@@ -128,7 +128,7 @@ role="navigation" aria-label="main navigation">
 
 <p>Usando 60% do peso da carne de farinha ainda faltou massa para cerca de 4 empanadas. Considerando que foram feitas 26 o aumento deve ser de 10 a 20%. Vamos de 70% na próxima. Para a gordura foi usado 40%. O resultado ficou gorduroso como uma empada, mas não muito pesado. Ficou menos seco. Parece um ponto ideal para tentar colocar mais água, uns 40%, para ver se retém a umidade. Nessa noite tive insônia e acabei achando o <a href="https://youtu.be/jDSh7fBigPU">vídeo de empanadas do cara do Amo Pão Caseiro</a> onde ele usa o mesmo peso de cebola e carne e o mesmo peso de farinha e carne (mas vai batata e uva passa a mais). Achei simples e posso testar na próxima. Outras diferenças na proporção: 20% de banha de porco, 48% de água. No recheio 10% do peso da carne em banha de porco. Uma dica interessante dos comentários é que alguém usou um ovo para a massa, o que deu mais elasticidade. E eu vi um outro vídeo na mesma noite de algum argentino usando ovo também. Vale a pena o experimento. E, por fim: não precisa sovar a massa, só misturar e guardar na geladeira.</p>
 
-<h3>2022-11-13 </h3>
+<h3>2022-11-13</h3>
 
 <p>Dessa vez, no calor de 27 graus, usei 30% de água e achei pouco. Acredito que 35% seja o valor. Estou usando também 30% de gordura... ops, não. Medi errado. Foram 26% de gordura. Resolvi adotar a estratégia de metade do peso da carne em farinha. Na hora de montar sobrou bem pouco de carne, o suficiente para mais duas ou no máximo três empanadas. Isso quer dizer que a proporção que usei de metade do peso da carne em farinha estava bem próximo. Considerar na próxima 60% do peso da carne em farinha.</p>
 
@@ -249,6 +249,7 @@ role="navigation" aria-label="main navigation">
 &quot;Fastcall registers are used to pass parameters to functions. Fastcall is the
 default calling convention on X64 where in the first 4 parameters are passed via
 the registers RCX, RDX, R8, R9.&quot; - X64 Deep Dive
+
 int TestFastCall() {
 push        rdi
 sub         rsp,30h # RBP is no longer used as frame pointer.
@@ -274,11 +275,13 @@ ret
 &quot;X64 compiler can optimize the last call made from a function by replacing it
 with a jump to the callee. This avoids the overhead of setting up the stack
 frame for the callee.&quot; - x64 Deep Dive
+
 # TailCall3
     return a + b;
 lea         eax,[rcx+rdx]
 }
 ret
+
 # TestTailCallElimination
     TailCall1(1);
     TailCall2(2);
@@ -286,6 +289,7 @@ ret
 mov         edx,2
 lea         ecx,[rdx-1]
 jmp         TailCall3
+
 */
 </pre>
 <h2>Frame Pointer Omission</h2>
@@ -296,12 +300,14 @@ jmp         TailCall3
 local variables on the stack, X64 functions do not make use of the RBP register
 for this purpose i.e. do not use the EBP register as a
 frame pointer.&quot; - x64 Deep Dive
+
 # Win32 (x86)
 int TestFramePointerOmission() {
     return 1;
 00601593  mov         eax,1
 }
 00601599  ret
+
 # Win62 (x64)
 int TestFramePointerOmission() {
     return 1;
@@ -318,6 +324,7 @@ Since RSP is used to reference both parameters and local variables in x64,
 the side effect and feature of x64 function is that RSP does not change
 thru all its body, changing only in prolog (begin) and epilog (end) parts
 of the function.
+
 # Win32
 int RSPIsTheSame(int p1, int p2, int p3, int p4, int p5, int p6, int p7, int p8) {
 # prolog-begin
@@ -351,6 +358,7 @@ mov         eax,1
 pop         ebp
 # epilog-end
 ret
+
 # Win64
 int RSPIsTheSame(int p1, int p2, int p3, int p4, int p5, int p6, int p7, int p8) {
 # prolog-begin
@@ -393,8 +401,10 @@ compiled with the /homeparams flag. The minimum size of this homing space is
 0x20 bytes or four 64-bit slots, even if the function takes less than 4
 parameters. When the homing space is not used to store parameter values, the
 compiler uses it to save non-volatile registers.&quot; - x64 Deep Dive
+
 &quot;The register based parameter homing space exists only for non-leaf 
 functions.&quot; - x64 Deep Dive
+
 # Win64 Debug
 int HomingSpaceNonLeaf(int p1, int p2, int p3, int p4) {
 mov         dword ptr [rsp+20h],r9d # homing space saving params
@@ -403,6 +413,7 @@ mov         dword ptr [rsp+10h],edx
 mov         dword ptr [rsp+8],ecx
 push        rdi
 sub         rsp,20h
+
 # Win64 Release
 int TestHomingSpaceNonLeaf() {
 sub         rsp,28h
@@ -426,6 +437,7 @@ the function as it invokes its callees. Since X64 functions do not modify the
 value of RSP after the function prolog, any stack accesses performed by the rest
 of the function are done relative to this position of the stack pointer. This
 includes access to stack based parameters and local variables.&quot; - x64 Deep Dive
+
 */
 # Win64 Debug
         p5 = i + j + (i % 2 ? p1 : p2) + (j % 2 ? p3 : p4);
@@ -486,6 +498,7 @@ memory. If so, the memory location can be examined to determine the parameter
 values. Determine if the parameters are saved into non-volatile registers and if
 those registers are saved by the callee. If so, the saved non-volatile register
 values can be examined to determine the parameter values.&quot; - x64 Deep Dive
+
 # Win64 Release
 1. Parameters are loaded into the registers from memory.
 mov         dword ptr [rbp+30h],5 # p5 = 5
@@ -493,8 +506,10 @@ mov         dword ptr [rbp+28h],6 # p6 = 6
 mov         dword ptr [rbp+20h],7 # p7 = 7
 mov         dword ptr [rbp+18h],8 # p8 = 8
 call        ChildSPF1
+
 2. Parameters are loaded from non-volatile registers and those registers
 are saved by the callee.
+
     int oldP7 = *g_ParameterRetrieval_p7_retrieval;
     return p1 + p2 + p3 + p4 + p5 + p6 + oldP7 + p8;
 mov         eax,dword ptr [rdx]
@@ -503,7 +518,9 @@ add         eax,dword ptr [r8]
 add         eax,dword ptr [r9]
 mov         rdx,qword ptr [p5]
 mov         rcx,qword ptr [g_ParameterRetrieval_p7_retrieval]
+
 3. Parameters are saved from the registers into memory.
+
 # Win64 Release
     g_ParameterRetrieval_p7_retrieval = &amp;p7;
 mov         r10,qword ptr [p7]
@@ -511,8 +528,10 @@ mov         r11,rcx
     return p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8;
 mov         rcx,qword ptr [p8]
 mov         qword ptr [g_ParameterRetrieval_p7_retrieval],r10 # save nonvolatile register
+
 4. Parameters are saved into non-volatile registers and those registers
 are saved by the callee.
+
 # Win64 Release
 int ParameterRetrieval3(int&amp; p1, int&amp; p2, int&amp; p3, int&amp; p4, int&amp; p5, int&amp; p6, int&amp; p7, int&amp; p8) {
 mov         qword ptr [rsp+8],rbx
@@ -545,18 +564,13 @@ ret
 */
 </pre>
 <blockquote>On X64, the first 4 parameters are always passed in registers and the rest of the parameters are passed via the stack. This is one of main causes of grief during debugging since register values tend to change as functions execute and it becomes difficult to determine the original parameter values that were passed to a function, half-way into its execution. Other than this one issue with retrieving parameters, x64 debugging is not that different from x86 debugging.</blockquote>
-<blockquote>Unfortunately, there is no silver bullet to finding parameters. All the techniques here depend heavily on the X64 assembler instructions generated by the compiler. If the parameters are not in "reachable memory", there is simply no way to get them. Having private symbols for modules and functions that appear in the call stack doesn't help too much either. Private symbols do tell the number and types of parameters a function takes, but that's about it. It does not tell what those parameter values are. </blockquote>
-
-<blockquote>Determine if the parameters are loaded from non-volatile registers and if those registers are saved by the callee. </blockquote>
-
-<blockquote>Determine if the parameters are saved from the registers into memory. </blockquote>
-
-<blockquote>Determine if the parameters are saved into non-volatile registers and if those registers are saved by the callee. </blockquote>
-
-<blockquote>Each one of the techniques requires disassembling the caller and the callee functions involved in the parameter passing. </blockquote>
-
-<blockquote>The debugger's ".frame /r" command displays the values of non-volatile registers when a particular function was executing. </blockquote>
-<blockquote>it is important to always verify parameter register overwrites </blockquote>
+<blockquote>Unfortunately, there is no silver bullet to finding parameters. All the techniques here depend heavily on the X64 assembler instructions generated by the compiler. If the parameters are not in "reachable memory", there is simply no way to get them. Having private symbols for modules and functions that appear in the call stack doesn't help too much either. Private symbols do tell the number and types of parameters a function takes, but that's about it. It does not tell what those parameter values are.</blockquote>
+<blockquote>Determine if the parameters are loaded from non-volatile registers and if those registers are saved by the callee.</blockquote>
+<blockquote>Determine if the parameters are saved from the registers into memory.</blockquote>
+<blockquote>Determine if the parameters are saved into non-volatile registers and if those registers are saved by the callee.</blockquote>
+<blockquote>Each one of the techniques requires disassembling the caller and the callee functions involved in the parameter passing.</blockquote>
+<blockquote>The debugger's ".frame /r" command displays the values of non-volatile registers when a particular function was executing.</blockquote>
+<blockquote>it is important to always verify parameter register overwrites</blockquote>
 <blockquote>It is important to examine the instructions up to the call to the next function (...) to ascertain that these non-volatile registers are not being overwritten.</blockquote>
 </section><hr/>
 
@@ -570,24 +584,15 @@ ret
 
 <p>Estava em cerca de 8% do livro e desisti. Suas dicas são deveras avançadas para quem está apenas querendo tirar a ferrugem de algoritmos. Iniciei um outro chamado A Common-Sense Guide to Data Structures que parece mais a minha cara.</p>
 
-
 <blockquote>False negatives are acceptable. This is sad (and frustrating for candidates), but true. From the company's perspective, it's actually acceptable that some good candidates are rejected. The company is out to build a great set of employees. They can accept that they miss out on some good people.</blockquote>
-
 <blockquote>(...) They're far more concerned with false positives: people who do well in an interview but are not in fact very good.</blockquote>
-
 <blockquote>Could you learn it as needed? Sure. But it's very difficult to know that you should use a binary search tree if you don't know of its existence. And if you do know of its existence, then you pretty much know the basics.</blockquote>
 <blockquote>Whiteboards also tend to encourage candidates to speak more and explain their thought process. When a candidate is given a computer, their communication drops substantially.</blockquote>
-
 <blockquote>If you are thinking right now that you have too much experience and can't fit it all on one or two pages, trust me, you can. Long resumes are not a reflection of having tons of experience; they're a reflection of not understanding how to prioritize content.</blockquote>
-
 <blockquote>(...) For each role, try to discuss your accomplishments with the following approach: "Accomplished X by implementing Y which led to z". Here's an example:</blockquote>
-
 <blockquote>Reduced object rendering time by 75% by implementing distributed caching, leading to a 10% reduction in log-in time.</blockquote>
-
 <blockquote>Here's another example with an alternate wording:</blockquote>
-
 <blockquote>Increased average match accuracy from 1.2 to 1.5 by implementing a new comparison algorithm based on windiff.</blockquote>
-
 <blockquote>Which one is faster? The first one does one for loop and the other one does two for loops. But then, the first solution has two lines of code per for loop rather than one. If you're going to count the number of instructions, then you'd have to go to the assembly level and take into account that multiplication requires more instructions than addition, how the compiler would optimize something, and all sorts of other details. This would be horrendously complicated, so don't even start going down this road. Big O allows us to express how the runtime scales. We just need to accept that it doesn't mean that O(N) is always better than O(N2).</blockquote>
 <blockquote>We already said that we drop constants. Therefore, 0( N2 + N2) would be O ( N2 ). If we don't care about that latter N2 term, why would we care about N? We don't. You should drop the non-dominant terms.</blockquote>
 <blockquote>If your algorithm is in the form "do this, then, when you're all done, do that" then you add the runtimes. If your algorithm is in the form "do this for each time you do that" then you multiply the runtimes.</blockquote>
@@ -718,18 +723,22 @@ i = 0
 6 5 4 3 2 1
 j - - - - j
 5 4 3 2 1 6
+
 i = 1
 5 4 3 2 1 6
 j - - - j
 4 3 2 1 5 6
+
 i = 2
 4 3 2 1 5 6
 j - - j
 3 2 1 4 5 6
+
 i = 3
 3 2 1 4 5 6
 j - j
 2 1 3 4 5 6
+
 i = 4
 2 1 3 4 5 6
 j j
@@ -832,6 +841,7 @@ shared_ptr&lt;LinkedList&gt; LinkedListReverse(shared_ptr&lt;LinkedList&gt; head
     shared_ptr&lt;LinkedList&gt; present = head-&gt;next; // begin
     shared_ptr&lt;LinkedList&gt; preceding = nullptr;
     shared_ptr&lt;LinkedList&gt; following;
+
     while (present != nullptr)
     {
         following = present-&gt;next; // 1
@@ -839,6 +849,7 @@ shared_ptr&lt;LinkedList&gt; LinkedListReverse(shared_ptr&lt;LinkedList&gt; head
         preceding = present;       // 3
         present = following;       // 4
     }
+
     shared_ptr&lt;LinkedList&gt; rhead = make_shared&lt;LinkedList&gt;();
     rhead-&gt;value = 0;
     rhead-&gt;next = preceding;
@@ -877,14 +888,17 @@ string ReverseString(string s)
 {
     size_t begin = 0; // posição inicial
     size_t end = s.size() - 1; // posição final
+
     while (begin &lt; end) // enquanto não invertemos as posições
     {
         char buf = s[begin]; // troca elementos de posição
         s[begin] = s[end];
         s[end] = buf;
+
         ++begin; // atualize a posição inicial e final da string
         --end;
     }
+
     return s; // string invertida
 }
 </pre>
@@ -956,6 +970,7 @@ shared_ptr&lt;LinkedList&gt; LinkedListTraverseToTheMiddle(shared_ptr&lt;LinkedL
     shared_ptr&lt;LinkedList&gt; next = head;
     shared_ptr&lt;LinkedList&gt; nextDouble = head;
     bool secondNext = true;
+
     while (nextDouble-&gt;next)
     {
         if (secondNext)
@@ -965,6 +980,7 @@ shared_ptr&lt;LinkedList&gt; LinkedListTraverseToTheMiddle(shared_ptr&lt;LinkedL
         nextDouble = nextDouble-&gt;next;
         secondNext = !secondNext;
     }
+
     return next;
 }
 </pre>
@@ -1005,6 +1021,7 @@ int SecondLargest(vector&lt;int&gt; array)
 {
     int first = max(array[0], array[1]);
     int second = min(array[0], array[1]);
+
     for (size_t i = 2; i &lt; array.size(); ++i)
     {
         if (array[i] &gt;= first)
@@ -1017,6 +1034,7 @@ int SecondLargest(vector&lt;int&gt; array)
             second = array[i];
         }
     }
+
     return second;
 }
 </pre>
@@ -1062,12 +1080,14 @@ int ReverseNumberStringVersion(int number)
 int ReverseNumberNumberVersion(int number)
 {
     int reversedNumber = 0;
+
     while (number) {
         reversedNumber *= 10;
         int next = number % 10;
         reversedNumber += next;
         number /= 10;
     }
+
     return reversedNumber;
 }
 </pre>
@@ -1095,6 +1115,7 @@ int ReverseNumberNumberVersion(int number)
 bool PrimeNumber(int number)
 {
     if (number == 2) return true;
+
     for (int i = 2; i &lt;= (number / 2); ++i)
     {
         if (number % i == 0)
@@ -1102,6 +1123,7 @@ bool PrimeNumber(int number)
             return false;
         }
     }
+
     return true;
 }
 </pre>
@@ -1130,6 +1152,7 @@ void Fibonacci()
 {
     int num1 = 0, num2 = 1;
     int total = 5;
+
     cout &lt;&lt; &quot;fibonacci of first &quot; &lt;&lt; total &lt;&lt; &quot; elements\n&quot;;
     for (int i = 0; i &lt; total; ++i)
     {
@@ -1208,16 +1231,19 @@ void Fibonacci()
 int countingValleys(int steps, string path) {
     int valleys = 0;
     int altitude = 0;
+
     for (int s = 0; s &lt; steps; ++s)
     {
         int step = path[s] == 'D' ? -1 : 1;
         int newAltitude = altitude + step;
+
         if (altitude &lt; 0 &amp;&amp; newAltitude == 0)
         {
             valleys++;
         }
         altitude = newAltitude;
     }
+
     return valleys;
 }
 </pre>
@@ -1231,6 +1257,7 @@ int countingValleys(int steps, string path) {
 int jumpingOnClouds(vector&lt;int&gt; c) {
     int jumps = 0;
     size_t i = 0;
+
     while (i &lt; c.size()) {
         if (i &lt; c.size() - 2 &amp;&amp; c[i + 2] == 0) {
             i += 2;
@@ -1244,6 +1271,7 @@ int jumpingOnClouds(vector&lt;int&gt; c) {
             i += 1;
         }
     }
+
     return jumps;
 }
 </pre>
@@ -1354,6 +1382,7 @@ void update(int node, int left, int right, int pos, int value, vector&lt;int&gt;
         tree[node] = tree[nodeLeft] + tree[nodeRight];
     }
 }
+
 int main() {
     vector&lt;int&gt; tree(4 * 1000);
     update(1, 1, 999, 666, 42, tree);
@@ -1414,15 +1443,19 @@ int sum(int node, int left, int right, int posLeft, int posRight, const vector&l
     return sum(nodeLeft, left, middle, posLeft, min(posRight, middle), tree)
         + sum(nodeRight, middle + 1, right, max(posLeft, middle + 1), posRight, tree);
 }
+
 int main() {
     vector&lt;int&gt; tree(4 * 1000);
+
     update(1, 1, 999, 666, 42, tree);
     update(1, 1, 999, 600, 58, tree);
     update(1, 1, 999, 700, 45, tree);
     update(1, 1, 999, 999, 55, tree);
+
     vector&lt;vector&lt;int&gt;&gt; intervals = { 
         {666, 666}, {600, 700}, {600, 999}, 
         {1, 999}, {1, 599} };
+
     for (const vector&lt;int&gt;&amp; i : intervals) {
         int isum = sum(1, 1, 999, i[0], i[1], tree);
         cout &lt;&lt; &quot;the interval [&quot; &lt;&lt; i[0] &lt;&lt; &quot;,&quot; &lt;&lt; i[1] 
@@ -1489,25 +1522,27 @@ int main() {
 <p>Ainda estudando e praticando testes de entrevista me veio essa em que seja possível realizar somas para todas as chaves de uma hash table. Curioso, nunca tinha pensado nesta feature. Imagine que temos uma tabela de hash entre inteiros em que `{ 1: 8, 2: 9 }`. A chave corresponde ao hash.</p>
 
 <pre>
-   | -5: | -4: | -3: | -2: | -1: | 0: | 1:8 | 2:9 | 3: | 4: | 5: |...
+| -5: | -4: | -3: | -2: | -1: | 0: | 1:8 | 2:9 | 3: | 4: | 5: |...
 </pre>
 <p>Então eu aplico um comando na tabela inteira adicionando o valor 2 às chaves, fazendo seus elementos irem parar duas posições à frente de onde estavam. A posição 1 vira 3 e a posição 2 vira 5, mantendo os mesmos valores.</p>
 
 <pre>
-   | -5: | -4: | -3: | -2: | -1: | 0: | 1: | 2: | 3: | 4:8 | 5:9 |...
+| -5: | -4: | -3: | -2: | -1: | 0: | 1: | 2: | 3: | 4:8 | 5:9 |...
 </pre>
 <p>Em primeiro momento eu pensei em mover posições em um vetor para resolver esta questão, mas em seguida descobri que a mesma lógica pode ser aplicada a números negativos, o que deixou tudo muito confuso na minha cabeça.</p>
 
 <p>Depois de pensar em uma caminhada cheguei à conclusão que não é necessário ficar movendo memória uma vez que as posições relativas se mantém. Com base nisso eu desenvolvi a lógica de apenas manter um referencial do início "real" da tabela, ou seja, qual valor deve ser adicionado para se chegar à posição real após os deslocamentos. Dessa forma a posição na memória dos elementos permanece a mesma, mas do ponto de vista de indexação eles estariam, no exemplo acima, duas posições à frente. Para isso eu colocaria meu indexador duas posições atrás.</p>
 
 <pre>
-   | -5: | -4: | -3: | -2: | -1: | 0: | 1:8 | 2:9 | 3: | 4: | 5: |...
-                                 |
-                                 beg    1     2     3    4    5   ...
-   add_to_key 2
-   | -5: | -4: | -3: | -2: | -1: | 0: | 1:8 | 2:9 | 3: | 4: | 5: |...
-                     |
-                     beg      1    2    3     4     5   ...
+| -5: | -4: | -3: | -2: | -1: | 0: | 1:8 | 2:9 | 3: | 4: | 5: |...
+                              |
+                              beg    1     2     3    4    5   ...
+
+add_to_key 2
+
+| -5: | -4: | -3: | -2: | -1: | 0: | 1:8 | 2:9 | 3: | 4: | 5: |...
+                  |
+                  beg      1    2    3     4     5   ...
 </pre>
 <p>Agora sempre que alguém referenciar a posição 0 ela estará em -2 e assim por diante. Como a posição dentro de um array não precisa ser alterada não me preocupei em atualizar as chaves, apenas os campos internos de uma hash table: sua chave e valor.</p>
 
@@ -1516,24 +1551,29 @@ int main() {
 <pre>
 struct HashTable {
     typedef vector&lt;vector&lt;int&gt;&gt; BufferType;
+
     HashTable(int tableSize) {
         this-&gt;tableSize = tableSize;
         bufferRaw = new BufferType[tableSize];
         buffer = shared_ptr&lt;BufferType&gt;(bufferRaw, default_delete&lt;BufferType[]&gt;());
         currentPosition = tableSize / 2; // for positive and negative room
     }
+
     BufferType&amp; operator [] (int position) {
         int actualPosition = (currentPosition + position) % tableSize;
         return buffer.get()[actualPosition];
     }
+
     int tableSize;
     shared_ptr&lt;BufferType&gt; buffer;
     vector&lt;vector&lt;int&gt;&gt;* bufferRaw;
     int currentPosition;
 };
+
 int HashFunction(int key, int tableSize) {
     return key % tableSize;
 }
+
 vector&lt;int&gt;* FindItem(HashTable&amp; hashTable, int key) {
     for (vector&lt;int&gt;&amp; items : hashTable[HashFunction(key, hashTable.tableSize)]) {
         if (items[0] == key) {
@@ -1554,6 +1594,7 @@ int actualPosition = (currentPosition + position) % tableSize;
 vector&lt;int&gt; TestCase(vector&lt;string&gt; operations, vector&lt;vector&lt;int&gt;&gt; operands) {
     HashTable hashTable(DEFAULT_HASH_TABLE_SIZE);
     vector&lt;int&gt; results;
+
     for( int i = 0; i &lt; operations.size(); ++i ) {
         if (operations[i] == &quot;get&quot;) {
             if (auto* item = FindItem(hashTable, operands[i][0]))
@@ -1577,6 +1618,7 @@ vector&lt;int&gt; TestCase(vector&lt;string&gt; operations, vector&lt;vector&lt;
             hashTable.currentPosition -= operands[i][0];
         }
     }
+
     return results;
 }
 </pre>
@@ -1586,6 +1628,7 @@ vector&lt;int&gt; TestCase(vector&lt;string&gt; operations, vector&lt;vector&lt;
 void TestCase005() {
     vector&lt;string&gt; operations;
     vector&lt;vector&lt;int&gt;&gt; operands;
+
     operations.push_back(&quot;insert&quot;);
     operands.push_back({ 1, 2 });
     operations.push_back(&quot;insert&quot;);
@@ -1596,6 +1639,7 @@ void TestCase005() {
     operands.push_back({ -150 });
     operations.push_back(&quot;get&quot;);
     operands.push_back({ -148 });
+
     vector&lt;int&gt; results = TestCase(operations, operands);
     assert(results.size() == 1);
     assert(results[0] == 5);
@@ -1882,6 +1926,7 @@ long query(int node, int left, int right, int pos, const vector&lt;long&gt;&amp;
             return tree[node] + query(nodeRight, middle + 1, right, pos, tree);
     }
 }
+
 void update(int node, int left, int right, int posLeft, int posRight, int value, vector&lt;long&gt;&amp; tree) {
     if (posLeft &gt; posRight) return;
     if (posLeft == left &amp;&amp; posRight == right) {
@@ -1895,10 +1940,12 @@ void update(int node, int left, int right, int posLeft, int posRight, int value,
         update(nodeRight, middle + 1, right, max(posLeft, middle + 1), posRight, value, tree);
     }
 }
+
 // Solution
 long arrayManipulation(int n, vector&lt;vector&lt;int&gt;&gt; queries) {
     int m = queries.size();
     vector&lt;long&gt; t(4 * n); // room for binary tree
+
     for (int i = 0; i &lt; m; i++) {
         int l, r, x;
         l = queries[i][0];
@@ -1906,10 +1953,12 @@ long arrayManipulation(int n, vector&lt;vector&lt;int&gt;&gt; queries) {
         x = queries[i][2];
         update(1, 1, n, l, r, x, t);
     }
+
     long max_val = 0;
     for (int i = 1; i &lt;= n; i++) {
         max_val = max(max_val, query(1, 1, n, i, t));
     }
+
     return max_val;
 }
 </pre>
@@ -1943,12 +1992,15 @@ template &lt;class ForwardIterator&gt;
 // Solution
 vector&lt;int&gt; rotLeft(vector&lt;int&gt; a, int d) {
   vector&lt;int&gt; ra(a.size());
+
   auto it = a.begin();
   advance(it, d);
   copy(it, a.end(), ra.begin());
+
   auto it2 = ra.begin();
   advance(it2, a.size() - d);
   copy(a.begin(), it, it2);
+
   return ra;
 }
 </pre>

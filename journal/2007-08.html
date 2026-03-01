@@ -82,12 +82,12 @@ role="navigation" aria-label="main navigation">
 <p>O uso do pré-processador na linguagem C facilitou a portabilidade por um bom tempo, quando não existiam typedefs. Diferente do BCPL, C já tinha tipagem, o que quer dizer que era necessário escolher o espaço de armazenamento que seria utilizado para as variáveis. Com o pré-processamento, essa escolha pode ser feita de maneira seletiva, documentada e generalizada.</p>
 
 <pre>
-   /* space limitation */
-   #ifdef SBRUBLE_PLATFORM
-   #define UINT unsigned char
-   #else
-   #define UINT unsigned int
-   #endif
+/* space limitation */
+#ifdef SBRUBLE_PLATFORM
+#define UINT unsigned char
+#else
+#define UINT unsigned int
+#endif
 </pre>
 <p>Como é natural, o código-fonte de uma aplicação tende a crescer em muitas linhas durante sua evolução, especialmente se estamos falando de sistemas operacionais. A compilação desse código vai tomar cada vez mais tempo no processo de desenvolvimento. Por isso, manter esse código-fonte em um mesmo arquivo eventualmente torna-se inviável, tornando a compilação de módulos separados uma solução pra lá de elegante. Compila-se apenas o módulo que foi modificado e liga-se esse módulo com módulos pré-compilados.</p>
 
@@ -100,7 +100,6 @@ role="navigation" aria-label="main navigation">
 <span class="title-heading">Caloni, 2007-08-01 <a href="quotes.html">quotes</a><a href="2007-09.html#preconceito">&gt;</a> <a href="self.html">self</a><a href="2007-09.html#preconceito">&gt;</a> <a href="now.html">now</a><a href="2007-09.html#preconceito">&gt;</a><a href="2007-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_dogmas')"><sup>[copy]</sup></a></span>
 
 <blockquote>Os dogmas são prisões formadas por conceitos coletivos.</blockquote>
-
 <blockquote>Tolle, Eckhart (O Poder do Agora, 1997)</blockquote>
 </section><hr/>
 
@@ -129,23 +128,23 @@ role="navigation" aria-label="main navigation">
 <p>Antes de ser criada uma janela, é necessário registrar uma classe de janela no sistema, cuja relação com uma janela é mais ou menos a mesma entre classe e objeto no paradigma de orientação a objetos. Você primeiro define uma classe para sua janela e posteriormente pode criar inúmeras janelas a partir da mesma classe.</p>
 
 <pre>
-   WNDCLASS wndclass; //Dados sobre a classe de janela.
-   wndclass.style = CS_HREDRAW | CS_VREDRAW;
-   wndclass.lpfnWndProc = WndProc; // Função de janela (isso é importante!)
-   ...
-   wndclass.lpszClassName = szAppName;
-   RegisterClass (&amp;wndclass) ; // Registra a classe de janela.
+WNDCLASS wndclass; //Dados sobre a classe de janela.
+wndclass.style = CS_HREDRAW | CS_VREDRAW;
+wndclass.lpfnWndProc = WndProc; // Função de janela (isso é importante!)
+...
+wndclass.lpszClassName = szAppName;
+RegisterClass (&amp;wndclass) ; // Registra a classe de janela.
 </pre>
 <p>Quando você define uma classe e a registra está dizendo para o sistema qual será sua função de janela, i. e., qual será a função responsável por receber as mensagens das janelas criadas.</p>
 
 <pre>
-   wndclass.lpfnWndProc = WndProc ; // Função de janela.
-   ...
-   long FAR PASCAL WndProc (HWND hwnd, WORD message, WORD wParam, LONG lParam)
-   {
-   switch( message ) // Manipulando as mensagens.
-   ...
-   }
+wndclass.lpfnWndProc = WndProc ; // Função de janela.
+...
+long FAR PASCAL WndProc (HWND hwnd, WORD message, WORD wParam, LONG lParam)
+{
+switch( message ) // Manipulando as mensagens.
+...
+}
 </pre>
 <p>Uma mensagem é um evento que ocorre relativo à sua janela ou o que está acontecendo ao redor dela no mundo Windows. Por exemplo, as janelas recebem eventos a respeito dos cliques do usuário, redesenho da janela, etc. Quem envia essas mensagens é o próprio Windows, e ele espera uma resposta da sua função de janela. Agora a parte esquisita: quem envia essas mensagens para o Windows é o seu próprio aplicativo!</p>
 
@@ -154,90 +153,105 @@ role="navigation" aria-label="main navigation">
 <p>O aplicativo fica aguardando por eventos em um loop conhecido como loop de mensagens. A função do loop basicamente é chamar a função GetMessage e redirecionar as mensagens obtidas para as respectivas funções de janela.</p>
 
 <pre>
-   while( GetMessage (&amp;msg, NULL, 0, 0) )
-   {
-      TranslateMessage (&amp;msg);
-      DispatchMessage (&amp;msg); // Despacha a mensagem para a função de janela.
-   }
+while( GetMessage (&amp;msg, NULL, 0, 0) )
+{
+   TranslateMessage (&amp;msg);
+   DispatchMessage (&amp;msg); // Despacha a mensagem para a função de janela.
+}
 </pre>
 <p>E aqui está o código completo:</p>
 
 <pre>
-   /*--------------------------------------------------------
-     HELLOWIN.C -- Displays &quot;Hello, Windows&quot; in client area
-     (c) Charles Petzold, 1990
-     --------------------------------------------------------*/
-   #include &lt;windows.h&gt;
-   long FAR PASCAL WndProc (HWND, WORD, WORD, LONG) ;
-   int PASCAL WinMain (HANDLE hInstance, HANDLE hPrevInstance,
-       LPSTR lpszCmdParam, int nCmdShow)
-   {
-     static char szAppName[] = &quot;HelloWin&quot; ;
-     HWND        hwnd ;
-     MSG         msg ;
-     WNDCLASS    wndclass ;
-     if (!hPrevInstance)
-     {
-       wndclass.style         = CS_HREDRAW | CS_VREDRAW ;
-       wndclass.lpfnWndProc   = WndProc ;
-       wndclass.cbClsExtra    = 0 ;
-       wndclass.cbWndExtra    = 0 ;
-       wndclass.hInstance     = hInstance ;
-       wndclass.hIcon         = LoadIcon (NULL, IDI_APPLICATION) ;
-       wndclass.hCursor       = LoadCursor (NULL, IDC_ARROW) ;
-       wndclass.hbrBackground = GetStockObject (WHITE_BRUSH) ;
-       wndclass.lpszMenuName  = NULL ;
-       wndclass.lpszClassName = szAppName ;
-       RegisterClass (&amp;wndclass) ;
-     }
-     hwnd = CreateWindow (
-       szAppName,           // window class name
-       &quot;The Hello Program&quot;, // window caption
-       WS_OVERLAPPEDWINDOW, // window style
-       CW_USEDEFAULT,       // initial x position
-       CW_USEDEFAULT,       // initial y position
-       CW_USEDEFAULT,       // initial x size
-       CW_USEDEFAULT,       // initial y size
-       NULL,                // parent window handle
-       NULL,                // window menu handle
-       hInstance,           // program instance handle
-       NULL) ;              // creation parameters
-     ShowWindow (hwnd, nCmdShow) ;
-     UpdateWindow (hwnd) ;
-     while (GetMessage (&amp;msg, NULL, 0, 0))
-     {
-       TranslateMessage (&amp;msg) ;
-       DispatchMessage (&amp;msg) ;
-     }
-     return msg.wParam ;
-   }
-   long FAR PASCAL WndProc (HWND hwnd, WORD message, WORD wParam, LONG lParam)
-   {
-     HDC hdc;
-     PAINTSTRUCT ps;
-     RECT rect;
-     switch (message)
-     {
-       case WM_PAINT:
-         hdc = BeginPaint (hwnd, &amp;ps) ;
-         GetClientRect (hwnd, &amp;rect) ;
-         DrawText (hdc, &quot;Hello, Windows!&quot;, -1, &amp;rect,
-             DT_SINGLELINE | DT_CENTER | DT_VCENTER) ;
-         EndPaint (hwnd, &amp;ps) ;
-         return 0 ;
-       case WM_DESTROY:
-         PostQuitMessage (0) ;
-         return 0 ;
-     }
-     return DefWindowProc (hwnd, message, wParam, lParam) ;
-   } 
+/*--------------------------------------------------------
+  HELLOWIN.C -- Displays &quot;Hello, Windows&quot; in client area
+  (c) Charles Petzold, 1990
+  --------------------------------------------------------*/
+
+#include &lt;windows.h&gt;
+
+long FAR PASCAL WndProc (HWND, WORD, WORD, LONG) ;
+
+int PASCAL WinMain (HANDLE hInstance, HANDLE hPrevInstance,
+    LPSTR lpszCmdParam, int nCmdShow)
+{
+  static char szAppName[] = &quot;HelloWin&quot; ;
+  HWND        hwnd ;
+  MSG         msg ;
+  WNDCLASS    wndclass ;
+
+  if (!hPrevInstance)
+  {
+    wndclass.style         = CS_HREDRAW | CS_VREDRAW ;
+    wndclass.lpfnWndProc   = WndProc ;
+    wndclass.cbClsExtra    = 0 ;
+    wndclass.cbWndExtra    = 0 ;
+    wndclass.hInstance     = hInstance ;
+    wndclass.hIcon         = LoadIcon (NULL, IDI_APPLICATION) ;
+    wndclass.hCursor       = LoadCursor (NULL, IDC_ARROW) ;
+    wndclass.hbrBackground = GetStockObject (WHITE_BRUSH) ;
+    wndclass.lpszMenuName  = NULL ;
+    wndclass.lpszClassName = szAppName ;
+
+    RegisterClass (&amp;wndclass) ;
+  }
+
+  hwnd = CreateWindow (
+    szAppName,           // window class name
+    &quot;The Hello Program&quot;, // window caption
+    WS_OVERLAPPEDWINDOW, // window style
+    CW_USEDEFAULT,       // initial x position
+    CW_USEDEFAULT,       // initial y position
+    CW_USEDEFAULT,       // initial x size
+    CW_USEDEFAULT,       // initial y size
+    NULL,                // parent window handle
+    NULL,                // window menu handle
+    hInstance,           // program instance handle
+    NULL) ;              // creation parameters
+
+  ShowWindow (hwnd, nCmdShow) ;
+  UpdateWindow (hwnd) ;
+
+  while (GetMessage (&amp;msg, NULL, 0, 0))
+  {
+    TranslateMessage (&amp;msg) ;
+    DispatchMessage (&amp;msg) ;
+  }
+  return msg.wParam ;
+}
+
+long FAR PASCAL WndProc (HWND hwnd, WORD message, WORD wParam, LONG lParam)
+{
+  HDC hdc;
+  PAINTSTRUCT ps;
+  RECT rect;
+
+  switch (message)
+  {
+    case WM_PAINT:
+      hdc = BeginPaint (hwnd, &amp;ps) ;
+
+      GetClientRect (hwnd, &amp;rect) ;
+
+      DrawText (hdc, &quot;Hello, Windows!&quot;, -1, &amp;rect,
+          DT_SINGLELINE | DT_CENTER | DT_VCENTER) ;
+
+      EndPaint (hwnd, &amp;ps) ;
+      return 0 ;
+
+    case WM_DESTROY:
+      PostQuitMessage (0) ;
+      return 0 ;
+  }
+
+  return DefWindowProc (hwnd, message, wParam, lParam) ;
+} 
 </pre>
 <p>Esse exemplo é bem velho, mas compila e funciona até hoje, depois de passados 17 anos. Pode não rodar em sua máquina, mas esta é outra história.</p>
 
 <pre>
-   cl /c hellowin.c
-   link hellowin.obj user32.lib gdi32.lib
-   hellowin.exe
+cl /c hellowin.c
+link hellowin.obj user32.lib gdi32.lib
+hellowin.exe
 </pre>
 <p>O Windows 3.x tinha uma particularidade nefasta: qualquer aplicativo poderia travar o sistema como um todo. Se lembrarmos que o Windows antigamente era multitarefa e não-preemptivo, podemos deduzir que enquanto é executada a função de janela de um aplicativo o sistema aguarda por esse aplicativo indefinidamente. Se o aplicativo trava, ele nunca retorna. Se ele nunca retorna, o sistema fica eternamente esperando pelo retorno da função de janela. Alguns travamentos conseguiam ser resolvidos por interrupção, mas a maioria não. No próximo capítulo <a href="2020-09.html#historia_do_windows">da série</a> veremos como os sistemas de 32 bits resolveram esse pequeno problema.</p>
 
@@ -308,22 +322,24 @@ role="navigation" aria-label="main navigation">
 <p>O upgrade apresentado aqui continua utilizando o lançamento de exceções intrinsecamente, mas agora não depende mais da divisão do código em minifunções e chamá-las aos poucos. Em vez disso, temos apenas que pegar traços de código e colocá-los em torno de uma macro milagrosa que fará tudo o que quisermos. Isso, claro, depois de algumas marteladas que serão explicadas aqui.</p>
 
 <pre>
-   void LongJmp(restorePoint)
-   {
-     BackToStart(restorePoint);
-   }
-   int Start()
-   {
-     if( RestorePoint() == Defined )
-     {
-       LongJmp(if);
-     }
-     else
-     {
-       CallFunc();
-     }
-     return 0;
-   }
+void LongJmp(restorePoint)
+{
+  BackToStart(restorePoint);
+}
+
+int Start()
+{
+  if( RestorePoint() == Defined )
+  {
+    LongJmp(if);
+  }
+  else
+  {
+    CallFunc();
+  }
+
+  return 0;
+}
 </pre>
 <p>A solução acima está apresentada em pseudo-código para tornar mais claro o conceito. Note que existe uma espécie de "retorno invisível", não baseado em retorno de pilha, envolvido. Para implementá-lo, contudo, podemos nos ajeitar com o velho e bom padrão C ANSI, com as rotinas setjmp  e longjmp. Para entender a implementação dessa funções na plataforma 8086 precisamos ter primeiro uma visão básica da estrutura de pilha na chamada de funções.</p>
 
@@ -332,132 +348,150 @@ role="navigation" aria-label="main navigation">
 <p>Imagine que você tem uma função, CallFunc, e outra função, Func, e que uma chame a outra. Para analisarmos apenas a chamada de função, e apenas isso, vamos considerar que Func não recebe nenhum parâmetro e não retorna nenhum valor. O código em C fica, então, assim:</p>
 
 <pre>
-   void Func()
-   {
-     return;
-   }
-   void CallFunc()
-   {
-     Func();
-   }
+void Func()
+{
+  return;
+}
+
+void CallFunc()
+{
+  Func();
+}
 </pre>
 <p>Simples, não? Por esse mesmo motivo o disassembly terá que ser igualmente simples. Em CallFunc ele deverá conter a chamada da função (call) e em Func o retorno da chamada (ret). Se você compilar o código acima e o assembly vier com mais coisas pode ser que que eventualmente apareça mais código embutido em versões Debug, ou se estiver muito diferente ou inexistente pode ser uma otimização do seu compilador.</p>
 
 <pre>
-   Func:
-   00411F73 prev_instruction ; ESP = 0012FD38 (four bytes stacked up)
-   00411F74 ret ; *ESP = 00411FA3 (return address)
-   CallFunc:
-   00411F9C prev_instruction
-   00411F9E call Func (411424h) ; ESP = 0012FD3C
-   00411FA3 next_instruction
+Func:
+00411F73 prev_instruction ; ESP = 0012FD38 (four bytes stacked up)
+00411F74 ret ; *ESP = 00411FA3 (return address)
+
+CallFunc:
+00411F9C prev_instruction
+00411F9E call Func (411424h) ; ESP = 0012FD3C
+00411FA3 next_instruction
 </pre>
 <p>A partir do assembly acima podemos concluir no mínimo duas coisas:</p>
 
-<p> 1. a pilha "cresce" para baixo, pois seu valor decrementou de quadro (0012FD3C para 0012FD38 são 4 byte a menos).</p>
+<p>1. a pilha "cresce" para baixo, pois seu valor decrementou de quadro (0012FD3C para 0012FD38 são 4 byte a menos).</p>
 
-<p> 2. o valor de retorno da função chamada é o endereço da próxima instrução após a chamada (call), no caso 00411FA3.</p>
+<p>2. o valor de retorno da função chamada é o endereço da próxima instrução após a chamada (call), no caso 00411FA3.</p>
 
 <p>Ora, da mesma forma que conseguimos acompanhar essa simples execução, o atacante também o fará. Por isso que no meio dessa chamada iremos colocar o lançamento de uma exceção e, no retorno, faremos não do modo convencional apresentado, mas por uma outra técnica que, ao invés de utilizar a instrução ret, seta "manualmente" o valor do registrador ESP (estado da pilha) e "pula" para a próxima instrução de CallFunc.</p>
 
 <pre>
-   Func:
-   00411F60 throw_exception
-   00411F61 ...
-   00411F73 catch_exception
-   00411F74 mov ESP, 0012FD3C ; ESP = 0012FD3C, como em CallFunc
-   00411F75 jmp 00411FA3 ; &quot;pula&quot; para CallFunc::next_instruction
+Func:
+00411F60 throw_exception
+00411F61 ...
+00411F73 catch_exception
+00411F74 mov ESP, 0012FD3C ; ESP = 0012FD3C, como em CallFunc
+00411F75 jmp 00411FA3 ; &quot;pula&quot; para CallFunc::next_instruction
 </pre>
 <p>Toda essa esculhambada em assembly não precisa ser necessariamente feita em linguagem de baixo nível. Foi apenas uma maneira que encontrei pra ilustrar as diferenças entre retorno baseado em pilha e alteração no fluxo do código. Como já foi dito, para a sorte e o bem-estar de todos, essa mesma técnica pode ser implementada com funções C da biblioteca ANSI:</p>
 
 <pre>
-   jmp_buf stack_state;
-   void Func()
-   {
-     longjmp(stack_state, 1);
-   }
-   void CallFunc()
-   {
-     // setting returns 0
-     // returning returns not 0
-     if( setjmp(stack_state) == 0 )
-       Func();
-     int x = 10;
-   }
+jmp_buf stack_state;
+
+void Func()
+{
+  longjmp(stack_state, 1);
+}
+
+void CallFunc()
+{
+  // setting returns 0
+  // returning returns not 0
+  if( setjmp(stack_state) == 0 )
+    Func();
+
+  int x = 10;
+}
 </pre>
 <p>Essa foi a técnica adicionada à solução do lançamento de exceções. E o código final ficou mais claro (além de rápido, por economizar o uso de uma thread para leitura dos comandos).</p>
 
 <pre>
-   /** The only purpose of 
-     this function is to 
-     generate an exception. */
-   DWORD LongJmp(jmp_buf* env)
-   {
-     __try
-     {
-       __asm int 3
-     }
-       __except( EXCEPTION_EXECUTE_HANDLER )
-     {
-       longjmp(*env, 1);
-     }
-     return ERROR_SUCCESS;
-   }
-   /** And God said: 
-     'int main!'
-   */
-   int main()
-   {
-     DWORD ret = ERROR_SUCCESS;
-     while( cin )
-     {
-       string line;
-       cout &lt;&lt; &quot;Type something\n&quot;;
-       getline(cin, line);
-       jmp_buf env;
-       if( setjmp(env) == 0 )
-       {
-         LongJmp(&amp;env);
-       }
-       else
-       {
-         cout &lt;&lt; line &lt;&lt; endl;
-       }
-     }
-     return (int) ret;
-   } 
+/** The only purpose of 
+  this function is to 
+  generate an exception. */
+DWORD LongJmp(jmp_buf* env)
+{
+  __try
+  {
+    __asm int 3
+  }
+    __except( EXCEPTION_EXECUTE_HANDLER )
+  {
+    longjmp(*env, 1);
+  }
+
+  return ERROR_SUCCESS;
+}
+
+/** And God said: 
+  'int main!'
+*/
+int main()
+{
+  DWORD ret = ERROR_SUCCESS;
+
+  while( cin )
+  {
+    string line;
+
+    cout &lt;&lt; &quot;Type something\n&quot;;
+    getline(cin, line);
+
+    jmp_buf env;
+
+    if( setjmp(env) == 0 )
+    {
+      LongJmp(&amp;env);
+    }
+    else
+    {
+      cout &lt;&lt; line &lt;&lt; endl;
+    }
+  }
+
+  return (int) ret;
+} 
 </pre>
 <p>À primeira vista parece um desperdício o if estar diretamente no código (lembre-se que vamos utilizar a mesma estrutura condicional em várias e várias partes do código. Para tornar mais claro seu uso, resumir a chamada protegida e permitir que a proteção seja desabilitada em debug, vamos criar uma macro:</p>
 
 <pre>
-   /** Use this macro instead of LongJmp
-   */
-   #define ANTIDEBUG(code)
-   {
-     jmp_buf env;
-     if( setjmp(env) == 0 )
-     {
-       LongJmp(&amp;env);
-     }
-     else
-     {
-       code;
-     }
-   }
-   /** And God said: 'int main!'
-   */
-   int main()
-   {
-     DWORD ret = ERROR_SUCCESS;
-     while( cin )
-     {
-       string line;
-       cout &lt;&lt; &quot;Type something\n&quot;;
-       getline(cin, line);
-       ANTIDEBUG(( cout &lt;&lt; line &lt;&lt; endl ));
-     }
-     return (int) ret;
-   } 
+/** Use this macro instead of LongJmp
+*/
+#define ANTIDEBUG(code)
+{
+  jmp_buf env;
+
+  if( setjmp(env) == 0 )
+  {
+    LongJmp(&amp;env);
+  }
+  else
+  {
+    code;
+  }
+}
+
+/** And God said: 'int main!'
+*/
+int main()
+{
+  DWORD ret = ERROR_SUCCESS;
+
+  while( cin )
+  {
+    string line;
+
+    cout &lt;&lt; &quot;Type something\n&quot;;
+    getline(cin, line);
+
+    ANTIDEBUG(( cout &lt;&lt; line &lt;&lt; endl ));
+  }
+
+  return (int) ret;
+} 
 </pre>
 <p>Veja que como agora permitimos a seleção do anti-debug por chamada, fica mais fácil escolher quais os pontos a serem protegidos e quais não devem/podem por conta de perfomance ou outro detalhe obscuro que sempre existe na vida de um programador C++.</p>
 
@@ -515,64 +549,72 @@ role="navigation" aria-label="main navigation">
 <p>Como esse padrão de bits nunca muda de tamanho, todas as rotinas da biblioteca recebiam e retornavam sempre valores do mesmo tamanho na memória. Isso na linguagem C quer dizer que o char da época ocupava tanto quanto o int. Existia inclusive uma função que retornava o caractere de uma string na posição especificada:</p>
 
 <pre>
-   c = char(string, i); /* the i-th character of the string is returned */
+c = char(string, i); /* the i-th character of the string is returned */
 </pre>
 <p>Sim! Char era uma função, um conversor de "tipos". No entanto a própria variável que armazenava um char tinha o tamanho de qualquer objeto da linguagem. Esse é o motivo pelo qual, tradicionalmente, as seguintes funções recebem e retornam ints em C e C++:</p>
 
 <pre>
-   int getchar( void ); // read a character from stdin
-   int putchar( int c ); // writes a character to stdout
-   void *memset( void *dest, int c, size_t count ); // sets buffers to a specified character
+int getchar( void ); // read a character from stdin
+int putchar( int c ); // writes a character to stdout
+void *memset( void *dest, int c, size_t count ); // sets buffers to a specified character
 </pre>
 <p>Segue o exemplo de uma função na linguagem B, hoje muito famosa:</p>
 
 <pre>
-   /* The following function is a general formatting, printing, and
-      conversion subroutine.  The first argument is a format string.
-      Character sequences of the form `%x' are interpreted and cause
-      conversion of type 'x' of the next argument, other character
-      sequences are printed verbatim.   Thus
-     printf(&quot;delta is %d*n&quot;, delta);
-     will convert the variable delta to decimal (%d) and print the
-     string with the converted form of delta in place of %d.   The
-     conversions %d-decimal, %o-octal, *s-string and %c-character
-     are allowed.
-     This program calls upon the function `printn'. (see section
-     9.1) */
-   printf(fmt, x1,x2,x3,x4,x5,x6,x7,x8,x9) {
-     extrn printn, char, putchar;
-     auto adx, x, c, i, j;
-     i= 0;  /* fmt index */
-     adx = &amp;x1;  /* argument pointer */
-   loop :
-     while((c=char(fmt,i++) ) != `%') {
-       if(c == `*e')
-         return;
-       putchar(c);
-     }
-     x = *adx++;
-     switch c = char(fmt,i++) {
-     case `d': /* decimal */
-     case `o': /* octal */
-       if(x &lt; O) {
-         x = -x ;
-         putchar('-');
-       }
-       printn(x, c=='o'?8:1O);
-       goto loop;
-     case 'c' : /* char */
-       putchar(x);
-       goto loop;
-     case 's': /* string */
-       while(c=char(x, j++)) != '*e')
-         putchar(c);
-       goto loop;
-     }
-     putchar('%') ;
-     i--;
-     adx--;
-     goto loop;
-   } 
+/* The following function is a general formatting, printing, and
+   conversion subroutine.  The first argument is a format string.
+   Character sequences of the form `%x' are interpreted and cause
+   conversion of type 'x' of the next argument, other character
+   sequences are printed verbatim.   Thus
+
+  printf(&quot;delta is %d*n&quot;, delta);
+
+  will convert the variable delta to decimal (%d) and print the
+  string with the converted form of delta in place of %d.   The
+  conversions %d-decimal, %o-octal, *s-string and %c-character
+  are allowed.
+
+  This program calls upon the function `printn'. (see section
+  9.1) */
+
+printf(fmt, x1,x2,x3,x4,x5,x6,x7,x8,x9) {
+  extrn printn, char, putchar;
+  auto adx, x, c, i, j;
+
+  i= 0;  /* fmt index */
+  adx = &amp;x1;  /* argument pointer */
+loop :
+  while((c=char(fmt,i++) ) != `%') {
+    if(c == `*e')
+      return;
+    putchar(c);
+  }
+  x = *adx++;
+  switch c = char(fmt,i++) {
+
+  case `d': /* decimal */
+  case `o': /* octal */
+    if(x &lt; O) {
+      x = -x ;
+      putchar('-');
+    }
+    printn(x, c=='o'?8:1O);
+    goto loop;
+
+  case 'c' : /* char */
+    putchar(x);
+    goto loop;
+
+  case 's': /* string */
+    while(c=char(x, j++)) != '*e')
+      putchar(c);
+    goto loop;
+  }
+  putchar('%') ;
+  i--;
+  adx--;
+  goto loop;
+} 
 </pre>
 <p>Como podemos ver, vários elementos (se não todos) da linguagem C já estão presentes na B.</p>
 
@@ -587,10 +629,10 @@ role="navigation" aria-label="main navigation">
 <p>Semana passada baixei uma nova imagem para minha máquina de desenvolvimento. Esse esquema do pessoal da engenharia instalar as coisas para você facilita muito as coisas, mas existe o risco de algo ser instalado no lugar errado, que foram os casos do DDK e do SDK do Windows. Aqui no desenvolvimento, para efeito de padronização, utilizamos a seguinte estrutura de diretórios para esses dois aplicativos:</p>
 
 <pre>
-   Library
-   |- ddk
-   |- legacy
-   |- mssdk
+Library
+|- ddk
+|- legacy
+|- mssdk
 </pre>
 <p>Porém, por algum motivo desconhecido os instaladores da Microsoft não seguem o nosso padrão: o SDK é instalado em %programfiles%, Microsoft Platform SDK e o DDK em C:, WINDDK, 3790.1830. Para corrigir este pequeno ato relapso eu até poderia reinstalar ambos os aplicativos no local correto, gastanto algumas horas do dia, mas existe uma outra solução mais rápida e simpática chamada de junction.</p>
 
@@ -599,8 +641,8 @@ role="navigation" aria-label="main navigation">
 <p>Para criar um junction pode-se usar uma ferramenta disponível no Windows Resource Kit chamada linkd.exe. Porém, para evitar de ter que baixar todo o pacote para usar um único arquivo, existe uma outra ferramenta desenvolvida à parte por Mark Russinovich chamada... junction. O comando para criar junctions é bem fácil e direto:</p>
 
 <pre>
-   junction c:\library\mssdk &quot;path where is microsoft platform sdk&quot;
-   junction c:\library\ddk &quot;path where is winddk&quot;
+junction c:\library\mssdk &quot;path where is microsoft platform sdk&quot;
+junction c:\library\ddk &quot;path where is winddk&quot;
 </pre>
 <p>E é isso aí. A partir de agora tanto as pastas originais quanto os junctions criados para elas respondem como se fossem a mesma coisa, porém com paths diferentes.</p>
 
@@ -620,115 +662,128 @@ role="navigation" aria-label="main navigation">
 <p>O fonte abaixo, por exemplo, envolve um detalhe que costuma atormentar alguns programadores, ou por falta de observação ou documentação (ou ambos).</p>
 
 <pre>
-   #include &lt;stdio.h&gt;
-   #include &lt;windows.h&gt;
-   void main(void)
-   {
-     typedef enum _COMPUTER_NAME_FORMAT
-     {
-       ComputerNameNetBIOS,
-       ComputerNameDnsHostname,
-       ComputerNameDnsDomain,
-       ComputerNameDnsFullyQualified,
-       ComputerNamePhysicalNetBIOS,
-       ComputerNamePhysicalDnsHostname,
-       ComputerNamePhysicalDnsDomain,
-       ComputerNamePhysicalDnsFullyQualified,
-       ComputerNameMax
-     } COMPUTER_NAME_FORMAT;
-     COMPUTER_NAME_FORMAT CF = ComputerNameDnsDomain;
-     char szDomainName[MAX_COMPUTERNAME_LENGTH];
-     DWORD dwSize = sizeof(szDomainName);
-     //GetComputerName(szDomainName, &amp;dwSize);
-     GetComputerNameEx(CF, szDomainName, &amp;dwSize);
-   } 
+#include &lt;stdio.h&gt;
+#include &lt;windows.h&gt;
+
+void main(void)
+{
+  typedef enum _COMPUTER_NAME_FORMAT
+  {
+    ComputerNameNetBIOS,
+    ComputerNameDnsHostname,
+    ComputerNameDnsDomain,
+    ComputerNameDnsFullyQualified,
+    ComputerNamePhysicalNetBIOS,
+    ComputerNamePhysicalDnsHostname,
+    ComputerNamePhysicalDnsDomain,
+    ComputerNamePhysicalDnsFullyQualified,
+    ComputerNameMax
+  } COMPUTER_NAME_FORMAT;
+
+  COMPUTER_NAME_FORMAT CF = ComputerNameDnsDomain;
+
+  char szDomainName[MAX_COMPUTERNAME_LENGTH];
+
+  DWORD dwSize = sizeof(szDomainName);
+
+  //GetComputerName(szDomainName, &amp;dwSize);
+  GetComputerNameEx(CF, szDomainName, &amp;dwSize);
+} 
 </pre>
 <p>Tirando o fato que o retorno void não é mais um protótipo padrão da função main e que a definição da enumeração COMPUTER_NAME_FORMAT dentro da função main é no mínimo suspeita, podemos testar a compilação e verificar que existe exatamente um erro grave neste fonte:</p>
 
 <pre>
-   cl getcomputername.cpp
-   getcomputername.cpp(26) : error C3861: 'GetComputerNameEx': identifier not found
+cl getcomputername.cpp
+getcomputername.cpp(26) : error C3861: 'GetComputerNameEx': identifier not found
 </pre>
 <p>A função GetComputerNameEx parece não ter sido definida, apesar de estarmos incluindo o header windows.h, que é o pedido pela documentação do MSDN.</p>
 
 <p>Esse tipo de problema acontece na maioria das vezes por dois motivos:</p>
 
-<p>  1. o header responsável não foi incluído (não é o caso, como vimos),</p>
+<p>1. o header responsável não foi incluído (não é o caso, como vimos),</p>
 
-<p>  2. é necessário especificar a versão mínima do sistema operacional.</p>
+<p>2. é necessário especificar a versão mínima do sistema operacional.</p>
 
 <p>De fato, se criarmos coragem e abrirmos o arquivo winbase.h, que é onde a função é definida de fato, e procurarmos pela função GetComputerNameEx encontramos a seguinte condição:</p>
 
 <pre>
-   #if (_WIN32_WINNT &gt;= 0x0500)
-   typedef enum _COMPUTER_NAME_FORMAT {
-       ComputerNameNetBIOS,
-       ComputerNameDnsHostname,
-       ComputerNameDnsDomain,
-       ComputerNameDnsFullyQualified,
-       ComputerNamePhysicalNetBIOS,
-       ComputerNamePhysicalDnsHostname,
-       ComputerNamePhysicalDnsDomain,
-       ComputerNamePhysicalDnsFullyQualified,
-       ComputerNameMax
-   } COMPUTER_NAME_FORMAT ;
-   WINBASEAPI
-   BOOL
-   WINAPI
-   GetComputerNameExA (
-       __in    COMPUTER_NAME_FORMAT NameType,
-       __out_ecount_part_opt(*nSize, *nSize + 1) LPSTR lpBuffer,
-       __inout LPDWORD nSize
-       );
-   WINBASEAPI
-   BOOL
-   WINAPI
-   GetComputerNameExW (
-       __in    COMPUTER_NAME_FORMAT NameType,
-       __out_ecount_part_opt(*nSize, *nSize + 1) LPWSTR lpBuffer,
-       __inout LPDWORD nSize
-       );
-   #ifdef UNICODE
-   #define GetComputerNameEx  GetComputerNameExW
-   #else
-   #define GetComputerNameEx  GetComputerNameExA
-   #endif // !UNICODE
-   //...
-   #endif // _WIN32_WINNT
+#if (_WIN32_WINNT &gt;= 0x0500)
+
+typedef enum _COMPUTER_NAME_FORMAT {
+    ComputerNameNetBIOS,
+    ComputerNameDnsHostname,
+    ComputerNameDnsDomain,
+    ComputerNameDnsFullyQualified,
+    ComputerNamePhysicalNetBIOS,
+    ComputerNamePhysicalDnsHostname,
+    ComputerNamePhysicalDnsDomain,
+    ComputerNamePhysicalDnsFullyQualified,
+    ComputerNameMax
+} COMPUTER_NAME_FORMAT ;
+
+WINBASEAPI
+BOOL
+WINAPI
+GetComputerNameExA (
+    __in    COMPUTER_NAME_FORMAT NameType,
+    __out_ecount_part_opt(*nSize, *nSize + 1) LPSTR lpBuffer,
+    __inout LPDWORD nSize
+    );
+WINBASEAPI
+BOOL
+WINAPI
+GetComputerNameExW (
+    __in    COMPUTER_NAME_FORMAT NameType,
+    __out_ecount_part_opt(*nSize, *nSize + 1) LPWSTR lpBuffer,
+    __inout LPDWORD nSize
+    );
+#ifdef UNICODE
+#define GetComputerNameEx  GetComputerNameExW
+#else
+#define GetComputerNameEx  GetComputerNameExA
+#endif // !UNICODE
+
+//...
+
+#endif // _WIN32_WINNT
 </pre>
 <p>Ou seja, para que essa função seja visível a quem inclui o windows.h, é necessário antes definir que a versão mínima do Windows será a 0x0500, ou seja, Windows 2000 (vulgo Windows 5.0). Aliás, é como aparece na documentação. Um pouco de observação nesse caso seria o suficiente para resolver o caso, já que tanto abrindo o header quanto olhando no exemplo do MSDN nos levaria a crer que é necessário definir essa macro:</p>
 
 <pre>
-   #define _WIN32_WINNT 0x0500
-   #include &lt;windows.h&gt;
-   #include &lt;stdio.h&gt;
-   #include &lt;tchar.h&gt;
-   void _tmain(void)
-   {
-     TCHAR buffer[256] = TEXT(&quot;&quot;);
-     TCHAR szDescription[8][32] = {TEXT(&quot;NetBIOS&quot;), 
-     TEXT(&quot;DNS hostname&quot;), 
-     TEXT(&quot;DNS domain&quot;), 
-     TEXT(&quot;DNS fully-qualified&quot;), 
-     TEXT(&quot;Physical NetBIOS&quot;), 
-     TEXT(&quot;Physical DNS hostname&quot;), 
-     TEXT(&quot;Physical DNS domain&quot;), 
-     TEXT(&quot;Physical DNS fully-qualified&quot;)};
-     int cnf = 0;
-     DWORD dwSize = sizeof(buffer);
-     for( cnf = 0; cnf &lt; ComputerNameMax; cnf++ )
-     {
-       if (!GetComputerNameEx( (COMPUTER_NAME_FORMAT)cnf, buffer, &amp;dwSize) )
-       {
-         _tprintf(TEXT(&quot;GetComputerNameEx failed (%d)\n&quot;),
-         GetLastError());
-         return;
-       }
-         else _tprintf(TEXT(&quot;%s: %s\n&quot;), szDescription[cnf], buffer);
-       dwSize = sizeof(buffer);
-       ZeroMemory(buffer, dwSize);
-     }
-   } 
+#define _WIN32_WINNT 0x0500
+
+#include &lt;windows.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;tchar.h&gt;
+
+void _tmain(void)
+{
+  TCHAR buffer[256] = TEXT(&quot;&quot;);
+  TCHAR szDescription[8][32] = {TEXT(&quot;NetBIOS&quot;), 
+  TEXT(&quot;DNS hostname&quot;), 
+  TEXT(&quot;DNS domain&quot;), 
+  TEXT(&quot;DNS fully-qualified&quot;), 
+  TEXT(&quot;Physical NetBIOS&quot;), 
+  TEXT(&quot;Physical DNS hostname&quot;), 
+  TEXT(&quot;Physical DNS domain&quot;), 
+  TEXT(&quot;Physical DNS fully-qualified&quot;)};
+  int cnf = 0;
+  DWORD dwSize = sizeof(buffer);
+
+  for( cnf = 0; cnf &lt; ComputerNameMax; cnf++ )
+  {
+    if (!GetComputerNameEx( (COMPUTER_NAME_FORMAT)cnf, buffer, &amp;dwSize) )
+    {
+      _tprintf(TEXT(&quot;GetComputerNameEx failed (%d)\n&quot;),
+      GetLastError());
+      return;
+    }
+      else _tprintf(TEXT(&quot;%s: %s\n&quot;), szDescription[cnf], buffer);
+
+    dwSize = sizeof(buffer);
+    ZeroMemory(buffer, dwSize);
+  }
+} 
 </pre>
 <p>Outra observação que poderia ter ajudado na hora de codificar seria dar uma olhada no que os caras escrevem na seção de advertências (remarks) da documentação:</p>
 
@@ -760,44 +815,50 @@ role="navigation" aria-label="main navigation">
 <p>No caso de se conectar em um processo já existente, é chamada a função da API DebugActiveProcess. A partir dessa chamada, se retornado sucesso, o processo que depura agora está liberado para ficar chamando continuamente a função API WaitForDebugEvent. E o código se resume a isto:</p>
 
 <pre>
-   void DebugLoop()
-   {
-     bool exitLoop = false;
-     while( ! exitLoop )
-     {
-       DEBUG_EVENT debugEvt;
-       WaitForDebugEvent(&amp;debugEvt, 
-         INFINITE);
-       switch( debugEvt.dwDebugEventCode )
-       {
-         // This one...
-         // That one...
-         // Process is going out.
-         case EXIT_PROCESS_DEBUG_EVENT:
-           exitLoop = true;
-           break;
-       }
-       // Unfreeze the thread who sent the debug event.
-       // Otherwise, it stays frozen forever!
-       ContinueDebugEvent(debugEvt.dwProcessId, 
-         debugEvt.dwThreadId, 
-         DBG_EXCEPTION_NOT_HANDLED);
-     }
-   } 
+void DebugLoop()
+{
+  bool exitLoop = false;
+
+  while( ! exitLoop )
+  {
+    DEBUG_EVENT debugEvt;
+
+    WaitForDebugEvent(&amp;debugEvt, 
+      INFINITE);
+
+    switch( debugEvt.dwDebugEventCode )
+    {
+      // This one...
+
+      // That one...
+
+      // Process is going out.
+      case EXIT_PROCESS_DEBUG_EVENT:
+        exitLoop = true;
+        break;
+    }
+
+    // Unfreeze the thread who sent the debug event.
+    // Otherwise, it stays frozen forever!
+    ContinueDebugEvent(debugEvt.dwProcessId, 
+      debugEvt.dwThreadId, 
+      DBG_EXCEPTION_NOT_HANDLED);
+  }
+} 
 </pre>
 <p>O detalhe interessante desse processo de comunicação depurador/depurado é que um processo só pode ser depurado por apenas UM depurador. Ou seja, enquanto houver um processo depurando outro, os outros processos só ficam na vontade.</p>
 
 <p>Partindo desse princípio, podemos imaginar uma proteção baseada nessa exclusividade, criando um processo protetor que conecta no processo protegido e o "depura". Fiz um código de exemplo que faz justamente isso: ele atacha em um processo para depurá-lo (basta passar o PID como parâmetro) e não deixa mais outro depurador ocupar a debug port. Os passos para testá-lo são:</p>
 
-<p>  1. Compilar o código.</p>
+<p>1. Compilar o código.</p>
 
-<p>  2. Executar o notepad (ou qualquer outra vítima).</p>
+<p>2. Executar o notepad (ou qualquer outra vítima).</p>
 
-<p>  3. Obter seu PID (Process ID).</p>
+<p>3. Obter seu PID (Process ID).</p>
 
-<p>  4. Executar o protetor passando o PID como parâmetro.</p>
+<p>4. Executar o protetor passando o PID como parâmetro.</p>
 
-<p>  5. Tentar "atachar" no processo através do Visual C++.</p>
+<p>5. Tentar "atachar" no processo através do Visual C++.</p>
 
 <p>Após o processo de attach, a porta de debug é ocupada, e a comunicação entre depurador e depurado é feita através do LPC. Abaixo uma pequena ilustração de como as coisas ocorrem:</p>
 
@@ -875,57 +936,57 @@ role="navigation" aria-label="main navigation">
 <p>O importante do Dependency Walker para o WinDbg é que com um editor é possível copiar todas as funções exibidas em sua interface para um editor, usar um pouco de regular expressions e criar uma batelada de breakpoints:</p>
 
 <pre>
-   ...
-   bp user32!GetDC &quot;.echo GetDC; g&quot;
-   bp user32!GetDesktopWindow &quot;.echo GetDesktopWindow; g&quot;
-   bp user32!GetDlgCtrlID &quot;.echo GetDlgCtrlID; g&quot;
-   bp user32!GetDlgItem &quot;.echo GetDlgItem; g&quot;
-   bp user32!GetDlgItemTextW &quot;.echo GetDlgItemTextW; g&quot;
-   bp user32!GetFocus &quot;.echo GetFocus; g&quot;
-   ...
+...
+bp user32!GetDC &quot;.echo GetDC; g&quot;
+bp user32!GetDesktopWindow &quot;.echo GetDesktopWindow; g&quot;
+bp user32!GetDlgCtrlID &quot;.echo GetDlgCtrlID; g&quot;
+bp user32!GetDlgItem &quot;.echo GetDlgItem; g&quot;
+bp user32!GetDlgItemTextW &quot;.echo GetDlgItemTextW; g&quot;
+bp user32!GetFocus &quot;.echo GetFocus; g&quot;
+...
 </pre>
 <p>O comando "bp" cria um breakpoint no endereço requisitado. O que está entre aspas são os comandos que você deseja executar quando o breakpoint for disparado. No caso, para todas as funções será impresso o seu nome (comando ".echo") e a execução irá continuar (comando "g"). Ao rodar o programa, as chamadas das funções são mostradas na saída do depurador:</p>
 
 <pre>
-   ...
-   GetDesktopWindow
-   GetDC
-   GetFocus
-   GetDlgItem
-   GetDC
-   GetDlgItem
-   GetDC
-   GetDlgItem
-   GetDC
-   GetDlgItemTextW
-   ...
+...
+GetDesktopWindow
+GetDC
+GetFocus
+GetDlgItem
+GetDC
+GetDlgItem
+GetDC
+GetDlgItem
+GetDC
+GetDlgItemTextW
+...
 </pre>
 <p>Lindo, não? Porém ainda podem estar sendo chamadas as funções obtidas pela segunda técnica, a do GetProcAddress. Para esse caso devemos ir um pouquinho mais fundo e rodar o executável duas vezes. Na primeira, coletamos as funções que são obtidas por essa técnica através do seguinte comando:</p>
 
 <pre>
-   bp kernel32!GetProcAddress &quot;da poi(esp + 8); g&quot;
+bp kernel32!GetProcAddress &quot;da poi(esp + 8); g&quot;
 </pre>
 <p>O comando "da" exibe o conteúdo de uma string em C (caracteres ANSI e terminada em zero) na memória. A memória no caso é o "apontado do valor contido no segundo parâmetro da pilha". Complicado? Nem tanto: lembre-se que o ESP aponta sempre pro endereço de retorno da função chamadora e os parâmetros são sempre empilhados na ordem inversa da declaração em C. Logo, se o protótipo de GetProcAddress é:</p>
 
 <pre>
-   FARPROC GetProcAddress(HMODULE hModule, LPCSTR lpProcName);
+FARPROC GetProcAddress(HMODULE hModule, LPCSTR lpProcName);
 </pre>
 <p>O último parâmetro empilhado (ESP+4) é o hModule, e o penúltimo (ESP+8) é o lpProcName, que é o lugar onde é passado o nome da função.</p>
 
 <p>Devemos lembrar de colocar esse breakpoint bem no início da execução e rodar o executável uma vez. Com isso coletamos o conjunto de nomes de funções usadas para chamar GetProcAddress:</p>
 
 <pre>
-   ...
-   746e29f8  &quot;ImmReleaseContext&quot;
-   746e2a30  &quot;ImmNotifyIME&quot;
-   746e2934  &quot;CtfImmEnterCoInitCountSkipMode&quot;
-   746e2978  &quot;CtfImmLeaveCoInitCountSkipMode&quot;
-   746e29bc  &quot;ImmGetDefaultIMEWnd&quot;
-   746e2a64  &quot;ImmSetConversionStatus&quot;
-   746e2aa0  &quot;ImmGetConversionStatus&quot;
-   746e2adc  &quot;ImmGetProperty&quot;
-   746e2b10  &quot;ImmGetOpenStatus&quot;
-   ...
+...
+746e29f8  &quot;ImmReleaseContext&quot;
+746e2a30  &quot;ImmNotifyIME&quot;
+746e2934  &quot;CtfImmEnterCoInitCountSkipMode&quot;
+746e2978  &quot;CtfImmLeaveCoInitCountSkipMode&quot;
+746e29bc  &quot;ImmGetDefaultIMEWnd&quot;
+746e2a64  &quot;ImmSetConversionStatus&quot;
+746e2aa0  &quot;ImmGetConversionStatus&quot;
+746e2adc  &quot;ImmGetProperty&quot;
+746e2b10  &quot;ImmGetOpenStatus&quot;
+...
 </pre>
 <p>Daí é só organizar a lista obtida em ordem alfabética, acabar com duplicidades e criar o mesmo tipo de breakpoint que foi usado para as funções estáticas (pode ser sem o nome da DLL porque, embora não recomendado, o WinDbg se vira para encontrar os símbolos). Depois de criados os comandos, rodamos novamente o executável e, logo no início, já colocamos todos os breakpoints das funções coletadas.</p>
 

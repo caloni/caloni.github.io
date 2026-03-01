@@ -151,9 +151,7 @@ role="navigation" aria-label="main navigation">
 <p>Can you talk a bit about how you conduct a code reading?</p>
 
 <blockquote>At each meeting, someone's responsible for reading their code, and they'll walk us through everything, and the rest of us will observe. It's a really good chance for the rest of the team to understand how their stuff is going to have to fit with that stuff.</blockquote>
-
 <blockquote>We get everybody around the table; everybody gets a stack of paper. We also blow it up on the screen. And we all read through it together. And we're all commenting on the code as we go along. People say, 'I don't understand this comment,' or, 'This comment doesn't seem to describe the code.' That kind of stuff can be so valuable because as a programmer you stop reading your own comments and you're not aware that you're misdirecting the reader. Having the people you work with helping to keep your code clean is a huge service'you find defects that you never would've found on your own.</blockquote>
-
 <blockquote>I think an hour of code reading is worth two weeks of QA. It's just a really effective way of removing errors. If you have someone who is strong reading, then the novices around them are going to learn a lot that they wouldn't be learning otherwise, and if you have a novice reading, he's going to get a lot of really good advice.</blockquote>
 <p>So if you don't clean up every seventh cycle you may be faced with the choice of whether or not to do a big rewrite. How do you know when, if ever, it's time for a big rewrite?</p>
 
@@ -167,12 +165,10 @@ role="navigation" aria-label="main navigation">
 <p>Ferramentas de Depuração Avançadas:</p>
 
 <blockquote>Instrumenting and having a checked model of the entire memory hierarchy is big. Robert O'Callahan, our big brain in New Zealand, did his own debugger based on the Valgrind framework, which efficiently logs every instruction so he can re-create the entire program state at any point. It's not just a time-traveling debugger. It's a full database so you see a data structure and there's a field with a scrogged value and you can say, 'Who wrote to that last?' and you get the full stack. You can reason from effects back to causes. Which is the whole game in debugging. So it's very slow. It's like a hundred times slower than real time, but there's hope.</blockquote>
-
 <blockquote>Or you can use one of these faster recording VMs'they checkpoint only at system call and I/O boundaries. They can re-create corrupt program states at any boundary but to go in between those is harder. But if you use that you can probably close in quickly at near real time and then once you get to that stage you can transfer it into Rob's Chronomancer and run it much slower and get all the program states and find the bug.</blockquote>
 <p>Depuradores da Indústria:</p>
 
 <blockquote>Debugging technology has been sadly underresearched. That's another example where there's a big gulf between industry and academia: the academics are doing proofs, sometimes by hand, more and more mechanized thanks to the POPLmark challenge and things like that. But in the real world we're all in debuggers and they're pieces of shit from the '70s like GDB.</blockquote>
-
 <blockquote>Yeah. So I use GDB, and I'm glad GDB, at least on the Mac, has a watch-point facility that mostly works. So I can watch an address and I can catch it changing from good bits to bad bits. That's pretty helpful. Otherwise I'm using printfs to bisect. Once I get close enough usually I can just try things inside GDB or use some amount of command scripting. But it's incredibly weak. The scripting language itself is weak. I think Van Jacobson added loops and I don't even know if those made it into the real GDB, past the FSF hall monitors.</blockquote>
 <p>Multithreading:</p>
 
@@ -253,75 +249,78 @@ role="navigation" aria-label="main navigation">
 <img src="/journal/img/depuracao_de_emergencia_receita_de_bolo_CjXbOD1.png"/>
 
 <pre>
-   WinDbg: &quot;mas que bagunça é essa na memória desse processo?&quot;
+WinDbg: &quot;mas que bagunça é essa na memória desse processo?&quot;
 </pre>
 <p>O comando mais útil na maioria dos casos é mostrar a pilha em modo verbose (kv e enter). Porém, antes disso, precisamos:</p>
 
-<p>  1. Ajeitar o path dos símbolos.</p>
+<p>1. Ajeitar o path dos símbolos.</p>
 
-<p>  2. Recarregar o PDB do executável suspeito.</p>
+<p>2. Recarregar o PDB do executável suspeito.</p>
 
-<p>  3. Mostrar a pilha de todas as threads (até descobrir a culpada).</p>
+<p>3. Mostrar a pilha de todas as threads (até descobrir a culpada).</p>
 
 <p>Todos esses comandos podem ser vistos abaixo. São, respectivamente, .symfix, .reload e novamente o kv (mas para todas threads).</p>
 
 <pre>
-   0:001&gt; .symfix
-   0:001&gt; .reload /f CrashOnServer.exe
-   *** WARNING: Unable to verify checksum for C:\Users\wanderley.caloni\Documents\Projetos\Caloni\Posts\Debug\CrashOnServer.exe
-   0:001&gt; kv
-   Child-SP RetAddr  : Args to Child               : Call Site
-   0030f918 77679198 : 00000000`00000000 `00000000 : ntdll!DbgBreakPoint
-   0030f920 775e244d : 00000000`00000000 `00000000 : ntdll!DbgUiRemoteBreakin+0x38
-   0030f950 00000000 : 00000000`00000000 `00000000 : ntdll!RtlUserThreadStart+0x25
-   0:001&gt; ~* kv
-      0  Id: 1dc.978 Suspend: 1 Teb: 00000000`7efdb000 Unfrozen
-   Child-SP RetAddr  : Args to Child                       : Call Site
-   0008ea48 751f282c : 00000000`77770190 00000000`001dfb50 : wow64cpu!CpupSyscallStub+0x9
-   0008ea50 7526d07e : 00000000`00000000 00000000`775b3501 : wow64cpu!WaitForMultipleObjects32+0x32
-   0008eb10 7526c549 : 00000000`00000000 00000000`7ffe0030 : wow64!RunCpuSimulation+0xa
-   0008eb60 775cae27 : 00000000`003b3710 00000000`7efdf000 : wow64!Wow64LdrpInitialize+0x429
-   0008f0b0 775c72f8 : 00000000`00000000 00000000`00000000 : ntdll!LdrpInitializeProcess+0x1780
-   0008f5b0 775b2ace : 00000000`0008f670 00000000`00000000 : ntdll! ?? ::FNODOBFM::`string'+0x2af20
-   0008f620 00000000 : 00000000`00000000 00000000`00000000 : ntdll!LdrInitializeThunk+0xe
+0:001&gt; .symfix
+0:001&gt; .reload /f CrashOnServer.exe
+*** WARNING: Unable to verify checksum for C:\Users\wanderley.caloni\Documents\Projetos\Caloni\Posts\Debug\CrashOnServer.exe
+0:001&gt; kv
+Child-SP RetAddr  : Args to Child               : Call Site
+0030f918 77679198 : 00000000`00000000 `00000000 : ntdll!DbgBreakPoint
+0030f920 775e244d : 00000000`00000000 `00000000 : ntdll!DbgUiRemoteBreakin+0x38
+0030f950 00000000 : 00000000`00000000 `00000000 : ntdll!RtlUserThreadStart+0x25
+0:001&gt; ~* kv
+
+   0  Id: 1dc.978 Suspend: 1 Teb: 00000000`7efdb000 Unfrozen
+Child-SP RetAddr  : Args to Child                       : Call Site
+0008ea48 751f282c : 00000000`77770190 00000000`001dfb50 : wow64cpu!CpupSyscallStub+0x9
+0008ea50 7526d07e : 00000000`00000000 00000000`775b3501 : wow64cpu!WaitForMultipleObjects32+0x32
+0008eb10 7526c549 : 00000000`00000000 00000000`7ffe0030 : wow64!RunCpuSimulation+0xa
+0008eb60 775cae27 : 00000000`003b3710 00000000`7efdf000 : wow64!Wow64LdrpInitialize+0x429
+0008f0b0 775c72f8 : 00000000`00000000 00000000`00000000 : ntdll!LdrpInitializeProcess+0x1780
+0008f5b0 775b2ace : 00000000`0008f670 00000000`00000000 : ntdll! ?? ::FNODOBFM::`string'+0x2af20
+0008f620 00000000 : 00000000`00000000 00000000`00000000 : ntdll!LdrInitializeThunk+0xe
 </pre>
 <p>Ops! Estamos rodando um processo 32 dentro de um SO 64 (Windows 7, por exemplo). Isso pode acontecer. Seguimos com o workaround .load wow64exts e .effmach x86:</p>
 
 <pre>
-   0:001&gt; .load wow64exts
-   0:001&gt; .effmach x86
-   Effective machine: x86 compatible (x86)
-   0:001:x86&gt; ~* kv
-      0  Id: 1dc.978 Suspend: 1 Teb: 7efdb000 Unfrozen
-   ChildEBP RetAddr  Args to Child
-   001df24c 761a0bdd 00000002 001df29c 00000001 ntdll_77760000!NtWaitForMultipleObjects+0x15 (FPO: [5,0,0])
-   001df2e8 7727162d 001df29c 001df310 00000000 KERNELBASE!WaitForMultipleObjectsEx+0x100 (FPO: [Non-Fpo])
-   001df330 77271921 00000002 7efde000 00000000 KERNEL32!WaitForMultipleObjectsExImplementation+0xe0 (FPO: [Non-Fpo])
-   001df34c 77299b2d 00000002 001df380 00000000 KERNEL32!WaitForMultipleObjects+0x18 (FPO: [Non-Fpo])
-   001df3b8 77299bca 001df498 00000001 00000001 KERNEL32!WerpReportFaultInternal+0x186 (FPO: [Non-Fpo])
-   001df3cc 772998f8 001df498 00000001 001df468 KERNEL32!WerpReportFault+0x70 (FPO: [Non-Fpo])
-   001df3dc 77299875 001df498 00000001 38239b1e KERNEL32!BasepReportFault+0x20 (FPO: [Non-Fpo])
-   001df468 777d0df7 00000000 777d0cd4 00000000 KERNEL32!UnhandledExceptionFilter+0x1af (FPO: [Non-Fpo])
-   001df470 777d0cd4 00000000 001dfb34 7778c550 ntdll_77760000!__RtlUserThreadStart+0x62 (FPO: [SEH])
-   001df484 777d0b71 00000000 00000000 00000000 ntdll_77760000!_EH4_CallFilterFunc+0x12 (FPO: [Uses EBP] [0,0,4])
-   001df4ac 777a6ac9 fffffffe 001dfb24 001df5e8 ntdll_77760000!_except_handler4+0x8e (FPO: [Non-Fpo])
-   001df4d0 777a6a9b 001df598 001dfb24 001df5e8 ntdll_77760000!ExecuteHandler2+0x26
-   001df580 7777010f 001df598 001df5e8 001df598 ntdll_77760000!ExecuteHandler+0x24
-   001df584 001df598 001df5e8 001df598 001df5e8 ntdll_77760000!KiUserExceptionDispatcher+0xf (FPO: [2,0,0])
-   WARNING: Frame IP not in any known module. Following frames may be wrong.
-   001df9ac 010d141e 00000000 00000000 00000000 0x1df598
-   001dfa90 010d19af 00000001 00321410 00321c70 CrashOnServer!main+0x2e (FPO: [Non-Fpo]) (CONV: cdecl)
-       [c:\users\wanderley.caloni\documents\projetos\caloni\posts\crashonserver\crashonserver.cpp @ 13]
-   001dfae0 010d17df 001dfaf4 77273677 7efde000 CrashOnServer!__tmainCRTStartup+0x1bf (FPO: [Non-Fpo]) (CONV: cdecl)
-       [f:\dd\vctools\crt_bld\self_x86\crt\src\crtexe.c @ 555]
-   001dfae8 77273677 7efde000 001dfb34 77799f02 CrashOnServer!mainCRTStartup+0xf (FPO: [Non-Fpo]) (CONV: cdecl)
-       [f:\dd\vctools\crt_bld\self_x86\crt\src\crtexe.c @ 371]
-   001dfaf4 77799f02 7efde000 6b3e1b48 00000000 KERNEL32!BaseThreadInitThunk+0xe (FPO: [Non-Fpo])
-   001dfb34 77799ed5 010d1109 7efde000 00000000 ntdll_77760000!__RtlUserThreadStart+0x70 (FPO: [Non-Fpo])
-   001dfb4c 00000000 010d1109 7efde000 00000000 ntdll_77760000!_RtlUserThreadStart+0x1b (FPO: [Non-Fpo])
-   #  1  Id: 1dc.1b0 Suspend: 1 Teb: 7efd8000 Unfrozen
-   ChildEBP RetAddr  Args to Child
-   0056ffe8 00000000 00000000 00000000 00000000 ntdll_77760000!RtlUserThreadStart (FPO: [0,2,0])
+0:001&gt; .load wow64exts
+0:001&gt; .effmach x86
+Effective machine: x86 compatible (x86)
+0:001:x86&gt; ~* kv
+
+   0  Id: 1dc.978 Suspend: 1 Teb: 7efdb000 Unfrozen
+ChildEBP RetAddr  Args to Child
+001df24c 761a0bdd 00000002 001df29c 00000001 ntdll_77760000!NtWaitForMultipleObjects+0x15 (FPO: [5,0,0])
+001df2e8 7727162d 001df29c 001df310 00000000 KERNELBASE!WaitForMultipleObjectsEx+0x100 (FPO: [Non-Fpo])
+001df330 77271921 00000002 7efde000 00000000 KERNEL32!WaitForMultipleObjectsExImplementation+0xe0 (FPO: [Non-Fpo])
+001df34c 77299b2d 00000002 001df380 00000000 KERNEL32!WaitForMultipleObjects+0x18 (FPO: [Non-Fpo])
+001df3b8 77299bca 001df498 00000001 00000001 KERNEL32!WerpReportFaultInternal+0x186 (FPO: [Non-Fpo])
+001df3cc 772998f8 001df498 00000001 001df468 KERNEL32!WerpReportFault+0x70 (FPO: [Non-Fpo])
+001df3dc 77299875 001df498 00000001 38239b1e KERNEL32!BasepReportFault+0x20 (FPO: [Non-Fpo])
+001df468 777d0df7 00000000 777d0cd4 00000000 KERNEL32!UnhandledExceptionFilter+0x1af (FPO: [Non-Fpo])
+001df470 777d0cd4 00000000 001dfb34 7778c550 ntdll_77760000!__RtlUserThreadStart+0x62 (FPO: [SEH])
+001df484 777d0b71 00000000 00000000 00000000 ntdll_77760000!_EH4_CallFilterFunc+0x12 (FPO: [Uses EBP] [0,0,4])
+001df4ac 777a6ac9 fffffffe 001dfb24 001df5e8 ntdll_77760000!_except_handler4+0x8e (FPO: [Non-Fpo])
+001df4d0 777a6a9b 001df598 001dfb24 001df5e8 ntdll_77760000!ExecuteHandler2+0x26
+001df580 7777010f 001df598 001df5e8 001df598 ntdll_77760000!ExecuteHandler+0x24
+001df584 001df598 001df5e8 001df598 001df5e8 ntdll_77760000!KiUserExceptionDispatcher+0xf (FPO: [2,0,0])
+WARNING: Frame IP not in any known module. Following frames may be wrong.
+001df9ac 010d141e 00000000 00000000 00000000 0x1df598
+001dfa90 010d19af 00000001 00321410 00321c70 CrashOnServer!main+0x2e (FPO: [Non-Fpo]) (CONV: cdecl)
+    [c:\users\wanderley.caloni\documents\projetos\caloni\posts\crashonserver\crashonserver.cpp @ 13]
+001dfae0 010d17df 001dfaf4 77273677 7efde000 CrashOnServer!__tmainCRTStartup+0x1bf (FPO: [Non-Fpo]) (CONV: cdecl)
+    [f:\dd\vctools\crt_bld\self_x86\crt\src\crtexe.c @ 555]
+001dfae8 77273677 7efde000 001dfb34 77799f02 CrashOnServer!mainCRTStartup+0xf (FPO: [Non-Fpo]) (CONV: cdecl)
+    [f:\dd\vctools\crt_bld\self_x86\crt\src\crtexe.c @ 371]
+001dfaf4 77799f02 7efde000 6b3e1b48 00000000 KERNEL32!BaseThreadInitThunk+0xe (FPO: [Non-Fpo])
+001dfb34 77799ed5 010d1109 7efde000 00000000 ntdll_77760000!__RtlUserThreadStart+0x70 (FPO: [Non-Fpo])
+001dfb4c 00000000 010d1109 7efde000 00000000 ntdll_77760000!_RtlUserThreadStart+0x1b (FPO: [Non-Fpo])
+
+#  1  Id: 1dc.1b0 Suspend: 1 Teb: 7efd8000 Unfrozen
+ChildEBP RetAddr  Args to Child
+0056ffe8 00000000 00000000 00000000 00000000 ntdll_77760000!RtlUserThreadStart (FPO: [0,2,0])
 </pre>
 <p>Nosso depurador favorito acusa uma pilha que contém a função WerpReportFault (Web Error Report, mas qualquer outra função com Exception no meio seria uma candidata). E, nessa mesma thread, a última linha nossa conhecida está no arquivo crashonserver.cpp:13. Isso nos revela o seguinte:</p>
 

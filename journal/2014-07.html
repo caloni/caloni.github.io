@@ -151,13 +151,17 @@ role="navigation" aria-label="main navigation">
 
 <pre>
 &lt;?php
+
 $url = 'https://trello.com/1/cards/ID_DO_CARD/actions/comments';
+
 $msg = 'Hello, World!';
+
 $data = array(
         'key' =&gt; 'AQUI_VAI_SUA_CHAVE', 
         'token' =&gt; 'AQUI_VAI_SEU_TOKEN_DE_ACESSO',
         'text' =&gt; $msg
         );
+
 $options = array(
         'http' =&gt; array(
             'header'  =&gt; &quot;Content-type: application/x-www-form-urlencoded\r\n&quot;,
@@ -165,8 +169,11 @@ $options = array(
             'content' =&gt; http_build_query($data),
             ),
         );
+
 $context  = stream_context_create($options);
+
 $result = file_get_contents($url, false, $context);
+
 ?&gt;
 </pre>
 <p>As informações AQUI_VAI_SUA_CHAVE e AQUI_VAI_SEU_TOKEN_DE_ACESSO você já obteve no linque de geração de key/secret. Já o ID_DO_CARD é algo que depende de em qual lista seu card está, mas felizmente também existe um shortlink único e imutável para cada card no sistema:</p>
@@ -191,13 +198,16 @@ $result = file_get_contents($url, false, $context);
 
 <pre>
 &lt;?php
+
 $pushData = json_decode($_POST['payload']);
+
 foreach( $pushData-&gt;commits as $c )
 {
     $msg = $c-&gt;message;
     $pattern = '#http[s]*://trello.com/c/([A-Za-z0-9]+)#';
     if( preg_match($pattern, $msg, $matches) == 0 )
         continue;
+
     $url = 'https://trello.com/1/cards/' . $matches[1] . '/actions/comments';
     $msg = $c-&gt;message . ' Commit: ' . $c-&gt;url;
     $data = array(
@@ -205,6 +215,7 @@ foreach( $pushData-&gt;commits as $c )
             'token' =&gt; 'AQUI_VAI_SEU_TOKEN_DE_ACESSO',
             'text' =&gt; $msg
             );
+
     $options = array(
             'http' =&gt; array(
                 'header'  =&gt; &quot;Content-type: application/x-www-form-urlencoded\r\n&quot;,
@@ -212,7 +223,9 @@ foreach( $pushData-&gt;commits as $c )
                 'content' =&gt; http_build_query($data),
                 ),
             );
+
     $context  = stream_context_create($options);
+
     $result = file_get_contents($url, false, $context);
 }
 ?&gt;
@@ -235,13 +248,16 @@ foreach( $pushData-&gt;commits as $c )
 
 <pre>
 &lt;?php
+
 $bitData = json_decode($_POST[&quot;payload&quot;]);
+
 foreach( $bitData-&gt;commits as $c )
 {
     $msg = $c-&gt;message;
     $pattern = '#http[s]*://trello.com/c/([A-Za-z0-9]+)#';
     if( preg_match($pattern, $msg, $matches) == 0 )
         continue;
+
     $url = 'https://trello.com/1/cards/' . $matches[1] . '/actions/comments';
     $msg = $c-&gt;message . ' Commit: ' . $bitData-&gt;canon_url . $bitData-&gt;repository-&gt;absolute_url . 'commits/' . $c-&gt;raw_node;
     $data = array(
@@ -249,6 +265,7 @@ foreach( $bitData-&gt;commits as $c )
             'token' =&gt; 'AQUI_VAI_SEU_TOKEN_DE_ACESSO',
             'text' =&gt; $msg
             );
+
     $options = array(
             'http' =&gt; array(
                 'header'  =&gt; &quot;Content-type: application/x-www-form-urlencoded\r\n&quot;,
@@ -256,7 +273,9 @@ foreach( $bitData-&gt;commits as $c )
                 'content' =&gt; http_build_query($data),
                 ),
             );
+
     $context  = stream_context_create($options);
+
     $result = file_get_contents($url, false, $context);
 }
 ?&gt;
