@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="modificadores_e_qualificadores_de_tipo" title="Modificadores e qualificadores de tipo"/></span>
+<section id="section_modificadores_e_qualificadores_de_tipo">
+<p class="title">Modificadores e qualificadores de tipo</p>
+<span class="title-heading">Caloni, 2010-05-28 computer blog</span>
+
+<p>"@caloni poderia pensar em fazer um artigo sobre os modificadores de tipo em c? os mais complexo, acho eu: volatile, enum, union, extern, etc"</p>
+
+<p>Uma coisa de cada vez: existem modificadores (ou qualificadores) de tipo e especificadores de tipo. Volatile e extern se encaixam na primeira categoria, enum e union na segunda. Veremos um pouco desses dois lados da linguagem em doses paliativas.</p>
+
+<p>Padrão C (ISO/IEC 9899:1990):</p>
+
+<pre>
+6.5.2.2 enum-specifier
+ enum
+
+6.5.3 type-qualifier
+ const
+ volatile
+
+6.5.2.1 struct-or-union
+ struct
+ union
+
+6.5.1 storage-class-specifier
+ typedef
+ extern
+ static
+ auto
+ register
+</pre>
+<p>Padrão C++ (ISO/IEC 14882:1998):</p>
+
+<pre>
+type-specifier
+ enum-specifier
+
+enum-specifier
+ enum
+
+cv-qualifier
+ const
+ volatile
+
+class-key
+ class
+ struct
+ union
+
+storage-class-specifier
+ auto
+ register
+ static
+ extern
+ mutable
+
+decl-specifier
+ storage-class-specifier
+ typedef
+</pre>
+<h4>Modificadores de tipo</h4>
+
+<p>Um modificador de tipo é opcional na definição de um tipo e deve estar sempre relacionado com a declaração de alguma variável. Ele determina, em termos gerais, qual será a função dessa variável. Ela pode ser modificada? Onde ela se encontra no programa? Como ela será modificada?</p>
+
+<p>Como exemplo rápido, temos abaixo uma variável que é atualizada pelo clock do processador e uma variável que não pode ser alterada após sua primeira atribuição:</p>
+
+<pre>
+volatile int* clockSecs = &lt;algum-endereço-do-sistema&gt;;
+const float pi = 3.14;
+</pre>
+<p>Fica meio óbvio que a primeira variável possui seu valor volátil, ou seja, muda conforme o tempo passa, e não depende do próprio código (pode mudar sem sua permissão). A segunda variável também tem um uso explícito, uma vez que o valor de pi nunca será alterado (não nesse Universo).</p>
+
+<h4>Especificadores de tipo</h4>
+
+<p>Os especificadores de tipo possuem cada um sua peculiaridade. Os mais peculiares, que veremos nos próximos artigos, serão as enumerações e as construções bizarras de structs e unions.</p>
+
+<pre>
+enum Contador { um = 1, dois, tres, };
+union Atoms { struct { int part1; int part2; } parts; int64 total; };
+</pre>
+<p>Aqui não é um compêndio teórico sobre a linguagem. Vamos falar particularmente da programação Windows, mas esteja livre para dar seus pitacos com respeito a outros sistemas operacionais e suas implementações igualmente exdrúxulas =)</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="enum.html">[enum]</a>
+ <a href="analogicamente_perfeito.html">[analogicamente_perfeito]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

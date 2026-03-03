@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="por_que_long_pointer" title="Por que Long Pointer"/></span>
+<section id="section_por_que_long_pointer">
+<p class="title">Por que Long Pointer</p>
+<span class="title-heading">Caloni, 2010-04-21 computer blog</span>
+
+<p>Esse artigo continua a explicação sobre <a href="typedef_arcaico.html">os typedefs arcaicos</a>, já que ainda falta explicar por que diabos os ponteiros da Microsoft começam com LP. Tentei explicar para <a href="basico_do_basico_ponteiros.html">minha pupila</a> que, por ser código dos anos 80, as pessoas usavam LP para tudo, pois os CDs ainda não estavam tão difundidos.</p>
+
+<pre>
+/** @brief Para instanciar um Bozo. @date 1982-02-21 */ 
+typedef struct _BOZO { 
+   char helloMsg[100]; /* definir para &quot;alô, criançada, o bozo chegou...&quot; */ 
+   float currentTime; /* definir para 5e60 */ 
+}
+ BOZO, *LPBOZO;
+
+
+/** @brief Para instanciar um Pokemon. @date 1996-03-01 */ 
+typedef struct _PIKACHU 
+{ 
+ char helloMsg[100]; // setar para &quot;pika, pika pikachuuuuuuu...&quot; 
+ int pokemonID; // setar para 24 
+}
+PIKACHU, *CDPIKACHU;
+</pre>
+<p>Não colou. Então vou tentar explicar do jeito certo.</p>
+
+<p>Antigamente, as pessoas mandavam cartas umas para as outras. Carta, para você, caro leitor de quinze anos, era um e-mail implementado em hardware.</p>
+
+<p>Para mandar um e-mail, usamos o nome da pessoa e o domínio em que seu e-mail é endereçado, ex: nome-da-pessoa@dominio.com.br. Para mandar uma carta usamos duas informações básicas: o nome da rua e o número da casa.</p>
+
+<img src="/blog/img/por_que_long_pointer_endereco_da_carta.png"/>
+
+<p>Consequentemente enviamos dois comandos ao carteiro: meu amigo, vá para a rua tal. Chegando lá, encontre o número 1065.</p>
+
+<p>Considere que estamos falando do mesmo bairro ou cidade, o que na minha analogia seria um computador e sua memória. Para enviar cartas para outros bairros em outras cidades (outros computadores em outras redes) teríamos que informar também outros dados, como nome da cidade e CEP.</p>
+
+<img src="/blog/img/por_que_long_pointer_getting_right_on_street.png"/>
+
+<p>Nesse exemplo também podemos usar o Juquinha do bairro para entregar a carta e economizarmos 10 centavos.</p>
+
+<p>Agora, repare que interessante: em uma rua, cabem no máximo N casas. Se você tentar construir mais casas vai acabar invadindo o espaço de outra rua.</p>
+
+<p>E, já que estamos falando do endereço do destinatário, já podemos relevar que esse endereço constitui um ponteiro em nossa analogia. Se você está usando dois dados para informar o endereço, então estamos falando de um ponteiro longo, long pointer, ou LP!</p>
+
+<img src="/blog/img/por_que_long_pointer_relacao_endereco_carta_segmento_offset.png"/>
+
+<h4>Long Pointers</h4>
+
+<p>Na terminologia Intel para as plataformas 16 bits, a memória do computador era acessível através de segmentos (ruas) e offsets (números), que eram pedaços da memória onde cabiam no máximo N bytes. Para conseguir mais bytes é necessário alocar memória em outro segmento (outra rua).</p>
+
+<p>Os ponteiros que conseguiam fazer isso eram chamados de long pointers, pois podiam alcançar uma memória mais "longa". Os ponteiros que apenas endereçavam o offset (número) eram chamados, em detrimento, short pointers, pois podiam apenas apontar para a memória do seu segmento (rua).</p>
+
+<p>Ora, se seu destinatário está na mesma rua que você, tudo que você tem a dizer ao Juquinha é: "Juquinha, seu moleque, entrega essa carta no número 1065, e vai rápido!". Nesse caso você está usando um short pointer.</p>
+
+<p>Porém, no exemplo que demos, o destinatário está em outra rua. Se o Juquinha entregar a carta no número 1065, mas na rua errada, estará errando o destinatário. Por isso é que você deve usar um long pointer e falar para o Juquinha do segmento!</p>
+
+<img src="/blog/img/por_que_long_pointer_getting_lost_on_streets.png"/>
+
+<p>"Juquinha, seu moleque safado, entrega essa carta no Segmento 0xAC89, Offset 0x496E. E vê se anda logo!"</p>
+
+<p>Essa frase era muito usada nos anos 80, com seus 16 bits e tudo mais.</p>
+
+<h4>Voltando ao Windows</h4>
+
+<p>Com toda essa analogia, fica fácil perceber que o Windows não cabe em uma rua só. Seus aplicativos precisam de muitas ruas para rodar. Isso exige que todos seus ponteiros sejam long, pois do contrário o Juquinha estará entregando as cartas sempre nos endereços errados. Dessa forma, foi estipulado o typedef arcaico padrão para todos os tipos da API que usasse LP (Long Pointer) como prefixo:</p>
+
+<pre>
+typedef unsigned long WORD, *LPDWORD;
+typedef const char* LPCSTR;
+typedef &lt;coloque-seu-tipo-aqui&gt; APELIDO, *LPAPELIDO;
+</pre>
+<p>E é por isso que, historicamente, todos os ponteiros para os apelidos da API Win32 possuem sua contraparte LP.</p>
+
+<p>Com a era 32 bits (e mais atualmente 64 bits) os endereços passaram a ser flat, ou seja, apontam para qualquer lugar na memória. Se eu quisesse continuar minha analogia falaria que é o equivalente a uma coordenada GPS, também muito na moda, e que pode apontar para qualquer lugar do planeta. Eu, por exemplo, já trabalhei perto das coordenadas (-23.563596,-46.653885), o que eu costumo dizer que fica bem próximo do Paraíso =).</p>
+
+<h4>Largando velhos hábitos</h4>
+
+<p>De uns anos pra cá, existem novos typedefs nos headers que permitem o uso dos apelidos Win32 apenas com um P inicial.</p>
+
+<pre>
+typedef unsigned long WORD, *LPDWORD, *PDWORD;
+typedef const char *LPCSTR, *PCSTR;
+typedef &lt;coloque-seu-tipo-aqui&gt; APELIDO, *LPAPELIDO, *PAPELIDO;
+</pre>
+<p>A escolha é livre. Assim como com o typedef arcaico.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="analogicamente_perfeito.html">[analogicamente_perfeito]</a>
+ <a href="typedef_arcaico.html">[typedef_arcaico]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>
