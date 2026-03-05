@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="breakpoints_promiscuos" title="Breakpoints promíscuos"/></span>
+<section id="section_breakpoints_promiscuos">
+<p class="title">Breakpoints promíscuos</p>
+<span class="title-heading">Caloni, 2010-07-26 computer blog</span>
+
+<p>Eu chamo de breakpoints promíscuos aqueles que topam qualquer processo. Isso é muito simples de se fazer:</p>
+
+<ul><li>Configure uma VM para bootar em kernel debug.</li>
+
+<li>Encontre um processo qualquer (vamos usar o notepad pra variar?).</li>
+
+<li>Reabra os símbolos de user mode nele.</li>
+
+<li>Defina um breakpoint em alguma DLL de user mode.</li></ul>
+
+<p>Como meus leitores são muito espertos vou partir para o momento após rodarmos um notepad.exe:</p>
+
+<pre>
+kd&gt; !process 0 0 notepad.exe
+PROCESS 81681be0  SessionId: 0  Cid: 0598    Peb: 7ffd7000  ParentCid: 0200
+    DirBase: 08740260  ObjectTable: e18ee8d8  HandleCount:  29.
+    Image: notepad.exe
+
+kd&gt; .process /i 81681be0
+You need to continue execution (press 'g' &lt;enter&gt;) for the context
+to be switched. When the debugger breaks in again, you will be in
+the new process context.
+kd&gt; g
+Break instruction exception - code 80000003 (first chance)
+nt!RtlpBreakWithStatusInstruction:
+80527bdc cc              int     3
+kd&gt; .reload /user
+Loading User Symbols
+.......................
+kd&gt; bp user32!MessageBoxExW
+kd&gt; g
+Breakpoint 0 hit
+USER32!MessageBoxExW:
+001b:7e3a0838 8bff            mov     edi,edi
+kd&gt; du poi(esp+8)
+0007cfb8  &quot;naoexistetralala.txt.Arquivo não&quot;
+0007cff8  &quot; encontrado..Verifique se o nome&quot;
+0007d038  &quot; do arquivo correto foi especifi&quot;
+0007d078  &quot;cado.&quot;
+kd&gt; ezu poi(esp+8) &quot;Esse arquivo não existe! Mas é muito mané, não é mesmo?&quot;
+kd&gt; g
+</pre>
+<p>O screenshot diz tudo:</p>
+
+<img src="/blog/img/breakpoints_promiscuos_debug_notepad_kernel.png"/>
+
+<p>Agora a parte mais divertida: experimente com outro notepad, ou com o explorer =)</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="como_achar_o_codigofonte_sem_simbolos.html">[como_achar_o_codigofonte_sem_simbolos]</a>
+ <a href="const_e_volatile.html">[const_e_volatile]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="como_achar_o_codigofonte_sem_simbolos" title="Como achar o código-fonte sem símbolos"/></span>
+<section id="section_como_achar_o_codigofonte_sem_simbolos">
+<p class="title">Como achar o código-fonte sem símbolos</p>
+<span class="title-heading">Caloni, 2010-08-03 computer blog</span>
+
+<p>Continuo escovando bits. Dessa vez de forma mais nervosa. Se trata de um serviço que trava durante seu stop. Um colega muito esperto do suporte gerou um dump para mim, tornando as coisas mais fáceis. O problema era que não havia símbolos nem código-fonte que batessem exatamente com aquela compilação de 2004. Solução? Analisar as pilhas das threads restantes.</p>
+
+<p>É sabido que esse serviço responde requisições de milhares de máquinas em um período curto de tempo, então por isso a primeira coisa que me atentei foi verificar quantas threads haviam:</p>
+
+<pre>
+0:000&gt; ~*
+.  0  Id: 4c8.30c Suspend: 1 Teb: 7ffde000 Unfrozen
+      Start: *** WARNING: Unable to verify checksum for Service.exe
+*** ERROR: Module load completed but symbols could not be loaded for Service.exe
+Service+0xc60c (0040c60c)
+      Priority: 0  Priority class: 32  Affinity: f
+   1  Id: 4c8.4d8 Suspend: 1 Teb: 7ffdd000 Unfrozen
+      Start: ADVAPI32!AccessCheckByTypeResultListAndAudit(...)
+      Priority: 0  Priority class: 32  Affinity: f
+   2  Id: 4c8.580 Suspend: 1 Teb: 7ffdc000 Unfrozen
+      Priority: 0  Priority class: 32  Affinity: f
+   3  Id: 4c8.adc Suspend: 1 Teb: 7ffd9000 Unfrozen
+      Start: rtutils!TraceServerThread (778321fe)
+      Priority: 0  Priority class: 32  Affinity: f
+...
+ 1428  Id: 4c8.12dc Suspend: 1 Teb: 7fa09000 Unfrozen
+      Start: rpcrt4!ThreadStartRoutine (77d37e70)
+      Priority: 0  Priority class: 32  Affinity: f
+ 1429  Id: 4c8.1410 Suspend: 1 Teb: 7fa08000 Unfrozen
+      Start: rpcrt4!ThreadStartRoutine (77d37e70)
+      Priority: 0  Priority class: 32  Affinity: f
+ 1430 Id: 4c8.143c Suspend: 1 Teb: 7fa06000 Unfrozen
+      Priority: 0  Priority class: 32  Affinity: f
+</pre>
+<p>São muitas.</p>
+
+<p>Analisar essa quantidade absurda de threads seria um saco. Além de inútil. Foi por isso deus inventou a função !uniqstack, que encontra automagicamente quais threads estão com a pilha duplicada.</p>
+
+<pre>
+0:000&gt; !uniqstack
+Processing 1431 threads, please wait
+
+.  0  Id: 4c8.30c Suspend: 1 Teb: 7ffde000 Unfrozen
+      Start: Service+0xc60c (0040c60c)
+      Priority: 0  Priority class: 32  Affinity: f
+ChildEBP RetAddr
+0012f9f8 7c586381 NTDLL!ZwReadFile+0xb
+0012fa6c 7c2dd578 KERNEL32!ReadFile+0x181
+...
+0012fff0 00000000 KERNEL32!BaseProcessStart+0x3d
+
+.  1  Id: 4c8.4d8 Suspend: 1 Teb: 7ffdd000 Unfrozen
+      Start: ADVAPI32!AccessCheckByTypeResultListAndAudit(...)
+      Priority: 0  Priority class: 32  Affinity: f
+ChildEBP RetAddr
+00cefec0 7c59a0a2 NTDLL!ZwWaitForSingleObject+0xb
+...
+00cf000c 007a0000 0x1366e0
+00cf000c 00000000 0x7a0000
+
+.  2  Id: 4c8.580 Suspend: 1 Teb: 7ffdc000 Unfrozen
+      Priority: 0  Priority class: 32  Affinity: f
+ChildEBP RetAddr
+010efe24 77d59815 NTDLL!ZwReplyWaitReceivePortEx+0xb
+...
+010effec 00000000 KERNEL32!BaseThreadStart+0x52
+
+.  3  Id: 4c8.adc Suspend: 1 Teb: 7ffd9000 Unfrozen
+      Start: rtutils!TraceServerThread (778321fe)
+      Priority: 0  Priority class: 32  Affinity: f
+ChildEBP RetAddr
+0150fd20 7c59a26d NTDLL!ZwWaitForMultipleObjects+0xb
+...
+0150ffec 00000000 KERNEL32!BaseThreadStart+0x52
+...
+.1430  Id: 4c8.143c Suspend: 1 Teb: 7fa06000 Unfrozen
+      Priority: 0  Priority class: 32  Affinity: f
+ChildEBP RetAddr
+6665f0dc 7c59a0a2 NTDLL!ZwWaitForSingleObject+0xb
+...
+6665ffec 00000000 KERNEL32!BaseThreadStart+0x52
+
+Total threads: 1431
+Duplicate callstacks: 1092 (windbg thread #s follow):
+7, 9, 11, 12, 13, 14, 15, 17, 18, 20, 21, (...), 1428, 1429
+</pre>
+<p>Muitas threads duplicadas. Isso quer dizer que podemos nos focar na pilha de uma delas. Basta pegar uma.</p>
+
+<pre>
+0:000&gt; ~1429 kv
+
+NTDLL!ZwWaitForSingleObject+0xb 
+KERNEL32!WaitForSingleObjectEx+0x71 
+KERNEL32!WaitForSingleObject+0xf 
+Service+0x54c3 6645f764 77d79970 Service+0x60ec6645f788 
+...
+rpcrt4!Invoke+0x30
+rpcrt4!NdrCallServerManager+0x15 
+rpcrt4!NdrStubCall+0x200 
+rpcrt4!CStdStubBuffer_Invoke+0xc1 
+OLE32!SyncStubInvoke+0x61 
+OLE32!StubInvoke+0xa8 
+OLE32!CCtxComChnl::ContextInvoke+0xbb 
+OLE32!MTAInvoke+0x18 
+OLE32!AppInvoke+0xb5 
+OLE32!ComInvokeWithLockAndIPID+0x297 
+OLE32!ThreadInvoke+0x1b7 
+rpcrt4!DispatchToStubInC+0x32 
+rpcrt4!RPC_INTERFACE::DispatchToStubWorker+0x100 
+rpcrt4!RPC_INTERFACE::DispatchToStub+0x5e 
+rpcrt4!RPC_INTERFACE::DispatchToStubWithObject+0xa9 
+rpcrt4!OSF_SCALL::DispatchHelper+0xa1 
+rpcrt4!OSF_SCALL::DispatchRPCCall+0x121 
+rpcrt4!OSF_SCALL::ProcessReceivedPDU+0x68f 
+rpcrt4!OSF_SCALL::BeginRpcCall+0x183 
+rpcrt4!OSF_SCONNECTION::ProcessReceiveComplete+0x326 
+rpcrt4!ProcessConnectionServerReceivedEvent+0x1b 
+rpcrt4!LOADABLE_TRANSPORT::ProcessIOEvents+0xcd 
+rpcrt4!ProcessIOEventsWrapper+0x9 
+rpcrt4!BaseCachedThreadRoutine+0x4f 
+rpcrt4!ThreadStartRoutine+0x18 
+KERNEL32!BaseThreadStart+0x52 
+</pre>
+<p>Através das funções de RPC e OLE32 podemos concluir que se trata de uma chamada direta para uma interface COM. Bom, existem centenas de métodos e dezenas de interfaces nesse serviço, tornando mais fácil tentar desmontar a chamada inicial que o rpcrt4 faz ao nosso módulo.</p>
+
+<pre>
+0:000&gt; ub 77d79970
+rpcrt4!Invoke+0x20:
+std
+rep movs dword ptr es:[edi],dword ptr [esi]
+mov     eax,dword ptr [ebp-0Ch]
+push    eax
+popf
+popf
+mov     eax, dword ptr [ebp+8]
+call    eax
+</pre>
+<p>Nossa função é obtida em ebp+8. Podemos obter esse endereço pelo campo ChildEBP da função em questão.</p>
+
+<pre>
+0:000&gt; dd 6645f788 +8 l1 6645f790  00406061
+0:000&gt; uf 00406061
+Service+0x6061:
+push    ebp
+mov     ebp,esp
+sub     esp,0C8h
+cmp dword ptr [Service+0x19fb0 (00419fb0)],0
+jne     Service+0x608e (0040608e)
+
+Service+0x6073:
+push    0
+push    offset Service+0x15160 (00415160)
+mov     ecx,offset Service+0x19e60 (00419e60)
+call    Service+0x68a6 (004068a6)
+mov     eax,dword ptr [ebp+14h]
+mov word ptr [eax],2Fh
+
+jmp     Service+0x60f3 (004060f3)
+
+Service+0x608e:
+push    esi
+mov     esi,dword ptr [ebp+8]
+cmp     dword ptr [esi+52h],0
+je      Service+0x60c8 (004060c8)
+
+Service+0x6098:
+lea     eax,[ebp-0C8h]
+push    offset Service+0x15130 (00415130)
+push    eax
+call    Service+0xae08 (0040ae08)
+pop     ecx
+pop     ecx
+push    0
+lea     eax,[ebp-0C8h]
+push    eax
+mov     ecx,offset Service+0x19e60 (00419e60)
+call    Service+0x68a6 (004068a6)
+mov     eax,dword ptr [ebp+14h]
+mov     word ptr [eax],400Ah
+jmp     Service+0x60f2 (004060f2)
+
+Service+0x60c8:
+push    104h
+lea     eax,[esi+18Ch]
+push    eax
+push    dword ptr [ebp+0Ch]
+call    dword ptr [Service+0x1308c (0041308c)]
+mov     ax,word ptr [ebp+10h]
+mov     ecx,esi
+mov     word ptr [esi+48h],ax
+call    Service+0x537e (0040537e)
+mov     ecx,dword ptr [ebp+14h]
+mov     word ptr [ecx],ax
+
+Service+0x60f2:
+pop     esi
+
+Service+0x60f3:
+xor     eax,eax
+leave
+ret     10h
+</pre>
+<p>Note como a função compara algo com zero. Caso não seja zero ela continua. Caso contrário ela vai para um ponto que chama uma função interna e move um código de erro para um ponteiro recebido como parâmetro, o que é muito normal, se lembrarmos que as funções COM de um programa em C devem retornar o código da chamada no retorno (S_OK) e o código de erro em um lResult da vida.</p>
+
+<pre>
+STDMETHODIMP CService::Open(&lt;params&gt;, PLONG *pctReturn)
+{
+    if( DeuErrado() )
+    {
+      *pctReturn = ERR_DEU_ERRADO;
+      return S_OK;
+    }
+    //...
+}
+</pre>
+<p>O código retornado é 2Fh, e agora temos uma boa pista para encontrar a localização no fonte. A primeira coisa é encontrar o define responsável por esse erro, o que exige um pouco de familiaridade com o sistema, pois não se trata aqui de um código Windows.</p>
+
+<pre>
+#define OSRL_ERR  44  /* Data file serial number overflow */
+#define KLEN_ERR  45  /* Key length exceeds MAXLEN parameter */
+#define FUSE_ERR  46  /* File number already in use */
+#define FINT_ERR  47  /* database has not been initialized */
+#define FMOD_ERR  48  /* Operation incompatible with type of file */
+#define FSAV_ERR  49  /* Could not save file */
+#define LNOD_ERR  50  /* Could not lock node */
+</pre>
+<p>Ótimo. 2F, para os leigos (leigos? o que vocês estão fazendo aqui?), é 47 em decimal, exatamente nosso código listado acima. Com esse define podemos agora procurar no código-fonte e analisar todas as funções que retornam esse código em seu início. Para nossa sorte, existe apenas uma.</p>
+
+<pre>
+STDMETHODIMP CService::Open(BYTE *fileName, COUNT keyNo, COUNT *pctReturn)
+{
+    char szMsg[200];
+
+    // Verifica se o banco de dados foi inicializado
+    if (!_Main.m_bDBInitialized)
+    {
+      _Main.Log(&quot;Error opening file before database to be initialized.&quot;);
+      *pctReturn = FINT_ERR;
+      return S_OK;
+    }
+
+    // Verifica se o arquivo já foi aberto
+    if (m_pData)
+    {
+      sprintf(szMsg, &quot;Error on open file \&quot;%s\&quot;. File already opened.&quot;);
+      _Main.Log(szMsg);
+      *pctReturn = ERR_BLABLABLA;
+      return S_OK;
+    }
+    //...
+}
+</pre>
+<p>Para confirmar que não estamos sonhando, podemos dar uma olhada no parâmetro passado para a função Log antes do código retornar. A memória deverá conter uma string idêntica a do código-fonte.</p>
+
+<pre>
+Service+0x6073:
+push    0
+push    offset Service+0x15160 (00415160)
+mov     ecx,offset Service+0x19e60 (00419e60)
+call Service+0x68a6 (004068a6)
+mov     eax,dword ptr [ebp+14h]
+mov     word ptr [eax],2Fh
+jmp     Service+0x60f3 (004060f3)
+
+0:000&gt; da 00415160
+&quot;Error opening file before databa&quot;
+&quot;se to be initialized.&quot;
+</pre>
+<p>E, agora sim, encontramos o culpado!</p>
+
+<img src="/blog/img/como_achar_o_codigo_fonte_sem_simbolos_gUfPM5Q.jpg"/>
+
+<p>Mais para a frente em minha análise consegui encontrar o objeto pelo qual todas as threads esperavam. Não tive tanta sorte, pois se tratava de um mutex, e <a href="http://www.debuginfo.com/articles/easywindbg.html#debugdeadlocks">mutexes não conseguem ser rastreados tão facilmente em user mode</a>. Mas isso não vem ao caso. O que tentei descrever aqui foi mais ou menos o processo que você deverá seguir caso tenha que analisar um binário compilado em outras vidas. Espero que você tenha tanta sorte quanto eu.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="a_origem.html">[a_origem]</a>
+ <a href="breakpoints_promiscuos.html">[breakpoints_promiscuos]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

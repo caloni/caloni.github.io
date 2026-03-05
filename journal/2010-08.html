@@ -45,7 +45,7 @@ role="navigation" aria-label="main navigation">
 <li><small><a href="2010-08.html#foto_dos_melhores_momentos">Foto dos melhores momentos</a></small></li>
 <li><small><a href="2010-08.html#superman_o_filme">Superman: O Filme (Richard Donner, 1978)</a></small></li>
 <li><small><a href="2010-08.html#os_mercenarios">Os Mercenários (Sylvester Stallone, 2010)</a></small></li>
-<li><small><a href="2010-08.html#evento_c++">Evento C++</a></small></li>
+<li><small><a href="2010-08.html#padroes_em_analise_de_dumps">Padrões em análise de dumps</a></small></li>
 <li><small><a href="2010-08.html#domicilio_conjugal">Domicilio Conjugal</a></small></li>
 <li><small><a href="2010-08.html#gerando_dumps_automatizados">Gerando dumps automatizados</a></small></li>
 <li><small><a href="2010-08.html#karate_kid_2010">Karate Kid</a></small></li>
@@ -55,7 +55,7 @@ role="navigation" aria-label="main navigation">
 <span id="como_achar_o_codigofonte_sem_simbolos" title="Como achar o código-fonte sem símbolos"/></span>
 <section id="section_como_achar_o_codigofonte_sem_simbolos">
 <p class="title"><a href="2010-08.html#como_achar_o_codigofonte_sem_simbolos">#</a> Como achar o código-fonte sem símbolos</p>
-<span class="title-heading">Caloni, 2010-08-03 <a href="2010-06.html#const_e_volatile">&lt;</a><a href="computer.html">computer</a><a href="2010-08.html#nao_e_minha_culpa">&gt;</a><a href="2010-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_como_achar_o_codigofonte_sem_simbolos')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2010-08-03 <a href="2010-07.html#breakpoints_promiscuos">&lt;</a><a href="computer.html">computer</a><a href="2010-08.html#nao_e_minha_culpa">&gt;</a> <a href="2010-07.html#breakpoints_promiscuos">&lt;</a><a href="blog.html">blog</a><a href="2010-08.html#a_origem">&gt;</a><a href="2010-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_como_achar_o_codigofonte_sem_simbolos')"><sup>[copy]</sup></a></span>
 
 <p>Continuo escovando bits. Dessa vez de forma mais nervosa. Se trata de um serviço que trava durante seu stop. Um colega muito esperto do suporte gerou um dump para mim, tornando as coisas mais fáceis. O problema era que não havia símbolos nem código-fonte que batessem exatamente com aquela compilação de 2004. Solução? Analisar as pilhas das threads restantes.</p>
 
@@ -76,16 +76,7 @@ Service+0xc60c (0040c60c)
    3  Id: 4c8.adc Suspend: 1 Teb: 7ffd9000 Unfrozen
       Start: rtutils!TraceServerThread (778321fe)
       Priority: 0  Priority class: 32  Affinity: f
-   4  Id: 4c8.f1c Suspend: 1 Teb: 7ffa5000 Unfrozen
-      Start: rpcrt4!ThreadStartRoutine (77d37e70)
-      Priority: 0  Priority class: 32  Affinity: f
 ...
- 1426  Id: 4c8.1464 Suspend: 1 Teb: 7fa0c000 Unfrozen
-      Start: rpcrt4!ThreadStartRoutine (77d37e70)
-      Priority: 0  Priority class: 32  Affinity: f
- 1427  Id: 4c8.144c Suspend: 1 Teb: 7fa0b000 Unfrozen
-      Start: rpcrt4!ThreadStartRoutine (77d37e70)
-      Priority: 0  Priority class: 32  Affinity: f
  1428  Id: 4c8.12dc Suspend: 1 Teb: 7fa09000 Unfrozen
       Start: rpcrt4!ThreadStartRoutine (77d37e70)
       Priority: 0  Priority class: 32  Affinity: f
@@ -152,56 +143,51 @@ Duplicate callstacks: 1092 (windbg thread #s follow):
 <pre>
 0:000&gt; ~1429 kv
 
-ChildEBP 
-
-RetAddr  Args to Child
-6645f334 7c59a0a2 ... NTDLL!ZwWaitForSingleObject+0xb (FPO: [3,0,0])
-6645f35c 7c57b40f ... KERNEL32!WaitForSingleObjectEx+0x71 (FPO: [Non-Fpo])
-6645f36c 004054c3 ... KERNEL32!WaitForSingleObject+0xf (FPO: [2,0,0])
-WARNING: Stack unwind information not available. Following frames may be wrong.
-6645f690 004060ec ... Service+0x54c3 6645f764 77d79970 Service+0x60ec6645f788 
+NTDLL!ZwWaitForSingleObject+0xb 
+KERNEL32!WaitForSingleObjectEx+0x71 
+KERNEL32!WaitForSingleObject+0xf 
+Service+0x54c3 6645f764 77d79970 Service+0x60ec6645f788 
 ...
-77d96460 ... rpcrt4!Invoke+0x30
-6645f7a0 77d9637a ... rpcrt4!NdrCallServerManager+0x15 (FPO: [4,0,2])
-6645fa90 77d9076f ... rpcrt4!NdrStubCall+0x200 (FPO: [Non-Fpo])
-6645faf4 7cef55fd ... rpcrt4!CStdStubBuffer_Invoke+0xc1 (FPO: [Non-Fpo])
-6645fb38 7cef58d8 ... OLE32!SyncStubInvoke+0x61 (FPO: [Non-Fpo])
-6645fb80 7ce8833d ... OLE32!StubInvoke+0xa8 (FPO: [Non-Fpo])
-6645fbe4 7ce7a711 ... OLE32!CCtxComChnl::ContextInvoke+0xbb (FPO: [Non-Fpo])
-6645fc00 7cef54e2 ... OLE32!MTAInvoke+0x18 (FPO: [Non-Fpo])
-6645fc30 7cef5c06 ... OLE32!AppInvoke+0xb5 (FPO: [Non-Fpo])
-6645fcf0 7cef3360 ... OLE32!ComInvokeWithLockAndIPID+0x297 (FPO: [Non-Fpo])
-6645fd30 77d545b1 ... OLE32!ThreadInvoke+0x1b7 (FPO: [Non-Fpo])
-6645fd68 77d39463 ... rpcrt4!DispatchToStubInC+0x32 (FPO: [Non-Fpo])
-6645fdc0 77d39337 ... rpcrt4!RPC_INTERFACE::DispatchToStubWorker+0x100 (FPO: [Non-Fpo])
-6645fde0 77d39603 ... rpcrt4!RPC_INTERFACE::DispatchToStub+0x5e (FPO: [Non-Fpo])
-6645fe10 77d4740d ... rpcrt4!RPC_INTERFACE::DispatchToStubWithObject+0xa9 (FPO: [Non-Fpo])
-6645fe44 77d47634 ... rpcrt4!OSF_SCALL::DispatchHelper+0xa1 (FPO: [Non-Fpo])
-6645fe58 77d46f3b ... rpcrt4!OSF_SCALL::DispatchRPCCall+0x121 (FPO: [Non-Fpo])
-6645fe90 77d466ac ... rpcrt4!OSF_SCALL::ProcessReceivedPDU+0x68f (FPO: [Non-Fpo])
-6645feb0 77d48730 ... rpcrt4!OSF_SCALL::BeginRpcCall+0x183 (FPO: [Uses EBP] [2,0,4])
-6645ff10 77d5154b ... rpcrt4!OSF_SCONNECTION::ProcessReceiveComplete+0x326 (FPO: [Non-Fpo])
-6645ff20 77d516b8 ... rpcrt4!ProcessConnectionServerReceivedEvent+0x1b (FPO: [7,0,0])
-6645ff74 77d514bd ... rpcrt4!LOADABLE_TRANSPORT::ProcessIOEvents+0xcd (FPO: [Non-Fpo])
-6645ff78 77d3af8d ... rpcrt4!ProcessIOEventsWrapper+0x9 (FPO: [1,0,0])
-6645ffa8 77d37e88 ... rpcrt4!BaseCachedThreadRoutine+0x4f (FPO: [Non-Fpo])
-6645ffb4 7c57b3bc ... rpcrt4!ThreadStartRoutine+0x18 (FPO: [Non-Fpo])
-6645ffec 00000000 ... KERNEL32!BaseThreadStart+0x52 (FPO: [Non-Fpo])
+rpcrt4!Invoke+0x30
+rpcrt4!NdrCallServerManager+0x15 
+rpcrt4!NdrStubCall+0x200 
+rpcrt4!CStdStubBuffer_Invoke+0xc1 
+OLE32!SyncStubInvoke+0x61 
+OLE32!StubInvoke+0xa8 
+OLE32!CCtxComChnl::ContextInvoke+0xbb 
+OLE32!MTAInvoke+0x18 
+OLE32!AppInvoke+0xb5 
+OLE32!ComInvokeWithLockAndIPID+0x297 
+OLE32!ThreadInvoke+0x1b7 
+rpcrt4!DispatchToStubInC+0x32 
+rpcrt4!RPC_INTERFACE::DispatchToStubWorker+0x100 
+rpcrt4!RPC_INTERFACE::DispatchToStub+0x5e 
+rpcrt4!RPC_INTERFACE::DispatchToStubWithObject+0xa9 
+rpcrt4!OSF_SCALL::DispatchHelper+0xa1 
+rpcrt4!OSF_SCALL::DispatchRPCCall+0x121 
+rpcrt4!OSF_SCALL::ProcessReceivedPDU+0x68f 
+rpcrt4!OSF_SCALL::BeginRpcCall+0x183 
+rpcrt4!OSF_SCONNECTION::ProcessReceiveComplete+0x326 
+rpcrt4!ProcessConnectionServerReceivedEvent+0x1b 
+rpcrt4!LOADABLE_TRANSPORT::ProcessIOEvents+0xcd 
+rpcrt4!ProcessIOEventsWrapper+0x9 
+rpcrt4!BaseCachedThreadRoutine+0x4f 
+rpcrt4!ThreadStartRoutine+0x18 
+KERNEL32!BaseThreadStart+0x52 
 </pre>
 <p>Através das funções de RPC e OLE32 podemos concluir que se trata de uma chamada direta para uma interface COM. Bom, existem centenas de métodos e dezenas de interfaces nesse serviço, tornando mais fácil tentar desmontar a chamada inicial que o rpcrt4 faz ao nosso módulo.</p>
 
 <pre>
 0:000&gt; ub 77d79970
-
 rpcrt4!Invoke+0x20:
-77d79960 fd              std
-77d79961 f3a5            rep movs dword ptr es:[edi],dword ptr [esi]
-77d79963 8b45f4          mov     eax,dword ptr [ebp-0Ch]
-77d79966 50              push    eax
-77d79967 669d            popf
-77d79969 669d            popf
-77d7996b 8b4508          mov     eax, dword ptr [ebp+8]
-77d7996e ffd0            call    eax
+std
+rep movs dword ptr es:[edi],dword ptr [esi]
+mov     eax,dword ptr [ebp-0Ch]
+push    eax
+popf
+popf
+mov     eax, dword ptr [ebp+8]
+call    eax
 </pre>
 <p>Nossa função é obtida em ebp+8. Podemos obter esse endereço pelo campo ChildEBP da função em questão.</p>
 
@@ -209,64 +195,64 @@ rpcrt4!Invoke+0x20:
 0:000&gt; dd 6645f788 +8 l1 6645f790  00406061
 0:000&gt; uf 00406061
 Service+0x6061:
-00406061 55              push    ebp
-00406062 8bec            mov     ebp,esp
-00406064 81ecc8000000    sub     esp,0C8h
-0040606a 833db09f410000 cmp dword ptr [Service+0x19fb0 (00419fb0)],0
-00406071 751b            jne     Service+0x608e (0040608e)
+push    ebp
+mov     ebp,esp
+sub     esp,0C8h
+cmp dword ptr [Service+0x19fb0 (00419fb0)],0
+jne     Service+0x608e (0040608e)
 
 Service+0x6073:
-00406073 6a00            push    0
-00406075 6860514100      push    offset Service+0x15160 (00415160)
-0040607a b9609e4100      mov     ecx,offset Service+0x19e60 (00419e60)
-0040607f e822080000      call    Service+0x68a6 (004068a6)
-00406084 8b4514          mov     eax,dword ptr [ebp+14h]
-00406087 66c7002f00      mov word ptr [eax],2Fh
+push    0
+push    offset Service+0x15160 (00415160)
+mov     ecx,offset Service+0x19e60 (00419e60)
+call    Service+0x68a6 (004068a6)
+mov     eax,dword ptr [ebp+14h]
+mov word ptr [eax],2Fh
 
-0040608c eb65            jmp     Service+0x60f3 (004060f3)
+jmp     Service+0x60f3 (004060f3)
 
 Service+0x608e:
-0040608e 56              push    esi
-0040608f 8b7508          mov     esi,dword ptr [ebp+8]
-00406092 837e5200        cmp     dword ptr [esi+52h],0
-00406096 7430            je      Service+0x60c8 (004060c8)
+push    esi
+mov     esi,dword ptr [ebp+8]
+cmp     dword ptr [esi+52h],0
+je      Service+0x60c8 (004060c8)
 
 Service+0x6098:
-00406098 8d8538ffffff    lea     eax,[ebp-0C8h]
-0040609e 6830514100      push    offset Service+0x15130 (00415130)
-004060a3 50              push    eax
-004060a4 e85f4d0000      call    Service+0xae08 (0040ae08)
-004060a9 59              pop     ecx
-004060aa 59              pop     ecx
-004060ab 6a00            push    0
-004060ad 8d8538ffffff    lea     eax,[ebp-0C8h]
-004060b3 50              push    eax
-004060b4 b9609e4100      mov     ecx,offset Service+0x19e60 (00419e60)
-004060b9 e8e8070000      call    Service+0x68a6 (004068a6)
-004060be 8b4514          mov     eax,dword ptr [ebp+14h]
-004060c1 66c7000a40      mov     word ptr [eax],400Ah
-004060c6 eb2a            jmp     Service+0x60f2 (004060f2)
+lea     eax,[ebp-0C8h]
+push    offset Service+0x15130 (00415130)
+push    eax
+call    Service+0xae08 (0040ae08)
+pop     ecx
+pop     ecx
+push    0
+lea     eax,[ebp-0C8h]
+push    eax
+mov     ecx,offset Service+0x19e60 (00419e60)
+call    Service+0x68a6 (004068a6)
+mov     eax,dword ptr [ebp+14h]
+mov     word ptr [eax],400Ah
+jmp     Service+0x60f2 (004060f2)
 
 Service+0x60c8:
-004060c8 6804010000      push    104h
-004060cd 8d868c010000    lea     eax,[esi+18Ch]
-004060d3 50              push    eax
-004060d4 ff750c          push    dword ptr [ebp+0Ch]
-004060d7 ff158c304100    call    dword ptr [Service+0x1308c (0041308c)]
-004060dd 668b4510        mov     ax,word ptr [ebp+10h]
-004060e1 8bce            mov     ecx,esi
-004060e3 66894648        mov     word ptr [esi+48h],ax
-004060e7 e892f2ffff      call    Service+0x537e (0040537e)
-004060ec 8b4d14          mov     ecx,dword ptr [ebp+14h]
-004060ef 668901          mov     word ptr [ecx],ax
+push    104h
+lea     eax,[esi+18Ch]
+push    eax
+push    dword ptr [ebp+0Ch]
+call    dword ptr [Service+0x1308c (0041308c)]
+mov     ax,word ptr [ebp+10h]
+mov     ecx,esi
+mov     word ptr [esi+48h],ax
+call    Service+0x537e (0040537e)
+mov     ecx,dword ptr [ebp+14h]
+mov     word ptr [ecx],ax
 
 Service+0x60f2:
-004060f2 5e              pop     esi
+pop     esi
 
 Service+0x60f3:
-004060f3 33c0            xor     eax,eax
-004060f5 c9              leave
-004060f6 c21000          ret     10h
+xor     eax,eax
+leave
+ret     10h
 </pre>
 <p>Note como a função compara algo com zero. Caso não seja zero ela continua. Caso contrário ela vai para um ponto que chama uma função interna e move um código de erro para um ponteiro recebido como parâmetro, o que é muito normal, se lembrarmos que as funções COM de um programa em C devem retornar o código da chamada no retorno (S_OK) e o código de erro em um lResult da vida.</p>
 
@@ -286,10 +272,10 @@ STDMETHODIMP CService::Open(&lt;params&gt;, PLONG *pctReturn)
 <pre>
 #define OSRL_ERR  44  /* Data file serial number overflow */
 #define KLEN_ERR  45  /* Key length exceeds MAXLEN parameter */
-#define  FUSE_ERR  46  /* File number already in use */
+#define FUSE_ERR  46  /* File number already in use */
 #define FINT_ERR  47  /* database has not been initialized */
 #define FMOD_ERR  48  /* Operation incompatible with type of file */
-#define  FSAV_ERR  49  /* Could not save file */
+#define FSAV_ERR  49  /* Could not save file */
 #define LNOD_ERR  50  /* Could not lock node */
 </pre>
 <p>Ótimo. 2F, para os leigos (leigos? o que vocês estão fazendo aqui?), é 47 em decimal, exatamente nosso código listado acima. Com esse define podemos agora procurar no código-fonte e analisar todas as funções que retornam esse código em seu início. Para nossa sorte, existe apenas uma.</p>
@@ -322,17 +308,17 @@ STDMETHODIMP CService::Open(BYTE *fileName, COUNT keyNo, COUNT *pctReturn)
 
 <pre>
 Service+0x6073:
-00406073 6a00            push    0
-00406075 6860514100      push    offset Service+0x15160 (00415160)
-0040607a b9609e4100      mov     ecx,offset Service+0x19e60 (00419e60)
-0040607f e822080000      call Service+0x68a6 (004068a6)
-00406084 8b4514          mov     eax,dword ptr [ebp+14h]
-00406087 66c7002f00      mov     word ptr [eax],2Fh
-0040608c eb65            jmp     Service+0x60f3 (004060f3)
+push    0
+push    offset Service+0x15160 (00415160)
+mov     ecx,offset Service+0x19e60 (00419e60)
+call Service+0x68a6 (004068a6)
+mov     eax,dword ptr [ebp+14h]
+mov     word ptr [eax],2Fh
+jmp     Service+0x60f3 (004060f3)
 
 0:000&gt; da 00415160
-00415160  &quot;Error opening file before databa&quot;
-00415180  &quot;se to be initialized.&quot;
+&quot;Error opening file before databa&quot;
+&quot;se to be initialized.&quot;
 </pre>
 <p>E, agora sim, encontramos o culpado!</p>
 
@@ -346,7 +332,7 @@ Service+0x6073:
 <span id="novas_diferencas_no_bazaar" title="Novas diferenças no Bazaar"/></span>
 <section id="section_novas_diferencas_no_bazaar">
 <p class="title"><a href="2010-08.html#novas_diferencas_no_bazaar">#</a> Novas diferenças no Bazaar</p>
-<span class="title-heading">Caloni, 2010-08-04<a href="2010-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_novas_diferencas_no_bazaar')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2010-08-04 <a href="2010-07.html#twitter_eu">&lt;</a><a href="archive.html">archive</a><a href="2010-08.html#nao_e_minha_culpa">&gt;</a><a href="2010-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_novas_diferencas_no_bazaar')"><sup>[copy]</sup></a></span>
 
 <p>Novidade incrível nas novas versões do Bazaar. Dando continuidade à sua versão boiola gráfica, agora é possível configurar quantos visualizadores de diferenças você quiser. Na hora de ver a diferença em algum código-fonte, você pode optar pelo enrustido embutido ou, no caso, o meu favorito, WinMerge.</p>
 
@@ -362,17 +348,17 @@ Service+0x6073:
 <span id="a_origem" title="A Origem (Christopher Nolan, 2010)"/></span>
 <section id="section_a_origem">
 <p class="title"><a href="2010-08.html#a_origem">#</a> A Origem (Christopher Nolan, 2010)</p>
-<span class="title-heading">Caloni, 2010-08-06 <a href="2010-06.html#almas_a_venda">&lt;</a><a href="cinema.html">cinema</a><a href="2010-08.html#superman_o_filme">&gt;</a> <a href="2010-06.html#almas_a_venda">&lt;</a><a href="movies.html">movies</a><a href="2010-08.html#superman_o_filme">&gt;</a><a href="2010-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_a_origem')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2010-08-06 <a href="2010-06.html#almas_a_venda">&lt;</a><a href="cinema.html">cinema</a><a href="2010-08.html#superman_o_filme">&gt;</a> <a href="2010-06.html#almas_a_venda">&lt;</a><a href="movies.html">movies</a><a href="2010-08.html#superman_o_filme">&gt;</a> <a href="2010-08.html#como_achar_o_codigofonte_sem_simbolos">&lt;</a><a href="blog.html">blog</a><a href="2010-08.html#superman_o_filme">&gt;</a><a href="2010-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_a_origem')"><sup>[copy]</sup></a></span>
 
-<p>Christopher Nolan, tanto como diretor como roteirista, tem o dom de traduzir para o espectador as experiências de seus personagens na tela. Vimos isso em Amnésia com a montagem invertida fazendo o papel do protagonista que não consegue se lembrar o que estava fazendo cinco minutos atrás. Em O Grande Truque as trucagens do roteiro são tão ágeis que se assemelham a um número de mágica bem conduzido. E agora em A Origem participamos de um exercício narrativo que consegue unir todas as ideias modernas a respeito dos sonhos, mas que ao mesmo tempo se deixa levar pela metalinguagem e faz uma sutil homenagem ao próprio Cinema.</p>
+<p>O diretor e roteirista Christopher Nolan tem o dom de traduzir para o espectador as experiências de seus personagens na tela. Vimos isso em Amnésia com a montagem invertida fazendo o papel do protagonista que não consegue se lembrar o que estava fazendo cinco minutos atrás. Em O Grande Truque as trucagens do roteiro são tão ágeis que se assemelham a um número de mágica bem conduzido. E agora em A Origem participamos de um exercício narrativo que consegue unir todas as ideias modernas a respeito dos sonhos, mas que ao mesmo tempo se deixa levar pela metalinguagem e faz uma sutil homenagem ao próprio Cinema.</p>
 
-<p>A história gira em torno de Cobb (Leonardo DiCaprio), um espião que rouba informações sigilosas das pessoas diretamente em seus subconscientes através de uma nova tecnologia que permite o compartilhamento dos sonhos. Até que ele recebe a proposta de fazer exatamente o oposto: inserir uma ideia dentro do consciente da pessoa, algo muito mais difícil de se fazer e que exige adentrar em camadas mais inferiores ainda do ser. Esse "último trabalho" traria de volta sua família, pois ele conseguiria voltar para o país onde estão os seus filhos. No entanto, o fantasma, ou as memórias, de sua mulher morta serão um problema constante no decorrer da missão.</p>
+<p>A história gira em torno de Cobb (Leonardo DiCaprio), um espião que rouba informações sigilosas das pessoas diretamente em seus subconscientes através de uma nova tecnologia que permite o compartilhamento dos sonhos. Até que ele recebe a proposta de fazer exatamente o oposto: inserir uma ideia dentro do consciente da pessoa, algo muito mais difícil de se fazer e que exige adentrar em camadas mais inferiores ainda do ser. Esse "último trabalho" traria de volta sua família, pois ele conseguiria voltar para o país onde estão os seus filhos. No entanto, o fantasma das memórias de sua mulher morta serão um problema constante no decorrer da missão.</p>
 
-<p>"Brincando" de uma maneira absolutamente controladora com a edição, os pulos entre os sonhos são efetuados com uma precisão milimétrica, entregando ritmo e uma nova forma de ação: a multicamadas. Há uma sequência particularmente fascinante, no momento em que uma Van capota com todos seus passageiros dormindo. Uma viagem psicodélica em torno da noção de gravidade embutida no subconsciente.</p>
+<p>A edição do filme brinca de uma maneira absolutamente controladora. Os pulos entre os sonhos são efetuados com uma precisão milimétrica, entregando ritmo e uma nova forma de ação: a multicamadas. Há uma sequência particularmente fascinante, no momento em que uma Van capota com todos seus passageiros dormindo. Uma viagem psicodélica em torno da noção de gravidade embutida no subconsciente.</p>
 
-<p>Além disso, A Origem também é um pouco de filosofia. A questão que tortura a mulher de Cobb não é fruto de uma mente perturbada, mas possui argumentos bem embasados por alguém que se sentiu presa com outro alguém por décadas a fio; acaba se tornando fatal para ambos. Porém, sejamos justos: no universo que o filme retrata, pensar que toda a realidade pode ser um sonho não parece tão disparate assim.</p>
+<p>Além disso, A Origem também é um pouco de filosofia. A questão que tortura a mulher de Cobb não é fruto apenas de uma mente perturbada, mas de argumentos de alguém com história de vida e que que se sentiu presa a uma realidade infértil por décadas a fio, o que acabou se tornando fatal para ambos. E sejamos justos: no universo que o filme retrata, pensar que toda a realidade pode ser um sonho não parece tão disparate assim.</p>
 
-<p>É por isso que os personagens trágicos de A Origem acabam emprestando um pouco do clima "noir" do Cinema, pois seus futuros são sombrios graças ao passado sem volta. O tal do paradoxo espacial explorado pelos "arquitetos" de sonhos possui uma rima em sua própria estrutura, onde as coisas funcionam em nossa mente, conforme vemos a equipe se deparando com diversos desafios, cada um em sua camada de sonho. É dentro desse embate psicológico que reside a tensão de um filme que possui uma ação muito particular, e que provavelmente se revisto de tempos em tempos, irá se mostrar muito mais rico do que apenas um filme de ação.</p>
+<p>É por isso que os personagens trágicos de A Origem acabam emprestando um pouco do Cinema noir, pois seus futuros são sombrios graças ao passado sem volta. O tal do paradoxo espacial explorado pelos arquitetos de sonhos possui uma rima em sua própria estrutura, onde as coisas funcionam em nossa mente, conforme vemos a equipe se deparando com diversos desafios, cada um em sua camada de sonho. É dentro desse embate psicológico que reside a tensão de um filme que possui uma ação muito particular, e que provavelmente se revisto de tempos em tempos, irá se mostrar muito mais rico do que um mero filme de ação.</p>
 
 </section><hr/>
 
@@ -380,7 +366,7 @@ Service+0x6073:
 <span id="nao_e_minha_culpa" title="Não é minha culpa"/></span>
 <section id="section_nao_e_minha_culpa">
 <p class="title"><a href="2010-08.html#nao_e_minha_culpa">#</a> Não é minha culpa</p>
-<span class="title-heading">Caloni, 2010-08-08 <a href="2010-08.html#como_achar_o_codigofonte_sem_simbolos">&lt;</a><a href="computer.html">computer</a><a href="2010-08.html#foto_dos_melhores_momentos">&gt;</a><a href="2010-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_nao_e_minha_culpa')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2010-08-08 <a href="2010-08.html#como_achar_o_codigofonte_sem_simbolos">&lt;</a><a href="computer.html">computer</a><a href="2010-08.html#foto_dos_melhores_momentos">&gt;</a> <a href="2010-08.html#novas_diferencas_no_bazaar">&lt;</a><a href="archive.html">archive</a><a href="2010-08.html#foto_dos_melhores_momentos">&gt;</a><a href="2010-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_nao_e_minha_culpa')"><sup>[copy]</sup></a></span>
 
 <p>Recebi a dica de meu amigo kernel-mode sobre o aplicativo NotMyFault, escrito como ferramenta do livro Windows Internals e que basicamente gera telas azuis para análise.</p>
 
@@ -408,7 +394,7 @@ Service+0x6073:
 <span id="foto_dos_melhores_momentos" title="Foto dos melhores momentos"/></span>
 <section id="section_foto_dos_melhores_momentos">
 <p class="title"><a href="2010-08.html#foto_dos_melhores_momentos">#</a> Foto dos melhores momentos</p>
-<span class="title-heading">Caloni, 2010-08-12 <a href="2010-08.html#nao_e_minha_culpa">&lt;</a><a href="computer.html">computer</a><a href="2010-08.html#evento_c++">&gt;</a><a href="2010-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_foto_dos_melhores_momentos')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2010-08-12 <a href="2010-08.html#nao_e_minha_culpa">&lt;</a><a href="computer.html">computer</a><a href="2010-08.html#padroes_em_analise_de_dumps">&gt;</a> <a href="2010-08.html#nao_e_minha_culpa">&lt;</a><a href="archive.html">archive</a><a href="2010-08.html#os_mercenarios">&gt;</a><a href="2010-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_foto_dos_melhores_momentos')"><sup>[copy]</sup></a></span>
 
 <p>Mais um quebra-cabeças antes da nossa palestra, esse "baseado em fatos reais".</p>
 
@@ -434,7 +420,7 @@ Service+0x6073:
 <span id="superman_o_filme" title="Superman: O Filme (Richard Donner, 1978)"/></span>
 <section id="section_superman_o_filme">
 <p class="title"><a href="2010-08.html#superman_o_filme">#</a> Superman: O Filme (Richard Donner, 1978)</p>
-<span class="title-heading">Caloni, 2010-08-12 <a href="2010-08.html#a_origem">&lt;</a><a href="cinema.html">cinema</a><a href="2010-08.html#os_mercenarios">&gt;</a> <a href="2010-08.html#a_origem">&lt;</a><a href="movies.html">movies</a><a href="2010-08.html#os_mercenarios">&gt;</a><a href="2010-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_superman_o_filme')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2010-08-12 <a href="2010-08.html#a_origem">&lt;</a><a href="cinema.html">cinema</a><a href="2010-08.html#os_mercenarios">&gt;</a> <a href="2010-08.html#a_origem">&lt;</a><a href="movies.html">movies</a><a href="2010-08.html#os_mercenarios">&gt;</a> <a href="2010-08.html#a_origem">&lt;</a><a href="blog.html">blog</a><a href="2010-08.html#gerando_dumps_automatizados">&gt;</a><a href="2010-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_superman_o_filme')"><sup>[copy]</sup></a></span>
 
 <p>Cercado de evocações épicas em seus quadros, no tom solene da partida de Krypton (protagonizada por ninguém menos que Marlon Brando) e até mesmo na fotografia dos diversos ambientes em que vemos o personagem-título, o fato é que "Superman: O Filme" funciona bem exatamente por tudo isso junto, ainda aliado às convincentes interpretações dos personagens, uniformes em suas representações do mundo fantasioso vivido pelo homem de aço, que estranhamente não soa piegas ou exagerado, mas possui o tom cartunesco corretíssimo para manter a lenda e ao mesmo tempo não se levar a sério demais.</p>
 
@@ -452,7 +438,7 @@ Service+0x6073:
 
 <p>Olhe atentamente para Clark Kent e me diga o seguinte: mesmo sabendo que ele é o Homem de Aço com óculos, é apenas isso que o separa do ser alienígena? Os ombros arqueados, o tique de sempre estar empurrando os aros, a voz fina que mal consegue balbuciar uma frase sem ser interrompido. O esforço da interpretação não fica só no tom solene ao vestir aquelas roupas coloridas. Há um personagem interpretando outro em Superman, e é isso que Chris Reeve faz com uma desenvoltura que torna tudo fácil (como se espremer ao tentar abrir uma garrafa).</p>
 
-<p>Em contraparte, não há como negar os esforços do diretor Richard Donner em tentar tornar as cenas de voo (a chamada principal para o filme na época era "Você vai acreditar que o homem pode voar") e torná-las leves e poéticas. É um marco nos efeitos visuais, mesmo hoje tendo sido ultrapassado. Já a lenda, essa parece que está longe de ser. Todos os trabalhos futuros devem se render e se deixar influenciar pelo primeiro grande filme sobre um super-herói.</p>
+<p>Em contraparte, não há como negar os esforços do diretor Richard Donner em tentar tornar as cenas de voo (a chamada principal para o filme na época era "Você vai acreditar que o homem pode voar") e torná-las leves e poéticas. É um marco nos efeitos visuais, mesmo hoje tendo sido ultrapassado. Já a lenda, essa parece que está longe de o ser.</p>
 
 </section><hr/>
 
@@ -460,7 +446,7 @@ Service+0x6073:
 <span id="os_mercenarios" title="Os Mercenários (Sylvester Stallone, 2010)"/></span>
 <section id="section_os_mercenarios">
 <p class="title"><a href="2010-08.html#os_mercenarios">#</a> Os Mercenários (Sylvester Stallone, 2010)</p>
-<span class="title-heading">Caloni, 2010-08-13 <a href="2010-08.html#superman_o_filme">&lt;</a><a href="cinema.html">cinema</a><a href="2010-08.html#domicilio_conjugal">&gt;</a> <a href="2010-08.html#superman_o_filme">&lt;</a><a href="movies.html">movies</a><a href="2010-08.html#domicilio_conjugal">&gt;</a><a href="2010-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_os_mercenarios')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2010-08-13 <a href="2010-08.html#superman_o_filme">&lt;</a><a href="cinema.html">cinema</a><a href="2010-08.html#domicilio_conjugal">&gt;</a> <a href="2010-08.html#superman_o_filme">&lt;</a><a href="movies.html">movies</a><a href="2010-08.html#domicilio_conjugal">&gt;</a> <a href="2010-08.html#foto_dos_melhores_momentos">&lt;</a><a href="archive.html">archive</a><a href="2010-08.html#domicilio_conjugal">&gt;</a><a href="2010-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_os_mercenarios')"><sup>[copy]</sup></a></span>
 
 <p>Usando uma steady cam e iniciando no tom de documentário, Os Mercenários traz uma gangue de atores milionários que, em seus devidos personagens unidimensionais, fazem operações de guerra por uns trocados. A primeira cena, aliás, resume bem o que teremos no resto das cenas de ação: muito sangue. Tanto sangue que, no início, vemos o resto da matança através de uma lente de visão noturno, para não afastar de imediato o espectador que ainda verá muitas cabeças explodindo e corpos rolando.</p>
 
@@ -479,97 +465,50 @@ Service+0x6073:
 </section><hr/>
 
 
-<span id="evento_c++" title="Evento C++"/></span>
-<section id="section_evento_c++">
-<p class="title"><a href="2010-08.html#evento_c++">#</a> Evento C++</p>
-<span class="title-heading">Caloni, 2010-08-16 <a href="2010-08.html#foto_dos_melhores_momentos">&lt;</a><a href="computer.html">computer</a><a href="2010-08.html#gerando_dumps_automatizados">&gt;</a><a href="2010-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_evento_c++')"><sup>[copy]</sup></a></span>
+<span id="padroes_em_analise_de_dumps" title="Padrões em análise de dumps"/></span>
+<section id="section_padroes_em_analise_de_dumps">
+<p class="title"><a href="2010-08.html#padroes_em_analise_de_dumps">#</a> Padrões em análise de dumps</p>
+<span class="title-heading">Caloni, 2010-08-16 <a href="2010-08.html#foto_dos_melhores_momentos">&lt;</a><a href="computer.html">computer</a><a href="2010-08.html#gerando_dumps_automatizados">&gt;</a><a href="2010-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_padroes_em_analise_de_dumps')"><sup>[copy]</sup></a></span>
 
-<p>Esse fim-de-semana houve o tão falado evento C++, com a presença de dezenas de pessoas, algo que eu sinceramente não esperava. O bom desse evento foi saber que existem tantas pessoas interessadas em manter contato com quem gosta e pratica essa linguagem e também em saber que o nível técnico das palestras estão de alto para avançado.</p>
+<p>Vamos dar uma olhada em certos padrões de crash dump e stacks muito comuns no dia-a-dia.</p>
 
-<p>Infelizmente em nenhuma das duas palestras práticas (minha e do Fernando) houve participação interativa, e ninguém que eu saiba abriu meu pacote-surpresa com os dumps a serem analisados. De qualquer forma, minha palestra ficou bagunçada pelo excesso de conteúdo e falta de tempo, o que me fez dar boas risadas ao ouvir no twitter que <a href="http://twitter.com/nicolasgavlak/status/21201995301">minha palestra foi mais um brainstorm</a>. A intenção não era essa, claro, mas meu claro despreparo para muito conteúdo gerou essa impressão. Espero que do pouco que consegui explicar alguém tenha achado utilidade.</p>
-
-<p>E, pelo jeito, futuramente irei aplicar essa mesma metodologia brainstorm em um videocast, que ainda não decidi como irei preparar. A ideia é analisarmos alguns dumps em conjunto e, para os que acompanharem online, a interatividade de perguntas &amp; respostas.</p>
-
-<p>Mas enquanto isso não acontece vamos dar uma olhada no que tínhamos no <a href="http://www.caloni.com.br/nao-e-minha-culpa">pacote-surpresa</a>.</p>
-
-<h4>1. NotMyFaultEither.exe.mdmp - Stack Trash</h4>
+<p>Stack Trash:</p>
 
 <pre>
-0:000&gt; kv
-ChildEBP RetAddr  Args to Child
-0012b200 7c90df3c 7c8025db 000000e8 00000000 ntdll!KiFastSystemCallRet
-0012b204 7c8025db 000000e8 00000000 0012b238 ntdll!NtWaitForSingleObject+0xc
-0012b268 7c802542 000000e8 000493e0 00000000 kernel32!WaitForSingleObjectEx+0xa8
-0012b27c 6998ada6 000000e8 000493e0 003a0043 kernel32!WaitForSingleObject+0x12
-0012bd70 6998aff1 000000c4 00000568 000000d0 faultrep!InternalGenerateMinidumpEx+0x335
-0012bd9c 6998b50a 000000c4 00000568 0012c698 faultrep!InternalGenerateMinidump+0x75
-0012c678 69986652 000000c4 00000568 0012c698 faultrep!InternalGenFullAndTriageMinidumps+0x8a
-0012dea0 69987d3d 0012df18 0015c300 00000000 faultrep!ReportFaultDWM+0x4e5
-0012e398 699882d8 0040a1dc 0012f1e0 ffffffff faultrep!StartManifestReportImmediate+0x268
-0012f404 7c8643c6 0040a1dc ffffffff 0012fc24 faultrep!ReportFault+0x55a
-Unable to load image C:\Documents and Settings\Administrador\Desktop\NotMyFaultEither.exe
-*** WARNING: Unable to verify timestamp for NotMyFaultEither.exe
-*** ERROR: Module load completed but symbols could not be loaded for NotMyFaultEither.exe
-0012f678 004018aa 0040a1dc e280eec4 1d7f113b kernel32!UnhandledExceptionFilter+0x55b
-WARNING: Stack unwind information not available. Following frames may be wrong.
-0012f9ac 00401357 dededede dededede dededede NotMyFaultEither+0x18aa
-0012fbe8 dededede dededede dededede dededede NotMyFaultEither+0x1357
-0012fbec dededede dededede dededede dededede 0xdededede
-0012fbf4 dededede dededede dededede dededede 0xdededede
-...
+RetAddr  Args to Child
+7c8643c6 0040a1dc ffffffff 0012fc24 faultrep!ReportFault+0x55a
+004018aa 0040a1dc e280eec4 1d7f113b kernel32!UnhandledExceptionFilter+0x55b
+00401357 dededede dededede dededede Application+0x18aa
+dededede dededede dededede dededede Application+0x1357
+dededede dededede dededede dededede 0xdededede
+dededede dededede dededede dededede 0xdededede
 </pre>
-<p>Como foi visto na palestra, uma pilha nesse estado demonstra claramente alguma variável que estourou e corrompeu o resto da pilha de chamadas. Na hora de voltar para a função chamadora, o endereço usado foi o endereço reescrito por lixo, e daí temos o "crash-pattern" Stack Trash.</p>
+<p>Uma pilha nesse estado demonstra claramente alguma variável que estourou e corrompeu o resto da pilha de chamadas (note o padrão 0xdededede). Na hora de voltar para a função chamadora, o endereço usado foi o endereço reescrito por lixo, e daí temos o "crash-pattern" Stack Trash.</p>
 
-<h4>2. NotMyFaultEither.mdmp - Dead Lock</h4>
+<p>Dead Lock:</p>
 
 <pre>
-0:000&gt; kv
-ChildEBP RetAddr  Args to Child
-0012f900 7c90df3c 7c8025db 0000007c 00000000 ntdll!KiFastSystemCallRet
-0012f904 7c8025db 0000007c 00000000 00000000 ntdll!NtWaitForSingleObject+0xc
-0012f968 7c802542 0000007c ffffffff 00000000 kernel32!WaitForSingleObjectEx+0xa8
-0012f97c 00401176 0000007c ffffffff 00000111 kernel32!WaitForSingleObject+0x12
-WARNING: Stack unwind information not available. Following frames may be wrong.
-0012f9c0 7c910202 00000002 001506e8 00150000 NotMyFaultEither+0x1176
-0012f9f8 7e3746d3 01010050 00000000 00000000 ntdll!RtlpAllocateFromHeapLookaside+0x42
-0012fa5c 7e382672 01010050 01100068 7e3a4716 user32!DrawStateW+0x5cd
-0012fae8 7e382c75 001563ac 01010050 00000003 user32!xxxBNDrawText+0x313
-0012fb20 002d0036 00000000 00000020 0012fb3c user32!xxxDrawButton+0xbb
-0012fb30 7e3799d8 0000800a 0012fbc8 7e375ba2 0x2d0036
-0012fb3c 7e375ba2 0000800a 002d0036 fffffffc user32!NotifyWinEvent+0xd
-0012fbc8 00000000 002d0036 004011b0 dcbaabcd user32!ButtonWndProcWorker+0x79b
+RetAddr  Args to Child
+7c90df3c 7c8025db 0000007c 00000000 ntdll!KiFastSystemCallRet
+7c8025db 0000007c 00000000 00000000 ntdll!NtWaitForSingleObject+0xc
+7c802542 0000007c ffffffff 00000000 kernel32!WaitForSingleObjectEx+0xa8
+00401176 0000007c ffffffff 00000111 kernel32!WaitForSingleObject+0x12
+7c910202 00000002 001506e8 00150000 Application+0x1176
 0:000&gt; !handle 0000007c
 Handle 0000007c
   Type           Thread
 0:000&gt; ~* kv
-
-.  0  Id: 5e4.39c Suspend: 0 Teb: 7ffdd000 Unfrozen
-ChildEBP RetAddr  Args to Child
-0012f900 7c90df3c 7c8025db 0000007c 00000000 ntdll!KiFastSystemCallRet
-0012f904 7c8025db 0000007c 00000000 00000000 ntdll!NtWaitForSingleObject+0xc
-0012f968 7c802542 0000007c ffffffff 00000000 kernel32!WaitForSingleObjectEx+0xa8
-0012f97c 00401176 0000007c ffffffff 00000111 kernel32!WaitForSingleObject+0x12
-WARNING: Stack unwind information not available. Following frames may be wrong.
-0012f9c0 7c910202 00000002 001506e8 00150000 NotMyFaultEither+0x1176
-0012f9f8 7e3746d3 01010050 00000000 00000000 ntdll!RtlpAllocateFromHeapLookaside+0x42
-0012fa5c 7e382672 01010050 01100068 7e3a4716 user32!DrawStateW+0x5cd
-0012fae8 7e382c75 001563ac 01010050 00000003 user32!xxxBNDrawText+0x313
-0012fb20 002d0036 00000000 00000020 0012fb3c user32!xxxDrawButton+0xbb
-0012fb30 7e3799d8 0000800a 0012fbc8 7e375ba2 0x2d0036
-0012fb3c 7e375ba2 0000800a 002d0036 fffffffc user32!NotifyWinEvent+0xd
-0012fbc8 00000000 002d0036 004011b0 dcbaabcd user32!ButtonWndProcWorker+0x79b
-
+...
    1  Id: 5e4.6a4 Suspend: 0 Teb: 7ffdc000 Unfrozen
-ChildEBP RetAddr  Args to Child
-00b8ff10 7c90df3c 7c91b22b 00000080 00000000 ntdll!KiFastSystemCallRet
-00b8ff14 7c91b22b 00000080 00000000 00000000 ntdll!NtWaitForSingleObject+0xc
-00b8ff9c 7c901046 0040e940 004010e0 0040e940 ntdll!RtlpWaitForCriticalSection+0x132
-00b8ffa4 004010e0 0040e940 00000000 00000000 ntdll!RtlEnterCriticalSection+0x46
-WARNING: Stack unwind information not available. Following frames may be wrong.
-00b8ffec 00000000 004010c0 0012f99c 00000000 NotMyFaultEither+0x10e0
+RetAddr  Args to Child
+7c90df3c 7c91b22b 00000080 00000000 ntdll!KiFastSystemCallRet
+7c91b22b 00000080 00000000 00000000 ntdll!NtWaitForSingleObject+0xc
+7c901046 0040e940 004010e0 0040e940 ntdll!RtlpWaitForCriticalSection+0x132
+004010e0 0040e940 00000000 00000000 ntdll!RtlEnterCriticalSection+0x46
+00000000 004010c0 0012f99c 00000000 Application+0x10e0
 0:000&gt; !cs 0040e940
 -----------------------------------------
-Critical section   = 0x0040e940 (NotMyFaultEither+0xE940)
+Critical section   = 0x0040e940 (Application+0xE940)
 DebugInfo          = 0x00154498
 LOCKED
 LockCount          = 0x1
@@ -578,33 +517,24 @@ RecursionCount     = 0x1
 LockSemaphore      = 0x80
 SpinCount          = 0x00000000
 </pre>
-<p>A thread ativa no momento do dump aguardava por outra thread. Listando todas as threads do processo temos a primeira e a segunda, que tenta entrar em um critical section. Quando vemos que aquele CS estava sendo bloqueado pela primeira thread vemos claramente se tratar de um dead lock.</p>
+<p>A thread ativa no momento do dump aguardava por outra thread. Listando todas as threads do processo temos a primeira e a segunda, que tenta entrar em um critical section. Quando vemos que aquele CS estava sendo bloqueado pela primeira thread vemos poder se tratar de um dead lock.</p>
 
-<h4>3. NotMyFaultEither_100808_172407.dmp - Access Violation</h4>
+<p>Access Violation:</p>
 
 <pre>
 0:000&gt; kv
-ChildEBP RetAddr  Args to Child
-WARNING: Stack unwind information not available. Following frames may be wrong.
-0012f9cc 7e37f916 01010052 005a0049 0012f9f4 NotMyFaultEither+0x10a3
-0012fa58 7e37f991 01010052 00000043 01100076 user32!ClientFrame+0xe0
-0012fa7c 7e382909 01010052 0012fa98 00000000 user32!DrawFocusRect+0x40
-0012fae8 7e382c75 00156304 01010052 00000003 user32!xxxBNDrawText+0x3e9
-0012fb20 001100a0 00000000 00000020 0012fb3c user32!xxxDrawButton+0xbb
-0012fb30 7e3799d8 0000800a 0012fbc8 7e375ba2 0x1100a0
-0012fb3c 7e375ba2 0000800a 001100a0 fffffffc user32!NotifyWinEvent+0xd
-0012fbc8 00000000 001100a0 004010f0 dcbaabcd user32!ButtonWndProcWorker+0x79b
+RetAddr  Args to Child
+7e37f916 01010052 005a0049 0012f9f4 Application+0x10a3
+7e37f991 01010052 00000043 01100076 user32!ClientFrame+0xe0
 0:000&gt; ? eax+edx
 Evaluate expression: 0 = 00000000
 0:000&gt; u
-NotMyFaultEither+0x10a3:
+Application+0x10a3:
 004010a3 66890c02        mov     word ptr [edx+eax],cx
-004010a7 83c002          add     eax,2
-004010aa 6685c9          test    cx,cx
 </pre>
-<p>O disassemble da instrução inválida tenta escrever claramente em cima do endereço zerado (edx + eax). Dessa forma fica fácil saber que esse tipo de escrita não é permitido, constituindo nosso famosíssimo AV.</p>
+<p>O disassembly da instrução inválida tenta escrever claramente em cima do endereço zerado (edx + eax). Dessa forma fica fácil saber que esse tipo de escrita não é permitido, constituindo nosso famosíssimo AV.</p>
 
-<h4>4. NotMyFaultEither_100808_175404.dmp - Exception not Handled</h4>
+<p>Exception not Handled:</p>
 
 <pre>
 eax=00000000 ebx=00000111 ecx=7c91003d edx=00010000 esi=00330120 edi=7e374dfa
@@ -613,19 +543,12 @@ cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
 ntdll!DbgBreakPoint:
 7c90120e cc              int     3
 0:000&gt; kv
-ChildEBP RetAddr  Args to Child
-0012f99c 004011ec 0012fc24 004010d0 0012fbe8 ntdll!DbgBreakPoint (FPO: [0,0,0])
-WARNING: Stack unwind information not available. Following frames may be wrong.
-0012f9cc 7e37f916 01010054 005a0049 0012f9f4 NotMyFaultEither+0x11ec
-0012fa58 7e37f991 01010054 00000043 01100076 user32!ClientFrame+0xe0
+RetAddr  Args to Child
+004011ec 0012fc24 004010d0 0012fbe8 ntdll!DbgBreakPoint (FPO: [0,0,0])
+7e37f916 01010054 005a0049 0012f9f4 Application+0x11ec
+7e37f991 01010054 00000043 01100076 user32!ClientFrame+0xe0
 </pre>
-<p>Esse foi meio de brinde. Uma exceção de breakpoint (int 3, ntdll!DbgBreakPoint) lançada sem um depurador atachado implica em derrubamento do processo, pois é uma exceção como outra qualquer. O programador deve ter esquecido um DebugBreak ou algo que o valha no código de produção, que acabou sendo executado.</p>
-
-<h5>5. ntdll_cliente.dll - Importação de símbolos</h5>
-
-<img src="/journal/img/evento_c_vm_sony_xp_2010_08_08_17_59_22.png"/>
-
-<p>Essa foi a DLL encontrada no cliente quando ocorreu o problema relatado na imagem, também em anexo. Isso foi demonstrado na palestra com a ajuda do meu script que carrega DLLs, além de um pouco de sorte. Podemos analisar esse caso com mais calma em outro artigo. Acho que já falei demais por aqui.</p>
+<p>Uma exceção de breakpoint (int 3, ntdll!DbgBreakPoint) lançada sem um depurador atachado implica em derrubamento do processo, pois é uma exceção como outra qualquer. O programador deve ter esquecido um DebugBreak ou algo que o valha no código de produção, que acabou sendo executado.</p>
 
 </section><hr/>
 
@@ -633,7 +556,7 @@ WARNING: Stack unwind information not available. Following frames may be wrong.
 <span id="domicilio_conjugal" title="Domicilio Conjugal"/></span>
 <section id="section_domicilio_conjugal">
 <p class="title"><a href="2010-08.html#domicilio_conjugal">#</a> Domicilio Conjugal</p>
-<span class="title-heading">Caloni, 2010-08-17 <a href="2010-08.html#os_mercenarios">&lt;</a><a href="cinema.html">cinema</a><a href="2010-08.html#um_lugar_chamado_notting_hill">&gt;</a> <a href="2010-08.html#os_mercenarios">&lt;</a><a href="movies.html">movies</a><a href="2010-08.html#um_lugar_chamado_notting_hill">&gt;</a><a href="2010-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_domicilio_conjugal')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2010-08-17 <a href="2010-08.html#os_mercenarios">&lt;</a><a href="cinema.html">cinema</a><a href="2010-08.html#um_lugar_chamado_notting_hill">&gt;</a> <a href="2010-08.html#os_mercenarios">&lt;</a><a href="movies.html">movies</a><a href="2010-08.html#um_lugar_chamado_notting_hill">&gt;</a> <a href="2010-08.html#os_mercenarios">&lt;</a><a href="archive.html">archive</a><a href="2010-08.html#um_lugar_chamado_notting_hill">&gt;</a><a href="2010-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_domicilio_conjugal')"><sup>[copy]</sup></a></span>
 
 <p>Comédia romântica francesa datada de 70 e conduzida por François Truffaut. Nesse caso temos um casal vivendo sua vida em um condomínio de casas que mais lembra, nos minutos iniciais, um bom cortiço brasileiro. Mas aos poucos os detalhes culturais vão ganhando forma, não prejudicando a mensagem principal, que é contar a história de um casal como outro qualquer que passa por suas felicidades e tristezas, juntos ou separados.</p>
 
@@ -649,11 +572,11 @@ WARNING: Stack unwind information not available. Following frames may be wrong.
 <span id="gerando_dumps_automatizados" title="Gerando dumps automatizados"/></span>
 <section id="section_gerando_dumps_automatizados">
 <p class="title"><a href="2010-08.html#gerando_dumps_automatizados">#</a> Gerando dumps automatizados</p>
-<span class="title-heading">Caloni, 2010-08-26 <a href="2010-08.html#evento_c++">&lt;</a><a href="computer.html">computer</a><a href="2010-08.html#ofuscando_strings">&gt;</a><a href="2010-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_gerando_dumps_automatizados')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2010-08-26 <a href="2010-08.html#padroes_em_analise_de_dumps">&lt;</a><a href="computer.html">computer</a><a href="2010-08.html#ofuscando_strings">&gt;</a> <a href="2010-08.html#superman_o_filme">&lt;</a><a href="blog.html">blog</a><a href="2010-08.html#ofuscando_strings">&gt;</a><a href="2010-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_gerando_dumps_automatizados')"><sup>[copy]</sup></a></span>
 
 <p>Agora que a temporada das telas azuis passou estou às voltas com o nosso sistema de detecção de crashes, além de alguns dumps e logs pra relaxar de vez em quando.</p>
 
-<p>Fiquei impressionado com a simplicidade com que podemos capturar qualquer exceção que ocorra em um programa, independente da thread, e gravar um minidump com o contexto exato em que o problema ocorreu. O uso da função API <a href="http://msdn.microsoft.com/en-us/library/ms680634%28VS.85%29.aspx">SetUnhandledExceptionFilter</a> aliado com a já citada na palestra <a href="http://msdn.microsoft.com/en-us/library/ms680360%28VS.85%29.aspx">MiniDumpWriteDump</a> pode agilizar muito a correção de crashes triviais como Access Violation.</p>
+<p>Fiquei impressionado com a simplicidade com que podemos capturar qualquer exceção que ocorra em um programa, independente da thread, e gravar um minidump com o contexto exato em que o problema ocorreu. O uso da função API <a href="https://learn.microsoft.com/en-us/windows/win32/api/errhandlingapi/nf-errhandlingapi-setunhandledexceptionfilter">SetUnhandledExceptionFilter</a> aliado com a já citada na palestra <a href="https://learn.microsoft.com/en-us/windows/win32/api/minidumpapiset/nf-minidumpapiset-minidumpwritedump">MiniDumpWriteDump</a> pode agilizar muito a correção de crashes triviais como Access Violation.</p>
 
 <p>A mágica é tão bela que resolvi gravar um vídeo do que ocorreu quando compilei e testei o programa abaixo. Note que o tamanho do arquivo de dump ficou em torno dos 10 KB, ridículos nessa era de barateamento de espaço.</p>
 
@@ -714,7 +637,7 @@ int main()
 </pre>
 <img src="/journal/img/gerando_dumps_automatizados_finddump.png"/>
 
-<p>Espero com isso aliviar a carga pesada de A.V.s que sempre aparece quando menos se espera. Cuidar de toneladas de código legado exige algumas pitadas de automatização nos lugares certos. Como já dizia meu primeiro chefe: se a mente não pensa...</p>
+<p>Espero com isso aliviar a carga pesada de A.V.s que sempre aparece quando menos se espera. Cuidar de toneladas de código legado exige algumas pitadas de automatização nos lugares certos. Como já dizia meu primeiro chefe, que nem era de TI: a mente não pensa, o corpo paga.</p>
 
 </section><hr/>
 
@@ -722,7 +645,7 @@ int main()
 <span id="karate_kid_2010" title="Karate Kid"/></span>
 <section id="section_karate_kid_2010">
 <p class="title"><a href="2010-08.html#karate_kid_2010">#</a> Karate Kid</p>
-<span class="title-heading">Caloni, 2010-08-27 <a href="2010-08.html#um_lugar_chamado_notting_hill">&lt;</a><a href="cinema.html">cinema</a><a href="2010-09.html#enfim_viuva">&gt;</a> <a href="2010-08.html#um_lugar_chamado_notting_hill">&lt;</a><a href="movies.html">movies</a><a href="2010-09.html#enfim_viuva">&gt;</a><a href="2010-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_karate_kid_2010')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2010-08-27 <a href="2010-08.html#um_lugar_chamado_notting_hill">&lt;</a><a href="cinema.html">cinema</a><a href="2010-09.html#enfim_viuva">&gt;</a> <a href="2010-08.html#um_lugar_chamado_notting_hill">&lt;</a><a href="movies.html">movies</a><a href="2010-09.html#enfim_viuva">&gt;</a> <a href="2010-08.html#um_lugar_chamado_notting_hill">&lt;</a><a href="archive.html">archive</a><a href="2010-09.html#enfim_viuva">&gt;</a><a href="2010-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_karate_kid_2010')"><sup>[copy]</sup></a></span>
 
 <p>Esse é praticamente um remake do original, só que em vez de caratê, como o nome supõe, a luta do filme é o kung-fu, onde o mestre é nada mais nada menos que Jackie Chan, o Sr. Han, que irá treinar Jaden Smith, o filho de Will, para se preparar para o torneio de Kung Fue se livrar das perseguições da escola.</p>
 
@@ -740,7 +663,7 @@ int main()
 <span id="um_lugar_chamado_notting_hill" title="Um Lugar Chamado Notting Hill"/></span>
 <section id="section_um_lugar_chamado_notting_hill">
 <p class="title"><a href="2010-08.html#um_lugar_chamado_notting_hill">#</a> Um Lugar Chamado Notting Hill</p>
-<span class="title-heading">Caloni, 2010-08-27 <a href="2010-08.html#domicilio_conjugal">&lt;</a><a href="cinema.html">cinema</a><a href="2010-08.html#karate_kid_2010">&gt;</a> <a href="2010-08.html#domicilio_conjugal">&lt;</a><a href="movies.html">movies</a><a href="2010-08.html#karate_kid_2010">&gt;</a><a href="2010-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_um_lugar_chamado_notting_hill')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2010-08-27 <a href="2010-08.html#domicilio_conjugal">&lt;</a><a href="cinema.html">cinema</a><a href="2010-08.html#karate_kid_2010">&gt;</a> <a href="2010-08.html#domicilio_conjugal">&lt;</a><a href="movies.html">movies</a><a href="2010-08.html#karate_kid_2010">&gt;</a> <a href="2010-08.html#domicilio_conjugal">&lt;</a><a href="archive.html">archive</a><a href="2010-08.html#karate_kid_2010">&gt;</a><a href="2010-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_um_lugar_chamado_notting_hill')"><sup>[copy]</sup></a></span>
 
 <p>Esta é uma história estilo conto de fadas, em que uma famosa atriz, inalcançável pela maioria dos mortais, acaba visitando um pequeno bairro de Londres (o Notting Hill do título) e conhece o dono de uma loja de livros de viagem (e é curioso que provavelmente ela deve ter viajado para muitos dos lugares descritos nos livros de suas estantes) e vivem um inusitado romance.</p>
 
@@ -762,7 +685,7 @@ int main()
 <span id="ofuscando_strings" title="Ofuscando strings"/></span>
 <section id="section_ofuscando_strings">
 <p class="title"><a href="2010-08.html#ofuscando_strings">#</a> Ofuscando strings</p>
-<span class="title-heading">Caloni, 2010-08-30 <a href="2010-08.html#gerando_dumps_automatizados">&lt;</a><a href="computer.html">computer</a><a href="2010-10.html#tres_em_um">&gt;</a> <a href="2010-06.html#const_e_volatile">&lt;</a><a href="blog.html">blog</a><a href="2011-03.html#base64">&gt;</a><a href="2010-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_ofuscando_strings')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2010-08-30 <a href="2010-08.html#gerando_dumps_automatizados">&lt;</a><a href="computer.html">computer</a><a href="2010-10.html#tres_em_um">&gt;</a> <a href="2010-08.html#gerando_dumps_automatizados">&lt;</a><a href="blog.html">blog</a><a href="2010-10.html#curva_do_destino">&gt;</a><a href="2010-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_ofuscando_strings')"><sup>[copy]</sup></a></span>
 
 <p>Já fiz ofuscamento e embaralhamento de dados acho que umas três ou quatro vezes. Dessa vez, parti para o batidíssimo esquema de fazer o pré-processamento de um header com defines que irão virar estruturas reaproveitadas por uma função padrão que desofusca e ofusca aquela tripa de bytes em algo legível: a string original.</p>
 

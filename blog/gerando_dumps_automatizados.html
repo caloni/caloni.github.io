@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="gerando_dumps_automatizados" title="Gerando dumps automatizados"/></span>
+<section id="section_gerando_dumps_automatizados">
+<p class="title">Gerando dumps automatizados</p>
+<span class="title-heading">Caloni, 2010-08-26 computer blog</span>
+
+<p>Agora que a temporada das telas azuis passou estou às voltas com o nosso sistema de detecção de crashes, além de alguns dumps e logs pra relaxar de vez em quando.</p>
+
+<p>Fiquei impressionado com a simplicidade com que podemos capturar qualquer exceção que ocorra em um programa, independente da thread, e gravar um minidump com o contexto exato em que o problema ocorreu. O uso da função API <a href="https://learn.microsoft.com/en-us/windows/win32/api/errhandlingapi/nf-errhandlingapi-setunhandledexceptionfilter">SetUnhandledExceptionFilter</a> aliado com a já citada na palestra <a href="https://learn.microsoft.com/en-us/windows/win32/api/minidumpapiset/nf-minidumpapiset-minidumpwritedump">MiniDumpWriteDump</a> pode agilizar muito a correção de crashes triviais como Access Violation.</p>
+
+<p>A mágica é tão bela que resolvi gravar um vídeo do que ocorreu quando compilei e testei o programa abaixo. Note que o tamanho do arquivo de dump ficou em torno dos 10 KB, ridículos nessa era de barateamento de espaço.</p>
+
+<pre>
+/** @file OnCrash
+
+@brief Exemplo de como capturar exceções no seu programa.
+
+@author Wanderley Caloni &lt;wanderley.caloni@gmail.com&gt;
+@date 2010-08
+*/
+#include &lt;windows.h&gt;
+#include &lt;dbghelp.h&gt;
+#include &lt;time.h&gt;
+
+#pragma comment(lib, &quot;dbghelp.lib&quot;)
+
+LONG WINAPI CrashHandler(_EXCEPTION_POINTERS* ExceptionInfo)
+{
+    LONG ret = EXCEPTION_CONTINUE_SEARCH;
+    MINIDUMP_EXCEPTION_INFORMATION minidumpInfo;
+
+    minidumpInfo.ClientPointers = FALSE;
+    minidumpInfo.ThreadId = GetCurrentThreadId();
+    minidumpInfo.ExceptionPointers = ExceptionInfo;
+
+    HANDLE hFile = CreateFile(&quot;OnCrash.dmp&quot;, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, 0, NULL);
+
+    if( hFile != INVALID_HANDLE_VALUE )
+    {
+      MINIDUMP_TYPE dumpType = MiniDumpNormal;
+
+      if( MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), 
+        hFile, MiniDumpNormal, &amp;minidumpInfo, NULL, NULL) )
+      {
+        ret = EXCEPTION_EXECUTE_HANDLER;
+      }
+
+      CloseHandle(hFile);
+    }
+
+    return ret;
+}
+
+DWORD WINAPI CrashThread(PVOID)
+{
+    int* x = 0;
+    *x = 13;
+    return 0;
+}
+
+int main()
+{
+    SetUnhandledExceptionFilter(CrashHandler);
+    HANDLE crashThread = CreateThread(NULL, 0, CrashThread, NULL, 0, NULL);
+    WaitForSingleObject(crashThread, INFINITE);
+}
+</pre>
+<img src="/blog/img/gerando_dumps_automatizados_finddump.png"/>
+
+<p>Espero com isso aliviar a carga pesada de A.V.s que sempre aparece quando menos se espera. Cuidar de toneladas de código legado exige algumas pitadas de automatização nos lugares certos. Como já dizia meu primeiro chefe, que nem era de TI: a mente não pensa, o corpo paga.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="ofuscando_strings.html">[ofuscando_strings]</a>
+ <a href="superman_o_filme.html">[superman_o_filme]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>
