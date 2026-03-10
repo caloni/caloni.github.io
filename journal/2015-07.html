@@ -490,11 +490,15 @@ int main()
 
 <pre>
 // Using.h
-#pragma once 
-#define USING_FILE(version) static const Using st_Using ## __LINE__(&quot;using file &quot; __FILE__ &quot; &quot; version)
-#define USING_CLASS(name, version) static const Using st_Using ## __LINE__(&quot;using class &quot; #name &quot; &quot; version)
-#define USING_LIB(name, version) static const Using st_Using ## __LINE__(&quot;using lib &quot; #name &quot; &quot; version)
-#define USING_FUNCTION(version) static const Using st_Using ## __LINE__(&quot;using function &quot; __FUNCTION__ &quot; &quot; version)
+#pragma once
+#define USING_FILE(version) static const Using st_Using ##\
+  __LINE__(&quot;using file &quot; __FILE__ &quot; &quot; version)
+#define USING_CLASS(name, version) static const Using st_Using ##\
+  __LINE__(&quot;using class &quot; #name &quot; &quot; version)
+#define USING_LIB(name, version) static const Using st_Using ##\
+  __LINE__(&quot;using lib &quot; #name &quot; &quot; version)
+#define USING_FUNCTION(version) static const Using st_Using ##\
+  __LINE__(&quot;using function &quot; __FUNCTION__ &quot; &quot; version)
 
 class Using
 {

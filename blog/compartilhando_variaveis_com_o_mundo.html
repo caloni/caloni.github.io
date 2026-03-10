@@ -65,7 +65,7 @@ int main()
   g_coracao.meuCharAmigo = 'C';
   g_coracao.meuIntPreferido = 42;
   g_coracao.meuNumeroDePontoFlutuanteCamarada = 3.14159265358979323846264338;
-} 
+}
 </pre>
 <p>Aquele pragma do começo garante que qualquer instância do mesmo executável, mas processos distintos, irão compartilhar qualquer variável definida dentro da seção "shared". O nome na verdade não importa muito - é apenas usado para clareza - , mas o atributo do final, sim.</p>
 
@@ -153,7 +153,7 @@ VOID FreeSharedVariable(HANDLE varH, T* pVar)
     UnmapViewOfFile(pVar);
   if( varH )
     CloseHandle(varH);
-} 
+}
 </pre>
 <p>Como pode-se ver, o seu funcionamento é muito simples: uma função-template que recebe uma referência para um ponteiro de ponteiro do tipo da variável desejada, o seu nome global e retorna uma variável alocada na memória de cachê do sistema. Como contraparte existe uma função que abre essa memória baseada em seu nome e faz o cast (coversão de tipo) necessário. Ambas as chamadas devem chamar uma terceira função para liberar o recurso.</p>
 
@@ -192,7 +192,7 @@ int _tmain(int argc, PTSTR argv[])
       getchar();
     }
   }
-  else // não passou parâmetro: escreve na variável 
+  else // não passou parâmetro: escreve na variável
   // compartilhada e chama nova instância
   {
     TCHAR (*sharedVar)[100] = 0; // ponteiro para array de 100 TCHARs
@@ -213,7 +213,7 @@ int _tmain(int argc, PTSTR argv[])
   }
 
   return 0;
-} 
+}
 </pre>
 <p>Preciso lembrar que essa é uma versão inicial ainda, mas que pode muito bem ser melhorada. Duas idéias interessantes são: parametrizar a proteção da variável (através do SECURITY_ATTRIBUTES) e transformá-la em classe. Uma classe parece ser uma idéia bem popular. Afinal, tem tanta gente que só se consegue programar se o código estiver dentro de uma.</p>
 

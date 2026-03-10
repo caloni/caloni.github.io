@@ -138,10 +138,12 @@ role="navigation" aria-label="main navigation">
 int main()
 {
   int f1,f2,s=0;
-     for( f1 = 1; (f1 == 11 &amp;&amp; s != 5) ? s=5, f1=0, putchar(10) : ( f1 &lt;= 10 ) ? f1 = f1 : f1 = 12, f1 &lt;= 11 ; f1++ )
-      for( f2 = 1 + s; f2 &lt;= 5+s; f2++ ) printf(&quot;%dx%d=%d%c&quot;, f2, f1, f1 * f2, ( f2 == 5 + s ) ? 10 : 9);
+     for( f1 = 1; (f1 == 11 &amp;&amp; s != 5) ? s=5, f1=0, putchar(10) : ( f1 &lt;= 10 )
+     ? f1 = f1 : f1 = 12, f1 &lt;= 11 ; f1++ )
+      for( f2 = 1 + s; f2 &lt;= 5+s; f2++ ) printf(&quot;%dx%d=%d%c&quot;, f2, f1, f1 * f2,
+      ( f2 == 5 + s ) ? 10 : 9);
   return 0;
-} 
+}
 </pre>
 <p>Despite the fact the result is a strong candidate to <a href="http://www.ioccc.org">The International Obfuscated C Code Contest</a> the Linux guys told him the code was not successful on GCC, and somewhere inside those four lines there was a non-standard piece of code.</p>
 
@@ -172,7 +174,7 @@ error C2106: '=' : left operand must be l-value
   ( f1 &lt;= 10 ) ?
     f1 = f1
     :
-    f1 = 12, f1 &lt;= 11; 
+    f1 = 12, f1 &lt;= 11;
 </pre>
 <p>We have two ternary operators nestled. In accordance with C++ standard, the ternary operators have less precedence than the attribution operators and are evaluated from left to right. In other words, in first place all the atributions inside the expression are made before any ternary operator. After that, the first ternary operator is executed, followed by the second:</p>
 
@@ -186,7 +188,7 @@ error C2106: '=' : left operand must be l-value
 ) ?
   (f1 = f1)
   :
-  (f1 = 12), f1 &lt;= 11; 
+  (f1 = 12), f1 &lt;= 11;
 </pre>
 <p>Now let't take a look in C. In this language, different from C++, the ternary operators have more precedence than the attribution operators, and are executed from right to left. That means the first and last ternary operators are executed, ignoring the right attribution, and after that the first ternary operator is executed. Only after these two events the right attribution is evaluated:</p>
 
@@ -295,7 +297,7 @@ struct S
 char buffer[ sizeof( S.field2 ) + 1 ];
 
 // error C2070: '': illegal sizeof operand
-char buffer[ sizeof( S::field2 ) + 1 ]; 
+char buffer[ sizeof( S::field2 ) + 1 ];
 </pre>
 <p>In this first try (even being a nice one) we can clearly see by instinct that the construction is not supposed to work. The compiler error is not even clear. The member access operator (the point sign) needs to have as its left some variable or constant of the same type of the struct. Since the operand is the type itself, there is no deal.</p>
 
@@ -370,7 +372,7 @@ void ExecThread()
   }
 }
 
-int Functions[] = { 
+int Functions[] = {
   3, 4, 1, 2, 34, 66, 982
 };
 
@@ -384,7 +386,7 @@ int Start()
   }
 
   return 0;
-} 
+}
 </pre>
 <p>A proteção ainda não está aí. Mas fará parte intrínseca da thread de execução. Tudo que precisamos fazer é adicionar um tratamento de exceções e fazer chover ints 3. As exceções disparadas pela int 3 são capturadas por uma segunda função que antes de retornar o controle executa a próxima instrução enfileirada:</p>
 
@@ -405,10 +407,10 @@ void ExecThread()
       // breakpoint exception
       __asm int 3
 
-      // it stops the debugger 
-      // if we have an attached 
+      // it stops the debugger
+      // if we have an attached
       // debugger in the process
-      // or throws an exception 
+      // or throws an exception
       // if there is no one
     }
     __except( ExceptFilter() )
@@ -418,7 +420,7 @@ void ExecThread()
 
     Sleep(someTime);
   }
-} 
+}
 </pre>
 <p>O algoritmo da thread de execução continua o mesmo. Só que o ponto onde cada instrução é executada depende do lançamento de uma exceção. Note que essa exceção tem que ocorrer para que a chamada da próxima instrução ocorra. Isso é fundamental, pois dessa forma ninguém pode simplesmente retirar o int 3 do código para evitar o lançamento da exceção. Se fizer isso, então mais nenhuma instrução será executada.</p>
 
@@ -816,12 +818,12 @@ e = ( ( a ? b : c ) = d )
 <p>In the C++ language is interpreted as:</p>
 
 <pre>
-e = ( a ? b : ( c = d ) ) 
+e = ( a ? b : ( c = d ) )
 </pre>
 <p>In the C language case, we have a compilation error because the code is trying to assign a value to a lvalue (remember that lvalues can't be assigned to anything).</p>
 
 <pre>
-( a ? b : c ) = d 
+( a ? b : c ) = d
 </pre>
 <p>But in C++ there's no invalid assignment, what makes a no error compilation performed.</p>
 

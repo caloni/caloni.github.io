@@ -254,8 +254,6 @@ Use !analyze -v to get detailed debugging information.
 
 BugCheck C, {0, 0, 0, 0}
 
-*** ERROR: Module load completed but symbols could not be loaded for mydriver.sys
-
 Probably caused by : psseckbd.sys ( mydriver+199e )
 
 Followup: MachineOwner
@@ -288,7 +286,6 @@ LAST_CONTROL_TRANSFER:  from 804fa83f to 804f9c12
 STACK_TEXT:
 bad17bc0 804fa83f 0000000c 00000004 883a8eac nt!KeBugCheck+0x14
 bad17bfc bac9199e 00000004 e32e8928 00000000 nt!KeWaitForMultipleObjects+0x37
-WARNING: Stack unwind information not available. Following frames may be wrong.
 bad17c50 bac914d7 88d851e8 00000000 883a8030 mydriver+0x199e
 bad17c7c bac94058 899c0f38 8058006a 899c0f38 mydriver+0x14d7
 bad17c84 8058006a 899c0f38 8836b000 00000000 mydriver+0x4058
@@ -364,7 +361,7 @@ mydriver+0x199e:
 .text:00011996                 push    ebx
 .text:00011997                 push    edi
 
-.text:00011998 call ds:KeWaitForMultipleObjects.text:0001199E 
+.text:00011998 call ds:KeWaitForMultipleObjects.text:0001199E
 
 mov     eax, [esp+30h+var_14]
 .text:000119A2                 mov     edi, ds:ExFreePoolWithTag
@@ -390,8 +387,8 @@ while( maskAux )
 
 //...
 KeWaitForMultipleObjects(count,
-  waitObjects, 
-  WaitAll, 
+  waitObjects,
+  WaitAll,
   UserRequest,
   KernelMode,
   TRUE,
@@ -401,7 +398,7 @@ KeWaitForMultipleObjects(count,
 ExFreePool(...);
 ExFreePool(...);
 ExFreePool(...);
-//... 
+//...
 </pre>
 <p>Ora, ora. O número de processadores influencia no número de objetos que estaremos esperando na função de espera. Esse seria um bom motivo para gerar um MAXIMUMWAITOBJECTSEXCEEDED em máquinas onde existe mais de 3 processadores ativos, não? Talvez seja uma boa hora para atualizar esse código e torná-lo compatível com os novos Quad Core.</p>
 
@@ -654,7 +651,6 @@ cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000202
 ntdll!DbgBreakPoint:
 7c901230 cc              int     3
 0:000&gt; bp factorial
-*** WARNING: Unable to verify checksum for recursive-factorial1.exe
 0:000&gt; l+*
   WARNING: Line information loading disabled
 Source options are ffffffff:
@@ -806,7 +802,7 @@ Breakpoint 1, factorial (n=993) at recursive-factorial1.c:3
 
 <pre>
 return factorial(n - 1) * n;
-// o retorno da chamada recursiva 
+// o retorno da chamada recursiva
 // é parte de uma expressão
 </pre>
 <p>Por isso é necessário desenvolver uma segunda versão do código, que utiliza dois parâmetros para que aconteça a situação de tail recursion.</p>
@@ -1142,7 +1138,7 @@ switch( pMsg-&gt;message )
       pMsg-&gt;wParam = (WPARAM) g_tzPortAlphabet[offset];
     }
   }
-} 
+}
 </pre>
 <p>Simples assim. E temos um keylogger que troca caracteres! É impressionante como as coisas mais simples podem se transformar nos momentos mais divertidos de um programador em um feriado.</p>
 
@@ -1172,7 +1168,7 @@ HANDLE CreateAndGetProcessGodHandle(LPCTSTR lpApplicationName, LPTSTR lpCommandL
 HMODULE RemoteLoadLibrary(HANDLE hProcess, LPCTSTR lpFileName);
 
 /** Free DLL in another process. */
-BOOL RemoteFreeLibrary(HANDLE hProcess, HMODULE hModule); 
+BOOL RemoteFreeLibrary(HANDLE hProcess, HMODULE hModule);
 </pre>
 <p>Eis a rotina principal simplificada demonstrando como é simples a utilização das funções:</p>
 
@@ -1191,7 +1187,7 @@ if( hProc != NULL )
 
   CloseHandle(hProc);
 }
-//... 
+//...
 </pre>
 <p>A parte mais complicada talvez seja o que fazer quando a sua DLL é carregada. Considerando que ao ser chamada em seu ponto de entrada, o código da DLL possui algumas limitações (uma já citada; para mais, vide a ajuda de DllMain no MSDN), fiz uma "execução alternativa", criando uma thread na função DllMain:</p>
 
@@ -1227,7 +1223,7 @@ BOOL APIENTRY DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID lpReserve
         dwThrId));
         }
       break;
-      //... 
+      //...
 </pre>
 <p>A função da thread, por sua vez, é esperar pela finalização da thread DllMain (temos o handle dessa thread armazenado em g_hThrDllMain), fazer o que tem que fazer, e retornar, liberando ao mesmo tempo o handle da DLL criado para si:</p>
 
@@ -1251,7 +1247,7 @@ DWORD WINAPI RmThread(LPVOID lpParameter)
 
   // Do what the function name says.
   FreeLibraryAndExitThread(hDll, 0);
-} 
+}
 </pre>
 <p>A marca TODO é aonde seu código deve ser colocado (você pode tirar o MessageBox, se quiser). Como DllMain já foi previamente executada, essa parte do código está livre para fazer o que quiser no contexto do processo vizinho.</p>
 
@@ -1291,7 +1287,7 @@ int main()
   g_coracao.meuCharAmigo = 'C';
   g_coracao.meuIntPreferido = 42;
   g_coracao.meuNumeroDePontoFlutuanteCamarada = 3.14159265358979323846264338;
-} 
+}
 </pre>
 <p>Aquele pragma do começo garante que qualquer instância do mesmo executável, mas processos distintos, irão compartilhar qualquer variável definida dentro da seção "shared". O nome na verdade não importa muito - é apenas usado para clareza - , mas o atributo do final, sim.</p>
 
@@ -1379,7 +1375,7 @@ VOID FreeSharedVariable(HANDLE varH, T* pVar)
     UnmapViewOfFile(pVar);
   if( varH )
     CloseHandle(varH);
-} 
+}
 </pre>
 <p>Como pode-se ver, o seu funcionamento é muito simples: uma função-template que recebe uma referência para um ponteiro de ponteiro do tipo da variável desejada, o seu nome global e retorna uma variável alocada na memória de cachê do sistema. Como contraparte existe uma função que abre essa memória baseada em seu nome e faz o cast (coversão de tipo) necessário. Ambas as chamadas devem chamar uma terceira função para liberar o recurso.</p>
 
@@ -1418,7 +1414,7 @@ int _tmain(int argc, PTSTR argv[])
       getchar();
     }
   }
-  else // não passou parâmetro: escreve na variável 
+  else // não passou parâmetro: escreve na variável
   // compartilhada e chama nova instância
   {
     TCHAR (*sharedVar)[100] = 0; // ponteiro para array de 100 TCHARs
@@ -1439,7 +1435,7 @@ int _tmain(int argc, PTSTR argv[])
   }
 
   return 0;
-} 
+}
 </pre>
 <p>Preciso lembrar que essa é uma versão inicial ainda, mas que pode muito bem ser melhorada. Duas idéias interessantes são: parametrizar a proteção da variável (através do SECURITY_ATTRIBUTES) e transformá-la em classe. Uma classe parece ser uma idéia bem popular. Afinal, tem tanta gente que só se consegue programar se o código estiver dentro de uma.</p>
 

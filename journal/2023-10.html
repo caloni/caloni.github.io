@@ -125,21 +125,28 @@ dp &lt;address&gt; L50
 <p>Depois disso use o disassembly para cada um desses endereços, o que deve mostrar o início da função de cada um. Com sorte haverá símbolos que decodificaram o nome de cada método:</p>
 
 <pre>
-u 00007ff8`50532ca0 
-u 00007ff8`505335d0 
-u 00007ff8`505314c0 
+u 00007ff8`50532ca0
+u 00007ff8`505335d0
+u 00007ff8`505314c0
 ...
 
-Windows_Security_Authentication_Web_Core!Windows::Security::Authentication::Web::Provider::CWebProviderTokenRequest::get_ApplicationProcessName:
+Windows_Security_Authentication_Web_Core!Windows::Security::Authentication
+::Web::Provider::CWebProviderTokenRequest::get_ApplicationProcessName:
 00007ff8`5058cc40 488b4978        mov     rcx,qword ptr [rcx+78h]
-00007ff8`5058cc44 48ff2565260400  jmp     qword ptr [Windows_Security_Authentication_Web_Core!_imp_WindowsDuplicateString (00007ff8`505cf2b0)]
+00007ff8`5058cc44 48ff2565260400  jmp     qword ptr [
+Windows_Security_Authentication_Web_Core!_imp_WindowsDuplicateString (
+00007ff8`505cf2b0)]
 00007ff8`5058cc4b cc              int     3
 
-Windows_Security_Authentication_Web_Core!Windows::Security::Authentication::Web::Provider::CWebProviderTokenRequest::get_ApplicationPackageFamilyName:
+Windows_Security_Authentication_Web_Core!Windows::Security
+::Authentication::Web::Provider::CWebProviderTokenRequest
+::get_ApplicationPackageFamilyName:
 00007ff8`5058cbb0 48895c2418      mov     qword ptr [rsp+18h],rbx
 00007ff8`5058cbb5 57              push    rdi
 00007ff8`5058cbb6 4883ec50        sub     rsp,50h
-00007ff8`5058cbba 488b056fd90600  mov     rax,qword ptr [Windows_Security_Authentication_Web_Core!_security_cookie (00007ff8`505fa530)]
+00007ff8`5058cbba 488b056fd90600  mov     rax,qword ptr [
+Windows_Security_Authentication_Web_Core!_security_cookie (
+00007ff8`505fa530)]
 00007ff8`5058cbc1 4833c4          xor     rax,rsp
 00007ff8`5058cbc4 4889442448      mov     qword ptr [rsp+48h],rax
 ...

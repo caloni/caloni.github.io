@@ -259,7 +259,7 @@ int main()
         CHAR filePath[MAX_PATH];
 
         sprintf(filePath, &quot;%s\\%s&quot;, sysPath, findData.cFileName);
-        HANDLE fileH = CreateFile(filePath, GENERIC_READ, 
+        HANDLE fileH = CreateFile(filePath, GENERIC_READ,
           FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
 
         if( fileH )
@@ -270,7 +270,7 @@ int main()
           if( ReadFile(fileH, firstBytes, 4, &amp;wasRead, NULL) &amp;&amp; wasRead == 4 )
           {
             printf(&quot;%s: %02X %02X %02X %02X\n&quot;, findData.cFileName,
-              (int) firstBytes[0], (int) firstBytes[1], 
+              (int) firstBytes[0], (int) firstBytes[1],
               (int) firstBytes[2], (int) firstBytes[3]);
           }
 

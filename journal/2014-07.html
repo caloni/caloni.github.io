@@ -157,7 +157,7 @@ $url = 'https://trello.com/1/cards/ID_DO_CARD/actions/comments';
 $msg = 'Hello, World!';
 
 $data = array(
-        'key' =&gt; 'AQUI_VAI_SUA_CHAVE', 
+        'key' =&gt; 'AQUI_VAI_SUA_CHAVE',
         'token' =&gt; 'AQUI_VAI_SEU_TOKEN_DE_ACESSO',
         'text' =&gt; $msg
         );
@@ -211,7 +211,7 @@ foreach( $pushData-&gt;commits as $c )
     $url = 'https://trello.com/1/cards/' . $matches[1] . '/actions/comments';
     $msg = $c-&gt;message . ' Commit: ' . $c-&gt;url;
     $data = array(
-            'key' =&gt; 'AQUI_VAI_SUA_CHAVE', 
+            'key' =&gt; 'AQUI_VAI_SUA_CHAVE',
             'token' =&gt; 'AQUI_VAI_SEU_TOKEN_DE_ACESSO',
             'text' =&gt; $msg
             );
@@ -258,17 +258,20 @@ foreach( $bitData-&gt;commits as $c )
     if( preg_match($pattern, $msg, $matches) == 0 )
         continue;
 
-    $url = 'https://trello.com/1/cards/' . $matches[1] . '/actions/comments';
-    $msg = $c-&gt;message . ' Commit: ' . $bitData-&gt;canon_url . $bitData-&gt;repository-&gt;absolute_url . 'commits/' . $c-&gt;raw_node;
+    $url = 'https://trello.com/1/cards/' . $matches[1]
+      . '/actions/comments';
+    $msg = $c-&gt;message . ' Commit: ' . $bitData-&gt;canon_url
+      . $bitData-&gt;repository-&gt;absolute_url . 'commits/' . $c-&gt;raw_node;
     $data = array(
-            'key' =&gt; 'AQUI_VAI_SUA_CHAVE', 
+            'key' =&gt; 'AQUI_VAI_SUA_CHAVE',
             'token' =&gt; 'AQUI_VAI_SEU_TOKEN_DE_ACESSO',
             'text' =&gt; $msg
             );
 
     $options = array(
             'http' =&gt; array(
-                'header'  =&gt; &quot;Content-type: application/x-www-form-urlencoded\r\n&quot;,
+                'header'
+                  =&gt; &quot;Content-type: application/x-www-form-urlencoded\r\n&quot;,
                 'method'  =&gt; 'POST',
                 'content' =&gt; http_build_query($data),
                 ),

@@ -112,24 +112,24 @@ ntdll!DbgBreakPoint:
 0:003&gt; ~* kvn
 
    0  Id: 2b14.30f8 Suspend: 1 Teb: 000000b7`5be5b000 Unfrozen
- # Child-SP          RetAddr               : Args to Child                                                           : Call Site
-00 000000b7`5bdbd6f8 00007ff9`c74e078e     : 00000000`ffffffff 00007ff9`ae84cd4c 000000b7`00000000 00000000`00000001 : win32u!NtUserMsgWaitForMultipleObjectsEx+0x14
-01 000000b7`5bdbd700 00007ff9`ae85352b     : 00000211`41e83718 00007ff9`c87d0454 00000000`00000001 00000000`000000e5 : USER32!RealMsgWaitForMultipleObjectsEx+0x1e
-02 000000b7`5bdbd740 00007ff9`ae853422     : 00000000`ffffffff 00000000`00000000 00000000`008f06b6 00000000`00000410 : DUser!CoreSC::WaitMessage+0xeb
-03 000000b7`5bdbd7b0 00007ff9`c74edbe1     : 00000000`00000000 00000000`00000001 00000000`00000121 00007ff9`c74cde1b : DUser!MphWaitMessageEx+0x62
-04 000000b7`5bdbd7e0 00007ff9`c87d0454     : 00000000`00000001 00000002`00000001 00000000`0000412a 00000000`00000000 : USER32!_ClientWaitMessageExMPH+0x21
+ # RetAddr           : Call Site
+00 00007ff9`c74e078e : win32u!NtUserMsgWaitForMultipleObjectsEx+0x14
+01 00007ff9`ae85352b : USER32!RealMsgWaitForMultipleObjectsEx+0x1e
+02 00007ff9`ae853422 : DUser!CoreSC::WaitMessage+0xeb
+03 00007ff9`c74edbe1 : DUser!MphWaitMessageEx+0x62
+04 00007ff9`c87d0454 : USER32!_ClientWaitMessageExMPH+0x21
 ...
-0a 000000b7`5bdbd9e0 00007ff9`b14545e7     : 00000000`00000000 00000000`00000000 00000000`00000000 00000000`00000187 : USER32!DialogBoxIndirectParamW+0x18
-0b 000000b7`5bdbda20 00007ff9`b145456e     : 15e684dc`00000800 00000000`00000000 00000000`00000000 000000b7`5bdbdb20 : COMCTL32!SHFusionDialogBoxIndirectParam+0x57
-0c 000000b7`5bdbda60 00007ff9`c748cf3e     : 00000211`479c00a0 00000000`00000000 000000b7`5bdbdbf0 000000b7`5bdbdb20 : COMCTL32!CTaskDialog::Show+0x122
-0d 000000b7`5bdbdab0 00007ff9`c747959e     : 00000000`00000000 00000000`00220a9c 00000000`00000000 00000000`00220a9c : shlwapi!TaskDialogIndirect+0x56
-0e 000000b7`5bdbdaf0 00007ff9`c68f92cd     : 00000000`00000000 00000211`47a57dd0 00000211`41e69208 00007ff9`c74cde1b : shlwapi!ShellMessageBoxW+0x18e
-0f 000000b7`5bdbdcc0 00007ff9`c68bf17c     : 00000000`80070002 000000b7`5bdbdda9 00000000`00000000 00000000`00000000 : comdlg32!_DisplayErrorMessage+0x291
+0a 00007ff9`b14545e7 : USER32!DialogBoxIndirectParamW+0x18
+0b 00007ff9`b145456e : COMCTL32!SHFusionDialogBoxIndirectParam+0x57
+0c 00007ff9`c748cf3e : COMCTL32!CTaskDialog::Show+0x122
+0d 00007ff9`c747959e : shlwapi!TaskDialogIndirect+0x56
+0e 00007ff9`c68f92cd : shlwapi!ShellMessageBoxW+0x18e
+0f 00007ff9`c68bf17c : comdlg32!_DisplayErrorMessage+0x291
 ...
-24 000000b7`5bdbeb30 00007ff9`c68b609a     : 00000000`00000000 000000b7`00000000 00000211`00000004 000000b7`5bdbed68 : USER32!DialogBoxIndirectParamW+0x18
-25 000000b7`5bdbeb70 00007ff9`c6893084     : 00000211`41e69090 00000211`00000000 00000211`41e69098 00000003`00000003 : comdlg32!&lt;lambda_3a7baec315efe719b0d1bc9a8eafe6df&gt;::operator()+0xee
-26 000000b7`5bdbebc0 00007ff6`2c3987ae     : 00000000`00000000 00000000`008e07ea 00000000`00000000 000000b7`5bdbf0a8 : comdlg32!CFileOpenSave::Show+0xa34
-27 000000b7`5bdbef80 00007ff6`2c398aff     : 00000000`00000000 00000000`00001808 00000000`008e07ea 00000000`00000000 : notepad!ShowOpenSaveDialog+0xfe
+24 00007ff9`c68b609a : USER32!DialogBoxIndirectParamW+0x18
+25 00007ff9`c6893084 : comdlg32!&lt;lambda_3a7baec315efe719b0d1bc9a8eafe6df&gt;::operator()+0xee
+26 00007ff6`2c3987ae : comdlg32!CFileOpenSave::Show+0xa34
+27 00007ff6`2c398aff : notepad!ShowOpenSaveDialog+0xfe
 ...
 </pre>
 <p>Essa é uma função equivalente à antiga MessageBox, cujo protótipo é int ShellMessageBoxW(HINSTANCE hAppInst, HWND hWnd, LPCWSTR lpcText, LPCWSTR lpcTitle, UINT fuStyle, ...), ou seja, uma função que recebe cinco ou mais parâmetros: o handle da instância caso a string passada esteja em um resource, o handle da janela pai, o texto da mensagem, o título e flags de exibição. As reticências ao final do protótipo indicam que ele pode conter mais argumentos.</p>

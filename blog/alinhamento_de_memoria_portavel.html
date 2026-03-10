@@ -78,7 +78,7 @@ union Align
   t;
 
   unsigned char align[
-    sizeof(struct S) % 8 
+    sizeof(struct S) % 8
     ?
     (sizeof(struct S) / 8 + 1) * 8
     :
@@ -95,7 +95,7 @@ union Align
 <p>Tudo que temos que saber para fazer o alinhamento é o tamanho normal de nosso tipo útil (struct S). A partir desse valor deduzimos o próximo número que seja múltiplo de 8, através da seguinte construção:</p>
 
 <pre>
-sizeof(struct S) % 8 
+sizeof(struct S) % 8
 ?
 (sizeof(struct S) / 8 + 1) * 8
 :

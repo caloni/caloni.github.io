@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="patch_de_emergencia_2" title="Patch de emergência 2"/></span>
+<section id="section_patch_de_emergencia_2">
+<p class="title">Patch de emergência 2</p>
+<span class="title-heading">Caloni, 2010-11-09 computer blog</span>
+
+<p>No <a href="patch_de_emergencia.html">artigo anterior</a> fizemos um patch rapidinho na memória se aproveitando de um Sleep nojento que o código nos forneceu.</p>
+
+<p>E se não houvesse Sleep?</p>
+
+<p>As chances de estarmos escrevendo no momento em que a função está sendo executada são tremendas, de forma que não poderíamos sobrescrevê-la sem correr o risco de um crash.</p>
+
+<p>Uma solução alternativa para isso é alocar um novo pedaço de memória para a versão corrigida e trocar o endereço de chamada na função main.</p>
+
+<pre>
+windbg criticalservice3.exe
+
+0:000&gt; uf DoProcess
+criticalservice3!DoProcess [s:\docs\artigos\criticalservice3.cpp @ 8]:
+    8 00401020 55              push    ebp
+   ...
+   12 0040107d 5d              pop     ebp
+   12 0040107e c3              ret
+0:000&gt; .writemem DoProcess.func 00401020 0040107e
+Writing 5f bytes.
+
+windbg -pvr -pn criticalservice2.exe
+
+0:000&gt; .dvalloc 0x5f
+Allocated 1000 bytes starting at 00030000
+0:000&gt; .readmem DoProcess.func 00030000 L5f
+Reading 5f bytes.
+0:000&gt; uf 00030000
+00030000 55              push    ebp
+...
+0003005d 5d              pop     ebp
+0003005e c3              ret
+</pre>
+<p>Antes de trocarmos o endereço dentro do main precisamos "consertar" a função copiada. Ela está usando as funções globais rand e printf, e as chamadas usam offsets relativos. Como agora a função está em outro offset, temos que reconstruir as chamadas:</p>
+
+<pre>
+00401026 e8da000000      call    criticalservice3!rand (00401105)
+00030006 e8da000000      call    000300e5
+
+0:000&gt; a 00030006
+00030006 call 0x00401105
+call 0x00401105
+0003000b
+
+00401073 e852000000      call    criticalservice3!printf (004010ca)
+00030053 e852000000      call    000300aa
+
+0:000&gt; a 00030053
+00030053 call 0x004010ca
+call 0x004010ca
+00030058
+</pre>
+<p>Agora a função está pronta para ser usada.</p>
+
+<pre>
+0:000&gt; uf 00030000
+00030000 55              push    ebp
+00030001 8bec            mov     ebp,esp
+00030003 83ec0c          sub     esp,0Ch
+00030006 e8fa103d00      call    criticalservice2!rand (00401105)
+0003000b 99              cdq
+...
+0003004e 6828a04000      push    offset criticalservice2!GetSystemInfo
+00030053 e872103d00      call    criticalservice2!printf (004010ca)
+00030058 83c40c          add     esp,0Ch
+0003005b 8be5            mov     esp,ebp
+0003005d 5d              pop     ebp
+0003005e c3              ret
+
+0:000&gt; uf main
+criticalservice2!main [s:\docs\artigos\criticalservice2.cpp @ 16]:
+   16 00401080 55              push    ebp
+...
+criticalservice2!main+0x1f [s:\docs\artigos\criticalservice2.cpp @ 21]:
+   21 0040109f call    criticalservice2!ILT+0(?DoProcessYAXXZ) (00401005)
+   22 004010a4 jmp     criticalservice2!main+0x16 (00401096)
+</pre>
+<p>É nessa parte que trocaremos o endereço o endereço 00401005 pela memória alocada. Note que essa escrita é muito rápida e o programa lê esse endereço por muito pouco tempo se compararmos com todas as intruções que são executadas. No entanto, essa escrita não é atômica, e mesmo que as chances sejam extremamente remotas, ainda assim pode haver uma colisão no acesso à essa parte.</p>
+
+<p>É salutar rezar por 10 segundos.</p>
+
+<pre>
+0:000&gt; a 0040109f
+0040109f call 0x00030000
+call 0x00030000
+004010a4
+</pre>
+<p>E voilà! A partir do momento em que digitei o call seguido de enter, a função nova já começou a operar em cima do processo ainda rodando. Se quisermos voltar a função antiga, sem problemas:</p>
+
+<pre>
+0:000&gt; a 0040109f
+0040109f call 0x00401005
+call 0x00401005
+004010a4
+</pre>
+<p>Não façam isso em casa, crianças ;)</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="senna.html">[senna]</a>
+ <a href="patch_de_emergencia.html">[patch_de_emergencia]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

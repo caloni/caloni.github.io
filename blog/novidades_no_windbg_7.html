@@ -89,8 +89,6 @@ Loading User Symbols
 ............
 Loading unloaded module list
 ..........................
-
-
 *******************************************************************************
 *                                                                             *
 *                        Bugcheck Analysis                                    *
@@ -101,14 +99,10 @@ Use !analyze -v to get detailed debugging information.
 
 BugCheck 7F, {d, 0, 0, 0}
 
-*** ERROR: Symbol file could not be found.  Defaulted to export symbols for MyDriver.sys -
-*** ERROR: Symbol file could not be found.  Defaulted to export symbols for mfehidk.sys -
 Probably caused by : MyDriver.sys ( MyDriver!KeBugCheckTest+2b )
 
 Followup: MachineOwner
 ---------
-
-
 0: kd&gt; !analyze -v
 *******************************************************************************
 *                                                                             *
@@ -137,24 +131,17 @@ Arg1: 0000000d, EXCEPTION_GP_FAULT
 Arg2: 00000000
 Arg3: 00000000
 Arg4: 00000000
-
-
 Debugging Details:
 ------------------
 BUGCHECK_STR:  0x7f_d
 
 DEFAULT_BUCKET_ID:  DRIVER_FAULT
-
-
 PROCESS_NAME:  cmd.eze
-
-
 LAST_CONTROL_TRANSFER:  from 80564dd2 to 80544e7b
 
 STACK_TEXT:
 a7f4b6a4 80564dd2 badb0d00 89679eb0 a7f40000 nt!KiSystemFatalException+0xf
 a7f4b774 ba182d80 e23bb528 00000002 a7f4b86c nt!NonPagedPoolDescriptor+0xb2
-WARNING: Stack unwind information not available. Following frames may be wrong.
 a7f4b870 804ef19f 8a03a2e0 89665008 8972c838 MyDriver!KeBugCheckTest+0x2b
 a7f4b880 b9da1876 89665008 8a0f3a80 00000000 nt!IopfCallDriver+0x31
 ...

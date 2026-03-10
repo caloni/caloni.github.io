@@ -96,7 +96,7 @@ private:
 
   T* m_memPointer;
   HANDLE m_memHandle;
-}; 
+};
 </pre>
 <p>Como podemos notar, em programação "nada se cria, tudo se reutiliza". Reutilização é boa quando podemos acrescentar características adicionais ao código sem deturpar seu objetivo original. E isso é bom.</p>
 
@@ -124,7 +124,7 @@ int _tmain(int argc, PTSTR argv[])
       _tprintf(_T(&quot;Pressione &lt;enter&gt; para retornar...&quot;));
       getchar();
     }
-    else // não passou parâmetro: escreve na variável 
+    else // não passou parâmetro: escreve na variável
     // compartilhada e chama nova instância
     {
       // array de 100 TCHARs
@@ -148,7 +148,7 @@ int _tmain(int argc, PTSTR argv[])
   }
 
   return 0;
-} 
+}
 </pre>
 <p>Existem duas mudanças significativas: 1. a variável sozinha já representa a memória compartilhada; 2. o tratamento de erro agora é centralizado em apenas um ponto. Se pra melhor ou pior, eu não sei. Tratamento de exceções e classes são duas "modernisses" que podem ou não se encaixar em um projeto de desenvolvimento. Tudo vai depender de tudo. Por isso a melhor saída depende de como será a entrada.</p>
 
@@ -203,10 +203,22 @@ int _tmain(int argc, PTSTR argv[])
 <p>A primeira busca retorna uma chave no registro referente às propriedades de joystick. Como não estou usando joysticks, podemos ignorar este erro por enquanto e passar adiante.</p>
 
 <pre>
-MonopolyClassic.exe CreateFile  C:\Documents and ...\TikGames\Monopoly NAME COLLISION
-MonopolyClassic.exe CreateFile  C:\Arquivos de programas\GameHouse\Monopoly Classic\Monopoly.log ACCESS DENIED
-MonopolyClassic.exe QueryOpen  C:\Arquivos de programas\GameHouse\Monopoly Classic\DBGHELP.DLL NAME NOT FOUND
-MonopolyClassic.exe RegOpenKey  HKLM\Software\Microsoft\...\DBGHELP.DLL NAME NOT FOUND
+MonopolyClassic.exe
+  CreateFile
+  C:\Documents and ...\TikGames\Monopoly
+  NAME COLLISION
+MonopolyClassic.exe
+  CreateFile
+  C:\Arquivos de ...\Monopoly Classic\Monopoly.log
+  ACCESS DENIED
+MonopolyClassic.exe
+  QueryOpen
+  C:\Arquivos de ...\Monopoly Classic\DBGHELP.DLL
+  NAME NOT FOUND
+MonopolyClassic.exe
+  RegOpenKey
+  HKLM\Software\Microsoft\...\DBGHELP.DLL
+  NAME NOT FOUND
 </pre>
 <p>O próximo erro diz respeito a uma tentativa de acesso ao arquivo Monopoly.log localizado no diretório de instalação do jogo, o que já é mais sugestivo. Podemos fazer um pequeno teste alterando o acesso desse arquivo.</p>
 
@@ -222,7 +234,6 @@ Monopoly.log BUILTIN\Usuários:R
 <pre>
 cacls Monopoly.log /E /G Usuários:F
 arquivo processado: Monopoly.log
-
 cacls Monopoly.log
 Monopoly.log BUILTIN\Usuários:F
              BUILTIN\Administradores:F
@@ -239,13 +250,34 @@ start monopolyclassic.exe
 <img src="/journal/img/process_monitor_e_o_monopolio_malcriado_monopoly_procmon_find2.png"/>
 
 <pre>
-MonopolyClassic.exe QueryStandardInformationFile C:\Documents ...\Monopoly\save.gcf SUCCESS
-MonopolyClassic.exe ReadFile C:\Documents ...\Monopoly\save.gcf SUCCESS
-MonopolyClassic.exe CloseFile C:\Documents ...\Monopoly\save.gcf SUCCESS
-MonopolyClassic.exe CreateFile C:\Arquivos de programas\GameHouse\Monopoly Classic\Monopoly.log SUCCESS
-MonopolyClassic.exe CreateFile C:\Arquivos de programas\GameHouse\Monopoly Classic SUCCESS
-MonopolyClassic.exe CloseFile C:\Arquivos de programas\GameHouse\Monopoly Classic SUCCESS
-MonopolyClassic.exe WriteFile C:\Arquivos de programas\GameHouse\Monopoly Classic\Monopoly.log SUCCESS
+MonopolyClassic.exe
+  QueryStandardInformationFile
+  C:\Documents ...\Monopoly\save.gcf
+  SUCCESS
+MonopolyClassic.exe
+  ReadFile
+  C:\Documents
+  ...\Monopoly\save.gcf SUCCESS
+MonopolyClassic.exe
+  CloseFile
+  C:\Documents ...\Monopoly\save.gcf
+  SUCCESS
+MonopolyClassic.exe
+  CreateFile
+  C:\Arquivos de ...\Monopoly Classic\Monopoly.log
+  SUCCESS
+MonopolyClassic.exe
+  CreateFile
+  C:\Arquivos de ...\Monopoly Classic
+  SUCCESS
+MonopolyClassic.exe
+  CloseFile
+  C:\Arquivos de ...\Monopoly Classic
+  SUCCESS
+MonopolyClassic.exe
+  WriteFile
+  C:\Arquivos de ...\Monopoly Classic\Monopoly.log
+  SUCCESS
 </pre>
 <p>Moral da história: se algum dia você vier a escrever um programa inocente, deixe que pessoas inocentes consigam utilizá-lo.</p>
 
@@ -506,7 +538,7 @@ read(outStr)
   OutputDebugString(buffer); \
 }
 
-#endif /* NDEBUG */ 
+#endif /* NDEBUG */
 </pre>
 <p>Nothing much, but it seems to work. But, as we going to see in the following lines, it is really a buggy piece of code, since a call inside an if-else construction simply doesn't work.</p>
 
@@ -514,8 +546,7 @@ read(outStr)
 if( exploded() )
   MYTRACE(&quot;Oh, my God&quot;);
 else
-  MYTRACE(&quot;That's right&quot;); 
-
+  MYTRACE(&quot;That's right&quot;);
 error C2181: illegal else without matching if
 </pre>
 <p>Why's that? In order to answer this question, we need to look closer into the result code from the preprocessor, just replacing the macro for its piece of code:</p>
@@ -550,7 +581,6 @@ if( instruction )
   /* a lot of comands */
 
 } /* here I would expect an else or new instruction */
-
 ; /* a new command! okay, no else this time */
 
 else /* wait! what this else is doing here without an if?!?! */
@@ -565,7 +595,6 @@ if( error() )
 {
   printf(&quot;error&quot;);
 }
-
 printf(&quot;here we go&quot;);
 
 else /* llegal else without matching if! */
@@ -581,7 +610,6 @@ do
   /* multiple commands here */
 }
 while( expression )
-
 ;
 /* I expect a semicolon here, in order
    to end the do-while instruction */
@@ -608,7 +636,7 @@ do                           \
 }                            \
 while( 0 )
 
-#endif /* NDEBUG */ 
+#endif /* NDEBUG */
 </pre>
 <p>Using a do-while (with a false expression inside the test to execute the block just once) the if-else construction is allowed and working properly:</p>
 
@@ -736,20 +764,16 @@ int cannotConvertError(const char* message)
 int ret = cannotConvertError(3);
 
 error C2664: 'cannotConvertError' : cannot convert parameter 1 from 'int' to 'const char *'
-
 if( test() )
   something;
   something-else;
 else
   else-something;
-
 error C2181: illegal else without matching if
-
 while( (x &lt; z) &amp;&amp; func(x, func2(y) != 2 )
 {
   something;
 }
-
 error C2143: syntax error : missing ')' before '{'
 </pre>
 <p>Claro, não estamos falando de erros relacionados a templates, que são um pesadelo à parte.</p>
@@ -858,7 +882,7 @@ int main(int argc, char **argv)
 {
   func();
   return 0;
-} 
+}
 </pre>
 <p>Bem, para testar a compilação basta compilar. Porém, se estivermos em uma entrevista, geralmente não existe nenhum compilador em um raio de uma sala de reunião senão seu próprio cérebro.</p>
 
@@ -1003,9 +1027,8 @@ kernel32!ReadFile:
 7c80180e 6a20            push    20h
 
 $$ dados acima:
-$$  - O buffer de saída é 08bbf1d0 
+$$  - O buffer de saída é 08bbf1d0
 $$  - O número de bytes lidos é 200
-
 0:000&gt; db 08bbf1d0 L80
 08bbf1d0  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................
 08bbf1e0  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................
@@ -1015,7 +1038,6 @@ $$  - O número de bytes lidos é 200
 08bbf220  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................
 08bbf230  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................
 08bbf240  00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  ................
-
 0:000&gt; bp /1 @$ra &quot;db 08bbf1d0 L80&quot;
 0:000&gt; g
 08bbf1d0  1f 65 67 64 5c 67 56 62-56 22 5b 64 63 69 5a 02  .egd\gVbV&quot;[dciZ.
@@ -1080,10 +1102,8 @@ Houaiss2+0xb9077:
 0:000&gt; p
 Houaiss2+0xb9079:
 004b9079 e8eef9ffff      call Houaiss2+0xb8a6c (004b8a6c)
-
 0:000&gt; p
 Houaiss2+0xb9
-
 0:000&gt; db 08bbf1d0 L80
 08bbf1d0  2a 70 72 6f 67 72 61 6d-61 2d 66 6f 6e 74 65 0d  *programa-fonte.
 08bbf1e0  0a 43 73 2e 6d 2e 0d 0a-64 7b 5c 69 20 73 58 58  .Cs.m...d{\i sXX
@@ -1100,7 +1120,6 @@ Houaiss2+0xb9
 Houaiss2+0xb9079:
 004b9079 e8eef9ffff      call    Houaiss2+0xb8a6c (004b8a6c)
 0:000&gt; t
-
 eax=08bbf1a0 ebx=08bbf1a0 ecx=00000200 edx=00000000 esi=00000200 edi=02fe8661
 eip=004b8a6c esp=0012fa98 ebp=0012facc iopl=0         nv up ei pl nz na po nc
 cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000202
@@ -1212,7 +1231,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, PSTR cmdLine, int)
 
   if( HOUAISS_PATH[0] == 0 )
   {
-    MessageBox(NULL, &quot;How to use:\r\nHouCalc.exe -p \&quot;C:\\HouaissPath\\\&quot;&quot;, 
+    MessageBox(NULL, &quot;How to use:\r\nHouCalc.exe -p \&quot;C:\\HouaissPath\\\&quot;&quot;,
       &quot;Houaiss Decipher v. alpha&quot;, 0);
     return 0;
   }

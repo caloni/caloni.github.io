@@ -244,7 +244,7 @@ long FAR PASCAL WndProc (HWND hwnd, WORD message, WORD wParam, LONG lParam)
   }
 
   return DefWindowProc (hwnd, message, wParam, lParam) ;
-} 
+}
 </pre>
 <p>Esse exemplo é bem velho, mas compila e funciona até hoje, depois de passados 17 anos. Pode não rodar em sua máquina, mas esta é outra história.</p>
 
@@ -390,7 +390,6 @@ Func:
 
 <pre>
 jmp_buf stack_state;
-
 void Func()
 {
   longjmp(stack_state, 1);
@@ -409,8 +408,8 @@ void CallFunc()
 <p>Essa foi a técnica adicionada à solução do lançamento de exceções. E o código final ficou mais claro (além de rápido, por economizar o uso de uma thread para leitura dos comandos).</p>
 
 <pre>
-/** The only purpose of 
-  this function is to 
+/** The only purpose of
+  this function is to
   generate an exception. */
 DWORD LongJmp(jmp_buf* env)
 {
@@ -426,7 +425,7 @@ DWORD LongJmp(jmp_buf* env)
   return ERROR_SUCCESS;
 }
 
-/** And God said: 
+/** And God said:
   'int main!'
 */
 int main()
@@ -453,7 +452,7 @@ int main()
   }
 
   return (int) ret;
-} 
+}
 </pre>
 <p>À primeira vista parece um desperdício o if estar diretamente no código (lembre-se que vamos utilizar a mesma estrutura condicional em várias e várias partes do código. Para tornar mais claro seu uso, resumir a chamada protegida e permitir que a proteção seja desabilitada em debug, vamos criar uma macro:</p>
 
@@ -491,7 +490,7 @@ int main()
   }
 
   return (int) ret;
-} 
+}
 </pre>
 <p>Veja que como agora permitimos a seleção do anti-debug por chamada, fica mais fácil escolher quais os pontos a serem protegidos e quais não devem/podem por conta de perfomance ou outro detalhe obscuro que sempre existe na vida de um programador C++.</p>
 
@@ -614,7 +613,7 @@ loop :
   i--;
   adx--;
   goto loop;
-} 
+}
 </pre>
 <p>Como podemos ver, vários elementos (se não todos) da linguagem C já estão presentes na B.</p>
 
@@ -688,11 +687,12 @@ void main(void)
 
   //GetComputerName(szDomainName, &amp;dwSize);
   GetComputerNameEx(CF, szDomainName, &amp;dwSize);
-} 
+}
 </pre>
 <p>Tirando o fato que o retorno void não é mais um protótipo padrão da função main e que a definição da enumeração COMPUTER_NAME_FORMAT dentro da função main é no mínimo suspeita, podemos testar a compilação e verificar que existe exatamente um erro grave neste fonte:</p>
 
 <pre>
+
 cl getcomputername.cpp
 getcomputername.cpp(26) : error C3861: 'GetComputerNameEx': identifier not found
 </pre>
@@ -759,13 +759,13 @@ GetComputerNameExW (
 void _tmain(void)
 {
   TCHAR buffer[256] = TEXT(&quot;&quot;);
-  TCHAR szDescription[8][32] = {TEXT(&quot;NetBIOS&quot;), 
-  TEXT(&quot;DNS hostname&quot;), 
-  TEXT(&quot;DNS domain&quot;), 
-  TEXT(&quot;DNS fully-qualified&quot;), 
-  TEXT(&quot;Physical NetBIOS&quot;), 
-  TEXT(&quot;Physical DNS hostname&quot;), 
-  TEXT(&quot;Physical DNS domain&quot;), 
+  TCHAR szDescription[8][32] = {TEXT(&quot;NetBIOS&quot;),
+  TEXT(&quot;DNS hostname&quot;),
+  TEXT(&quot;DNS domain&quot;),
+  TEXT(&quot;DNS fully-qualified&quot;),
+  TEXT(&quot;Physical NetBIOS&quot;),
+  TEXT(&quot;Physical DNS hostname&quot;),
+  TEXT(&quot;Physical DNS domain&quot;),
   TEXT(&quot;Physical DNS fully-qualified&quot;)};
   int cnf = 0;
   DWORD dwSize = sizeof(buffer);
@@ -783,7 +783,7 @@ void _tmain(void)
     dwSize = sizeof(buffer);
     ZeroMemory(buffer, dwSize);
   }
-} 
+}
 </pre>
 <p>Outra observação que poderia ter ajudado na hora de codificar seria dar uma olhada no que os caras escrevem na seção de advertências (remarks) da documentação:</p>
 
@@ -823,7 +823,7 @@ void DebugLoop()
   {
     DEBUG_EVENT debugEvt;
 
-    WaitForDebugEvent(&amp;debugEvt, 
+    WaitForDebugEvent(&amp;debugEvt,
       INFINITE);
 
     switch( debugEvt.dwDebugEventCode )
@@ -840,11 +840,11 @@ void DebugLoop()
 
     // Unfreeze the thread who sent the debug event.
     // Otherwise, it stays frozen forever!
-    ContinueDebugEvent(debugEvt.dwProcessId, 
-      debugEvt.dwThreadId, 
+    ContinueDebugEvent(debugEvt.dwProcessId,
+      debugEvt.dwThreadId,
       DBG_EXCEPTION_NOT_HANDLED);
   }
-} 
+}
 </pre>
 <p>O detalhe interessante desse processo de comunicação depurador/depurado é que um processo só pode ser depurado por apenas UM depurador. Ou seja, enquanto houver um processo depurando outro, os outros processos só ficam na vontade.</p>
 

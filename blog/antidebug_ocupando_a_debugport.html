@@ -66,7 +66,7 @@ void DebugLoop()
   {
     DEBUG_EVENT debugEvt;
 
-    WaitForDebugEvent(&amp;debugEvt, 
+    WaitForDebugEvent(&amp;debugEvt,
       INFINITE);
 
     switch( debugEvt.dwDebugEventCode )
@@ -83,11 +83,11 @@ void DebugLoop()
 
     // Unfreeze the thread who sent the debug event.
     // Otherwise, it stays frozen forever!
-    ContinueDebugEvent(debugEvt.dwProcessId, 
-      debugEvt.dwThreadId, 
+    ContinueDebugEvent(debugEvt.dwProcessId,
+      debugEvt.dwThreadId,
       DBG_EXCEPTION_NOT_HANDLED);
   }
-} 
+}
 </pre>
 <p>O detalhe interessante desse processo de comunicação depurador/depurado é que um processo só pode ser depurado por apenas UM depurador. Ou seja, enquanto houver um processo depurando outro, os outros processos só ficam na vontade.</p>
 

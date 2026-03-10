@@ -60,7 +60,7 @@ void ExecThread()
   }
 }
 
-int Functions[] = { 
+int Functions[] = {
   3, 4, 1, 2, 34, 66, 982
 };
 
@@ -74,7 +74,7 @@ int Start()
   }
 
   return 0;
-} 
+}
 </pre>
 <p>A proteção ainda não está aí. Mas fará parte intrínseca da thread de execução. Tudo que precisamos fazer é adicionar um tratamento de exceções e fazer chover ints 3. As exceções disparadas pela int 3 são capturadas por uma segunda função que antes de retornar o controle executa a próxima instrução enfileirada:</p>
 
@@ -95,10 +95,10 @@ void ExecThread()
       // breakpoint exception
       __asm int 3
 
-      // it stops the debugger 
-      // if we have an attached 
+      // it stops the debugger
+      // if we have an attached
       // debugger in the process
-      // or throws an exception 
+      // or throws an exception
       // if there is no one
     }
     __except( ExceptFilter() )
@@ -108,7 +108,7 @@ void ExecThread()
 
     Sleep(someTime);
   }
-} 
+}
 </pre>
 <p>O algoritmo da thread de execução continua o mesmo. Só que o ponto onde cada instrução é executada depende do lançamento de uma exceção. Note que essa exceção tem que ocorrer para que a chamada da próxima instrução ocorra. Isso é fundamental, pois dessa forma ninguém pode simplesmente retirar o int 3 do código para evitar o lançamento da exceção. Se fizer isso, então mais nenhuma instrução será executada.</p>
 

@@ -84,15 +84,15 @@ void InstallAntiAttach()
 
     DWORD oldProtect = 0;
 
-    if( VirtualProtect(attachBreak, sizeof(jmpToAntiAttachAbort), 
+    if( VirtualProtect(attachBreak, sizeof(jmpToAntiAttachAbort),
       PAGE_EXECUTE_READWRITE, &amp;oldProtect) )
     {
       // if we can change the code page protection we put a jump to our code
-      CopyMemory(attachBreak, 
+      CopyMemory(attachBreak,
         jmpToAntiAttachAbort, sizeof(jmpToAntiAttachAbort));
 
       // restore old protection
-      VirtualProtect(attachBreak, sizeof(jmpToAntiAttachAbort), 
+      VirtualProtect(attachBreak, sizeof(jmpToAntiAttachAbort),
         oldProtect, &amp;oldProtect);
     }
 }
@@ -104,7 +104,7 @@ int main()
     InstallAntiAttach();
     cout &lt;&lt; &quot;Try to attach, if you can...&quot;;
     cin.get();
-} 
+}
 </pre>
 <p>To compile the code above, just call the compiler and linker normally. Obs.: We need the user32.lib in order to call MessageBox API:</p>
 
@@ -133,7 +133,7 @@ BYTE jmpToAntiAttachAbort[] =
 0xFF, 0xE0 };                     // jmp eax
 
 // we change 0xCCCCCCCC using a more useful address
-*reinterpret_cast&lt;PVOID*&gt;(&amp;jmpToAntiAttachAbort[1]) = AntiAttachAbort; 
+*reinterpret_cast&lt;PVOID*&gt;(&amp;jmpToAntiAttachAbort[1]) = AntiAttachAbort;
 </pre>
 <p>There are a lot of ways to do the same thing. The example above is what is normally called in the crackers community as a shellcode, what is a pretty name for "byte array that is really the assembly code that does interesting things". Shellcode for short =).</p>
 

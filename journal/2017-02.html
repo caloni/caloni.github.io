@@ -467,7 +467,7 @@ Date:   Sat Feb 4 10:47:11 2017 -0200
 
 <p>É muito bom (para quem gosta) usar a IDE e viver feliz sem precisar se preocupar em digitar comandos estranhos no prompt. Porém, essa vida acaba quando ocorre o primeiro erro inexplicável, aquele tipo de erro que não importa onde você olhe, não há nada para olhar. Até você apelar para ferramentas de macho.</p>
 
-<p>Que nem hoje de manhã, quando fui inocentemente baixar uma versão limpa do [tiodb] e após baixar todos os pacotes do [NuGet], o gerenciador de pacotes do Visual Studio (inclusive para C++, agora) acusou a falta do boost, sendo que ele havia acabado de baixá-lo:</p>
+<p>Que nem hoje de manhã, quando fui inocentemente baixar uma versão limpa do <a href="https://github.com/tiodb/tiodb">tiodb</a> e após baixar todos os pacotes do <a href="https://docs.microsoft.com/pt-br/nuget/consume-packages/overview-and-workflow">NuGet</a>, o gerenciador de pacotes do Visual Studio (inclusive para C++, agora) acusou a falta do boost, sendo que ele havia acabado de baixá-lo:</p>
 
 <img src="/journal/img/pacotes_perdidos_nuget_em_projetos_cpp_no_visual_studio_HUp5S4K.png"/>
 
@@ -506,9 +506,18 @@ boost_thread-vc140.1.61.0.0
 <p>Então não tem jeito. Há algo de podre dentro desse projeto e o próprio Visual Studio não vai resolver. Grep nele!</p>
 
 <pre>
-C:\Projects\tiodb&gt;grep -r -i &quot;boost.*1.61&quot; --include=*proj .
-./server/tio/tioserver.vcxproj:    &lt;Import Project=&quot;packages\boost.1.61.0.0\build\native\boost.targets&quot; Condition=&quot;Exists('packages\boost.1.61.0.0\build\native\boost.targets')&quot; /&gt;
-./server/tio/tioserver.vcxproj:    &lt;Error Condition=&quot;!Exists('packages\boost.1.61.0.0\build\native\boost.targets')&quot; Text=&quot;$([System.String]::Format('$(ErrorText)', 'packages\boost.1.61.0.0\build\native\boost.targets'))&quot; /&gt;
+C:\Projects\tiodb&gt;grep -r -i &quot;boost.*1.61&quot; --include=*proj
+
+../server/tio/tioserver.vcxproj:
+&lt;Import Project=&quot;packages\boost.1.61.0.0\build\native\boost.targets&quot;
+Condition=&quot;Exists('packages\boost.1.61.0.0\build\native\boost.targets')&quot;
+/&gt;
+
+./server/tio/tioserver.vcxproj:
+&lt;Error
+Condition=&quot;!Exists('packages\boost.1.61.0.0\build\native\boost.targets')&quot;
+Text=&quot;$([System.String]::Format('$(ErrorText)',
+'packages\boost.1.61.0.0\build\native\boost.targets'))&quot; /&gt;
 ...
 </pre>
 <p>Note (e é preciso prestar atenção!) que o projeto server/tio/tioserver.vcxproj referencia a pasta packages como se ela existisse dentro do projeto. Porém, como já sabemos, ela existe na raiz da solution, que fica duas pastas "para trás". Isso nos indica que talvez o NuGet ainda não esteja tão redondo e que um possível teste é mudar esses valores na mão e ver o que acontece.</p>
@@ -523,11 +532,7 @@ gvim server\tio\tioserver.vcxproj
 <pre>
 1&gt;------ Build started: Project: tioclientdll, Configuration: Debug x64 ------
 2&gt;------ Build started: Project: tioserver, Configuration: Debug x64 ------
-
-[tiodb]: https://github.com/tiodb/tiodb
-
-[tiodb] e após baixar todos os pacotes do [NuGet]: https://docs.microsoft.com/pt-br/nuget/consume-packages/overview-and-workflow
-2&gt;  tioserver.vcxproj -&gt; C:\Projects\tiocoin\tiodb\server\tio\..\..\bin\x64\Debug\tio.exe
+2&gt;  tioserver.vcxproj -&gt; tiodb\server\tio\..\..\bin\x64\Debug\tio.exe
 2&gt;  tioserver.vcxproj -&gt; ..\..\bin\x64\Debug\tio.pdb (Full PDB)
 ========== Build: 2 succeeded, 0 failed, 3 up-to-date, 0 skipped ==========
 </pre>
@@ -938,7 +943,8 @@ try
                 break;
 
                 default:
-                cout &lt;&lt; &quot;Unknown event &quot; &lt;&lt; hex &lt;&lt; eventCode &lt;&lt; &quot; with key &quot; &lt;&lt; dec &lt;&lt; key &lt;&lt; &quot; and with value &quot; &lt;&lt; value;
+                cout &lt;&lt; &quot;Unknown event &quot; &lt;&lt; hex &lt;&lt; eventCode &lt;&lt; &quot; with key &quot;
+                  &lt;&lt; dec &lt;&lt; key &lt;&lt; &quot; and with value &quot; &lt;&lt; value;
                 break;
                 }
                 });
@@ -952,8 +958,11 @@ try
     {
         tio::containers::list&lt;string&gt; transactionsReader;
         transactionsReader.open(&amp;conn, &quot;transactions&quot;);
-        for( size_t transactionIdx = 0; transactionIdx &lt; transactionsReader.size(); ++transactionIdx )
+        for( size_t transactionIdx = 0;
+          transactionIdx &lt; transactionsReader.size();
+          ++transactionIdx ) {
             cout &lt;&lt; &quot;Transaction &quot; &lt;&lt; transactionsReader.at(transactionIdx) &lt;&lt; endl;
+          }
     }
 
     break; // just testing and developing...

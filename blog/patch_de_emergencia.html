@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="patch_de_emergencia" title="Patch de emergência"/></span>
+<section id="section_patch_de_emergencia">
+<p class="title">Patch de emergência</p>
+<span class="title-heading">Caloni, 2010-11-08 computer blog</span>
+
+<p>Após um projeto muito bem sucedido, entregue no prazo e homologado em tempo recorde, você e sua equipe estão aproveitando suas devidas férias nas Bahamas, tomando água de coco na sombra de uma palmeira e apreciando as belezas da região.</p>
+
+<img src="/blog/img/patch_de_emergencia_ggKPJuT.jpg"/>
+
+<p>Mas eis que liga o seu gerente para o celular vermelho que te entregou no caso de emergências críticas e te avisa que um problema crítico foi detectado em um serviço crítico: o detector de pares. Consegue ver o erro?</p>
+
+<img src="/blog/img/patch_de_emergencia_wHctVe6.png"/>
+
+<blockquote>Oh, meu Deus!</blockquote>
+<p>Com toda a calma do mundo, você saca o seu netbook, baixa a versão homologada do controle de fonte e descobre facilmente o problema, gerando um patch e recompilando o projeto.</p>
+
+<pre>
+#include &lt;windows.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;time.h&gt;
+#include &lt;stdlib.h&gt;
+
+void DoProcess()
+{
+    int nextNumber = rand() % 1000;
+    //bool even = nextNumber % 2;
+    bool even = !(nextNumber % 2);
+    printf(&quot;%d =&gt; %s\n&quot;, nextNumber, even ? &quot;even&quot; : &quot;odd&quot;);
+}
+
+int main()
+{
+    srand( time(0) );
+
+    while( true )
+    {
+      DoProcess();
+      Sleep(3000);
+    }
+}
+</pre>
+<p>Feliz da vida, avisa o seu chefe que a única coisa que precisam trocar é o serviço crítico. Parar, trocar o arquivo, reiniciar o serviço. Simples.</p>
+
+<p>Porém, ele lhe avisa que esse é um serviço crítico, que não pode parar por nenhum segundo sequer. A atualização terá que ser feita sem parar o ciclo ininterrupto de pares/ímpares chegando do gerador de números randômicos.</p>
+
+<p>Mais uma vez calmo da vida, você diz que isso é coisa de criança. Tudo que precisa fazer é atualizar a versão certa na memória. O arquivo poderá ser renomeado e, quando o serviço puder ser reiniciado, a versão nova será executada. Enquanto isso, o patch na memória bastará para corrigir o problema e não causar nenhum momento inoperante.</p>
+
+<p>Tudo que você precisa é abrir o processo pelo WinDbg, encontrar a versão defeituosa e substituir os bytes certos.</p>
+
+<img src="/blog/img/patch_de_emergencia_zrZQir4.png"/>
+
+<blockquote>Nota: O parâmetro -pv permite depurar um processo de forma não-invasiva, mas as threads serão suspensas. Já com -pvr podemos depurar de forma não-invasiva e ainda conseguir manter as threads do processo rodando.</blockquote>
+<p>Analisando o disassembly da função nova e antiga podemos perceber que o tamanho delas não mudou (bom sinal), mas o uso dos registradores e a lógica interna teve uma alteração significativa (mau sinal):</p>
+
+<pre>
+Função antiga: bool even = nextNumber % 2;
+test    edx,edx
+setne   al
+mov     byte ptr [ebp-1],al
+movzx   ecx,byte ptr [ebp-1]
+test    ecx,ecx
+je      criticalservice!DoProcess+0x3f (0040105f)
+
+Função nova: bool even = !(nextNumber % 2);
+neg     edx
+sbb     edx,edx
+inc     edx
+mov     byte ptr [ebp-1],dl
+movzx   eax,byte ptr [ebp-1]
+test    eax,eax
+je      criticalservice!DoProcess+0x3f (0040105f)
+</pre>
+<p>Podemos começar escrevendo a função nova da memória do processo de teste para um arquivo, e lendo em seguida para cima da função antiga. Só que para isso temos que nos certificar que os endereços que referenciam para fora da função sejam os mesmos. Nesse caso, felizmente, são.</p>
+
+<pre>
+0:001&gt; .writemem c:\tests\newfunc.dat criticalservice!DoProcess 0040107e
+Writing 5f bytes.
+</pre>
+<p>Em seguida iremos sobrescrever a função antiga no processo em execução. Para evitar crashes é vital que tenhamos certeza que a função não estará sendo executada nesse momento. No nosso caso basta aguardar a entrada na função Sleep da API, que dorme por 3 segundos, tempo suficiente para a atualização.</p>
+
+<img src="/blog/img/patch_de_emergencia_bMI63Ka.png"/>
+
+<pre>
+0:000&gt; .readmem c:\tests\newfunc.dat criticalservice!DoProcess 0040107e
+Reading 5f bytes.
+</pre>
+<p>Atualizada a função, apenas nos lembramos de renomear o arquivo antigo e atualizar o novo para evitar reativar o problema. Agora podemos voltar para a apreciação das belezas da natureza...</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="patch_de_emergencia_2.html">[patch_de_emergencia_2]</a>
+ <a href="suporte_tecnico.html">[suporte_tecnico]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

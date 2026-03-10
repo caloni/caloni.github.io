@@ -392,14 +392,22 @@ SpinCount          = 0x00000000020007d0
 . 58  Id: 661c.18e9c Suspend: -1 Teb: 0000003c`34078000 Unfrozen
       Start: mso20win32client!CIOPort::ThreadProc (00007ff8`70ba3ef0)
       Priority: 0  Priority class: 32  Affinity: fffff
- # Child-SP          RetAddr               Call Site
-00 0000003c`382fedc8 00007ff9`089c52a8     ntdll!NtQueryFullAttributesFile+0x14
-01 0000003c`382fedd0 00007ff9`089b9483     AppVIsvSubsystems64!vfs_query_full_attributes_request::pass_through+0x28
-02 0000003c`382fee00 00007ff9`089b384b     AppVIsvSubsystems64!AppV::VFS::Filesys::virtualize_nt_query_full_attributes+0xc3
-03 0000003c`382ff050 00007ff9`089b61fe     AppVIsvSubsystems64!vfs_hooks::NtQueryFullAttributesFile+0xeb
-04 0000003c`382ff100 00007ff9`7774849f     AppVIsvSubsystems64!vfs_hooks::hooked_NtQueryFullAttributesFile+0x2e
-05 0000003c`382ff130 00007ff8`70b957c0     KERNELBASE!GetFileAttributesExW+0x9f
-06 0000003c`382ff230 00007ff8`70b95779     mso20win32client!MsoGetFileAttributesW+0x20
+ # RetAddr           Call Site
+00 00007ff9`089c52a8
+ntdll!NtQueryFullAttributesFile+0x14
+01 00007ff9`089b9483
+AppVIsvSubsystems64!vfs_query_full_attributes_request::pass_through+0x28
+02 00007ff9`089b384b
+AppVIsvSubsystems64!AppV::VFS::Filesys
+::virtualize_nt_query_full_attributes+0xc3
+03 00007ff9`089b61fe
+AppVIsvSubsystems64!vfs_hooks::NtQueryFullAttributesFile+0xeb
+04 00007ff9`7774849f
+AppVIsvSubsystems64!vfs_hooks::hooked_NtQueryFullAttributesFile+0x2e
+05 00007ff8`70b957c0
+KERNELBASE!GetFileAttributesExW+0x9f
+06 00007ff8`70b95779
+mso20win32client!MsoGetFileAttributesW+0x20
 ...
 </pre>
 <blockquote>Virtual applications are installed on centrally managed servers and delivered to users as a service in real time and on an as-needed basis. Users launch virtual applications from familiar access points and interact with them as if they were installed locally.</blockquote>
@@ -427,7 +435,8 @@ rem install the certificate (run as admin)
 certmgr /add MyTest.cer /s /r localMachine root
 
 rem sign the driver
-signtool sign /v /fd sha256 /s PrivateCertStore /n My.com(Test) /t http://timestamp.digicert.com MyDriver.sys
+signtool sign /v /fd sha256 /s PrivateCertStore /n My.com(Test)
+/t http://timestamp.digicert.com MyDriver.sys
 </pre>
 </section><hr/>
 

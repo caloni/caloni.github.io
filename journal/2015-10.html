@@ -455,8 +455,10 @@ role="navigation" aria-label="main navigation">
 <p>Nós da <a href="https://www.linkedin.com/company/bit-forge">BitForge</a> costumamos pelo menos indexar binários com fonte, através dos resources do binário. Como isso é feito? Basicamente editando o arquivo RC na parte da versão do binário e inserindo o hash do commit usado para gerar aquele binário. Com isso qualquer binário produzido possui seu pai ("use the source, Luke!"). Usamos um script em Python muito simples e muito eficaz para isso, que indexa .NET e C++ (através do Visual Studio, mas não está com muitas amarras de ambiente):</p>
 
 <pre>
-rc_new_content = re.sub(u'^.*ProductVersion.*$', product_version_string, rc_original_content, flags=re.MULTILINE)
-rc_new_content = re.sub(u'^.*FILEVERSION.*$', file_version_string, rc_new_content, flags=re.MULTILINE)
+rc_new_content = re.sub(u'^.*ProductVersion.*$', product_version_string,
+  rc_original_content, flags=re.MULTILINE)
+rc_new_content = re.sub(u'^.*FILEVERSION.*$', file_version_string,
+  rc_new_content, flags=re.MULTILINE)
 </pre>
 <p>Quando algum binário parar na máquina de algum cliente em algum lugar do universo, basta olhar para os detalhes pelo Windows Explorer, e ele estará lá:</p>
 
@@ -475,7 +477,8 @@ rc_new_content = re.sub(u'^.*FILEVERSION.*$', file_version_string, rc_new_conten
 <p>Para resolver isso, o mínimo que se deve fazer é super-simples e nada difícil: crie uma pasta em algum lugar, nomeie essa pasta seu servidor de símbolos, a cada novo binário que será entregue, indexe o binário e os seus símbolos. Como? Com o <a href="https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/debugger-download-tools">Debugging Tools for Windows</a>, como dizia um amigo meu, é mamão com açúcar:</p>
 
 <pre>
-&quot;c:\Tools\DbgTools(x86)\symstore&quot; add /r /f &lt;MINHA-PASTA-COM-BINÁRIOS&gt; /s c:\Tools\Symbols /t &quot;IndexSymbols&quot;
+&quot;c:\Tools\DbgTools(x86)\symstore&quot; add /r /f &lt;MINHA-PASTA-COM-BINÁRIOS&gt;
+  /s c:\Tools\Symbols /t &quot;IndexSymbols&quot;
 </pre>
 <p>Essa e outra técnicas de indexar fontes e binário você pode ver no meu <a href="2015-05.html#depurando_ate_o_fim_do_mundo_e_de_volta_de_novo_source_server_com_github">artigo</a>, na <a href="2015-08.html#ccppbrrio12">palestra</a> e <a href="https://www.youtube.com/watch?v=mZewxqlFShA">vídeo de demonstração</a>. Se você for cego, ainda tem a vantagem da áudio-narração do vídeo. Brincadeira, ainda não temos isso.</p>
 

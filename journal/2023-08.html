@@ -175,13 +175,23 @@ sxe ld:UserDeviceRegistration.dll
 <p>Na minha primeira tentativa o breakpoint não disparou. Busco, então, por nomes de funções semelhantes:</p>
 
 <pre>
-x UserDeviceRegistration!Windows::Internal::UserDeviceRegistration::CUserDeviceRegManagerStatic::*
+x UserDeviceRegistration!Windows::Internal
+::UserDeviceRegistration::CUserDeviceRegManagerStatic::*
 </pre>
 <p>Já que estou interessado no macro coloco breakpoint em todos os métodos da classe. Faço isso também do lado do BrokerPlugin e seus métodos dentro de `UserDeviceRegistration::IUserDeviceRegManagerStatics`. Posso acompanhar o fluxo sem parar usando um parâmetro bem esperto nos breakpoints do WinDbg: um comando qualquer. Nesse caso uso imprimir o nome da função chamada e o comando `g`, que segue a execução sem parar. Por exemplos (RuntimeBroker e BrokerPlugin, respectivamente):</p>
 
 <pre>
-bp UserDeviceRegistration!Windows::Internal::UserDeviceRegistration::CUserDeviceRegManagerStatic::DelegatedWorkplaceJoinWithRequestId &quot;.echotime; .echo UserDeviceRegistration!Windows::Internal::UserDeviceRegistration::CUserDeviceRegManagerStatic::DelegatedWorkplaceJoinWithRequestId; g&quot;
-bp AAD_Core!Windows::Internal::UserDeviceRegistration::IUserDeviceRegManagerStatics::GetJoinInfo &quot;.echotime; .echo AAD_Core!Windows::Internal::UserDeviceRegistration::IUserDeviceRegManagerStatics::GetJoinInfo; g&quot;
+bp UserDeviceRegistration!Windows::Internal
+::UserDeviceRegistration::CUserDeviceRegManagerStatic
+::DelegatedWorkplaceJoinWithRequestId
+&quot;.echotime; .echo UserDeviceRegistration!Windows::Internal
+::UserDeviceRegistration::CUserDeviceRegManagerStatic
+::DelegatedWorkplaceJoinWithRequestId; g&quot;
+
+bp AAD_Core!Windows::Internal::UserDeviceRegistration
+::IUserDeviceRegManagerStatics::GetJoinInfo
+&quot;.echotime; .echo AAD_Core!Windows::Internal::UserDeviceRegistration
+::IUserDeviceRegManagerStatics::GetJoinInfo; g&quot;
 </pre>
 <p>Com isso eu descobri qual o processo e qual a classe envolvida neste processo de registro de máquina. Graças também aos símbolos disponibilizados pela Microsoft fica muito mais fácil entender o fluxo. Pretendo usar esta técnica mais vezes no futuro.</p>
 
@@ -425,15 +435,15 @@ int main()
 
 <pre>
 UINT32 hstrLen = WindowsGetStringLen(hstr);
-00007FFC84D8BBE7  mov         eax,dword ptr [rcx+4]  
+00007FFC84D8BBE7  mov         eax,dword ptr [rcx+4]
 
 PCWSTR rawHstr = WindowsGetStringRawBuffer(hstr, &amp;hstrLen);
-00007FFC84D22345  mov         rax,qword ptr [rcx+10h]  
+00007FFC84D22345  mov         rax,qword ptr [rcx+10h]
 
 BOOL isEmpty = WindowsIsStringEmpty(hstr);
-00007FFC84D23019  mov         edx,dword ptr [rcx+4]  
-00007FFC84D2301C  test        edx,edx  
-00007FFC84D2301E  sete        al  
+00007FFC84D23019  mov         edx,dword ptr [rcx+4]
+00007FFC84D2301C  test        edx,edx
+00007FFC84D2301E  sete        al
 
 hr = WindowsDuplicateString(hstr, &amp;hstr2);
 00007FFC84D1789A  lock inc    dword ptr [rcx+18h]

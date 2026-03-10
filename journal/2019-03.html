@@ -546,10 +546,15 @@ C:\Tools\nssm.exe install Msvcmon
 
 int main()
 {
-    if( ! SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), CONSOLE_FULLSCREEN_MODE | CONSOLE_WINDOWED_MODE, NULL) )
+    if( ! SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE),
+      CONSOLE_FULLSCREEN_MODE | CONSOLE_WINDOWED_MODE, NULL) )
     {
-        // Se falhas com GLE 120 (função não suportada) usar função abaixo.
-        ::SendMessage(::GetConsoleWindow(), WM_SYSKEYDOWN, VK_RETURN, 0x20000000);
+        // Se falhas com GLE 120 (função não suportada)
+        // usar função abaixo.
+        ::SendMessage(::GetConsoleWindow(),
+          WM_SYSKEYDOWN,
+          VK_RETURN,
+          0x20000000);
     }
     system(&quot;chcp 65001&quot;);
 }

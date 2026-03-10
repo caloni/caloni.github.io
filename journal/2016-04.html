@@ -202,14 +202,18 @@ def PublishToTwitter(postInfo):
     https://pypi.python.org/pypi/twitter
     &quot;&quot;&quot;
     t = twitter.Twitter(auth=twitter_credentials.auth)
-    
-    with open(&quot;C:\\daytoday\\caloni.github.io\\images\\&quot; + postInfo[&quot;permalink&quot;] + &quot;.jpg&quot;, &quot;rb&quot;) as imagefile:
-      imagedata = imagefile.read()
-    t_up = twitter.Twitter(domain='upload.twitter.com', auth=twitter_credentials.auth)
+
+    with open(&quot;C:\\daytoday\\caloni.github.io\\images\\&quot; +
+      postInfo[&quot;permalink&quot;] + &quot;.jpg&quot;, &quot;rb&quot;) as imagefile:
+        imagedata = imagefile.read()
+    t_up = twitter.Twitter(domain='upload.twitter.com',
+      auth=twitter_credentials.auth)
     id_img1 = t_up.media.upload(media=imagedata)[&quot;media_id_string&quot;]
-    st = postInfo['title'] + '\n\n' + postInfo['tagline'] + '\n\n' + postInfo['shortlink'].encode('utf-8')
+    st = postInfo['title'] + '\n\n' + postInfo['tagline'] + '\n\n' +
+      postInfo['shortlink'].encode('utf-8')
     if len(st) &gt; 120: # giving space to image attachment
-        st = stars + ' ' + postInfo['title'] + '\n\n' + '\n\n' + postInfo['shortlink'].encode('utf-8')
+        st = stars + ' ' + postInfo['title'] + '\n\n' + '\n\n' +
+          postInfo['shortlink'].encode('utf-8')
     t.statuses.update(status=st, media_ids=&quot;,&quot;.join([id_img1]))
 </pre>
 <h3>Postando no Facebook</h3>
@@ -223,10 +227,12 @@ def PublishToFacebook(postInfo):
     &quot;&quot;&quot;
     http://nodotcom.org/python-facebook-tutorial.html
     &quot;&quot;&quot;
-    with open(&quot;C:\\daytoday\\caloni.github.io\\images\\&quot; + postInfo[&quot;permalink&quot;] + &quot;.jpg&quot;, &quot;rb&quot;) as imagefile:
-      imagedata = imagefile.read()
+    with open(&quot;C:\\daytoday\\caloni.github.io\\images\\&quot; +
+      postInfo[&quot;permalink&quot;] + &quot;.jpg&quot;, &quot;rb&quot;) as imagefile:
+        imagedata = imagefile.read()
 
-    st = postInfo['title'] + '\n\n' + postInfo['paragraph'] + '\n\n' + baseUrl + postInfo['permalink']
+    st = postInfo['title'] + '\n\n' + postInfo['paragraph'] + '\n\n' +
+      baseUrl + postInfo['permalink']
     post = facebook_credentials.auth.put_photo(image=imagedata, message=st)
 </pre>
 </section><hr/>
@@ -335,7 +341,7 @@ int main()
     }
     printf(&quot;Case #%d:&quot;, t);
     for(int i = 1; i &lt; 2500; i++)
-      if (cnt[i]) 
+      if (cnt[i])
         cout &lt;&lt; &quot; &quot; &lt;&lt; i; // se não for zero (ou seja, ímpar) imprime
     cout &lt;&lt; endl;
 }

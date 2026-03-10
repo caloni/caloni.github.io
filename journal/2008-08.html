@@ -97,7 +97,7 @@ void DebugLoop()
       // Otherwise, it stays frozen forever!
       ContinueDebugEvent(debugEvt.dwProcessId, debugEvt.dwThreadId, DBG_EXCEPTION_NOT_HANDLED);
     }
-} 
+}
 </pre>
 <p>The interesting detail about this communication process is that a program can be debugged actively only for ONE debugger. In other words, while there's a process A debugging process B, no one besides A can debug and break B.Using this principle, we can imagine a debugging protection based on this exclusivity, creating a protector process that connects to the protected process and "debugs" it:</p>
 
@@ -175,7 +175,7 @@ int main(int argc, char* argv[])
     }
 
     return (int) ret;
-} 
+}
 </pre>
 <p>The needed steps to test the code above are:</p>
 
@@ -265,15 +265,15 @@ void InstallAntiAttach()
 
     DWORD oldProtect = 0;
 
-    if( VirtualProtect(attachBreak, sizeof(jmpToAntiAttachAbort), 
+    if( VirtualProtect(attachBreak, sizeof(jmpToAntiAttachAbort),
       PAGE_EXECUTE_READWRITE, &amp;oldProtect) )
     {
       // if we can change the code page protection we put a jump to our code
-      CopyMemory(attachBreak, 
+      CopyMemory(attachBreak,
         jmpToAntiAttachAbort, sizeof(jmpToAntiAttachAbort));
 
       // restore old protection
-      VirtualProtect(attachBreak, sizeof(jmpToAntiAttachAbort), 
+      VirtualProtect(attachBreak, sizeof(jmpToAntiAttachAbort),
         oldProtect, &amp;oldProtect);
     }
 }
@@ -285,7 +285,7 @@ int main()
     InstallAntiAttach();
     cout &lt;&lt; &quot;Try to attach, if you can...&quot;;
     cin.get();
-} 
+}
 </pre>
 <p>To compile the code above, just call the compiler and linker normally. Obs.: We need the user32.lib in order to call MessageBox API:</p>
 
@@ -314,7 +314,7 @@ BYTE jmpToAntiAttachAbort[] =
 0xFF, 0xE0 };                     // jmp eax
 
 // we change 0xCCCCCCCC using a more useful address
-*reinterpret_cast&lt;PVOID*&gt;(&amp;jmpToAntiAttachAbort[1]) = AntiAttachAbort; 
+*reinterpret_cast&lt;PVOID*&gt;(&amp;jmpToAntiAttachAbort[1]) = AntiAttachAbort;
 </pre>
 <p>There are a lot of ways to do the same thing. The example above is what is normally called in the crackers community as a shellcode, what is a pretty name for "byte array that is really the assembly code that does interesting things". Shellcode for short =).</p>
 
@@ -586,7 +586,6 @@ Handle table at e15cf000 with 261 Entries in use
 029c: Object: 81668020  GrantedAccess: 001f0fff
 
 0330: Object: 815dc798  GrantedAccess: 001f0fff
-
 ... continua por muuuuuuuito mais tempo
 </pre>
 <p>Uma simples busca pelo EPROCESS do processo-fantasma nos retorna dois processos que o estão referenciando: um svchost.exe e um outro processo com um nome muito suspeito, provavelmente feito sob encomenda para a confecção desse artigo:</p>
@@ -623,9 +622,7 @@ Handle table at e19fe000 with 1302 Entries in use
 10dc: Object: 8169a958  GrantedAccess: 00100000
 
 1118: Object: 815f42f0  GrantedAccess: 00100068
-
 ...
-
 processor number 0, process 8164c220
 Searching for handles of type Process
 PROCESS 8164c220  SessionId: 0  Cid: 044c    Peb: 7ffdf000  ParentCid: 02a4

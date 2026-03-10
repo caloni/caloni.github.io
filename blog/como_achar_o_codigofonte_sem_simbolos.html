@@ -48,8 +48,6 @@ role="navigation" aria-label="main navigation">
 <pre>
 0:000&gt; ~*
 .  0  Id: 4c8.30c Suspend: 1 Teb: 7ffde000 Unfrozen
-      Start: *** WARNING: Unable to verify checksum for Service.exe
-*** ERROR: Module load completed but symbols could not be loaded for Service.exe
 Service+0xc60c (0040c60c)
       Priority: 0  Priority class: 32  Affinity: f
    1  Id: 4c8.4d8 Suspend: 1 Teb: 7ffdd000 Unfrozen
@@ -81,40 +79,40 @@ Processing 1431 threads, please wait
 .  0  Id: 4c8.30c Suspend: 1 Teb: 7ffde000 Unfrozen
       Start: Service+0xc60c (0040c60c)
       Priority: 0  Priority class: 32  Affinity: f
-ChildEBP RetAddr
-0012f9f8 7c586381 NTDLL!ZwReadFile+0xb
-0012fa6c 7c2dd578 KERNEL32!ReadFile+0x181
+RetAddr
+7c586381 NTDLL!ZwReadFile+0xb
+7c2dd578 KERNEL32!ReadFile+0x181
 ...
 0012fff0 00000000 KERNEL32!BaseProcessStart+0x3d
 
 .  1  Id: 4c8.4d8 Suspend: 1 Teb: 7ffdd000 Unfrozen
       Start: ADVAPI32!AccessCheckByTypeResultListAndAudit(...)
       Priority: 0  Priority class: 32  Affinity: f
-ChildEBP RetAddr
-00cefec0 7c59a0a2 NTDLL!ZwWaitForSingleObject+0xb
+RetAddr
+7c59a0a2 NTDLL!ZwWaitForSingleObject+0xb
 ...
-00cf000c 007a0000 0x1366e0
-00cf000c 00000000 0x7a0000
+007a0000 0x1366e0
+00000000 0x7a0000
 
 .  2  Id: 4c8.580 Suspend: 1 Teb: 7ffdc000 Unfrozen
       Priority: 0  Priority class: 32  Affinity: f
-ChildEBP RetAddr
-010efe24 77d59815 NTDLL!ZwReplyWaitReceivePortEx+0xb
+RetAddr
+77d59815 NTDLL!ZwReplyWaitReceivePortEx+0xb
 ...
 010effec 00000000 KERNEL32!BaseThreadStart+0x52
 
 .  3  Id: 4c8.adc Suspend: 1 Teb: 7ffd9000 Unfrozen
       Start: rtutils!TraceServerThread (778321fe)
       Priority: 0  Priority class: 32  Affinity: f
-ChildEBP RetAddr
-0150fd20 7c59a26d NTDLL!ZwWaitForMultipleObjects+0xb
+RetAddr
+7c59a26d NTDLL!ZwWaitForMultipleObjects+0xb
 ...
-0150ffec 00000000 KERNEL32!BaseThreadStart+0x52
+00000000 KERNEL32!BaseThreadStart+0x52
 ...
 .1430  Id: 4c8.143c Suspend: 1 Teb: 7fa06000 Unfrozen
       Priority: 0  Priority class: 32  Affinity: f
-ChildEBP RetAddr
-6665f0dc 7c59a0a2 NTDLL!ZwWaitForSingleObject+0xb
+RetAddr
+7c59a0a2 NTDLL!ZwWaitForSingleObject+0xb
 ...
 6665ffec 00000000 KERNEL32!BaseThreadStart+0x52
 
@@ -126,38 +124,37 @@ Duplicate callstacks: 1092 (windbg thread #s follow):
 
 <pre>
 0:000&gt; ~1429 kv
-
-NTDLL!ZwWaitForSingleObject+0xb 
-KERNEL32!WaitForSingleObjectEx+0x71 
-KERNEL32!WaitForSingleObject+0xf 
-Service+0x54c3 6645f764 77d79970 Service+0x60ec6645f788 
+NTDLL!ZwWaitForSingleObject+0xb
+KERNEL32!WaitForSingleObjectEx+0x71
+KERNEL32!WaitForSingleObject+0xf
+Service+0x54c3 6645f764 77d79970 Service+0x60ec6645f788
 ...
 rpcrt4!Invoke+0x30
-rpcrt4!NdrCallServerManager+0x15 
-rpcrt4!NdrStubCall+0x200 
-rpcrt4!CStdStubBuffer_Invoke+0xc1 
-OLE32!SyncStubInvoke+0x61 
-OLE32!StubInvoke+0xa8 
-OLE32!CCtxComChnl::ContextInvoke+0xbb 
-OLE32!MTAInvoke+0x18 
-OLE32!AppInvoke+0xb5 
-OLE32!ComInvokeWithLockAndIPID+0x297 
-OLE32!ThreadInvoke+0x1b7 
-rpcrt4!DispatchToStubInC+0x32 
-rpcrt4!RPC_INTERFACE::DispatchToStubWorker+0x100 
-rpcrt4!RPC_INTERFACE::DispatchToStub+0x5e 
-rpcrt4!RPC_INTERFACE::DispatchToStubWithObject+0xa9 
-rpcrt4!OSF_SCALL::DispatchHelper+0xa1 
-rpcrt4!OSF_SCALL::DispatchRPCCall+0x121 
-rpcrt4!OSF_SCALL::ProcessReceivedPDU+0x68f 
-rpcrt4!OSF_SCALL::BeginRpcCall+0x183 
-rpcrt4!OSF_SCONNECTION::ProcessReceiveComplete+0x326 
-rpcrt4!ProcessConnectionServerReceivedEvent+0x1b 
-rpcrt4!LOADABLE_TRANSPORT::ProcessIOEvents+0xcd 
-rpcrt4!ProcessIOEventsWrapper+0x9 
-rpcrt4!BaseCachedThreadRoutine+0x4f 
-rpcrt4!ThreadStartRoutine+0x18 
-KERNEL32!BaseThreadStart+0x52 
+rpcrt4!NdrCallServerManager+0x15
+rpcrt4!NdrStubCall+0x200
+rpcrt4!CStdStubBuffer_Invoke+0xc1
+OLE32!SyncStubInvoke+0x61
+OLE32!StubInvoke+0xa8
+OLE32!CCtxComChnl::ContextInvoke+0xbb
+OLE32!MTAInvoke+0x18
+OLE32!AppInvoke+0xb5
+OLE32!ComInvokeWithLockAndIPID+0x297
+OLE32!ThreadInvoke+0x1b7
+rpcrt4!DispatchToStubInC+0x32
+rpcrt4!RPC_INTERFACE::DispatchToStubWorker+0x100
+rpcrt4!RPC_INTERFACE::DispatchToStub+0x5e
+rpcrt4!RPC_INTERFACE::DispatchToStubWithObject+0xa9
+rpcrt4!OSF_SCALL::DispatchHelper+0xa1
+rpcrt4!OSF_SCALL::DispatchRPCCall+0x121
+rpcrt4!OSF_SCALL::ProcessReceivedPDU+0x68f
+rpcrt4!OSF_SCALL::BeginRpcCall+0x183
+rpcrt4!OSF_SCONNECTION::ProcessReceiveComplete+0x326
+rpcrt4!ProcessConnectionServerReceivedEvent+0x1b
+rpcrt4!LOADABLE_TRANSPORT::ProcessIOEvents+0xcd
+rpcrt4!ProcessIOEventsWrapper+0x9
+rpcrt4!BaseCachedThreadRoutine+0x4f
+rpcrt4!ThreadStartRoutine+0x18
+KERNEL32!BaseThreadStart+0x52
 </pre>
 <p>Através das funções de RPC e OLE32 podemos concluir que se trata de uma chamada direta para uma interface COM. Bom, existem centenas de métodos e dezenas de interfaces nesse serviço, tornando mais fácil tentar desmontar a chamada inicial que o rpcrt4 faz ao nosso módulo.</p>
 
@@ -184,7 +181,6 @@ mov     ebp,esp
 sub     esp,0C8h
 cmp dword ptr [Service+0x19fb0 (00419fb0)],0
 jne     Service+0x608e (0040608e)
-
 Service+0x6073:
 push    0
 push    offset Service+0x15160 (00415160)
@@ -192,7 +188,6 @@ mov     ecx,offset Service+0x19e60 (00419e60)
 call    Service+0x68a6 (004068a6)
 mov     eax,dword ptr [ebp+14h]
 mov word ptr [eax],2Fh
-
 jmp     Service+0x60f3 (004060f3)
 
 Service+0x608e:

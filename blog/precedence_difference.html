@@ -49,10 +49,12 @@ role="navigation" aria-label="main navigation">
 int main()
 {
   int f1,f2,s=0;
-     for( f1 = 1; (f1 == 11 &amp;&amp; s != 5) ? s=5, f1=0, putchar(10) : ( f1 &lt;= 10 ) ? f1 = f1 : f1 = 12, f1 &lt;= 11 ; f1++ )
-      for( f2 = 1 + s; f2 &lt;= 5+s; f2++ ) printf(&quot;%dx%d=%d%c&quot;, f2, f1, f1 * f2, ( f2 == 5 + s ) ? 10 : 9);
+     for( f1 = 1; (f1 == 11 &amp;&amp; s != 5) ? s=5, f1=0, putchar(10) : ( f1 &lt;= 10 )
+     ? f1 = f1 : f1 = 12, f1 &lt;= 11 ; f1++ )
+      for( f2 = 1 + s; f2 &lt;= 5+s; f2++ ) printf(&quot;%dx%d=%d%c&quot;, f2, f1, f1 * f2,
+      ( f2 == 5 + s ) ? 10 : 9);
   return 0;
-} 
+}
 </pre>
 <p>Despite the fact the result is a strong candidate to <a href="http://www.ioccc.org">The International Obfuscated C Code Contest</a> the Linux guys told him the code was not successful on GCC, and somewhere inside those four lines there was a non-standard piece of code.</p>
 
@@ -83,7 +85,7 @@ error C2106: '=' : left operand must be l-value
   ( f1 &lt;= 10 ) ?
     f1 = f1
     :
-    f1 = 12, f1 &lt;= 11; 
+    f1 = 12, f1 &lt;= 11;
 </pre>
 <p>We have two ternary operators nestled. In accordance with C++ standard, the ternary operators have less precedence than the attribution operators and are evaluated from left to right. In other words, in first place all the atributions inside the expression are made before any ternary operator. After that, the first ternary operator is executed, followed by the second:</p>
 
@@ -97,7 +99,7 @@ error C2106: '=' : left operand must be l-value
 ) ?
   (f1 = f1)
   :
-  (f1 = 12), f1 &lt;= 11; 
+  (f1 = 12), f1 &lt;= 11;
 </pre>
 <p>Now let't take a look in C. In this language, different from C++, the ternary operators have more precedence than the attribution operators, and are executed from right to left. That means the first and last ternary operators are executed, ignoring the right attribution, and after that the first ternary operator is executed. Only after these two events the right attribution is evaluated:</p>
 

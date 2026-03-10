@@ -404,7 +404,7 @@ role="navigation" aria-label="main navigation">
 #include &lt;iostream&gt;
 
 char* LegacyFunction()
-{ 
+{
     char* ret = (char*) malloc(100);
     strcpy(ret, &quot;old old string&quot;);
     return ret;
@@ -419,11 +419,13 @@ int main()
 {
     char* legacyString = LegacyFunction();
     size_t legacyLen = strlen(legacyString);
-    wchar_t* convertedString = new wchar_t[legacyLen+1]; // espalhando a merda de alocar dinamicamente
+     // espalhando a merda de alocar dinamicamente
+    wchar_t* convertedString = new wchar_t[legacyLen+1]
     mbstowcs(convertedString, legacyString, legacyLen+1);
     WideStringFunction( convertedString );
     free(legacyString);
-    free(convertedString); // espalhando a merda de desalocar manualmente
+     // espalhando a merda de desalocar manualmente
+    free(convertedString)
 }
 </pre>
 <p>Quando lidamos com funções legadas elas se misturam de tal maneira com código novo que a merda da alocação/desalocação dinâmica manual vai se espalhando também. A não ser que a gente comece a usar o novo modelo RAII e deixe a memória ser gerenciada automaticamente:</p>
@@ -434,7 +436,7 @@ int main()
 #include &lt;vector&gt;
 
 char* LegacyFunction()
-{ 
+{
     char* ret = (char*) malloc(100);
     strcpy(ret, &quot;old old string&quot;);
     return ret;
@@ -449,7 +451,8 @@ int main()
 {
     char* legacyString = LegacyFunction();
     size_t legacyLen = strlen(legacyString);
-    std::vector&lt;wchar_t&gt; convertedString(legacyLen+1); // a STL que se vira pra alocar
+    // a STL que se vira pra alocar
+    std::vector&lt;wchar_t&gt; convertedString(legacyLen+1)
     mbstowcs(&amp;convertedString[0], legacyString, legacyLen+1);
     WideStringFunction(&amp;convertedString[0]);
     free(legacyString);

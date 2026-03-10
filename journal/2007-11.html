@@ -153,8 +153,8 @@ int main()
 <p>Como podemos ver, para o typedef de ponteiros de método é necessário especificar o escopo da classe. Com isso o compilador já sabe que só poderá aceitar endereços de métodos pertencentes à mesma classe com o mesmo protótipo. Na hora de atribuir, usamos o operador de endereço e o nome do método (com escopo, se estivermos fora da classe). É importante notar que, diferente de ponteiros de função, o operador de endereço é obrigatório. Do contrário:</p>
 
 <pre>
-error C4867: 'Rand::FuncOne': function call 
-missing argument list; use '&amp;Rand::FuncOne' 
+error C4867: 'Rand::FuncOne': function call
+missing argument list; use '&amp;Rand::FuncOne'
 to create a pointer to member
 </pre>
 <p>E, por fim, a chamada. Como é a chamada de um método, é quase intuitiva a necessidade de um objeto para chamá-la. Do contrário não teríamos um this para alterar o objeto em qualquer método não-estático, certo? Daí a necessidade do padrão C++ especificar dois operadores especialistas para esse fim, construídos a partir da combinação de operadores já existentes em C:</p>
@@ -162,11 +162,9 @@ to create a pointer to member
 <pre>
 Rand r;
 Rand* pr = &amp;r;
-
 // [obj] .* [method ptr]
 ( r.*pMethod )();
-
-// [obj ptr] -&gt;* [method ptr] 
+// [obj ptr] -&gt;* [method ptr]
 ( pr-&gt;*pMethod )();
 </pre>
 <p>Esses operadores obrigam o programador a sempre ter um objeto e um ponteiro. Daí não tem como errar. Infelizmente, devido à ordem de precedência, temos que colocar os parênteses em torno da expressão para chamar o método. Pelo menos fica equivalente ao que precisávamos fazer antes da padronização da linguagem C.</p>
@@ -205,15 +203,15 @@ public:
 
   void Print()
   {
-    std::cout &lt;&lt; &quot;this: &quot; 
-      &lt;&lt; std::hex &lt;&lt; this 
-      &lt;&lt; &quot;, member: &quot; 
+    std::cout &lt;&lt; &quot;this: &quot;
+      &lt;&lt; std::hex &lt;&lt; this
+      &lt;&lt; &quot;, member: &quot;
       &lt;&lt; std::dec &lt;&lt; m_num
       &lt;&lt; std::endl;
   }
 };
 
-/** No princípio Deus disse: 
+/** No princípio Deus disse:
     'int main!'
 */
 int main()
@@ -229,25 +227,25 @@ int main()
   (r3.*fp)();
 
   std::cout &lt;&lt; std::endl;
-  
-  std::cout &lt;&lt; &quot;this: &quot; 
-    &lt;&lt; std::hex &lt;&lt; &amp;r1 
-    &lt;&lt; &quot;, member: &quot; 
-    &lt;&lt; std::dec &lt;&lt; r1.*mp 
+
+  std::cout &lt;&lt; &quot;this: &quot;
+    &lt;&lt; std::hex &lt;&lt; &amp;r1
+    &lt;&lt; &quot;, member: &quot;
+    &lt;&lt; std::dec &lt;&lt; r1.*mp
     &lt;&lt; std::endl;
 
-  std::cout &lt;&lt; &quot;this: &quot; 
-    &lt;&lt; std::hex &lt;&lt; &amp;r2 
-    &lt;&lt; &quot;, member: &quot; 
-    &lt;&lt; std::dec &lt;&lt; r2.*mp 
+  std::cout &lt;&lt; &quot;this: &quot;
+    &lt;&lt; std::hex &lt;&lt; &amp;r2
+    &lt;&lt; &quot;, member: &quot;
+    &lt;&lt; std::dec &lt;&lt; r2.*mp
     &lt;&lt; std::endl;
 
-  std::cout &lt;&lt; &quot;this: &quot; 
-    &lt;&lt; std::hex &lt;&lt; &amp;r3 
-    &lt;&lt; &quot;, member: &quot; 
-    &lt;&lt; std::dec &lt;&lt; r3.*mp 
+  std::cout &lt;&lt; &quot;this: &quot;
+    &lt;&lt; std::hex &lt;&lt; &amp;r3
+    &lt;&lt; &quot;, member: &quot;
+    &lt;&lt; std::dec &lt;&lt; r3.*mp
     &lt;&lt; std::endl;
-} 
+}
 </pre>
 <p>O novo código chama através do mesmo ponteiro o mesmo método (duh), mas através de três objetos diferentes. Se observarmos a saída veremos que cada instância da classe guardou um inteiro aleatório diferente para si:</p>
 
@@ -268,20 +266,17 @@ this: 0012FF60, member: 44
 
 <pre>
 ; FP fp = &amp;Rand::Print;
-lea rax,[Rand::Print]  
+lea rax,[Rand::Print]
 mov qword ptr [fp],rax
-
 ; (r1.*fp)();
-lea rcx,[r1]  
-call qword ptr [fp]  
-
+lea rcx,[r1]
+call qword ptr [fp]
 ; (r2.*fp)();
-lea rcx,[r2]  
-call qword ptr [fp]  
-
+lea rcx,[r2]
+call qword ptr [fp]
 ; (r3.*fp)();
-lea rcx,[r3]  
-call qword ptr [fp]  
+lea rcx,[r3]
+call qword ptr [fp]
 </pre>
 <p>Além do ponteiro de métodos, também é possível no C++ apontar para membros de um dado objeto como foi feito no exemplo acima. Para tanto, como vimos no código, basta declarar um tipo de ponteiro de membro de acordo com o tipo desejado com o escopo da classe: typedef int Rand::*MP. Nesse caso, a técnica de usar o próprio enderenço não funciona, já que cada objeto possui um membro próprio em um lugar de memória próprio. Porém, assim como os ponteiros de métodos, os ponteiros de membros exigem um objeto para serem acessados, o que já nos dá a dica de onde o objeto começa. Sabendo onde ele começa, fica fácil saber onde fica o membro através do seu offset, ou seja, a distância dele a partir do início da memória do objeto. O código abaixo simplifica a obtenção de um objeto dentro da classe usando ponteiro para membros:</p>
 
@@ -298,18 +293,18 @@ int i3 = r3.*mp;
 mov dword ptr [mp],0
 
 ; int i1 = r1.*mp;
-movsxd rax,dword ptr [mp] 
-mov eax,dword ptr r1[rax] 
-mov dword ptr [i1],eax 
+movsxd rax,dword ptr [mp]
+mov eax,dword ptr r1[rax]
+mov dword ptr [i1],eax
 
 ; int i2 = r2.*mp;
-movsxd rax,dword ptr [mp] 
-mov eax,dword ptr r2[rax] 
-mov dword ptr [i2],eax 
+movsxd rax,dword ptr [mp]
+mov eax,dword ptr r2[rax]
+mov dword ptr [i2],eax
 
 ; int i3 = r3.*mp;
-movsxd rax,dword ptr [mp] 
-mov eax,dword ptr r3[rax] 
+movsxd rax,dword ptr [mp]
+mov eax,dword ptr r3[rax]
 mov dword ptr [i3],eax
 </pre>
 <p>Como podemos ver, não é nenhuma magia negra a responsável por fazer os ponteiros de métodos e de membros funcionarem em C++. Porém, eles não são ponteiros ordinário que costumamos misturar a torto e a direito. Essa distinção na linguagem é importante para manter o código "minimamente sadio".</p>
@@ -499,7 +494,7 @@ HHOOK SetWindowsHookEx(
 int main()
 {
   puts(&quot;oi, mundo!\n&quot;);
-} 
+}
 </pre>
 <p>Desde o Windows 95, existe uma DLL na pasta de sistema chamada msvcrt.dll com a maioria das funções da libc disponíveis para link dinâmico (update 2026-02-20: sim, ela ainda está lá). Só que, com o uso padrão do Visual C++, é usada sempre a biblioteca que vem junto com o ambiente, com suas trocentas funções (e consequentes bytes enche-linguiça). Porém, é possível utilizar diretamente a msvcrt.dll distribuída no diretório do sistema se criarmos uma LIB de importação para ela.</p>
 
@@ -568,7 +563,6 @@ eip=0028010a esp=0007fb24 ebp=0007fc94 iopl=0         nv up ei pl zr na pe nc
 cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
 0028010a cc int     3
 0:000&gt; r$ip = $t0
-*** WARNING: Unable to verify checksum for C:\temp\MinhaDllInvasora.dll
 0:000&gt; g
 ModLoad: 5cb70000 5cb96000   C:\WINDOWS\system32\ShimEng.dll
 ModLoad: 6f880000 6fa4a000   C:WINDOWS\AppPatch\AcGenral.DLL
@@ -830,7 +824,7 @@ void __fastcall TForm1::FormMouseDown(TObject *Sender, TMouseButton Button,
 {
   Canvas-&gt;PenPos = TPoint(X, Y); // mais tarde veremos o porquê disso
   mouseDown = true;
-} 
+}
 </pre>
 <p>Saber quando o mouse está sendo arrastado também é um passo trivial, uma vez que temos esse evento (OnMove) para tratar no controle da janela.</p>
 
@@ -846,7 +840,7 @@ void __fastcall TForm1::FormMouseMove(TObject *Sender, TShiftState Shift,
   {
     Canvas-&gt;LineTo(X, Y);
   }
-} 
+}
 </pre>
 <p>O método LineTo() desenha uma linha do ponto onde está atualmente a caneta de desenho até a coordenada especificada. Esse é o motivo pelo qual no evento OnMouseDown alteramos a propriedade PenPos do Canvas para o ponto onde o usuário pressiona o botão do mouse.</p>
 
@@ -872,7 +866,7 @@ private:
     Canvas-&gt;LineTo(X, Y);
   }
 }
-//... 
+//...
 </pre>
 <img src="/journal/img/desenhando_em_c_builder_amobuilder.gif"/>
 

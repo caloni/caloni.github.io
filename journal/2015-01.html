@@ -373,7 +373,7 @@ int getInstalledSoftware(InstalledSoftwareList&amp; installedSoftware)
       TCHAR swKeyName[MAX_PATH] = _T(&quot;&quot;);
 
       // para cada chave dentro da raiz de programas instalados
-      while( (err = RegEnumKey(swRoot, swIndex++, swKeyName, SizeofArray(swKeyName))) 
+      while( (err = RegEnumKey(swRoot, swIndex++, swKeyName, SizeofArray(swKeyName)))
          == ERROR_SUCCESS )
       {
          HKEY swCurrent = NULL;
@@ -384,7 +384,7 @@ int getInstalledSoftware(InstalledSoftwareList&amp; installedSoftware)
             CHAR swDisplay[MAX_PATH] = &quot;&quot;; // vamos obter a string já em mb
             DWORD swDisplaySz = SizeofArray(swDisplay);
 
-            if( (err = RegQueryValueExA(swCurrent, SW_DISPLAY_NAME, 0, NULL, 
+            if( (err = RegQueryValueExA(swCurrent, SW_DISPLAY_NAME, 0, NULL,
                reinterpret_cast&lt;PBYTE&gt;(swDisplay), &amp;swDisplaySz)) == ERROR_SUCCESS )
             {
                installedSoftware.push_back(swDisplay);
@@ -485,7 +485,7 @@ int main()
 }
 Linking
 =======
-library.lib(library.obj) : warning LNK4049: locally 
+library.lib(library.obj) : warning LNK4049: locally
  defined symbol __invalid_parameter_noinfo imported
 
 Running
@@ -494,7 +494,7 @@ O sistema no pode executar o programa especificado.
 
 Depends
 =======
-Error: The Side-by-Side configuration information in &quot;blablabla\CONSOLE.EXE&quot; 
+Error: The Side-by-Side configuration information in &quot;blablabla\CONSOLE.EXE&quot;
  contains errors.
 Falha na inicialização do aplicativo devido a configuração incorreta.
 A reinstalação do aplicativo pode resolver o problema (14001).
@@ -504,13 +504,13 @@ A reinstalação do aplicativo pode resolver o problema (14001).
 <p>Até agora, a maneira que eu tenho utilizado para rastrear esse problema é não ignorar a msvcrt e ir tirando as dependências das LIBs pouco a pouco, até que ocorra o erro de símbolo duplicado. Algo assim:</p>
 
 <pre>
-MSVCRT.lib(ti_inst.obj) : error LNK2005: &quot;private: __thiscall 
- type_info::type_info(class type_info const &amp;)&quot; (??0type_info@@AAE@ABV0@@Z) 
+MSVCRT.lib(ti_inst.obj) : error LNK2005: &quot;private: __thiscall
+ type_info::type_info(class type_info const &amp;)&quot; (??0type_info@@AAE@ABV0@@Z)
  already defined in LIBCMT.lib(typinfo.obj)
-MSVCRT.lib(ti_inst.obj) : error LNK2005: &quot;private: class type_info &amp; __thiscall 
- type_info::operator=(class type_info const &amp;)&quot; (??4type_info@@AAEAAV0@ABV0@@Z) 
+MSVCRT.lib(ti_inst.obj) : error LNK2005: &quot;private: class type_info &amp; __thiscall
+ type_info::operator=(class type_info const &amp;)&quot; (??4type_info@@AAEAAV0@ABV0@@Z)
  already defined in LIBCMT.lib(typinfo.obj)
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; 
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs;
  use /NODEFAULTLIB:library
 Blablabla\console.exe : fatal error LNK1169: one or more multiply defined symbols found
 </pre>
@@ -777,25 +777,23 @@ Blablabla\console.exe : fatal error LNK1169: one or more multiply defined symbol
 <p>Como esse padrão de bits nunca muda de tamanho, todas as rotinas da biblioteca recebiam e retornavam sempre valores do mesmo tamanho na memória. Isso na linguagem C quer dizer que o char da época ocupava o mesmo tamanho que um int. Existia inclusive uma função que retornava o caractere de uma string na posição especificada:</p>
 
 <pre>
-// the i-th character 
+// the i-th character
 // of the string is returned
 c = char( string, i );
 </pre>
 <p>Sim! Char era uma função, um conversor de "tipos". No entanto a própria variável que armazenava um char tinha o tamanho de qualquer objeto da linguagem. Esse é o motivo pelo qual, tradicionalmente, as seguintes funções recebem e retornam ints em C:</p>
 
 <pre>
-// read a character 
+// read a character
 // from stdin
 int getchar( void );
-
-// writes a character 
+// writes a character
 // to stdout
 int putchar( int c );
-
-// sets buffers to a 
+// sets buffers to a
 // specified character
-void *memset( void *dest, 
-  int c, 
+void *memset( void *dest,
+  int c,
   size_t count );
 </pre>
 </section><hr/>

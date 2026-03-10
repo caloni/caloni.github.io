@@ -220,7 +220,7 @@ int func(int x, int y, int z);
 struct Teste
 {
   /* tamanho em memória: zero bytes */
-  char bufao[0x100000]; 
+  char bufao[0x100000];
   /* tamanho em memória: zero bytes */
   int intao[0xffffff];
 };
@@ -237,14 +237,12 @@ int func(int x, int y, int z)
   int ret = x + y + z; /* alguns _asm add + */
   return ret;          /* um _asm ret */
 }
-
-/* tamanho em memória: 
-   0x100000 + 0xffffff * 4 
+/* tamanho em memória:
+   0x100000 + 0xffffff * 4
    = 1048576 bytes
 */
 Teste tst;
-
-/* tamanho em memória: 
+/* tamanho em memória:
    sizeof(int) bytes
 */
 int x;
@@ -260,8 +258,7 @@ int x;
 <pre>
 /* atenção: declaração apenas! */
 struct Estrutura;
-
-/* ponteiro para declaração: 
+/* ponteiro para declaração:
    não sabemos o tamanho ainda
 */
 Estrutura* st;
@@ -357,9 +354,7 @@ C:\&gt;bzr init-repo Tests
 C:\&gt;cd Tests
 
 C:\Tests&gt;bzr init project1
-
 C:\Tests&gt;cd project1
-
 C:\Tests\project1&gt;bzr add
 added AUTHORS
 added COPYING
@@ -385,7 +380,6 @@ added winboard/extends/infboard/main.c
 added winboard/extends/infboard/msvc.mak
 added winboard/extends/infboard/support.c
 Committed revision 1.
-
 C:\Tests\project1&gt;
 </pre>
 <p>Se compararmos o tamanho, veremos que o repositório compartilhado é que detém a maior parte dos arquivos, enquanto agora o ".bzr" que está na pasta do projeto possui apenas dados de controle. A mesma coisa irá acontecer com qualquer branch criado dentro da pasta de repositório compartilhado.</p>
@@ -606,7 +600,6 @@ All changes applied successfully.
 Committing to: C:/Tests/linux/
 added win2
 Committed revision 4.
-
 C:\Tests\linux&gt;bzr log
 ------------------------------------------------------------
 revno: 4
@@ -691,7 +684,7 @@ union Align
   t;
 
   unsigned char align[
-    sizeof(struct S) % 8 
+    sizeof(struct S) % 8
     ?
     (sizeof(struct S) / 8 + 1) * 8
     :
@@ -708,7 +701,7 @@ union Align
 <p>Tudo que temos que saber para fazer o alinhamento é o tamanho normal de nosso tipo útil (struct S). A partir desse valor deduzimos o próximo número que seja múltiplo de 8, através da seguinte construção:</p>
 
 <pre>
-sizeof(struct S) % 8 
+sizeof(struct S) % 8
 ?
 (sizeof(struct S) / 8 + 1) * 8
 :
@@ -1156,7 +1149,6 @@ Copyright (C) Microsoft Corporation.  All rights reserved.
 typeid-class.obj
 
 C:\Tests&gt;typeid-class.exe
-
 class MyClass::MyMethod
 </pre>
 <p>Com classes não-polimórficas a coisa parece não ter muita utilidade. No entanto, essa mesma técnica pode ser aplicada em classes derivadas, uma vez que o operador typeid pode trabalhar em tempo de execução:</p>
@@ -1195,7 +1187,6 @@ Copyright (C) Microsoft Corporation.  All rights reserved.
 typeid-class2.obj
 
 C:\Tests&gt;typeid-class2.exe
-
 class MyDerivatedClass1::MyMethod class MyDerivatedClass2::MyMethod
 </pre>
 <p>Apenas se lembre de ter de fato uma classe polimórfica (eu consegui isso tornando MyMethod uma função virtual). Do contrário você pode <a href="2007-10.html#typeid_e_os_perigos_do_nao_polimorfismo">ter problemas</a>.</p>

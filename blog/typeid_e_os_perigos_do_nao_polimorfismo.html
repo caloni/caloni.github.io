@@ -96,7 +96,7 @@ int main()
 {
   Base* b = new Deriv();
   func(b);
-} 
+}
 </pre>
 <p>O typeid usado nesse exemplo será o estático, no estilo typeid(type), porque o tipo do objeto para a função é de "ponteiro para objeto de classe não-polimórfica", ou seja, sem nenhuma função virtual. É importante lembrar que o polimorfismo em C++ só é aplicado se houver razão para tal, pois na linguagem a regra é que "não existe sobrecarga de execução sem que o programador queira":</p>
 
@@ -112,7 +112,7 @@ class Base
 virtual ~Base()
 {
   cout &lt;&lt; &quot;~Base()\n&quot;;
-} 
+}
 </pre>
 <p>Esse é um erro equivalente ao chamar o operador delete usando o ponteiro recebido em func. Se isso fosse feito, seria chamado apenas o destrutor da classe Base. Por falar nisso, temos nesse exemplo um leak de memória (percebeu pela saída que os destrutores não são chamados?). Mas esse é um erro bem menos sutil que o visto pelo nosso amigo typeid amigo-da-onça ;).</p>
 

@@ -468,14 +468,15 @@ namespace MyStateMachine
     {
         typedef msm::back::state_machine&lt;StateMachine&gt; SM;
 
-        struct Off :msmf::terminate_state&lt;&gt; // Off is the last state
+         // Off is the last state
+        struct Off :msmf::terminate_state&lt;
         {
             template &lt;class Event, class Fsm&gt;
             void on_entry(Event const&amp;, Fsm&amp;) const
             {
                 cout &lt;&lt; &quot;on_entry Off generic event\n&quot;;
             }
-        }; 
+        };
 
         struct On :msmf::state&lt;&gt;
         {
@@ -525,15 +526,16 @@ namespace MyStateMachine
             }
         };
 
-        typedef On initial_state; // On is the start
+         // On is the start
+        typedef On initial_state
 
         struct transition_table :mpl::vector&lt;
-            //          Start      Event                     Next               Action                      Guard
-            msmf::Row &lt; On,        Events::Event1,           On,                msmf::none, msmf::none &gt;,
-            msmf::Row &lt; On,        Events::Event2,           Tick,              msmf::none, msmf::none &gt;,
-            msmf::Row &lt; Tick,      Events::Event3,           Tick,              msmf::none, msmf::none &gt;,
-            msmf::Row &lt; Tick,      Events::Event1,           On,                msmf::none, msmf::none &gt;,
-            msmf::Row &lt; Tick,      Events::Event2,           Off,               msmf::none, msmf::none &gt;
+            //          Start Event           Next  Action
+            msmf::Row &lt; On,   Events::Event1, On,   msmf::none, msmf::none &gt;,
+            msmf::Row &lt; On,   Events::Event2, Tick, msmf::none, msmf::none &gt;,
+            msmf::Row &lt; Tick, Events::Event3, Tick, msmf::none, msmf::none &gt;,
+            msmf::Row &lt; Tick, Events::Event1, On,   msmf::none, msmf::none &gt;,
+            msmf::Row &lt; Tick, Events::Event2, Off,  msmf::none, msmf::none &gt;
         &gt; {};
     };
 
@@ -560,12 +562,12 @@ int main()
 
 <pre>
 struct transition_table :mpl::vector&lt;
-    //          Start      Event                     Next               Action                      Guard
-    msmf::Row &lt; On,        Events::Event1,           On,                msmf::none, msmf::none &gt;,
-    msmf::Row &lt; On,        Events::Event2,           Tick,              msmf::none, msmf::none &gt;,
-    msmf::Row &lt; Tick,      Events::Event3,           Tick,              msmf::none, msmf::none &gt;,
-    msmf::Row &lt; Tick,      Events::Event1,           On,                msmf::none, msmf::none &gt;,
-    msmf::Row &lt; Tick,      Events::Event2,           Off,               msmf::none, msmf::none &gt;
+    //          Start Event           Next  Action
+    msmf::Row &lt; On,   Events::Event1, On,   msmf::none, msmf::none &gt;,
+    msmf::Row &lt; On,   Events::Event2, Tick, msmf::none, msmf::none &gt;,
+    msmf::Row &lt; Tick, Events::Event3, Tick, msmf::none, msmf::none &gt;,
+    msmf::Row &lt; Tick, Events::Event1, On,   msmf::none, msmf::none &gt;,
+    msmf::Row &lt; Tick, Events::Event2, Off,  msmf::none, msmf::none &gt;
 &gt; {};
 </pre>
 <p>Claro que a indentação ajuda. Para cada entrada e saída de um estado é possível utilizar os métodos on_entry e on_exit de cada struct que define um estado, seja este método um template totalmente genérico ou especificado por evento (e cada evento também é um struct, com direito a dados específicos).</p>

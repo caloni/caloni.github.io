@@ -334,16 +334,24 @@ D:\deploy&gt;python27\Scripts\activate.bat
 
 (python27) d:\src\MyFictionalPackage&gt;pip install -r requirements.txt
 Collecting cx-Freeze==5.1.1 (from -r requirements.txt (line 1))
-  Using cached https://files.pythonhosted.org/packages/ba/d7/e5a699abbc04df31d28750bd4f7715f75452c57c6ea7f05acff0bc26873d/cx_Freeze-5.1.1-cp27-cp27m-win32.whl
+  Using cached
+  https://files.pythonhosted.org/packages/ba/d7/hash
+  /cx_Freeze-5.1.1-cp27-cp27m-win32.whl
 Collecting protobuf==3.6.0 (from -r requirements.txt (line 2))
-  Using cached https://files.pythonhosted.org/packages/85/f8/d09e4bf21c4de65405ce053e90542e728c5b7cf296b9df36b0bf0488f534/protobuf-3.6.0-py2.py3-none-any.whl
+  Using cached https://files.pythonhosted.org/packages/85/f8/hash
+  /protobuf-3.6.0-py2.py3-none-any.whl
 Collecting pyodbc==4.0.23 (from -r requirements.txt (line 3))
-  Using cached https://files.pythonhosted.org/packages/fe/0c/3fa53bf0f1779ef3e3a81e474d1e8db924b7398dc12f2fe9b2c9f1bf392d/pyodbc-4.0.23-cp27-cp27m-win32.whl
+  Using cached https://files.pythonhosted.org/packages/fe/0c/hash
+  /pyodbc-4.0.23-cp27-cp27m-win32.whl
 Collecting six==1.11.0 (from -r requirements.txt (line 4))
-  Using cached https://files.pythonhosted.org/packages/67/4b/141a581104b1f6397bfa78ac9d43d8ad29a7ca43ea90a2d863fe3056e86a/six-1.11.0-py2.py3-none-any.whl
-Requirement already satisfied: setuptools in d:\deploy\python27\lib\site-packages (from protobuf==3.6.0-&gt;-r requirements.txt (line 2)) (40.0.0)
+  Using cached https://files.pythonhosted.org/packages/67/4b/hash
+  /six-1.11.0-py2.py3-none-any.whl
+Requirement already satisfied: setuptools in
+d:\deploy\python27\lib\site-packages (from protobuf==3.6.0-&gt;-r
+requirements.txt (line 2)) (40.0.0)
 Installing collected packages: cx-Freeze, six, protobuf, pyodbc
-Successfully installed cx-Freeze-5.1.1 protobuf-3.6.0 pyodbc-4.0.23 six-1.11.0
+Successfully installed cx-Freeze-5.1.1
+protobuf-3.6.0 pyodbc-4.0.23 six-1.11.0
 
 (python27) d:\src\MyFictionalPackage&gt;
 </pre>
@@ -355,23 +363,41 @@ running build_exe
 Traceback (most recent call last):
   File &quot;setup.py&quot;, line 19, in &lt;module&gt;
     executables=exe
-  File &quot;D:\deploy\python27\lib\site-packages\cx_Freeze\dist.py&quot;, line 349, in setup
+  File
+  &quot;D:\deploy\python27\lib\site-packages\cx_Freeze\dist.py&quot;
+  , line 349, in setup
     distutils.core.setup(**attrs)
-  File &quot;c:\programs\python27\Lib\distutils\core.py&quot;, line 151, in setup
+  File
+  &quot;c:\programs\python27\Lib\distutils\core.py&quot;
+  , line 151, in setup
     dist.run_commands()
-  File &quot;c:\programs\python27\Lib\distutils\dist.py&quot;, line 953, in run_commands
+  File
+  &quot;c:\programs\python27\Lib\distutils\dist.py&quot;
+  , line 953, in run_commands
     self.run_command(cmd)
-  File &quot;c:\programs\python27\Lib\distutils\dist.py&quot;, line 972, in run_command
+  File
+  &quot;c:\programs\python27\Lib\distutils\dist.py&quot;
+  , line 972, in run_command
     cmd_obj.run()
-  File &quot;D:\deploy\python27\lib\site-packages\cx_Freeze\dist.py&quot;, line 219, in run
+  File
+  &quot;D:\deploy\python27\lib\site-packages\cx_Freeze\dist.py&quot;
+  , line 219, in run
     freezer.Freeze()
-  File &quot;D:\deploy\python27\lib\site-packages\cx_Freeze\freezer.py&quot;, line 616, in Freeze
+  File
+  &quot;D:\deploy\python27\lib\site-packages\cx_Freeze\freezer.py&quot;
+  , line 616, in Freeze
     self.finder = self._GetModuleFinder()
-  File &quot;D:\deploy\python27\lib\site-packages\cx_Freeze\freezer.py&quot;, line 340, in _GetModuleFinder
+  File
+  &quot;D:\deploy\python27\lib\site-packages\cx_Freeze\freezer.py&quot;
+  , line 340, in _GetModuleFinder
     finder.IncludeModule(name)
-  File &quot;D:\deploy\python27\lib\site-packages\cx_Freeze\finder.py&quot;, line 651, in IncludeModule
+  File
+  &quot;D:\deploy\python27\lib\site-packages\cx_Freeze\finder.py&quot;
+  , line 651, in IncludeModule
     namespace = namespace)
-  File &quot;D:\deploy\python27\lib\site-packages\cx_Freeze\finder.py&quot;, line 351, in _ImportModule
+  File
+  &quot;D:\deploy\python27\lib\site-packages\cx_Freeze\finder.py&quot;
+  , line 351, in _ImportModule
     raise ImportError(&quot;No module named %r&quot; % name)
 ImportError: No module named 'google.protobuf'
 
@@ -380,7 +406,8 @@ ImportError: No module named 'google.protobuf'
 <p>Para fazer funcionar há um pequeno patch: criar um arquivo __init__.py dentro da pasta google onde está instalado o pacote do protobuf:</p>
 
 <pre>
-(python27) d:\src\MyFictionalPackage&gt;dir d:\deploy\python27\Lib\site-packages\google
+(python27) d:\src\MyFictionalPackage&gt;dir
+d:\deploy\python27\Lib\site-packages\google
  Volume in drive D is SYSTEM
  Volume Serial Number is 5C08-36EE
 
@@ -392,11 +419,13 @@ ImportError: No module named 'google.protobuf'
                0 File(s)              0 bytes
                3 Dir(s)  102.341.001.216 bytes free
 
-(python27) d:\src\MyFictionalPackage&gt;copy con d:\deploy\python27\Lib\site-packages\google\__init__.py
+(python27) d:\src\MyFictionalPackage&gt;copy con
+d:\deploy\python27\Lib\site-packages\google\__init__.py
 ^Z
         1 file(s) copied.
 
-(python27) d:\src\MyFictionalPackage&gt;dir d:\deploy\python27\Lib\site-packages\google
+(python27) d:\src\MyFictionalPackage&gt;dir
+d:\deploy\python27\Lib\site-packages\google
  Volume in drive D is SYSTEM
  Volume Serial Number is 5C08-36EE
 
@@ -416,9 +445,9 @@ ImportError: No module named 'google.protobuf'
 <pre>
 (python27) d:\src\MyFictionalPackage&gt;python setup.py build_exe
 running build_exe
-copying D:\deploy\python27\lib\site-packages\cx_Freeze\bases\Console.exe -&gt; build\exe.win32-2.7\MyFictionalPackage.exe
+copying D:\deploy\python27\lib\site-packages\cx_Freeze\bases\Console.exe -&gt;
+build\exe.win32-2.7\MyFictionalPackage.exe
 copying C:\WINDOWS\SYSTEM32\python27.dll -&gt; build\exe.win32-2.7\python27.dll
-*** WARNING *** unable to create version resource
 install pywin32 extensions first
 writing zip file build\exe.win32-2.7\lib\library.zip
 
@@ -432,7 +461,8 @@ m UserDict                  D:\deploy\python27\lib\UserDict.py
 m __builtin__
 m __future__                c:\programs\python27\Lib\__future__.py
 m __main__
-m __startup__               D:\deploy\python27\lib\site-packages\cx_Freeze\initscripts\__startup__.py
+m __startup__
+D:\deploy\python27\lib\site-packages\cx_Freeze\initscripts\__startup__.py
 m _abcoll                   D:\deploy\python27\lib\_abcoll.py
 m _codecs
 m _codecs_cn
@@ -453,11 +483,17 @@ Missing modules:
 ? _emx_link imported from os
 ? ce imported from os
 ? fcntl imported from subprocess
-? google.protobuf._use_fast_cpp_protos imported from google.protobuf.internal.api_implementation
-? google.protobuf.enable_deterministic_proto_serialization imported from google.protobuf.internal.api_implementation
-? google.protobuf.internal._api_implementation imported from google.protobuf.internal.api_implementation
-? google.protobuf.internal.use_pure_python imported from google.protobuf.internal.api_implementation
-? google.protobuf.pyext._message imported from google.protobuf.descriptor, google.protobuf.internal.api_implementation, google.protobuf.pyext.cpp_message
+? google.protobuf._use_fast_cpp_protos imported from
+google.protobuf.internal.api_implementation
+? google.protobuf.enable_deterministic_proto_serialization imported from
+google.protobuf.internal.api_implementation
+? google.protobuf.internal._api_implementation imported from
+google.protobuf.internal.api_implementation
+? google.protobuf.internal.use_pure_python imported from
+google.protobuf.internal.api_implementation
+? google.protobuf.pyext._message imported from
+google.protobuf.descriptor, google.protobuf.internal.api_implementation,
+google.protobuf.pyext.cpp_message
 ? ordereddict imported from google.protobuf.json_format
 ? org.python.core imported from copy, pickle
 ? os.path imported from os, pkgutil, shlex
@@ -470,14 +506,22 @@ Missing modules:
 ? riscospath imported from os
 This is not necessarily a problem - the modules may not be needed on this platform.
 
-copying c:\programs\python27\DLLs\_hashlib.pyd -&gt; build\exe.win32-2.7\lib\_hashlib.pyd
-copying C:\WINDOWS\SYSTEM32\python27.dll -&gt; build\exe.win32-2.7\lib\python27.dll
-copying c:\programs\python27\DLLs\_socket.pyd -&gt; build\exe.win32-2.7\lib\_socket.pyd
-copying c:\programs\python27\DLLs\_ssl.pyd -&gt; build\exe.win32-2.7\lib\_ssl.pyd
-copying c:\programs\python27\DLLs\bz2.pyd -&gt; build\exe.win32-2.7\lib\bz2.pyd
-copying D:\deploy\python27\lib\site-packages\pyodbc.pyd -&gt; build\exe.win32-2.7\lib\pyodbc.pyd
-copying c:\programs\python27\DLLs\select.pyd -&gt; build\exe.win32-2.7\lib\select.pyd
-copying c:\programs\python27\DLLs\unicodedata.pyd -&gt; build\exe.win32-2.7\lib\unicodedata.pyd
+copying c:\programs\python27\DLLs\_hashlib.pyd -&gt;
+build\exe.win32-2.7\lib\_hashlib.pyd
+copying C:\WINDOWS\SYSTEM32\python27.dll -&gt;
+build\exe.win32-2.7\lib\python27.dll
+copying c:\programs\python27\DLLs\_socket.pyd -&gt;
+build\exe.win32-2.7\lib\_socket.pyd
+copying c:\programs\python27\DLLs\_ssl.pyd -&gt;
+build\exe.win32-2.7\lib\_ssl.pyd
+copying c:\programs\python27\DLLs\bz2.pyd -&gt;
+build\exe.win32-2.7\lib\bz2.pyd
+copying D:\deploy\python27\lib\site-packages\pyodbc.pyd -&gt;
+build\exe.win32-2.7\lib\pyodbc.pyd
+copying c:\programs\python27\DLLs\select.pyd -&gt;
+build\exe.win32-2.7\lib\select.pyd
+copying c:\programs\python27\DLLs\unicodedata.pyd -&gt;
+build\exe.win32-2.7\lib\unicodedata.pyd
 
 (python27) d:\src\MyFictionalPackage&gt;
 </pre>
@@ -672,7 +716,15 @@ setup(name = &quot;teste_cx_Freeze&quot;,
 <p>Este batch baixa todo o conteúdo do site da Stanford em um único diretório. O processo pode demorar mais ou menos, dependendo da sua banda, mas aqui em casa (50MB) demorou cerca de meia-hora pra mais.</p>
 
 <pre>
-wget --recursive --domains plato.stanford.edu --page-requisites --no-parent --convert-links --restrict-file-names=windows --no-directories --html-extension https://plato.stanford.edu/contents.html 
+wget --recursive
+  --domains plato.stanford.edu
+  --page-requisites
+  --no-parent
+  --convert-links
+  --restrict-file-names=windows
+  --no-directories
+  --html-extension
+  https://plato.stanford.edu/contents.html
 </pre>
 <h3>calibre_clean_files.bat (limpa início e fim das entradas)</h3>
 
@@ -720,14 +772,19 @@ sort calibre_entries.txt &gt; calibre_entries_sorted.txt
 <p>Essa parte do processo precisa converter as entradas no formato Título Link para entradas HTML com a tag a, no formato que o Calibre espera:</p>
 
 <pre>
-sed -e &quot;s/\(^.*\) \(index.*$\)/        &lt;a href=\&quot;\2\&quot;&gt;\1&lt;\/a&gt;&lt;br\/&gt;/&quot; calibre_entries_sorted.txt &gt; calibre_template_entries.html
+sed -e &quot;s/\(^.*\) \(index.*$\)/
+&lt;a href=\&quot;\2\&quot;&gt;\1&lt;\/a&gt;&lt;br\/&gt;/&quot; calibre_entries_sorted.txt &gt;
+calibre_template_entries.html
 </pre>
 <h3>calibre_merge_templates.bat (junta início, meio e fim do template do Calibre)</h3>
 
 <p>Por fim, antes de usar o Calibre é necessário juntar os arquivos de template em um arquivo final de TOC, o calibre.html. Ao final desse processo passaremos ao Calibre em si.</p>
 
 <pre>
-copy /Y calibre_template_begin.html+calibre_template_entries.html+calibre_template_end.html calibre.html
+copy /Y calibre_template_begin.html
++calibre_template_entries.html
++calibre_template_end.html
+calibre.html
 </pre>
 <h3>Usar Calibre para abrir calibre.html</h3>
 

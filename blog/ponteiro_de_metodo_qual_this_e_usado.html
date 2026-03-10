@@ -67,15 +67,15 @@ public:
 
   void Print()
   {
-    std::cout &lt;&lt; &quot;this: &quot; 
-      &lt;&lt; std::hex &lt;&lt; this 
-      &lt;&lt; &quot;, member: &quot; 
+    std::cout &lt;&lt; &quot;this: &quot;
+      &lt;&lt; std::hex &lt;&lt; this
+      &lt;&lt; &quot;, member: &quot;
       &lt;&lt; std::dec &lt;&lt; m_num
       &lt;&lt; std::endl;
   }
 };
 
-/** No princípio Deus disse: 
+/** No princípio Deus disse:
     'int main!'
 */
 int main()
@@ -91,25 +91,25 @@ int main()
   (r3.*fp)();
 
   std::cout &lt;&lt; std::endl;
-  
-  std::cout &lt;&lt; &quot;this: &quot; 
-    &lt;&lt; std::hex &lt;&lt; &amp;r1 
-    &lt;&lt; &quot;, member: &quot; 
-    &lt;&lt; std::dec &lt;&lt; r1.*mp 
+
+  std::cout &lt;&lt; &quot;this: &quot;
+    &lt;&lt; std::hex &lt;&lt; &amp;r1
+    &lt;&lt; &quot;, member: &quot;
+    &lt;&lt; std::dec &lt;&lt; r1.*mp
     &lt;&lt; std::endl;
 
-  std::cout &lt;&lt; &quot;this: &quot; 
-    &lt;&lt; std::hex &lt;&lt; &amp;r2 
-    &lt;&lt; &quot;, member: &quot; 
-    &lt;&lt; std::dec &lt;&lt; r2.*mp 
+  std::cout &lt;&lt; &quot;this: &quot;
+    &lt;&lt; std::hex &lt;&lt; &amp;r2
+    &lt;&lt; &quot;, member: &quot;
+    &lt;&lt; std::dec &lt;&lt; r2.*mp
     &lt;&lt; std::endl;
 
-  std::cout &lt;&lt; &quot;this: &quot; 
-    &lt;&lt; std::hex &lt;&lt; &amp;r3 
-    &lt;&lt; &quot;, member: &quot; 
-    &lt;&lt; std::dec &lt;&lt; r3.*mp 
+  std::cout &lt;&lt; &quot;this: &quot;
+    &lt;&lt; std::hex &lt;&lt; &amp;r3
+    &lt;&lt; &quot;, member: &quot;
+    &lt;&lt; std::dec &lt;&lt; r3.*mp
     &lt;&lt; std::endl;
-} 
+}
 </pre>
 <p>O novo código chama através do mesmo ponteiro o mesmo método (duh), mas através de três objetos diferentes. Se observarmos a saída veremos que cada instância da classe guardou um inteiro aleatório diferente para si:</p>
 
@@ -130,20 +130,17 @@ this: 0012FF60, member: 44
 
 <pre>
 ; FP fp = &amp;Rand::Print;
-lea rax,[Rand::Print]  
+lea rax,[Rand::Print]
 mov qword ptr [fp],rax
-
 ; (r1.*fp)();
-lea rcx,[r1]  
-call qword ptr [fp]  
-
+lea rcx,[r1]
+call qword ptr [fp]
 ; (r2.*fp)();
-lea rcx,[r2]  
-call qword ptr [fp]  
-
+lea rcx,[r2]
+call qword ptr [fp]
 ; (r3.*fp)();
-lea rcx,[r3]  
-call qword ptr [fp]  
+lea rcx,[r3]
+call qword ptr [fp]
 </pre>
 <p>Além do ponteiro de métodos, também é possível no C++ apontar para membros de um dado objeto como foi feito no exemplo acima. Para tanto, como vimos no código, basta declarar um tipo de ponteiro de membro de acordo com o tipo desejado com o escopo da classe: typedef int Rand::*MP. Nesse caso, a técnica de usar o próprio enderenço não funciona, já que cada objeto possui um membro próprio em um lugar de memória próprio. Porém, assim como os ponteiros de métodos, os ponteiros de membros exigem um objeto para serem acessados, o que já nos dá a dica de onde o objeto começa. Sabendo onde ele começa, fica fácil saber onde fica o membro através do seu offset, ou seja, a distância dele a partir do início da memória do objeto. O código abaixo simplifica a obtenção de um objeto dentro da classe usando ponteiro para membros:</p>
 
@@ -160,18 +157,18 @@ int i3 = r3.*mp;
 mov dword ptr [mp],0
 
 ; int i1 = r1.*mp;
-movsxd rax,dword ptr [mp] 
-mov eax,dword ptr r1[rax] 
-mov dword ptr [i1],eax 
+movsxd rax,dword ptr [mp]
+mov eax,dword ptr r1[rax]
+mov dword ptr [i1],eax
 
 ; int i2 = r2.*mp;
-movsxd rax,dword ptr [mp] 
-mov eax,dword ptr r2[rax] 
-mov dword ptr [i2],eax 
+movsxd rax,dword ptr [mp]
+mov eax,dword ptr r2[rax]
+mov dword ptr [i2],eax
 
 ; int i3 = r3.*mp;
-movsxd rax,dword ptr [mp] 
-mov eax,dword ptr r3[rax] 
+movsxd rax,dword ptr [mp]
+mov eax,dword ptr r3[rax]
 mov dword ptr [i3],eax
 </pre>
 <p>Como podemos ver, não é nenhuma magia negra a responsável por fazer os ponteiros de métodos e de membros funcionarem em C++. Porém, eles não são ponteiros ordinário que costumamos misturar a torto e a direito. Essa distinção na linguagem é importante para manter o código "minimamente sadio".</p>

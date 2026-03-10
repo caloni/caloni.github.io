@@ -291,24 +291,39 @@ parallel --block 100M --pipe  \
 <h2>Test #1</h2>
 
 <pre>
-yes 'SomeSampleText SomeOtherText 33 1970 YetAnotherText 777 abc 1 AndSomeMore' | head -1000000 &gt; bigsample.txt
-time gawk 'BEGIN {a = 0;} {if ($5 == &quot;YetAnotherText&quot;) a ++;} END {print &quot;a: &quot; a;}' bigsample.txt
-time gawk 'BEGIN {a = 0;} {if ($0 ~ /YetAnotherText/) a ++;} END {print &quot;a: &quot; a;}' bigsample.txt
-time gawk 'BEGIN {a = 0;} /YetAnotherText/ {a ++;} END {print &quot;a: &quot; a;}' bigsample.txt
-time gawk 'BEGIN {a = 0;} {if (NF == 9) a ++;} END {print &quot;a: &quot; a;}' bigsample.txt
-time gawk 'BEGIN {a = 0;} {if ($1 == &quot;SomeSampleText&quot;) a ++;} END {print &quot;a: &quot; a;}' bigsample.txt
-time gawk 'BEGIN {a = 0;} {if ($9 == &quot;AndSomeMore&quot;) a ++;} END {print &quot;a: &quot; a;}' bigsample.txt
+yes 'SomeSampleText SomeOtherText 33 1970 YetAnotherText 777 abc 1
+AndSomeMore' | head -1000000 &gt; bigsample.txt
+time gawk 'BEGIN {a = 0;} {if ($5 == &quot;YetAnotherText&quot;) a ++;}
+END {print &quot;a: &quot; a;}' bigsample.txt
+time gawk 'BEGIN {a = 0;} {if ($0 ~ /YetAnotherText/) a ++;}
+END {print &quot;a: &quot; a;}' bigsample.txt
+time gawk 'BEGIN {a = 0;} /YetAnotherText/ {a ++;}
+END {print &quot;a: &quot; a;}' bigsample.txt
+time gawk 'BEGIN {a = 0;} {if (NF == 9) a ++;}
+END {print &quot;a: &quot; a;}' bigsample.txt
+time gawk 'BEGIN {a = 0;} {if ($1 == &quot;SomeSampleText&quot;) a ++;}
+END {print &quot;a: &quot; a;}' bigsample.txt
+time gawk 'BEGIN {a = 0;} {if ($9 == &quot;AndSomeMore&quot;) a ++;}
+END {print &quot;a: &quot; a;}' bigsample.txt
 </pre>
 <h2>Test #2</h2>
 
 <pre>
-yes &quot;&lt;SomeSampleText:SomeOtherText=33&gt;1970&lt;YetAnotherText:777=abc&gt;1&lt;AndSomeMore&gt;&quot; | head -1000000 &gt; bigsample.txt
-time gawk 'BEGIN {FS = &quot;&lt;|:|=&quot;;} {if ($5 == &quot;YetAnotherText&quot;) a ++;} END {print &quot;a: &quot; a;}' bigsample.txt
-time gawk 'BEGIN {FS = &quot;&lt;|:|=&quot;;} {if ($0 ~ /YetAnotherText/) a ++;} END {print &quot;a: &quot; a;}' bigsample.txt
-time gawk 'BEGIN {FS = &quot;&lt;|:|=&quot;;} /YetAnotherText/ {a ++;} END {print &quot;a: &quot; a;}' bigsample.txt
-time gawk 'BEGIN {FS = &quot;&lt;|:|=&quot;;} {if (NF == 8) a ++;} END {print &quot;a: &quot; a;}' bigsample.txt
-time gawk 'BEGIN {FS = &quot;&lt;|:|=&quot;;} {if ($2 == &quot;SomeSampleText&quot;) a ++;} END {print &quot;a: &quot; a;}' bigsample.txt
-time gawk 'BEGIN {FS = &quot;&lt;|:|=&quot;;} {if ($8 == &quot;AndSomeMore&gt;&quot;) a ++;} END {print &quot;a: &quot; a;}' bigsample.txt
+yes
+&quot;&lt;SomeSampleText:SomeOtherText=33&gt;1970&lt;YetAnotherText:777=abc&gt;1&lt;AndSomeMore&gt;&quot;
+| head -1000000 &gt; bigsample.txt
+time gawk 'BEGIN {FS = &quot;&lt;|:|=&quot;;} {if ($5 == &quot;YetAnotherText&quot;) a ++;}
+END {print &quot;a: &quot; a;}' bigsample.txt
+time gawk 'BEGIN {FS = &quot;&lt;|:|=&quot;;} {if ($0 ~ /YetAnotherText/) a ++;}
+END {print &quot;a: &quot; a;}' bigsample.txt
+time gawk 'BEGIN {FS = &quot;&lt;|:|=&quot;;} /YetAnotherText/ {a ++;}
+END {print &quot;a: &quot; a;}' bigsample.txt
+time gawk 'BEGIN {FS = &quot;&lt;|:|=&quot;;} {if (NF == 8) a ++;}
+END {print &quot;a: &quot; a;}' bigsample.txt
+time gawk 'BEGIN {FS = &quot;&lt;|:|=&quot;;} {if ($2 == &quot;SomeSampleText&quot;) a ++;}
+END {print &quot;a: &quot; a;}' bigsample.txt
+time gawk 'BEGIN {FS = &quot;&lt;|:|=&quot;;} {if ($8 == &quot;AndSomeMore&gt;&quot;) a ++;}
+END {print &quot;a: &quot; a;}' bigsample.txt
 </pre>
 <h2>Test #2.1</h2>
 
@@ -358,7 +373,8 @@ time gawk '/Hahaha/{if($4==&quot;Hahaha&quot;)print(&quot;a&quot;)}' bigsample.t
 xml sample 300k times bigger
 time gawk 'BEGIN{FS=&quot;[&lt;:=]&quot;}NF&gt;=4{a++}END{print a+0}' bigsample.txt
 time gawk 'BEGIN{FS=&quot;&lt;|:|=&quot;}NF&gt;=4{a++}END{print a+0}' bigsample.txt
-time gawk 'BEGIN{FS=&quot;&lt;|:|=&quot;}NF&gt;=4&amp;&amp;/:SubNetwork/{a++}END{print a+0}' bigsample.txt
+time gawk 'BEGIN{FS=&quot;&lt;|:|=&quot;}NF&gt;=4&amp;&amp;/:SubNetwork/{a++}END{print a+0}'
+bigsample.txt
 time gawk 'BEGIN{FS=&quot;:SubNetwork&quot;}NF&gt;=2{a++}END{print a+0}' bigsample.txt
 time gawk '/:SubNetwork/{a++}END{print a}' bigsample.txt
 </pre>

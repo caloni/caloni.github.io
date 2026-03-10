@@ -82,7 +82,7 @@ private:
 
   T* m_memPointer;
   HANDLE m_memHandle;
-}; 
+};
 </pre>
 <p>Como podemos notar, em programação "nada se cria, tudo se reutiliza". Reutilização é boa quando podemos acrescentar características adicionais ao código sem deturpar seu objetivo original. E isso é bom.</p>
 
@@ -110,7 +110,7 @@ int _tmain(int argc, PTSTR argv[])
       _tprintf(_T(&quot;Pressione &lt;enter&gt; para retornar...&quot;));
       getchar();
     }
-    else // não passou parâmetro: escreve na variável 
+    else // não passou parâmetro: escreve na variável
     // compartilhada e chama nova instância
     {
       // array de 100 TCHARs
@@ -134,7 +134,7 @@ int _tmain(int argc, PTSTR argv[])
   }
 
   return 0;
-} 
+}
 </pre>
 <p>Existem duas mudanças significativas: 1. a variável sozinha já representa a memória compartilhada; 2. o tratamento de erro agora é centralizado em apenas um ponto. Se pra melhor ou pior, eu não sei. Tratamento de exceções e classes são duas "modernisses" que podem ou não se encaixar em um projeto de desenvolvimento. Tudo vai depender de tudo. Por isso a melhor saída depende de como será a entrada.</p>
 

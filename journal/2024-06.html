@@ -163,11 +163,13 @@ int main()
 <p>Ao depurar a chamada ao `operator =` que chama por sua vez o método `std::string::assign` é possível ver que o objeto está com os membros `size` e `capacity` com lixo. O que faz sentido, já que o construtor dessa string nunca foi chamado.</p>
 
 <pre>
--    this  0x00000216888f5858 &lt;Error reading characters of string.&gt;  std::string *
-      [size]  14829735431805717965  unsigned __int64
-      [capacity]  14829735431805717965  unsigned __int64
-+    [allocator]  allocator  std::_Compressed_pair&lt;std::allocator&lt;char&gt;,std::_String_val&lt;std::_Simple_types&lt;char&gt;&gt;,1&gt;
-      [0]  &lt;Unable to read memory&gt;  char
+- this  0x00000216888f5858 &lt;Error reading characters of string.&gt;
+std::string *
+   [size]  14829735431805717965  unsigned __int64
+   [capacity]  14829735431805717965  unsigned __int64
++ [allocator]  allocator  std::_Compressed_pair&lt;
+std::allocator&lt;char&gt;,std::_String_val&lt;std::_Simple_types&lt;char&gt;&gt;,1&gt;
+   [0]  &lt;Unable to read memory&gt;  char
 </pre>
 <p>Para corrigir isso podemos usar o que C++ chama de placement new: uma construção de objeto em memória previamente disponível.</p>
 

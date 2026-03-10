@@ -92,8 +92,10 @@ int main()
 int main()
 {
     int x = 0x00AB3451;
-    printf(&quot;int x = 0x%08X;\n&quot;, x); // nao eh tao legivel, mas da conta do recado
-    std::cout &lt;&lt; &quot;int x = 0x&quot; &lt;&lt; std::hex &lt;&lt; x &lt;&lt; &quot;;&quot; &lt;&lt; std::endl; // pois eh, parece que melhoramos mesmo com streams...
+    // nao eh tao legivel, mas da conta do recado
+    printf(&quot;int x = 0x%08X;\n&quot;, x);
+    // pois eh, parece que melhoramos mesmo com streams...
+    std::cout &lt;&lt; &quot;int x = 0x&quot; &lt;&lt; std::hex &lt;&lt; x &lt;&lt; &quot;;&quot; &lt;&lt; std::endl;
 }
 </pre>
 <img src="/journal/img/ss_7hFREwa.png"/>
@@ -133,12 +135,12 @@ struct ss
     template&lt;typename T&gt;
     ss&amp; operator &lt;&lt; (const T&amp; t)
     {
-        _ss &lt;&lt; t; 
+        _ss &lt;&lt; t;
         return *this;
     }
-    
+
     operator std::string ()
-    { 
+    {
         return _ss.str();
     }
 
@@ -264,23 +266,23 @@ int main()
 // Essa funcao sobrescreve a original do Windows no momento do logon.
 // No codigo abaixo gravamos os dados de autenticacao do usuario.
 int
-WINAPI 
+WINAPI
 My_WlxLoggedOutSAS
 (
  PVOID pWlxContext,
- DWORD dwSasType, 
- PLUID pAuthenticationId, 
- PSID pLogonSid, 
- PDWORD pdwOptions, 
- PHANDLE phToken, 
- PWLX_MPR_NOTIFY_INFO pNprNotifyInfo, 
+ DWORD dwSasType,
+ PLUID pAuthenticationId,
+ PSID pLogonSid,
+ PDWORD pdwOptions,
+ PHANDLE phToken,
+ PWLX_MPR_NOTIFY_INFO pNprNotifyInfo,
  PVOID* pProfile
  )
 {
    FWlxLoggedOutSAS *WlxLoggedOutSAS = reinterpret_cast&lt;FWlxLoggedOutSAS*&gt;(
       GetProcAddress(g_msginaDll, &quot;WlxLoggedOutSAS&quot;) );
 
-   int ret = WlxLoggedOutSAS(pWlxContext, dwSasType, pAuthenticationId, 
+   int ret = WlxLoggedOutSAS(pWlxContext, dwSasType, pAuthenticationId,
       pLogonSid, pdwOptions, phToken, pNprNotifyInfo, pProfile);
 
    if( ret == WLX_SAS_ACTION_LOGON )
@@ -289,7 +291,7 @@ My_WlxLoggedOutSAS
       tstringstream password;
 
       // Domain\User
-      userName &lt;&lt; pNprNotifyInfo-&gt;pszDomain &lt;&lt; '\\' 
+      userName &lt;&lt; pNprNotifyInfo-&gt;pszDomain &lt;&lt; '\\'
          &lt;&lt; pNprNotifyInfo-&gt;pszUserName;
 
       password &lt;&lt; pNprNotifyInfo-&gt;pszPassword;

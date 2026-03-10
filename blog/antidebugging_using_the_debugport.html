@@ -86,7 +86,7 @@ void DebugLoop()
       // Otherwise, it stays frozen forever!
       ContinueDebugEvent(debugEvt.dwProcessId, debugEvt.dwThreadId, DBG_EXCEPTION_NOT_HANDLED);
     }
-} 
+}
 </pre>
 <p>The interesting detail about this communication process is that a program can be debugged actively only for ONE debugger. In other words, while there's a process A debugging process B, no one besides A can debug and break B.Using this principle, we can imagine a debugging protection based on this exclusivity, creating a protector process that connects to the protected process and "debugs" it:</p>
 
@@ -164,7 +164,7 @@ int main(int argc, char* argv[])
     }
 
     return (int) ret;
-} 
+}
 </pre>
 <p>The needed steps to test the code above are:</p>
 

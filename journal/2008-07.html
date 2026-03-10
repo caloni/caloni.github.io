@@ -375,7 +375,7 @@ test.obj : error LNK2019: unresolved external symbol func referenced in function
 
 int main()
 {
-    HANDLE hFile = CreateFile(&quot;c:\\tests\\myfile.txt&quot;, GENERIC_READ, 
+    HANDLE hFile = CreateFile(&quot;c:\\tests\\myfile.txt&quot;, GENERIC_READ,
       FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
 
     if( hFile )
@@ -513,7 +513,7 @@ void ExecutionThread()
     }
 }
 
-// the well-defined functions script is an integer array indicating 
+// the well-defined functions script is an integer array indicating
 // the number for the next function that is going to be called
 int FunctionsToBeCalled[] = { 3, 4, 1, 2, 34, 66, 982, n };
 
@@ -531,7 +531,7 @@ int Start()
 
     // 6. end of execution.
     return 0;
-} 
+}
 </pre>
 <p>The protection isn't there yet. But it will as intrinsic part of the execution thread. All we need to do is to add a exception handling and to throw lots of int 3. The thrown exceptions are caught by a second function that runs the instruction before to returning:</p>
 
@@ -545,7 +545,7 @@ DWORD ExceptionFilterButExecuteWellDefinedFunction()
     return EXCEPTION_EXECUTE_HANDLER; // goes to except code
 }
 
-// this thread stays forever waiting execution commands from a 
+// this thread stays forever waiting execution commands from a
 // well-defined function. its &quot;parameter&quot; is the function number
 void ExecutionThread()
 {
@@ -566,7 +566,7 @@ void ExecutionThread()
 
       Sleep( someTime ); // give some time
     }
-} 
+}
 </pre>
 <p>The execution thread algorithm is the same. Just the point where each instruction is executed depends to the exception throw system. Note that this exception has to be thrown in order to the next instruction run. This is fundamental, since this way nobody can just rip of the int 3 code to avoid the exception. If one does that, so no instruction will be executed at all.</p>
 
@@ -737,7 +737,7 @@ int main()
 
    // 6. end of execution.
    return (int) ret;
-} 
+}
 </pre>
 <p>The strength in this protection is to annoy the attacker easily in the first steps (days, months...). Its weakness is the simplicity for the solution, since the attacker eventually realize what is going on. It is so easy that I will let it as an exercise for my readers.</p>
 
@@ -786,7 +786,7 @@ int Start()
 
     // 6. End of execution.
     return 0;
-} 
+}
 </pre>
 <p>The solution above is explained in pseudocode to make things clearer. Notice that exist some kind of invisible return, not stack based. To handle it, however, we can use the good for all C ANSI standard, using the setjmp (step one) and longjmp (step 3). To understand the implementation for theses functions running on the 8086 platform we need to get the basic vision of the function calls in a stack based environment (the C and Pascal way).</p>
 
@@ -801,7 +801,6 @@ void Func()
 {
    return;
 }
-
 void CallFunc()
 {
    Func();
@@ -852,7 +851,7 @@ void CallFunc()
       Func();
 
     int x = 10; // 4. Next instruction.
-} 
+}
 </pre>
 <p>That was the new trick for the trowing of exceptions. The final code is clearer, now:</p>
 
@@ -899,7 +898,7 @@ int main()
     }
 
     return (int) ret;
-} 
+}
 </pre>
 <p>At first sight, it seems a waste the if being directly in the code (remember we gonna use the same conditional structure in several parts in the code). To turn things clearer, resume the protected call and allows the protection to be disabled in debug version code, let's create a macro:</p>
 
@@ -937,7 +936,7 @@ int main()
     }
 
     return (int) ret;
-} 
+}
 </pre>
 <p>Now we allow the antidebugging selection by call, what turns things much easier than to choose the protected points inside the code.</p>
 

@@ -430,18 +430,20 @@ int main(int argc, char* argv[])
     PROCESS_INFORMATION pi;
     CHAR cmd[4096] = &quot;cmd.exe&quot;;
     SECURITY_ATTRIBUTES saAttr;
- 
+
     saAttr.nLength = sizeof(SECURITY_ATTRIBUTES);
     saAttr.bInheritHandle = TRUE;
     saAttr.lpSecurityDescriptor = NULL;
 
     si.dwFlags = STARTF_USESTDHANDLES;
-    si.hStdOutput = CreateFileA(&quot;cmd.log&quot;, GENERIC_WRITE, FILE_SHARE_READ, &amp;sa, CREATE_ALWAYS, 0, NULL);
+    si.hStdOutput = CreateFileA(&quot;cmd.log&quot;, GENERIC_WRITE, FILE_SHARE_READ,
+      &amp;sa, CREATE_ALWAYS, 0, NULL);
     si.hStdError = si.hStdOutput;
 
     if( si.hStdOutput != NULL &amp;&amp; si.hStdOutput != INVALID_HANDLE_VALUE )
     {
-        if (CreateProcessA(NULL, cmd, NULL, NULL, TRUE, CREATE_NEW_CONSOLE, NULL, NULL, &amp;si, &amp;pi))
+        if (CreateProcessA(NULL, cmd, NULL, NULL, TRUE, CREATE_NEW_CONSOLE,
+          NULL, NULL, &amp;si, &amp;pi))
         {
             WaitForSingleObject(pi.hProcess, INFINITE);
             CloseHandle(pi.hThread);

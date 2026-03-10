@@ -123,7 +123,10 @@ using System.Net;
 
 public class Program
 {
-    private static void CalculateWireguardAllowedIps(ref HashSet&lt;IPNetwork2&gt; list, IPNetwork2 ip, IPNetwork2 remove)
+    private static void CalculateWireguardAllowedIps(
+      ref HashSet&lt;IPNetwork2&gt; list,
+      IPNetwork2 ip,
+      IPNetwork2 remove)
     {
         if (ip.Cidr == 32)
         {
@@ -133,29 +136,38 @@ public class Program
             }
             else
             {
-                Console.WriteLine(&quot;CalculateWireguardAllowedIps: found and skipping&quot; + ip.ToString());
+                Console.WriteLine(&quot;CalculateWireguardAllowedIps: &quot;
+                  &quot;found and skipping&quot; + ip.ToString());
             }
         }
         else
         {
-            HashSet&lt;IPNetwork2&gt; split = ip.Subnet((byte)(ip.Cidr + 1)).ToHashSet(); // [0]=left, [1]=right
+            HashSet&lt;IPNetwork2&gt; split = ip.Subnet((byte)(ip.Cidr + 1))
+            .ToHashSet(); // [0]=left, [1]=right
             if (split.Count == 2)
             {
                 List&lt;IPNetwork2&gt; splitList = split.ToList();
                 if (splitList[0].Overlap(remove))
                 {
                     list.Add(splitList[1]);
-                    CalculateWireguardAllowedIps(ref list, splitList[0], remove);
+                    CalculateWireguardAllowedIps(ref list,
+                      splitList[0],
+                      remove);
                 }
                 else
                 {
                     list.Add(splitList[0]);
-                    CalculateWireguardAllowedIps(ref list, splitList[1], remove);
+                    CalculateWireguardAllowedIps(ref list,
+                      splitList[1],
+                      remove);
                 }
             }
         }
     }
-    private static void CalculateWireguardAllowedIps(ref HashSet&lt;IPNetwork2&gt; ipsToAdd, ref HashSet&lt;IPNetwork2&gt; ipsToRemove, ref HashSet&lt;IPNetwork2&gt; list)
+    private static void CalculateWireguardAllowedIps(
+      ref HashSet&lt;IPNetwork2&gt; ipsToAdd,
+      ref HashSet&lt;IPNetwork2&gt; ipsToRemove,
+      ref HashSet&lt;IPNetwork2&gt; list)
     {
         foreach (IPNetwork2 remove in ipsToRemove)
         {
@@ -175,7 +187,10 @@ public class Program
             ipsToAdd = list;
         }
     }
-    private static void AddAllowedIp(ref HashSet&lt;IPNetwork2&gt; allowedIps, IPNetwork2 addThisIp, ref HashSet&lt;IPNetwork2&gt; notAddTheseIps)
+    private static void AddAllowedIp(
+      ref HashSet&lt;IPNetwork2&gt; allowedIps,
+      IPNetwork2 addThisIp,
+      ref HashSet&lt;IPNetwork2&gt; notAddTheseIps)
     {
         if (addThisIp.Cidr == 32)
         {
@@ -185,12 +200,15 @@ public class Program
             }
             else
             {
-                Console.WriteLine(&quot;AddAllowedIp: found and skipping &quot; + addThisIp.ToString());
+                Console.WriteLine(&quot;AddAllowedIp: found and skipping &quot;
+                + addThisIp.ToString());
             }
         }
         else
         {
-            List&lt;IPNetwork2&gt; split = addThisIp.Subnet((byte)(addThisIp.Cidr + 1)).ToList(); // [0]=left, [1]=right
+            // [0]=left, [1]=right
+            List&lt;IPNetwork2&gt; split = addThisIp.Subnet(
+              (byte)(addThisIp.Cidr + 1)).ToList();
             if (split.Count == 2)
             {
                 bool overlapLeft = false, overlapRight = false;
@@ -215,7 +233,9 @@ public class Program
 
                 if (overlapLeft)
                 {
-                    AddAllowedIp(ref allowedIps, split[0], ref notAddTheseIps);
+                    AddAllowedIp(ref allowedIps,
+                      split[0],
+                      ref notAddTheseIps);
                 }
                 else
                 {
@@ -224,7 +244,9 @@ public class Program
 
                 if (overlapRight)
                 {
-                    AddAllowedIp(ref allowedIps, split[1], ref notAddTheseIps);
+                    AddAllowedIp(ref allowedIps,
+                      split[1],
+                      ref notAddTheseIps);
                 }
                 else
                 {
@@ -236,21 +258,28 @@ public class Program
 
     public static int Main(string[] args)
     {
-        HashSet&lt;IPNetwork2&gt; twoPeersHashSet = new HashSet&lt;IPNetwork2&gt;();
-        IPNetwork2 allAllowedIPs = new IPNetwork2(IPAddress.Parse(&quot;0.0.0.0&quot;), 0);
-        IPNetwork2 removeIP = new IPNetwork2(IPAddress.Parse(&quot;66.22.190.0&quot;), 32);
-        CalculateWireguardAllowedIps(ref twoPeersHashSet, allAllowedIPs, removeIP);
+        HashSet&lt;IPNetwork2&gt; twoPeersHashSet
+        = new HashSet&lt;IPNetwork2&gt;();
+        IPNetwork2 allAllowedIPs
+        = new IPNetwork2(IPAddress.Parse(&quot;0.0.0.0&quot;), 0);
+        IPNetwork2 removeIP
+        = new IPNetwork2(IPAddress.Parse(&quot;66.22.190.0&quot;), 32);
+        CalculateWireguardAllowedIps(ref twoPeersHashSet,
+        allAllowedIPs, removeIP);
 
-        HashSet&lt;IPNetwork2&gt; multiplePeersHashSet = new HashSet&lt;IPNetwork2&gt;();
-        HashSet&lt;IPNetwork2&gt; ipsToRemove = new HashSet&lt;IPNetwork2&gt;();
-        //ipsToRemove.Add(new IPNetwork2(IPAddress.Parse(&quot;66.22.190.0&quot;), 32));
-        ipsToRemove.Add(new IPNetwork2(IPAddress.Parse(&quot;66.22.188.1&quot;), 32));
-        //ipsToRemove.Add(new IPNetwork2(IPAddress.Parse(&quot;66.22.190.1&quot;), 32));
-        //ipsToRemove.Add(new IPNetwork2(IPAddress.Parse(&quot;66.22.188.0&quot;), 32));
-        AddAllowedIp(ref multiplePeersHashSet, allAllowedIPs, ref ipsToRemove);
+        HashSet&lt;IPNetwork2&gt; multiplePeersHashSet
+        = new HashSet&lt;IPNetwork2&gt;();
+        HashSet&lt;IPNetwork2&gt; ipsToRemove
+        = new HashSet&lt;IPNetwork2&gt;();
+        ipsToRemove.Add(new IPNetwork2(IPAddress.Parse(&quot;66.22.188.1&quot;),
+        32));
+        AddAllowedIp(ref multiplePeersHashSet, allAllowedIPs,
+        ref ipsToRemove);
 
-        var inMultipleExceptTwoPeers = multiplePeersHashSet.Except(twoPeersHashSet).ToHashSet();
-        var inTwoPeersExceptMultiple = twoPeersHashSet.Except(multiplePeersHashSet).ToHashSet();
+        var inMultipleExceptTwoPeers
+        = multiplePeersHashSet.Except(twoPeersHashSet).ToHashSet();
+        var inTwoPeersExceptMultiple
+        = twoPeersHashSet.Except(multiplePeersHashSet).ToHashSet();
 
         Console.WriteLine(&quot;In multiple peers except two peers:&quot;);
         foreach (var ip in inMultipleExceptTwoPeers)
@@ -293,8 +322,8 @@ public class Program
 #include &lt;windows.h&gt;
 int main()
 {
-    if( ! SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE), 
-      CONSOLE_FULLSCREEN_MODE | CONSOLE_WINDOWED_MODE, 
+    if( ! SetConsoleDisplayMode(GetStdHandle(STD_OUTPUT_HANDLE),
+      CONSOLE_FULLSCREEN_MODE | CONSOLE_WINDOWED_MODE,
       NULL) )
     {
         // if GetLastError 120 use this:
@@ -337,13 +366,13 @@ using namespace std;
 
 typedef long long int LongInteger;
 
-struct Chunk 
+struct Chunk
 {
 	const char* begin;
 	const char* end;
 };
 
-struct Employee 
+struct Employee
 {
 	Chunk name;
 	Chunk surname;
@@ -371,13 +400,15 @@ struct ParseChunk
 };
 
 template&lt;typename Cmp&gt;
-inline bool compare_exchange_employees(vector&lt;const Area*&gt;&amp; lst_change, const Area&amp; area_cmp, Cmp cmp)
+inline bool compare_exchange_employees(vector&lt;const Area*&gt;&amp; lst_change,
+const Area&amp; area_cmp, Cmp cmp)
 {
 	if (lst_change.size())
 	{
 		if (cmp(area_cmp.total_employees, (*lst_change.begin())-&gt;total_employees))
 			lst_change = vector&lt;const Area*&gt;{ &amp;area_cmp };
-		else if (area_cmp.total_employees == (*lst_change.begin())-&gt;total_employees)
+		else if (area_cmp.total_employees
+    == (*lst_change.begin())-&gt;total_employees)
 			lst_change.push_back(&amp;area_cmp);
 		return true;
 	}
@@ -386,7 +417,8 @@ inline bool compare_exchange_employees(vector&lt;const Area*&gt;&amp; lst_change
 }
 
 template&lt;typename Cmp&gt;
-inline bool compare_exchange_salary(vector&lt;Employee&gt;&amp; lst_change, const Employee&amp; employee, Cmp cmp)
+inline bool compare_exchange_salary(vector&lt;Employee&gt;&amp; lst_change,
+const Employee&amp; employee, Cmp cmp)
 {
 	if (lst_change.size())
 	{
@@ -401,7 +433,8 @@ inline bool compare_exchange_salary(vector&lt;Employee&gt;&amp; lst_change, cons
 }
 
 template&lt;typename Cmp&gt;
-inline bool compare_exchange_salary(vector&lt;Employee&gt;&amp; lst_change, const vector&lt;Employee&gt;&amp; lst_cmp, Cmp cmp)
+inline bool compare_exchange_salary(vector&lt;Employee&gt;&amp; lst_change,
+const vector&lt;Employee&gt;&amp; lst_cmp, Cmp cmp)
 {
 	if (lst_change.size())
 	{
@@ -425,14 +458,15 @@ void parse(ParseChunk* data)
 	string area_name;
 	Area* area;
 	vector&lt;Employee&gt;* employees;
-	auto mystrchr = [&amp;](const char* str, char ch) { while (*str &amp;&amp; *str != ch) ++str; return str; };
-	auto myatoi = [&amp;](const char* beg, const char* end) 
-	{ 
-		int ret = 0; 
+	auto mystrchr = [&amp;](const char* str, char ch)
+  { while (*str &amp;&amp; *str != ch) ++str; return str; };
+	auto myatoi = [&amp;](const char* beg, const char* end)
+	{
+		int ret = 0;
 		while (beg &lt; end) {
-			char c = *beg++; 
-			if (c == '.') continue; 
-			ret = ret * 10 + c - '0'; } 
+			char c = *beg++;
+			if (c == '.') continue;
+			ret = ret * 10 + c - '0'; }
 		return ret;
 	};
 	const char* curr = mystrchr(data-&gt;data_chunk.begin, '&quot;');
@@ -471,8 +505,10 @@ void parse(ParseChunk* data)
 			area_name = string(employee.area.begin, employee.area.end);
 			area = &amp;data-&gt;areas[area_name];
 
-			compare_exchange_salary(area-&gt;area_max, employee, greater&lt;LongInteger&gt;());
-			compare_exchange_salary(area-&gt;area_min, employee, less&lt;LongInteger&gt;());
+			compare_exchange_salary(area-&gt;area_max,
+      employee, greater&lt;LongInteger&gt;());
+			compare_exchange_salary(area-&gt;area_min,
+      employee, less&lt;LongInteger&gt;());
 
 			surname = string(employee.surname.begin, employee.surname.end);
 			employees = &amp;data-&gt;surname_max[surname];
@@ -541,8 +577,10 @@ int main(int argc, char* argv[])
 					Area&amp; total_area = total.areas[area.first];
 					total_area.total_employees += area.second.total_employees;
 					total_area.total_salaries += area.second.total_salaries;
-					compare_exchange_salary(total_area.area_max, area.second.area_max, greater&lt;LongInteger&gt;());
-					compare_exchange_salary(total_area.area_min, area.second.area_min, less&lt;LongInteger&gt;());
+					compare_exchange_salary(total_area.area_max,
+          area.second.area_max, greater&lt;LongInteger&gt;());
+					compare_exchange_salary(total_area.area_min,
+          area.second.area_min, less&lt;LongInteger&gt;());
 					if( area.second.name.size() )
 						total_area.name = area.second.name;
 				}
@@ -551,7 +589,8 @@ int main(int argc, char* argv[])
 				{
 					const string&amp; surname = surname_max.first;
 					vector&lt;Employee&gt;&amp; total_surname = total.surname_max[surname];
-					bool exchange = compare_exchange_salary(total_surname, surname_max.second, greater&lt;LongInteger&gt;());
+					bool exchange = compare_exchange_salary(total_surname,
+          surname_max.second, greater&lt;LongInteger&gt;());
 					total_surname.begin()-&gt;surname_max = exchange;
 				}
 			}
@@ -562,16 +601,22 @@ int main(int argc, char* argv[])
 			{
 				if (area.second.total_employees)
 				{
-					area.second.avg_salary = ( double(area.second.total_salaries) / 100.0 ) / double(area.second.total_employees);
+					area.second.avg_salary = ( double(area.second.total_salaries)
+          / 100.0 ) / double(area.second.total_employees);
 					global.total_employees += area.second.total_employees;
 					global.total_salaries += area.second.total_salaries;
-					compare_exchange_salary(global.area_max, area.second.area_max, greater&lt;LongInteger&gt;());
-					compare_exchange_salary(global.area_min, area.second.area_min, less&lt;LongInteger&gt;());
-					compare_exchange_employees(most_employees, area.second, greater&lt;LongInteger&gt;());
-					compare_exchange_employees(least_employees, area.second, less&lt;LongInteger&gt;());
+					compare_exchange_salary(global.area_max, area.second.area_max,
+          greater&lt;LongInteger&gt;());
+					compare_exchange_salary(global.area_min, area.second.area_min,
+          less&lt;LongInteger&gt;());
+					compare_exchange_employees(most_employees, area.second,
+          greater&lt;LongInteger&gt;());
+					compare_exchange_employees(least_employees, area.second,
+          less&lt;LongInteger&gt;());
 				}
 			}
-			global.avg_salary = ( double(global.total_salaries) / 100.0 ) / double(global.total_employees);
+			global.avg_salary = ( double(global.total_salaries) / 100.0 )
+      / double(global.total_employees);
 
 			auto out_salary = [](LongInteger salary) -&gt; string
 			{
@@ -581,30 +626,47 @@ int main(int argc, char* argv[])
 			};
 
 			for (const auto&amp; emp : global.area_max)
-				cout &lt;&lt; &quot;global_max|&quot; &lt;&lt; string(emp.name.begin, emp.name.end) &lt;&lt; ' ' &lt;&lt; string(emp.surname.begin, emp.surname.end) &lt;&lt; '|' &lt;&lt; out_salary(emp.salary) &lt;&lt; '\n';
+				cout &lt;&lt; &quot;global_max|&quot; &lt;&lt; string(emp.name.begin, emp.name.end) &lt;&lt; ' '
+        &lt;&lt; string(emp.surname.begin, emp.surname.end) &lt;&lt; '|'
+        &lt;&lt; out_salary(emp.salary) &lt;&lt; '\n';
 			for (const auto&amp; emp : global.area_min)
-				cout &lt;&lt; &quot;global_min|&quot; &lt;&lt; string(emp.name.begin, emp.name.end) &lt;&lt; ' ' &lt;&lt; string(emp.surname.begin, emp.surname.end) &lt;&lt; '|' &lt;&lt; out_salary(emp.salary) &lt;&lt; '\n';
-			cout &lt;&lt; &quot;global_avg|&quot; &lt;&lt; fixed &lt;&lt; setprecision(2) &lt;&lt; global.avg_salary &lt;&lt; '\n';
+				cout &lt;&lt; &quot;global_min|&quot; &lt;&lt; string(emp.name.begin, emp.name.end)
+        &lt;&lt; ' ' &lt;&lt; string(emp.surname.begin, emp.surname.end) &lt;&lt; '|'
+        &lt;&lt; out_salary(emp.salary) &lt;&lt; '\n';
+			cout &lt;&lt; &quot;global_avg|&quot; &lt;&lt; fixed &lt;&lt; setprecision(2) &lt;&lt; global.avg_salary
+      &lt;&lt; '\n';
 			for (const auto&amp; area : total.areas)
 			{
 				for (const auto&amp; emp : area.second.area_max)
-					cout &lt;&lt; &quot;area_max|&quot; &lt;&lt; area.second.name &lt;&lt; '|' &lt;&lt; string(emp.name.begin, emp.name.end) &lt;&lt; ' ' &lt;&lt; string(emp.surname.begin, emp.surname.end) &lt;&lt; '|' &lt;&lt; out_salary(emp.salary) &lt;&lt; '\n';
+					cout &lt;&lt; &quot;area_max|&quot; &lt;&lt; area.second.name &lt;&lt; '|'
+          &lt;&lt; string(emp.name.begin, emp.name.end) &lt;&lt; ' '
+          &lt;&lt; string(emp.surname.begin, emp.surname.end)
+          &lt;&lt; '|' &lt;&lt; out_salary(emp.salary) &lt;&lt; '\n';
 				for (const auto&amp; emp : area.second.area_min)
-					cout &lt;&lt; &quot;area_min|&quot; &lt;&lt; area.second.name &lt;&lt; '|' &lt;&lt; string(emp.name.begin, emp.name.end) &lt;&lt; ' ' &lt;&lt; string(emp.surname.begin, emp.surname.end) &lt;&lt; '|' &lt;&lt; out_salary(emp.salary) &lt;&lt; '\n';
+					cout &lt;&lt; &quot;area_min|&quot; &lt;&lt; area.second.name &lt;&lt; '|'
+          &lt;&lt; string(emp.name.begin, emp.name.end) &lt;&lt; ' '
+          &lt;&lt; string(emp.surname.begin, emp.surname.end) &lt;&lt; '|'
+          &lt;&lt; out_salary(emp.salary) &lt;&lt; '\n';
 				if( area.second.total_employees )
-					cout &lt;&lt; &quot;area_avg|&quot; &lt;&lt; area.second.name &lt;&lt; '|' &lt;&lt; fixed &lt;&lt; setprecision(2) &lt;&lt; area.second.avg_salary &lt;&lt; '\n';
+					cout &lt;&lt; &quot;area_avg|&quot; &lt;&lt; area.second.name &lt;&lt; '|' &lt;&lt; fixed
+          &lt;&lt; setprecision(2) &lt;&lt; area.second.avg_salary &lt;&lt; '\n';
 			}
 			for (const auto&amp; emp : most_employees)
-				cout &lt;&lt; &quot;most_employees|&quot; &lt;&lt; emp-&gt;name &lt;&lt; '|' &lt;&lt; emp-&gt;total_employees &lt;&lt; '\n';
+				cout &lt;&lt; &quot;most_employees|&quot; &lt;&lt; emp-&gt;name &lt;&lt; '|'
+        &lt;&lt; emp-&gt;total_employees &lt;&lt; '\n';
 			for (const auto&amp; emp : least_employees)
-				cout &lt;&lt; &quot;least_employees|&quot; &lt;&lt; emp-&gt;name &lt;&lt; '|' &lt;&lt; emp-&gt;total_employees &lt;&lt; '\n';
+				cout &lt;&lt; &quot;least_employees|&quot; &lt;&lt; emp-&gt;name &lt;&lt; '|'
+        &lt;&lt; emp-&gt;total_employees &lt;&lt; '\n';
 			for (const auto&amp; emps : total.surname_max)
 			{
 				if (emps.second.begin()-&gt;surname_max || emps.second.size() &gt; 1)
 				{
-					string surname = string(emps.second.begin()-&gt;surname.begin, emps.second.begin()-&gt;surname.end);
+					string surname = string(emps.second.begin()-&gt;surname.begin,
+          emps.second.begin()-&gt;surname.end);
 					for (const auto&amp; emp : emps.second)
-						cout &lt;&lt; &quot;last_name_max|&quot; &lt;&lt; surname &lt;&lt; '|' &lt;&lt; string(emp.name.begin, emp.name.end) &lt;&lt; ' ' &lt;&lt; surname &lt;&lt; '|' &lt;&lt; out_salary(emp.salary) &lt;&lt; '\n';
+						cout &lt;&lt; &quot;last_name_max|&quot; &lt;&lt; surname &lt;&lt; '|'
+            &lt;&lt; string(emp.name.begin, emp.name.end) &lt;&lt; ' ' &lt;&lt; surname &lt;&lt; '|'
+            &lt;&lt; out_salary(emp.salary) &lt;&lt; '\n';
 				}
 			}
 
@@ -640,7 +702,11 @@ namespace fs = std::filesystem;
 int main()
 {
     const fs::path RootPath = fs::path(&quot;resources&quot;);
-    auto isBinary = [](const fs::path&amp; path) { return path.extension() == &quot;.exe&quot; || path.extension() == &quot;.dll&quot; || path.extension() == &quot;.sys&quot;; };
+    auto isBinary = [](const fs::path&amp; path) {
+      return path.extension() == &quot;.exe&quot;
+      || path.extension() == &quot;.dll&quot;
+      || path.extension() == &quot;.sys&quot;;
+    };
 
     ::SymInitialize(::GetCurrentProcess(), NULL, FALSE);
     try
@@ -653,34 +719,44 @@ int main()
                 if (entry.is_regular_file() &amp;&amp; isBinary(entry.path()))
                 {
                     auto imageName = entry.path().string();
-                    SYMSRV_INDEX_INFO imageFileInfo = { sizeof(imageFileInfo) };
-                    ::SymSrvGetFileIndexInfo(imageName.c_str(), &amp;imageFileInfo, 0);
+                    SYMSRV_INDEX_INFO imageFileInfo = {
+                      sizeof(imageFileInfo) };
+                    ::SymSrvGetFileIndexInfo(imageName.c_str(),
+                    &amp;imageFileInfo, 0);
                     char downloadedImagePath[MAX_PATH + 1] = { 0 };
-                    if (::SymFindFileInPath(GetCurrentProcess(), NULL, imageName.c_str(),
-                        &amp;imageFileInfo.timestamp, imageFileInfo.size, 0, SSRVOPT_DWORDPTR,
+                    if (::SymFindFileInPath(GetCurrentProcess(),
+                    NULL, imageName.c_str(),
+                        &amp;imageFileInfo.timestamp, imageFileInfo.size, 0,
+                        SSRVOPT_DWORDPTR,
                         downloadedImagePath, nullptr, nullptr))
                     {
-                        std::cout &lt;&lt; &quot;Image file downloaded to &quot; &lt;&lt; downloadedImagePath &lt;&lt; std::endl;
+                        std::cout &lt;&lt; &quot;Image file downloaded to &quot;
+                        &lt;&lt; downloadedImagePath &lt;&lt; std::endl;
                     }
 
                     char downloadedPdbPath[MAX_PATH + 1] = { 0 };
-                    if (::SymFindFileInPath(GetCurrentProcess(), NULL, imageFileInfo.pdbfile,
-                        &amp;imageFileInfo.guid, imageFileInfo.age, 0, SSRVOPT_GUIDPTR,
+                    if (::SymFindFileInPath(GetCurrentProcess(), NULL,
+                    imageFileInfo.pdbfile,
+                        &amp;imageFileInfo.guid, imageFileInfo.age, 0,
+                        SSRVOPT_GUIDPTR,
                         downloadedPdbPath, nullptr, nullptr))
                     {
-                        std::cout &lt;&lt; &quot;PDB file downloaded to &quot; &lt;&lt; downloadedPdbPath &lt;&lt; std::endl;
+                        std::cout &lt;&lt; &quot;PDB file downloaded to &quot;
+                        &lt;&lt; downloadedPdbPath &lt;&lt; std::endl;
                     }
                 }
             }
             catch (std::exception&amp; e)
             {
-                std::cerr &lt;&lt; entry.path().string() &lt;&lt; &quot;: &quot; &lt;&lt; e.what() &lt;&lt; std::endl;
+                std::cerr &lt;&lt; entry.path().string() &lt;&lt; &quot;: &quot;
+                &lt;&lt; e.what() &lt;&lt; std::endl;
             }
         }
     }
     catch (std::filesystem::filesystem_error&amp; e)
     {
-        std::cout &lt;&lt; &quot;No resources directory found; nothing to do here: &quot; &lt;&lt; e.what();
+        std::cout &lt;&lt; &quot;No resources directory found; nothing to do here: &quot;
+        &lt;&lt; e.what();
     }
     ::SymCleanup(::GetCurrentProcess());
     return 0;
@@ -703,8 +779,10 @@ using namespace std;
 decltype(SendMessageA)* Orig_SendMessageA = ::SendMessageA;
 decltype(SendMessageW)* Orig_SendMessageW = ::SendMessageW;
 
-LRESULT WINAPI Hook_SendMessageA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
-LRESULT WINAPI Hook_SendMessageW(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
+LRESULT WINAPI Hook_SendMessageA(HWND hWnd, UINT Msg,
+WPARAM wParam, LPARAM lParam);
+LRESULT WINAPI Hook_SendMessageW(HWND hWnd, UINT Msg,
+WPARAM wParam, LPARAM lParam);
 
 struct Hook
 {
@@ -718,14 +796,16 @@ static Hook g_installedHooks[] =
     { (PVOID&amp;)Orig_SendMessageW, Hook_SendMessageW },
 };
 
-LRESULT WINAPI Hook_SendMessageA(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
+LRESULT WINAPI Hook_SendMessageA(HWND hWnd, UINT Msg,
+WPARAM wParam, LPARAM lParam)
 {
     LRESULT l = Orig_SendMessageA(hWnd, Msg, wParam, lParam);
     printf(&quot;Hook_SendMessageA %x %d&quot;, hWnd, Msg);
     return l;
 }
 
-LRESULT WINAPI Hook_SendMessageW(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
+LRESULT WINAPI Hook_SendMessageW(HWND hWnd, UINT Msg,
+WPARAM wParam, LPARAM lParam)
 {
     LRESULT l = Orig_SendMessageW(hWnd, Msg, wParam, lParam);
     printf(&quot;Hook_SendMessageW %x %d&quot;, hWnd, Msg);
@@ -755,7 +835,8 @@ static void UninstallHooks()
     DetourTransactionCommit();
 }
 
-BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReserved)
+BOOL APIENTRY DllMain(HMODULE hModule, DWORD
+ul_reason_for_call, LPVOID lpReserved)
 {
     if (DetourIsHelperProcess())
     {

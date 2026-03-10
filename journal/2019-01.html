@@ -155,8 +155,10 @@ BOOL CreateProcessA(
 // usando flags de uso de entrada/saída padrão
 STARTUPINFO si = { sizeof(si) };
 si.dwFlags = STARTF_USESTDHANDLES;
-si.hStdInput = CreateFileA(inputTempFilePath, GENERIC_READ, 0, &amp;sa, OPEN_EXISTING, 0, NULL);
-si.hStdOutput = CreateFileA(outputTempFilePath, GENERIC_WRITE, FILE_SHARE_READ, &amp;sa, CREATE_ALWAYS, 0, NULL);
+si.hStdInput = CreateFileA(inputTempFilePath, GENERIC_READ, 0, &amp;sa,
+OPEN_EXISTING, 0, NULL);
+si.hStdOutput = CreateFileA(outputTempFilePath, GENERIC_WRITE,
+FILE_SHARE_READ, &amp;sa, CREATE_ALWAYS, 0, NULL);
 si.hStdError = si.hStdOutput;
 </pre>
 <p>Após o término do processo a saída estará no arquivo aberto em si.hStdOutput. Basta abri-lo para leitura e enviar seu conteúdo via socket para o cliente. O trabalho dessa conexão termina por aí.</p>

@@ -72,7 +72,7 @@ int func(int x, int y, int z);
 struct Teste
 {
   /* tamanho em memória: zero bytes */
-  char bufao[0x100000]; 
+  char bufao[0x100000];
   /* tamanho em memória: zero bytes */
   int intao[0xffffff];
 };
@@ -89,14 +89,12 @@ int func(int x, int y, int z)
   int ret = x + y + z; /* alguns _asm add + */
   return ret;          /* um _asm ret */
 }
-
-/* tamanho em memória: 
-   0x100000 + 0xffffff * 4 
+/* tamanho em memória:
+   0x100000 + 0xffffff * 4
    = 1048576 bytes
 */
 Teste tst;
-
-/* tamanho em memória: 
+/* tamanho em memória:
    sizeof(int) bytes
 */
 int x;
@@ -112,8 +110,7 @@ int x;
 <pre>
 /* atenção: declaração apenas! */
 struct Estrutura;
-
-/* ponteiro para declaração: 
+/* ponteiro para declaração:
    não sabemos o tamanho ainda
 */
 Estrutura* st;

@@ -64,20 +64,20 @@ MIDL_INTERFACE(&quot;00000002-0000-0000-C000-000000000046&quot;)
 IMalloc : public IUnknown
 {
   public:
-  virtual void *STDMETHODCALLTYPE Alloc( 
+  virtual void *STDMETHODCALLTYPE Alloc(
     /* [in] */ SIZE_T cb) = 0;
 
-  virtual void *STDMETHODCALLTYPE Realloc( 
+  virtual void *STDMETHODCALLTYPE Realloc(
     /* [in] */ void *pv,
     /* [in] */ SIZE_T cb) = 0;
 
-  virtual void STDMETHODCALLTYPE Free( 
+  virtual void STDMETHODCALLTYPE Free(
     /* [in] */ void *pv) = 0;
 
-  virtual SIZE_T STDMETHODCALLTYPE GetSize( 
+  virtual SIZE_T STDMETHODCALLTYPE GetSize(
     /* [in] */ void *pv) = 0;
 
-  virtual int STDMETHODCALLTYPE DidAlloc( 
+  virtual int STDMETHODCALLTYPE DidAlloc(
     void *pv) = 0;
 
   virtual void STDMETHODCALLTYPE HeapMinimize(void) = 0;
@@ -90,12 +90,12 @@ IMalloc : public IUnknown
 <p>Nesse exemplo iremos obter o ponteiro através de um aplicativo de teste trivial, ignorando todas aquelas proteções antidebugging que podem estar presentes no momento da reversa, feitos por alguém que lê meu blog (quanta pretensão!):</p>
 
 <pre>
-/** @brief A stupid sample to 
+/** @brief A stupid sample to
   show WinDbg COM hooking! */
 #include &lt;windows.h&gt;
 #include &lt;objbase.h&gt;
 #include &lt;objidl.h&gt;
- 
+
 int main()
 {
   CoInitialize(NULL);
@@ -103,7 +103,7 @@ int main()
 
   if( CoGetMalloc(1, &amp;malloc) == 0 )
   {
-    if( void* pAlloc 
+    if( void* pAlloc
       = malloc-&gt;Alloc(0x1000) )
     {
       malloc-&gt;Free(pAlloc);
@@ -113,7 +113,7 @@ int main()
   }
 
   CoUninitialize();
-} 
+}
 </pre>
 <p>Vamos fazer de conta que é desnecessário dizer como se compila o fonte acima.</p>
 

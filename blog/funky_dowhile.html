@@ -63,7 +63,7 @@ role="navigation" aria-label="main navigation">
   OutputDebugString(buffer); \
 }
 
-#endif /* NDEBUG */ 
+#endif /* NDEBUG */
 </pre>
 <p>Nothing much, but it seems to work. But, as we going to see in the following lines, it is really a buggy piece of code, since a call inside an if-else construction simply doesn't work.</p>
 
@@ -71,8 +71,7 @@ role="navigation" aria-label="main navigation">
 if( exploded() )
   MYTRACE(&quot;Oh, my God&quot;);
 else
-  MYTRACE(&quot;That's right&quot;); 
-
+  MYTRACE(&quot;That's right&quot;);
 error C2181: illegal else without matching if
 </pre>
 <p>Why's that? In order to answer this question, we need to look closer into the result code from the preprocessor, just replacing the macro for its piece of code:</p>
@@ -107,7 +106,6 @@ if( instruction )
   /* a lot of comands */
 
 } /* here I would expect an else or new instruction */
-
 ; /* a new command! okay, no else this time */
 
 else /* wait! what this else is doing here without an if?!?! */
@@ -122,7 +120,6 @@ if( error() )
 {
   printf(&quot;error&quot;);
 }
-
 printf(&quot;here we go&quot;);
 
 else /* llegal else without matching if! */
@@ -138,7 +135,6 @@ do
   /* multiple commands here */
 }
 while( expression )
-
 ;
 /* I expect a semicolon here, in order
    to end the do-while instruction */
@@ -165,7 +161,7 @@ do                           \
 }                            \
 while( 0 )
 
-#endif /* NDEBUG */ 
+#endif /* NDEBUG */
 </pre>
 <p>Using a do-while (with a false expression inside the test to execute the block just once) the if-else construction is allowed and working properly:</p>
 

@@ -402,7 +402,7 @@ compiled with the /homeparams flag. The minimum size of this homing space is
 parameters. When the homing space is not used to store parameter values, the
 compiler uses it to save non-volatile registers.&quot; - x64 Deep Dive
 
-&quot;The register based parameter homing space exists only for non-leaf 
+&quot;The register based parameter homing space exists only for non-leaf
 functions.&quot; - x64 Deep Dive
 
 # Win64 Debug
@@ -928,7 +928,8 @@ string ReverseString(string s)
 void MatchingCharacters(string s)
 {
     map&lt;char, int&gt; m; // declarar um map entre char e int
-    for_each(s.begin(), s.end(), [&amp;m] { m[c] += 1; }); // loop caractere a caractere incrementando contador para cada um
+    // loop caractere a caractere incrementando contador para cada um'
+    for_each(s.begin(), s.end(), [&amp;m] { m[c] += 1; });
     for( auto c: m ) {
       cout &lt;&lt; c.first &lt;&lt; &quot;: &quot; &lt;&lt; c.second &lt;&lt; &quot;\n&quot;;
     }
@@ -1432,7 +1433,9 @@ int main() {
 <p>Vamos implementar a função de soma e descobrir.</p>
 
 <pre>
-int sum(int node, int left, int right, int posLeft, int posRight, const vector&lt;int&gt;&amp; tree) {
+int sum(int node, int left, int right, int posLeft, int posRight,
+  const vector&lt;int&gt;&amp; tree)
+{
     if (posLeft &gt; posRight)
         return 0;
     if (posLeft == left &amp;&amp; posRight == right)
@@ -1440,8 +1443,10 @@ int sum(int node, int left, int right, int posLeft, int posRight, const vector&l
     int nodeLeft = 2 * node;
     int nodeRight = 2 * node + 1;
     int middle = (left + right) / 2;
-    return sum(nodeLeft, left, middle, posLeft, min(posRight, middle), tree)
-        + sum(nodeRight, middle + 1, right, max(posLeft, middle + 1), posRight, tree);
+    return sum(nodeLeft, left, middle, posLeft,
+      min(posRight, middle), tree)
+      + sum(nodeRight, middle + 1, right,
+      max(posLeft, middle + 1), posRight, tree);
 }
 
 int main() {
@@ -1452,13 +1457,13 @@ int main() {
     update(1, 1, 999, 700, 45, tree);
     update(1, 1, 999, 999, 55, tree);
 
-    vector&lt;vector&lt;int&gt;&gt; intervals = { 
-        {666, 666}, {600, 700}, {600, 999}, 
+    vector&lt;vector&lt;int&gt;&gt; intervals = {
+        {666, 666}, {600, 700}, {600, 999},
         {1, 999}, {1, 599} };
 
     for (const vector&lt;int&gt;&amp; i : intervals) {
         int isum = sum(1, 1, 999, i[0], i[1], tree);
-        cout &lt;&lt; &quot;the interval [&quot; &lt;&lt; i[0] &lt;&lt; &quot;,&quot; &lt;&lt; i[1] 
+        cout &lt;&lt; &quot;the interval [&quot; &lt;&lt; i[0] &lt;&lt; &quot;,&quot; &lt;&lt; i[1]
             &lt;&lt; &quot;] has the value &quot; &lt;&lt; isum &lt;&lt; endl;
     }
 }
@@ -1923,11 +1928,13 @@ long query(int node, int left, int right, int pos, const vector&lt;long&gt;&amp;
         if (pos &lt;= middle)
             return tree[node] + query(nodeLeft, left, middle, pos, tree);
         else
-            return tree[node] + query(nodeRight, middle + 1, right, pos, tree);
+            return tree[node] + query(nodeRight, middle + 1,
+            right, pos, tree);
     }
 }
 
-void update(int node, int left, int right, int posLeft, int posRight, int value, vector&lt;long&gt;&amp; tree) {
+void update(int node, int left, int right, int posLeft,
+int posRight, int value, vector&lt;long&gt;&amp; tree) {
     if (posLeft &gt; posRight) return;
     if (posLeft == left &amp;&amp; posRight == right) {
         tree[node] += value;
@@ -1936,8 +1943,10 @@ void update(int node, int left, int right, int posLeft, int posRight, int value,
         int nodeLeft = 2 * node;
         int nodeRight = 2 * node + 1;
         int middle = (left + right) / 2;
-        update(nodeLeft, left, middle, posLeft, min(posRight, middle), value, tree);
-        update(nodeRight, middle + 1, right, max(posLeft, middle + 1), posRight, value, tree);
+        update(nodeLeft, left, middle, posLeft, min(posRight, middle),
+        value, tree);
+        update(nodeRight, middle + 1, right, max(posLeft, middle + 1),
+        posRight, value, tree);
     }
 }
 

@@ -94,13 +94,13 @@ role="navigation" aria-label="main navigation">
 
 <pre>
 windbg notepad
-$$&gt;a&lt;&lt;a href=&quot;http://www.caloni.com.br/carregando-dlls-arbitrarias-pelo-windbg-parte-2&quot;&gt;scripts\loadlibrary.txt&lt;/a&gt; ntoskrnl.exe
-
-
+$$&gt;a&lt;scripts\loadlibrary.txt&lt;/a&gt; ntoskrnl.exe
 0:000&gt; lm m nt*
 start    end        module name
-00400000 00629000   ntoskrnl   (pdb symbols)          c:\tools\symbols\ntkrnlmp.pdb\46DFBE2D3E484140A0909F7519B1700A2\ntkrnlmp.pdb
-7c900000 7c9b6000   ntdll      (pdb symbols)          c:\tools\symbols\ntdll.pdb\6992F4DAF4B144068D78669D6CB5D2072\ntdll.pdb
+00400000 00629000   ntoskrnl (pdb symbols)
+  c:\symbols\ntkrnlmp.pdb\hash\ntkrnlmp.pdb
+7c900000 7c9b6000   ntdll (pdb symbols)
+  c:\symbols\ntdll.pdb\hash\ntdll.pdb
 0:000&gt; x ntoskrnl!KiInit*
 005ef332 ntoskrnl!KiInitializePcr = &lt;no type information&gt;
 005eefc0 ntoskrnl!KiInitQueuedSpinLocks = &lt;no type information&gt;
@@ -119,14 +119,14 @@ start    end        module name
 
 0:000&gt; u ntoskrnl!KiInitializeKernel
 ntoskrnl!KiInitializeKernel:
-005eadd2 6a28            push    28h
-005eadd4 68c0784300      push    offset ntoskrnl!KiDebugRegisterContextOffsets+0x3c (004378c0)
-005eadd9 e8a510e2ff      call    ntoskrnl!_SEH_prolog (0040be83)
-005eadde e8b531ffff      call    ntoskrnl!KiSetProcessorType (005ddf98)
-005eade3 e8cfffffff      call    ntoskrnl!KiSetCR0Bits (005eadb7)
-005eade8 e8d334ffff      call    ntoskrnl!KiIsNpxPresent (005de2c0)
-005eaded 8845e7          mov     byte ptr [ebp-19h],al
-005eadf0 64a11c000000    mov     eax,dword ptr fs:[0000001Ch]
+005eadd2 push 28h
+005eadd4 push offset ntoskrnl!KiDebugRegisterContextOffsets+0x3c
+005eadd9 call ntoskrnl!_SEH_prolog
+005eadde call ntoskrnl!KiSetProcessorType
+005eade3 call ntoskrnl!KiSetCR0Bits
+005eade8 call ntoskrnl!KiIsNpxPresent
+005eaded mov  byte ptr [ebp-19h],al
+005eadf0 mov  eax,dword ptr fs:[0000001Ch]
 </pre>
 <p>Veremos nos próximos capítulos como podemos nos aproveitar do ntoskrnl.exe para poder depurar o código a partir daí. Até lá.</p>
 

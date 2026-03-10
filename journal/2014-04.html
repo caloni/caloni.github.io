@@ -276,15 +276,24 @@ import sys
 
 def CookieClicker(farmCost, farmIncrement, cookieTarget):
     cookiePerSecond = 2.0
-    bestTime = cookieTarget / cookiePerSecond # melhor tempo soh fazendo cookies
-    cookieFarmTime = cookieTarget / (cookiePerSecond + farmIncrement) # melhor tempo ja com fazenda criada
-    farmTime = farmCost / cookiePerSecond + cookieFarmTime # quanto vai custar fazer a fazenda e depois fazer cookies com a fazenda
-    while farmTime &lt; bestTime: # enquanto fazer a fazenda custar menos tempo que soh fazer cookies...
-      bestTime = farmTime # por enquanto melhor tempo
-      cookiePerSecond = cookiePerSecond + farmIncrement # novo tempo para fazer cookies (mais uma fazenda ja criada)
-      farmTime = farmTime - cookieFarmTime # tiramos o tempo de soh fazer cookies para fazer mais uma fazenda
-      cookieFarmTime = cookieTarget / (cookiePerSecond + farmIncrement) # novo tempo com mais uma fazenda criada
-      farmTime = farmTime + farmCost / cookiePerSecond + cookieFarmTime # agora com o novo tempo de fazer outra fazenda e soh cookies
+    # melhor tempo soh fazendo cookies
+    bestTime = cookieTarget / cookiePerSecond
+    # melhor tempo ja com fazenda criada
+    cookieFarmTime = cookieTarget / (cookiePerSecond + farmIncrement)
+    # quanto vai custar fazer a fazenda e depois fazer cookies com a fazenda
+    farmTime = farmCost / cookiePerSecond + cookieFarmTime
+    # enquanto fazer a fazenda custar menos tempo que soh fazer cookies...
+    while farmTime &lt; bestTime:
+      # por enquanto melhor tempo
+      bestTime = farmTime
+      # novo tempo para fazer cookies (mais uma fazenda ja criada)
+      cookiePerSecond = cookiePerSecond + farmIncrement
+      # tiramos o tempo de soh fazer cookies para fazer mais uma fazenda
+      farmTime = farmTime - cookieFarmTime
+      # novo tempo com mais uma fazenda criada
+      cookieFarmTime = cookieTarget / (cookiePerSecond + farmIncrement)
+      # agora com o novo tempo de fazer outra fazenda e soh cookies
+      farmTime = farmTime + farmCost / cookiePerSecond + cookieFarmTime
     return bestTime
 
 f = open(sys.argv[1])
@@ -318,7 +327,8 @@ def War(naomi, ken):
       kenBlock = BestBlock(naomiBlock, ken)
       if naomiBlock &gt; kenBlock:
         naomiCount = naomiCount + 1
-      #print str(naomiBlock) + ' vs ' + str(kenBlock) + ': ' + str(naomiCount)
+      #print str(naomiBlock) + ' vs ' + str(kenBlock)
+      #+ ': ' + str(naomiCount)
       naomi.remove(naomiBlock)
       ken.remove(kenBlock)
     return naomiCount
@@ -339,7 +349,8 @@ def WarCheat(naomi, ken):
       naomiBlock = BestBlock(kenBlock, naomi)
       if naomiBlock &gt; kenBlock:
         naomiCount = naomiCount + 1
-      #print str(naomiTold) + '(' + str(naomiBlock) + ') vs ' + str(kenBlock) + ': ' + str(naomiCount)
+      #print str(naomiTold) + '(' + str(naomiBlock) + ') vs '
+      #+ str(kenBlock) + ': ' + str(naomiCount)
       naomi.remove(naomiBlock)
       ken.remove(kenBlock)
     return naomiCount
@@ -479,7 +490,7 @@ def FieldRender(row, col, mines):
                         nextRow = 0
                         nextCol = 0
                         while empties:
-                                
+
     return field
 
 def Mine(row, col, mines):
@@ -911,7 +922,7 @@ void TestCase(std::istream&amp; is, std::ostream&amp; os)
 
     typedef map&lt;__int64, set&lt;int&gt;&gt; SwitchOcurrences;
     SwitchOcurrences switchOcurrences;
-    
+
     for( int n = 0; n &lt; N; ++n )
     {
       __int64 outlet = outlets[n];
@@ -936,7 +947,9 @@ void TestCase(std::istream&amp; is, std::ostream&amp; os)
     {
       int switches = MAX_SWITCHES + 1;
 
-      for_each(switchOcurrences.begin(), switchOcurrences.end(), [&amp;](const SwitchOcurrences::value_type&amp; ocurrence)
+      for_each(switchOcurrences.begin(),
+        switchOcurrences.end(),
+          [&amp;](const SwitchOcurrences::value_type&amp; ocurrence)
       {
         int bits = CountBits(ocurrence.first);
         switches = min(switches, bits);

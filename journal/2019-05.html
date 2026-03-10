@@ -335,7 +335,7 @@ namespace UnitTest1
     TEST_CLASS(UnitTest1)
     {
     public:
-      
+
       TEST_METHOD(TestaSoma)
       {
         int z = soma(3, 2);
@@ -984,7 +984,7 @@ typedef struct foo_instance { cclass_instance type; } foo_instance;
 static foo_instance foo = { &quot;foo&quot; };
 
 /* defclass(bar, foo); */
-typedef struct bar_instance { cclass_instance type; } bar_instance; 
+typedef struct bar_instance { cclass_instance type; } bar_instance;
 static bar_instance bar = { &quot;bar&quot; };
 </pre>
 <h2>Estruturas de dados</h2>
@@ -1140,7 +1140,9 @@ int calcdistance_arg(cclass_instance* arg, cclass_instance* underpromo)
     return ret;
 }
 
-int calcdistance(cclass_instance** args, cclass_instance** underpromo, int len)
+int calcdistance(cclass_instance** args,
+  cclass_instance** underpromo,
+  int len)
 {
     int ret = 0;
     for (int i = 0; i &lt; len; ++i)
@@ -1184,7 +1186,8 @@ void call_next_method(const char* name, int argc, ...)
           int dist = -1;
 
           if (method-&gt;argv-&gt;len == m-&gt;argv-&gt;len)
-            dist = calcdistance((cclass_instance * *)method-&gt;argv-&gt;pdata, (cclass_instance * *)m-&gt;argv-&gt;pdata, method-&gt;argv-&gt;len);
+            dist = calcdistance((cclass_instance * *)method-&gt;argv-&gt;pdata,
+            (cclass_instance * *)m-&gt;argv-&gt;pdata, method-&gt;argv-&gt;len);
 
           if (dist &gt;= 0 &amp;&amp; dist &lt; nextdist)
           {
@@ -1222,7 +1225,8 @@ void call(const char* name, int argc, ...)
         int dist = -1;
 
         if (method-&gt;argv-&gt;len == m-&gt;argv-&gt;len)
-          dist = calcdistance((cclass_instance * *)method-&gt;argv-&gt;pdata, (cclass_instance * *)m-&gt;argv-&gt;pdata, method-&gt;argv-&gt;len);
+          dist = calcdistance((cclass_instance * *)method-&gt;argv-&gt;pdata,
+          (cclass_instance * *)m-&gt;argv-&gt;pdata, method-&gt;argv-&gt;len);
 
         if (dist &gt;= 0 &amp;&amp; dist &lt; nextdist)
         {
@@ -1258,7 +1262,7 @@ typedef struct foo_instance { cclass_instance type; } foo_instance;
 static foo_instance foo = { &quot;foo&quot; };
 
 /* defclass(bar, foo); */
-typedef struct bar_instance { cclass_instance type; } bar_instance; 
+typedef struct bar_instance { cclass_instance type; } bar_instance;
 static bar_instance bar = { &quot;bar&quot; };
 
 void test_dispatch()
@@ -1519,9 +1523,8 @@ int main()
 <pre>
 if( argc != 5 )
     goto usage;
-
 /*
-do something 
+do something
 do something else
 more to do
 and more
@@ -1533,7 +1536,6 @@ too much lines
 finished
 */
 return 0;
-
 usage:
 printf(&quot;How to use: ...&quot;);
 return 1;
@@ -1564,13 +1566,13 @@ code
 
 printf(&quot;closing f5\n&quot;);
 fclose(f5);
-end_f4: 
+end_f4:
   fclose(f4);
-end_f3: 
+end_f3:
   fclose(f3);
-end_f2: 
+end_f2:
   fclose(f2);
-end_f1: 
+end_f1:
   fclose(f1);
 end: ;
 </pre>
@@ -1649,21 +1651,21 @@ register count;
 
 <pre>
 register n = (count + 7) / 8;
-if (count % 8 == 0 ) 
+if (count % 8 == 0 )
   goto case_0;
-if (count % 8 == 7 ) 
+if (count % 8 == 7 )
   goto case_7;
-if (count % 8 == 6 ) 
+if (count % 8 == 6 )
   goto case_6;
-if (count % 8 == 5 ) 
+if (count % 8 == 5 )
   goto case_5;
-if (count % 8 == 4 ) 
+if (count % 8 == 4 )
   goto case_4;
-if (count % 8 == 3 ) 
+if (count % 8 == 3 )
   goto case_3;
-if (count % 8 == 2 ) 
+if (count % 8 == 2 )
   goto case_2;
-if (count % 8 == 1 ) 
+if (count % 8 == 1 )
   goto case_1;
 case_0: do { *to++ = *from++;
 case_7: *to++ = *from++;

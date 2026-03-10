@@ -254,15 +254,12 @@ void InitFunction()
 {
   printf(&quot;InitFunction\n&quot;);
 }
-
 void DoAnotherJob()
 {
   char buf[100] = &quot;&quot;;
   fgets(buf, sizeof(buf), stdin);
-
   printf(&quot;New line: %s\n&quot;, buf);
 }
-
 void TerminateFunction()
 {
   printf(&quot;TerminateFunction\n&quot;);
@@ -287,16 +284,13 @@ void DoAnotherJob()
 
 <pre>
 #define ENOUGH_BYTES 100
-
 void InitFunction()
 {
   printf(&quot;InitFunction\n&quot;);
 }
-
 void DoAnotherJob()
 {
   char buf[ENOUGH_BYTES] = &quot;&quot;;
-
   fgets(buf, sizeof(buf), stdin);
   printf(&quot;New line: %s\n&quot;, buf);
 }
@@ -341,9 +335,7 @@ bzr: ERROR: These branches have diverged. Use the merge command to reconcile the
 <pre>
 C:\Tests\bzrpilot&gt;bzr merge ..\bzrpilot-bufferoverflow
  M  bzppilot.cpp
-
 Text conflict in bzppilot.cpp
-
 1 conflicts encountered.
 </pre>
 <p>Usamos merge no lugar do pull e ganhamos agora um conflito no arquivo bzppilot.cpp, nosso único arquivo. Vamos ver a bagunça que fizemos?</p>
@@ -387,7 +379,6 @@ void InitFunction()
 {
   printf(&quot;InitFunction\n&quot;);
 }
-
 void DoAnotherJob()
 {
 &lt;&lt;&lt;&lt;&lt;&lt;&lt; TREE
@@ -398,21 +389,17 @@ void DoAnotherJob()
   fgets(buf, sizeof(buf), stdin);
   printf(&quot;New line: %s\n&quot;, buf);
 }
-
 void TerminateFunction()
 {
   printf(&quot;TerminateFunction\n&quot;);
 }
-
 int main()
 {
   InitFunction();
-
   while( ! feof(stdin) )
   {
     DoAnotherJob();
   }
-
   TerminateFunction();
 }
 </pre>
@@ -420,12 +407,10 @@ int main()
 
 <pre>
 #define ENOUGH_BYTES 200
-
 void InitFunction()
 {
   printf(&quot;InitFunction\n&quot;);
 }
-
 void DoAnotherJob()
 {
   char buf[ENOUGH_BYTES] = &quot;&quot;;
@@ -575,7 +560,7 @@ input&gt; l+* $$ habilita uso de código-fonte no ntsd
       message); \
     output(buffer); \
   }
-#endif /* NDEBUG */ 
+#endif /* NDEBUG */
 </pre>
 <p>Nada de mais, e parece até funcionar. Porém, como veremos nas próximas linhas, esse é realmente um exemplo de código "buguento", já que uma chamada dentro de uma construção if-else simplesmente não funciona.</p>
 
@@ -583,7 +568,7 @@ input&gt; l+* $$ habilita uso de código-fonte no ntsd
 if( exploded() )
   MYTRACE(&quot;Oh, my God&quot;);
 else
-  MYTRACE(&quot;That's right&quot;); 
+  MYTRACE(&quot;That's right&quot;);
 
 error C2181: illegal else without matching if
 </pre>
@@ -634,9 +619,7 @@ if( error() )
 {
   printf(&quot;error&quot;);
 }
-
 printf(&quot;here we go&quot;);
-
 else /* llegal else without matching if! */
 {
   printf(&quot;okay&quot;);
@@ -651,7 +634,7 @@ do
 }
 while( expression )
   ; /* eu espero um ponto-e-vírgula aqui,
-       para finalizar minha 
+       para finalizar minha
        instrução do-while */
 </pre>
 <p>Assim nós podemos reescrever nossa macro de logue da maneira certa (e todas as 549.797 macros já escritas em nossa vida de programador). E, apesar de ser uma construção um tanto bizarra, ela funciona melhor do que nossa tentativa inicial:</p>
@@ -672,7 +655,7 @@ do  \
   output(buffer); \
 } \
 while( 0 )
-#endif /* NDEBUG */ 
+#endif /* NDEBUG */
 </pre>
 <p>Ao usar um do-while (com uma expressão que retorna falso dentro do teste, de maneira que o código seja executado apenas uma vez) a construção if-else consegue funcionar perfeitamente:</p>
 

@@ -363,7 +363,7 @@ DWORD CreateJobAndWait(LPSTR cmdLine)
       PROCESS_INFORMATION pi;
 
       // depois, criamos um processo suspenso (travado)
-      if( CreateProcess(NULL, cmdLine, NULL, NULL, FALSE, 
+      if( CreateProcess(NULL, cmdLine, NULL, NULL, FALSE,
          CREATE_SUSPENDED | CREATE_NEW_CONSOLE, NULL, NULL, &amp;si, &amp;pi) )
       {
          // atribuímos esse processo ao nosso jobo
@@ -375,7 +375,7 @@ DWORD CreateJobAndWait(LPSTR cmdLine)
          // essa é uma completion i/o port genérica
          // (ou seja, não relacionada com nenhum arquivo
          // ou outra completion port)
-         HANDLE port = CreateIoCompletionPort(INVALID_HANDLE_VALUE, 
+         HANDLE port = CreateIoCompletionPort(INVALID_HANDLE_VALUE,
                  NULL, 0, 0);
 
          if( port )
@@ -386,8 +386,8 @@ DWORD CreateJobAndWait(LPSTR cmdLine)
             jobPort.CompletionPort = port; // nossa completion port vai aqui!
 
             // definimos a c.p. em nosso job
-            if( SetInformationJobObject(job, 
-                        JobObjectAssociateCompletionPortInformation, 
+            if( SetInformationJobObject(job,
+                        JobObjectAssociateCompletionPortInformation,
                         &amp;jobPort, sizeof(jobPort)) )
             {
                ULONG_PTR key = 0; // ver membro CompletionKey acima
@@ -395,7 +395,7 @@ DWORD CreateJobAndWait(LPSTR cmdLine)
                DWORD tranferred = 0;
 
                // nosso loop de mensagens com completion port
-               while( GetQueuedCompletionStatus(port, &amp;tranferred, 
+               while( GetQueuedCompletionStatus(port, &amp;tranferred,
                   &amp;key, &amp;overlap, INFINITE) )
                {
                   // transferred especifica a mensagem

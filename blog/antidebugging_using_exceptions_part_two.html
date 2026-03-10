@@ -76,7 +76,7 @@ int Start()
 
     // 6. End of execution.
     return 0;
-} 
+}
 </pre>
 <p>The solution above is explained in pseudocode to make things clearer. Notice that exist some kind of invisible return, not stack based. To handle it, however, we can use the good for all C ANSI standard, using the setjmp (step one) and longjmp (step 3). To understand the implementation for theses functions running on the 8086 platform we need to get the basic vision of the function calls in a stack based environment (the C and Pascal way).</p>
 
@@ -91,7 +91,6 @@ void Func()
 {
    return;
 }
-
 void CallFunc()
 {
    Func();
@@ -142,7 +141,7 @@ void CallFunc()
       Func();
 
     int x = 10; // 4. Next instruction.
-} 
+}
 </pre>
 <p>That was the new trick for the trowing of exceptions. The final code is clearer, now:</p>
 
@@ -189,7 +188,7 @@ int main()
     }
 
     return (int) ret;
-} 
+}
 </pre>
 <p>At first sight, it seems a waste the if being directly in the code (remember we gonna use the same conditional structure in several parts in the code). To turn things clearer, resume the protected call and allows the protection to be disabled in debug version code, let's create a macro:</p>
 
@@ -227,7 +226,7 @@ int main()
     }
 
     return (int) ret;
-} 
+}
 </pre>
 <p>Now we allow the antidebugging selection by call, what turns things much easier than to choose the protected points inside the code.</p>
 

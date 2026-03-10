@@ -89,11 +89,11 @@ role="navigation" aria-label="main navigation">
 <pre>
 void StartBruteForceThread()
 {
-  g_bruteForceThread = CreateThread(NULL, 
-    0, 
-    BruteForceThread, 
-    NULL, 
-    0, 
+  g_bruteForceThread = CreateThread(NULL,
+    0,
+    BruteForceThread,
+    NULL,
+    0,
     &amp;g_bruteForceThreadId);
 }
 </pre>
@@ -156,7 +156,8 @@ void StartBruteForceThread()
 <p>Naquele momento, meu lado letrado foi mais forte.</p>
 
 <pre>
--- &quot;Quero ser escritor, logo, vou fazer letras. Deve ser bem legal! Mas se não for bem legal, pelo menos tem um monte de mulher.&quot;
+-- &quot;Quero ser escritor, logo, vou fazer letras. Deve ser bem legal!
+Mas se não for bem legal, pelo menos tem um monte de mulher.&quot;
 </pre>
 <p>E comecei a estudar para o vestibular. Apenas um vestibular. Fuvest. Se não passasse ficaria a Deus dará. O que me importunava bastante àquela época da vida: depois de 13 anos de escola eu havia ficado um tanto condicionado a comparecer em sala de aula todos os dias de semana da minha vida.</p>
 
@@ -363,7 +364,7 @@ int UseFile()
   File config(&quot;config.txt&quot;);
   // using config.txt
   return 0; // config.m_file released
-} 
+}
 </pre>
 <p>Ignorei tratamento de erros e a dor de cabeça que é a discussão sobre inicializações dentro do construtor, matéria para um outro artigo. Fora os detalhes, o que temos é (1) uma classe que se preocupa em alocar os recursos que necessita e no seu fim desalocá-los, (2) uma função que usa um objeto dessa classe, alegremente apenas preocupada em usar e abusar do objeto. A demonstração da técnica reside no fato que a função não se preocupa em desalocar os recursos alocados pelo objeto config. Algo óbvio, desejável e esperado.</p>
 
@@ -382,7 +383,7 @@ int UseFileEx()
 {
   File config(&quot;config.txt&quot;);
   BlowUpFunction(); // exception thrown:
-                    // config.m_file is 
+                    // config.m_file is
                     // automagically released
   return 0;
 }
@@ -415,13 +416,13 @@ int UseFile2()
   config.Open(&quot;config.txt&quot;);
 
   BlowUpFunction(); // exception thrown:
-                    // the resource was 
+                    // the resource was
                     // NOT released
 
   config.Close(); // resource released
 
   return 0;
-} 
+}
 </pre>
 <p>Nesse caso o código de UseFile2 acaba deixando um recurso alocado por conta de uma exceção que ocorreu em uma função secundária chamada lá pelas tantas em um momento delicado demais para ocorrerem exceções. Note que o destrutor de File2 é chamado assim como o de File, só que este não libera os recursos do objeto. Ele não usa a técnica RAII (Resource Acquisition Is Initialization, ou como seria o título deste artigo em inglês).</p>
 
@@ -462,20 +463,20 @@ MIDL_INTERFACE(&quot;00000002-0000-0000-C000-000000000046&quot;)
 IMalloc : public IUnknown
 {
   public:
-  virtual void *STDMETHODCALLTYPE Alloc( 
+  virtual void *STDMETHODCALLTYPE Alloc(
     /* [in] */ SIZE_T cb) = 0;
 
-  virtual void *STDMETHODCALLTYPE Realloc( 
+  virtual void *STDMETHODCALLTYPE Realloc(
     /* [in] */ void *pv,
     /* [in] */ SIZE_T cb) = 0;
 
-  virtual void STDMETHODCALLTYPE Free( 
+  virtual void STDMETHODCALLTYPE Free(
     /* [in] */ void *pv) = 0;
 
-  virtual SIZE_T STDMETHODCALLTYPE GetSize( 
+  virtual SIZE_T STDMETHODCALLTYPE GetSize(
     /* [in] */ void *pv) = 0;
 
-  virtual int STDMETHODCALLTYPE DidAlloc( 
+  virtual int STDMETHODCALLTYPE DidAlloc(
     void *pv) = 0;
 
   virtual void STDMETHODCALLTYPE HeapMinimize(void) = 0;
@@ -488,12 +489,12 @@ IMalloc : public IUnknown
 <p>Nesse exemplo iremos obter o ponteiro através de um aplicativo de teste trivial, ignorando todas aquelas proteções antidebugging que podem estar presentes no momento da reversa, feitos por alguém que lê meu blog (quanta pretensão!):</p>
 
 <pre>
-/** @brief A stupid sample to 
+/** @brief A stupid sample to
   show WinDbg COM hooking! */
 #include &lt;windows.h&gt;
 #include &lt;objbase.h&gt;
 #include &lt;objidl.h&gt;
- 
+
 int main()
 {
   CoInitialize(NULL);
@@ -501,7 +502,7 @@ int main()
 
   if( CoGetMalloc(1, &amp;malloc) == 0 )
   {
-    if( void* pAlloc 
+    if( void* pAlloc
       = malloc-&gt;Alloc(0x1000) )
     {
       malloc-&gt;Free(pAlloc);
@@ -511,7 +512,7 @@ int main()
   }
 
   CoUninitialize();
-} 
+}
 </pre>
 <p>Vamos fazer de conta que é desnecessário dizer como se compila o fonte acima.</p>
 

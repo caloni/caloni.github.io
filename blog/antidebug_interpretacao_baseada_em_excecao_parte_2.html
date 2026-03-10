@@ -114,7 +114,6 @@ Func:
 
 <pre>
 jmp_buf stack_state;
-
 void Func()
 {
   longjmp(stack_state, 1);
@@ -133,8 +132,8 @@ void CallFunc()
 <p>Essa foi a técnica adicionada à solução do lançamento de exceções. E o código final ficou mais claro (além de rápido, por economizar o uso de uma thread para leitura dos comandos).</p>
 
 <pre>
-/** The only purpose of 
-  this function is to 
+/** The only purpose of
+  this function is to
   generate an exception. */
 DWORD LongJmp(jmp_buf* env)
 {
@@ -150,7 +149,7 @@ DWORD LongJmp(jmp_buf* env)
   return ERROR_SUCCESS;
 }
 
-/** And God said: 
+/** And God said:
   'int main!'
 */
 int main()
@@ -177,7 +176,7 @@ int main()
   }
 
   return (int) ret;
-} 
+}
 </pre>
 <p>À primeira vista parece um desperdício o if estar diretamente no código (lembre-se que vamos utilizar a mesma estrutura condicional em várias e várias partes do código. Para tornar mais claro seu uso, resumir a chamada protegida e permitir que a proteção seja desabilitada em debug, vamos criar uma macro:</p>
 
@@ -215,7 +214,7 @@ int main()
   }
 
   return (int) ret;
-} 
+}
 </pre>
 <p>Veja que como agora permitimos a seleção do anti-debug por chamada, fica mais fácil escolher quais os pontos a serem protegidos e quais não devem/podem por conta de perfomance ou outro detalhe obscuro que sempre existe na vida de um programador C++.</p>
 

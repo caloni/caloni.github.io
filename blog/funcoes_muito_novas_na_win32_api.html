@@ -72,11 +72,12 @@ void main(void)
 
   //GetComputerName(szDomainName, &amp;dwSize);
   GetComputerNameEx(CF, szDomainName, &amp;dwSize);
-} 
+}
 </pre>
 <p>Tirando o fato que o retorno void não é mais um protótipo padrão da função main e que a definição da enumeração COMPUTER_NAME_FORMAT dentro da função main é no mínimo suspeita, podemos testar a compilação e verificar que existe exatamente um erro grave neste fonte:</p>
 
 <pre>
+
 cl getcomputername.cpp
 getcomputername.cpp(26) : error C3861: 'GetComputerNameEx': identifier not found
 </pre>
@@ -143,13 +144,13 @@ GetComputerNameExW (
 void _tmain(void)
 {
   TCHAR buffer[256] = TEXT(&quot;&quot;);
-  TCHAR szDescription[8][32] = {TEXT(&quot;NetBIOS&quot;), 
-  TEXT(&quot;DNS hostname&quot;), 
-  TEXT(&quot;DNS domain&quot;), 
-  TEXT(&quot;DNS fully-qualified&quot;), 
-  TEXT(&quot;Physical NetBIOS&quot;), 
-  TEXT(&quot;Physical DNS hostname&quot;), 
-  TEXT(&quot;Physical DNS domain&quot;), 
+  TCHAR szDescription[8][32] = {TEXT(&quot;NetBIOS&quot;),
+  TEXT(&quot;DNS hostname&quot;),
+  TEXT(&quot;DNS domain&quot;),
+  TEXT(&quot;DNS fully-qualified&quot;),
+  TEXT(&quot;Physical NetBIOS&quot;),
+  TEXT(&quot;Physical DNS hostname&quot;),
+  TEXT(&quot;Physical DNS domain&quot;),
   TEXT(&quot;Physical DNS fully-qualified&quot;)};
   int cnf = 0;
   DWORD dwSize = sizeof(buffer);
@@ -167,7 +168,7 @@ void _tmain(void)
     dwSize = sizeof(buffer);
     ZeroMemory(buffer, dwSize);
   }
-} 
+}
 </pre>
 <p>Outra observação que poderia ter ajudado na hora de codificar seria dar uma olhada no que os caras escrevem na seção de advertências (remarks) da documentação:</p>
 

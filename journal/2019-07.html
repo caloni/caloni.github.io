@@ -261,7 +261,8 @@ role="navigation" aria-label="main navigation">
               &lt;li&gt;&lt;a href=&quot;#cat&quot;&gt;Categorias&lt;/a&gt;&lt;/li&gt;
               &lt;ul&gt;
                 {{ range $key, $value := .Site.Taxonomies.categories }}
-                   &lt;li&gt;&lt;a href=&quot;#{{ $key }}&quot;&gt;{{ $key | humanize }}({{ len $value }})&lt;/a&gt;&lt;/li&gt;
+                   &lt;li&gt;&lt;a href=&quot;#{{ $key }}&quot;&gt;{{ $key | humanize }}
+                   ({{ len $value }})&lt;/a&gt;&lt;/li&gt;
                 {{ end }}
               &lt;/ul&gt;
               &lt;li&gt;&lt;a href=&quot;#posts&quot;&gt;Data (ir para Conteúdo)&lt;/a&gt;&lt;/li&gt;
@@ -279,7 +280,8 @@ role="navigation" aria-label="main navigation">
             {{ $letters := split &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot; &quot;&quot; }}
             &lt;!-- range all pages sorted by their title --&gt;
             {{ range .Data.Pages.ByTitle }}
-              &lt;!-- get the first character of each title. Assumes that the title is never empty! --&gt;
+              &lt;!-- get the first character of each title.
+              Assumes that the title is never empty! --&gt;
               {{ $firstChar := substr .Title 0 1 | upper }}
               &lt;!-- in case $firstChar is a letter --&gt;
               {{ if $firstChar | in $letters }}
@@ -295,7 +297,8 @@ role="navigation" aria-label="main navigation">
               {{ end }}
             {{ end }}
             &lt;/ul&gt;
-            &lt;h2 id=&quot;cat&quot; style=&quot;page-break-before: always;&quot;&gt;Índice por Categoria&lt;/h2&gt;
+            &lt;h2 id=&quot;cat&quot; style=&quot;page-break-before: always;&quot;&gt;
+            Índice por Categoria&lt;/h2&gt;
             &lt;ul&gt;
             {{ range $taxonomyname, $taxonomy := .Site.Taxonomies }}
               {{ if eq &quot;categories&quot; $taxonomyname }}
@@ -312,7 +315,9 @@ role="navigation" aria-label="main navigation">
             &lt;/ul&gt;
             &lt;h2 id=&quot;posts&quot; style=&quot;page-break-before: always;&quot;&gt;Conteúdo&lt;/h2&gt;
             {{ range .Site.RegularPages }}
-              &lt;h3 style=&quot;page-break-before: always&quot; id=&quot;{{ .UniqueID }}&quot;&gt;{{ .Title }}&lt;/h3&gt; {{ dateFormat &quot;2006-01-02&quot; .Date }} {{ .Content }}
+              &lt;h3 style=&quot;page-break-before: always&quot; id=&quot;{{ .UniqueID }}&quot;&gt;
+              {{ .Title }}&lt;/h3&gt; {{ dateFormat &quot;2006-01-02&quot; .Date }}
+              {{ .Content }}
               {{ partial &quot;taglist.html&quot; . }}
             {{ end }}
             &lt;/div&gt;

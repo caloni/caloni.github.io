@@ -76,7 +76,7 @@ LONG WINAPI CrashHandler(_EXCEPTION_POINTERS* ExceptionInfo)
     {
       MINIDUMP_TYPE dumpType = MiniDumpNormal;
 
-      if( MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), 
+      if( MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(),
         hFile, MiniDumpNormal, &amp;minidumpInfo, NULL, NULL) )
       {
         ret = EXCEPTION_EXECUTE_HANDLER;

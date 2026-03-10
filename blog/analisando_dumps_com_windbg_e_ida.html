@@ -90,8 +90,6 @@ Use !analyze -v to get detailed debugging information.
 
 BugCheck C, {0, 0, 0, 0}
 
-*** ERROR: Module load completed but symbols could not be loaded for mydriver.sys
-
 Probably caused by : psseckbd.sys ( mydriver+199e )
 
 Followup: MachineOwner
@@ -124,7 +122,6 @@ LAST_CONTROL_TRANSFER:  from 804fa83f to 804f9c12
 STACK_TEXT:
 bad17bc0 804fa83f 0000000c 00000004 883a8eac nt!KeBugCheck+0x14
 bad17bfc bac9199e 00000004 e32e8928 00000000 nt!KeWaitForMultipleObjects+0x37
-WARNING: Stack unwind information not available. Following frames may be wrong.
 bad17c50 bac914d7 88d851e8 00000000 883a8030 mydriver+0x199e
 bad17c7c bac94058 899c0f38 8058006a 899c0f38 mydriver+0x14d7
 bad17c84 8058006a 899c0f38 8836b000 00000000 mydriver+0x4058
@@ -200,7 +197,7 @@ mydriver+0x199e:
 .text:00011996                 push    ebx
 .text:00011997                 push    edi
 
-.text:00011998 call ds:KeWaitForMultipleObjects.text:0001199E 
+.text:00011998 call ds:KeWaitForMultipleObjects.text:0001199E
 
 mov     eax, [esp+30h+var_14]
 .text:000119A2                 mov     edi, ds:ExFreePoolWithTag
@@ -226,8 +223,8 @@ while( maskAux )
 
 //...
 KeWaitForMultipleObjects(count,
-  waitObjects, 
-  WaitAll, 
+  waitObjects,
+  WaitAll,
   UserRequest,
   KernelMode,
   TRUE,
@@ -237,7 +234,7 @@ KeWaitForMultipleObjects(count,
 ExFreePool(...);
 ExFreePool(...);
 ExFreePool(...);
-//... 
+//...
 </pre>
 <p>Ora, ora. O número de processadores influencia no número de objetos que estaremos esperando na função de espera. Esse seria um bom motivo para gerar um MAXIMUMWAITOBJECTSEXCEEDED em máquinas onde existe mais de 3 processadores ativos, não? Talvez seja uma boa hora para atualizar esse código e torná-lo compatível com os novos Quad Core.</p>
 
