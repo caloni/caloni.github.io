@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="vtable" title="VTable"/></span>
+<section id="section_vtable">
+<p class="title">VTable</p>
+<span class="title-heading">Caloni, 2011-03-01 computer blog</span>
+
+<p>Acho que na breve história desse blogue nunca contei a história do vtable. No máximo fizemos um <a href="hook_de_com_no_windbg.html">hookzinho nos métodos de um componente COM</a>. Mas só.</p>
+
+<p>Não encontro uma analogia simples, assim, de cabeça. Então vou contar no cru, mesmo. Talvez seja até mais divertido.</p>
+
+<p>A vtable foi um mecanismo criado para implementar o polimorfismo em C++ quando falamos de ponteiros para classes base cujos métodos virtuais foram sobrescritos por uma classe derivada.</p>
+
+<p>A coisa fica mais simples quando explicamos que em C++ você só paga pelo que usa. Se você declarar uma classe que não tenha nenhum método virtual, os objetos dessa classe não precisarão de uma vtable. No entanto, você não conseguirá sobrescrever um método dessa classe através de uma derivada:</p>
+
+<pre>
+#include &lt;iostream&gt;
+
+class C
+{
+public:
+        void method()
+    {
+      std::cout &lt;&lt; &quot;C::method\n&quot;;
+    }
+};
+
+class D : public C
+{
+public:
+        void method()
+    {
+      std::cout &lt;&lt; &quot;D::method\n&quot;;
+    }
+};
+
+void func(C* c)
+{
+        c-&gt;method();
+}
+
+int main()
+{
+        D d;
+        func(&amp;d); // passa endereço de C &quot;dentro de D&quot;
+}
+
+--- 
+
+Saída
+=====
+
+C::method
+</pre>
+<p>No exemplo acima, a chamada feita em func irá chamar o método da classe C, mesmo que a classe D tenha sobrescrito esse método. O programador semi-experiente deve pensar "lógico, ela não é virtual!", e está certo, assim como qualquer pessoa que decora essas formulazinhas de vestibular.</p>
+
+<p>Para criarmos polimorfismo de verdade, precisamos declarar o método em C como virtual:</p>
+
+<pre>
+class C
+{
+public:
+        virtual void method();
+};
+</pre>
+<p>Agora sim, a chamada em func irá ser para D::method.</p>
+
+<p>Pergunte para o programador semi-experiente em C++ por que as coisas são assim e provavelmente ele irá falar algo sobre vtable, mesmo que não saiba exatamente como ela funciona.</p>
+
+<p>A vtable é uma tabela que guarda o endereço dos métodos virtuais de uma classe. Se uma classe derivada sobrescrever um ou mais métodos de sua classe base, ela terá uma outra vtable com os endereços dos métodos "corrigidos".</p>
+
+<img src="/blog/img/vtable_vtable11.png"/>
+
+<p>Dessa forma, algo um pouco diferente ocorre na chamada c-&gt;method() quando estamos lidando com classes polimórficas: o início de um objeto dessa classe terá um ponteiro para a vtable de sua classe. Quando um método virtual é chamado, em vez do compilador gerar uma chamada estática para o endereço do método da classe cujo tipo estamos usando, ele irá redirecionar essa chamada para uma posição na vtable para onde esse objeto aponta. No caso de um objeto do tipo D, a entrada para method em sua vtable apontará não para C::method, mas para D::method, uma função com a mesma assinatura contida na classe base C e que, portanto, a sobrescreve.</p>
+
+<p>Façamos um pequeno teste para comprovar o que falamos. Vamos escancarar a chamada feita a partir de uma instância de D e a partir de uma instância de C. Nada que um WinDbg não resolva de braços cruzados:</p>
+
+<pre>
+int main()
+{
+  D d;
+  C c;
+
+  func(&amp;d);
+  func(&amp;c);
+}
+cl /Zi vtable3.cpp
+windbg vtable3.exe
+</pre>
+<img src="/blog/img/vtable_vtable2.png"/>
+
+</section>
+
+<span style="float: left;">
+ <a href="base64.html">[base64]</a>
+ <a href="cisne_negro.html">[cisne_negro]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

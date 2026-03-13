@@ -105,7 +105,7 @@ FARPROC GetProcAddress(HMODULE hModule, LPCSTR lpProcName);
 
 <p>Essa é uma maneira rústica, porém eficaz e rápida de obter a lista de execução da API utilizada por um programa (2).</p>
 
-<p>(1) Uma variação do método GetProcAddress é a técnica de delay load usado pelo Visual C++. Porém, como o Dependency Walker nos mostra também as DLLs que estão linkadas usando essa técnica se torna dispensável um tratamento ad hoc.</p>
+<p>(1) Uma variação do método GetProcAddress é a técnica de delay load usado pelo Visual C++. Porém, como o Dependency Walker (2026-03-13 ou o dumpbin do Visual Studio) nos mostra também as DLLs que estão linkadas usando essa técnica se torna dispensável um tratamento ad hoc.</p>
 
 <p>(2) Essa técnica nem sempre funciona com todas as chamadas API, pois o aplicativo ainda pode utilizar outras maneiras de obter o endereço de uma função e chamá-la. A solução definitiva seria escrever diretamente um assembly esperto no começo da função, o que pode gerar mais problemas que soluções. Do jeito que está, conseguimos resolver 90% dos nossos problemas com análise de chamadas API. O resto nós podemos resolver em futuros artigos.</p>
 

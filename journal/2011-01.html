@@ -53,15 +53,16 @@ role="navigation" aria-label="main navigation">
 <span id="dependencia_pedindo_carona" title="Dependência pedindo carona"/></span>
 <section id="section_dependencia_pedindo_carona">
 <p class="title"><a href="2011-01.html#dependencia_pedindo_carona">#</a> Dependência pedindo carona</p>
-<span class="title-heading">Caloni, 2011-01-04 <a href="2010-11.html#patch_de_emergencia_2">&lt;</a><a href="computer.html">computer</a><a href="2011-01.html#esse_ponteiro_vai_ate_onde">&gt;</a><a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_dependencia_pedindo_carona')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2011-01-04 <a href="2010-12.html#trabalhando_em_multiplos_ambientes">&lt;</a><a href="computer.html">computer</a><a href="2011-01.html#esse_ponteiro_vai_ate_onde">&gt;</a> <a href="2010-12.html#elsa_e_fred">&lt;</a><a href="blog.html">blog</a><a href="2011-01.html#reuniao_de_programadores_c++_ha_5_anos">&gt;</a><a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_dependencia_pedindo_carona')"><sup>[copy]</sup></a></span>
 
+<blockquote>2026-03-13 Este artigo só se aplica a versões do Visual Studio daquela época. Hoje o compilador detecta "código morto" e o retira seletivamente (mesmo em Debug). Dessa forma, nenhum dos testes feitos aqui, caro leitor, serão reproduzidos na versão mais nova do linker. A não ser que você force um comportamento paleozoico :).</blockquote>
 <p>Mesmo as vezes que você não queira, algumas dependências pedem carona e o compilador deixa entrar. Daí mesmo que você não use uma função API, ela acaba te atazanando a vida.</p>
 
 <p>Foi o caso da ToolHelp32 no Windows NT 4.</p>
 
 <h4>Como as coisas funcionam</h4>
 
-<p>Quando compilamos, cada CPP vira uma coleção de funções que serão usadas, mais tarde, pelo linker, para juntar a bagunça. Para mais detalhes dessa fascinante história, recomendo o fantástico artigo sobre <a href="http://www.caloni.com.br/os-diferentes-erros-na-linguagem-c">Os diferentes erros na linguagem C</a>, seção Linkedição.</p>
+<p>Quando compilamos, cada CPP vira uma coleção de funções que serão usadas, mais tarde, pelo linker, para juntar a bagunça. Para mais detalhes dessa fascinante história, recomendo o fantástico artigo sobre <a href="2008-02.html#os_diferentes_erros_na_linguagem_c">Os diferentes erros na linguagem C</a>, seção Linkedição.</p>
 
 <p>Para as dependências localizadas fora do executável final, por exemplo, as DLLs do sistema, o linker cria uma entrada no formato padrão de executável que adiciona essa dependência extra que será resolvida na hora do programa rodar, quando o loader do sistema operacional terá que fazer um linker on-the-fly, catando todas as DLLs e funções necessárias para colocar o bichinho no ar.</p>
 
@@ -73,12 +74,23 @@ role="navigation" aria-label="main navigation">
 
 <p>Um recurso muito útil para ver essas funções é o Dependency Walker, meu amigo de infância:</p>
 
+<blockquote>Update 2026-03-13: a última versão disponível é de 2006, então talvez não seja uma boa ideia usá-lo agora; prefira o dumpbin das ferramentas do Visual Studio.</blockquote>
 <img src="/journal/img/dependencia_pedindo_carona_depends_process32_not_found2.png"/>
 
 <blockquote>"Mas, Caloni, eu nem uso essa função! Como ela pode ser necessária?"</blockquote>
 <p>Pois é. As coisas nem sempre acabam sendo como o esperado. Se você possuir uma LIB, por exemplo, e nela existirem duas funções, como abaixo, e você se limitar a usar em seu programa apenas a primeira, todas as dependências da segunda também irão parar no executável final.</p>
 
 <pre>
+// LibMod.h
+#pragma once
+int UsingOldApis();
+void UsingNewApis();
+
+---
+
+// LibMod.cpp
+// avoid error C4996: 'GetVersion': was declared deprecated
+#define FKG_FORCED_USAGE
 #include &quot;LibMod.h&quot;
 #include &lt;windows.h&gt;
 #include &lt;Tlhelp32.h&gt;
@@ -115,6 +127,9 @@ void UsingNewApis()
     }
 }
 
+---
+
+// ConsoleApplication6.cpp
 #include &quot;LibMod.h&quot;
 #include &lt;stdio.h&gt;
 #include &lt;stdlib.h&gt;
@@ -137,6 +152,9 @@ int main()
 <p>Sempre existe. Nesse caso, migrarmos as funções moderninhas para um segundo CPP, recompilarmos a LIB e a dependência milagrosamente desaparecerá!</p>
 
 <pre>
+// LibMod.cpp
+// avoid error C4996: 'GetVersion': was declared deprecated
+#define FKG_FORCED_USAGE
 #include &quot;LibMod.h&quot;
 #include &lt;windows.h&gt;
 #include &lt;Tlhelp32.h&gt;
@@ -149,8 +167,9 @@ int UsingOldApis()
     return int( (DWORD)(LOBYTE(LOWORD(ver))) );
 }
 
+---
 
-
+// LibMod2.cpp
 #include &quot;LibMod.h&quot;
 #include &lt;windows.h&gt;
 #include &lt;Tlhelp32.h&gt;
@@ -190,7 +209,7 @@ void UsingNewApis()
 <span id="reuniao_de_programadores_c++_ha_5_anos" title="Reunião de programadores C++ (há 5 anos)"/></span>
 <section id="section_reuniao_de_programadores_c++_ha_5_anos">
 <p class="title"><a href="2011-01.html#reuniao_de_programadores_c++_ha_5_anos">#</a> Reunião de programadores C++ (há 5 anos)</p>
-<span class="title-heading">Caloni, 2011-01-12 <a href="2010-12.html#pos_ii_seminario_portabilidade_e_performance">&lt;</a><a href="ccppbr.html">ccppbr</a><a href="2011-09.html#oitavo_encontro_do_grupo_cc++_brasil">&gt;</a><a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_reuniao_de_programadores_c++_ha_5_anos')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2011-01-12 <a href="2010-12.html#pos_ii_seminario_portabilidade_e_performance">&lt;</a><a href="ccppbr.html">ccppbr</a><a href="2011-09.html#oitavo_encontro_do_grupo_cc++_brasil">&gt;</a> <a href="2011-01.html#dependencia_pedindo_carona">&lt;</a><a href="blog.html">blog</a><a href="2011-01.html#esse_ponteiro_vai_ate_onde">&gt;</a><a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_reuniao_de_programadores_c++_ha_5_anos')"><sup>[copy]</sup></a></span>
 
 <p>Começo de ano, hora de fazer backup completo. Durante minha cópia anual do gmail acabei encontrando meu post-chamado para nossa primeira reunião C++. Como parte da sessão nostalgia, convido-os, novos e velhos colegas, a continuar a brincadeira de organizar uma reunião informal de pessoas que gostam tanto de programar que criam seus próprios ponteiros.</p>
 
@@ -212,11 +231,9 @@ void UsingNewApis()
 
 <li>Isso é uma boa desculpa para se encontrar e tomar um chopp || guaraná || cachaça.</li></ul>
 
-<p>Gostaríamos que as pessoas da comunidade C++ dessem sugestões sobre essa idéia. Estamos pensando em agendar o primeiro encontro para dia 17/12/2005 (sábado) durante a tarde, em um Outback (comida australiana, Shopping Center Norte ou Eldorado, tem infra para crianças e a comida é muito boa). Como pauta do primeiro encontro eu sugiro uma apresentação dos participantes (o que será desnecessário se só eu e o Strauss aparecermos) e uma discussão sobre o presente e o futuro do mercado de trabalho C++.</p>
+<p>Gostaríamos que as pessoas da comunidade C++ dessem sugestões sobre essa idéia. Estamos pensando em agendar o primeiro encontro para o dia 17/12/2005 (sábado) durante a tarde, em um Outback (comida australiana, Shopping Center Norte ou Eldorado, tem infra para crianças e a comida é muito boa). Como pauta do primeiro encontro eu sugiro uma apresentação dos participantes (o que será desnecessário se só eu e o Strauss aparecermos) e uma discussão sobre o presente e o futuro do mercado de trabalho C++.</p>
 
 <p>Coloquem as sugestões nos comentários e quando a gente fechar alguma coisa eu escrevo um novo post com o que definimos. Até lá.</p>
-
-<p>PS: Qualquer semelhança deste post com o conteúdo de um conhecido blog brasileiro sobre programação não é mera coincidência.</p>
 
 </section><hr/>
 
@@ -224,7 +241,7 @@ void UsingNewApis()
 <span id="72_horas" title="72 horas"/></span>
 <section id="section_72_horas">
 <p class="title"><a href="2011-01.html#72_horas">#</a> 72 horas</p>
-<span class="title-heading">Caloni, 2011-01-14 <a href="2010-12.html#de_pernas_pro_ar">&lt;</a><a href="cinema.html">cinema</a><a href="2011-01.html#incontrolavel">&gt;</a> <a href="2010-12.html#de_pernas_pro_ar">&lt;</a><a href="movies.html">movies</a><a href="2011-01.html#incontrolavel">&gt;</a><a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_72_horas')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2011-01-14 <a href="2010-12.html#de_pernas_pro_ar">&lt;</a><a href="cinema.html">cinema</a><a href="2011-01.html#incontrolavel">&gt;</a> <a href="2010-12.html#de_pernas_pro_ar">&lt;</a><a href="movies.html">movies</a><a href="2011-01.html#incontrolavel">&gt;</a> <a href="2010-12.html#de_pernas_pro_ar">&lt;</a><a href="archive.html">archive</a><a href="2011-01.html#garotas_do_calendario">&gt;</a><a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_72_horas')"><sup>[copy]</sup></a></span>
 
 <p>Um drama contado em um ritmo adequado, que consegue avançar para um filme de ação em seu terceiro ato de forma surpreendentemente competente, visto que o filme consegue uma identificação com o drama de seus personagens, mesmo que perifericamente, e extrai disso uma emoção maior da perseguição final, pois não estamos assistindo mais um filme de perseguição qualquer.</p>
 
@@ -246,7 +263,7 @@ void UsingNewApis()
 <span id="esse_ponteiro_vai_ate_onde" title="Esse ponteiro vai até onde?"/></span>
 <section id="section_esse_ponteiro_vai_ate_onde">
 <p class="title"><a href="2011-01.html#esse_ponteiro_vai_ate_onde">#</a> Esse ponteiro vai até onde?</p>
-<span class="title-heading">Caloni, 2011-01-17 <a href="2011-01.html#dependencia_pedindo_carona">&lt;</a><a href="computer.html">computer</a><a href="2011-03.html#vtable">&gt;</a><a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_esse_ponteiro_vai_ate_onde')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2011-01-17 <a href="2011-01.html#dependencia_pedindo_carona">&lt;</a><a href="computer.html">computer</a><a href="2011-02.html#mudanca">&gt;</a> <a href="2011-01.html#reuniao_de_programadores_c++_ha_5_anos">&lt;</a><a href="blog.html">blog</a><a href="2011-01.html#atividades_extracurriculares">&gt;</a><a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_esse_ponteiro_vai_ate_onde')"><sup>[copy]</sup></a></span>
 
 <p>Brincando com obtenções e conversões de SIDs, tive uma pequena dificuldade de usar a função ConvertStringSidToSid, de Sddl.h. Seu objetivo é receber uma string-SID no formato usado pela ferramenta PsGetSid e retornar uma sequência de bytes de tamanho arbitrário, que é o SID como o sistema o enxerga. Como ela retorna apenas o ponteiro final, do tipo PSID, o que parece fácil pode se tornar tricky se quisermos copiar o SID binário para algum buffer na pilha, já que não sabemos o número de bytes no buffer de origem. Tudo que sabemos é que, após o uso, devemos desalocar essa memória retornada pela API com outra API: LocalFree.</p>
 
@@ -264,7 +281,7 @@ void UsingNewApis()
 <span id="atividades_extracurriculares" title="Atividades extracurriculares"/></span>
 <section id="section_atividades_extracurriculares">
 <p class="title"><a href="2011-01.html#atividades_extracurriculares">#</a> Atividades extracurriculares</p>
-<span class="title-heading">Caloni, 2011-01-18<a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_atividades_extracurriculares')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2011-01-18 <a href="2009-06.html#programadores_de_verdade_nao_usam_java">&lt;</a><a href="essays.html">essays</a><a href="2018-07.html#argentina_vs_franca_e_o_fim_da_geracao_dos_autistas">&gt;</a> <a href="2011-01.html#esse_ponteiro_vai_ate_onde">&lt;</a><a href="blog.html">blog</a><a href="2011-01.html#incontrolavel">&gt;</a><a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_atividades_extracurriculares')"><sup>[copy]</sup></a></span>
 
 <p>Essa é uma resposta a um simpático e-mail de um leitor, o Fabio, me perguntando sobre a tal da lógica (de programação?) e das atividades que um programador pode ter quando está longe do micro para não ficar com a "mente vadiando".</p>
 
@@ -284,19 +301,19 @@ void UsingNewApis()
 
 <p>Primeiro, de que lógica estamos falando? Existem diversas lógicas e existe a intuição, lado importante e muitas vezes renegado, mas presente no cinto de utilidades. É só saber usar. Seja um, seja outro.</p>
 
-<p>Segundo, o cérebro pode cair na vadiagem. Aliás, ele deve. Sem vadiagem, nunca conseguimos processar aquelas threads que ficam rodando em idle, no inconsciente, e que podem resolver uma série de questões que ficam ensebando em nossos conturbados egos. É como o copo cheio de água em Karate Kid (ou em "2012").</p>
+<p>Segundo, o cérebro pode cair na vadiagem. Aliás, ele deve. Sem vadiagem, nunca conseguimos processar aquelas threads que ficam rodando em idle, no inconsciente, e que podem resolver uma série de questões que ficam ensebando em nossos conturbados egos. É como o copo cheio de água em <a href="2010-08.html#karate_kid_2010">Karate Kid de 2010</a>.</p>
 
 <p>O básico mesmo é ler livros. Tão básico que deve ser a atividade principal quando não estamos com nenhum eletrônico bonitinho na mão. Aliás, até quando estamos, com o auto-controle, conseguimos ler um ebook de vez em quando.</p>
 
-<p>Independente do método empregado, nunca visualize seus esforços com ceticismo, e muito menos com o ceticismo dos outros. Se estiver funcionando, continue a fazê-lo. Não vê resultados? Mude o método. Senão cai na velha frase de Eistein sobre o sujeito que espera resultados diferentes fazendo sempre a mesma coisa: loucura.</p>
+<p>Independente do método empregado, nunca visualize seus esforços com ceticismo, e muito menos com o ceticismo dos outros. Se estiver funcionando, continue a fazê-lo. Não vê resultados? Mude o método. Senão cai na velha frase de Einsten sobre o sujeito que espera resultados diferentes fazendo sempre a mesma coisa: loucura.</p>
 
-<p>O que eu adicionaria na lista?</p>
+<p>O que eu adicionaria na lista? Séries de investigação criminal e médica:</p>
 
-<ul><li>Assistir CSI. Pra entender o uso prático dos métodos indutivo e dedutivo de raciocínio; mais indutivo.</li>
+<ul><li>CSI pra entender o uso prático dos métodos indutivo e dedutivo de raciocínio; mais indutivo.</li>
 
-<li>Assistir House. Nunca é demais se imaginar como o médico-louco que cura todas as doenças esquisitas; doença aqui é bug.</li>
+<li>House porque nunca é demais se imaginar como o médico-louco que cura todas as doenças esquisitas; doença aqui é bug.</li>
 
-<li>Assistir Dexter. Veja como ele faz o seu trabalho seguindo sempre o mesmo método e deixando o ambiente limpinho, sem nenhuma pista.</li></ul>
+<li>Dexter para ver como ele faz o seu trabalho seguindo sempre o mesmo método e deixando o ambiente limpinho, sem nenhuma pista.</li></ul>
 
 <p>Fora isso, curta o que está fazendo. Isso é o primordial. Arrebenta com qualquer dúvida que tiver sobre estar no caminho certo.</p>
 
@@ -306,7 +323,7 @@ void UsingNewApis()
 <span id="incontrolavel" title="Incontrolável (Tony Scott, 2010)"/></span>
 <section id="section_incontrolavel">
 <p class="title"><a href="2011-01.html#incontrolavel">#</a> Incontrolável (Tony Scott, 2010)</p>
-<span class="title-heading">Caloni, 2011-01-19 <a href="2011-01.html#72_horas">&lt;</a><a href="cinema.html">cinema</a><a href="2011-01.html#garotas_do_calendario">&gt;</a> <a href="2011-01.html#72_horas">&lt;</a><a href="movies.html">movies</a><a href="2011-01.html#garotas_do_calendario">&gt;</a><a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_incontrolavel')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2011-01-19 <a href="2011-01.html#72_horas">&lt;</a><a href="cinema.html">cinema</a><a href="2011-01.html#garotas_do_calendario">&gt;</a> <a href="2011-01.html#72_horas">&lt;</a><a href="movies.html">movies</a><a href="2011-01.html#garotas_do_calendario">&gt;</a> <a href="2011-01.html#atividades_extracurriculares">&lt;</a><a href="blog.html">blog</a><a href="2011-01.html#perfume_a_historia_de_um_assassino">&gt;</a><a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_incontrolavel')"><sup>[copy]</sup></a></span>
 
 <p>Ontem fui ver o novo filme de ação de Denzel Washington. É sobre um trem desgovernado e os esforços para segurar o bicho antes que ele destrua alguma coisa. Confesso que fiquei impressionado com a atuação acima de Denzel no papel de Frank, um condutor de trens de carga que trabalhou a vida toda nisso. Seu sotaque e seus gestos condizem de alguma forma com o personagem, enquanto seu companheiro de viagem Will (Chris Pine) fica com seus dramazinhos de família tão bobinhos que passam despercebidos.</p>
 
@@ -314,7 +331,7 @@ void UsingNewApis()
 
 <p>Já o que realmente faz o filme funcionar são as cenas de ação do último ato. Vemos cortes rápidos, mas sincronizados o suficiente para que fiquemos tensos na cadeira a cada movimento novo dos personagens, e, diferente de Transformers 2, aqui conseguimos enxergá-los.</p>
 
-<p>Uma experiência interessante, se você não se importar em esquecer do enredo assim que sair da cadeira do cinema.</p>
+<p>Uma experiência interessante, se você não se importar em esquecer do enredo assim que se levantar da cadeira do cinema.</p>
 
 </section><hr/>
 
@@ -322,7 +339,7 @@ void UsingNewApis()
 <span id="garotas_do_calendario" title="Garotas do Calendário (Nigel Cole, 2003)"/></span>
 <section id="section_garotas_do_calendario">
 <p class="title"><a href="2011-01.html#garotas_do_calendario">#</a> Garotas do Calendário (Nigel Cole, 2003)</p>
-<span class="title-heading">Caloni, 2011-01-27 <a href="2011-01.html#incontrolavel">&lt;</a><a href="cinema.html">cinema</a><a href="2011-01.html#lixo_extraordinario">&gt;</a> <a href="2011-01.html#incontrolavel">&lt;</a><a href="movies.html">movies</a><a href="2011-01.html#lixo_extraordinario">&gt;</a><a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_garotas_do_calendario')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2011-01-27 <a href="2011-01.html#incontrolavel">&lt;</a><a href="cinema.html">cinema</a><a href="2011-01.html#lixo_extraordinario">&gt;</a> <a href="2011-01.html#incontrolavel">&lt;</a><a href="movies.html">movies</a><a href="2011-01.html#lixo_extraordinario">&gt;</a> <a href="2011-01.html#72_horas">&lt;</a><a href="archive.html">archive</a><a href="2011-01.html#lixo_extraordinario">&gt;</a><a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_garotas_do_calendario')"><sup>[copy]</sup></a></span>
 
 <p>Chegando em casa, a Net Movies pegou o denso Munique e deixou no lugar Garotas do Calendário. Triste troca. Uma história que tem como centro um vilarejo na inglaterra em que senhoras de meia-idade posam nus artísticos para um calendário a fim de angariar fundos de caridade mereceria um pano de fundo mais bem tratado. No entanto, o que vemos é uma sucessão de pequenos conflitos que são logo resolvidos e nunca ocupam muito espaço na tela, impossibilitando até mesmo a caracterização das personagens. Onde fica até difícil reconhecer um pouco de ação (como a briga no Conselho das Mulheres que acaba sendo resolvido de forma tão insossa quanto começara) também é difícil reconhecer seu desenlace e a consequente satisfação. Infelizmente, o filme parece realmente ter um ano de duração.</p>
 
@@ -332,7 +349,7 @@ void UsingNewApis()
 <span id="enrolados" title="Enrolados"/></span>
 <section id="section_enrolados">
 <p class="title"><a href="2011-01.html#enrolados">#</a> Enrolados</p>
-<span class="title-heading">Caloni, 2011-01-30 <a href="2011-01.html#inverno_da_alma">&lt;</a><a href="cinema.html">cinema</a><a href="2011-01.html#perfume_a_historia_de_um_assassino">&gt;</a> <a href="2011-01.html#inverno_da_alma">&lt;</a><a href="movies.html">movies</a><a href="2011-01.html#perfume_a_historia_de_um_assassino">&gt;</a><a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_enrolados')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2011-01-30 <a href="2011-01.html#inverno_da_alma">&lt;</a><a href="cinema.html">cinema</a><a href="2011-01.html#perfume_a_historia_de_um_assassino">&gt;</a> <a href="2011-01.html#inverno_da_alma">&lt;</a><a href="movies.html">movies</a><a href="2011-01.html#perfume_a_historia_de_um_assassino">&gt;</a> <a href="2011-01.html#inverno_da_alma">&lt;</a><a href="archive.html">archive</a><a href="2011-02.html#caca_as_bruxas">&gt;</a><a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_enrolados')"><sup>[copy]</sup></a></span>
 
 <p>A história clássica de Rapunzel é recriada com o novo senso se humor Disney/Pixar, em que o príncipe é um ladrão procurado, e a frágil princesa não é tão frágil assim. Temos aí os mesmos elementos que tornaram a Disney tão amada pelas crianças e adultos: números de música inspirados (com destaque para o bar do patinho) e uma história sem muitos conflitos e um final feliz.</p>
 
@@ -348,7 +365,7 @@ void UsingNewApis()
 <span id="inverno_da_alma" title="Inverno da Alma"/></span>
 <section id="section_inverno_da_alma">
 <p class="title"><a href="2011-01.html#inverno_da_alma">#</a> Inverno da Alma</p>
-<span class="title-heading">Caloni, 2011-01-30 <a href="2011-01.html#lixo_extraordinario">&lt;</a><a href="cinema.html">cinema</a><a href="2011-01.html#enrolados">&gt;</a> <a href="2011-01.html#lixo_extraordinario">&lt;</a><a href="movies.html">movies</a><a href="2011-01.html#enrolados">&gt;</a><a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_inverno_da_alma')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2011-01-30 <a href="2011-01.html#lixo_extraordinario">&lt;</a><a href="cinema.html">cinema</a><a href="2011-01.html#enrolados">&gt;</a> <a href="2011-01.html#lixo_extraordinario">&lt;</a><a href="movies.html">movies</a><a href="2011-01.html#enrolados">&gt;</a> <a href="2011-01.html#lixo_extraordinario">&lt;</a><a href="archive.html">archive</a><a href="2011-01.html#enrolados">&gt;</a><a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_inverno_da_alma')"><sup>[copy]</sup></a></span>
 
 <p>O filme todo gira em torno da história da filha mais velha de uma família problemática que ainda por cima precisa encontrar o pai, pois este afiançou a casa onde moram e, se não comparecer ao tribunal no dia estabelecido, eles serão despejados.</p>
 
@@ -364,7 +381,7 @@ void UsingNewApis()
 <span id="lixo_extraordinario" title="Lixo Extraordinário (Lucy Walker, Karen Harley, João Jardim, 2010)"/></span>
 <section id="section_lixo_extraordinario">
 <p class="title"><a href="2011-01.html#lixo_extraordinario">#</a> Lixo Extraordinário (Lucy Walker, Karen Harley, João Jardim, 2010)</p>
-<span class="title-heading">Caloni, 2011-01-30 <a href="2011-01.html#garotas_do_calendario">&lt;</a><a href="cinema.html">cinema</a><a href="2011-01.html#inverno_da_alma">&gt;</a> <a href="2011-01.html#garotas_do_calendario">&lt;</a><a href="movies.html">movies</a><a href="2011-01.html#inverno_da_alma">&gt;</a><a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_lixo_extraordinario')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2011-01-30 <a href="2011-01.html#garotas_do_calendario">&lt;</a><a href="cinema.html">cinema</a><a href="2011-01.html#inverno_da_alma">&gt;</a> <a href="2011-01.html#garotas_do_calendario">&lt;</a><a href="movies.html">movies</a><a href="2011-01.html#inverno_da_alma">&gt;</a> <a href="2011-01.html#garotas_do_calendario">&lt;</a><a href="archive.html">archive</a><a href="2011-01.html#inverno_da_alma">&gt;</a><a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_lixo_extraordinario')"><sup>[copy]</sup></a></span>
 
 <p>O início e no programa do Jô possui um sentido maior por causa da mensagem de que, no final, o lixo de todas as pessoas que assistem a televisão vai parar no mesmo lugar?</p>
 
@@ -388,7 +405,7 @@ void UsingNewApis()
 <span id="perfume_a_historia_de_um_assassino" title="Perfume: A História de um Assassino"/></span>
 <section id="section_perfume_a_historia_de_um_assassino">
 <p class="title"><a href="2011-01.html#perfume_a_historia_de_um_assassino">#</a> Perfume: A História de um Assassino</p>
-<span class="title-heading">Caloni, 2011-01-31 <a href="2011-01.html#enrolados">&lt;</a><a href="cinema.html">cinema</a><a href="2011-02.html#caca_as_bruxas">&gt;</a> <a href="2011-01.html#enrolados">&lt;</a><a href="movies.html">movies</a><a href="2011-02.html#caca_as_bruxas">&gt;</a><a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_perfume_a_historia_de_um_assassino')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2011-01-31 <a href="2011-01.html#enrolados">&lt;</a><a href="cinema.html">cinema</a><a href="2011-02.html#caca_as_bruxas">&gt;</a> <a href="2011-01.html#enrolados">&lt;</a><a href="movies.html">movies</a><a href="2011-02.html#caca_as_bruxas">&gt;</a> <a href="2011-01.html#incontrolavel">&lt;</a><a href="blog.html">blog</a><a href="2011-02.html#mudanca">&gt;</a><a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_perfume_a_historia_de_um_assassino')"><sup>[copy]</sup></a></span>
 
 <p>Jean-Baptiste Grenouille é um personagem atípico. Abandonado pela mãe logo após o parto, sua maior (única?) destreza são suas capacidades olfativas: capaz de sentir o cheiro até mesmo de elementos normalmente inodoros como vidro e cobre, e isso nos submete imediatamente ao conceito de fábula, ele segue seu destino tendo como única obsessão na vida criar o perfume perfeito.</p>
 

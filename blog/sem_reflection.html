@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="sem_reflection" title="Sem reflection"/></span>
+<section id="section_sem_reflection">
+<p class="title">Sem reflection</p>
+<span class="title-heading">Caloni, 2011-05-18 computer ccpp blog</span>
+
+<p>Em C++ não temos (ainda) a possibilidade de listarmos, por exemplo, a lista de métodos de um determinado tipo, a fim de chamá-lo pelo nome em tempo de execução. Algo assim:</p>
+
+<pre>
+class MyClass
+{
+public:
+  void Method1();
+  void Method2();
+  void Method3();
+};
+
+int main()
+{
+  MyClass c;
+  if( auto m = typeid(c). methods. getaddresof( &quot;Method1&quot; ) )
+  {
+    m();
+  }
+}
+
+// Update 2026-03-13
+// Porém, a proposta do C++ 26 deixaria as coisas
+// um pouco mais apimentadas e confusas. Segue pseudocódigo
+// baseado na proposta P2996.
+template &lt;typename T&gt;
+auto criar_mapa_de_metodos() {
+  std::unordered_map&lt;std::string, std::function&lt;void(T&amp;)&gt;&gt; mapa;
+  
+  // O 'template for' itera sobre os membros da classe em tempo de compilação
+  template for (constexpr auto m : std::meta::members_of(^T)) {
+    if (std::meta::is_function(m)) {
+      mapa[std::meta::name_of(m)] = [](T&amp; obj) { 
+        // [: m :] &quot;desenrola&quot; o metadado de volta para o código real
+        obj.[: m :](); 
+      };
+    }
+  }
+  return mapa;
+}
+
+Agora voltando para o passado.
+</pre>
+<p>OK, foi apenas um exemplo tosco de como seria um reflection em C++.</p>
+
+<p>Porém, existem algumas maneiras de contornar esse problema. A solução, é claro, depende de qual problema você está tentando resolver.</p>
+
+<p>Vamos supor, por exemplo, que você queira cadastrar funções para serem chamadas de maneira uniforme pelo prompt de comando. Vamos chamar nossa classe tratadora de CommandPrompt.</p>
+
+<pre>
+typedef void (Method*)(vector&lt;string&gt;&amp; args);
+
+class CommandPrompt
+{
+public:
+  void Add(string name, Method m); // adiciona novo método
+  void Interact(ostream&amp; os, istream&amp; is); // começa interação com usuário
+};
+</pre>
+<p>Internamente, para armazenar as funções de acordo com o nome dado, basta criarmos um mapeamento entre esses dois tipos e fazemos a amarração necessária para o método principal de parseamento:</p>
+
+<pre>
+// uma variável desse tipo armazena todas as funções
+typedef map&lt;string, Method&gt; MethodList;
+
+void CommandPrompt::Interact(ostream&amp; os, istream&amp; is)
+{
+  while( is )
+  {
+    string func;
+    vector&lt;string&gt; args;
+
+    if( ParseLine(is, func, args) )
+    {
+      // se a função desejada está em nossa lista,
+      // podemos chamá-la, mesmo sem conhecer qual é
+      if( Method m = m_funcs[func] )
+        m(args);
+    }
+  }
+}
+</pre>
+<p>Essa solução não é exatamente um reflection, mas apenas parte do que o verdadeiro reflection possibilita. Existem outras funcionalidades, como traits, que a STL já consegue se virar razoavelmente bem, por exemplo.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="os_agentes_do_destino.html">[os_agentes_do_destino]</a>
+ <a href="houaiss_no_kindle.html">[houaiss_no_kindle]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

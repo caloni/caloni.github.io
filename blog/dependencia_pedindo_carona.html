@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="dependencia_pedindo_carona" title="Dependência pedindo carona"/></span>
+<section id="section_dependencia_pedindo_carona">
+<p class="title">Dependência pedindo carona</p>
+<span class="title-heading">Caloni, 2011-01-04 computer blog</span>
+
+<blockquote>2026-03-13 Este artigo só se aplica a versões do Visual Studio daquela época. Hoje o compilador detecta "código morto" e o retira seletivamente (mesmo em Debug). Dessa forma, nenhum dos testes feitos aqui, caro leitor, serão reproduzidos na versão mais nova do linker. A não ser que você force um comportamento paleozoico :).</blockquote>
+<p>Mesmo as vezes que você não queira, algumas dependências pedem carona e o compilador deixa entrar. Daí mesmo que você não use uma função API, ela acaba te atazanando a vida.</p>
+
+<p>Foi o caso da ToolHelp32 no Windows NT 4.</p>
+
+<h4>Como as coisas funcionam</h4>
+
+<p>Quando compilamos, cada CPP vira uma coleção de funções que serão usadas, mais tarde, pelo linker, para juntar a bagunça. Para mais detalhes dessa fascinante história, recomendo o fantástico artigo sobre <a href="os_diferentes_erros_na_linguagem_c.html">Os diferentes erros na linguagem C</a>, seção Linkedição.</p>
+
+<p>Para as dependências localizadas fora do executável final, por exemplo, as DLLs do sistema, o linker cria uma entrada no formato padrão de executável que adiciona essa dependência extra que será resolvida na hora do programa rodar, quando o loader do sistema operacional terá que fazer um linker on-the-fly, catando todas as DLLs e funções necessárias para colocar o bichinho no ar.</p>
+
+<p>Dessa forma, quando existirem unresolved externals fora do executável final, o responsável por dar o erro é o loader do sistema:</p>
+
+<img src="/blog/img/dependencia_pedindo_carona_winnt4_process32next_unresolved2.png"/>
+
+<p>Isso significa que o seu processo não poderá ser executado, pois faltam funções no ambiente que ele depende.</p>
+
+<p>Um recurso muito útil para ver essas funções é o Dependency Walker, meu amigo de infância:</p>
+
+<blockquote>Update 2026-03-13: a última versão disponível é de 2006, então talvez não seja uma boa ideia usá-lo agora; prefira o dumpbin das ferramentas do Visual Studio.</blockquote>
+<img src="/blog/img/dependencia_pedindo_carona_depends_process32_not_found2.png"/>
+
+<blockquote>"Mas, Caloni, eu nem uso essa função! Como ela pode ser necessária?"</blockquote>
+<p>Pois é. As coisas nem sempre acabam sendo como o esperado. Se você possuir uma LIB, por exemplo, e nela existirem duas funções, como abaixo, e você se limitar a usar em seu programa apenas a primeira, todas as dependências da segunda também irão parar no executável final.</p>
+
+<pre>
+// LibMod.h
+#pragma once
+int UsingOldApis();
+void UsingNewApis();
+
+---
+
+// LibMod.cpp
+// avoid error C4996: 'GetVersion': was declared deprecated
+#define FKG_FORCED_USAGE
+#include &quot;LibMod.h&quot;
+#include &lt;windows.h&gt;
+#include &lt;Tlhelp32.h&gt;
+#include &lt;stdio.h&gt;
+
+// Essa função é usada pelo nosso App
+int UsingOldApis()
+{
+    DWORD ver = GetVersion(); // API paleozoica, OK.
+    return int( (DWORD)(LOBYTE(LOWORD(ver))) );
+}
+
+// Essa função NÃO é usada pelo nosso App
+void UsingNewApis()
+{
+    // Opa: função moderninha!!
+    if( HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL) )
+    {
+      PROCESSENTRY32 procEntry;
+
+      // Tudo bem, nosso App não vai usar essa função.
+      if( Process32First(snapshot, &amp;procEntry) )
+      {
+        printf(&quot;Process list:\n&quot;);
+
+        do
+        {
+          printf(&quot;%s\n&quot;, procEntry.szExeFile);
+        }
+        while( Process32Next(snapshot, &amp;procEntry) );
+      }
+
+      CloseHandle(snapshot);
+    }
+}
+
+---
+
+// ConsoleApplication6.cpp
+#include &quot;LibMod.h&quot;
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main()
+{
+    // Usando apenas funções paleozoicas, certo?
+    printf(&quot;Our Major OS version is %d\n&quot;, UsingOldApis() );
+    system(&quot;pause&quot;);
+}
+</pre>
+<h4>Por que isso ocorre?</h4>
+
+<p>Acontece que o nosso amigo linker gera uma lista de dependências por módulo (CPP), e não por função. Dessa forma, tudo que vier é lucro.</p>
+
+<p>Só que às vezes é prejuízo, também. Quando usamos um SO da época do guaraná com rolha, como o Windows NT 4, por exemplo, não conseguimos usar um programa porque este possuía uma função moderninha nunca usada, mas que estava dentro de um CPP junto de uma função comportada, usando apenas APIs documentadas no primeiro papiro da Microsoft.</p>
+
+<h4>Solução?</h4>
+
+<p>Sempre existe. Nesse caso, migrarmos as funções moderninhas para um segundo CPP, recompilarmos a LIB e a dependência milagrosamente desaparecerá!</p>
+
+<pre>
+// LibMod.cpp
+// avoid error C4996: 'GetVersion': was declared deprecated
+#define FKG_FORCED_USAGE
+#include &quot;LibMod.h&quot;
+#include &lt;windows.h&gt;
+#include &lt;Tlhelp32.h&gt;
+#include &lt;stdio.h&gt;
+
+// Essa função é usada pelo nosso App
+int UsingOldApis()
+{
+    DWORD ver = GetVersion(); // API paleozoica, OK.
+    return int( (DWORD)(LOBYTE(LOWORD(ver))) );
+}
+
+---
+
+// LibMod2.cpp
+#include &quot;LibMod.h&quot;
+#include &lt;windows.h&gt;
+#include &lt;Tlhelp32.h&gt;
+#include &lt;stdio.h&gt;
+
+// Essa função NÃO é usada pelo nosso App
+void UsingNewApis()
+{
+    // Opa: função moderninha!!
+    if( HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL) )
+    {
+      PROCESSENTRY32 procEntry;
+
+      // Tudo bem, nosso App não vai usar essa função.
+      if( Process32First(snapshot, &amp;procEntry) )
+      {
+        printf(&quot;Process list:\n&quot;);
+
+        do
+        {
+          printf(&quot;%s\n&quot;, procEntry.szExeFile);
+        }
+        while( Process32Next(snapshot, &amp;procEntry) );
+      }
+
+      CloseHandle(snapshot);
+    }
+}
+</pre>
+<img src="/blog/img/dependencia_pedindo_carona_depends_process32_not_needed.png"/>
+
+<p>Agora a aplicação poderá rodar em paz naquele que é, como diz meu amigo, um sistema operacional de ponta... da outra ponta!</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="reuniao_de_programadores_c++_ha_5_anos.html">[reuniao_de_programadores_c++_ha_5_anos]</a>
+ <a href="elsa_e_fred.html">[elsa_e_fred]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

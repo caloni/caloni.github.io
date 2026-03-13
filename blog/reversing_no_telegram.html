@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="reversing_no_telegram" title="Boas-vindas ao canal de Reversing do Telegrama"/></span>
+<section id="section_reversing_no_telegram">
+<p class="title"><a class="external" href="https://youtu.be/HYkG4ZG7lxU">Boas-vindas ao canal de Reversing do Telegrama</a></p>
+<span class="title-heading">Caloni, 2023-07-21 computer reversing blog blogging</span>
+
+<p>Olá, pessoas do Telegrão que entraram <a href="https://t.me/reversingclubc">no canal</a>. Bora começar a fazer baixarias pra ver se anima? Bom, acho que a primeira coisa que todo reversing de computador precisa fazer é gerar sua primeira telinha azul com uma poesia. Vamos lá?</p>
+
+<p>Primeiro passo: configurar para <a href="https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/forcing-a-system-crash-from-the-keyboard">gerar tela azul em seu computador</a>.</p>
+
+<p>Segundo passo: na hora de gerar a tela azul é importante que seja gerado um dump de memória (no português: despejo de memória). E é importante que seja gerado da memória completa. Do contrário nossa poesia pode não estar lá.</p>
+
+<p>Terceiro passo: rebootar a desgraça do Windows para os efeitos fazerem efeitos.</p>
+
+<p>Quarto passo: vamos ver se gera tela azul? Tem que apertar o botão CTRL mais à direita do seu teclado junto da tecla SCROLL LOCK duas vezes (mantendo o CTRL apertado).</p>
+
+<p>É, aqui não funcionou. Meu "teclado" (virtual) da VM deve ser PS2 =p. Se não funcionou também com você verifique isso e mude o registro de acordo.</p>
+
+<p>Corta para os comerciais...</p>
+
+<p>Aê!! Tela azul!! `\/\/\/`</p>
+
+<p>Mas essa não valeu porque não teve poesia...</p>
+
+<p>Quinto passo: escolha a poesia de sua preferência e digite-a no notepad. Vale copiar e colar, também.</p>
+
+<p>Eu vou escolher uma poesia que nossa professora da quinta série leu para a gente:</p>
+
+<pre>
+If you can talk with crowds and keep your virtue,
+Or walk with Kings—nor lose the common touch,
+If neither foes nor loving friends can hurt you,
+If all men count with you, but none too much;
+If you can fill the unforgiving minute
+With sixty seconds’ worth of distance run,
+Yours is the Earth and everything that’s in it,
+And—which is more—you’ll be a Man, my son!
+</pre>
+<p>Você vai abrir o bloco de notas e digitar/colar sua poesia, mas, importante, não irá salvar. Apenas deixe aberta no bloco de notas. É essa a graça.</p>
+
+<p>E... tela azul again. Porém, dessa vez, vamos deixar gerar o arquivo até o final. Se estiver assistindo ao vídeo pode acelerar até o reboot.</p>
+
+<p>Enquanto gera a tela azul vamos falar sobre o que esse experimento deseja provar. Todo trabalho de engenharia reversa que pretende descobrir como algo que não sabemos como funciona... funciona, precisa utilizar o método científico para avançar. Cria-se uma hipótese, encontra-se elementos que a corrobore essa hipótese e faz-se os experimentos que a comprove. Quando há múltiplas possibilidades também é importante fazer experimentos que desprovem algum caminho a ser seguido.</p>
+
+<p>No caso, a hipótese é que uma tela azul de toda a memória necessariamente irá conter os textos que um usuário estiver digitando no bloco de notas, pois esse texto precisa estar em algum lugar da memória. Certo?</p>
+
+<p>Bom, é o que eu acho. Para saber se isso é verdade podíamos digitar algum texto no bloco de notas e, sem salvar nem nada, gerar uma tela azul. O texto deverá estar no arquivo de dump gerado. Texto simples e aberto, pois é isso o que o usuário estava digitando. Parece um teste simples de ser feito e, até que se prove o contrário, conclusivo, não?</p>
+
+<p>Veremos.</p>
+
+<p>O arquivo de dump gerado deverá ter o mesmo tamanho da memória RAM. Com a ajuda de algum programa que encontre strings em binários vamos fazer uma busca pela poesia. Pode ser o programa <a href="https://learn.microsoft.com/en-us/sysinternals/downloads/strings">Strings</a>, da SysInternals.</p>
+
+<pre>
+strings.exe MEMORY.DMP
+</pre>
+<p>Uma outra opção seria abrir o arquivo em um editor hexadecimal como o <a href="https://mh-nexus.de/en/hxd/">HxD</a> e buscar pela string.</p>
+
+<p>É, no meu caso a busca do HxD deu mais boa. Pera...</p>
+
+<p>Hum... isso vai demorar. Mas ele vai achar.</p>
+
+<p>Achou.</p>
+
+<p>Acho que é isso. Bem-vindo ao grupo! E se quiser conversar sobre o assunto, outros assuntos, dúvidas técnicas, etc. Fique à vontade. De bits e bytes até moléculas de café, reversing é sobre isso =)</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="consumo_abusivo_de_memoria.html">[consumo_abusivo_de_memoria]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>
