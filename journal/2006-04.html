@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Jornal do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Jornal do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/journal/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/journal/index.xml" rel="feed" type="application/rss+xml" title="Jornal do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/journal/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/journal/css/jquery-ui.css"/>
+<script src="/journal/js/jquery-1.12.4.js"></script>
+<script src="/journal/js/jquery-ui.js"></script>
+<script src="/journal/js/copy_clipboard.js"></script>
+<script src="/journal/js/list.js"></script>
+<link rel="icon" href="/journal/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="months.html">
+<div class="is-4"><b>Jornal do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<ul style="list-style: none;">
+
+<li><small><a href="2006-04.html#erros_esquisitos_que_nenhum_principiante_deveria_enfrentar">Erros esquisitos que nenhum principiante deveria enfrentar</a></small></li></ul>
+
+<span id="erros_esquisitos_que_nenhum_principiante_deveria_enfrentar" title="Erros esquisitos que nenhum principiante deveria enfrentar"/></span>
+<section id="section_erros_esquisitos_que_nenhum_principiante_deveria_enfrentar">
+<p class="title"><a href="2006-04.html#erros_esquisitos_que_nenhum_principiante_deveria_enfrentar">#</a> Erros esquisitos que nenhum principiante deveria enfrentar</p>
+<span class="title-heading">Caloni, 2006-04-10 <a href="2005-05.html#a_inteligencia_do_if_primeira_versao">&lt;</a><a href="computer.html">computer</a><a href="2006-05.html#diferencas_entre_c_e_c++_precedencia">&gt;</a> <a href="2005-05.html#a_inteligencia_do_if_primeira_versao">&lt;</a><a href="veryold.html">veryold</a><a href="2006-05.html#diferencas_entre_c_e_c++_precedencia">&gt;</a> <a href="2005-05.html#a_inteligencia_do_if_primeira_versao">&lt;</a><a href="draft.html">draft</a><a href="2006-05.html#diferencas_entre_c_e_c++_precedencia">&gt;</a><a href="2006-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_erros_esquisitos_que_nenhum_principiante_deveria_enfrentar')"><sup>[copy]</sup></a></span>
+
+<p>A tentativa de tornar C++ mais simples de usar para tarefas simples deu um grande avanço a partir do padrão de 1998. Veja esse exemplo que lê um inteiro na entrada e escreve ele novamente na saída na base hexadecimal:</p>
+
+<pre>
+#include &lt;iostream&gt;
+
+using namespace std;
+
+
+int main()
+{
+   int num = 0;
+
+
+   cout &lt;&lt; &quot;Digite um numero. Qualquer numero! &quot;;
+
+   if( cin &gt;&gt; num )
+      cout &lt;&lt; &quot;Esse numero em hexa fica &quot; &lt;&lt; hex &lt;&lt; num &lt;&lt; &quot;, nao fica?\n&quot;;
+
+   else
+      cout &lt;&lt; &quot;Bad, bad number.\n&quot;;
+
+   return num;
+}
+
+Algumas entradas e saídas:
+Digite um numero. Qualquer numero! 123456
+Esse numero em hexa fica 1e240, nao fica?
+
+Digite um numero. Qualquer numero! 42
+Esse numero em hexa fica 2a, nao fica?
+
+Digite um numero. Qualquer numero! babaca
+Bad, bad number.
+</pre>
+<p>Intuitivo e direto. Porém, tem uma coisa que eu não gostei nele: não imprime as letras usadas no formato hexadecimal com caracteres em maiúsculo. Bom, isso não é - ou seria - um problema tão grande, já que a biblioteca de I/O da STL fornece inúmeras rotinas para formatar a saída como bem desejarmos. Para imprimir em maiúsculas, por exemplo, só precisaríamos mudar uma linha:</p>
+
+<pre>
+cout &lt;&lt; &quot;Esse numero em hexa fica &quot; &lt;&lt; hex &lt;&lt; setiosflags(ios_base::uppercase) &lt;&lt; num &lt;&lt; &quot;, nao fica?\n&quot;;
+</pre>
+<p>Tudo bem, aumenta o tamanho da linha. E também temos que usar o especificador de escopo (ios_base::), já que as definições dos nomes dos flags ficam dentro da classe base de todas as classes de I/O.</p>
+
+<p>Mas esses não são os maiores problemas. Depois dessa singela modificação, o programa simplesmente não compila mais. E não é aquele errinho besta que aparece todo santo dia após algumas pequenas mudanças no código, um lugar comum facilmente detectável. É uma seqüência de erros que acaba ficando bem maior que o próprio programa!</p>
+
+<pre>
+error C2593: 'operator &lt;&lt;' is ambiguous
+        (...)\include\ostream(434): could be 'std::basic_ostream&lt;_Elem,_Traits&gt;::_Myt 
+    &amp;std;::basic_ostream&lt;_Elem,_Traits&gt;::operator &lt;&lt;(std::basic_ostream&lt;_Elem,_Traits&gt;::_Mysb *)'
+        with
+        [
+            _Elem=char,
+            _Traits=std::char_traits&lt;char&gt;
+        ]
+        (...)\ostream(414): or       'std::basic_ostream&lt;_Elem,_Traits&gt;::_Myt 
+ &amp;std;::basic_ostream&lt;_Elem,_Traits&gt;::operator &lt;&lt;(const void *)'
+        with
+        [
+            _Elem=char,
+            _Traits=std::char_traits&lt;char&gt;
+        ]
+        (...)\include\ostream(394): or       'std::basic_ostream&lt;_Elem,_Traits&gt;::_Myt 
+ &amp;std;::basic_ostream&lt;_Elem,_Traits&gt;::operator &lt;&lt;(long double)'
+        with
+        [
+            _Elem=char,
+            _Traits=std::char_traits&lt;char&gt;
+        ]
+        (...)\include\ostream(374): or       'std::basic_ostream&lt;_Elem,_Traits&gt;::_Myt 
+ &amp;std;::basic_ostream&lt;_Elem,_Traits&gt;::operator &lt;&lt;(double)'
+        with
+        [
+            _Elem=char,
+            _Traits=std::char_traits&lt;char&gt;
+        ]
+        (...)\include\ostream(354): or       'std::basic_ostream&lt;_Elem,_Traits&gt;::_Myt 
+ &amp;std;::basic_ostream&lt;_Elem,_Traits&gt;::operator &lt;&lt;(float)'
+        with
+        [
+            _Elem=char,
+            _Traits=std::char_traits&lt;char&gt;
+        ]
+        (...)\include\ostream(333): or       'std::basic_ostream&lt;_Elem,_Traits&gt;::_Myt 
+ &amp;std;::basic_ostream&lt;_Elem,_Traits&gt;::operator &lt;&lt;(unsigned __int64)'
+        with
+        [
+            _Elem=char,
+            _Traits=std::char_traits&lt;char&gt;
+        ]
+        (...)\include\ostream(313): or       'std::basic_ostream&lt;_Elem,_Traits&gt;::_Myt 
+ &amp;std;::basic_ostream&lt;_Elem,_Traits&gt;::operator &lt;&lt;(__int64)'
+        with
+        [
+            _Elem=char,
+            _Traits=std::char_traits&lt;char&gt;
+        ]
+        (...)\include\ostream(292): or       'std::basic_ostream&lt;_Elem,_Traits&gt;::_Myt 
+ &amp;std;::basic_ostream&lt;_Elem,_Traits&gt;::operator &lt;&lt;(unsigned long)'
+        with
+        [
+            _Elem=char,
+            _Traits=std::char_traits&lt;char&gt;
+        ]
+        (...)\include\ostream(272): or       'std::basic_ostream&lt;_Elem,_Traits&gt;::_Myt 
+ &amp;std;::basic_ostream&lt;_Elem,_Traits&gt;::operator &lt;&lt;(long)'
+        with
+        [
+            _Elem=char,
+            _Traits=std::char_traits&lt;char&gt;
+        ]
+        (...)\include\ostream(252): or       'std::basic_ostream&lt;_Elem,_Traits&gt;::_Myt 
+ &amp;std;::basic_ostream&lt;_Elem,_Traits&gt;::operator &lt;&lt;(unsigned int)'
+        with
+        [
+            _Elem=char,
+            _Traits=std::char_traits&lt;char&gt;
+        ]
+        (...)\include\ostream(227): or       'std::basic_ostream&lt;_Elem,_Traits&gt;::_Myt 
+ &amp;std;::basic_ostream&lt;_Elem,_Traits&gt;::operator &lt;&lt;(int)'
+        with
+        [
+            _Elem=char,
+            _Traits=std::char_traits&lt;char&gt;
+        ]
+        (...)\include\ostream(207): or       'std::basic_ostream&lt;_Elem,_Traits&gt;::_Myt 
+ &amp;std;::basic_ostream&lt;_Elem,_Traits&gt;::operator &lt;&lt;(unsigned short)'
+        with
+        [
+            _Elem=char,
+            _Traits=std::char_traits&lt;char&gt;
+        ]
+        (...)\include\ostream(174): or       'std::basic_ostream&lt;_Elem,_Traits&gt;::_Myt 
+ &amp;std;::basic_ostream&lt;_Elem,_Traits&gt;::operator &lt;&lt;(short)'
+        with
+        [
+            _Elem=char,
+            _Traits=std::char_traits&lt;char&gt;
+        ]
+        (...)\include\ostream(154): or       'std::basic_ostream&lt;_Elem,_Traits&gt;::_Myt 
+ &amp;std;::basic_ostream&lt;_Elem,_Traits&gt;::operator &lt;&lt;(std::_Bool)'
+        with
+        [
+            _Elem=char,
+            _Traits=std::char_traits&lt;char&gt;
+        ]
+        (...)\include\ostream(148): or       'std::basic_ostream&lt;_Elem,_Traits&gt;::_Myt 
+ &amp;std;::basic_ostream&lt;_Elem,_Traits&gt;::operator &lt;&lt;(std::ios_base &amp;(__cdecl *)(std::ios_base &amp;))'
+        with
+        [
+            _Elem=char,
+            _Traits=std::char_traits&lt;char&gt;
+        ]
+        (...)\include\ostream(142): or       'std::basic_ostream&lt;_Elem,_Traits&gt;::_Myt 
+ &amp;std;::basic_ostream&lt;_Elem,_Traits&gt;::operator &lt;&lt;(std::basic_ostream&lt;_Elem,_Traits&gt;::_Myios 
+ &amp;(__cdecl *)(std::basic_ostream&lt;_Elem,_Traits&gt;::_Myios &amp;))'
+        with
+        [
+            _Elem=char,
+            _Traits=std::char_traits&lt;char&gt;
+        ]
+        (...)\include\ostream(137): or       'std::basic_ostream&lt;_Elem,_Traits&gt;::_Myt 
+ &amp;std;::basic_ostream&lt;_Elem,_Traits&gt;::operator &lt;&lt;(std::basic_ostream&lt;_Elem,_Traits&gt;::_Myt 
+ &amp;(__cdecl *)(std::basic_ostream&lt;_Elem,_Traits&gt;::_Myt &amp;))'
+        with
+        [
+            _Elem=char,
+            _Traits=std::char_traits&lt;char&gt;
+        ]
+        (...)\include\ostream(887): or       'std::basic_ostream&lt;_Elem,_Traits&gt; 
+ &amp;std;::operator &lt;&lt;&lt;std::char_traits&lt;char&gt;&gt;(std::basic_ostream&lt;_Elem,_Traits&gt; &amp;,unsigned char)'
+        with
+        [
+            _Elem=char,
+            _Traits=std::char_traits&lt;char&gt;
+        ]
+        (...)\include\ostream(880): or       'std::basic_ostream&lt;_Elem,_Traits&gt; 
+ &amp;std;::operator &lt;&lt;&lt;std::char_traits&lt;char&gt;&gt;(std::basic_ostream&lt;_Elem,_Traits&gt; &amp;,const unsigned char *)'
+        with
+        [
+            _Elem=char,
+            _Traits=std::char_traits&lt;char&gt;
+        ]
+        (...)\include\ostream(873): or       'std::basic_ostream&lt;_Elem,_Traits&gt; 
+ &amp;std;::operator &lt;&lt;&lt;std::char_traits&lt;char&gt;&gt;(std::basic_ostream&lt;_Elem,_Traits&gt; &amp;,signed char)'
+        with
+        [
+            _Elem=char,
+            _Traits=std::char_traits&lt;char&gt;
+        ]
+        (...)\include\ostream(866): or       'std::basic_ostream&lt;_Elem,_Traits&gt; 
+ &amp;std;::operator &lt;&lt;&lt;std::char_traits&lt;char&gt;&gt;(std::basic_ostream&lt;_Elem,_Traits&gt; &amp;,const signed char *)'
+        with
+        [
+            _Elem=char,
+            _Traits=std::char_traits&lt;char&gt;
+        ]
+        (...)\include\ostream(744): or       'std::basic_ostream&lt;_Elem,_Traits&gt; 
+ &amp;std;::operator &lt;&lt;&lt;std::char_traits&lt;char&gt;&gt;(std::basic_ostream&lt;_Elem,_Traits&gt; &amp;,char)'
+        with
+        [
+            _Elem=char,
+            _Traits=std::char_traits&lt;char&gt;
+        ]
+        (...)\include\ostream(697): or       'std::basic_ostream&lt;_Elem,_Traits&gt; 
+ &amp;std;::operator &lt;&lt;&lt;std::char_traits&lt;char&gt;&gt;(std::basic_ostream&lt;_Elem,_Traits&gt; &amp;,const char *)'
+        with
+        [
+            _Elem=char,
+            _Traits=std::char_traits&lt;char&gt;
+        ]
+        (...)\include\ostream(659): or       'std::basic_ostream&lt;_Elem,_Traits&gt; 
+ &amp;std;::operator &lt;&lt;&lt;char,std::char_traits&lt;char&gt;&gt;(std::basic_ostream&lt;_Elem,_Traits&gt; &amp;,char)'
+        with
+        [
+            _Elem=char,
+            _Traits=std::char_traits&lt;char&gt;
+        ]
+        (...)\include\ostream(613): or       'std::basic_ostream&lt;_Elem,_Traits&gt; 
+ &amp;std;::operator &lt;&lt;&lt;char,std::char_traits&lt;char&gt;&gt;(std::basic_ostream&lt;_Elem,_Traits&gt; &amp;,const char *)'
+        with
+        [
+            _Elem=char,
+            _Traits=std::char_traits&lt;char&gt;
+        ]
+        while trying to match the argument list '(std::basic_ostream&lt;_Elem,_Traits&gt;::_Myt, 'unknown-type')'
+        with
+        [
+            _Elem=char,
+            _Traits=std::char_traits&lt;char&gt;
+        ]
+error C3861: 'setiosflags': identifier not found, even with argument-dependent lookup
+</pre>
+<p>Depois disso parece um tanto óbvio o porquê de tantas pessoas começarem a programar em C++ e pararem na mesma semana. Se o principiante não conhecer algum fórum onde possa pedir ajuda aos "gurus" da linguagem, dificilmente irá se livrar desse monte de erros sozinho. E o pior é que aqui no Brasil - seja original ou tradução - estamos cheios de livros com pequenos lapsos nos códigos. Tudo isso contribui para um razoável aumento na curva de aprendizado dessa linguagem comparada às outras.</p>
+
+<p>A solução para o problema acima não é nada de arrancar os cabelos. O real problema é que o flag usado não está definido no único header que incluímos. Esses flags ficam em um lugar especial, um outro header chamado iomanip. Sabendo isso daí fica fácil corrigir:</p>
+
+<pre>
+#include &lt;iomanip&gt;
+</pre>
+<p>Esses detalhes acabam assustanto até pessoas mais experientes que desejam subir mais um degrau em seu aprendizado C++ e passar a usar a tão famosa STL e suas inúmeras vantagens. Esse pequeno exemplo demonstra que precisamos de uns retoques finais no que é - reconheço - uma das obras de arte da programação contemporânea: os conceitos e a produtividade que nos fornece a Standard Template Library.</p>
+
+<h4>Comentários</h4>
+
+<ul><li>[11/4/06 08:58] Fabricio:Você acertou em cheio Caloni!</li></ul>
+
+<p>A linguagem C++ me fascina, porém já comecei e parei com ela inúmeras vezes. Estes erros de compilação assustam mesmo, e acabam sempre me fazendo pensar que não tenho capacidade para trabalhar com a linguagem.</p>
+
+<p>Agora me explica uma coisa: o compilador não poderia ser mais claro ao exibir o erro? Informar que o operador &gt;&gt; é ambíbuo não ajudou muito (pra não dizer nada) neste caso.</p>
+
+<ul><li>[11/4/06 09:30] Wanderley Caloni Jr:Pois é, além de não ajudar muito, ocupou um destaque que não lhe cabia. Se o segundo erro aparecesse antes ('setiosflags': identifier not found) seria bem mais fácil e rápido corrigir. Informar ambigüidade é um dos erros que costuma aparecer quando se brinca com STL e, pior, quase nunca está relacionado com o que foi feito de errado.</li></ul>
+
+<p>Porém, se quer um conselho, não tenha medo quando seu compilador te mostrar 514324 erros. Geralmente o primeiro e o segundo são os que importam. Também é útil se aproveitar do desenvolvimento incremental: faz algumas linhas, compila. Mais algumas linhas, compila de novo. E de novo. E de novo. Quando acontecer um erro, é mais fácil de localizar, pois estará relacionado às últimas modificações.</p>
+
+<ul><li>[19/4/06 15:31] Basilio Miranda:Esse prolema diz mais respeito à maturidade do compilador empregado.Realmente a maior complexidade do C++ atual gera algumas dificuldades para o fabricante do compilador. Em especial templates, STL.Mas, de qualquer modo, é necessário observar que se a linguagem requer maior complexidade das rotinas de compilação, isso já passa a ser um problema dos compiladores e não exatamente da linguagem em si mesma.No exemplo que você citou, o gcc de cara diria o seguinte: `setiosflags' undeclared.E no VC++6 ou VC++8 a mensagem seria mais ou menos assim.</li></ul>
+
+<p>Já em erros como: std::list &lt; int, int &gt; l; (personalização incorreta do allocator) já sabemos que o gcc percorrerá alguns includes mas haverá uma linha de mensagem contendo "instantiated from here" que indica a linha original do erro no fonte. É só procurá-la.Isso torna-se um pouco mais confuso em qualquer 'Visual C++'.Mas na linha de comando melhora: cl -GX arq.cpp -o arq.exe; na segunda linha já temos o erro.Acho bom ter sempre à mão o gcc para dirimir dúvidas. E, em alguns casos mais "cabeludos" a ajuda será inestimável. Um exemplo típico no Visual C++ é o "Internal Error C1001". Bug e ainda ocorre(menos) no VC7 e no VC8.Uma solução imediata infalível em casos como esse é compilar com o gcc. E lá está o erro ou então não há erro e aí basta checar opções de compilação que também podem gerar o problema.</p>
+
+<p>Fabricantes de compilador C++ sofrem mais; mas melhoram com o tempo. Em se tratando de compiladores, "maturidade" é uma palavra chave.</p>
+
+<p>Ainda assim, o microsoft até hoje compila isso:std::list &lt; int &gt; ; // chamada ao construtor? devia explicitar... // microsoft/cl -&gt; sem errosMas o gcc, corretamente, nos diz que: error: declaration does not declare anythingPor isso, também quanto aos padrões, é sempre bom dar uma "repassada" com o gcc.E, é lógico, nem há o que dizer se o alvo for Unix.</p>
+
+<p>abraços,Basilio Miranda</p>
+
+<p>PS: gostei de ter visitado este site, que só localizei recentemente. Disseminar a linguagem com bom nível é de grande importância neste nosso rincão natal - onde até "clipper" fez sucesso...</p>
+
+<ul><li>[19/4/06 15:38] Wanderley Caloni Jr:Obrigado pela dica, Basilio. Concordo que, quando possível, é legal usar mais de um compilador para análise dos erros de compilação. Lógico que isso só será viável em programas portáveis, 100% c++ ISO.</li></ul>
+
+<p>Mesmo assim, fica difícil para um iniciante configurar um compilador. Dois, então, já seria abuso =).</p>
+
+<p>[]s</p>
+
+<ul><li>[21/4/06 15:30] Basilio Miranda:Realmente o iniciante tende a ter mais problemas em C++ do que em outras linguagens. Penso que o autodidatismo em C++, ao contrário de outras, só funciona para um número muito pequeno de pessoas - pois ou o auto-aprendizado não é consistente ou absorve vícios de "tradução" da linguagem já conhecida para C++.E a dificuldade pode ocorrer até com mensagens de erro... Mas o foco no fundo é o mesmo: é mais complicado construir um compilador C++. Um compilador C é bem mais simples de se fazer. Cobol mais ainda, etc. Do ponto de vista do compilador a coisa piora bastante com templates (consequentemente STL). Assim, o poder que ganhamos com templates(STL incluída), abstração de tipo sem runtimes (interpretadores/alocadores de memória embutidos nos executáveis) tem esse preço - ao menos por enquanto.Mas, voltando às dificuldades do iniciante, assumindo-se que seu ambiente seja Windows, creio que o melhor é que ele comece com o gcc ao invés do VC. Se tiver dificuldade com a linha de comando pode usar como ambiente o Dev-C++, simples mas eficaz (e free) - se for para compilar um único arquivo fonte nem é preciso criar um projeto. Ou, se for do tipo "fuçador", pode usar o Eclipse que é um ambiente poderoso, completo, totalmente multi-plataforma e também free.Isso não seria aplicável até 2002/2003 mas hoje é, com a evolução dos portes do gcc para Win32. Em um ambiente de treinamento isso não é tão importante, pois aí há alguém para explicar certas "liberalidades" do VC.</li></ul>
+
+<p>Além disso hoje podemos compilar mais do que apenas código 100% ISO, pois o gcc para Win32 já tem as bibliotecas necessárias para compilar aplicações Win32. O único problema é com a MFC, mas isso devido ao fato de que o gcc não irá perdoar coisas bem fora do padrão existentes dentro da MFC, como por exemplo "friend COleDateTime" (ao invés de "friend class ....") ou "for (int x ; ... ; ... )" que o compilador microsoft permite. Problema semelhante teremos com ATL.Mas creio que isso não se coloca para um iniciante, pois não creio que ele vá usar logo a MFC ou a ATL. Quando precisar de aplicações assim, terá que usar sim o VC pois trata-se de uma realidade inescapável no mercado. Apenas (e felizmente) esse não é o único mercado do programador C++... Assim talvez seja melhor aprender o C++ propriamente dito antes de ter que lidar com essas especificidades.</p>
+
+<p>Além disso, se usar o VC++8 terá que se virar com o fato de que, por default(!) ele passou a considerar "deprecated" as funções para string(vetor char) da biblioteca padrão. Ou usamos as extensions do "Secure C" ou temos que anular explicitamente o default. Aliás, P. J. Plauger no Editor's Forum da "C++ Users Journal" de janeiro disse o que devia ser dito sobre esse "deprecated".Por isso acho o gcc mais saudável: sempre foi o compilador mais compatível com os padrões e até em mensagens de erro é mais esperto. Além disso é open-source e, secundariamente, free (o que não é tão pouco...). Não é que eu seja fundamentalista ou "xiita" em relação a C++ mas ultimamente ando meio cansado das "especificidades" microsoft...</p>
+
+<p>Abraços,Basilio Miranda</p>
+
+<ul><li>[24/4/06 10:17] Wanderley Caloni Jr:Voltando ao meu comentário anterior, o uso de dois compiladores e a programação visando portabilidade, considero serem tópicos avançados na programação C++. Eles não estariam no enfoque de um programador iniciante, que só precisa no momento de um ambiente onde ele possa fazer algo de (in)útil com a linguagem, e aprender com os erros. Daí a necessidade da clareza desses erros =).</li></ul>
+
+<p>É ótimo que o gcc tenha mensagens de erros mais claras. E, como você bem disse, MFC e ATL não são coisas para usar no começo. Mas isso não impede que o principiante use outros ambientes igualmente gratuitos, como o Visual C++ Express Edition [1] e o Borland C++ Command Line Tools [2], que oferecem o mesmo ambiente básico de programação C++. As extensões da Microsoft costumam existir para facilitar e agilizar o trabalho do programador. Isso para portabilidade é péssimo, mas se seu programa vai rodar só em Windows é uma mão na roda. E sempre existe a possibilidade do programa ser feito em camadas portáveis e não-portáveis.</p>
+
+<p>Note que não estou fazendo apologia ao Visual C++, assim como você não fez com o GCC. Somente acredito que, como a maioria dos mortais utiliza Windows no seu dia a dia, é natural começar a programar em um ambiente que no futuro poderá oferecer as bibliotecas já mencionadas. Claro que, caso estejamos falando de um programador iniciante do mundo Linux, aí não tem conversa: GCC é o ambiente nativo e desejável. E de cara ele já ganha um ambiente mais de acordo com as regras do padrão C++ ISO. O que não é pouco =).</p>
+
+<p>Aproveito a conversa sobre esse tema para indicar aos iniciantes alguns artigos bem interessantes e animadores, disponíveis no site 1bit: [3], [4] e [5].</p>
+
+<p>[1] http://www.1bit.com.br/content.1bit/weblog/vc_express[2] http://www.borland.com/downloads/download_cbuilder.html[3] http://www.1bit.com.br/content.1bit/weblog/faq_cpp_start[4] http://www.1bit.com.br/content.1bit/programador[5] http://www.1bit.com.br/content.1bit/bom_programador</p>
+
+<ul><li>[27/4/06 12:21] Basilio Miranda:Bem, não discordo -e não discordei desde o início- quando você afirma que mensagens de erro confusas prejudicam o aprendizado (e não só ele). Apenas, não achei muito clara a afirmação, na sua mensagem original, de que precisamos de uns "retoques finais" quanto à STL. Precisamos? Sim, certamente há sempre muito o que melhorar e prova disso é a própria existência da biblioteca 'boost'.Mas no que diz respeito a mensagens de erro, quem deve fazer isso? Quem deve dar esses retoques? O ponto de vista que tentei defender é de que o responsável por isso, o cara que pode fazer isso, não é o comitê de padrões de C++, por exemplo. Isso diz respeito aos caras que criam compiladores. Pois não vejo como o padrão poderia descer a esse nível de detalhe mesmo que fosse no capítulo "recomendações".E, por outro lado, desculpe repetir, não sei se podemos esperar melhorias grandes nesse quesito a curto prazo, pois compilar templates não é lá tão simples.</li></ul>
+
+<p>Esse assunto é importante para o programador e para o iniciante, até porque no Brasil é muito comum, no que diz respeito ao ambiente 'PC', misturar 3 coisas: linguagens / compiladores / IDE's. Pois, nas práticas predominantes em nosso país, imperam produtos (VB, etc) onde tudo parece ser a mesma coisa.Mas com C/C++ a primeira pergunta a fazer é: qual compilador vou usar? Eventualmente, uma segunda pergunta: qual IDE vou usar?</p>
+
+<p>Quanto aos problemas do iniciante (bem reais e concretos com C e C++, certamente) não estou defendendo que ele se preocupe com questões de portabilidade desde o início. Apenas que se preocupe em aprender C++: e só existe um C++ que é o padrão (lógico que isso implica em portabilidade também mas portabilidade não é só isso).E o iniciante é um tanto maltratado com o Visual C++.Quando falei das "especificidades" estava me referindo não às "facilidades" voltadas para programação Windows, mas sim às quebras de padrão da linguagem, comuns no VC.Alguns exemplos já citados (acrescento aqui suas consequências):</p>
+
+<ul><li>o iniciante usafor ( int x = 0 ; ...; ... ){ ... }em seguida, após o escopo do laço for:x=5;O padrão nega isso claramente.Isso no VC++6. No VC++7 também, só que nas "propriedades de projeto" é possível inibir isso, mas a inibição não é o default (difícil o iniciante perceber...). JÁ no VC++8 a inibição é que passa a ser o default... Opa.. Então o cara que tinha começado a usar o VC++7 e agora vai usar o "Visual C++ 2005 express" e recompila o seu fonte, vai tomar um erro que nunca tinha aparecido antes... Eu já fui iniciante como toda a gente e não gostaria de passar por isso. Até descobrir... O cara vai fazer a pergunta: "afinal o que é C++? o que pode? o que não pode?" E o problema é que há outros casos não-padrão que ainda continuam.</li></ul>
+
+<p>E no VC++8 (2005) há um problema extremamente sério que já comentei: o "depracated" por default para a família de funções de string.O iniciante usa uma strcpy e toma uma "warning" que diz que isso é "depracated" - mas acontece que não é assim para a linguagem. E o compilador aconselha a usar uma extension microsoft. Isso é C++? O que estou aprendendo? C++ ou MS-C++? "Boas práticas" sobre buffers e strings serão aprendidas com o tempo - e há outras formas (padrão) de encaminhá-las. Mas essa warning não-padrão (e default!) só confunde o iniciante e irrita o experiente (ver artigo de Plauger no CUJ de janeiro).</p>
+
+<p>Por isso acho que a primeira pergunta do iniciante: "qual compilador C/C++ usar?" - deveria ser respondida com "aquele que estiver mais coerente com o padrão linguagem"; ou seja, aquele em que você pode testar aquilo que "é" e aquilo que "não é" C++, para não acabar aprendendo gato por lebre.Quanto gente eu já vi defendendo que o "x" declarado em "for ( int x; " pode ser usado legitimamente fora desse escopo? Uma porção de gente oriunda de VC.Eis o problema. Num ambiente de treinamento, aí tudo bem, pois haverá um instrutor que pode esclarecer essas coisas e avisar das "irregularidades". E provavelmente outro compilador será pelo menos exibido. Mas para um cara sozinho isso é um problema.</p>
+
+<p>Bem, é isso, desculpe mais uma vez a insistência mas penso que um iniciante deve ter consciência dessas coisas.</p>
+
+<p>Abraços,Basilio Miranda</p>
+
+<ul><li>[27/4/06 12:23] Basilio Miranda:Bem, não discordo -e não discordei desde o início- quando você afirma que mensagens de erro confusas prejudicam o aprendizado (e não só ele). Apenas, não achei muito clara a afirmação, na sua mensagem original, de que precisamos de uns "retoques finais" quanto à STL. Precisamos? Sim, certamente há sempre muito o que melhorar e prova disso é a própria existência da biblioteca 'boost'.Mas no que diz respeito a mensagens de erro, quem deve fazer isso? Quem deve dar esses retoques? O ponto de vista que tentei defender é de que o responsável por isso, o cara que pode fazer isso, não é o comitê de padrões de C++, por exemplo. Isso diz respeito aos caras que criam compiladores. Pois não vejo como o padrão poderia descer a esse nível de detalhe mesmo que fosse no capítulo "recomendações".</li></ul>
+
+<p>Esse assunto é importante para o programador e para o iniciante, até porque no Brasil é muito comum, no que diz respeito ao ambiente 'PC', misturar 3 coisas: linguagens / compiladores / IDE's (VB,etc). Mas com C/C++ a primeira pergunta a fazer é: qual compilador vou usar? Eventualmente, uma segunda pergunta: qual IDE vou usar?</p>
+
+<p>Quanto aos problemas do iniciante não estou defendendo que ele se preocupe com questões de portabilidade desde o início. Apenas que se preocupe em aprender C++: e só existe um C++ que é o padrão (lógico que isso implica em portabilidade também, mas portabilidade não é só isso).E o iniciante é um tanto maltratado com o Visual C++.Quando falei das "especificidades" estava me referindo não às "facilidades" voltadas para programação Windows, mas sim às quebras de padrão da linguagem, comuns no VC.Alguns exemplos já citados (acrescento aqui suas consequências):</p>
+
+<ul><li>o iniciante usafor ( int x = 0 ; ...; ... ){ ... }em seguida, após o escopo do laço for:x=5;O padrão nega isso claramente.Isso no VC++6. No VC++7 também, só que nas "propriedades de projeto" é possível inibir isso, mas a inibição não é o default (difícil o iniciante perceber...). JÁ no VC++8 a inibição é que passa a ser o default... Opa.. Então o cara que tinha começado a usar o VC++7 e agora vai usar o "Visual C++ 2005 express" e recompila o seu fonte, vai tomar um erro que nunca tinha aparecido antes... Eu já fui iniciante como toda a gente e não gostaria de passar por isso. Até descobrir... O cara vai fazer a pergunta: "afinal o que é C++? o que pode? o que não pode?" E o problema é que há outros casos não-padrão que ainda continuam.</li></ul>
+
+<p>E no VC++8 (2005) há um problema extremamente sério que já comentei: o "depracated" por default para a família de funções de string.O iniciante usa uma strcpy e toma uma "warning" que diz que isso é "depracated" - mas acontece que não é assim para a linguagem. E o compilador aconselha a usar uma extension microsoft. Isso é C++? O que estou aprendendo? C++ ou MS-C++? "Boas práticas" sobre buffers e strings serão aprendidas com o tempo - e há outras formas (padrão) de encaminhá-las. Mas essa warning não-padrão (e default!) só confunde o iniciante e irrita o experiente (ver artigo de Plauger no CUJ de janeiro).</p>
+
+<p>Por isso acho que a primeira pergunta do iniciante: "qual compilador C/C++ usar?" - deveria ser respondida com "aquele que estiver mais coerente com o padrão linguagem"; ou seja, aquele em que você pode testar aquilo que "é" e aquilo que "não é" C++, para não acabar aprendendo gato por lebre.Quanto gente eu já vi defendendo que o "x" declarado em "for ( int x; " pode ser usado legitimamente fora desse escopo? Uma porção de gente oriunda de VC.Eis o problema. Num ambiente de treinamento, aí tudo bem, pois haverá um instrutor que pode esclarecer essas coisas e avisar das "irregularidades". E provavelmente outro compilador será pelo menos exibido. Mas para um cara sozinho isso é um problema.</p>
+
+<p>Bem, é isso, desculpe mais uma vez a insistência mas penso que um iniciante deve ter consciência dessas coisas.</p>
+
+<p>Abraços,Basilio Miranda</p>
+
+<ul><li>[1/5/06 11:55] Thiago Adams:Oi,Olha o exemplo abaixo:</li></ul>
+
+<p>std::cout << "Esse numero em hexa fica "<< std::hex&lt;&lt; std::uppercase&lt;&lt; num&lt;&lt; ", nao fica?\n";</p>
+
+<p>mais simples né?</p>
+
+<ul><li>[1/5/06 16:21] Wanderley Caloni:Olá.</li></ul>
+
+<p>Sim, com certeza mais simples. Eu tentei exemplificar o uso de alguma função do header iomanip para forçar o erro em que o iniciante ficaria perdido. Talvez um setw(8) ou setf('0') fosse mais realista que o meu setiosflags =).</p>
+
+<ul><li>[7/5/06 23:33] Wanderley Caloni:Basílio,</li></ul>
+
+<p>os motivos do meu comentário sobre os "pequenos retoques" certamente não ficaram tão claros como eu gostaria. Eu estava me referindo à alguns detalhes que tornariam a caminhada do iniciante com menos paradas até o ponto em que ele faz algo realmente útil. Alguns dos itens que poderiam ser melhorados:</p>
+
+<ul><li>inclusão implícita das funções em iomanip quando usado sistema de streams, tais como iostream e fstream (o que evita o problema explicado no artigo),</li>
+
+<li>conversão automática de uma string para inteiro e vice-versa sem o uso de um stringstream (ou a versão em C, atoi),</li>
+
+<li>eliminar o conhecido erro que ocorre quando se usam dois templates na mesma expressão, o > dobrado (ex: vector< meuTemplate< int > > a; // erro: operador > > ).</li></ul>
+
+<p>Esses são os que me vêm à mente no momento, mas existem mais. Essas são mudanças na linguagem e que podem melhorar um pouco a vida do iniciante.</p>
+
+<p>Os compiladores também podem melhorar, e muito. Até porque eles ainda estão ajustando a imensidão que se tornou o padrão C++ (tanto que, até onde sei, o único compilador que implementa 100% do padrão é o da Digital Mars, com seus export template).</p>
+
+<p>Concordo que o lanco do deprecated é muito triste e totalmente lamentável. Quer mais? O ambiente do VC8 marca a palavra "array" como reservada (como int, class...). Talvez eu tenha desinstalado meu Visual 2003 cedo demais...</p>
+
+<p>[]s</p>
+
+</section><hr/>
+
+<span style="float: left;">
+ [next: <a href="2005-05.html">2005-05</a>]
+ [prev: <a href="2006-05.html">2006-05</a>]
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>
