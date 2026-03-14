@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="reversing" title="Reversing"/></span>
+<section id="section_reversing">
+<p class="title">Reversing</p>
+<span class="title-heading">Caloni, 2026-03-13 computer reversing_tag blog</span>
+
+<p>A depuração é o meu assunto favorito de ciência da computação. Para mim é até a mais ciência de todas (programação eu considero mais próxima até de matemática). A criação de teorias, testes, obtenção de teorias e a transpiração constante em busca de padrões e os diabos dos detalhes é o que praticamente me fez virar programador. Sem gostar dessa parte menos nobre onde precisamos escarafunchar os algoritmos que criamos ou mantemos, muito se perde de tempo no dia-a-dia. Afinal de contas, se você trabalha com algo que não gosta está perdendo seu tempo. Se depuração te atrai, tenho boas notícias sobre a área para você :).</p>
+
+<p>Para começar a rodar seu código passo-a-passo comece com o artigo <a href="guia_basico_para_programadores_de_primeiro_breakpoint.html">Guia básico para programadores de primeiro breakpoint</a>. Se estiver usando outro ambiente adapte o que aprendeu para este ambiente. Os conceitos são os mesmos.</p>
+
+<p>Não escrevi muitos posts sobre depuração depuração mesmo. Minha vibe gira mais em torno de descobrir como as coisas funcionam por trás dos panos, o que acaba sendo útil também quando você conhece o código-fonte, mas se transforma em um superpoder quando você descobre que se souber assembly você nem precisa do fontes.</p>
+
+<p>Por isso estou listando posts com um viés mais sobre engenharia reversa do que depuração no sentido acadêmico da coisa. Considero conhecimento fundamental para não perder tempo se intimidando com a entranhas de um sistema. Não será o que você irá mexer sempre, apenas em casos exceptionais, mas te dará mais confiança ao longo do tempo para a depuração com o código-fonte.</p>
+
+<p>E por isso mesmo tenho alguns artigos mais densos utilizando ferramentas mais complexas como WinDbg e IDA. Eu sempre apelo para o WinDbg porque programo para Windows e ele é o depurador definitivo para todos os casos. Ele é mantido pela Microsoft junto do sistema operacional e é possível depurar userland e kernel na mesma ferramenta. Seus comandos não são intuitivos, mas seu poder acaba compensando. Especialmente para reversa :).</p>
+
+<ul><li><a href="aprendendo_conceitos_essenciais_do_windbg.html">Aprendendo rapidamente conceitos essenciais do WinDbg</a></li>
+
+<li><a href="hook_de_api_no_windbg.html">Hook de API no WinDbg</a></li>
+
+<li><a href="hook_de_com_no_windbg.html">Hook de COM no WinDbg</a></li>
+
+<li><a href="analisando_dumps_com_windbg_e_ida.html">Analisando Dumps com WinDbg e IDA</a></li></ul>
+
+<p>Antes de saber como desmontar as coisas para descobrir erros ou comportamentos é bom ter uma noção de como as coisas deveriam funcionar. Esses dois primeiros artigos são leves e irão te guiar por este caminho. Os dois próximos já começam a adentrar em assuntos que um depurador master precisa dominar, como multithreading. O último deles abre o leque de aprendizados fundamentais.</p>
+
+<ul><li><a href="provas_de_conceito.html">Construindo provas de conceito (PoC)</a></li>
+
+<li><a href="resolvendo_bugs_quase_impossiveis.html">Resolvendo bugs quase impossíveis</a></li>
+
+<li><a href="a_fila_das_threads.html">A fila das threads</a></li>
+
+<li><a href="a_sala_da_fila_das_threads.html">A sala da fila das threads</a></li>
+
+<li><a href="engenharia_reversa_para_principiantes.html">Engenharia reversa para principiantes</a></li></ul>
+
+<p>A partir daí você terá alguns possíveis caminhos a seguir com mais ênfase. Pode se dedicar inteiramente ao baixo nível, mais próximo das entranhas da máquina e do sistema operacional. Eu não tenho muito aqui sobre kernel development, mas a depuração muitas vezes passa pelo kernel mode e assembly. Você pode pular esta série e a seguinte se não preferir se enveredar por caminhos tão escuros.</p>
+
+<ul><li><a href="aprendendo_assembly_com_o_depurador.html">Aprendendo assembly com o depurador</a></li>
+
+<li><a href="importando_tipos_de_outros_projetos.html">Importando tipos de outros projetos</a></li>
+
+<li><a href="breakpoints_promiscuos.html">Breakpoints promíscuos</a></li>
+
+<li><a href="patch_de_emergencia.html">Patch de emergência</a></li>
+
+<li><a href="patch_de_emergencia_2.html">Patch de emergência 2</a></li></ul>
+
+<p>Este grupo abaixo é mais sobre conhecimento de sistema aliado à depuração efusiva. Deve sair desta lista com uma confiança muito boa em conseguir depurar qualquer coisa para Windows e outros SOs (o aprendizado de um acaba sendo uma escalada independente para outros).</p>
+
+<ul><li><a href="depuracao_da_mbr.html">Depuração da MBR</a></li>
+
+<li><a href="o_boot_no_windows_sem_windows.html">O boot no Windows: sem Windows</a></li>
+
+<li><a href="o_boot_no_windows_pre_ntldr.html">O boot no Windows: pré-NTLDR</a></li>
+
+<li><a href="o_boot_no_windows_ntldr.html">O boot no Windows: NTLDR</a></li>
+
+<li><a href="o_boot_no_windows_kernel.html">O boot no Windows: Kernel</a></li>
+
+<li><a href="debug_user_mode_in_kernel_mode.html">Como Fazer Debug de User Mode pelo Kernel Mode</a></li>
+
+<li><a href="depurando_ate_o_ultimo_segundo.html">Depurando até o último segundo</a></li></ul>
+
+<p>Agora, se você sentir que sua vibe está mais para user land, talvez um escalation engineer que manja muito sobre os paranauê dos registros, coisas e tá, quem sabe uma boa não seja você praticar reversa e depuração de sistemas fechados? Nesta série tenho algumas brincadeiras que fiz no serviço e no lazer.</p>
+
+<ul><li><a href="alterando_mensagem_de_erro_no_notepad.html">Alterando mensagem de erro no Notepad</a></li>
+
+<li><a href="conversor_de_houaiss_para_babylon_parte_1.html">Conversor de Houaiss para Babylon - parte 1</a></li>
+
+<li><a href="como_funciona_o_psexec.html">Como funciona o PsExec</a></li>
+
+<li><a href="encontrando_as_respostas_do_flash_pops.html">Encontrando as respostas do Flash Pops</a></li>
+
+<li><a href="process_monitor_e_o_monopolio_malcriado.html">Process Monitor e o monopólio malcriado</a></li>
+
+<li><a href="restaurando_o_registro.html">Restaurando o registro</a></li>
+
+<li><a href="suporte_tecnico.html">Suporte técnico</a></li>
+
+<li><a href="consumo_abusivo_de_memoria.html">Consumo abusivo de memória</a></li></ul>
+
+<p>E é isso. Desculpe pela extensa lista. E ela não é final, há mais posts escondidos sobre esses assuntos por aqui. No futuro devo manter este artigo atualizado, talvez mais enxuto e focado ou estruturado por áreas específicas. Se você quiser algum tipo de contato eu criei um <a href="reversing_no_telegram.html">grupo de engenharia reversa no Telegram</a>. Dá uma passada por lá.</p>
+
+<p>Boas depuradas!</p>
+
+</section>
+
+<span style="float: left;">
+ [prev: <a href="programming.html">programming</a>]
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

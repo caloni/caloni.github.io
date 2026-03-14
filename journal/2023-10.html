@@ -71,7 +71,7 @@ role="navigation" aria-label="main navigation">
 <span id="como_inspecionar_chamadas_com_remotas_olhando_a_informacao_de_marshaling" title="Como inspecionar chamadas COM remotas olhando a informação de marshaling"/></span>
 <section id="section_como_inspecionar_chamadas_com_remotas_olhando_a_informacao_de_marshaling">
 <p class="title"><a href="2023-10.html#como_inspecionar_chamadas_com_remotas_olhando_a_informacao_de_marshaling">#</a> Como inspecionar chamadas COM remotas olhando a informação de marshaling</p>
-<span class="title-heading">Caloni, 2023-10-03 <a href="2023-10.html#como_colocar_breakpoint_nas_chamadas_a_outputdebugstring">&lt;</a><a href="reversing.html">reversing</a><a href="2023-10.html#setando_proxima_instrucao_no_windbg">&gt;</a> <a href="2023-10.html#como_colocar_breakpoint_nas_chamadas_a_outputdebugstring">&lt;</a><a href="windbg.html">windbg</a><a href="2023-10.html#setando_proxima_instrucao_no_windbg">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_como_inspecionar_chamadas_com_remotas_olhando_a_informacao_de_marshaling')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2023-10-03 <a href="2023-10.html#como_colocar_breakpoint_nas_chamadas_a_outputdebugstring">&lt;</a><a href="reversing_tag.html">reversing_tag</a><a href="2023-10.html#setando_proxima_instrucao_no_windbg">&gt;</a> <a href="2023-10.html#como_colocar_breakpoint_nas_chamadas_a_outputdebugstring">&lt;</a><a href="windbg.html">windbg</a><a href="2023-10.html#setando_proxima_instrucao_no_windbg">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_como_inspecionar_chamadas_com_remotas_olhando_a_informacao_de_marshaling')"><sup>[copy]</sup></a></span>
 
 <p>Esta dica é para começar uma análise de reversa quando você deseja entender quais informações estão sendo trafegadas por uma chamada COM remota, ou seja, entre processos distintos. Isso vale para WinRT e para o COM tradicional. De uma forma ou de outra a chamada irá passar por `combase!NdrExtpProxySendReceive` e outras funções de RPC relacionadas, além das novas funções de ALPC, em especial `ntdll!NtAlpcSendWaitReceivePort`. Existem várias de marshaling e unmarshaling, mas o mais importante é centralizar na função que envia e recebe bytes e analisar estes bytes. Eles são a versão serializada dos parâmetro sendo trafegados.</p>
 
@@ -93,7 +93,7 @@ role="navigation" aria-label="main navigation">
 <span id="como_colocar_breakpoint_nas_chamadas_a_outputdebugstring" title="Como colocar breakpoint nas chamadas a OutputDebugString"/></span>
 <section id="section_como_colocar_breakpoint_nas_chamadas_a_outputdebugstring">
 <p class="title"><a href="2023-10.html#como_colocar_breakpoint_nas_chamadas_a_outputdebugstring">#</a> Como colocar breakpoint nas chamadas a OutputDebugString</p>
-<span class="title-heading">Caloni, 2023-10-03 <a href="2023-10.html#como_investigar_a_vtable_de_uma_interface_ou_objeto_com">&lt;</a><a href="reversing.html">reversing</a><a href="2023-10.html#como_inspecionar_chamadas_com_remotas_olhando_a_informacao_de_marshaling">&gt;</a> <a href="2023-10.html#como_investigar_a_vtable_de_uma_interface_ou_objeto_com">&lt;</a><a href="windbg.html">windbg</a><a href="2023-10.html#como_inspecionar_chamadas_com_remotas_olhando_a_informacao_de_marshaling">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_como_colocar_breakpoint_nas_chamadas_a_outputdebugstring')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2023-10-03 <a href="2023-10.html#como_investigar_a_vtable_de_uma_interface_ou_objeto_com">&lt;</a><a href="reversing_tag.html">reversing_tag</a><a href="2023-10.html#como_inspecionar_chamadas_com_remotas_olhando_a_informacao_de_marshaling">&gt;</a> <a href="2023-10.html#como_investigar_a_vtable_de_uma_interface_ou_objeto_com">&lt;</a><a href="windbg.html">windbg</a><a href="2023-10.html#como_inspecionar_chamadas_com_remotas_olhando_a_informacao_de_marshaling">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_como_colocar_breakpoint_nas_chamadas_a_outputdebugstring')"><sup>[copy]</sup></a></span>
 
 <p>Usando `sxe out` é possível parar a execução de um programa sendo depurado pelo WinDbg sempre que ele disparar alguma saída para o depurador através da função OutputDebugString. Isso permite em nossa sessão de debug descobrir de onde vem a chamada, pois o depurador para e podemos usar o comando `k` para dar uma espiada.</p>
 
@@ -115,7 +115,7 @@ role="navigation" aria-label="main navigation">
 <span id="como_investigar_a_vtable_de_uma_interface_ou_objeto_com" title="Como investigar a vtable de uma interface ou objeto COM"/></span>
 <section id="section_como_investigar_a_vtable_de_uma_interface_ou_objeto_com">
 <p class="title"><a href="2023-10.html#como_investigar_a_vtable_de_uma_interface_ou_objeto_com">#</a> Como investigar a vtable de uma interface ou objeto COM</p>
-<span class="title-heading">Caloni, 2023-10-03 <a href="2023-09.html#traffic">&lt;</a><a href="reversing.html">reversing</a><a href="2023-10.html#como_colocar_breakpoint_nas_chamadas_a_outputdebugstring">&gt;</a> <a href="2008-05.html#aprendendo_conceitos_essenciais_do_windbg">&lt;</a><a href="windbg.html">windbg</a><a href="2023-10.html#como_colocar_breakpoint_nas_chamadas_a_outputdebugstring">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_como_investigar_a_vtable_de_uma_interface_ou_objeto_com')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2023-10-03 <a href="2023-09.html#traffic">&lt;</a><a href="reversing_tag.html">reversing_tag</a><a href="2023-10.html#como_colocar_breakpoint_nas_chamadas_a_outputdebugstring">&gt;</a> <a href="2008-05.html#aprendendo_conceitos_essenciais_do_windbg">&lt;</a><a href="windbg.html">windbg</a><a href="2023-10.html#como_colocar_breakpoint_nas_chamadas_a_outputdebugstring">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_como_investigar_a_vtable_de_uma_interface_ou_objeto_com')"><sup>[copy]</sup></a></span>
 
 <p>Uma vez que você encontre onde está a `vtable` -- por exemplo, como o primeiro parâmetro da chamada em um método, vide <a href="2023-04.html#x64_deep_dive">convenção de chamadas do x64</a> -- liste no WinDbg os endereços contidos neste endereço (o parâmetro `L` é a quantidade de bytes para mostrar):</p>
 
@@ -218,7 +218,7 @@ Windows_Security_Authentication_Web_Core!_security_cookie (
 <span id="setando_proxima_instrucao_no_windbg" title="Setando próxima instrução no WinDbg"/></span>
 <section id="section_setando_proxima_instrucao_no_windbg">
 <p class="title"><a href="2023-10.html#setando_proxima_instrucao_no_windbg">#</a> Setando próxima instrução no WinDbg</p>
-<span class="title-heading">Caloni, 2023-10-04 <a href="2023-10.html#como_inspecionar_chamadas_com_remotas_olhando_a_informacao_de_marshaling">&lt;</a><a href="windbg.html">windbg</a><a href="2023-10.html#como_saber_quais_classes_winrt_estao_sendo_ativadas">&gt;</a> <a href="2023-10.html#como_inspecionar_chamadas_com_remotas_olhando_a_informacao_de_marshaling">&lt;</a><a href="reversing.html">reversing</a><a href="2023-10.html#como_saber_quais_classes_winrt_estao_sendo_ativadas">&gt;</a> <a href="2023-09.html#traffic">&lt;</a><a href="debugging.html">debugging</a><a href="2024-03.html#comparando_logs_no_procmon">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_setando_proxima_instrucao_no_windbg')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2023-10-04 <a href="2023-10.html#como_inspecionar_chamadas_com_remotas_olhando_a_informacao_de_marshaling">&lt;</a><a href="windbg.html">windbg</a><a href="2023-10.html#como_saber_quais_classes_winrt_estao_sendo_ativadas">&gt;</a> <a href="2023-10.html#como_inspecionar_chamadas_com_remotas_olhando_a_informacao_de_marshaling">&lt;</a><a href="reversing_tag.html">reversing_tag</a><a href="2023-10.html#como_saber_quais_classes_winrt_estao_sendo_ativadas">&gt;</a> <a href="2023-09.html#traffic">&lt;</a><a href="debugging.html">debugging</a><a href="2024-03.html#comparando_logs_no_procmon">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_setando_proxima_instrucao_no_windbg')"><sup>[copy]</sup></a></span>
 
 <p>Procurando onde setar a próxima instrução no WinDbg? Dica: curiosamente ela não fica no meio dos comandos de debug, mas no menu Edit. Selecione a linha desejada no assembly ou código-fonte para onde deseja alterar o fluxo de execução e use a opção "Set Current Instruction".</p>
 
@@ -230,7 +230,7 @@ Windows_Security_Authentication_Web_Core!_security_cookie (
 <span id="como_saber_quais_classes_winrt_estao_sendo_ativadas" title="Como saber quais classes winrt estão sendo ativadas"/></span>
 <section id="section_como_saber_quais_classes_winrt_estao_sendo_ativadas">
 <p class="title"><a href="2023-10.html#como_saber_quais_classes_winrt_estao_sendo_ativadas">#</a> Como saber quais classes winrt estão sendo ativadas</p>
-<span class="title-heading">Caloni, 2023-10-05 <a href="2023-10.html#setando_proxima_instrucao_no_windbg">&lt;</a><a href="reversing.html">reversing</a><a href="2023-11.html#encontrando_o_hive_de_aps_uwp">&gt;</a> <a href="2023-10.html#setando_proxima_instrucao_no_windbg">&lt;</a><a href="windbg.html">windbg</a><a href="2023-11.html#encontrando_o_hive_de_aps_uwp">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_como_saber_quais_classes_winrt_estao_sendo_ativadas')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2023-10-05 <a href="2023-10.html#setando_proxima_instrucao_no_windbg">&lt;</a><a href="reversing_tag.html">reversing_tag</a><a href="2023-11.html#encontrando_o_hive_de_aps_uwp">&gt;</a> <a href="2023-10.html#setando_proxima_instrucao_no_windbg">&lt;</a><a href="windbg.html">windbg</a><a href="2023-11.html#encontrando_o_hive_de_aps_uwp">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_como_saber_quais_classes_winrt_estao_sendo_ativadas')"><sup>[copy]</sup></a></span>
 
 <p>Quando analisando o comportamento de programas Windows que usam winrt é sempre útil dar uma olhada nas classes sendo ativadas. Uma função-chave para isso é a <a href="https://learn.microsoft.com/en-us/windows/win32/api/roapi/nf-roapi-rogetactivationfactory">RoGetActivationFactory</a>:</p>
 
@@ -483,8 +483,8 @@ Windows.Storage.Streams.DataReader
 </section><hr/>
 
 <span style="float: left;">
- <a href="2023-09.html">[2023-09]</a>
- <a href="2023-11.html">[2023-11]</a>
+ [next: <a href="2023-09.html">2023-09</a>]
+ [prev: <a href="2023-11.html">2023-11</a>]
 </span>
 </div>
 </div>
