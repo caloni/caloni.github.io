@@ -41,7 +41,8 @@ role="navigation" aria-label="main navigation">
 <li><small><a href="2026-03.html#change_slug_style_to_wiki_style">Change slug style to wiki style</a></small></li>
 <li><small><a href="2026-03.html#revisar_codigos_e_diagramas_usar_mermaid_e_ia_dos_posts_do_blogue">Revisar códigos e diagramas (usar Mermaid e IA) dos posts do blogue.</a></small></li>
 <li><small><a href="2026-03.html#programming">Programming</a></small></li>
-<li><small><a href="2026-03.html#reversing">Reversing</a></small></li></ul>
+<li><small><a href="2026-03.html#reversing">Reversing</a></small></li>
+<li><small><a href="2026-03.html#replicar_codigo_rapidamente">Replicar código rapidamente</a></small></li></ul>
 
 <span id="change_slug_style_to_wiki_style" title="Change slug style to wiki style"/></span>
 <section id="section_change_slug_style_to_wiki_style">
@@ -68,7 +69,7 @@ role="navigation" aria-label="main navigation">
 <span id="programming" title="Programming"/></span>
 <section id="section_programming">
 <p class="title"><a href="2026-03.html#programming">#</a> Programming</p>
-<span class="title-heading">Caloni, 2026-03-13 <a href="2026-03.html#reversing">&lt;</a><a href="computer.html">computer</a> <a href="2009-01.html#basico_do_basico_assembly">&lt;</a><a href="programming_tag.html">programming_tag</a> <a href="2026-03.html#reversing">&lt;</a><a href="blog.html">blog</a><a href="2026-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_programming')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2026-03-13 <a href="2026-03.html#reversing">&lt;</a><a href="computer.html">computer</a><a href="2026-03.html#replicar_codigo_rapidamente">&gt;</a> <a href="2009-01.html#basico_do_basico_assembly">&lt;</a><a href="programming_tag.html">programming_tag</a> <a href="2026-03.html#reversing">&lt;</a><a href="blog.html">blog</a><a href="2026-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_programming')"><sup>[copy]</sup></a></span>
 
 <p>Aqui estão os artigos que considero essenciais para seguir a carreira de programador. Foco principalmente nos fundamentos, pois considero que eles são tudo o que um programador necessita para evoluir. Tendo os fundamentos o resto se faz sozinho no dia-a-dia.</p>
 
@@ -180,9 +181,37 @@ role="navigation" aria-label="main navigation">
 
 </section><hr/>
 
+
+<span id="replicar_codigo_rapidamente" title="Replicar código rapidamente"/></span>
+<section id="section_replicar_codigo_rapidamente">
+<p class="title"><a href="2026-03.html#replicar_codigo_rapidamente">#</a> Replicar código rapidamente</p>
+<span class="title-heading">Caloni, 2026-03-18 <a href="2026-03.html#programming">&lt;</a><a href="computer.html">computer</a><a href="2026-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_replicar_codigo_rapidamente')"><sup>[copy]</sup></a></span>
+
+<p>Claudeão me ensinou uma boa essa semana. Precisava replicar um bloco de código para N diferentes itens. Queria usar algo simples como AWK. Eis o padrão:</p>
+
+<pre>
+printf '%s\n' Item1 Item2 Item3 | awk '
+{
+    item = $0
+    print &quot;{&quot;
+    print &quot;    changePart = &quot; item &quot;,&quot;
+    print &quot;    otherMembers = imutable,&quot;
+    print &quot;    pathMember = c:\\\\somepath\\\\withslashes,&quot;
+    print &quot;},&quot;
+    print &quot;&quot;
+}
+'
+</pre>
+<p>Para executar no Windows é possível usar o bash do Git.</p>
+
+<p>O padrão era mais complexo, com mais membros e algumas variáveis que mudavam de acordo com outro parâmetro. Porém, a ideia geral do printf junto de um script awk rapidão é o que me fez escrever este post.</p>
+
+<blockquote>Note on the backslashes: In a bash inline awk '...' script, you need \\ to get a literal \ in the output, since bash and awk each consume one level of escaping. The .awk file version only needed \ because bash wasn't involved.</blockquote>
+</section><hr/>
+
 <span style="float: left;">
- [next: <a href="2026-02.html">2026-02</a>]
- [prev: <a href="index.html">index</a>]
+ <a href="2026-02.html">[2026-02]</a>
+ <a href="index.html">[index]</a>
 </span>
 </div>
 </div>
