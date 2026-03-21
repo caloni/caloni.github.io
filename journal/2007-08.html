@@ -50,12 +50,12 @@ role="navigation" aria-label="main navigation">
 <li><small><a href="2007-08.html#antidebug_ocupando_a_debugport">Antidebug: ocupando a DebugPort</a></small></li>
 <li><small><a href="2007-08.html#todolist">ToDoList</a></small></li>
 <li><small><a href="2007-08.html#hook_de_api_no_windbg">Hook de API no WinDbg</a></small></li>
-<li><small><a href="2007-08.html#barata_eletrica_e_o_hacker_de_antigamente">Barata Elétrica e o hacker de antigamente</a></small></li></ul>
+<li><small><a href="2007-08.html#barata_eletrica">Barata Elétrica e o hacker de antigamente</a></small></li></ul>
 
 <span id="historia_da_linguagem_c_parte_1" title="História da Linguagem C: Parte 1"/></span>
 <section id="section_historia_da_linguagem_c_parte_1">
 <p class="title"><a href="2007-08.html#historia_da_linguagem_c_parte_1">#</a> História da Linguagem C: Parte 1</p>
-<span class="title-heading">Caloni, 2007-08-01 <a href="2007-07.html#c_and_c++_operators_precedence_table">&lt;</a><a href="computer.html">computer</a><a href="2007-08.html#historia_do_windows_parte_30">&gt;</a> <a href="2007-07.html#c_and_c++_operators_precedence_table">&lt;</a><a href="ccpp.html">ccpp</a><a href="2007-08.html#historia_da_linguagem_c_parte_2">&gt;</a> <a href="2007-07.html#c_and_c++_operators_precedence_table">&lt;</a><a href="blog.html">blog</a><a href="2007-08.html#historia_do_windows_parte_30">&gt;</a><a href="2007-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_historia_da_linguagem_c_parte_1')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2007-08-01 <a href="2007-07.html#c_cpp_operators_precedence_table">&lt;</a><a href="computer.html">computer</a><a href="2007-08.html#historia_do_windows_parte_30">&gt;</a> <a href="2007-07.html#c_cpp_operators_precedence_table">&lt;</a><a href="ccpp.html">ccpp</a><a href="2007-08.html#historia_da_linguagem_c_parte_2">&gt;</a> <a href="2007-07.html#c_cpp_operators_precedence_table">&lt;</a><a href="blog.html">blog</a><a href="2007-08.html#historia_do_windows_parte_30">&gt;</a><a href="2007-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_historia_da_linguagem_c_parte_1')"><sup>[copy]</sup></a></span>
 
 <p>Confesso que adoro estudar sobre a história da linguagem C. Essa verdadeira adoração pela linguagem me fez estudar suas precursoras, como as linguagens BCPL e B. Posso dizer que todo esse conhecimento, no final das contas, valeu a pena. Hoje entendo muito melhor as decisões tomadas na criação da linguagem e, principalmente, a origem de algumas idiossincrasias e boas idéias que permaneceram até hoje.</p>
 
@@ -494,6 +494,10 @@ int main()
 </pre>
 <p>Veja que como agora permitimos a seleção do anti-debug por chamada, fica mais fácil escolher quais os pontos a serem protegidos e quais não devem/podem por conta de perfomance ou outro detalhe obscuro que sempre existe na vida de um programador C++.</p>
 
+<p>Além da tabela de testes acima, é necessário notar que por mas três vezes a VM simplesmente parou de responder, sendo necessário reiniciar o programa Host.</p>
+
+<p>Em suma, o VirtualBox tem tudo para arrasar em futuras versões. Se, é claro, conseguir competir em qualidade com a VMWare que, no momento, é a líder em soluções de virtualização. Talvez por isso sua solução não seja tão barata.</p>
+
 </section><hr/>
 
 
@@ -926,7 +930,7 @@ void DebugLoop()
 <span id="hook_de_api_no_windbg" title="Hook de API no WinDbg"/></span>
 <section id="section_hook_de_api_no_windbg">
 <p class="title"><a href="2007-08.html#hook_de_api_no_windbg">#</a> Hook de API no WinDbg</p>
-<span class="title-heading">Caloni, 2007-08-29 <a href="2007-08.html#antidebug_ocupando_a_debugport">&lt;</a><a href="computer.html">computer</a><a href="2007-09.html#historia_do_windows_parte_40">&gt;</a> <a href="2007-08.html#antidebug_ocupando_a_debugport">&lt;</a><a href="blog.html">blog</a><a href="2007-08.html#barata_eletrica_e_o_hacker_de_antigamente">&gt;</a><a href="2007-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_hook_de_api_no_windbg')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2007-08-29 <a href="2007-08.html#antidebug_ocupando_a_debugport">&lt;</a><a href="computer.html">computer</a><a href="2007-09.html#historia_do_windows_parte_40">&gt;</a> <a href="2007-08.html#antidebug_ocupando_a_debugport">&lt;</a><a href="blog.html">blog</a><a href="2007-08.html#barata_eletrica">&gt;</a><a href="2007-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_hook_de_api_no_windbg')"><sup>[copy]</sup></a></span>
 
 <p>Basicamente existem duas maneiras de um executável obter o endereço de uma função API do Windows: ou ele usa uma lib de interface com a DLL (o chamado "link estático") ou ele chama a função GetProcAddress explicitamente (1).</p>
 
@@ -999,10 +1003,10 @@ FARPROC GetProcAddress(HMODULE hModule, LPCSTR lpProcName);
 </section><hr/>
 
 
-<span id="barata_eletrica_e_o_hacker_de_antigamente" title="Barata Elétrica e o hacker de antigamente"/></span>
-<section id="section_barata_eletrica_e_o_hacker_de_antigamente">
-<p class="title"><a href="2007-08.html#barata_eletrica_e_o_hacker_de_antigamente">#</a> Barata Elétrica e o hacker de antigamente</p>
-<span class="title-heading">Caloni, 2007-08-31 <a href="2007-07.html#desejo_insano_de_programar_no_kernel">&lt;</a><a href="essays.html">essays</a><a href="2007-10.html#cronograma">&gt;</a> <a href="2007-08.html#hook_de_api_no_windbg">&lt;</a><a href="blog.html">blog</a><a href="2007-09.html#antidebug_detectando_attach">&gt;</a><a href="2007-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_barata_eletrica_e_o_hacker_de_antigamente')"><sup>[copy]</sup></a></span>
+<span id="barata_eletrica" title="Barata Elétrica e o hacker de antigamente"/></span>
+<section id="section_barata_eletrica">
+<p class="title"><a href="2007-08.html#barata_eletrica">#</a> <a class="external" href="https://absoluta.org/barata/">Barata Elétrica e o hacker de antigamente</a></p>
+<span class="title-heading">Caloni, 2007-08-31 <a href="2007-07.html#desejo_insano_programar_no_kernel">&lt;</a><a href="essays.html">essays</a><a href="2007-10.html#cronograma">&gt;</a> <a href="2007-08.html#hook_de_api_no_windbg">&lt;</a><a href="blog.html">blog</a><a href="2007-09.html#antidebug_detectando_attach">&gt;</a> <a href="blogging.html">blogging</a><a href="2007-10.html#debug_da_bios_com_o_softice_16_bits">&gt;</a><a href="2007-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_barata_eletrica')"><sup>[copy]</sup></a></span>
 
 <p>Os artigos escritos por ele estavam em português, mas sempre em suas edições ele disponibilizava artigos de outras partes do mundo em inglês. Praticamente li todos eles, e muitos fiz questão de ler mais de uma vez. A maioria falava de um mundo que existia antes de eu ter um computador, onde existiam vírus e pirataria de programas em disquetes, BBSs e a tal reserva de mercado. Além, é claro, de dicas de como ser um nerd e não perder a sociabilidade (se é que isso é possível quando se é um nerd adolescente). Existe uma página no zine onde estão listados os melhores artigos de todos os tempos da revista.</p>
 
