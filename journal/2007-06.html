@@ -50,7 +50,7 @@ role="navigation" aria-label="main navigation">
 <span id="about" title="About"/></span>
 <section id="section_about">
 <p class="title"><a href="2007-06.html#about">#</a> About</p>
-<span class="title-heading">Caloni, 2007-06-14 <a href="2005-05.html#hello_world">&lt;</a><a href="blog.html">blog</a><a href="2007-06.html#hello_world2">&gt;</a><a href="2007-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_about')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2007-06-14 <a href="2006-05.html#diferencas_entre_c_e_c++_precedencia">&lt;</a><a href="blog.html">blog</a><a href="2007-06.html#hello_world2">&gt;</a><a href="2007-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_about')"><sup>[copy]</sup></a></span>
 
 <p>Quer entrar em contato? Mande o bom e velho <a href="mailto:wanderley.caloni@gmail.com">email</a>. Quer um <a href="https://caloni.com.br/journal/2007-06.html#resume">resumo profissional</a>?</p>
 
@@ -442,6 +442,60 @@ logger freetrojan.exe
 <p>De quebra ele exibe todos os parâmetros das funções de acordo com o tipo, identificando inclusive quando se trata de uma enumeração ou define reservado. Essa "mágica" é feita interpretando os headers que ficam na pasta Debugging Tools for Windows, winext, manifest, tarefa executada pelo Logger no início.</p>
 
 <p>O Debugging Tools é um pacote extremamente poderoso de ferramentas para programadores avançados. De maneira alguma conseguirei cobrir tudo que é possível fazer com essas ferramentas em apenas um blog e muito menos em um post. Porém, espero que essa pequena introdução seja o começo de uma série de artigos bem interessantes sobre debugging e uma série de testes realizados pelos meus leitores.</p>
+
+<h4>Comments</h4>
+
+<p>2009-01-28 Werner:</p>
+
+<p>Olá Caloni,</p>
+
+<p>Eu baixei o WinDbg, mas ainda não instalei. Gostaria de antes saber de você duas coisas (me sinto meio estúpido em perguntar sem ter antes usado, mas corro o risco):</p>
+
+<p>Com o WinDbg é possível efetuar debug da própria máquina onde ele foi instalado (como no SoftICE), ou ele apenas debuga remotamente (eu lembro-me de ter lido isso em algum outro lugar, que ele só debuga conectado a outra máquina)?</p>
+
+<p>Segunda pergunta, eu vi pelas figuras que me parece ser possível configurar o WinDbg para obter os símbolos pela rede (na primeira figura, janela de comandos, string "Symbol search path is..." - posso ao invés de baixar todos aqueles símbolos no site da Microsoft, configurar uma URL da internet, de onde o WinDbg pode acessar todos eles?</p>
+
+<p>Eu não sou um debugger experiente (nem principiante; estou começando a me interessar no assunto agora, depois de ler sua coluna aqui no Blog, para tentar resolver sozinho algumas "chatices" aqui do meu Windows), por isso pergunto essas coisas básicas. Espero não ter te aborrecido com as minhas bobagens.</p>
+
+<hr/>
+
+<p>2009-01-29 Werner:</p>
+
+<p>Hehehe, é sítio, desculpe...</p>
+
+<p>Obrigado pela paciência e pelas informações!</p>
+
+<hr/>
+
+<p>2009-01-29 Caloni:</p>
+
+<p>Olá, Werner.</p>
+
+<p>Se você está querendo depurar o kernel, então, de fato, vai precisar de duas máquinas: a depuradora (onde está o WinDbg) e a vítima (onde está o problema). Para depuração de coisas no ambiente do usuário (programas e serviços) geralmente apenas uma máquina é suficiente. Ela é depuradora e vítima ao mesmo tempo =).</p>
+
+<p>Sim, é muito fácil configurar o WinDbg para baixar os símbolos direto do saite da Microsoft. Para isso digite .symfix no console do WinDbg. Ele irá guardar os arquivos baixados em uma pasta de cachê.</p>
+
+<p>Boas depuradas!</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2009-01-29 Caloni:</p>
+
+<p>Sítio? Não entendi...</p>
+
+<p>Se estiver se referindo ao meu "saite", é a forma atual que escolhi para escrever o batidíssimo site que todos conhecem, e podem usar, assim como sítio =)</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2009-01-29 Werner:</p>
+
+<p>Sim, é isso mesmo que você entendeu. Eu notei que você usa essa terminologia, por isso achei que o saite foi uma brincadeira, o que eu achei engraçado.</p>
+
+<p>Eu já configurei o WinDbg para baixar os símbolos, conforme está explicado aqui (2026-03-21 link quebrado), e deu certo. Agora estou seguindo os tutoriais para tentar me entender com ele. Quero ver se consigo depurar um executável que tenho aqui na máquina, passo-a-passo, examinando determinados pontos onde ele possivelmente "olha" no registry do Windows e guarda um certo valor na memória... vamos ver no que dá.</p>
 
 </section><hr/>
 

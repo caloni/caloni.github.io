@@ -45,7 +45,8 @@ role="navigation" aria-label="main navigation">
 <li><small><a href="2026-03.html#replicar_codigo_rapidamente">Replicar código rapidamente</a></small></li>
 <li><small><a href="2026-03.html#creative_commons">Creative Commons</a></small></li>
 <li><small><a href="2026-03.html#linux_dhcp">Linux e o DHCP</a></small></li>
-<li><small><a href="2026-03.html#projetos_no_caloni_com_br">Projetos no Caloni.com.br</a></small></li></ul>
+<li><small><a href="2026-03.html#projetos_no_caloni_com_br">Projetos no Caloni.com.br</a></small></li>
+<li><small><a href="2026-03.html#comentarios_para_revisar">Comentários para revisar</a></small></li></ul>
 
 <span id="change_slug_style_to_wiki_style" title="Change slug style to wiki style"/></span>
 <section id="section_change_slug_style_to_wiki_style">
@@ -62,7 +63,7 @@ role="navigation" aria-label="main navigation">
 <span id="revisar_codigos_e_diagramas_usar_mermaid_e_ia_dos_posts_do_blogue" title="Revisar códigos e diagramas (usar Mermaid e IA) dos posts do blogue."/></span>
 <section id="section_revisar_codigos_e_diagramas_usar_mermaid_e_ia_dos_posts_do_blogue">
 <p class="title"><a href="2026-03.html#revisar_codigos_e_diagramas_usar_mermaid_e_ia_dos_posts_do_blogue">#</a> Revisar códigos e diagramas (usar Mermaid e IA) dos posts do blogue.</p>
-<span class="title-heading">Caloni, 2026-03-10 <a href="2026-03.html#change_slug_style_to_wiki_style">&lt;</a><a href="projects.html">projects</a> <a href="2026-03.html#change_slug_style_to_wiki_style">&lt;</a><a href="todo.html">todo</a><a href="2026-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_revisar_codigos_e_diagramas_usar_mermaid_e_ia_dos_posts_do_blogue')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2026-03-10 <a href="2026-03.html#change_slug_style_to_wiki_style">&lt;</a><a href="projects.html">projects</a><a href="2026-03.html#comentarios_para_revisar">&gt;</a> <a href="2026-03.html#change_slug_style_to_wiki_style">&lt;</a><a href="todo.html">todo</a><a href="2026-03.html#comentarios_para_revisar">&gt;</a><a href="2026-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_revisar_codigos_e_diagramas_usar_mermaid_e_ia_dos_posts_do_blogue')"><sup>[copy]</sup></a></span>
 
 <p>Após bagunçar a formatação acho que seria uma boa atualizar os posts selecionados para uma versão padronizada e fácil de manter no futuro. Manter o limite de colunas no código é elegante o suficiente para manter.</p>
 
@@ -312,6 +313,2458 @@ ONBOOT=yes
 bzr clone lp:nome-do-projeto
 </pre>
 <p>Espero que seja de bom uso de todos os que se interessam por mouses clicando, xadrez e dicionários eletrônicos.</p>
+
+</section><hr/>
+
+
+<span id="comentarios_para_revisar" title="Comentários para revisar"/></span>
+<section id="section_comentarios_para_revisar">
+<p class="title"><a href="2026-03.html#comentarios_para_revisar">#</a> Comentários para revisar</p>
+<span class="title-heading">Caloni, 2026-03-22 <a href="2026-03.html#revisar_codigos_e_diagramas_usar_mermaid_e_ia_dos_posts_do_blogue">&lt;</a><a href="projects.html">projects</a> <a href="2026-03.html#revisar_codigos_e_diagramas_usar_mermaid_e_ia_dos_posts_do_blogue">&lt;</a><a href="todo.html">todo</a> <a href="2025-10.html#textos_de_ia_nao_tem_alma">&lt;</a><a href="draft.html">draft</a><a href="2026-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_comentarios_para_revisar')"><sup>[copy]</sup></a></span>
+
+<p><a href="2008-02.html#os_diferentes_erros_na_linguagem_c">Os diferentes erros na linguagem C</a></p>
+
+<p>2008-02-19 <a href="http://marcioandreyoliveira.blogspot.com">Marcio Andrey Oliveira</a>:</p>
+
+<p>Wanderley, teu artigo está excelente.</p>
+
+<p>Só há um pequeno engano: na tua explicação tu mostras que __HEADER__ foi definido no header-do-mal.h (tu colocaste em vermelho, para chamar a atençao do leitor).</p>
+
+<p>Tu dizes logo abaixo que o conteúdo de  meuheader.h não será incluído devido a definição anterior de __HEADER__. Na realidade, deverias ter definido __MEUHEADER__ no arquivo header-do-mal.h.</p>
+
+<p>Com certeza foi apenas um pequeno engano da tua parte, mas isto causa dois problemas:</p>
+
+<p>1. para quem ainda não domina o C isto pode causar confusão.</p>
+
+<p>2. teu riso maléfico foi em vão.</p>
+
+<p>[]s,</p>
+
+<p>mao</p>
+
+<hr/>
+
+<p>2008-02-15 <a href="http://vinigodoy.wordpress.com">ViniGodoy</a>:</p>
+
+<p>Uma outra curiosidade. O código fonte do Quake faz um uso menos comum do include. Existe um arquivo chamado anormal.h, que contém uma lista na seguinte forma:</p>
+
+<pre>
+10, 20, 30, 40,
+14, 56, 23, 12
+</pre>
+<p>(os números são apenas ilustrativos).</p>
+
+<p>No código fonte que usa esse arquivo, você encontra o include no meio do código, e não no topo, como geralmente é o usual:</p>
+
+<pre>
+int[] anorms = {
+ #include &quot;anormals.h&quot;
+};
+</pre>
+<p>E com isso, criam um vetor. Assim fica fácil de ver que um include nada mais é do que um "copypaste" de um arquivo em outro.</p>
+
+<p>Quem quiser baixar o código do quake e ver isso, pode obter o arquivo no site da id-software:</p>
+
+<p>http://www.idsoftware.com/business/techdownloads/</p>
+
+<hr/>
+
+<p>2008-02-15 <a href="http://vinigodoy.wordpress.com">ViniGodoy</a>:</p>
+
+<p>Excelente artigo, mais uma vez. :)</p>
+
+<p>O exemplo do max eu já conhecia. Pelo menos, nesse caso, você pode não ter um problema sério (embora tenha um descrescimo de performance), pois a função pode retornar duas vezes o mesmo resultado.</p>
+
+<p>Agora, considere o que acontece se o valor passado para função for alterado, ou no código abaixo, também inocente: int x = max(a++, b);</p>
+
+<p>Não haverá erro de compilação e a variável a será somada duas vezes. E o mais cruel, é que o código "cheira" a algo correto, como no caso da sua função. Além disso, como macros desaparecem, são muito mais difíceis de depurar.</p>
+
+<p>É por essas e outras que o Scott Meyers, no Effective C++ (livro obrigatório para todo programador C++), sugere que usem-se funções inline no lugar de macros. Ou então templates, que é um poderoso mix dos recursos fornecidos pelo pré-processador com os do compilador.</p>
+
+<p>Qual é a lição que gardamos disso? Use macros só se for imprescindível, caso contrário, deixe a tarefa para o compilador. Ele é seu amigo e procura te ajudar na verificação do código.</p>
+
+<hr/>
+
+<p>2008-02-19 Caloni:</p>
+
+<p>Olá, Márcio, obrigado pelos elogios.</p>
+
+<p>Corrigido. Falha minha. Esse header é do mal, mesmo. Explicando sobre correção de bugs, não é nada bonito o exemplo já estar "bugado". Valeu pela dica! Nunca iria ver esse erro, mesmo vermelho e piscando.</p>
+
+<p>Agora sim, o mal prevalecerá =)</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-02-19 Caloni:</p>
+
+<p>Vini, obrigado mais uma vez pela visita e pelos elogios.</p>
+
+<p>Você está certo com respeito à chamada de função, pois em 90% das vezes as funções fazem sempre a mesma coisa se não forem parametrizadas.</p>
+
+<p>Porém, imagine uma função que escreve alguma coisa em um arquivo, ou atualiza uma variável global/estática. Ela poderá ter o mesmo efeito maléfico que o seu "a++".</p>
+
+<p>Quando se trata de programar em C, clareza é mil vezes mais importante que concisão.</p>
+
+<p>[]s</p>
+
+<p><a href="2007-06.html#historia_do_windows_parte_10">História do Windows - parte 1.0</a></p>
+
+<p>2008-07-14 Ricardo:</p>
+
+<p>Gostei muito do artigo, Caloni. Em termos de programação, deveria ser excitante se pudessemos ter o codigo fonte deles, não? :)Para eu matar a curiosidade sobre as telas desses sistemas operacionais, andei fuçando e achei <a href="http://www.guidebookgallery.org/screenshots/firstrun">esse site</a>.</p>
+
+<p><a href="2008-02.html#desconstruindo_ioccc">Desconstruindo IOCCC</a></p>
+
+<p>2008-02-13 <a href="http://vinigodoy.wordpress.com">ViniGodoy</a>:</p>
+
+<p>Se for o C99 ou o C++, há ainda outra coisa legal. Você pode substituir caracteres como as chaves e os colchetes por dígrafos equivalentes, conforme a seguinte tabela:</p>
+
+<pre>
+ = ]
+ = }
+%: = #
+%:%: = ##
+</pre>
+<p>A declaração de um vetor fica divertida:</p>
+
+<pre>
+int x = ;
+</pre>
+<p>Esses pares de caracteres foram incluídos para facilitar a digitação em teclados sem esses símbolos. Mas são conhecidos por pouquíssimos usuários...</p>
+
+<hr/>
+
+<p>2008-02-13 <a href="http://vinigodoy.wordpress.com">ViniGodoy</a>:</p>
+
+<p>PS: Acho que meu código não ficou corretamente formatado ali em cima, por causa do HTML. Depois você editar e corrigir? Obrigado...</p>
+
+<hr/>
+
+<p>2008-02-19 Caloni:</p>
+
+<p>Olá, Gustavo.</p>
+
+<p>Obrigado pelo apoio! Acredite, às vezes é importante saber que existe realmente alguém do outro lado que está lendo o que eu escrevo =)</p>
+
+<p>Estou tentando não perder o pique, esse ano será decisivo para me manter nessa lotação cada vez mais lotada que é a blogosfera.</p>
+
+<p>Como nem só de elogios vive o homem, se tiver críticas ou sugestões, esteja à vontade para se manifestar.</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-02-14 Caloni:</p>
+
+<p>Olá, Vini. De fato, os dígrafos em C/C++ são uma das características das duas linguagens das mais obscuras, até porque dificilmente conheceremos um programador que não disponha das teclas de chaves e colchetes. Você conhece algum? =)</p>
+
+<p>A parte de pontuação (6.4.6) da linguagem C explica sucintamente a correlação entre esses sinais bizarros e seus equivalentes:</p>
+
+<pre>
+[#3] In all aspects of the language, these six tokens
+&amp;lt;:  :&gt;  &amp;lt;%  %&gt;  %:  %:%:
+behave, respectively, the same as these six tokens
+[   ]   {   }   #   ##
+</pre>
+<p>Dessa forma, sua declaração de vetor ficaria mais ou menos assim (com um pouco de preprocessamento):</p>
+
+<pre>
+%:ifdef _OBSCURE_VECTOR_
+int x&amp;lt;::&gt;=&amp;lt;%1,2,3%&gt;;
+%:endif
+</pre>
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-02-13 <a href="http://www.inf.ufsc.br/~meira">gustavo</a>:</p>
+
+<p>Gostei do artigo.</p>
+
+<p>Estou comentando mais para dar um estusiasmo pro Caloni :)</p>
+
+<p>Continue no rítmo :)</p>
+
+<p><a href="2026-03.html#creative_commons">Creative Commons</a></p>
+
+<p>2008-02-19 <a href="http://dqsoft.blogspot.com.br">Daniel Quadros</a>:</p>
+
+<p>Legal, estava na minha lista de idéias para o blog indicar os direitos de reprodução, mas não tinha muita idéia de como fazer. Uma dica para quer for tapado como eu: para criar o ícone basta acessar a página do Creative Commons e clicar no alto em 'License Your Work'.</p>
+
+<p>Agora só falta achar tempo para rever o layout do blog, além do ícone do Creative Commons estou pensando em incluir o widget do Shelfari e o do Dilbert e colocar uma lista de links para sites interessantes (como o seu).</p>
+
+<hr/>
+
+<p>2008-02-19 Caloni:</p>
+
+<p>Também ficou na minha lista por um bom tempo, até que chegou o ponto onde eu não tinha mais idéias (nem tempo), a não ser escrever sobre isso. A propósito, os direitos do seu blogue são os mesmos que o meu?</p>
+
+<p>Eu pensava que "enfeitava" meu sítio apenas para mim, já que, pelo menos eu, acesso todos os blogues pelo Google Reader. Aliás, é uma enquete interessante: "você conhece o leiaute do seu blogue favorito?"</p>
+
+<p>[]s</p>
+
+<p><a href="2008-02.html#codigos_de_entrevista_o_ponteiro_nulo">Códigos de entrevista - o ponteiro nulo</a></p>
+
+<p>2008-03-05 Yorick:</p>
+
+<p>Gostaria de aproveitar e mencionar Walter Oney:</p>
+
+<blockquote>More About NULL Pointers</blockquote>
+<blockquote>While we’re on the subject of invalid pointers, note that a NULL pointer is (a) an invalid user-mode pointer in Windows XP and (b) a perfectly valid pointer in Windows 98/Me. If you use a NULL pointer directly, as in *p, or indirectly, as in p-StructureMember, you’ll be trying to reference something in the first few bytes of virtual memory. Doing so in Windows XP will cause a trappable access violation.</blockquote>
+<blockquote>Dereferencing a NULL pointer in Windows 98/Me will not, of itself, cause any immediately observable problem. I once spent several days tracking down a bug that resulted from overstoring location 0x0000000C in a Windows 95 system. That location is the real-mode vector for the breakpoint (INT 3) interrupt. The wild store didn’t show up until some infrequently used application did an INT 3 that wasn’t caught by a debugger. The system reflected the interrupt to real mode. The invalid interrupt vector pointed to memory containing a bunch of technically valid but nonsensical instructions followed by an invalid one. The system halted with an invalid operation exception. As you can see, the eventual symptom was very far removed in space and time from the wild store.</blockquote>
+<blockquote>To debug a different problem in Windows 98, I once installed a debugging driver to catch alterations to the first 16 bytes of virtual memory. I had to remove it because so many VxD drivers (including some belonging to Microsoft) were getting caught.</blockquote>
+<blockquote>The moral of these anecdotes is that you should always test pointers for NULL before using them if there is any possibility that the pointer could be NULL. To learn whether the possibility exists, read documentation and specifications very carefully.</blockquote>
+<p>2008-03-05 <a href="http://techberto.wordpress.com">Alberto Fabiano</a>:</p>
+
+<p>Este livro do Koening é realmente uma obra muito interessante; eu também recomendo! Aliás, ele é considerando uma das 10 personalidades mais importantes do C++ e está na lista do 5 mais do Scott Meyers.</p>
+
+<hr/>
+
+<p>2008-02-29 <a href="http://www.bleno.org">Bleno</a>:</p>
+
+<p>Olá Caloni...</p>
+
+<p>Bom post... Parabéns pelo site. Ótimo material...</p>
+
+<p>Ah, no link do blog do http://dqsoft.blogspot.com/ está faltando o "g" de bloGspot ;)</p>
+
+<p>Abraços...</p>
+
+<p>[]´s</p>
+
+<hr/>
+
+<p>2008-03-03 <a href="http://dqsoft.blogspot.com.br">Daniel Quadros</a>:</p>
+
+<p>Bem que eu ia colocar um comentário a respeito... Na programação "embarcada" é comum aparecerem alguns endereços fixos. Por exemplo, em um microcontrolador que estou programando a gravação na memória não volátil é feita colocando-se os dados de um "setor" na Ram a partir do endereço zero e depois "dançando um samba" sobre alguns registradores. Para o código ficar um pouco mais bonito, declarei o buffer de gravação em um módulo assembler e evitei ter um ponteiro explicitamente nulo.</p>
+
+<hr/>
+
+<p>2008-03-23 Caloni:</p>
+
+<p>Olá, Bleno. Valeu pela dica! Corrigido.</p>
+
+<hr/>
+
+<p>2008-03-23 Caloni:</p>
+
+<p>Olá, Yorick.</p>
+
+<p>Desconhecia esse comentário do Walter. Provavelmente é bem antigo, já que ele está citando Win9x, um tabu atualmente entre o pessoal da MS.</p>
+
+<p>Também desconhecia esse detalhe de implementação desses sitemas. Valeu a dica!</p>
+
+<p>[]s</p>
+
+<p><a href="2008-03.html#iteradores_nao_sao_constantes">Iteradores não são constantes</a></p>
+
+<p>2008-04-18 Luiz Salamon:</p>
+
+<p>Recentemente coloquei um post na lista CCPPBRASIL (http://groups.google.com/group/ccppbrasil/browse_thread/thread/1e444ab3067baf55?hl=pt-BR), sobre um problema que tive recentemente, na verdade resolvi com o uso de sincronicação, mas gostaria de sua sugestão, pois penso que deveria existir uma forma mais simples de resolver o problema.Reproduzindo o texto :</p>
+
+<p>Partindo do código abaixo, que simplifica a situação real onde oproblema se apresentou, tenho um problema que resolvi porsincronização, pois o sistema é multithread.</p>
+
+<pre>
+map map_test;
+map::iterator iter_map_test;
+
+map_test [ &quot;AAAAA&quot; ] = &quot;11111&quot;;
+map_test [ &quot;BBBBB&quot; ] = &quot;22222&quot;;
+map_test [ &quot;CCCCC&quot; ] = &quot;33333&quot;;
+
+iter_map_test = map_test.find (&quot;BBBBB&quot;); // iterator esta apontando
+para uma posição válida
+
+map_test.erase (&quot;BBBBB&quot;);// neste ponto o iterator deixa de ser válido
+</pre>
+<p>A questão é como faço para verificar se o iterator iter_map_test éválido ? Pois qualquer operação que tento a partir do momento que omesmo fica inválido causa uma excesão.</p>
+
+<hr/>
+
+<p>2008-03-06 <a href="http://paginas.terra.com.br/informatica/thiago_adams">Thiago R Adams</a>:</p>
+
+<p>Uma curiosidade é que o map não retorna o iterator no erase.</p>
+
+<p>Mas a implementação da STL que vem no VC++ retorna. Tive este problema uma vez quando fui compilar um código no gcc. Eu não imagina que isso não era padrão.</p>
+
+<p>Mas vendo a documentação da msdn.</p>
+
+<p>http://msdn2.microsoft.com/en-us/library/z2f3cb7h.aspx</p>
+
+<p>Tem uma nota:</p>
+
+<p>"This return type does not conform to the C++ standard."</p>
+
+<p>A solução sem usar o retorno eh:</p>
+
+<pre>
+if (condition)
+  map.erase(it++);
+else
+  ++it;
+</pre>
+<hr/>
+
+<p>2008-04-22 Caloni:</p>
+
+<p>Olá, Luiz.</p>
+
+<p>As respostas da lista de discussão foram ótimas, e de fato não há muito o que fazer. Considere um iterador um ponteiro que não aponta mais para nada válido. Nesse caso, não há como você validá-lo.</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-03-23 Caloni:</p>
+
+<p>Olá, Thiago.</p>
+
+<p>Mais um problema com a compatibilidade do Visual Studio. Desse jeito foi começar a usar o GCC para meus testes.</p>
+
+<p>Valeu o aviso!</p>
+
+<p>[]s</p>
+
+<p>2008-04-10 <a href="http://techberto.wordpress.com">Alberto Fabiano</a>:</p>
+
+<p>Meu caro,</p>
+
+<p>Só por curiosidade, eu também fiz o teste nos seguintes compiladores:</p>
+
+<ul><li>ICC, Intel C++ Compiler 10.1: Comportamento OK</li>
+
+<li>DC, Digital Mars C++ Compiler 8.48: Comportamento OK</li></ul>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-04-10 <a href="http://techberto.wordpress.com">Alberto Fabiano</a>:</p>
+
+<p>Pequena correção...</p>
+
+<p>O nome do compilador da digital Mars é DMC e não dc, porém quando eu percebi o erro eu já havia clicado no "submit comment" ;-(</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-04-16 <a href="http://www.planetamessenger.org">PopolonY2k</a>:</p>
+
+<p>Grande blog...</p>
+
+<p>...Caloni, não o conhecia anteriormente e vejo que darei vários "pitacos" por aqui sempre que puder.</p>
+
+<p>Sobre o bloco try catch(...) em inicialização de variáveis e objetos em construtores, vale ressaltar o que o amigo Thiago Adams citou acima, que é o uso em qualquer tipo de função de C++, mas alguns cuidados devem ser tomados conforme reportado no padrão ANSI de C++ proposto em 1998.</p>
+
+<p>Sobre não ter funcionado em alguns compiladores reportados por você, como o Visual Studio 6 - VC++ 6.0, Borland C++ Builder 5 e o Borland Studio Developer Studio 4, deve deixo registrado aqui que a proposta de try catch na inicialização de funções veio na versão final da proposta do padrão ANSI para C++ em 1998, portanto compiladores, como o Visual C++ 6.0 (Visual Studio 6) e Borland C++ Builder 5 já estavam no mercado e portanto não existia maneira de que os mesmos respeitassem a nova sintaxe proposta pelo ANSI.</p>
+
+<p>Segue um artigo de referência no Dr. Dobbs.</p>
+
+<p>http://www.ddj.net/cpp/184401297</p>
+
+<p>Um abraço,</p>
+
+<p>PopolonY2kPlanetaMessenger.org</p>
+
+<hr/>
+
+<p>2008-04-11 <a href="http://paginas.terra.com.br/informatica/thiago_adams/">Thiago Adams</a>:</p>
+
+<p>Também pode ser usado assim:</p>
+
+<pre>
+void f() try
+{
+  throw 1;
+  //throw &quot;&quot;;
+}
+catch (int) {
+  throw;
+}
+catch (...) {
+  std::terminate();
+}
+que poderia simular algo assim:
+
+void f() throw(int)
+{
+}
+</pre>
+<hr/>
+
+<p>2008-04-14 <a href="http://paginas.terra.com.br/informatica/thiago_adams">Thiago R Adams</a>:</p>
+
+<p>Quando uma função possui a especificação das exceções significa que ela só pode lançar aquelas exceções. Caso seja lançado outra, o std::unexpected(); é chamado. O compilador VC++ não obedece essa especificação do C++. Mas é possível gerar o código na mão, usando aquela sintaxe com o try.Então por exemplo:</p>
+
+<pre>
+void f() throw(int); //num compilador que obedece o padrao
+</pre>
+<p>É equivalente a fazer "na mão":</p>
+
+<pre>
+void f() try
+{
+   //algo...
+}
+catch (int) {
+throw;
+}
+catch (...) {
+std::unexpected()
+}
+</pre>
+<p>Este é outro uso curioso do try que eu resolvi comentar aqui.</p>
+
+<hr/>
+
+<p>2008-04-13 Caloni:</p>
+
+<p>Alberto: valeu pelos testes! É bom saber que existem outros compiladores tão bons quanto o GCC e o VC no mercado.</p>
+
+<p>Thiago: isso sim é bem esquisito! Te confesso que nem entendi direito o uso desse exemplo.</p>
+
+<p>try_catch_flutuante</p>
+
+<p>2008-07-13 Adrian:</p>
+
+<p>Olá caloni,</p>
+
+<p>Estou interessadíssimo nisso, mas tive algum problema. Quando executo o Houaiss2Babylon na pasta c:\houaiss nada acontece, o mesmo se executo na pasta c:\houaiss\dicionario. A tela do cmd só pipoca rapidamente na tela. Quando tento executar pelo cmd, entro o comando e nada ocorre. Uso o Windows XP sp2, houaisss versao 1.05, instalei o babylon 7 e o babylon builder.</p>
+
+<p>Agradeço pela atenção.</p>
+
+<hr/>
+
+<p>2008-04-23 Angélica:</p>
+
+<p>Oi Wanderley,</p>
+
+<p>O Bloco de Notas abriu, mas disse que a operação é inválida:</p>
+
+<pre>
+Start building...
+
+Invalid project file name: Houaiss.gpr
+</pre>
+<p>Só não sei se abri o prompt da maneira correta. Fui para Iniciar  Procurar, escrevi 'cmd' e selecionei 'cmd.exe' e o prompt se abriu. Depois eu simplesmente colei o comando sugerido acima e dei um 'enter'.</p>
+
+<p>Mais uma vêz, MUITO obrigada!</p>
+
+<hr/>
+
+<p>2008-04-23 Angélica &lt;angelica_sampaio@hotmail.com&gt;:</p>
+
+<p>DEU CERTO!!!</p>
+
+<p>Agora eu consegui abrir o prompt DENTRO da pasta (usando a função 'Open Command Prompt here' do menu de contexto com a tecla SHIFT), e tudo correu as mil maravilhas.O dicionário já esta instalado no Babylon e funcionando. Se você fizer novas modificaçôes avise-nos. Marcarei este site e voltarei sempre em busca de modificações.</p>
+
+<p>MUITÍSSIMO OBRIGADA,</p>
+
+<p>Angélica</p>
+
+<hr/>
+
+<p>2008-04-21 Angélica:</p>
+
+<p>Eu tenho um dicionário Houaiss 2.0 e o Babylon 7, mas não entendo nada de computação e portanto não entendi o que devo fazer para convertê-lo ao formato Babylon. Baixei a pasta acima [VERSÃO ATUAL] mas não tenho a mínima idéia de como usá-la.</p>
+
+<p>1. Da onde extraio o arquivo [Houaiss.txt]?</p>
+
+<p>2. Qual é a 'pasta do projeto'?</p>
+
+<p>3. Uma vez localizado o arquivo [Houaiss.txt], se eu copiá-lo para a referida pasta, o que devo fazer? Clicar aonde?</p>
+
+<hr/>
+
+<p>2008-04-22 Angélica:</p>
+
+<p>MUITO OBRIGADO pelas dicas. Segui todas (menos a do Administrador, apesar de estar usando Windows Vista). Será que foi este o problema?</p>
+
+<p>É que cheguei até o ítem 7, mas quando o Babylon builder entrou em ação recebi oma mensagem de erro.</p>
+
+<p>Copiei a janela do erro com Snagit e se houver um modo posso enviá-la. Para tanto precisaria de um e-mail... O meu já está anotado acima.</p>
+
+<p>Mesmo assim, mais uma vez obrigada. VALEU!!!</p>
+
+<hr/>
+
+<p>2008-04-22 Angélica:</p>
+
+<p>Oi novamente,</p>
+
+<p>Tentei mais vezes, agora como administradora mas mesmo assim não deu certo.A mensagem de erro é a seguinte:</p>
+
+<pre>
+Value of '-2' is not valid for 'Value'. 'Value'should be between
+'minimum' and 'maximum'.
+Parameter name: Value
+</pre>
+<p>Mas não é só o '-2' que tem problema. Quase todos os valores entre 1 e 18 trazem a mesma mensagem. E não há como ignorá-las, pois a construção do glossário pára em 18%, volta para o começo e pára de novo.</p>
+
+<p>Obrigada pela atenção,Angélica</p>
+
+<hr/>
+
+<p>2008-07-11 Fabricio Morrone:</p>
+
+<p>Caloni,</p>
+
+<p>Tive o mesmo problema do Roberto. Tenho o Houaiss instalado assim como o Babylon e ainda não instalei o Babylon Builder. Uso Windows Vista em portugues. Não sei o que fazer, pois acho que sei menos de programação que o Major!!!</p>
+
+<hr/>
+
+<p>2008-07-11 Fabricio Morrone:</p>
+
+<p>Olá Caloni</p>
+
+<p>Executei como vc pediu e nada aconteceu. O meu Houaiss é a versão 1.0.5, de agosto de 2002. Será que é por isso que não dá certo?</p>
+
+<hr/>
+
+<p>2008-07-14 Fabricio Morrone:</p>
+
+<p>Oi Caloni</p>
+
+<p>Testei essa nova versão, ela dá várias mensagens de erro mesmo, mas não cria os arquivos txt. As mensagens são para cada arquivo da pasta Dicionario (Erro abrindo arquivo "C:\ArquivodeProgramas\Houaiss\Dicionario\deah***.dhx". Erro de sistema numero 3"). Essa mensagem aparece também com a extensão txt.</p>
+
+<p>Por enquanto, obrigado por tentar nos ajudar!!</p>
+
+<hr/>
+
+<p>2008-05-23 Major Quaresma:</p>
+
+<p>Muito obrigado a todos,</p>
+
+<p>Não sei NADA de programação. Pra ser mais preciso, comecei - e logo desisti - de um famoso curso da UFMG de programação em C. Meu programa mais complexo pedia que o usuario inserisse um numero e desse enter, ai o meu "programaço" pedia um seguindo numero e quando o usuario apertasse enter o meu "programaço" somava os dois numeros, dividia-os por 2 e mostrava o resultado!!! Uau!!! Que maximo!!! Mas foi util pois pelo menos eu pude compilar o programinha para extrair os dados do Houaiss... Muita tentativa e erro ate eu entender o que estava fazendo, mas funcionou... Agora vou tentar passar a base de dados para SlovoEd (PalmOS).</p>
+
+<hr/>
+
+<p>2009-02-09 <a href="http://www.renanimated.com">Renan de Araujo</a>:</p>
+
+<p>Olá! queria agradecer pelo esforço de criar o programa, mas tenho também uma pergunta:</p>
+
+<p>Eu gostaria saber se é possível fazer esse programa gerar a tabela que vai para o babylon baseada em XML e não HTML. Por que eu gostaria de converter o arquivo final para o dicionário do mac, que tenho um conversor de babylon pro dict.app, mas o problema é o que o software não sabe interpretar HTML, então preciso de uma fonte baseada em XML</p>
+
+<p>Grato pela atenção!</p>
+
+<hr/>
+
+<p>2008-05-18 Ricardo:</p>
+
+<p>Olá, Caloni.</p>
+
+<p>Esbarrei por aqui com seu projeto e achei interessante, compilei com o Visual C++ 2008 Express Edition. Foi criado o arquivo Houaiss2Babylon.exe mais ele não está convertendo os arquivos.</p>
+
+<p>A mensagem do Debug é:</p>
+
+<pre>
+'Houaiss2Babylon.exe': Loaded 'C:\Tests\Houaiss2Babylon\Release\Houaiss2Babylon.exe', Symbols loaded.
+'Houaiss2Babylon.exe': Loaded 'C:\WINDOWS\system32\ntdll.dll'
+'Houaiss2Babylon.exe': Loaded 'C:\WINDOWS\system32\kernel32.dll'
+'Houaiss2Babylon.exe': Loaded 'C:\WINDOWS\system32\user32.dll'
+'Houaiss2Babylon.exe': Loaded 'C:\WINDOWS\system32\gdi32.dll'
+'Houaiss2Babylon.exe': Loaded 'C:\WINDOWS\system32\advapi32.dll'
+'Houaiss2Babylon.exe': Loaded 'C:\WINDOWS\system32\rpcrt4.dll'
+'Houaiss2Babylon.exe': Loaded 'C:\WINDOWS\WinSxS\x86_Microsoft.VC90.CRT_1fc8b3b9a1e18e3b_9.0.21022.8_x-ww_d08d0375\msvcr90.dll'
+'Houaiss2Babylon.exe': Loaded 'C:\WINDOWS\WinSxS\x86_Microsoft.VC90.CRT_1fc8b3b9a1e18e3b_9.0.21022.8_x-ww_d08d0375\msvcp90.dll'
+'Houaiss2Babylon.exe': Loaded 'C:\WINDOWS\system32\shimeng.dll'
+'Houaiss2Babylon.exe': Loaded 'C:\WINDOWS\system32\imm32.dll'
+'Houaiss2Babylon.exe': Loaded 'C:\WINDOWS\system32\lpk.dll'
+'Houaiss2Babylon.exe': Loaded 'C:\WINDOWS\system32\usp10.dll'
+'Houaiss2Babylon.exe': Loaded 'C:\WINDOWS\system32\msvcrt.dll'
+'Houaiss2Babylon.exe': Unloaded 'C:\WINDOWS\system32\shimeng.dll'
+The program '[1260] Houaiss2Babylon.exe: Native' has exited with code -1 (0xffffffff).
+</pre>
+<p>Minha experiência com C++ é quase zero, sem querer abusar (já abusando) tem alguma dica?</p>
+
+<hr/>
+
+<p>2008-05-19 Ricardo:</p>
+
+<p>Olá Caloni.</p>
+
+<p>Eu bem que já havia tentado, mais o linque está quebrado.</p>
+
+<p>Quanto à dica mais demorada, o Visual C++ 2008 Express importa o projeto (The solution or project you are openig was created in a previous version of Visual Studio.) e compila de forma aparentemente normal só que o executável quando colocado na pasta de instalação do Houaiss e devidamente acionado não gera arquivo nenhum.</p>
+
+<p>Obrigado pela atenção.</p>
+
+<hr/>
+
+<p>2008-07-09 <a href="http://www.bechtranslations.com">Roberto Bechtlufft</a>:</p>
+
+<p>Estou interessadíssimo nisso, mas tive algum problema. Quando executo o Houaiss2Babylon nada acontece. A tela do cmd só pipoca rapidamente na tela. Quando tento executar pelo cmd, entro o comando e nada. Minha pasta Dicionário tem vários arquivos dhx.</p>
+
+<hr/>
+
+<p>2008-12-29 Caloni:</p>
+
+<p>Olá, Willians.</p>
+
+<p>Antes de tudo, parabéns pela sua iniciativa e dedicação, mesmo não conhecendo muito da linguagem, de tentar adaptar o programa para seus objetivos. Fico muito feliz que tenha conseguido, e conseguido sozinho, o que prova sua capacidade de resolver problemas aparentemente muito difíceis se tentado sozinho.</p>
+
+<p>Olharei seu código-fonte com calma. Obrigado por compartilhá-lo.</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-04-23 Caloni:</p>
+
+<p>Olá, Angélica.</p>
+
+<p>Eu acho que você está com um problema parecido com o meu durante alguns testes iniciais. Tente fazer o seguinte: você já tem o Houaiss.txt e todos os arquivos estão na mesma pasta, certo? Tente abrir um prompt de comando dentro dessa pasta e digite os seguintes comandos:</p>
+
+<pre>
+set path=%path%;%programfiles%\Babylon\Babylon Glossary Builder
+BuilderWizard /Build Houaiss.gpr
+</pre>
+<p>Se dessa forma funcionar, no final da conversão deverá ser aberto um arquivo no Bloco de Notas indicando que está tudo OK.</p>
+
+<p>Caso não dê certo, por favor, me avise, que irei tentar corrigir quando tiver um tempinho, ok?</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-04-23 Caloni:</p>
+
+<p>Olá, Angélica.</p>
+
+<p>Puxa, fico muito feliz que você tenha conseguido. Sinceramente, não imaginei que alguém fosse realmente usar minha solução. Fico mesmo muito contente.</p>
+
+<p>Quando tiver mais tempo pretendo fazer mais análises do que dá pra melhorar na conversão. Acredito que uma tela descrevendo os passos (que nem o Babylon Builder) deve ajudar bastante os usuários.</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-05-19 Caloni:</p>
+
+<p>Olá, Ricardo.</p>
+
+<p>Uma dica rápida: use o linque (2026-03-21 link quebrado) que eu disponibilizei com o projeto compilado e siga as instruções nos comentários anteriores.</p>
+
+<p>Uma dica mais demorada: depure passo-a-passo e me diga em que ponto que o programa está saindo. A partir daí teremos dados mais concretos para dizer o que está acontecendo.</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-05-26 Caloni:</p>
+
+<p>Olá novamente, Ricardo.</p>
+
+<p>Disponibilizei novamente uma versão compilada no mesmo linque (2026-03-21 quebrado) dos comentários. Tente usar esta versão.</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-05-26 Caloni:</p>
+
+<p>Olá, Major.</p>
+
+<p>Fico feliz que tenha conseguido compilar e usar meu pequeno e singelo programinha. Você é uma inspiração para que outros tentem mais um pouco.</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-07-10 Caloni:</p>
+
+<p>Olá, Roberto.</p>
+
+<p>Lembre-se que para aplicar a conversão é necessário que você tenha o Houaiss, o Babylon e o Babylon Builder instalados em seus lugares padrões. Caso você tenha, poderia me informar o sistema operacional utilizado e o idioma?</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-07-11 Caloni:</p>
+
+<p>Olá, Fabrício.</p>
+
+<p>Não se preocupe. Apenas peço que tenha paciência que em breve irei lançar uma versão mais robusta com geração de log, o que me permitirá descobrir o que está acontecendo nas suas execuções.</p>
+
+<p>No momento, poderia fazer mais um teste? Tente executar o programa dentro de um prompt de comando com direitos administrativos E nível de integridade alto. Você consegue isso clicando com o outro botão do mouse sobre o atalho para o prompt e escolhendo "Executar como Administrador", ou algo do tipo.</p>
+
+<p>Obrigado a todos pelo feedback dos problemas da versão beta.</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-07-15 Caloni:</p>
+
+<p>Olá, Fabricio.</p>
+
+<p>A mensagm do erro número 3 é "O sistema não pode encontrar o caminho especificado". Você poderia verificar se o caminho que está sendo mostrado na mensagem é exatamente o que existe em sua máquina? Grato.</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-12-23 Caloni:</p>
+
+<p>Olá, Willians.</p>
+
+<p>Se o formato do Palm for aberto, ou o Roadlingua possuir um conversor de um formato aberto para seu formato, então com certeza! Se você der uma olhada no <a href="2008-02.html#conversor_de_houaiss_para_babylon_parte_1">artigo em que fazemos a engenharia reversa</a> do dicionário vai perceber que seu formato interno é muito simples de interpretar.</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-12-26 Caloni:</p>
+
+<p>Olá, Willians.</p>
+
+<p>Agora que me toquei: você deve estar usando a versão antiga, não?</p>
+
+<p>A versão para usuário (ainda beta) está disponível (2026-03-21 não mais) <a href="2008-11.html#houaissparababylon_beta">neste outro artigo</a>.</p>
+
+<p>Boa sorte!</p>
+
+<hr/>
+
+<p>2009-02-10 Caloni:</p>
+
+<p>Olá, Renan.</p>
+
+<p>Uma vez que conseguimos desencriptar o conteúdo do Houaiss através de engenharia reversa, e seu formato aberto é facilmente interpretável, podemos convertê-lo para qualquer formato, limitado apenas à imaginação =)</p>
+
+<p>Dessa forma, se você for programador, recomendo que dê uma olhada no artigo sobre a <a href="2008-04.html#conversor_de_houaiss_para_babylon_parte_2">engenharia reversa</a> aplicada e criar sua própria solução.</p>
+
+<p>Se você não é, então terá que esperar pelo menos uns dois meses, depois que eu voltar de férias e ter algum tempo para pensar em uma futura nova versão =)</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-07-14 Caloni:</p>
+
+<p>Olá a todos.</p>
+
+<p>Foi gerada uma nova versão (2026-03-21 link quebrado) com diversas mensagens de erro. Se puderem testar novamente, agradeço muito.</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-04-22 Caloni:</p>
+
+<p>Olá, Angélica.</p>
+
+<p>Por essa eu não esperava. As respostas para suas perguntas são:</p>
+
+<p>1. Não extrai. Ele deve ser gerado automaticamente no diretório de instalação do Houaiss, pasta Dicionario.</p>
+
+<p>2. A "pasta do projeto" é o diretório que você extraiu do linque "versão atual". Isso é, depois de você ter compilado o projeto (que é a geração do executável que faz todo o trabalho).</p>
+
+<p>3. Após gerado o arquivo Houaiss.txt, você deveria copiá-lo para a pasta do projeto.</p>
+
+<p>Bem, aqui vão algumas dicas e passos para fazer a conversão, mesmo sem conhecimentos de programação e informática avançada. Disponibilizei aqui uma versão compilada do projeto. É esse executável que você irá usar para todo o trabalho.</p>
+
+<p>1. Primeiro, certifique-se que instalou o Houaiss com a opção de copiar os arquivos para o disco rígido.</p>
+
+<p>2. Copie o arquivo Houaiss2Babylon.exe para a pasta de instalação do Houaiss e execute. A conversão irá demorar alguns minutos, e durante esse tempo você deve ver uma tela preta sendo exibida. Se você usa Windows Vista, talvez seja necessário executar o programa com direitos de administrador.</p>
+
+<p>3. Quando a tela preta sumir, o programa já deve ter desencriptado o Houaiss, e dentro da pasta Dicionario de instalação existirão alguns arquivos TXT que você pode apagar, e o Houaiss.txt, que você NÃO deve apagar ainda.</p>
+
+<p>4. Para o resto da conversão, você precisa do Babylon Builder. Instale-o antes de continuar.</p>
+
+<p>5. Copie o arquivo de projeto (Houaiss.grp) e o ícone (Houaiss.ico), que estão na pasta de projeto, para a pasta Dicionario onde está o arquvo Houaiss.txt.</p>
+
+<p>6. Dê um duplo clique no arquivo Houaiss.grp. Para que tudo funciona é ESSENCIAL que na mesma pasta estejam os arquivos Houaiss.ico e Houaiss.txt, este gerado nos passos anteriores.</p>
+
+<p>7. Quando a tela do Babylon Builder aparecer, escolha a opção Quick Build. Espere a conversão terminar.</p>
+
+<p>8. Se você chegou até aqui, um arquivo de dicionário Babylon foi gerado. Se não, algum problema ocorreu. Nesse caso, descreva o que aconteceu, por favor.</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-12-24 Caloni:</p>
+
+<p>Olá, Willians.</p>
+
+<p>Até onde eu sei, iniciei minha análise na versão 1.0, portanto deve funcionar. Ainda está na minha lista de tarefas dar uma olhada em por que o conversor não está funcionando nessa versão, apesar da desencriptação seguir o mesmo princípio.</p>
+
+<p>Igualmente.</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-12-22 Willians:</p>
+
+<p>Olá Caloni</p>
+
+<p>Será que através do seu método seria possível converter  o Houaiss para um arquivo com extensão ".PDB", lido pelo Roadlingua, em versões para palm e Windows mobile?</p>
+
+<p>Parabéns, muito obrigado e um grande abraço.</p>
+
+<hr/>
+
+<p>2008-12-23 Willians:</p>
+
+<p>Olá Wanderley</p>
+
+<p>Muito obrigado meu caro, sem querer abusar, mas o algoritmo utilizado na interpretação do Houaiss 2.0 é aplicável ao Houaiss 1.0 (não consigo achar o 2.o por aqui)?</p>
+
+<p>Mais uma vez, o meu muito obrigado, um feliz natal pra você e um ano novo igualmente agradável.</p>
+
+<hr/>
+
+<p>2008-12-25 Willians:</p>
+
+<p>Muito obrigado Wanderley.</p>
+
+<hr/>
+
+<p>2008-12-25 Willians:</p>
+
+<p>Olá Wanderley</p>
+
+<p>Evoluí um pouco, todavia, surgiu uma caixa de diálogo com a seguinte mensagem: 'Erro abrindo arquivo "C:\Windows\dicionário\deah049.dhx". Erro de sistema número 2.' Sempre que clico no botão "OK" é aberta uma nova caixa de diálogo com texto análogo, só se modificando o número do arquivo, que passa a ser "deah050.dhx", e assim sucessivamente, até o arquivo "deah059.dhx", se não me engano. Acontece que, de fato, ao verificar a pasta "Dicionario", constatei que os arquivos a que me referi acima, não existem. Será que o procedimento de conversão foi bem sucedido e, na verdade, o que ocorreu foi a não previsão, na sua rotina, da inexistência desses arquivos para a versão Houaiss 1.0?</p>
+
+<p>Novamente, muito obrigado e um grande abraço.</p>
+
+<hr/>
+
+<p>2008-12-25 Willians:</p>
+
+<p>Detalhe: Não foi gerado o arquivo "Houaiss.txt"</p>
+
+<hr/>
+
+<p>2008-12-26 Willians:</p>
+
+<p>Olá Wanderley</p>
+
+<p>Funcionou! Arrisco-me a afirmar que talvez tenha descoberto o porquê do aplicativo não funcionar no Houaiss 1.0 (por enquanto só posso especular, uma vez que não disponho da versão Houaiss 2.0). Acho que isso ocorre justamente pela ausência dos arquivos que vão do “deah049.dhx” ao “deah059.dhx” na versão Houaiss 1.0 (eles provavelmente devem existir na versão 2.0). Pra tentar “enganar” o teu aplicativo, criei arquivos de texto vazios com o nome e extensão daqueles ausentes e funcionou. Percebi, analisando o algoritmo que você disponibilizou a seguinte linha (o início de um “laço”):</p>
+
+<pre>
+&quot;for( int fileIdx = 1; fileIdx 
+</pre>
+<hr/>
+
+<p>2008-12-26 Willians:</p>
+
+<p>Olá Wanderley</p>
+
+<p>Funcionou! Arrisco-me a afirmar que talvez tenha descoberto o porquê do aplicativo não funcionar no Houaiss 1.0 (por enquanto só posso especular, uma vez que não disponho da versão Houaiss 2.0). Acho que isso ocorre justamente pela ausência dos arquivos que vão do “deah049.dhx” ao “deah059.dhx” na versão Houaiss 1.0 (eles provavelmente devem existir na versão 2.0). Pra tentar “enganar” o teu aplicativo, criei arquivos de texto vazios com o nome e extensão daqueles ausentes e funcionou. Percebi, analisando o algoritmo que você disponibilizou a seguinte linha (o início de um “laço”): "for( int fileIdx = 1; fileIdx</p>
+
+<hr/>
+
+<p>2008-12-26 Willians:</p>
+
+<p>Acredito que quando a rotina se depara com a quebra da sequência numérica, ocorra o “bug”.</p>
+
+<p>Enfim, espero não ter falado muita besteira.</p>
+
+<p>Um abraço e muito obrigado!</p>
+
+<hr/>
+
+<p>2008-12-26 Willians:</p>
+
+<p>for( int fileIdx = 1; fileIdx</p>
+
+<hr/>
+
+<p>2008-12-26 Willians:</p>
+
+<p>"for( int fileIdx = 1; fileIdx</p>
+
+<hr/>
+
+<p>2008-12-26 Willians:</p>
+
+<p>Descupe a repetição, é que tentei reproduzir a linha de código e não consegui.</p>
+
+<hr/>
+
+<p>2008-12-27 Willians:</p>
+
+<p>Olá Caloni</p>
+
+<p>Tenho até vergonha de te aborrecer com isso, mas estava tentando alterar a tua fonte com o propósito de tornar o arquivo de texto "Houaiss.txt" compatível com o programa "awmaker", que converte arquivos de texto para a base de dados de dicionários do "roadlingua", o que faria com que todos nós, além de podermos usar o Houaiss no Babylon, também pudéssemos usá-lo em celulares, smartfones, palms, etc. Todavia, para que isso possa funcionar corretamente, tenho de adequar o arquivo de texto "Houaiss.txt" para o padrão ”.csv”, ou seja, a palavra procurada (ou verbete) deve estar separada da sua respectiva definição por um ";" (ponto-e-vírgula), e toda a definição deve estar em um bloco de texto único, sem os marcadores HTML. Ademais, para poder fazer a quebra interna do texto dever-se-ia usar o delimitador "\n" (sem as aspas) invés do “enter” ou qualquer outro tipo de tabulação. O problema é que não conheço muito da linguagem "C", quase nada, pra ser mais preciso, e sempre que tento fazer esse delimitador ser adicionado no arquivo de texto, o que ocorre, na verdade, e a quebra automática do texto da definição (o que não pode acontecer, sob pena de descaracterizar o padrão .csv), não aparecendo o já referido delimitador no texto.</p>
+
+<p>Será que pode me ajudar mais uma ver amigo.</p>
+
+<p>Grande abraço.</p>
+
+<hr/>
+
+<p>2008-12-29 Willians:</p>
+
+<p>Olá Caloni</p>
+
+<p>Consegui alterar o código-fonte do teu aplicativo e fazer funcionar a base de dados do “Houaiss 1.0” no "Windows Mobile 6", que é o sistema operacional do meu celular (mas é possível fazer o mesmo para o sistema PALM), através do “Roadlingua”, para tanto, além de gerar um arquivo de texto compatível com o "awmaker", tive de dividir os arquivos “.pdb”, gerados por intermédio desse último, em 5 arquivos menores (“Houaiss_A-C.pdb”, “Houaiss_D-G.pdb”, “Houaiss_H-N.pdb”, “Houaiss_O-T.pdb”, “Houaiss_U-Z.pdb”), tive de fazê-lo por que se os mantivesse em único arquivo ele ficaria muito pesado, provocando travamentos no celular (coloquei essa hipótese à prova). Esse artifício atrapalha um pouco o processo de pesquisa, mas não a inviabiliza, pelo contrário, é condição para o seu funcionamento (pelo menos da maneira como vejo).</p>
+
+<p>A propósito, se interessar, mandei cópia das alterações feitas no código-fonte por intermédio da tua página de contato.</p>
+
+<p>Mais uma vez, muito obrigado e um grande abraço!</p>
+
+<hr/>
+
+<p>2008-12-29 Willians:</p>
+
+<p>Oh! Caloni, na verdade sou eu quem deve agradecer. Um grande abraço e um feliz ano novo pra ti.</p>
+
+<p>conversor_de_houaiss_para_babylon_parte_2</p>
+
+<hr/>
+
+<p>2008-04-09 <a href="http://www.gustavomonteiro.com">Gustavo Monteiro</a>:</p>
+
+<p>W,</p>
+
+<p>Na realidade, o arquivo é o /etc/resolv.conf.</p>
+
+<p>=)</p>
+
+<p>Abcs.,</p>
+
+<hr/>
+
+<p>2008-04-13 Caloni:</p>
+
+<p>É verdade! Lapso meu.</p>
+
+<p>Corrigido.</p>
+
+<p>[]s</p>
+
+<p>linux_dhcp</p>
+
+<p>2008-04-11 <a href="http://dqsoft.blogspot.com.br">Daniel Quadros</a>:</p>
+
+<p>Propaganda inevitável: em http://dqsoft.blogspot.com/2007/09/pc-assember-volume-i.html tem um livro gratuito sobre programação assembler 16 bits no PC.</p>
+
+<hr/>
+
+<p>2008-04-13 Caloni:</p>
+
+<p>Nada como saber um pouco de assembly para entender C a fundo =)</p>
+
+<p>Outro uso interessante é em pesquisas de otimização: saber como o compilador otimiza trechos de código.</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-04-11 <a href="http://www.skhaz.com/">skhaz</a>:</p>
+
+<p>Eu já usei esse método para tirar umas duvidas de asm, geralmente eu escrevo um código em C e depuru ele</p>
+
+<p>aprendendo_assembly_com_o_depurador</p>
+
+<p>2008-04-23 <a href="http://techberto.wordpress.com">Alberto Fabiano</a>:</p>
+
+<p>Quem foi este cara que disse que C++ está morto? Ele tem se orientado pelo TIOBE?Talvez o marketing de massa, que sempre foi indireto ou quase nulo, sim !!!</p>
+
+<p>Mas C++ não precisa de marketing publicitário, nossos mavens já fazem isto involuntariamente na expressão do prazer proporcionado pelo exercício da programação. OK, peguei pesado, mas não é isto? :-)</p>
+
+<p>PS: Gostei da contextualização da mensagem de startup que você enviou ao grupo.</p>
+
+<p>[]s</p>
+
+<p>ode_ao_cpp</p>
+
+<p>2008-04-25 <a href="http://devlog.waltercruz.com">Walter Cruz</a>:</p>
+
+<p>Bacana cara, mercurial é uma excelente escolha!</p>
+
+<hr/>
+
+<p>2008-04-26 Caloni:</p>
+
+<p>Olá, Walter</p>
+
+<p>Valeu! Na verdade, agora estou testando também o Bazaar... é uma escolha difícil!</p>
+
+<p>[]s</p>
+
+<p>guia_basico_de_controle_de_codigo_distribuido</p>
+
+<p>2008-04-17 Thiago:</p>
+
+<p>Esse homi é truculento mesmo.</p>
+
+<p>[]'s</p>
+
+<p>Thiago</p>
+
+<p>crash_dump_analysis_book</p>
+
+<p>2008-05-01 <a href="http://techberto.wordpress.com">Alberto Fabiano</a>:</p>
+
+<p>E tão maravilhoso quanto o tar é o distutils  que foi isto que você utilizou quando executou o " python setup.py install "</p>
+
+<p>Este cara é uma das oitavas maravilhas do mundo pythológico, bom, na realidade  acho que há mais do que 8 maravilhas pythônicas, mas este sem dúvidas é um deles.</p>
+
+<p>Quais são as outras 7?:-)</p>
+
+<p>Bem, aí está uma tarefa complicada, mas certamente uma delas é o PyS60! Não que eu esteja fugindo da raia em utilizar o Symbian C++, talvez seja trauma do Carbide que é uma IDE um tanto tosca, mas executar scripts Python num celular é algo muito dinâmico e divertido!</p>
+
+<p>E é isto aí... para mim programação é muito mais que profissão, é diversão!</p>
+
+<hr/>
+
+<p>2008-04-30 <a href="http://dqsoft.blogspot.com.br">Daniel Quadros</a>:</p>
+
+<p>Ah, as maravilhas do tar! Espero que tenham te explicado todas estas letrinhas, senão use "man tar" ou "info tar".</p>
+
+<p>Não é a toa que o linux tem dificuldade em ser aceito pelos acostumados com o next/next/finish do windows. Como dizem, "use the source, luke"</p>
+
+<hr/>
+
+<p>2008-04-30 Caloni:</p>
+
+<p>Pior que explicaram, Daniel. Usei uma fonte muito boa de conhecimento =)</p>
+
+<p>Do pouco que conheço sobre Linux, e continuo aprendendo, existem comandos que fazem maravilhas em um piscar de olhos. E existem outros que fazem o básico, mas que precisam de 59 switches mais 412 parâmetros.</p>
+
+<p>Haja Jedi Mind Trick! =)</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-05-01 Caloni:</p>
+
+<p>E o pior é que é uma diversão viciante!</p>
+
+<p>Espero que esse projeto de Python em celulares dê muito certo; pois irá elevar em muito as potencialidade de software móvel.</p>
+
+<p>[]s</p>
+
+<p>use_the_source_luke</p>
+
+<p>2008-05-05 <a href="http://marcioandreyoliveira.blogspot.com">Marcio Andrey Oliveira</a>:</p>
+
+<p>Muito legal a tua iniciativa. Espero que ela ajude a divulgar o MouseTool e p bazaar.</p>
+
+<p>[]s,</p>
+
+<p>mao</p>
+
+<hr/>
+
+<p>2008-05-05 Caloni:</p>
+
+<p>Olá, Márcio!</p>
+
+<p>Também espero isso. Com relação aos protocolos suportados, o Bazaar possui um arcabouço bem mais robusto do que o Mercurial, entre outras coisas =)</p>
+
+<p>[]s</p>
+
+<p>projetos_no_caloni_com_br</p>
+
+<p>2008-05-09 Fausto:</p>
+
+<p>Olá Caloni,</p>
+
+<p>muito legal esse post.</p>
+
+<p>De certa forma me inspirou a estudar algumas coisas que queria aprender.</p>
+
+<p>O seu blog já me ajudou muito, principalmente nos sufocos...</p>
+
+<p>parabéns pelo trabalho</p>
+
+<hr/>
+
+<p>2008-05-11 Caloni:</p>
+
+<p>Olá, Fausto.</p>
+
+<p>Obrigado pelos elogios.</p>
+
+<p>Eu fico especialmente grato quando sei que o blogue ajudou alguém, o que quer dizer que meu trabalho não é tão em vão assim ;)</p>
+
+<p>[]s</p>
+
+<p>rtfm</p>
+
+<p>2008-05-16 Blabos:</p>
+
+<p>Excelente artigo. Mas vc é um sacana, eu ia falar justo disso no meu blog, no artigo de sábado que vem :p</p>
+
+<p>Tenho visto muito esse tipo de construção aqui no trabalho. São uns truquezinhos muito úteis e interessantes, que usam aquelas notas de rodapé dos bons livros.</p>
+
+<p>Outro que eu achei muito interessante foi o uso do escopo de compilação para criar structs com dados privados. Espero ser mas rápido no gatilho desta vez...</p>
+
+<p>No livro "Linux Kernel Development" tem uma porção dessas "mágicas".</p>
+
+<p>Abraços</p>
+
+<hr/>
+
+<p>2008-06-06 Daniel:</p>
+
+<p>quando vc falou sobre isso na palestra do seminário eu até achei que fosse brincadeira. :P</p>
+
+<hr/>
+
+<p>2008-05-16 Caloni:</p>
+
+<p>Olá, Blabos.</p>
+
+<p>Se eu disser que foi a única coisa que eu consegui pensar para essa "quinta-feira sem inspiração" você acredita? =)</p>
+
+<p>Eu não acredito que só porque eu escrevi a respeito você não possa publicar sua visão da coisa. Isso apenas tende a enriquecer o assunto aqui no Brasil que, pelo que pude notar, ainda era intocado.</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-06-07 Caloni:</p>
+
+<p>Ehehehehehe. Bom, felizmente, ou infelizmente, não é. É apenas uma saída genial inventada por algum programador para um problema recorrente. E resolve de fato o problema =)</p>
+
+<p>[]s</p>
+
+<p>aquele_do_while_engracado</p>
+
+<p>2008-06-06 Daniel:</p>
+
+<p>estou usando para fazer um teste. é um pouco estranho, mas é MUITo mais fácil do que eu imaginava, hauhauahauahua</p>
+
+<p>Para quem estiver lendo isso, tente! Vale a pena conhecer.</p>
+
+<p>mousetool</p>
+
+<p>2008-05-30 <a href="http://bcsanches.wordpress.com">Bruno Sanches</a>:</p>
+
+<p>Bela explicação de como criar uma lib. Um outro detalhe que server de estimulo é que no visual 2005 as libs são compiladas em paralelo se a sua maquina for multicore (se tiver dois cores, por exemplo, vai compilar duas libs ao mesmo tempo). No visual 2008 isso parece que ocorre para arquivos do projeto tambem. Sei que esse nao eh um real motivo para se criar uma lib, mas acelera bastante a compilacao.</p>
+
+<hr/>
+
+<p>2008-05-30 <a href="http://dqsoft.blogspot.com.br">Daniel Quadros</a>:</p>
+
+<p>A grande motivação para gerar uma lib é facilitar o reaproveitamento de código, usando a mesma lib em vários projetos. Um outro uso frequente (mais comum com a prima dinâmica da lib, a dll) é para fornecer uma interface (API) para outros programadores.</p>
+
+<p>Obs.: a saída do compilador na figura não seria .obj ao invés de .c ? ;)</p>
+
+<hr/>
+
+<p>2008-08-05 Julimar:</p>
+
+<p>Muito bacana seu tutorial. sou iniciante e finalmente consegui fazer minha primeira biblioteca, que emoção. Valeu</p>
+
+<hr/>
+
+<p>2008-05-30 Caloni:</p>
+
+<p>Olá, Bruno.</p>
+
+<p>O Visual Studio 2005 já compilava múltiplos arquivos do mesmo projeto em paralelo com o uso de multithreading. Acredito que esse esquema independa da organização em LIBs e projetos executáveis. Porém, vou dar uma olhada nas novidades por trás da nova versão, valeu a dica.</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-05-30 Caloni:</p>
+
+<p>Olá, DQ!</p>
+
+<p>Concordo com os objetivos de uma LIB, acredito que faltou falar sobre isso no artigo. No entanto, existem outras organizações. Seria possível compartilhar apenas o código-fonte entre projetos, com a vantagem de não precisar se aventurar nas mil e uma configurações e conflitos que o VS oferece aos pobres programadores iniciantes. Também seria possível compartilhar ".objs" soltos em uma pasta. No entanto, confesso que em todos os projetos que participei em empresas, todos usavam LIBs e DLLs.</p>
+
+<p>Sobre o desenho, você está 100% certo! Corrigido e valeu pela dica.</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-08-06 Caloni:</p>
+
+<p>Olá, Julimar.</p>
+
+<p>Fico contente que o tutorial tenha sido útil para quem está começando. Essa foi a intenção =)</p>
+
+<p>[]s</p>
+
+<p>visual_studio_criar_lib</p>
+
+<p>2008-06-06 Daniel:</p>
+
+<p>Oe!</p>
+
+<p>Fui ao seminário no sábado e achei muito legal! Parabéns a todos vocês palestrantes. Queria ter sabido do encontro de programadores que aconteceu antes, pois provavelmente iria.</p>
+
+<p>Aproveito para comentar sobre sua opinião quanto ao valor da entrada. Não acho q foi barato. Na verdade eu e meu amigo só pudemos ir porque compramos antecipado, com desconto. Moro em SBC e estou na área a menos de 2 anos. Ganho mal e pago muito na faculdade. Acredito que o preço foi justo, e espero que não tenha sido problemas para outras pessoas.</p>
+
+<hr/>
+
+<p>2008-06-06 Daniel:</p>
+
+<p>Ops, outra coisa: achei muito legal você falar de portabilidade de código entre projetos e compiladores, visto que quando ouvimos a palavra, está sempre ligada a SOs e hardware. Valeu!</p>
+
+<hr/>
+
+<p>2008-06-05 <a href="http://www.skhaz.com">Rodrigo Delduca</a>:</p>
+
+<p>Parabéns pelo evento!, pena que não pude comparecer... Cade a cerveja na mesa?? :D</p>
+
+<hr/>
+
+<p>2008-06-04 Tiago:</p>
+
+<p>Fiquei bastante interessado no evento, tanto que até já me cadastrei no grupo... só tenho uma dúvida: o material das palestras está todo disponível em algum lugar? Já baixei o PDF da palestra de portabilidade, mas gostaria muito de obter o material do restante das palestras...Abraço e parabéns pelo evento!</p>
+
+<hr/>
+
+<p>2008-06-04 Caloni:</p>
+
+<p>Boa pergunta, Tiago!</p>
+
+<p>Geralmente fica sob responsabilidade dos próprios palestrantes a divulgação de suas apresentações. Portanto, fique de olho em seus blogues ou na própria lista CCPP. Seguem os linques que conheço:</p>
+
+<ul><li><a href="http://fabiogaluppo.spaces.live.com">Fábio Gallupo</a></li>
+
+<li><a href="http://www.1bit.com.br">Rodrigo Strauss</a></li></ul>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-06-06 Caloni:</p>
+
+<p>A foto é só do almoço... infelizmente no Happy Hour todos estavam bêbados demais para tirar fotos =)</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-06-07 Caloni:</p>
+
+<p>Olá, Daniel.</p>
+
+<p>Fico feliz duplamente: por ter testemunhado a respeito da dificuldade de alguns em pagar o valor da entrada dos encontros, e por ter entendido meu ponto de vista quando falei sobre portabilidade em geral.</p>
+
+<p>Fico feliz também que tenha gostado do encontro. Eu também gostei muito e acredito que nossa comunidade tem muito mais pessoas habilidosas do que parece.</p>
+
+<p>[]s</p>
+
+<p>resultado_seminario_ccpp</p>
+
+<p>2008-06-19 <a href="http://marcioandreyoliveira.blogspot.com">Marcio Andrey Oliveira</a>:</p>
+
+<p>Nunca vi uma explicação mais didática. A analogia com o hardware / software é ótima. Parabéns.</p>
+
+<hr/>
+
+<p>2008-06-19 Caloni:</p>
+
+<p>Olá, Márcio.</p>
+
+<p>Considero essa diferença uma das coisas mais difíceis para o iniciante entender, e portanto relutei bastante antes de explicar ambos os conceitos da melhor maneira possível. Seu comentário demonstra que valeu a pena a espera =)</p>
+
+<p>[]s</p>
+
+<p>declaracao_x_definicao</p>
+
+<p>2008-06-26 <a href="http://dqsoft.blogspot.com.br">Daniel Quadros</a>:</p>
+
+<p>Caloni,</p>
+
+<p>Bom truque, mas se entendi direito permite somente alterar o tamanho final da estrutura (e para um tamanho maior ou igual ao que o compilador geraria normalmente).</p>
+
+<p>No meu dia-a-dia a coisa costuma ser um pouco diferente. Normalmente uso structs para definir mensagens que precisam ser o mais curtas possíveis (portanto meu alinhamento preferido é 1) e são trocadas por equipamentos com processadores (e portanto compiladores) diferentes. Mais importante que o tamanho total, o posicionamento dos membros precisa ser o mesmo nas duas pontas. Felizmente, todos os compiladores que usei até hoje tem alguma forma de forçar o alinhamento; alguns defines e compilações condicionais resolvem o problema.</p>
+
+<p>PS: "pedaço de torta" ou "pedaço de bolo"? Ou, porque não, "mamão com açucar"?</p>
+
+<p>Cheers!</p>
+
+<hr/>
+
+<p>2008-06-27 Caloni:</p>
+
+<p>Olá, DQ.</p>
+
+<p>Você está certo. O alinhamento forçado da solução acima serve apenas para o alinhamento maior ou igual ao do compilador. Afinal de contas, quem manda nisso é o compilador, mesmo!</p>
+
+<p>PS-reply: Mmmmm... bolo ou torta, ambos são deliciosos. Mamão eu não curto muito, não.</p>
+
+<p>[]s</p>
+
+<p>alinhamento_memoria_portavel</p>
+
+<p>2008-06-12 <a href="http://www.codimark.com/blog/">Mounter</a>:</p>
+
+<p>Muito interessante o tutorial, atualmente ando procurando um programa para gerenciar meus projetos e quem sabe comece a usa-lo!</p>
+
+<p>Até mais.</p>
+
+<hr/>
+
+<p>2008-06-12 Caloni:</p>
+
+<p>Dê uma olhada também no <a href="2008-04.html#guia_basico_de_controle_de_codigo_distribuido">Mercurial</a>, para ver qual dos dois cabe melhor no tipo de organização que você está procurando.</p>
+
+<p>[]s</p>
+
+<p>guia_basico_de_repositorios_no_bazaar</p>
+
+<p>2008-02-27 <a href="http://dqsoft.blogspot.com.br">Daniel Quadros</a>:</p>
+
+<p>Esta "criptografia" lembra a que eu sugiro sempre que alguem fala para usar qualquer coisa bem simples: trocar maiúsculas por minúsculas.</p>
+
+<hr/>
+
+<p>2008-11-04 Luiz Carlos Freitas:</p>
+
+<p>Olá Caloni;</p>
+
+<p>Tenho o Houaiss 1.5 e o babylon 6. É possível adaptar o Houaiss2Babylon.exe para extrair o houaiss.txt?Antecipadamente agradeço</p>
+
+<hr/>
+
+<p>2008-07-18 <a href="http://www.marciowb.net/blog/">Marcio Wesley Borges</a>:</p>
+
+<p>Caracas, amigo! Este post sim, eu gostei! Du caralho seu artigo!</p>
+
+<p>Putz, nunca pensaria isso por mim mesmo. Verdadeira aula. Adorei! Valeu.</p>
+
+<p>[]s,</p>
+
+<p>Marcio Wesley Borges</p>
+
+<p>http://www.marciowb.net/blog</p>
+
+<hr/>
+
+<p>2008-07-09 <a href="http://philogroky.blogspot.com/">Nicolau Werneck</a>:</p>
+
+<p>Sensacional trabalho, meus parabéns! Estou morrendo de inveja. Kudos pra vc! :)</p>
+
+<p>Estou curioso pra saber se seria possível descobrir o "golpe" fazendo uma simples análise estatística dos dados, vou tentar fazer isso algum dia...</p>
+
+<p>Happy hacking.</p>
+
+<hr/>
+
+<p>2008-07-10 Caloni:</p>
+
+<p>Olá, Nicolau.</p>
+
+<p>Não imagino como fazer o "golpe" por análise estatística, mas é uma boa idéia. Provavelmente um analisador não tão complicado conseguiria encontrar padrões de texto. No entanto, nada tão "avançado" quanto o Translator do Fortaleza Digital =).</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-07-18 Caloni:</p>
+
+<p>Olá, Marcio.</p>
+
+<p>Fico feliz que tenha gostado bastante. Ultimamente estou meio parado com as reversa, mas espero escrever mais artigos com esse tema (e prática).</p>
+
+<p>Interessante o <a href="http://stardict.sourceforge.net/">StarDict</a> que você recomendou em seu blogue. Vou testá-lo nos próximos dias.</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-11-04 Caloni:</p>
+
+<p>Olá, Luiz.</p>
+
+<p>Aguarde, por favor, que está para ser lançada a versão com interface com usuário e diversos testes. Espero supri a necessidade dos usuários em menos de um mês.</p>
+
+<p>[]s</p>
+
+<p>tdc_2001</p>
+
+<p>2008-10-21 <a href="http://brunildz.blogspot.com/">Bruno Moreira Guedes</a>:</p>
+
+<p>Muito interessante o post!!</p>
+
+<p>Eu andei estudando os recursos de RTTI do C++. Além disso, estudei o name-mangling do compilador GNU. Juntando as duas informações é possível adicionar um dinamismo extremamente interessante pra linguagem.</p>
+
+<p>Fico esperançoso quanto ao C++0x sobre melhora nessas tuas questões(RTTI e name-mangling padronizado).</p>
+
+<p>[]'s</p>
+
+<hr/>
+
+<p>2008-07-02 Diego Henrique:</p>
+
+<p>Muito interessante.</p>
+
+<p>Em sistemas desenvolvidos sobre a pattern MVC isso tem muita utilidade.</p>
+
+<p>Abraços</p>
+
+<hr/>
+
+<p>2008-09-02 <a href="http://www.felipesilveira.com.br">Felipe Silveira</a>:</p>
+
+<p>Sim, esta técnica é muito interessante. E se aplica não só ao pattern MVC, mas também a alguns patterns do GoF, que podem ser implementados usando esta técnica.</p>
+
+<p>Parabéns pelo artigo.</p>
+
+<p>reflexao_em_c</p>
+
+<hr/>
+
+<p>2008-07-09 Jardel Weyrich:</p>
+
+<p>O artigo é interessante, mas o assunto já foi bastante abordado.Mesmo assim, eu continuo com uma dúvida: Qual a necessidade de se obter a senha do usuário via GINA se é necessário o acesso administrativo para tal? Ah sim, lembrei... é a mesma senha do email !?!</p>
+
+<p>Alright, it's useful for another things :)</p>
+
+<p>Cheers,jweyrich</p>
+
+<hr/>
+
+<p>2008-07-10 Caloni:</p>
+
+<p>Olá, Jardel.</p>
+
+<p>Não há necessidade alguma. Foi apenas um exemplo ilustrativo. No entanto, usei-o quando precisei obter a senha de administrador das máquinas do laboratório da faculdade. Na época eles usavam Windows 2000 e existe uma pequena falha de segurança que permite acesso total ao sistema por Power Users. Note que nesse caso eu não possuo a senha administrativa, mas possui acesso, o que me permite "agendar" a obtenção da senha para a próxima vez que o administrador real efetuar login.</p>
+
+<p>[]s</p>
+
+<p>gina_x_credential_provider</p>
+
+<hr/>
+
+<p>2008-07-07 <a href="http://marcioandreyoliveira.blogspot.com">Marcio Andrey Oliveira</a>:</p>
+
+<p>Wanderley, até um tempo atrás, estas funcionalidades só estavam disponíveis em uma versão paga do VirtualBox.</p>
+
+<p>Como deves ter baixado a versão OSE (Open Source Edition), creio que elas não estarão funcionando mesmo.</p>
+
+<p>Se fores em http://www.virtualbox.org/wiki/Editions verás quais características só estão disponíveis para os pagante$.</p>
+
+<hr/>
+
+<p>2008-07-10 Caloni:</p>
+
+<p>Olá, Márcio.</p>
+
+<p>Obrigado por avisar sobre esses detalhes obscuros! Estávamos pensando que a versão ainda não estava madura o suficiente. Bom, do meu ponto de vista não está, mesmo.</p>
+
+<p>Tudo bem essas funcionalidades não funcionarem por estarem desabilitadas na versão OSE, mas o programa deveria pelo menos avisar sobre isso. No entanto, o que eu vi foi que as funções estão disponíveis, mas não funcionam.</p>
+
+<p>[]s</p>
+
+<p>virtualbox</p>
+
+<p>2009-01-11 Huymada Farti Noys:</p>
+
+<p>Muitos usuários estão tendo problemas ao tentarem desinstalar o VMware Workstation em máquinas com Windows. Devido a dificuldade de encontrar a solução, estou postando o link oficial do site da VMware que explica como remover manualmente.</p>
+
+<p>Link: http://kb.vmware.com/selfservice/search.do?cmd=displayKCdocType=kcexternalId=1308sliceId=2docTypeID=DT_KB_1_1dialogID=14260782stateId=0%200%204402736</p>
+
+<p>Atenciosamente, Huymada Farti Noys™</p>
+
+<hr/>
+
+<p>2008-07-14 <a href="http://www.skhaz.com">Rodrigo Delduca</a>:</p>
+
+<p>Uma das coisas que mais me ajuda no VMware é a possibilidade de colocar 2 ou mais "maquinas" em rede e simular uma rede ruim com muito drop de pacotes.</p>
+
+<p>vmware</p>
+
+<p>2008-07-14 <a href="http://dqsoft.blogspot.com.br">Daniel Quadros</a>:</p>
+
+<p>Caloni,</p>
+
+<p>Duas sugestões de aperfeiçoamentos: (a) usar a temível FormatMessage para decodificar o código de erro do Windows (b) gravar em um log o andamento da conversão e os erros encontrados.</p>
+
+<p>Obs.: gostei do 'saite' mas acho que a tradição é usar 'sítio'Obs/2: pela segunda vez perdi um comentário que estava montando, o seu blog não gosta qdo abre mais de uma página simultaneamente!</p>
+
+<p>[]Daniel</p>
+
+<hr/>
+
+<p>2008-07-15 <a href="http://dqsoft.blogspot.com.br">Daniel Quadros</a>:</p>
+
+<p>Caloni,</p>
+
+<p>Fico feliz em saber que não sou só eu que acha o FormatMessage enrolado!</p>
+
+<p>Sobre o problema no saite, ocorre com o Firefox quando abro uma segunda página em outra aba. O anti-spam gera uma outra soma e quando dou o submite na primeira página ele reclama que eu não sei aritmética. Por exemplo,a conta era 2+8, abri uma nova aba com o link 'vários comentários' no inicio do post. Na nova aba, a conta é 9+6. Se volto para a primeira e respondo 10 dá erro. Se respondo à conta da nova aba, funciona.</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-07-14 Fabricio Morrone:</p>
+
+<p>Oi CaloniAgora consegui usar!! Mas não gerou o arquivo Houaiss.txt. Percebi outra coisa também: na pasta dicionario não tenho os arquivos deah049.dhx até o deah059.dhx. Já desintalei o dicionario e instalei de volta, mas esses arquivos não apareceram.Obrigado</p>
+
+<hr/>
+
+<p>2008-09-18 Renan de Araujo:</p>
+
+<p>Eu peguei a fonte e compilei o arquivo aqui. Daí usei o houaiss2babylon.exe sem problemas.</p>
+
+<p>Decidi gerar pelo babylon glossary builder. Criei o projeto, e quando vou contruir o glossário, recebo várias mensagens de erro como essa:</p>
+
+<pre>
+Value of '-18' os not valid for 'Value'. 'Value' should be
+between 'minimum' and 'maximum'.
+Parameter: 'Value'
+</pre>
+<p>Se eu respondo continuar em todas as mensagens de erro ele volta pro início e para em 18% de novo, que é onde ele começa a dar os erros. Se eu não respondo, ele diz que funcionou... Queria saber se alguem mais teve esse erro...</p>
+
+<p>Depois de um tempo ele desiste e diz que o dicionário foi bem sucedido!</p>
+
+<p>Agora minhas particularidades são:</p>
+
+<p>Estou rodando o windows num MacBook Pro, e queria usar esse programa pra depois converter o Houaiss pra Stardict, que é um formato aberto de dicionário, para posteriormente usá-lo no Dictionary.app do Mac OS que usa o Stardict... Agora, eu criei o glossario por mim mesmo por que preciso de UTF-8 pro stardict.</p>
+
+<hr/>
+
+<p>2008-09-19 Renan de Araujo:</p>
+
+<p>Bom, eu não sou programador mas estou tentando entender as coisas por aqui. Se tudo falhar, eu possivelmente vou ver os requisitos de formato pra gerar o arquivo para o dictionary.app, daí analiso o algorítmo e seu programa para gerar um novo!</p>
+
+<p>Quanto trabalho!</p>
+
+<p>aviso aqui se tudo der certo!</p>
+
+<hr/>
+
+<p>2008-07-15 Caloni:</p>
+
+<p>Olá, Fabricio.</p>
+
+<p>Esses arquivos, se não me engano, não existe, mesmo. Erro meu não verificar o código de erro. Esses arquivos irão sempre dar erro por não existirem. O que eu não entendo é como não foi gerado o txt.</p>
+
+<p>Vou seguir o conselho do DQ e na próxima versão gerar um log, daí fica mais fácil acompanhar o que está dando de errado.</p>
+
+<p>Aguarde =)</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-07-15 Caloni:</p>
+
+<p>Olá, DQ.</p>
+
+<p>Eu bem que tentei usar o famigerado FormatMessage, mas já passavam das duas da madrugada e não consegui ler o help direito.</p>
+
+<p>Obs.: eu usava sítio e mudei de opinião por achar em saite a aproximação fonética que precisava; afinal, na lingua falada ninguém usa sítio (apesar de ainda gostar de ambos).Obs. 2: calma, um problema de cada vez =). Você está usando IE? Só testo meu saite com Firefox =/</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-07-15 Caloni:</p>
+
+<p>DQ,</p>
+
+<p>Brilhante! Não sei como eu acharia esse bug se não fossem meus leitores. Eu simplesmente não uso essa continha de mais (não sou lá essas coisas com matemática).</p>
+
+<p>Corrigido. Se você descobrir qual foi a solução (sem ver o fonte), ganha um capuchinho na Kopenhagen. Apenas, por favor, não me bata =)</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-09-18 Caloni:</p>
+
+<p>Olá, Renan.</p>
+
+<p>Essa segunda versão do conversor, apesar de melhorada, é extremamente beta. Eu sinto muito por todos os problemas relatados até agora (nas duas versões) e apresento minhas desculpas anunciando que atualmente estou trabalhando em uma versão muito mais melhorada, que será a primeira feita para usuários.</p>
+
+<p>No momento, parabenizo-o pelo seu empenho e peço que dê uma garimpada no algoritmo que abre o dicionário Houaiss descrito no <a href="2008-02.html#conversor_de_houaiss_para_babylon_parte_1">primeiro artigo da série</a> e tente montar o dicionáio para o Startdict fazendo a conversão a partir do formato aberto.</p>
+
+<p>[]s</p>
+
+<p>segunda_versao_houaiss2babylon</p>
+
+<p>2008-07-11 <a href="http://www.jeanlandim.blogspot.com.br">Jean Landim</a>:</p>
+
+<p>Ei cara eu estou também com um desejo INSANO de programar.</p>
+
+<p>Meu sonho maior e ser um mantenedor do Kernel.</p>
+
+<p>Enquanto isso eu vou ter de Programar MUITO.</p>
+
+<p>Muito ótimo este seu Tópico.</p>
+
+<p>Até mais.</p>
+
+<p>printf("Jean Landim \n");</p>
+
+<hr/>
+
+<p>2008-07-12 Caloni:</p>
+
+<p>Olá, Jean.</p>
+
+<p>Se você tem certeza que é isso o que você quer, e é isso o que você precisa para fazer o que tem em mente, boa sorte!</p>
+
+<p>[]s</p>
+
+<p>desejo_insano_programar_no_kernel</p>
+
+<p>2008-08-11 <a href="http://techberto.wordpress.com">AF.</a>:</p>
+
+<p>Olá, Caloni.</p>
+
+<p>Que mancada! Felizmente, aprendi algo  com esta gafe.</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-08-08 <a href="http://techberto.wordpress.com">AF.</a>:</p>
+
+<p>Realmente a idéia do guia é excelente, mas um livro que também não está na lista do Vostokov, que eu também gosto muito e recomendo  é o Windows NT Device Driver Development do Viscarola. Acho ele melhor que o livro do Art Baker e do Lozano.</p>
+
+<p>http://www.amazon.com/Windows-NT-Device-Driver-Development/dp/1578700582</p>
+
+<hr/>
+
+<p>2008-08-07 <a href="http://www.coseinc.com">Edgar Barbosa</a>:</p>
+
+<p>Existe outro livro fantástico sobre Windows Internals que não consta na lista do Vostokov. Chama-se 'Undocumented Windows 2000 Secrets'. O autor conseguiu com a Addison-Wesley publicar o livro online gratuitamente. Voce pode encontrar os PDFs e o CD que acompanha o livro emhttp://undocumented.rawol.com/</p>
+
+<p>Atenção especial para os capitulos 4 e 7,os melhores do livro em minha opinião.</p>
+
+<p>Boa sorte com kernel-mode programming :)</p>
+
+<hr/>
+
+<p>2008-08-09 Caloni:</p>
+
+<p>Olá, Alberto.</p>
+
+<p>Na verdade, esse livro está, sim, só que infelizmente não com a mesma capa, e sim a capa verde que pode ser vista na lista. Conheci esse livro com esse livro com a capa antiga quando trabalhava na Scua (haviam outras do mesmo estilo, também, como o mineiro subindo o monte), mas devido ao esgotamento da edição a OSR republicou alguns livros que, apesar de antigos, ainda são os mais completos, como é o caso desse e do File System Internals.</p>
+
+<p>[]s</p>
+
+<p>aprendizado_kernel_mode</p>
+
+<p>2008-08-11 <a href="http://techberto.wordpress.com">AF.</a>:</p>
+
+<p>Olá, Caloni.</p>
+
+<p>E se não bastasse o excelente conteúdo técnico destes posts, ainda é possível encontrar pérolas com esta:</p>
+
+<p>"Deus é amor.O amor é cego.Steve Wonder é cego.Logo, Steve Wonder é Deus.</p>
+
+<p>Disseram-me que eu sou ninguém.Ninguém é perfeito.Logo, eu sou perfeito.Mas só Deus é perfeito.Portanto, eu sou Deus.</p>
+
+<p>Se Steve Wonder é Deus, eu sou Steve Wonder!Meu Deus, eu sou cego!"</p>
+
+<p>Fonte: http://www.driverentry.com.br/blog/2007/06/comear-de-novo.html (2026-03-21 link quebrado)</p>
+
+<p>guia_iniciantes_driverentry</p>
+
+<hr/>
+
+<p>2008-08-13 <a href="http://techberto.wordpress.com">AF.</a>:</p>
+
+<p>Salve Caloni!</p>
+
+<p>Realmente este é um método bem hacker (no bom sentido da palavra) de fazer algo que poderia ser bem mais simples, mas que é um incoveniente para que tem o plugin adequado de seu navegador (seja Firefox, Aurora, Opera ou whatever nav)</p>
+
+<p>Obviamente, praticar o WinDbg nunca é demais! :-)</p>
+
+<p>[]s</p>
+
+<p>AF.</p>
+
+<hr/>
+
+<p>2008-08-13 <a href="http://www.fzort.org/jumpi">Alan Silva</a>:</p>
+
+<p>Aeeeeeeeeeeee... gostei da telinha do VIM... :D</p>
+
+<p>Alias... faco o mesmo que o DQ... baixo os vídeos e vejo com calma utilizando VLC também... mais pratico... :)</p>
+
+<p>E para finalizar, curti o sistema de antispam... :D</p>
+
+<hr/>
+
+<p>2008-08-13 <a href="http://dqsoft.blogspot.com.br">Daniel Quadros</a>:</p>
+
+<p>Caloni,</p>
+
+<p>Já desisti há muito tempo de ver vídeos diretamente no browser, é muito irritante. Como mencionei num post recente, uso o DownloadHelper no Firefox para baixar os vídeos. Normalmente fecho até o browser, deixando só o download rodando. Depois assisto com calma usando o VLC media player.</p>
+
+<p>[]</p>
+
+<hr/>
+
+<p>2008-08-13 Caloni:</p>
+
+<p>Salve, DQ.</p>
+
+<p>Sim, eu vi sua menção ao DownloadHelper, mas ainda não tive tempo de baixar e testar.De qualquer forma, esse exercício no WinDbg foi bom para não enferrujar ;)</p>
+
+<p>[]s</p>
+
+<p>quando_programa_nao_quer_largar_arquivo</p>
+
+<p>2008-10-22 <a href="http://dqsoft.blogspot.com.br">Daniel Quadros</a>:</p>
+
+<p>Na minha pequena experiência como autor e menor ainda como tradutor (somente 1 livro), eu diria que achar uma forma de colocar termos técnicos estrangeiros é uma coisa complicada e sem possibilidade de vitória... Me irrita muito o uso desnecessário do inglês quando existem termos equivalentes em português. "Aportuguesar" soa bem na hora de falar, mas fica estranho quando escrito (ressetar é com um s ou dois?). É também um processo contínuo, a cada ano uma expressão em português se consolida. Sobre os exemplos citados: "linha de execução" no lugar de thread até me soa poético, porém alça como tradução de handle me dá calafrios. Gabarito no lugar de template não é totalmente incorreto pois gabarito também pode ser usado para se referir a um modelo usado na produção/reprodução de alguma coisa.</p>
+
+<p>Uma curiosidade: lá por volta de 1980 eu tive aula de eletrônica digital na Poli com o Prof Antonio Zuffo (o filho dele continua atuando na área e aparece na midia de vez em quando). Ele foi autor de um livro onde todas as siglas tradicionais (como RAM, ROM, CPU, etc) eram traduzidas. O nosso apelido para ele era Zovni!</p>
+
+<hr/>
+
+<p>2008-10-21 <a href="http://whatitakes.blogspot.com">Sergio CBJ</a>:</p>
+
+<p>Infelizmente eu já li livros em que eles se davam o trabalho de traduzir até as siglas.</p>
+
+<p>Mas esse "estrangeirismo" eu até gosto.. talvez eu esteja advogando em causa própria mas como você bem concluiu no final do post, eles ajudam muito a passar do portugues para o ingles gradativamente.No entando, eu acho o portingles uma boa linguagem para blogs e artigos informais, mas para um livro que pretende manter a seriedade é outra história.</p>
+
+<p>Bem, que atire a primeira pedra aquele que nunca falou "putz, essa droga bugo" ou "ta todo bugado" =P</p>
+
+<hr/>
+
+<p>2008-10-23 <a href="http://whatitakes.blogspot.com">Sergio CBJ</a>:</p>
+
+<p>sabe, agora que me lembrei.. a um tempo atrás eu estava conversando com um amigo biólogo.. e ele estava me explicando a briga deles para dizer se um virus é ou não um ser vivo e como essa discussão não tem fim por ser uma discussão mais filosofal do que qualquer outra coisa.(eles discutem o que é a vida por si só para saber se um virus é ou não um ser vivo o0)</p>
+
+<p>Na hora eu ri e pensei como é engraçado a forma como as ciencias que deveriam ser as mais exatas as vezes se baseiam em algo tão relativo quanto a opnião humana e pensei alto: "graças a deus que nos meus if's ou é TRUE ou é FALSE".</p>
+
+<p>Mas aqui está uma discussão completamente voltada a opnião humana, já que traduzir ou não é questão de ponto de vista e ainda não desenvolveram nenhum standard para expressões que devem ou não ser traduzidas.Ou seja, a programação não é tão exata assim também. =/</p>
+
+<hr/>
+
+<p>2008-12-04 Victor Hugo:</p>
+
+<p>Só um programador vindo do fefeléche pra fazer um artigo tão legal!</p>
+
+<p>Parabéns, suas opniões são espelhos das minhas!</p>
+
+<hr/>
+
+<p>2008-10-21 <a href="http://vinigodoy.wordpress.com">ViniGodoy</a>:</p>
+
+<p>Aliás, algo que sempre me chamou atenção é que esses livros geralmente tem revisores técnicos! Sinceramente, erros tão grotescos podem passar se gente da área ajuda na tradução?</p>
+
+<p>Também faltou citar o interessantístimo "gabarito" (template) na tradução do não menos clássico livro do Stroustrup. Mas tenho que admitir que o livro "Padrões de Projeto" foi muito bem traduzido. Um viva para o tradutor e para os revisores, que resolveram manter o nome dos padrões em inglês.</p>
+
+<hr/>
+
+<p>2008-10-21 Caloni:</p>
+
+<p>Olá, Sergio.</p>
+
+<p>De fato, no meu dia-a-dia proclamo e reclamo sobre tudo em inglês, gastando todos os termos possíveis e imagináveis. Nem parece uma afirmação de alguém que tenta zelar pelo excesso de estrangeirismos nos artigos deste humilde blogue =)</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-10-23 Caloni:</p>
+
+<p>É, meu caro, Sergio, quando a coisa cai no campo das línguas humanas, as coisas ficam menos lógicas; porém, mais ricas!</p>
+
+<p>[]s</p>
+
+<p>a_alca_dentro_do_fio_gerou_um_bloqueio_da_morte</p>
+
+<p>2008-09-14 A. F.:</p>
+
+<p>Caloni,</p>
+
+<p>Como saber que nunca usaremos algo? ;-)</p>
+
+<p>Realmente temos que estudar aquilo que nos dá prazer, aquilo que nos satisfaz mas sem nos preocupar se iremos utilizar ou não, pois o futuro é uma nebulosa e por mais previsível que ele pareça não custa estar preparado para o imprevisível. Porém não podemos forçar a utilização do novo aos nossos clientes e empregadores a serem early adopters. Devemos ter o foco na melhor solução, o que nem sempre significa utilizar a mais nova tecnologia, mas quando o novo é adequado ter a noção de como empregá-la é sensacional.</p>
+
+<p>Concordo que ser programador é ser criador ou como o Sílvio Meira afirma - num mundo onde cada vez mais convivemos com mais dispositivos programáveis - esta é a profissão da nova era, a era da infosfera. Por isto mesmo que o programador não deve prender-se a um universo limitado, eventualmente ele deve transcender aos meta e multiversos.  E estudar assuntos que a princípio pareçam exotéricos - como Erlang, OCAML, DSL, Haskell, HLA, C-INTERCAL, whatever - podem ser muito úteis seja para a compreensão ou para inspirar a inovação. Ser especialista é excelente, mas transcender o trivial também.</p>
+
+<p>Já previa Seth Lloyd (que afirma que o mundo não é feito de átomos mas de q-bits) que o homem ainda programaria o computador quântico universal, mas ainda estamos longe disto, porém já começamos a fazer nossas primeiras experiências de programação do computadores orgânicos que nos cercam. Portanto ser programador é o grande barato do momento e do futuro, mas esta é uma atividade para os vocacionados assim como todas as outras.</p>
+
+<p>Realmente os livros simples, curtos e claros são os melhores! Principalmente para um primeiro contato, mas você há de convir que certos assuntos podem tranquilamente transcender as 1.000 páginas...</p>
+
+<p>E por fim discordo que todo programador é um filósofo em potencial, pois muitos são operários de códificação, construtores de código limitados tão enquadrados em seu universo exato que podem ser facilmente substituídos por geradores de código, ou não. Mas concordo que todo programador deve ser um filósofo em potencial. Assim como todo programador merece o seu hackerspace e não uma baia apertada em uma fábrica de software, como já dizia Paul Graham.</p>
+
+<p>Meus parabéns por esta abordagem diferenciada neste post, aprecio seu estilo e este post foi uma grata surpresa.</p>
+
+<p>[ ]s</p>
+
+<p>A.F.</p>
+
+<hr/>
+
+<p>2008-09-12 Anderon Carubelli:</p>
+
+<p>Perfeito Caloni!</p>
+
+<p>vc soube explicar de forma unica o por que gostamos de programar</p>
+
+<p>parabens pelo post!</p>
+
+<p>[]´sAnderson</p>
+
+<hr/>
+
+<p>2008-09-12 <a href="http://ideiasgeek.blogspot.com">Michel</a>:</p>
+
+<p>Realmente ser programador é pensar todos os dias uma forma de deixar as coisas mais simples.</p>
+
+<p>Parabéns pela explicação!</p>
+
+<hr/>
+
+<p>2008-09-12 Caloni:</p>
+
+<p>Obrigado pelos elogios, colegas. Essa é uma coisa difícil de explicar, e tenho certeza que cada um tem o seu conto pra contar =)</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-09-15 Caloni:</p>
+
+<p>Olá, Alberto.</p>
+
+<p>Como sempre, enriquecendo meus artigos com seus pensamentos instigantes e provocativos =)</p>
+
+<p>E é exatamente sobre isso que eu estava falando.</p>
+
+<p>Assim como você, com certeza outros programadores devem ter opiniões diversas sobre esse tema, e é esse questionamento que me faz acreditar na filosofia como um grande forte de nossa "raça".</p>
+
+<p>Exatamente como eu disse, somos filósofos "em potencial". Não quer dizer que todos nós temos essa liberdade ou pré-disposição em nossos ambientes de trabalho, mas quer dizer que temos a chance de enxergar as coisas de outra maneira.</p>
+
+<p>E a propósito da discussão livros pequenos x livros gigantes, posso afirmar que foi de fato uma opinião pessoal, discutível e argumentável. Cada um tem suas capacidades, e garanto que a minha não é leitura dinâmica. Não pretendo gastar boa parte da minha vida lendo temas técnicos que "quem sabe irei usar", pois sinto a necessidade de ler sobre outras coisas, inclusive ficção.</p>
+
+<p>[]s e obrigado pelo enriquecimento do assunto.</p>
+
+<p>todo_programador_filosofo_em_potencial</p>
+
+<p>2008-10-15 <a href="http://dqsoft.blogspot.com.br">Daniel Quadros</a>:</p>
+
+<p>Falando no servidores em Seatle, você viu a foto em</p>
+
+<p>http://blogs.msdn.com/e7/archive/2008/09/05/organizing-the-windows-7-project.aspx ? (2026-03-21 link quebrado)</p>
+
+<hr/>
+
+<p>2008-10-16 Caloni:</p>
+
+<p>Amazing! 0_0</p>
+
+<p>[]s</p>
+
+<p>como_usar_wtl_com_atl_ddk</p>
+
+<p>2008-09-23 Fábio:</p>
+
+<p>Cada vez melhores esses eventos. Meu sonho é um evento com o Raymond Chen como palestrante.</p>
+
+<p>v</p>
+
+<p>2008-09-25 <a href="http://dqsoft.blogspot.com.br">Daniel Quadros</a>:</p>
+
+<p>Interessante esta coisa de gerações... acabo de descobrir que sou um "Baby Boomer"! Sobre o Mark Russinovich, acho que ele foi levemente sarcástico (como você, certo?);</p>
+
+<p>Mas gostei mesmo foi do seu crachá, não sabia que você era gerente! Já começou a mudar o penteado para deixar o cabelo mais pontudo?</p>
+
+<hr/>
+
+<p>2008-09-25 Caloni:</p>
+
+<p>Olá, DQ. Bom te ver novamente nos comentários.</p>
+
+<p>Sim, eu também percebi um quê de sarcasmo nos comentários do Mark, especialmente o segundo sobre enrolar a língua. Só espero que meu comentário um tanto ácido tenha tido a mesma "leveza" que os dele.</p>
+
+<p>Então, na verdade eu continuo ainda do lado dos que fazem. O ocorrido foi que eles deram um formulário para preencher e eu para meio provar que é possível se fazer de qualquer coisa em um evento corporativo de segurança e meio para levar um pouco de humor no estande da SCUA, me "auto-promovi" (se você notar o tooltip da imagem acima, verá o motivo da foto).</p>
+
+<p>[]s</p>
+
+<p>cnasi_geracao_y_gastos_ti</p>
+
+<p>2008-10-20 <a href="http://brunildz.blogspot.com/">Bruno Moreira Guedes</a>:</p>
+
+<p>Olá!! Muito bom o POST!!</p>
+
+<p>Gostaria de dizer que você me descreveu ao falar das "pessoas que tem muitas idéias em um intervalo curto de tempo".</p>
+
+<p>O que tenho feito ultimamente é tentar filtrá-las ao máximo. Estou montando um negócio próprio, e tenho tido lutas diárias contra minha própria mente em função de realizar meus planos.</p>
+
+<p>Mas não digo que muitas idéias tenha sido algo ruim pra mim. Isso me fez adquirir os mais diversos conhecimentos sobre uma infinidade de assuntos, e estes sempre "voltam a tona" quando preciso de algo relacionado.</p>
+
+<p>Porém, para viver no mundo real, precisamos deixar isso no ponto em que parou, e apenas reaproveitar o que já fomos atrás.</p>
+
+<p>Abraços!! Vou linkar este post no meu blog.</p>
+
+<hr/>
+
+<p>2009-01-13 <a href="http://dqsoft.blogspot.com.br">Daniel Quadros</a>:</p>
+
+<p>Menos de uma semana para acabar o prazo do rapaz... O erro foi tentar aprender a programar em 6 meses, quando todo mundo sabe que são precisos 10 anos (http://www.norvig.com/21-days.html)!</p>
+
+<hr/>
+
+<p>2009-01-14 Caloni:</p>
+
+<p>Pois, é, DQ. Não gosto de desanimar esses novatos, mas, sinceramente, eles vão e veem. Todos querem programar e todos querem ficar ricos e famosos =)</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-10-20 Caloni:</p>
+
+<p>Olá, Bruno.</p>
+
+<p>Sua noção de que as idéias sempre "voltam à tona" faz muito sentido para mim. Essa é uma vantagem que não havia enxergado quando escrevi o artigo. Portanto, valeu por enriquecer um pouco o assunto =)</p>
+
+<p>[]s</p>
+
+<p>programador_com_pressa</p>
+
+<p>2008-10-08 A.F.:</p>
+
+<p>Opa...</p>
+
+<p>Logo terá um album de fotos do encontro, com dezenas de fotos...</p>
+
+<p>E não sei como estará a qualidade, mas também uns vídeos de todas palestras.</p>
+
+<p>[]s</p>
+
+<p>A.F.</p>
+
+<hr/>
+
+<p>2008-10-14 <a href="http://dqsoft.blogspot.com.br">Daniel Quadros</a>:</p>
+
+<p>Eu levei máquina, mas as pilhas estavam descarregadas :(Estou contando com as fotos do "fotógrafo oficial".</p>
+
+<hr/>
+
+<p>2008-10-08 <a href="http://www.driverentry.com.br">Fernando Roberto</a>:</p>
+
+<p>Como assim não tem foto?</p>
+
+<p>:-)</p>
+
+<hr/>
+
+<p>2008-10-08 Caloni:</p>
+
+<p>Então, eu sou daqueles das antigas, que só leva máquina pra viagem de passeio =)</p>
+
+<p>Porém, provavelmente nosso amigo DQ irá publicar os flashes do dia. É só aguardar a "revelação".</p>
+
+<p>[]s</p>
+
+<p>impressoes_quinto_encontro_ccppbr</p>
+
+<p>2009-01-27 Caloni:</p>
+
+<p>Olá, Victor.</p>
+
+<p>Não fui eu que desenvolvi esse programa. Recomendo que dê uma pesquisada na internet para ver se outras pessoas já tiveram o mesmo problema que você.</p>
+
+<p>Só observo que o formato grupos\usuário não existe; tente domínio\usuário, ou máquina\usuário.</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2009-01-26 victor:</p>
+
+<p>Quando eu tento dar o comando Psexec dá acesso negado...</p>
+
+<p>eu tento colocar o -u Administrador e não vaieu tento colocar o -u Administradores\Administrador e não vai...</p>
+
+<p>não sei mais o que fazer...</p>
+
+<p>se puder mande a resposta pro meu email ;d</p>
+
+<p>como_funciona_o_psexec</p>
+
+<p>2008-11-16 Luiz Carlos Freitas:</p>
+
+<p>Bom dia Caloni.</p>
+
+<p>Parabéns pelo trabalho e dedicação.</p>
+
+<p>Infelizmente, a minha versão do Houaiss é 1.5 (atualização do 1.0, para o 2.0, mas que aparece como 1.5), e o conversor não está detectando os arquivos DEAH.</p>
+
+<p>Um abraço e muito obrigado.</p>
+
+<hr/>
+
+<p>2008-11-18 Luiz Carlos Freitas:</p>
+
+<p>Olá Caloni!</p>
+
+<p>Observando o comentário do Roberto Bechtlufft, conseguí fazer a conversão e instalar o dicionário. Parabéns e obrigado mais uma vez. Agradeço também ao Roberto Bechtlufft.</p>
+
+<hr/>
+
+<p>2008-11-23 Marcos:</p>
+
+<p>Sensacional, Caloni! Sou tradutor profissional e a chance de utilizar o Houaiss combinado com o Babylon é uma mão na roda. Muito bom!</p>
+
+<p>O seu conversor funciona perfeitamente, o Houaiss é um excelente dicionário. O que não ajuda é o próprio Babylon: quando uso a combinação Ctrl + botão direito do mouse ele, em geral, pega a palavra errada....</p>
+
+<p>Abraço!Marcos</p>
+
+<hr/>
+
+<p>2008-11-19 <a href="http://www.bechtranslations.com">Roberto Bechtlufft</a>:</p>
+
+<p>De nada!</p>
+
+<hr/>
+
+<p>2008-11-17 <a href="http://www.bechtranslations.com">Roberto Bechtlufft</a>:</p>
+
+<p>Aconteceu a mesma coisa aqui, com a versão 1.0 do Houaiss. O programa está buscando os arquivos em C:\Windows\Dicionário, mas por padrão, no meu Houais eles estão em C:\Arquivos de programas\Houaiss\Dicionario.</p>
+
+<p>Espero que corrija o problema, estou muito interessado. Aliás, qual é o formato do arquivo convertido, é BGL?</p>
+
+<pre>
+2008-1117 12:44:52 0312.1136 HouaissParaBabylon Starting program.
+Compilation: Nov 15 2008
+2008-1117 12:44:58 0312.1152 HouaissParaBabylon Working directory:
+C:\DOCUME~1\ROBERT~1\CONFIG~1\Temp
+2008-1117 12:44:58 0312.1152 HouaissParaBabylon Houaiss dictionary file
+does not exist: C:\WINDOWS\Dicionario\deah001.dhx
+2008-1117 12:44:58 0312.1152 HouaissParaBabylon Message code:
+0x20000000 (536870912)
+2008-1117 12:44:58 0312.1152 HouaissParaBabylon MessageDescription:
+Arquivos do dicionário Houaiss não foram encontrados. Por favor,
+reinstale o dicionário com a opção de copiar arquivos no disco
+rígido habilitada antes de efetuar a conversão.
+2008-1117 12:45:04 0312.1136 HouaissParaBabylon Finishing program
+2008-1117 12:45:04 0312.1136 HouaissParaBabylon Last error: 20000000
+2008-1117 12:45:07 0312.1136 HouaissParaBabylon Asking for path:
+Escolha o diretório de saída do arquivo de log
+2008-1117 12:45:11 0312.1136 HouaissParaBabylon Path (from user):
+C:\Documents and Settings\robertobech\Desktop
+</pre>
+<hr/>
+
+<p>2008-11-17 <a href="http://www.bechtranslations.com">Roberto Bechtlufft</a>:</p>
+
+<p>Copiei a pasta Dicionário para C:\Windows e funcionou. Vi que ele gerou um arquivo BDC... na verdade, eu queria um BGL para poder usar num programinha que uso no Linux, o Stardict. Dá para converter os dicionários BGL do Babylon para usar nele. Há alguma maneira de eu transformar esse BDC em BGL?</p>
+
+<p>Obrigado pelo seu trabalho, vai ajudar bastante.</p>
+
+<hr/>
+
+<p>2009-01-09 Tom Segev:</p>
+
+<p>Pode carregar Houaiss bgl file? Não posso converter Houaiss para Babylon. Muito obrigado.</p>
+
+<hr/>
+
+<p>2008-11-16 Caloni:</p>
+
+<p>Olá, Luiz.</p>
+
+<p>Você poderia mandar o arquivo de log gerado? Talvez seja algo simples de resolver.</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-11-21 Caloni:</p>
+
+<p>Olá, Roberto.</p>
+
+<p>O objetivo do conversor é fazer funcionar o dicionário Houaiss no Babylon. No entanto, baseado em <a href="2008-02.html#conversor_de_houaiss_para_babylon_parte_1">minhas análises e código</a> feitos para desofuscar o formato do dicionário Houaiss, é possível construir um conversor para qualquer formato aberto.</p>
+
+<p>Mesmo não tendo sido construído para isso, deduzo que você estará usando o resultado do conversor "para o bem". Então, vamos lá:</p>
+
+<p>Ao converter o dicionário, vários arquivos temporários são criados na sua pasta de temporários (normalmente a variável de ambiente %temp%). Após a fase de desencriptação ou montagem do dicionário é possível pausar o processo e copiar esses arquivos. Dessa forma acredito que você possa analisar o resultado da conversão e portar o formato para seu próprio dicionário.</p>
+
+<p>Boa sorte!</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-11-24 Caloni:</p>
+
+<p>Marcos, eu já tive esse problema com o Babylon nas versões 6 e 7. Aparentemente eles esqueceram como faziam o detector de palavras antigamente, nas ótimas versões 4 e 5.</p>
+
+<p>Uma técnica que eu uso é selecionar primeiro a palavra e depois clicar com o Babylon.</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2009-01-09 Caloni:</p>
+
+<p>Olá, Tom.</p>
+
+<p>Não, não posso. Isso seria infringir os direitos de copyright do produto Houaiss, além do arquivo ser razoavelmente grande.</p>
+
+<p>[]s</p>
+
+<p>houaissparababylon_beta</p>
+
+<p>2008-12-17 Daniel Silva:</p>
+
+<p>Olá. Quais as ferramentas/IDEs usadas nestes exemplos?</p>
+
+<p>Grato.Daniel.</p>
+
+<hr/>
+
+<p>2008-12-17 Caloni:</p>
+
+<p>Olá, Daniel.</p>
+
+<p>Foi usado o Visual Studio 2008 Express Edition, uma IDE de desenvolvimento C++ gratuita disponível no saite da Microsoft.</p>
+
+<p>[]s</p>
+
+<p>basico_do_basico_tipos</p>
+
+<p>2008-12-18 <a href="http://www.diegoholiveira.com">Diego Henrique</a>:</p>
+
+<p>Isso me lembrou as aulas de introdução a computação. rs</p>
+
+<hr/>
+
+<p>2008-12-25 PreH:</p>
+
+<p>Com certeza Diego!!!</p>
+
+<p>Caloni, parabéns pelos artigos...</p>
+
+<hr/>
+
+<p>2009-03-30 Caloni:</p>
+
+<p>Olá, Sandra.</p>
+
+<hr/>
+
+<p>2008, como sabemos, pode ser fatorado nas seguintes partes:</p>
+
+<pre>
+1024 + 512 + 256 + 128 + 64 + 16 + 8
+</pre>
+<p>Essas partes são potências de 2:</p>
+
+<pre>
+10 + 9 + 8 + 7 + 6 + 4 + 3
+</pre>
+<p>Para covertermos para binário, basta colocarmos 1 (um) em cada potência não-vazia, e 0 (zero) nas outras:</p>
+
+<pre>
+Potência   10 9 8 7 6 5 4 3 2 1 0
+Binário    1  1 1 1 1 0 1 0 1 0 0
+</pre>
+<p>Dessa forma, 2008 em binário é 111 1101 0100 (coloquei os espaços para ficar mais simples de enxergar).</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2009-03-29 sandra raquel:</p>
+
+<p>pelo amor ao próximo como se escreve 2008 nesse binario . Agradecida</p>
+
+<p>basico_do_basico_binario</p>
+
+<p>2009-02-27 Alberto Fabiano:</p>
+
+<p>Olá Caloni,</p>
+
+<p>Usei hoje esta nomenclatura ao comentar com um padawan e ainda indiquei este post! Realmente este alias ficou muito bom.</p>
+
+<p>[]s</p>
+
+<p>A.F.</p>
+
+<hr/>
+
+<p>2009-01-31 <a href="http://www.driverentry.com.br">Fernando Roberto</a>:</p>
+
+<p>Muito bem explicado Lesma.</p>
+
+<p>Uma coisa importante a se notar na documentação da função a ser usada, é se esta oferece uma função-polegar. Nem todas oferecem esse recurso. É o exemplo da rotina abaixo:</p>
+
+<p>SysAllocString</p>
+
+<p>Documentação MSDN: http://msdn.microsoft.com/en-us/library/ms221458.aspx</p>
+
+<p>Somente a função-polegar indicada na documentação poderá silanizar a causa da falha de uma rotina.Pode parecer besteira, mas já vi experientes programadores, que na falta de uma função-polegar, chamam a função SetLastError() com ERROR_SUCCESS antes de chamar uma determinada rotina de sistema, e em seguida chamam a GetLastError() para tentar descobrir se algo deu errado durante a chamada.</p>
+
+<p>Isso não faz o menor sentido. Quando você chama uma rotina de terceiro, esta pode utilizar inúmeras chamadas de outras funções, que por sua vez, possuem funções-polegares. Mas neste caso, os valores retornados por elas só serão válidos para a rotina de terceiro que você chamou. Se a rotina de terceiro não indicar uma função-polegar, não tente usar de magia negra para descobrir a causa.</p>
+
+<p>O uso incorreto da função-"polegar" pode sinalizar um "médio" pra cima.</p>
+
+<p>Abraço,Fernando.</p>
+
+<hr/>
+
+<p>2009-01-31 Caloni:</p>
+
+<p>Olá, Ferdinando.</p>
+
+<p>Pelo visto eu expliquei foi muito mal =)</p>
+
+<p>A função-polegar apenas indica se ela deu certo ou não. O que você chama de função-polegar na verdade é a função-causa, que retorna aí sim o código de erro do que aconteceu (no caso de falhas).</p>
+
+<p>Contudo, bem observado que nem toda função guarda o último erro para o chamador obter posteriormente. Às vezes a função é polegar, como a SysAllocString, mas não possui uma função de causa. Por outro lado, também existem funções não-polegar que são usadas como tal. Já vi programadores tão acostumados com a idéia da função-polegar que usavam o mesmo estilo para as funções do registro (e.g. RegOpenKey) que, como sabemos, já retorna o código de erro diretamente (nesse caso o dedo médio já vem devidamente deslocado).</p>
+
+<p>[]s</p>
+
+<p>funcoes_polegar</p>
+
+<hr/>
+
+<p>2009-02-10 <a href="http://www.driverentry.com.br">Fernando Roberto</a>:</p>
+
+<p>Nooooooossa...</p>
+
+<hr/>
+
+<p>2009-03-03 <a href="http://sergaralho.blogspot.com/">SergioCBJ</a>:</p>
+
+<p>Ótimo cara!</p>
+
+<hr/>
+
+<p>2009-02-10 Caloni:</p>
+
+<p>Viiiiiigi =)</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2009-02-12 Caloni:</p>
+
+<p>Valeu a dica, Werner. Na verdade, ele me disse que fez alguns ajustes, mas o deadlock deve ter passado batido.</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2009-02-12 <a href="http://www.wernermoecke.tk/">Werner</a>:</p>
+
+<p>Excelente a dica, e agradeço.</p>
+
+<p>Agora o alerta vai para a tradução em inglês do seu prefácio - obviamente, ele deve ter passado o seu original em um tradutor automático, sem que nenhuma revisão fosse feita. Caso que se percebe ao se ler deadlock "traduzido" como spirituality...</p>
+
+<p>windbg_info</p>
+
+<p>2009-03-05 Alex S. Torres:</p>
+
+<p>olá, parabens muito interressante o assunto abordado, bem mais tenho uma duvida, talvez alguem por aqui já teve esse problema e pode esclarecer, eu fiz um programa para hook compilei ele no ming, usando o codeblock, e tambem o compilei no visual c++, bem ambos funcionam perfeitamente no windows xp 32 bits, porem no vista 64, eles nao funcionam, de fato nao conseguem capiturar mensagem alguma, li em algum lugar que precisa compilar a dll com um compilador 64 bits, mais aí teria problemas no xp, alguem sabe como faço um hook que funciona no xp e no vista?</p>
+
+<hr/>
+
+<p>2009-03-05 <a href="http://dqsoft.blogspot.com.br">Daniel Quadros</a>:</p>
+
+<p>Para mim a coisa fica cabeluda quando surge o "em momentos aparentemente aleatórios". A minha teoria de depuração é que o primeiro passo é achar uma sequência, por mais longa e doida que seja, que provoque o erro. A partir daí, você vai simplificando a sequência para cercar a causa e vai "instrumentando" o código para achar o culpado. Eu acredito que uma vez que você consegue reproduzir à vontade um problema está bem perto de resolvê-lo.</p>
+
+<p>resolvendo_bugs_quase_impossiveis</p>
+
+<p>2009-04-09 <a href="http://fzort.org/jumpi">Alan</a>:</p>
+
+<p>O que seria o math tester enterprise edition??? Fiquei curioso agora... :D</p>
+
+<hr/>
+
+<p>2009-04-01 <a href="http://www.driverentry.com.br">Fernando Roberto</a>:</p>
+
+<p>Isso me faz lembrar de um trecho que li do Windows Driver Model, onde Walter Oney descreve que certa vez teve que depurar um driver que apresentava problemas com os eventos de gerenciamento de energia durante a transição para o Standby.</p>
+
+<p>No caso dele, o driver de serial, de vídeo e de rede já tinham ido pra caminha. Nessa situaçao WinDbg e SoftIce deixaram de ser uma opção óbvia. Escrever mensagens em disco também não foi uma escolha interessante já que o File System havia desligado. Tudo que ele tinha era uma tela preta e um congelamento da máquina durante o processo de standby ou o retorno dele.</p>
+
+<p>Por sorte, o teclado e a porta paralela ainda permaneciam ligados enquanto o problema era reproduzido, ele então decidiu utilizar o SoftIce e esperar o problema acontecer. Então, quando tudo parece congelado ele torce para que o SoftIce tenha manipulado algum ASSERT quando pressiona a tecla "Print Screeen". O SoftIce então manda a saída da tela para a impressora. Assim, a cada comando que ele lançava no SoftIce, ele fazia um Print Screen da tela. Muitas folhas mais tarde ele descobre o problema.</p>
+
+<p>O cara é um herói. :-)</p>
+
+<p>Windows Driver Model (2nd Edition) - página 434 "Debugging Power Management"</p>
+
+<hr/>
+
+<p>2009-04-01 Caloni:</p>
+
+<p>Olá, Mr. Ferdinando.</p>
+
+<p>Essa história foi de tirar lágrima das olhos!</p>
+
+<p>Você me lembrou de mais um caso extremo de depuração: microcontroladores! Lembro-me do <a href="http://dqsoft.blogspot.com">DQ</a> (ou outro "old-timer") comentar em um dos encontros de C++ como ele fazia para "depurar" aquelas caixinhas dos infernos: usando um led. A cada passada da rotina depurada, o led era aceso e apagado. Dessa forma, era possível saber qual a parte do código que fazia com que o dispositivo travasse.</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2009-04-01 Caloni:</p>
+
+<p>Caro Werner,</p>
+
+<p>Então o que eu temia é verdade: nada posso fazer para amenizar a longa e sinuosa estrada que leva programadores de F9/F11 para desbravadores das ciências ocultas da computação, prontos para encontrar o culpado no melhor estilo <a href="2008-04.html#csi_crashed_server_investigation">CSI</a> que nem os experts da Polícia Federal conseguiriam fazer!</p>
+
+<p>Por outro lado, sua história de tentativas e erros me deixou muito animado, pois demonstra que não estou sozinho nesse mundo de depuração hardcore. Dessa forma, espero aos poucos, conforme for acontecendo, narrar algumas aventuras em modo Debug que passo nos dias mais felizes do trabalho.</p>
+
+<p>[]s</p>
+
+<p>PS: Houve algum problema com o meu "Math Tester Enterprise Edition"? Espero que não, do contrário não terei como consertá-lo com meus conhecimentos matemáticos.</p>
+
+<p>E por falar em matemática, saiu um artigo muito interessante (2026-03-21 link quebrado) no Coding Horror sobre a dicotomia programação/matemática.</p>
+
+<hr/>
+
+<p>2009-04-01 Caloni:</p>
+
+<p>Olá, Werner!</p>
+
+<p>Vou considerar seu comentário uma crítica. Claro! Afinal de contas, a ideia do blogue era unicamente compartilhar conhecimento com as pessoas. Se estou me expressando confusamente, então acho que o objetivo foi por água abaixo.</p>
+
+<p>Espero que você não desista de suas tentativas de depuração. Mesmo que muitas coisas não deem certo nas primeiras vezes, com o tempo, experiência e cada vez mais conhecimento tudo vai ficando mais claro e lógico.</p>
+
+<p>Se você puder me dizer quais os principais obstáculos para o aprendizado em técnicas de debugging ficarei muito grato, pois me dá a chance de melhorar meus artigos.</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2009-04-11 Caloni:</p>
+
+<p>É simplesmente o formulário de comentários, que pede que você faça uma conta besta que nunca dá mais de 20 =)</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2009-04-12 <a href="http://www.wernermoecke.tk/">Werner</a>:</p>
+
+<p>Ufa, me causou tremendo alívio essa informação... meu buffer não comporta mais do que um small integer...   :-P</p>
+
+<hr/>
+
+<p>2009-03-31 <a href="http://www.wernermoecke.tk/">Werner</a>:</p>
+
+<p>Caloni, me perdoe, mas às vezes lendo seus posts, acho que você é doido...Não consigo entender, como alguém consegue entender o que vc entende. Mas ao mesmo tempo invejo isso.</p>
+
+<p>Essa capacidade de Debug que você consegue executar está além do meu intelecto. Confesso que depois de começar a ler o seu blog, andei fazendo umas brincadeiras aqui, mas estou longe de conseguir meu primeiro "sucesso"...</p>
+
+<p>Enfim, vou lendo e quem sabe uma hora entra alguma coisa na minha cabeça...</p>
+
+<hr/>
+
+<p>2009-04-01 <a href="http://www.wernermoecke.tk/">Werner</a>:</p>
+
+<p>Caloni,</p>
+
+<p>Você não deve considerar meu comentário como crítica. Foi apenas um pequeno desabafo, ante a minha dificuldade em entender o seu nível de debugging. Você já vive mergulhado nesse universo, que para mim é novo, de depuração de aplicativos em tempo real, coisa que eu, apesar de já ter "ouvido falar" nunca havia imaginado ser uma coisa de rotina para certos profissionais.</p>
+
+<p>Acredito que esse conhecimento abre muitas portas, e torna o programador muito mais do que um simples "teclador de F9/F11", como a maioria (eu incluso), a quem o conceito de "depuração" limita-se a "prender" o código-fonte dentro do ambiente de desenvolvimento, utilizando os recursos embutidos (F9/F11/etc)...</p>
+
+<p>O problema não acredito ser você, mas sim o iniciante (eu, novamente), que se depara com o "caminhão" de informações que você já vem aqui colocando, e precisa saber onde começar com o bê-a-bá.</p>
+
+<p>Eu não sei mais ler Assembler, desde que me formei no curso de eletrônica (saudosos tempos em que eu programava em Assembly Z-80), há 15 anos atrás, e me admira ver que há pessoas como você, que provavelmente sabem ler o conteúdo das janelas do WinDBG como se fossem um livro aberto. E saber isso deve ser muito gratificante, eu imagino.</p>
+
+<p>Para te citar dois exemplos práticos (que me fizeram lembrar de você):</p>
+
+<ul><li>Recentemente, estive com a minha máquina infectada pelo vírus Win32 Virut (conhecido mais como "reader_s.exe"), e consegui limpá-la, após 3 semanas intensas de frustrações (veja aqui (2026-03-21 link quebrado) o meu relato sobre o procedimento que eu formulei). Lembrei-me que em um de seus posts, você descreve que uma das suas atividades aí na Open é justamente a engenharia reversa em vírus e trojans. Nas 3 semanas em que passei batendo a cabeça na parede, lembrei-me disso e me perguntei, "como será que o Caloni lidaria com isso". Apesar de eu não ter lidado com o problema da forma como você provavelmente lidaria (abrindo um kernel debugger e "desentocando o bicho"), me deu a necessária dose de perseverança para não desistir e sair formatando, como a maioria esmagadora faz.</li>
+
+<li>Uma das minhas "experiências" (se assim posso chamar), é tentar descobrir uma forma comum de conseguir instalar aplicativos "WinXP-Only" em meu Windows 2000. Acho uma baita sacanagem da M$, você cada vez mais se deparar com aplicações que se recusam a instalar em sistemas "inferiores", por simples capricho desta empresa. Como prova disso, conto a você que tenho o Windows Defender rodando em 2000 e atualizando diariamente, após um pequeno "fix" que apliquei no arquivo de instalação .MSI do dito cujo, usando a ferramenta Orca, da própria M$. Ele roda normalmente, sem nenhum problema, em Windows 2000, sendo que esta é uma situação "non-Microsoft-endorsed".</li></ul>
+
+<p>Depois de começar a ler o seu blogue, me atentei para o fato de que poderia talvez buscar formas de "capturar" chamadas feitas às APIs Win32 (pois só posso imaginar que esses programas de "Setup" dos aplicativos buscam informações da versão do Sistema Operacional dentro de algum método específico que é fornecido pela API), e tentar alterar o seu valor de retorno, antes do mesmo ser lido pelo aplicativo.</p>
+
+<p>Nessa brincadeira, depois de quebrar a cabeça com o SoftICE (sem entender muito o que eu estava fazendo), acabei me deparando com a ferramenta <a href="http://www.nektra.com/products/spystudio/">SpyStudio</a>, que se parece bastante com um "debugger for dummies"... no momento, estou brincando com ele. Já consegui, graças a ele, localizar quais os métodos que estão nas DLLs kernel32 e user32, e que têm por função fornecer informações sobre o Sistema. Para mim, o maior problema até agora, está em localizar quais as chamadas que são feitas, para interceptar as corretas (já interceptei um só aplicativo fazendo várias chamadas para métodos diferentes, porém ao interceptar o retorno das mesmas e alterar os parâmetros corretos, ainda não consegui alcançar o meu objetivo).</p>
+
+<p>Citei esses dois casos para que veja como, apesar de minha expressa dificuldade em entender seus textos avançados, eu estou dando pequenos passos.</p>
+
+<p>O que você precisa compreender, se me permite dizer isso, é que não há forma de você simplificar um assunto tão complexo quanto debug em tempo real, nem a estrutura interna dos processadores atuais, a linguagem assembler, etc... aos interessados, cabe buscar fontes de informação que os coloquem na trilha certa, e o resto o tempo se encarrega.</p>
+
+<p>Para mim, acho que é necessário começar com uma boa leitura. Sei que deve haver livros (não um, mas vários), que forneçam uma introdução ao assunto, e permitam dominar, com tempo, as técnicas nas quais você já é mestre. Já sei que o debugging é uma técnica multidisciplinar; não há um livro que fale sobre tudo, são muitos os assuntos a serem dominados. Mas se você puder, apreciaria muito uma "shopping list" de publicações que você considere válidas, e que me coloquem no caminho certo (assim eu posso contar com algo a mais além do "trial-and-error"...)</p>
+
+<p>Um abraço e continue sempre!</p>
+
+<p>(O meu nível de matemática não permite comentários??? :))</p>
+
+<hr/>
+
+<p>2009-04-02 <a href="http://www.wernermoecke.tk/">Werner</a>:</p>
+
+<p>Caro Caloni,</p>
+
+<p>Infelizmente (ou talvez, felizmente), se fosse assim tão simples e fácil explicar o caminho para as ciências ocultas da computação aos "não-Jedi", facilmente tais artes negras seriam banalizadas, assim como acontece hoje com muitas das tais "linguagens" de programação que estão em voga. Imagine o que aconteceria com as carreiras e os salários...</p>
+
+<p>Mas enfim... de qualquer modo, eu padawan, vou tentando me manter no rumo, mesmo que a passos de formiga (e às vezes, de caranguejo - um passo à frente seguido de 3 passos atrás...). Assim é a vida.</p>
+
+<p>Quanto ao "Math Tester", acredito ter se tratado de alguma questão referente a "timeout", levando em conta a proporção direta entre tamanho do texto X tempo dispendido.</p>
+
+<p>Abraços!!(Em tempo: Se você é carabão mesmo, quero vê-lo "debugar" <a href="http://en.wikipedia.org/wiki/Whitespace_(programming_language)">este código-fonte</a>...)  :-)</p>
+
+<hr/>
+
+<p>2009-04-03 <a href="http://www.wernermoecke.tk/">Werner</a>:</p>
+
+<p>Gostei muito do artigo no Coding Horror, que você citou. E devo dizer que concordo com o ponto de vista exposto.</p>
+
+<p>Assim como o autor explica, vejo também a matemática como uma ferramenta dentre as milhares que existem, definida para solução de problemas específicos. Assim como nenhum programador precisa necessariamente ser economista para escrever um programa que auxilie no equilíbrio das contas do mês, ou técnico de futebol profissional, para criar um programa que faça a projeção das tabelas do campeonato estadual.</p>
+
+<p>É claro que existem aplicações onde a matemática é a ferramenta mais indicada, e muito provavelmente lhe garantirá o sucesso na proporção direta do seu nível de conhecimento. Eu tive a oportunidade de sentir isso na carne: ano passado, trabalhei para uma companhia que me enviou ao exterior, para aprender a mexer com uma ferramenta snap-in para sistemas CAD profissionais, a qual eu desenvolveria, futuramente. Para isso, fui estudar com programadores que eram mestres e doutores em matemática e engenharia mecânica (para meu terror, pois tenho verdadeiro trauma de matemática, desde o ginásio, e graças ao fatídico "Caloni's Math Tester Enterprise Edition", o trauma aumenta exponencialmente a cada comentário meu aqui). Era tudo envolvendo séries finitas, cálculo espacial, e por aí vai. Para você ter uma idéia, um dos exercícios que me foram propostos consistia em importar um arquivo criado no aplicativo CAD (em três formatos distintos e tendo nada em comum entre si), uma peça qualquer simples, calcular suas medidas extremas em três dimensões, e finalmente, gravar um novo arquivo contendo a peça e mais a "bounding box" (trata-se de uma representação traçada em torno da peça, exatamente nas dimensões mais extremas, como se fosse uma "caixa envolvente"). Levei aproximadamente 5 dias para completar o exercício, sendo que 1/3 do tempo passei estudando e rabiscando em papel, conceitos de geometria que não havia visto mais desde a oitava série!!</p>
+
+<p>Apesar de meus esforços terem gerado resultado (a meu ver) satisfatório, havia um fator bastante desagradável, a pressão imprimida pelos instrutores, que acharam o tempo dispendido por mim inaceitável (lembro-me que um deles ainda disse-me que ao bolar o exerfcício, tinha resolvido o mesmo em uma tarde...)</p>
+
+<p>Aprendi duas lições que levarei comigo:</p>
+
+<p>Primeiro, nunca trabalhe para alemães. Eu disse: NUNCA.Segundo, se você venceu um desafio, não deixe que ninguém (especialmente um alemão metido a besta) lhe diga que você não está à altura.</p>
+
+<p>(E terceira: C++ é amigo, amiiiiigo... amigoooo!!)</p>
+
+<p>Abraços! :-)</p>
+
+<p>depurando_ate_o_ultimo_segundo</p>
+
+<p>2009-04-10 <a href="http://fzort.org/jumpi">Alan</a>:</p>
+
+<p>Ahahahahahahahhahahaa... se eu nao estivesse junto no tal almoco, pensaria que realmente eram amigos imaginarios... :D</p>
+
+<p>Sim, quanto ao Strauss, sempre vejo ele proferindo a tal frase quando toca o telefone...</p>
+
+<p>"Porra meo, eu quero programar!!!!"</p>
+
+<p>HAHAHAHAHAHAHAHAHHAHAA</p>
+
+<hr/>
+
+<p>2009-04-11 Caloni:</p>
+
+<p>Calado, amigo imaginário =)</p>
+
+<p>[]s</p>
+
+<p>deixe_programador_programar</p>
+
+<p>2007-08-01 <a href="http://fzort.org/jumpi">Alan</a>:</p>
+
+<p>Opa... essa historia tambem me deixa emocionado... :~~~</p>
+
+<p>O interessante e ver o ponto de vista descrito por um dos criadores da linguagem C!!!</p>
+
+<p>http://www.cs.bell-labs.com/who/dmr/chist.html</p>
+
+<hr/>
+
+<p>2007-08-01 Caloni:</p>
+
+<p>Com certeza, Alan. Havia me esquecido desse documento, mas é uma ótima dissertação sobre os primórdios da linguagem. Geeks sensíveis irão chorar =)</p>
+
+<p>Por falar em se emocionar, imagino que seu comentário estaria mais contextualizado <a href="2007-08.html#historia_da_linguagem_c_parte_1">nesse artigo</a> onde inicio uma viagem ao tempo para discursar sobre as decisões por detrás da linguagem C. Se você ainda não o leu, recomendo.</p>
+
+<p>[]s</p>
 
 </section><hr/>
 

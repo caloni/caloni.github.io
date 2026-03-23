@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="diferencas_entre_c_e_c++_precedencia" title="Diferenças entre C e C++: precedência!"/></span>
+<section id="section_diferencas_entre_c_e_c++_precedencia">
+<p class="title">Diferenças entre C e C++: precedência!</p>
+<span class="title-heading">Caloni, 2006-05-03 computer blog</span>
+
+<p>Num belo dia, meu amigo Kabloc escreveu uma pequena e singela função para imprimir a tabuada de 1 a 10. O código era mais ou menos assim:</p>
+
+<pre>
+#include &lt;stdio.h&gt;
+
+int main()
+{
+  int f1,f2,s=0;
+  for(f1=1;(f1==11&amp;&amp;s!=5)?s=5,f1=0,putchar(10):(f1&lt;=10)?f1=f1:f1=12,f1&lt;=11;f1++)
+    for(f2=1+s;f2&lt;=5+s;f2++)printf(&quot;%dx%d=%d%c&quot;,f2,f1,f1*f2,(f2==5+s)?10:9);
+  return 0;
+}
+</pre>
+<p>Tirando o fato que o fonte é candidato forte ao <a href="http://www.ioccc.org">The International Obfuscated C Code Contest</a>, o pessoal do linux disse para ele que o dito cujo não compilava no GCC, e que em algum lugar naquelas 4 linhas dentro do main alguma coisa não era padrão da linguagem.</p>
+
+<p>Procurado para resolver o problema, dado minha inata vocação para <a href="curiosidades_inuteis_o_operador_de_subscrito_em_c.html">assuntos aleatórios</a>, resolvi resolver as coisas no bom e velho Visual Studio 2003. Afinal de contas, ele compila fontes em C, também. Basta alterarmos a extensão de um fonte de .cpp para .c. E foi o que eu fiz. Foi assim que encontrei o seguinte erro de compilação, que não ocorre ao compilar o mesmo fonte em um arquivo C++:</p>
+
+<pre>
+error C2106: '=' : left operand must be l-value
+</pre>
+<p>Isso acontece na linha 6, a linha do primeiro for. E eis um fonte em C que compila em C++, mas dá erro de falta de l-value quando compilado como C puro.</p>
+
+<p>Pensando um pouco sobre o problema, mais de maneira intuitiva do que propriamente destrinchando e analisando a linha de código, imaginei que poderia haver alguma diferença minúscula entre a tabela de precedência de operadores dessas duas linguagens. Tendo isso em mente, saquei os padrões das respectivas linguagens da minha pasta de e-books e, vejam só:</p>
+
+<pre>
+| C              C++  |
+| ------------------- |
+| [R2L] ?:  =   [R2L] |
+| [R2L] =   ?:  [L2R] |
+| [L2R] ,   ,   [L2R] |
+</pre>
+<p>Nota-se que no final da tabela existe uma inversão na precedência entre ooperador condicional ternário e os operadores de atribuição; isso semcontar que a ordem de avaliação também muda. Em C, o operador ternário éavaliado da direita pra esquerda (R2L, Right to Left), enquanto em C++ daesquerda pra direita (L2R), aliás como a maioria na tabela completa. Isso vai fazer com que, na linha 6, a mesma expressão tenha diferentes interpretações para cada linguagem.</p>
+
+<p>Para entender passo a passo o problema, vamos destrinchar a segunda parte do laço for da linha 6:</p>
+
+<pre>
+( f1 == 11 &amp;&amp; s != 5 ) ?
+  s = 5, f1 = 0, putchar(10)
+  :
+  ( f1 &lt;= 10 ) ?
+    f1 = f1
+    :
+    f1 = 12, f1 &lt;= 11;
+</pre>
+<p>Nós temos dois operadores ternários aninhados. De acordo com o padrão C++, os operadores ternário têm precedência menor que os operadores de atribuição, e são avaliados da esquerda pra direita. Ou seja, primeiro são avaliadas todas as atribuições da expressão antes de qualquer operador ternário. Depois disso, o primeiro operador ternário é avaliado, seguido do segundo:</p>
+
+<pre>
+// C++ understanding
+(
+  ( f1 == 11 &amp;&amp; s != 5 ) ?
+    (s = 5), (f1 = 0), putchar(10)
+    :
+    ( f1 &lt;= 10 )
+) ?
+  (f1 = f1)
+  :
+  (f1 = 12), f1 &lt;= 11;
+</pre>
+<p>2026-03-22 Antigamente meus códigos possuíam cores e havia uma separaçãoaqui entre vermelho, verde e azul. Eu removi o parágrafo descrevendo aordem de precedência por cores e reformatei o código para explicitar pelosparênteses a ordem a ser seguida.</p>
+
+<p>Agora analisemos em C. Nessa linguagem, ao contrário de C++, os operadores ternários possuem precedência maior que os operadores de atribuição, e são avaliados da direita para a esquerda. Isso quer dizer que primeiro o último operador ternário é avaliado, ignorando a atribuição mais à direita, e depois o primeiro operador ternário é avaliado. Só depois disso que a atribuição mais à direita é feita:</p>
+
+<pre>
+// C understanding
+(
+  ( f1 == 11 &amp;&amp; s != 5 ) ?
+    s = 5, f1 = 0, putchar(10)
+    :
+    (
+      ( f1 &lt;= 10 ) ?
+        f1 = f1
+        :
+        f1
+    )
+) = 12, f1 &lt;= 11;
+</pre>
+<p>Tudo isso para compreendermos que a atribuição do valor 12 será feita em cima do resultado do primeiro operador ternário, cujos valores possíveis poderão ser ou o retorno de putchar ou f1. Lembre-se de que o operador vírgula serve para encadear expressões, avaliá-las, e retornar o valor da expressão mais à direita:</p>
+
+<pre>
+// atribui 5 a s, 0 a f1 e retorna o valor da chamada a putchar.
+s = 5, f1 = 0, putchar(10)
+
+// em ambos os casos o valor retornado é a variável f1.
+f1 = f1 : f1
+</pre>
+<p>Ora, a variável f1 é do tipo int. E putchar também retorna um int. Isso não quebra nenhuma regra de tipagem. Porém, quebra a regra de ouro da atribuição, que possui um lugar de destaque nas escrituras sagradas: "colocarás um lvalue ao lado direito de uma atribuição; não serás um 10, muito menos uma constante, mas uma variável; e assim foi feito!".</p>
+
+<pre>
+// certo; nada a declarar (exceto o f1)
+f1 = 12;
+
+// opa! que que é isso? putchar não retorna variável, e sim uma constante
+putchar(10) = 12;
+</pre>
+<p>Isso termina a longa explicação do porquê aquele errinho lá no começo do artigo ocorreu apenas na linguagem C. Esse é um exemplo das pequenas diferenças entre essas duas linguagens. Provavelmente se você usa parênteses feito um doente mental não encontrará problemas desse tipo em seus códigos. Lembrando que isso não desmerece o operador ternário, tão útil e econômica expressão dessas duas linguagens que primam pela elegância e exatidão.</p>
+
+<pre>
+// Update (2026-01-25): Eu pedi ao Copilot para consertar o código em C
+// e ele gerou esse código formatado que conserta o programa e remove
+// toda a diversão.
+
+#include &lt;stdio.h&gt;
+
+int main()
+{
+  int f1, f2, s = 0;
+  for (; s &lt; 2; s++)
+  {
+    for (f1 = 1; f1 &lt;= 10; f1++)
+    {
+      for (f2 = 1 + s * 5; f2 &lt;= 5 + s * 5; f2++)
+      {
+        printf(&quot;%dx%d=%d%c&quot;, f2, f1, f1 * f2, (f2 == 5 + s * 5) ? 10 : 9);
+      }
+    }
+    putchar(10);
+  }
+  return 0;
+}
+</pre>
+<h4>Comments</h4>
+
+<p>2006-05-03 Daniel Quadros:</p>
+
+<p>Felizmente eu costumo usar parenteses ao invés de depender da precedênciados operadores. Por exemplo, eu escreveria ((f1==11)&amp;&amp;(s!=5)). Além disso,já passei da fase de economizar linhas e colunas no fonte. A minha versãopara a tabuada (não reproduzindo a esquisitice do fator 0 na segunda metade)seria:</p>
+
+<pre>
+#include &lt; stdio.h &gt;
+
+int main()
+{
+  int f1,f2,s=0;
+
+  for (s = 0; s &lt; 10; s += 5)
+  {
+   for (f1 = 1; f1 &lt;= 10; f1++)
+   {
+    for (f2 = 1+s; f2 &lt;= (5+s); f2++)
+     printf (\&quot;%dx%d=%d%c\&quot;, f2, f1, f1*f2, (f2==5+s) ? \'\\n\': \'\\t\');
+   }
+   if (s != 5)
+    putchar(\'\\n\');
+  }
+
+  return 0;
+}
+</pre>
+<p>Abraços,</p>
+
+<p>Daniel Quadros</p>
+
+<hr/>
+
+<p>2006-05-05 Kabloc:</p>
+
+<p>Quando eu estava fazendo este código eu estava brincando com o pessoal da faculdade:</p>
+
+<p>É que o professor passou a difícil tarefa "Escrever um três código que imprime a tabuada do '7', um com 'while', um com 'do while' e outro com 'for'", aí eu queria imprimir todas as tabuadas com um fonte do mesmo tamanho, e o mais confuso possível.</p>
+
+<p>Tudo não passou de uma brincadeira...</p>
+
+<hr/>
+
+<p>2006-05-05 Caloni:</p>
+
+<p>Pois é, deu pra perceber que seu código não era de "produção" =).</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="about.html">[about]</a>
+ <a href="erros_esquisitos.html">[erros_esquisitos]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

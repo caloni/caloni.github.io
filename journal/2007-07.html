@@ -163,7 +163,7 @@ error C2106: '=' : left operand must be l-value
 | [R2L] =   ?:  [L2R] |
 | [L2R] ,   ,   [L2R] |
 </pre>
-<p>We can notice a inversion between the ternary operator and the attribution operator and, more importantly, the inversion of the evaluation order. In C, the ternary operator is evaluated from right to left (R2L), whilst in C++ from left to right (L2R), like the rest. This is going to shows us that, in line 6, the same expression has two different interpretations in each language.</p>
+<p>We can notice a inversion between the ternary operator and the attributionoperator and, more importantly, the inversion of the evaluation order. InC, the ternary operator is evaluated from right to left (R2L), whilst inC++ from left to right (L2R), like the rest in the full table. This is going to shows us that, in line 6, the same expression has two different interpretations in each language.</p>
 
 <p>In order to understand bit by bit the problem, let's disassemble the second part of that for:</p>
 
@@ -239,19 +239,19 @@ putchar(10) = 12;
 
 int main()
 {
-    int f1, f2, s = 0;
-    for (; s &lt; 2; s++)
+  int f1, f2, s = 0;
+  for (; s &lt; 2; s++)
+  {
+    for (f1 = 1; f1 &lt;= 10; f1++)
     {
-        for (f1 = 1; f1 &lt;= 10; f1++)
-        {
-            for (f2 = 1 + s * 5; f2 &lt;= 5 + s * 5; f2++)
-            {
-                printf(&quot;%dx%d=%d%c&quot;, f2, f1, f1 * f2, (f2 == 5 + s * 5) ? 10 : 9);
-            }
-        }
-        putchar(10);
+      for (f2 = 1 + s * 5; f2 &lt;= 5 + s * 5; f2++)
+      {
+        printf(&quot;%dx%d=%d%c&quot;, f2, f1, f1 * f2, (f2 == 5 + s * 5) ? 10 : 9);
+      }
     }
-    return 0;
+    putchar(10);
+  }
+  return 0;
 }
 </pre>
 </section><hr/>

@@ -92,6 +92,32 @@ memcpy(buf, aSimpleString, len);
 
 <p>O mais encorajador desse problema do sizeof é que a resposta ingênua estava certa, ou seja, pelo menos dessa vez, o padrão conseguiu através de suas regras seguir a intuição do programador.</p>
 
+<h4>Comments</h4>
+
+<p>2007-12-27 marcos machado:</p>
+
+<pre>
+size_t len = sizeof(&quot;A simple string&quot;);
+memcpy(buf, &quot;A simple string&quot;, len);
+</pre>
+<p>não seria</p>
+
+<pre>
+size_t len = sizeof(&quot;A simple string&quot;);
+memcpy(buf, &quot;A simple string&quot;, len+1);
+</pre>
+<p>pra ter espaço pro ?</p>
+
+<hr/>
+
+<p>2007-12-28 Caloni:</p>
+
+<p>Olá, Marcos.</p>
+
+<p>Na verdade, não. Acho que você está confundindo com a função strlen (string.h), que retorna o número de caracteres em uma string. Em sizeof, além de não ser uma função (ele é resolvido em tempo de compilação), o valor retornado é o número de bytes que a string ocupa na memória. Como a string ocupa o número de caracteres mais o terminador nulo, a expressão está correta.</p>
+
+<p>[]s</p>
+
 </section>
 
 <span style="float: left;">

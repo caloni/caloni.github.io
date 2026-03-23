@@ -197,6 +197,40 @@ role="navigation" aria-label="main navigation">
 
 <p>É isso. Concorda, discorda, sem corda? Imagino que a dica que mais me afetou foi aquela sobre humildade, lá no começo. Digo isso porque ainda está martelando na minha cabeça, pronta para transformar este blogue em algo mais democrático e transparente.</p>
 
+<h4>Comments</h4>
+
+<p>2008-01-09 <a href="http://dqsoft.blogspot.com">Daniel Quadros</a>:</p>
+
+<p>Pela definição do criador do termo, o que você (e eu e muita gente mais) fazemos não é um weblog... Eu pessoalmente fico muito decepcionado quando vejo um título atraente em um feed e ao olhar o artigo encontro apenas um link, sem nenhum comentário (e usar um adjetivo genérico não vale!).</p>
+
+<p>Estas regras me lembram um trecho do livro 'Foundation' do Isaac Asimov onde, para ilustrar a decadência do 'Império Galático', é mencionado que os intelectuais consideram que sua atividade consiste em estudar e discutir os estudos já existentes, nunca se aventurando em criar algo novo.</p>
+
+<p>Para mim a regra realmente útil é a 3: ver o que já existe a respeito antes de sair escrevendo.</p>
+
+<hr/>
+
+<p>2008-01-14 Lino:</p>
+
+<p>Obrigado pela citação e pela repercussão dos conselhos do Jorn. Realmente, como diz o Daniel, se formos levar ao pé da letra o que ele diz, não teríamos um weblog. Só que as coisas evoluem e, no caso dos blogs, ao invés de somente links, aliás como é o Robot Wisdom, temos texto e muito mais.</p>
+
+<hr/>
+
+<p>2008-01-09 <a href="http://www.1bit.com.br">Rodrigo Strauss</a>:</p>
+
+<p>Os dois primeiros itens são tão estúpidos que invalida todo o resto...</p>
+
+<p>Outra coisa, ele escreve sobre banalidades e nós sobre coisas técnicas, é um mundo completamente diferente.</p>
+
+<hr/>
+
+<p>2008-01-09 Caloni:</p>
+
+<p>É uma questão de ponto de vista. Coisas técnicas para muita gente não passa de banalidades.</p>
+
+<p>Agora, se definir o termo "blog" apenas pela sua origem etimológica "web log", estaremos limitando seu significado atual, que evoluiu em muito desde que surgiu. Pode ter sido esse o "erro" do criador, ainda acostumado com o único significado cunhado, o original.</p>
+
+<p>De qualquer forma, não é porque escrevemos sobre coisas técnicas que nossos blogues são mais importantes ou que as outras coisas são "banais". Os blogues trouxeram mais gente para a internet, além das comunidades virtuais e outras coisas mais. A sociedade vai se inserindo na rede sobre inúmeras formas, e o blogue é uma delas.</p>
+
 </section><hr/>
 
 
@@ -405,6 +439,80 @@ ExFreePool(...);
 <h4>Versão debug pra quê?</h4>
 
 <p>É importante, durantes os testes de desenvolvimento, sempre manter em dia uma versão debug (para o mundo kernel mode, versões checked) para que os primeiros problemas, geralmente os mais bestinhas, sejam pegos de forma rápida e eficiente. No entanto, um bom desenvolvedor não se limita a depurar com código-fonte. Ele deve estar sempre preparado para enfrentar problemas de falta da versão certa, informação pela metade, situação não-reproduzível. Para isso que servem as ferramentas maravilhosas que podemos usar no dia-a-dia. O IDA é mais uma das que deve estar sempre no cinto de utilidades do bom "debugador".</p>
+
+<h4>Comments</h4>
+
+<p>2008-01-22 Leonardo:</p>
+
+<p>Estou usando o WIndbg para abrir os meus minidumps, porém ele trás os seguintes erros:</p>
+
+<pre>
+Microsoft (R) Windows Debugger Version 6.8.0004.0 X86
+Copyright (c) Microsoft Corporation. All rights reserved.
+
+Loading Dump File [C:\dump\Mini012108-04.dmp]
+Mini Kernel Dump File: Only registers and stack trace are available
+
+Symbol search path is: *** Invalid ***
+****************************************************************************
+* Symbol loading may be unreliable without a symbol search path.           *
+* Use .symfix to have the debugger choose a symbol path.                   *
+* After setting your symbol path, use .reload to refresh symbol locations. *
+****************************************************************************
+Executable search path is: 
+*********************************************************************
+* Symbols can not be loaded because symbol path is not initialized. *
+*                                                                   *
+* The Symbol Path can be set by:                                    *
+*   using the _NT_SYMBOL_PATH environment variable.                 *
+*   using the -y  argument when starting the debugger. *
+*   using .sympath and .sympath+                                    *
+*********************************************************************
+Unable to load image ntoskrnl.exe, Win32 error 0n2
+*** WARNING: Unable to verify timestamp for ntoskrnl.exe
+*** ERROR: Module load completed but symbols could not be loaded for
+ntoskrnl.exe
+Windows 2000 Kernel Version 2195 (Service Pack 4) UP Free x86 compatible
+Kernel base = 0x80400000 PsLoadedModuleList = 0x80481580
+Debug session time: Mon Jan 21 16:24:36.671 2008 (GMT-3)
+System Uptime: not available
+*********************************************************************
+* Symbols can not be loaded because symbol path is not initialized. *
+*                                                                   *
+* The Symbol Path can be set by:                                    *
+*   using the _NT_SYMBOL_PATH environment variable.                 *
+*   using the -y  argument when starting the debugger. *
+*   using .sympath and .sympath+                                    *
+*********************************************************************
+WaitForEvent failed
+?: kd&amp;gt; !analyze -v
+WARNING: The debugger does not have a current process or thread
+WARNING: Many commands will not work
+No export analyze found
+</pre>
+<p>Ou seja, vi que falta o Symbol Path.  Como resolvo isso para ele mostrar todo o dump?E como pode ser visto ele não mostrou o driver que causou a falha.</p>
+
+<p>Obrigado!</p>
+
+<hr/>
+
+<p>2008-01-22 Caloni:</p>
+
+<p>Olá, Leonardo!</p>
+
+<p>Acredito que o próprio WinDbg já tenha dado uma dica importante. Apenas me atenho em transcrever a parte importante:</p>
+
+<pre>
+* Symbols can not be loaded because symbol path is not initialized. *
+* *
+* The Symbol Path can be set by: *
+* using the _NT_SYMBOL_PATH environment variable. *
+* using the -y argument when starting the debugger. *
+* using .sympath and .sympath+ *
+</pre>
+<p>O artigo sobre temas no WinDbg explica como montar seu workspace com tudo configurado, de forma que esses problemas não mais ocorram.</p>
+
+<p>[]s</p>
 
 </section><hr/>
 
@@ -1084,6 +1192,32 @@ int main(int argc, char* argv[])
 
 <p>Durante a apresentação foi mostrado um exemplo de uso das classes thread e mutex. O código foi melhorado (mas não completado). Ao final da palestra, fiquei devendo os links (desculpem).</p>
 
+<h4>Comments</h4>
+
+<p>2008-04-23 Robson:</p>
+
+<p>Ola meu nome é Robson Farias faço faculdade de Sistemas  de Informação,Sou de  Pinhalzinho Santa Catarina uma cidade bem pequena no extremo oeste Gostaria de saber sobre Curso de linguagens C C++......Atenciosamente Obrigado ....</p>
+
+<hr/>
+
+<p>2008-04-24 Caloni:</p>
+
+<p>Olá, Robson.</p>
+
+<p>Se você tiver a oportunidade de vir a São Paulo, a Agit tem cursos de C e C++ que parecem com conteúdo bem interessante.</p>
+
+<p>Agora, a distância, você tem algumas outras opções:</p>
+
+<ul><li>Freqüentar um curso online. Eu conheço o da UFMG.</li>
+
+<li>Ler livros. Isso é realmente importante!</li>
+
+<li>Freqüentar o sítio do nosso grupo de C/C++ e nossa lista de discussão.</li>
+
+<li>Usar o Google e procurar por tutoriais</li></ul>
+
+<p>Boa sorte!</p>
+
 </section><hr/>
 
 
@@ -1438,6 +1572,24 @@ int _tmain(int argc, PTSTR argv[])
 }
 </pre>
 <p>Preciso lembrar que essa é uma versão inicial ainda, mas que pode muito bem ser melhorada. Duas idéias interessantes são: parametrizar a proteção da variável (através do SECURITY_ATTRIBUTES) e transformá-la em classe. Uma classe parece ser uma idéia bem popular. Afinal, tem tanta gente que só se consegue programar se o código estiver dentro de uma.</p>
+
+<h4>Comments</h4>
+
+<p>2008-06-17 Ricardo:</p>
+
+<p>Eu estava procurando no google como transferir uma estrutura de dados de uma dll para uma janela. Obrigado pelo exemplo, parece ser o que preciso.</p>
+
+<p>Abracos.</p>
+
+<hr/>
+
+<p>2008-06-17 Caloni:</p>
+
+<p>Olá, Ricardo.</p>
+
+<p>Espero que seja realmente o que você estava querendo fazer, e não existam melhores formas de fazê-lo.</p>
+
+<p>[]s</p>
 
 </section><hr/>
 

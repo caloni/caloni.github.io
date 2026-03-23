@@ -127,6 +127,33 @@ void __fastcall TForm1::Button1Click(TObject *Sender)
 
 <p>É claro! O Borlando C++ Builder é coisa do passado, assim como Delphi e VB como os conhecemos. A versão nova do C++ Buider chama-se Turbo C++ (até semana passada, pelo menos). Nele as coisas são iguais mas diferentes. Ou seja, os conceitos aqui apresentados ainda valem. Só estão com uma cara diferente.</p>
 
+<h4>Comments</h4>
+
+<p>2008-08-07 Danise:</p>
+
+<p>Olá,</p>
+
+<p>Parabéns pelo conteúdo, um ótimo trabalho!</p>
+
+<p>Estava querendo saber como criar componente em tempo de execução e este artigo me ajudou muito, agora estou com uma outra duvida, acredito que pode me ajudar. Gostaria de saber se tem como eu sabe se um checkbox (por exemplo) que foi criado em tempo de execução foi marcado ou não? Isto é possível? Pois para eu verificar isto tenho que especificar no código o nome do componente, mas o código não vai compilar pois o componente ainda não foi criado. Está é minha dúvida.</p>
+
+<p>Desde já agradeço a atenção.</p>
+
+<hr/>
+
+<p>2008-08-08 Caloni:</p>
+
+<p>Olá, Danise.</p>
+
+<p>Para isso você deve guardar o ponteiro para o componente em uma variável. No caso de um CheckBox, serial algo mais ou menos assim:</p>
+
+<pre>
+TCheckBox* chkBox = new TCheckBox(this);
+if( chkBox-&gt;Checked )
+...
+</pre>
+<p>[]s</p>
+
 </section><hr/>
 
 
@@ -421,6 +448,32 @@ memcpy(buf, aSimpleString, len);
 
 <p>O mais encorajador desse problema do sizeof é que a resposta ingênua estava certa, ou seja, pelo menos dessa vez, o padrão conseguiu através de suas regras seguir a intuição do programador.</p>
 
+<h4>Comments</h4>
+
+<p>2007-12-27 marcos machado:</p>
+
+<pre>
+size_t len = sizeof(&quot;A simple string&quot;);
+memcpy(buf, &quot;A simple string&quot;, len);
+</pre>
+<p>não seria</p>
+
+<pre>
+size_t len = sizeof(&quot;A simple string&quot;);
+memcpy(buf, &quot;A simple string&quot;, len+1);
+</pre>
+<p>pra ter espaço pro ?</p>
+
+<hr/>
+
+<p>2007-12-28 Caloni:</p>
+
+<p>Olá, Marcos.</p>
+
+<p>Na verdade, não. Acho que você está confundindo com a função strlen (string.h), que retorna o número de caracteres em uma string. Em sizeof, além de não ser uma função (ele é resolvido em tempo de compilação), o valor retornado é o número de bytes que a string ocupa na memória. Como a string ocupa o número de caracteres mais o terminador nulo, a expressão está correta.</p>
+
+<p>[]s</p>
+
 </section><hr/>
 
 
@@ -502,6 +555,32 @@ void __fastcall TMain::FormDragDrop(TObject *Sender, TObject *Source,
 
 <li>O método FindChildControl é deveras útil quando não temos certeza da existência de um controle. Geralmente é uma boa idéia confiar no sistema de gerenciamento de componentes da VCL. Não é à toa que existe um framework por baixo do ambiente RAD.</li></ul>
 
+<h4>Comments</h4>
+
+<p>2008-09-30 Sir jhonn:</p>
+
+<p>Wow.. parabéns ;D</p>
+
+<p>ei</p>
+
+<p>me responde uma coisa... teria como eu usar drag'n'Drop pra pegar Path</p>
+
+<p>de arquivo?</p>
+
+<p>too precisando mto disso ;P</p>
+
+<hr/>
+
+<p>2008-09-30 Caloni:</p>
+
+<p>Olá, Sir Jhonn.</p>
+
+<p>Então, já faz quase uma década que não mexo diariamente com essa ferramenta, então eu posso lhe afirmar sem dúvida alguma que não faço a mínima idéia.</p>
+
+<p>No entanto, se você já viu algum programa fazer isso, então é porque existe uma maneira.</p>
+
+<p>[]s</p>
+
 </section><hr/>
 
 
@@ -573,6 +652,46 @@ end
 <p>E é isso! Se chegamos até aqui, já sabemos o arroz com feijão de usar banco de dados com o C++ Builder. Mais para a frente podemos nos aventurar em tópicos um pouco mais avançados, como fazer buscas, navegar item a item e essas coisas que as pessoas costumam fazer com um MDB.</p>
 
 <ul><li>2021-03-27. Durante a revisão deste post eu tentei rodar a aplicação sem sucesso. Existem erros na abertura e configuração do arquivo mdb que não perdi mais tempo tentando resolver.</li></ul>
+
+<h4>Comments</h4>
+
+<p>2008-07-08 Daniel Cerignoni:</p>
+
+<p>Muito bom tutorial, mas como fazer a conversão a de 5 minutos e a busca dentro do banco de dados.</p>
+
+<p>Obrigado</p>
+
+<p>Daniel</p>
+
+<hr/>
+
+<p>2008-09-16 Ricardo A Pedri:</p>
+
+<p>Wanderley, seu tutorial é incrivel segui passo a passo e consegui conectar o builder ao access.</p>
+
+<p>Agora estou tentando executar uma pesquisa no banco de dados atraves do componente Query. Fiquei um tempão hoje tentando fazer minha consulta surtir efeito e nada. O que eu precisava era guardar em uma variavel o resultado de um campo. To tentando enviar uma consulta SQL mais sempre dá erro, se puder me ajudar ficarei grato.</p>
+
+<p>Obrigado desde já.</p>
+
+<hr/>
+
+<p>2008-07-10 Caloni:</p>
+
+<p>Olá, Daniel.</p>
+
+<p>Sinceramente, não entendi sua dúvida.</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-09-17 Caloni:</p>
+
+<p>Olá, Ricardo.</p>
+
+<p>Fico feliz que o tutorial tenha sido útil até um ponto. Na verdade, foi só um ensaio sobre como começar a fuçar com C++ Builder + Banco de Dados. Vou te confessar que sou meio Juquinha nessa área e portanto recomendo que você procure fóruns de pessoas que mexem o dia inteiro com isso. Ou leia um bom livro sobre o assunto.</p>
+
+<p>[]s e boa sorte.</p>
 
 </section><hr/>
 
@@ -676,6 +795,28 @@ std::cout &lt;&lt; &quot;E a linguagem é: &quot; &lt;&lt; 8[ditado] &lt;&lt; st
 std::cout &lt;&lt; 5[&quot;Isso Compila?&quot;] &lt;&lt; std::endl;
 </pre>
 <p>Nota do autor: esse tipo de "recurso obscuro" dificilmente passará por uma revisão de código, e com razão, dado que não é um método útil e muito menos conhecido. Sábio é saber evitar. Não acredito, porém, que o conhecimento de certos detalhes da linguagem em que se programa sejam completamente inúteis. Conhecimento nunca é demais, pois quanto mais se conhece maior é o número de ferramentas conceituais que se dispõe para resolver um certo problema. Em muitas vezes o "conhecimento inútil" de hoje se torna um guia sábio quando se precisa de bons conceitos sobre a coisa toda. No entanto, que não venha um <a href="http://www.google.com.br/search?q=boi+corneta+site%3Asualingua.com.br">boi-corneta</a> me dizer que esse código fere as boas práticas de programação. Tenho dito.</p>
+
+<h4>Comments</h4>
+
+<p>2008-01-27 <a href="http://vinigodoy.wordpress.com">ViniGodoy</a>:</p>
+
+<p>Muito interessante.</p>
+
+<p>Você já tinha visto <a href="http://cc.byexamples.com/20070528/swap-variable-quest/">esse artigo</a> (2026-03-22 link quebrado)?</p>
+
+<p>É exatamente a mesma idéia do seu. Não estou te acusando de cópia (até porque, se parar para pensar no desafio, acho que qualquer programador experiente chegaria nessa resposta), mas é mais uma confirmação de que o código funciona! :)</p>
+
+<hr/>
+
+<p>2008-01-28 Caloni:</p>
+
+<p>Olá, Vini.</p>
+
+<p>Não tinha visto, não, mas havia chegado nessa conclusão junto com meus amigos programadores algumas décadas atrás =).</p>
+
+<p>Imagine, não tenho a mínima pretensão de ter desenvolvido algo novo. Eu sempre parto do princípio que nada mais pode ser inventado de novo no mundo atual, mas as idéias estão todas aí, e às vezes elas não nos chegam com a mesma rapidez com que pensamos =).</p>
+
+<p>[]s e valeu pelo link.</p>
 
 </section><hr/>
 

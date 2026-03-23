@@ -485,6 +485,76 @@ wscanf_s
 
 <p>E agora o tamanho final de nosso executável passou para espantosos 3 KB! Isso a princípio parece ótimo e dá vontade de usar em todos os projetos, mas existe um porém ainda não resolvido: as limitações da falta de um runtime. Essa é uma solução bem bobinha que não tem nada a ver com uma solução profissional 100% garantida e com suporte técnico 24 horas. Algumas coisas não vão funcionar, como inicialização de variáveis estáticas, exceções, redirecionamento de entrada/saída, etc. Contudo, para projetos simples e pequenos, isso não deverá ser um problema. No entanto, eu não garanto qualquer coisa que advier de compilações inspiradas neste artigo.</p>
 
+<h4>Comments</h4>
+
+<p>2008-04-15 Yorick:</p>
+
+<p>Recentemente encontrei <a href="http://kobyk.wordpress.com/2007/07/20/dynamically-linking-with-msvcrtdll-using-visual-c-2005/">isso</a>, acho q tem a v :)</p>
+
+<p>Testei o metodo do Koby e funciona muito bem, como Koby menciona em seu site, eh bem menos sujeito a erros para programas mais complexos, estou usando em compilações em modo release, em debug mode continuo com o msvcr90d.dll do Visual C++ 2008. Vinculação à msvcp que contém C++ stuff como STL não é possivel de forma dinâmica utilizando o mesmo método, se for seguidos os passos do WDK é possível a vinculação estática. A seguir os procedimentos que usei para poder usar a crt dinâmica + stl estática:</p>
+
+<pre>
+Additional Include Directories:
+C:\WinDDK\inc\crt;C:\WinDDK\inc\api;C:\WinDDK\inc\api\crt\stl70
+
+Preprocessor Definitions 
+WIN32;NDEBUG;_CONSOLE;_STATIC_CPPLIB;_STL70_
+
+Additional Library Directories
+C:\WinDDK\lib\crt\i386;C:\WinDDK\lib\w2K\i386
+
+Generate Manifest
+No
+
+Additional Dependencies
+msvcrt_win2000.obj ntstc_msvcrt.lib msvcprt_btowc.lib
+</pre>
+<hr/>
+
+<p>2008-10-28 George Luiz Bittencourt:</p>
+
+<p>Olá,</p>
+
+<p>Com o parâmetro /MD do compilador é possível fazer isso sem a necessidade de criar uma lib.</p>
+
+<p>-George</p>
+
+<hr/>
+
+<p>2008-10-28 Caloni:</p>
+
+<p>Olá, George.</p>
+
+<p>O parâmetro /MD cria um projeto que depende da DLL de runtime do Visual Studio (a msvcXX.dll, sendo XX a versão atual). Esse artigo demonstra como criar um projeto que não dependa de nenhum tipo de LIB estática ou distribuída pelo Visual Studio. No entanto, os projetos compilados com essa solução passarão a depender da DLL de runtime localizada no diretório de sistema do próprio Windows.</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-11-13 George Luiz Bittencourt:</p>
+
+<p>Olá,</p>
+
+<p>Concordo com você, realmente desse jeito não irá depender de nenhuma LIB do Visual C, seja ela estática ou dinâmica.</p>
+
+<p>Alêm do tamanho reduzido outra vantagem de se linkar de forma dinâmica é que uma eventual atualização no runtime beneficia todos os programas que utilizem essa DLL. De forma estática isso não é possível já que o conteúdo dos arquivos OBJ (archive members da LIB) é copiado para o módulo final.</p>
+
+<p>A propósito, você trabalha com C/C++ em SP? Como que é o mercado ai nesse ramo? Tem muita demanda?</p>
+
+<p>Valeu e o seu artigo ficou muito bom! Legal também é a LIBCTINY.LIB do Pietrek.</p>
+
+<p>[]s</p>
+
+<p>-George</p>
+
+<hr/>
+
+<p>2008-11-13 Caloni:</p>
+
+<p>Sim, trabalho atualmente em São Paulo, Brasil. O mercado? Não sou uma pessoa muito indicada para falar sobre isso, pois trabalhei até hoje apenas em dois lugares. O que ouvimos falar quase sempre no grupo de oportunidades C++ são de empregos para essa área, quase a maioria.</p>
+
+<p>[]s</p>
+
 </section><hr/>
 
 
