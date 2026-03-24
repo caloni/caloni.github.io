@@ -142,6 +142,61 @@ func();
 </pre>
 <p>É bem o que o autor diz depois de jogar esta expressão: "expressions like these strike terror into the hearts of C programmers". É lógico que isso não é bem verdade para as pessoas que acompanham este blogue =)</p>
 
+<h4>Comments</h4>
+
+<p>2008-03-05 Yorick:</p>
+
+<p>Gostaria de aproveitar e mencionar Walter Oney:</p>
+
+<blockquote>More About NULL Pointers</blockquote>
+<blockquote>While we’re on the subject of invalid pointers, note that a NULL pointer is (a) an invalid user-mode pointer in Windows XP and (b) a perfectly valid pointer in Windows 98/Me. If you use a NULL pointer directly, as in *p, or indirectly, as in p-StructureMember, you’ll be trying to reference something in the first few bytes of virtual memory. Doing so in Windows XP will cause a trappable access violation.</blockquote>
+<blockquote>Dereferencing a NULL pointer in Windows 98/Me will not, of itself, cause any immediately observable problem. I once spent several days tracking down a bug that resulted from overstoring location 0x0000000C in a Windows 95 system. That location is the real-mode vector for the breakpoint (INT 3) interrupt. The wild store didn’t show up until some infrequently used application did an INT 3 that wasn’t caught by a debugger. The system reflected the interrupt to real mode. The invalid interrupt vector pointed to memory containing a bunch of technically valid but nonsensical instructions followed by an invalid one. The system halted with an invalid operation exception. As you can see, the eventual symptom was very far removed in space and time from the wild store.</blockquote>
+<blockquote>To debug a different problem in Windows 98, I once installed a debugging driver to catch alterations to the first 16 bytes of virtual memory. I had to remove it because so many VxD drivers (including some belonging to Microsoft) were getting caught.</blockquote>
+<blockquote>The moral of these anecdotes is that you should always test pointers for NULL before using them if there is any possibility that the pointer could be NULL. To learn whether the possibility exists, read documentation and specifications very carefully.</blockquote>
+<hr/>
+
+<p>2008-03-05 <a href="http://techberto.wordpress.com">Alberto Fabiano</a>:</p>
+
+<p>Este livro do Koening é realmente uma obra muito interessante; eu também recomendo! Aliás, ele é considerando uma das 10 personalidades mais importantes do C++ e está na lista do 5 mais do Scott Meyers.</p>
+
+<hr/>
+
+<p>2008-02-29 <a href="http://www.bleno.org">Bleno</a>:</p>
+
+<p>Olá Caloni...</p>
+
+<p>Bom post... Parabéns pelo site. Ótimo material...</p>
+
+<p>Ah, no link do blog do http://dqsoft.blogspot.com/ está faltando o "g" de bloGspot ;)</p>
+
+<p>Abraços...</p>
+
+<p>[]´s</p>
+
+<hr/>
+
+<p>2008-03-03 <a href="http://dqsoft.blogspot.com">Daniel Quadros</a>:</p>
+
+<p>Bem que eu ia colocar um comentário a respeito... Na programação "embarcada" é comum aparecerem alguns endereços fixos. Por exemplo, em um microcontrolador que estou programando a gravação na memória não volátil é feita colocando-se os dados de um "setor" na RAM a partir do endereço zero e depois "dançando um samba" sobre alguns registradores. Para o código ficar um pouco mais bonito, declarei o buffer de gravação em um módulo assembler e evitei ter um ponteiro explicitamente nulo.</p>
+
+<hr/>
+
+<p>2008-03-23 Caloni:</p>
+
+<p>Olá, Bleno. Valeu pela dica! Corrigido.</p>
+
+<hr/>
+
+<p>2008-03-23 Caloni:</p>
+
+<p>Olá, Yorick.</p>
+
+<p>Desconhecia esse comentário do Walter. Provavelmente é bem antigo, já que ele está citando Win9x, um tabu atualmente entre o pessoal da M$.</p>
+
+<p>Também desconhecia esse detalhe de implementação desses sistemas. Valeu a dica!</p>
+
+<p>[]s</p>
+
 </section>
 
 <span style="float: left;">

@@ -225,6 +225,37 @@ read(outStr)
   write(1, outStr, 1);
 }
 </pre>
+<h4>Comments</h4>
+
+<p>2008-02-13 <a href="http://vinigodoy.wordpress.com">ViniGodoy</a>:</p>
+
+<p>Se for o C99 ou o C++, há ainda outra coisa legal. Você pode substituir caracteres como as chaves e os colchetes por dígrafos equivalentes, conforme a seguinte tabela:</p>
+
+<pre>
+  &lt;:  --&gt;   [   (Abre colchete)
+  :&gt;  --&gt;   ]   (Fecha colchete)
+  &lt;%  --&gt;   {   (Abre chave)
+  %&gt;  --&gt;   }   (Fecha chave)
+  %:  --&gt;   #   (Símbolo de pré-processador/hash)
+%:%:  --&gt;   ##  (Operador de colagem de tokens)
+</pre>
+<p>A declaração de um vetor fica divertida:</p>
+
+<pre>
+%:ifdef _OBSCURE_VECTOR_
+int x&lt;::&gt; = &lt;: 1, 2, 3 :&gt;;
+%:endif
+</pre>
+<p>Esses pares de caracteres foram incluídos para facilitar a digitação em teclados sem esses símbolos. Mas são conhecidos por pouquíssimos usuários...</p>
+
+<hr/>
+
+<p>2008-02-14 Caloni:</p>
+
+<p>Olá, Vini. De fato, os dígrafos em C/C++ são uma das características das duas linguagens das mais obscuras, até porque dificilmente conheceremos um programador que não disponha das teclas de chaves e colchetes. Você conhece algum? =)</p>
+
+<p>[]s</p>
+
 </section>
 
 <span style="float: left;">

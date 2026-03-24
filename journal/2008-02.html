@@ -534,6 +534,37 @@ read(outStr)
   write(1, outStr, 1);
 }
 </pre>
+<h4>Comments</h4>
+
+<p>2008-02-13 <a href="http://vinigodoy.wordpress.com">ViniGodoy</a>:</p>
+
+<p>Se for o C99 ou o C++, há ainda outra coisa legal. Você pode substituir caracteres como as chaves e os colchetes por dígrafos equivalentes, conforme a seguinte tabela:</p>
+
+<pre>
+  &lt;:  --&gt;   [   (Abre colchete)
+  :&gt;  --&gt;   ]   (Fecha colchete)
+  &lt;%  --&gt;   {   (Abre chave)
+  %&gt;  --&gt;   }   (Fecha chave)
+  %:  --&gt;   #   (Símbolo de pré-processador/hash)
+%:%:  --&gt;   ##  (Operador de colagem de tokens)
+</pre>
+<p>A declaração de um vetor fica divertida:</p>
+
+<pre>
+%:ifdef _OBSCURE_VECTOR_
+int x&lt;::&gt; = &lt;: 1, 2, 3 :&gt;;
+%:endif
+</pre>
+<p>Esses pares de caracteres foram incluídos para facilitar a digitação em teclados sem esses símbolos. Mas são conhecidos por pouquíssimos usuários...</p>
+
+<hr/>
+
+<p>2008-02-14 Caloni:</p>
+
+<p>Olá, Vini. De fato, os dígrafos em C/C++ são uma das características das duas linguagens das mais obscuras, até porque dificilmente conheceremos um programador que não disponha das teclas de chaves e colchetes. Você conhece algum? =)</p>
+
+<p>[]s</p>
+
 </section><hr/>
 
 
@@ -839,6 +870,93 @@ int z = max( func(10), 30 );
 
 <p>Enfim, na vida real, é impossível catalogar todos os erros que podem ocorrer em um fonte em C. Se isso fosse possível, ou não existiriam bugs, ou pelo menos existiria uma ferramenta para automaticamente procurar por esses erros e corrigi-los. Bom, existe o Lint.</p>
 
+<h4>Comments</h4>
+
+<p>2008-02-19 <a href="http://marcioandreyoliveira.blogspot.com/">Marcio Andrey Oliveira</a>:</p>
+
+<p>Wanderley, teu artigo está excelente.</p>
+
+<p>Só há um pequeno engano: na tua explicação tu mostras que __HEADER__ foi definido no header-do-mal.h (tu colocaste em vermelho, para chamar a atenção do leitor).</p>
+
+<p>(Caloni update 2026-03-23: os códigos do blogue antigamente eram coloridos, mas agora são preto e branco mesmo.)</p>
+
+<p>Tu dizes logo abaixo que o conteúdo de meuheader.h não será incluído devido a definição anterior de __HEADER__. Na realidade, deverias ter definido __MEUHEADER__ no arquivo header-do-mal.h.</p>
+
+<p>Com certeza foi apenas um pequeno engano da tua parte, mas isto causa dois problemas:</p>
+
+<p>1. para quem ainda não domina o C isto pode causar confusão.</p>
+
+<p>2. teu riso maléfico foi em vão.</p>
+
+<p>[]s,</p>
+
+<p>mao</p>
+
+<hr/>
+
+<p>2008-02-15 <a href="http://vinigodoy.wordpress.com">ViniGodoy</a>:</p>
+
+<p>Excelente artigo, mais uma vez. :)</p>
+
+<p>O exemplo do max eu já conhecia. Pelo menos, nesse caso, você pode não ter um problema sério (embora tenha um decréscimo de performance), pois a função pode retornar duas vezes o mesmo resultado.</p>
+
+<p>Agora, considere o que acontece se o valor passado para função for alterado, ou no código abaixo, também inocente: int x = max(a++, b);</p>
+
+<p>Não haverá erro de compilação e a variável a será somada duas vezes. E o mais cruel, é que o código "cheira" a algo correto, como no caso da sua função. Além disso, como macros desaparecem, são muito mais difíceis de depurar.</p>
+
+<p>É por essas e outras que o Scott Meyers, no Effective C++ (livro obrigatório para todo programador C++), sugere que usem-se funções inline no lugar de macros. Ou então templates, que é um poderoso mix dos recursos fornecidos pelo pré-processador com os do compilador.</p>
+
+<p>Qual é a lição que gardamos disso? Use macros só se for imprescindível, caso contrário, deixe a tarefa para o compilador. Ele é seu amigo e procura te ajudar na verificação do código.</p>
+
+<hr/>
+
+<p>2008-02-15 <a href="http://vinigodoy.wordpress.com">ViniGodoy</a>:</p>
+
+<p>Uma outra curiosidade. O código fonte do Quake faz um uso menos comum do include. Existe um arquivo chamado anormal.h, que contém uma lista na seguinte forma:</p>
+
+<pre>
+10, 20, 30, 40,
+14, 56, 23, 12
+</pre>
+<p>(os números são apenas ilustrativos).</p>
+
+<p>No código fonte que usa esse arquivo, você encontra o include no meio do código, e não no topo, como geralmente é o usual:</p>
+
+<pre>
+int[] anorms = {
+ #include &quot;anormals.h&quot;
+};
+</pre>
+<p>E com isso, criam um vetor. Assim fica fácil de ver que um include nada mais é do que um "copy&amp;paste" de um arquivo em outro.</p>
+
+<p>Quem quiser baixar o <a href="https://github.com/id-Software/Quake">código do quake</a> e ver isso, pode obter o arquivo no site da id-software (2026-03-23 não mais, está no GitHub):</p>
+
+<hr/>
+
+<p>2008-02-19 Caloni:</p>
+
+<p>Olá, Márcio, obrigado pelos elogios.</p>
+
+<p>Corrigido. Falha minha. Esse header é do mal, mesmo. Explicando sobre correção de bugs, não é nada bonito o exemplo já estar "bugado". Valeu pela dica! Nunca iria ver esse erro, mesmo vermelho e piscando.</p>
+
+<p>Agora sim, o mal prevalecerá =)</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-02-19 Caloni:</p>
+
+<p>Vini, obrigado mais uma vez pela visita e pelos elogios.</p>
+
+<p>Você está certo com respeito à chamada de função, pois em 90% das vezes as funções fazem sempre a mesma coisa se não forem parametrizadas.</p>
+
+<p>Porém, imagine uma função que escreve alguma coisa em um arquivo, ou atualiza uma variável global/estática. Ela poderá ter o mesmo efeito maléfico que o seu "a++".</p>
+
+<p>Quando se trata de programar em C, clareza é mil vezes mais importante que concisão.</p>
+
+<p>[]s</p>
+
 </section><hr/>
 
 
@@ -987,6 +1105,61 @@ func_t func = (func_t) 0;
 func();
 </pre>
 <p>É bem o que o autor diz depois de jogar esta expressão: "expressions like these strike terror into the hearts of C programmers". É lógico que isso não é bem verdade para as pessoas que acompanham este blogue =)</p>
+
+<h4>Comments</h4>
+
+<p>2008-03-05 Yorick:</p>
+
+<p>Gostaria de aproveitar e mencionar Walter Oney:</p>
+
+<blockquote>More About NULL Pointers</blockquote>
+<blockquote>While we’re on the subject of invalid pointers, note that a NULL pointer is (a) an invalid user-mode pointer in Windows XP and (b) a perfectly valid pointer in Windows 98/Me. If you use a NULL pointer directly, as in *p, or indirectly, as in p-StructureMember, you’ll be trying to reference something in the first few bytes of virtual memory. Doing so in Windows XP will cause a trappable access violation.</blockquote>
+<blockquote>Dereferencing a NULL pointer in Windows 98/Me will not, of itself, cause any immediately observable problem. I once spent several days tracking down a bug that resulted from overstoring location 0x0000000C in a Windows 95 system. That location is the real-mode vector for the breakpoint (INT 3) interrupt. The wild store didn’t show up until some infrequently used application did an INT 3 that wasn’t caught by a debugger. The system reflected the interrupt to real mode. The invalid interrupt vector pointed to memory containing a bunch of technically valid but nonsensical instructions followed by an invalid one. The system halted with an invalid operation exception. As you can see, the eventual symptom was very far removed in space and time from the wild store.</blockquote>
+<blockquote>To debug a different problem in Windows 98, I once installed a debugging driver to catch alterations to the first 16 bytes of virtual memory. I had to remove it because so many VxD drivers (including some belonging to Microsoft) were getting caught.</blockquote>
+<blockquote>The moral of these anecdotes is that you should always test pointers for NULL before using them if there is any possibility that the pointer could be NULL. To learn whether the possibility exists, read documentation and specifications very carefully.</blockquote>
+<hr/>
+
+<p>2008-03-05 <a href="http://techberto.wordpress.com">Alberto Fabiano</a>:</p>
+
+<p>Este livro do Koening é realmente uma obra muito interessante; eu também recomendo! Aliás, ele é considerando uma das 10 personalidades mais importantes do C++ e está na lista do 5 mais do Scott Meyers.</p>
+
+<hr/>
+
+<p>2008-02-29 <a href="http://www.bleno.org">Bleno</a>:</p>
+
+<p>Olá Caloni...</p>
+
+<p>Bom post... Parabéns pelo site. Ótimo material...</p>
+
+<p>Ah, no link do blog do http://dqsoft.blogspot.com/ está faltando o "g" de bloGspot ;)</p>
+
+<p>Abraços...</p>
+
+<p>[]´s</p>
+
+<hr/>
+
+<p>2008-03-03 <a href="http://dqsoft.blogspot.com">Daniel Quadros</a>:</p>
+
+<p>Bem que eu ia colocar um comentário a respeito... Na programação "embarcada" é comum aparecerem alguns endereços fixos. Por exemplo, em um microcontrolador que estou programando a gravação na memória não volátil é feita colocando-se os dados de um "setor" na RAM a partir do endereço zero e depois "dançando um samba" sobre alguns registradores. Para o código ficar um pouco mais bonito, declarei o buffer de gravação em um módulo assembler e evitei ter um ponteiro explicitamente nulo.</p>
+
+<hr/>
+
+<p>2008-03-23 Caloni:</p>
+
+<p>Olá, Bleno. Valeu pela dica! Corrigido.</p>
+
+<hr/>
+
+<p>2008-03-23 Caloni:</p>
+
+<p>Olá, Yorick.</p>
+
+<p>Desconhecia esse comentário do Walter. Provavelmente é bem antigo, já que ele está citando Win9x, um tabu atualmente entre o pessoal da M$.</p>
+
+<p>Também desconhecia esse detalhe de implementação desses sistemas. Valeu a dica!</p>
+
+<p>[]s</p>
 
 </section><hr/>
 

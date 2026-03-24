@@ -117,6 +117,73 @@ obj.remove_if( remove_if_zero() ); // pronto!
 </pre>
 <p>Quando precisamos fazer algo nos elementos de um contêiner STL, é quase certo que existirá um algoritmo genérico para essa tarefa, seja no próprio contêiner ou na forma de função (`&lt;algorithm&gt;`). Nunca se esqueça disso na hora de desenvolver seus próprios algoritmos e não precisará reinventar a roda todos os dias.</p>
 
+<h4>Comments</h4>
+
+<p>2008-04-18 Luiz Salamon:</p>
+
+<p>Recentemente coloquei <a href="http://groups.google.com/group/ccppbrasil/browse_thread/thread/1e444ab3067baf55">um post na lista CCPPBRASIL</a> sobre um problema que tive recentemente. Na verdade resolvi com o uso de sincronicação, mas gostaria de sua sugestão, pois penso que deveria existir uma forma mais simples de resolver o problema.</p>
+
+<p>Reproduzindo o texto:</p>
+
+<p>Partindo do código abaixo, que simplifica a situação real onde o problema se apresentou, tenho um problema que resolvi por sincronização, pois o sistema é multithread.</p>
+
+<pre>
+map map_test;
+map::iterator iter_map_test;
+
+map_test [ &quot;AAAAA&quot; ] = &quot;11111&quot;;
+map_test [ &quot;BBBBB&quot; ] = &quot;22222&quot;;
+map_test [ &quot;CCCCC&quot; ] = &quot;33333&quot;;
+
+// iterator esta apontando para uma posição válida
+iter_map_test = map_test.find (&quot;BBBBB&quot;);
+
+// neste ponto o iterator deixa de ser válido
+map_test.erase (&quot;BBBBB&quot;);
+</pre>
+<p>A questão é como faço para verificar se o iterator iter_map_test é válido ? Pois qualquer operação que tento a partir do momento que o mesmo fica inválido causa uma exceção.</p>
+
+<hr/>
+
+<p>2008-03-06 <a href="http://paginas.terra.com.br/informatica/thiago_adams/">Thiago R Adams</a>:</p>
+
+<p>Uma curiosidade é que o map não retorna o iterator no erase.</p>
+
+<p>Mas a implementação da STL que vem no VC++ retorna. Tive este problema uma vez quando fui compilar um código no gcc. Eu não imaginava que isso não era padrão.</p>
+
+<p>Mas vendo <a href="http://msdn2.microsoft.com/en-us/library/z2f3cb7h.aspx">a documentação da msdn</a> tem uma nota:</p>
+
+<blockquote>"This return type does not conform to the C++ standard."</blockquote>
+<p>A solução sem usar o retorno é:</p>
+
+<pre>
+if (condition)
+  map.erase(it++);
+else
+  ++it;
+</pre>
+<hr/>
+
+<p>2008-04-22 Caloni:</p>
+
+<p>Olá, Luiz.</p>
+
+<p>As respostas da lista de discussão foram ótimas, e de fato não há muito o que fazer (2026-03-23 exceto talvez o comentário do Thiago acima). Considere um iterador um ponteiro que não aponta mais para nada válido. Nesse caso, não há como você validá-lo.</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-03-23 Caloni:</p>
+
+<p>Olá, Thiago.</p>
+
+<p>Mais um problema com a compatibilidade do Visual Studio. Desse jeito foi começar a usar o GCC para meus testes.</p>
+
+<p>Valeu o aviso!</p>
+
+<p>[]s</p>
+
 </section><hr/>
 
 

@@ -164,6 +164,101 @@ Something BAD hapenned
 We're going to blow up
 Something BAD BAD happenned...
 </pre>
+<h4>Comments</h4>
+
+<p>2008-04-10 Alberto Fabiano:</p>
+
+<p>Meu caro,</p>
+
+<p>Só por curiosidade, eu também fiz o teste nos seguintes compiladores:</p>
+
+<ul><li>ICC, Intel C++ Compiler 10.1: Comportamento OK</li>
+
+<li>DMC, Digital Mars C++ Compiler 8.48: Comportamento OK</li></ul>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-04-11 Thiago Adams:</p>
+
+<p>Também pode ser usado assim:</p>
+
+<pre>
+void f() try
+{
+  throw 1;
+  //throw &quot;&quot;;
+}
+catch (int) {
+  throw;
+}
+catch (...) {
+  std::terminate();
+}
+</pre>
+<p>Que poderia simular algo assim:</p>
+
+<pre>
+void f() throw(int)
+{
+}
+</pre>
+<hr/>
+
+<p>2008-04-13 Caloni:</p>
+
+<p>Alberto: valeu pelos testes! É bom saber que existem outros compiladores tão bons quanto o GCC e o VC no mercado.</p>
+
+<p>Thiago: isso sim é bem esquisito! Te confesso que nem entendi direito o uso desse exemplo.</p>
+
+<hr/>
+
+<p>2008-04-14 Thiago R Adams:</p>
+
+<p>Quando uma função possui a especificação das exceções significa que ela só pode lançar aquelas exceções. Caso seja lançado outra, o std::unexpected(); é chamado. O compilador VC++ não obedece essa especificação do C++. Mas é possível gerar o código na mão, usando aquela sintaxe com o try.</p>
+
+<p>Então por exemplo:</p>
+
+<pre>
+void f() throw(int); //num compilador que obedece o padrao
+</pre>
+<p>É equivalente a fazer "na mão":</p>
+
+<pre>
+void f() try
+{
+   //algo...
+}
+catch (int) {
+throw;
+}
+catch (...) {
+std::unexpected()
+}
+</pre>
+<p>Este é outro uso curioso do try que eu resolvi comentar aqui.</p>
+
+<hr/>
+
+<p>2008-04-16 <a href="http://www.planetamessenger.org">PopolonY2k</a>:</p>
+
+<p>Grande blog...</p>
+
+<p>... Caloni, não o conhecia anteriormente e vejo que darei vários "pitacos" por aqui sempre que puder.</p>
+
+<p>Sobre o bloco try catch(...) em inicialização de variáveis e objetos em construtores, vale ressaltar o que o amigo Thiago Adams citou acima, que é o uso em qualquer tipo de função de C++, mas alguns cuidados devem ser tomados conforme reportado no padrão ANSI de C++ proposto em 1998.</p>
+
+<p>Sobre não ter funcionado em alguns compiladores reportados por você, como o Visual Studio 6 - VC++ 6.0, Borland C++ Builder 5 e o Borland Studio Developer Studio 4, deve deixo registrado aqui que a proposta de try catch na inicialização de funções veio na versão final da proposta do padrão ANSI para C++ em 1998, portanto compiladores, como o Visual C++ 6.O (Visual Studio 6) e Borland C++ Builder 5 já estavam no mercado e portanto não existia maneira de que os mesmos respeitassem a nova sintaxe proposta pelo ANSI.</p>
+
+<p>Segue um artigo de referência no Dr. Dobbs (2026-03-23 Dr. Dobbs no more).</p>
+
+<p>Um abraço,</p>
+
+<p>PopolonY2k</p>
+
+<p>PlanetaMessenger.org</p>
+
 </section><hr/>
 
 
