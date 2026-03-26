@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="cuidado_com_variaveis_temporarias" title="Cuidado com variáveis temporárias"/></span>
+<section id="section_cuidado_com_variaveis_temporarias">
+<p class="title">Cuidado com variáveis temporárias</p>
+<span class="title-heading">Caloni, 2011-07-26 computer blog</span>
+
+<p>Um dos problemas que a linguagem C++ possui para seus iniciantes é o de não deixar muito explícito partes do seu comportamento, principalmente as partes que lidam com ponteiros ou referências e o jogo da vida dos objetos. Às  vezes a coisa fica de tal como complexa que fica até difícil explicar o porquê das coisas.</p>
+
+<p>Por exemplo, vejamos o singelo caso de alguém que precisa formatar uma saída de erro e para isso escolheu um stringstream:</p>
+
+<pre>
+#include &lt;sstream&gt;
+#include &lt;exception&gt;
+#include &lt;iostream&gt;
+
+using namespace std;
+
+void LogError(const char* msg)
+{
+    cerr &lt;&lt; &quot;** &quot; &lt;&lt; msg &lt;&lt; endl;
+}
+
+void func()
+{
+    //doSomething();
+    throw exception(&quot;sbrubles exception&quot;);
+}
+
+int main()
+{
+    try
+    {
+        func();
+    }
+    catch(exception&amp; e)
+    {
+        stringstream ss;
+        ss &lt;&lt; &quot;Error calling func: &quot; &lt;&lt; e.what() &lt;&lt; endl;
+        const char* errorMessage = ss.str().c_str();
+        LogError(errorMessage);
+    }
+}
+</pre>
+<p>Quando chamamos func, ele lança uma exceção que é capturada no main que, por sua vez, formata uma stream e obtém sua string (através do método str) e através dessa string obtém o ponteiro da string em C puro (através do método c_str). Porém, a mensagem resultante na saída-padrão de erro não era o esperado:</p>
+
+<img src="/blog/img/cuidado_com_variaveis_temporarias_Gs3Khz7.png"/>
+
+<p>Depurando diretamente, vemos que a stream, de fato, contém o que esperávamos. O único elemento errante é justamente o ponteiro obtido através da chamada dupla de métodos.</p>
+
+<img src="/blog/img/cuidado_com_variaveis_temporarias_x3n9FXS.png"/>
+
+<p>O porquê isso ocorre só fica óbvio quando vemos <a href="https://cplusplus.com/reference/sstream/stringstream/str/">a ajuda</a> (ou a assinatura) da função str da classe stringstream:</p>
+
+<blockquote>Get/set the associated string object The first version returns a copy of the string object currently associated with the string stream buffer.</blockquote>
+<p>Ora, a função str retorna uma cópia do objeto string usado internamento pelo buffer de nossa string stream. Duas coisas ocorrem em qualquer cópia de um objeto retornada por uma função:</p>
+
+<ul><li>A cópia do objeto original e seu desacoplamento (óbvio).</li>
+
+<li>A construção de um objeto baseado no original e que, após o fim da expressão onde foi chamado o método, é destruído.</li></ul>
+
+<p>Uma vez que a chamada a str termina, é entregue uma instância de uma string que contém a string original que está sendo usada pela string stream para a expressão da chamada, que geralmente vem seguida de uma cópia:</p>
+
+<pre>
+//
+// 1. str retorna uma cópia;
+// 2. atribuição copia retorno para buf.
+//
+string buf = ss.str();
+</pre>
+<p>A variável buf no exemplo acima será, portanto, a terceira string usada aqui até então. Ao final da expressão, a string intermediária retornada por str é automaticamente destruída, por se trata de uma cópia temporária para obedecer a sintaxe de retorno da função.</p>
+
+<p>Agora, o que acontece se, na cópia temporária, é feita uma operação para obter seu ponteiro interno usado para armazenar sua string estilo C?</p>
+
+<p>Obviamente ele fica inválido após o fim da expressão!</p>
+
+<p>Vamos ver em câmera lenta:</p>
+
+<img src="/blog/img/cuidado_com_variaveis_temporarias_vXQjDjK.png"/>
+
+<p>Nada como assembly fresquinho para refrescar os conceitos de C++ por baixo dos panos.</p>
+
+<h3>Update</h3>
+
+<p>Após uma enxurrada de programadores gerenciáveis perguntarem qual seria, então, a solução ideal, segue o snipet mais explicitado:</p>
+
+<pre>
+// 1. Copie a string retornada para uma variável não-temporária
+string buf = message.str();
+
+// 2. Use essa string dentro de seu escopo válido (até o final do catch, no exemplo do artigo).
+const char* text = buf.c_str();
+</pre>
+<h3>Update 2</h3>
+
+<p>Outro leitor sugeriu fazer toda a chamada em uma única instrução, economizando em expressividade e ainda evitando a destruição da variável temporária criada ao chamar str.</p>
+
+<pre>
+// 1. Matar três coelhos com uma instrução só.
+LogError(ss.str().c_str());
+</pre>
+<p>Particularmente, gosto de instruções simples que me permitam ver claramente o que está acontecendo de forma simples pelo depurador (até porque sei que o compilador irá otimizar tudo no final em versão Release, ainda mais se estiver quebrado em instruções simples). Porém, toda solução que evita o uso da variável temporária após a execução do método str é válida.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="depuracao_de_emergencia.html">[depuracao_de_emergencia]</a>
+ <a href="e_foise_o_tdc.html">[e_foise_o_tdc]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

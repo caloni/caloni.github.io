@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="depuracao_de_emergencia" title="Depuração de emergência"/></span>
+<section id="section_depuracao_de_emergencia">
+<p class="title">Depuração de emergência</p>
+<span class="title-heading">Caloni, 2011-07-26 computer blog</span>
+
+<p>O programa está rodando no servidor do cliente, que é acessível por sessão remota do Windows, mas de repente ele capota. Existem aí duas possibilidades fora o debug remoto (que, nesse caso, não é possível):</p>
+
+<p>1. Analisar um dump gerado.</p>
+
+<p>2. Depurar localmente o problema.</p>
+
+<img src="/blog/img/depuracao_de_emergencia_imt8kmB.png"/>
+
+<h3>Analisar um dump gerado</h3>
+
+<p>Para a primeira opção, basta abrir o Gerenciador de Tarefas, localizar o processo e gerar o dump através do menu de contexto.</p>
+
+<img src="/blog/img/depuracao_de_emergencia_RWPemAU.png"/>
+
+<p>Com o dump e o Windbg em mãos, basta analisá-lo. Porém, se o seu processo é 32 bits e o servidor é 64 bits (geralmente é), o dump gerado será de 64 bits, EMBORA seja de um process 32. Ou seja, ao abri-lo, o sistema vai mostrar as threads de manipulação do SO para sistemas 32 (todos com o nosso amigo wow64cpu).</p>
+
+<pre>
+Microsoft (R) Windows Debugger Version 6.12.0002.633 AMD64
+Copyright (c) Microsoft Corporation. All rights reserved.
+
+Loading Dump File [C:\Tests\CrashOnServer.DMP]
+User Mini Dump File with Full Memory: Only application data is available
+
+Executable search path is:
+Windows 7 Version 7600 MP (2 procs) Free x64
+Product: WinNt, suite: SingleUserTS
+Machine Name:
+Debug session time: Tue Jul 26 09:26:23.000 2011 (UTC - 3:00)
+System Uptime: 0 days 0:35:47.425
+Process Uptime: 0 days 0:00:42.000
+...........WARNING: MSVCR100D overlaps MSVCP100D
+
+wow64cpu!TurboDispatchJumpAddressEnd+0x690:
+00000000`745d2dd9 c3 ret
+0:000&gt; kv
+RetAddr : Call Site
+00000000`745d282c : wow64cpu!TurboDispatchJumpAddressEnd+0x690
+00000000`7464d07e : wow64cpu!TurboDispatchJumpAddressEnd+0xe3
+00000000`7464c549 : wow64!Wow64SystemServiceEx+0x1ce
+00000000`76deae27 : wow64!Wow64LdrpInitialize+0x429
+00000000`76de72f8 : ntdll!LdrGetKnownDllSectionHandle+0x1a7
+00000000`76dd2ace : ntdll!RtlInitCodePageTable+0xe8
+00000000`00000000 : ntdll!LdrInitializeThunk+0xe
+</pre>
+<p>Para entrar dentro do Inception, é necessário usar a extensão wow64exts e usar o comando ".effmach x86".</p>
+
+<pre>
+0:000&gt; .load wow64exts
+0:000&gt; .effmach x86
+Effective machine: x86 compatible (x86)
+0:000:x86&gt; kv
+RetAddr
+..
+0035ecac ntdll_76f80000!KiUserExceptionDispatcher+0xf
+01181ca9 0x35ecac
+01181b7d CrashOnServer!Log::LogError+0x29
+01186f1f CrashOnServer!main+0x12d
+01186d4f CrashOnServer!__tmainCRTStartup+0x1bf
+76543677 CrashOnServer!mainCRTStartup+0xf
+76fb9f02 kernel32!BaseThreadInitThunk+0xe
+76fb9ed5 ntdll_76f80000!__RtlUserThreadStart+0x70
+00000000 ntdll_76f80000!_RtlUserThreadStart+0x1b
+</pre>
+<p>Após esse último passo, siga para o último passo desse tutorial. Ou escolha a segunda opção:</p>
+
+<h3>Depurar localmente o problema</h3>
+
+<p>Para depurar localmente, supondo que seja um executável simples, você precisa dos seguintes itens:</p>
+
+<ul><li>Pasta do WinDbg copiado (a Debugging Tools instalada pelo SDK, ou sua pastinha particular guardada no PenDrive).</li>
+
+<li>Símbolos dos binários envolvidos (em sincronia com os binários que iremos analisar).</li>
+
+<li>Fontes da compilação dos binários (a versão exata seria ideal; grave o revno do controle de fonte pra facilitar).</li></ul>
+
+<p>Os fontes, no caso de uma conexão por Terminal Server, podem ser disponibilizados através do mapeamento de drives entre as máquinas. Os símbolos, no entanto, por serem usados extensivamente pelo WinDbg, é recomendável que estejam locais na máquina depurada, pois do contrário você terá que tomar uma quantidade excessiva de cafés para executar meia-dúzia de instruções.</p>
+
+<p>Supondo que temos tudo isso, só precisamos executar alguns passos básicos para o setup:</p>
+
+<h4>1. Abrir o WinDbg e escolher File, Open Executable. Escolha o executável e pare por aí.</h4>
+
+<img src="/blog/img/depuracao_de_emergencia_A2p4Q9y.png"/>
+
+<h4>2. Na tela de comando do WinDbg (View, Command, ou Alt + 1) execute os comandos abaixo:</h4>
+
+<pre>
+.symfix
+.sympath+
+.reload
+.srcpath
+.reload /f CrashOnServer.exe
+</pre>
+<h4>3. Ao executar lm, o módulo cujo símbolo foi carregado deve conter o nome do pdb logo à frente.</h4>
+
+<pre>
+0:000&gt; .symfix c:\tools\symbols
+0:000&gt; .sympath+ C:\Projetos\Caloni\Posts\Debug
+Symbol search path is: srv*;C:\Projetos\Caloni\Posts\Debug
+Expanded Symbol search path is:
+  SRV*c:\tools\symbols*http://msdl.microsoft.com/download/symbols;c:\debug
+0:000&gt; .reload
+Reloading current modules
+......
+0:000&gt; .srcpath C:\Projetos\Caloni\Posts
+Source search path is: C:\Projetos\Caloni\Posts
+0:000&gt; .reload /f CrashOnServer.exe
+0:000&gt; lm
+start end module name
+00000000`01170000 00000000`01193000 CrashOnServer C (private pdb symbols)
+  C:\Projetos\Caloni\Posts\Debug\CrashOnServer.pdb
+00000000`745d0000 00000000`745d8000 wow64cpu (deferred)
+00000000`745e0000 00000000`7463c000 wow64win (deferred)
+00000000`74640000 00000000`7467f000 wow64 (deferred)
+00000000`76da0000 00000000`76f4c000 ntdll (pdb symbols)
+  c:\tools\symbols\ntdll.pdb\\ntdll.pdb
+00000000`76f80000 00000000`77100000 ntdll32 (deferred)
+</pre>
+<h4>4. Feito isso, está tudo OK. Podemos colocar breakpoints, monitorar variáveis, verificar stacks, etc.</h4>
+
+<p>Por último, execute o seguinte na tela de comandos do WinDbg:</p>
+
+<pre>
+.hh
+</pre>
+<p>E boa sorte =)</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="consumo_abusivo_de_memoria.html">[consumo_abusivo_de_memoria]</a>
+ <a href="cuidado_com_variaveis_temporarias.html">[cuidado_com_variaveis_temporarias]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>
