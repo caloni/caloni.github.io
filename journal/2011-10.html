@@ -290,7 +290,7 @@ Effective machine: x86 compatible (x86)
 0:001:x86&gt; ~* kv
 
    0  Id: 1dc.978 Suspend: 1 Teb: 7efdb000 Unfrozen
-ChildEBP RetAddr  
+ChildEBP RetAddr
 001df24c 761a0bdd ntdll_77760000!NtWaitForMultipleObjects+0x15
 001df2e8 7727162d KERNELBASE!WaitForMultipleObjectsEx+0x100
 001df330 77271921 KERNEL32!WaitForMultipleObjectsExImplementation+0xe0
@@ -305,7 +305,7 @@ ChildEBP RetAddr
 001df4d0 777a6a9b ntdll_77760000!ExecuteHandler2+0x26
 001df580 7777010f ntdll_77760000!ExecuteHandler+0x24
 001df584 001df598 ntdll_77760000!KiUserExceptionDispatcher+0xf
-001df9ac 010d141e 
+001df9ac 010d141e
 001dfa90 010d19af CrashOnServer!main+0x2e
     [path\caloni\posts\crashonserver\crashonserver.cpp @ 13]
 001dfae0 010d17df CrashOnServer!__tmainCRTStartup+0x1bf
@@ -317,7 +317,7 @@ ChildEBP RetAddr
 001dfb4c 00000000 ntdll_77760000!_RtlUserThreadStart+0x1b
 
 #  1  Id: 1dc.1b0 Suspend: 1 Teb: 7efd8000 Unfrozen
-ChildEBP RetAddr  
+ChildEBP RetAddr
 0056ffe8 00000000 ntdll_77760000!RtlUserThreadStart
 </pre>
 <p>Nosso depurador favorito acusa uma pilha que contém a função WerpReportFault (Web Error Report, mas qualquer outra função com Exception no meio seria uma candidata). E, nessa mesma thread, a última linha nossa conhecida está no arquivo crashonserver.cpp:13. Isso nos revela o seguinte:</p>

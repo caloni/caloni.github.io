@@ -457,7 +457,7 @@ int main(int argc, char* argv[])
 <pre>
 #include &lt;windows.h&gt;
 
-/** Vamos fazer um exemplo convincente de uso da linguagem e não-uso da 
+/** Vamos fazer um exemplo convincente de uso da linguagem e não-uso da
 biblioteca C++.
 */
 int main(int argc, char* argv[])
@@ -468,7 +468,7 @@ int main(int argc, char* argv[])
       STARTUPINFOA si = { sizeof(si) }; // inicia primeiro membro e zera resto
       PROCESS_INFORMATION pi;
 
-      CreateProcessA(NULL, argv[1], NULL, NULL, TRUE, 0, 
+      CreateProcessA(NULL, argv[1], NULL, NULL, TRUE, 0,
          NULL, NULL, &amp;si, &amp;pi);
    }
 }
@@ -510,9 +510,9 @@ int main(int argc, char* argv[])
 // gs_report.c
 __declspec(noreturn) void __cdecl __report_gsfailure(void)
 {
-    /* 
+    /*
   ...
-  muito código 
+  muito código
   ..
   */
 #if defined (_CRTBLD) &amp;&amp; !defined (_SYSCRT)
@@ -520,9 +520,9 @@ __declspec(noreturn) void __cdecl __report_gsfailure(void)
     _CRT_DEBUGGER_HOOK(_CRT_DEBUGGER_GSFAILURE);
 
 #endif  /* defined (_CRTBLD) &amp;&amp; !defined (_SYSCRT) */
-    /* 
+    /*
   ...
-  mais código 
+  mais código
   ..
   */
 }
@@ -536,7 +536,7 @@ _CRTIMP void __cdecl _invoke_watson(
     uintptr_t pReserved
     )
 {
-    /* 
+    /*
   ...
   lá lá lá...
   ..
@@ -550,9 +550,9 @@ _CRTIMP void __cdecl _invoke_watson(
     /* Make sure any filter already in place is deleted. */
     SetUnhandledExceptionFilter(NULL);
 
-    /* 
+    /*
   ...
-  mais código 
+  mais código
   ..
   */
 }
@@ -583,7 +583,7 @@ _imp__IsDebuggerPresent(VOID)
 {
    BOOL ret = FALSE;
 
-   // aqui podemos chamar a função de verdade, mas 
+   // aqui podemos chamar a função de verdade, mas
    // sem usar link estático. e rodar no 95 =)
 
    return ret;

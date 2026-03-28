@@ -147,13 +147,13 @@ int main()
 template &lt;typename T&gt;
 auto criar_mapa_de_metodos() {
   std::unordered_map&lt;std::string, std::function&lt;void(T&amp;)&gt;&gt; mapa;
-  
+
   // O 'template for' itera sobre os membros da classe em tempo de compilação
   template for (constexpr auto m : std::meta::members_of(^T)) {
     if (std::meta::is_function(m)) {
-      mapa[std::meta::name_of(m)] = [](T&amp; obj) { 
+      mapa[std::meta::name_of(m)] = [](T&amp; obj) {
         // [: m :] &quot;desenrola&quot; o metadado de volta para o código real
-        obj.[: m :](); 
+        obj.[: m :]();
       };
     }
   }
