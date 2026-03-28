@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="remove_if" title="remove_if até remove, só que diferente"/></span>
+<section id="section_remove_if">
+<p class="title">remove_if até remove, só que diferente</p>
+<span class="title-heading">Caloni, 2014-01-21 computer blog</span>
+
+<p>A surpresa de hoje foi descobrir (vejam só) que o remove_if, como todo algoritmo da STL, deve ser olhado de perto antes de usado. Nesse caso em específico porque, apesar do nome, a função NÃO remove elementos, mas os sobrescreve.</p>
+
+<p>Imagine uma função que usa remove_if para remover todas as idades de potenciais lolitas:</p>
+
+<pre>
+void RemoveIfLolita(vector&lt;int&gt;&amp; ages)
+{
+    remove_if(ages.begin(), ages.end(), [&amp;] { return age &lt; 18; } );
+}
+</pre>
+<p>Ou até sua contraparte usando um array C:</p>
+
+<pre>
+void RemoveIfLolita(int* ages, int size)
+{
+    remove_if(ages, ages + size, [&amp;] { return age &lt; 18; } );
+}
+</pre>
+<p>Um uso trivial pode não cuspir um resultado trivial, ou seja, os elementos não serão removidos como se espera:</p>
+
+<pre>
+#include &lt;algorithm&gt;
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+void RemoveIfLolita(int* ages, int size)
+{
+    remove_if(ages, ages + size, [&amp;] { return age &lt; 18; } );
+}
+
+void RemoveIfLolita(vector&lt;int&gt;&amp; ages)
+{
+    remove_if(ages.begin(), ages.end(), [&amp;] { return age &lt; 18; } );
+}
+
+int main()
+{
+    vector&lt;int&gt; ages;
+
+    ages.push_back(10);
+    ages.push_back(21);
+    ages.push_back(66);
+    ages.push_back(18);
+    ages.push_back(16);
+    ages.push_back(15);
+    ages.push_back(8);
+    ages.push_back(24);
+    ages.push_back(12);
+    ages.push_back(20);
+    ages.push_back(13);
+
+    RemoveIfLolita(ages);
+    cout &lt;&lt; &quot;Vector (&quot; &lt;&lt; ages.size() &lt;&lt; &quot;):\n&quot;;
+    for_each(ages.begin(), ages.end(), [&amp;] { cout &lt;&lt; age &lt;&lt; endl; });
+
+    int newAges[] = { 10, 21, 66, 18, 16, 15, 8, 24, 12, 20, 13, 13 };
+    const int newAgesSz = (int) ( sizeof(newAges) / sizeof(int) );
+    RemoveIfLolita(newAges, newAgesSz);
+    cout &lt;&lt; &quot;\n\nArray (&quot; &lt;&lt; newAgesSz &lt;&lt; &quot;):\n&quot;;
+    for_each(newAges, newAges + newAgesSz, [&amp;] (int age) { cout &lt;&lt; age &lt;&lt; endl; } );
+}
+</pre>
+<img src="/blog/img/remove_if_ate_remove_so_que_diferente_AzliFSS.png"/>
+
+<p>Isso ocorre porque o comportamento do remove_if é copiar todos os elementos que retornem false (não remova) e pular elementos que retornem true (remova). No entanto, o tamanho do contêiner, e consequentemente seu ponteiro end(), permanecem o mesmo.</p>
+
+<img src="/blog/img/remove_if_ate_remove_so_que_diferente_JHucsWz.png"/>
+
+<p>De acordo com <a href="http://www.cplusplus.com/reference/algorithm/remove_if/">o saite cplusplus.com</a>, o algoritmo STL é previsível, simples, e por isso mesmo sujeito a otimizações do compilador:</p>
+
+<pre>
+template &lt;class ForwardIterator, class UnaryPredicate&gt;
+ForwardIterator remove_if (ForwardIterator first, ForwardIterator last,
+    UnaryPredicate pred)
+{
+    ForwardIterator result = first;
+    while (first!=last) {
+      if (!pred(*first)) {
+        *result = *first;
+        ++result;
+      }
+      ++first;
+    }
+    return result;
+}
+</pre>
+<p>Para obtermos qual seria o "novo end()", precisamos obter esse valor do retorno de remove_if. Com base nisso, podemos alterar o tamanho do contêiner ajustado:</p>
+
+<pre>
+#include &lt;algorithm&gt;
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+
+int RemoveIfLolita(int* ages, int size)
+{
+    auto newEnd = remove_if(ages, ages + size, [&amp;] { return age &lt; 18; } );
+    return newEnd - ages;
+}
+
+void RemoveIfLolita(vector&lt;int&gt;&amp; ages)
+{
+    auto newEnd = remove_if(ages.begin(), ages.end(), [&amp;] { return age &lt; 18; } );
+    ages.resize(distance(ages.begin(), newEnd));
+}
+
+int main()
+{
+    vector&lt;int&gt; ages;
+
+    ages.push_back(10);
+    ages.push_back(21);
+    ages.push_back(66);
+    ages.push_back(18);
+    ages.push_back(16);
+    ages.push_back(15);
+    ages.push_back(8);
+    ages.push_back(24);
+    ages.push_back(12);
+    ages.push_back(20);
+    ages.push_back(13);
+
+    RemoveIfLolita(ages);
+    cout &lt;&lt; &quot;Vector (&quot; &lt;&lt; ages.size() &lt;&lt; &quot;):\n&quot;;
+    for_each(ages.begin(), ages.end(), [&amp;] { cout &lt;&lt; age &lt;&lt; endl; });
+
+    int newAges[] = { 10, 21, 66, 18, 16, 15, 8, 24, 12, 20, 13, 13 };
+    int newAgesSz = (int) ( sizeof(newAges) / sizeof(int) );
+    newAgesSz = RemoveIfLolita(newAges, newAgesSz);
+    cout &lt;&lt; &quot;\n\nArray (&quot; &lt;&lt; newAgesSz &lt;&lt; &quot;):\n&quot;;
+    for_each(newAges, newAges + newAgesSz, [&amp;] (int age) { cout &lt;&lt; age &lt;&lt; endl; } );
+}
+</pre>
+<img src="/blog/img/remove_if_ate_remove_so_que_diferente_Q7f2N1G.png"/>
+
+<p>Esse C++... intuitivo como nunca!</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="houaiss_para_babylon_python.html">[houaiss_para_babylon_python]</a>
+ <a href="ponto_flutuante_afundando.html">[ponto_flutuante_afundando]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

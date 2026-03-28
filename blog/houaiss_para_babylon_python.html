@@ -36,60 +36,53 @@ role="navigation" aria-label="main navigation">
 <div class="column">
 <div style="min-height:56vh">
 <div style="padding-bottom: 1em;"></div>
-<span id="impressoes_quinto_encontro_ccppbr" title="Impressões do quinto encontro de CCPP"/></span>
-<section id="section_impressoes_quinto_encontro_ccppbr">
-<p class="title">Impressões do quinto encontro de CCPP</p>
-<span class="title-heading">Caloni, 2008-10-07 ccppbr blog</span>
+<span id="houaiss_para_babylon_python" title="Houaiss para Babylon em Python!"/></span>
+<section id="section_houaiss_para_babylon_python">
+<p class="title">Houaiss para Babylon em Python!</p>
+<span class="title-heading">Caloni, 2014-02-27 computer projects blog</span>
 
-<p>Pois é, passou, acabou... e foi muito bom!</p>
+<p>O <a href="https://gist.github.com/fabiomontefuscolo">Fabio Montefuscolo</a> expandiu mais ainda o acesso do conversor Houaiss para Babylon implementando uma versão em Python, uma linguagem que estou aprendendo a adorar. Tudo é mais simples, rápido e direto em Python, e o código que ele escreveu utiliza todo esse potencial:</p>
 
-<p>E dessa vez me abstenho de fazer os comentários de sempre, visto que já está rolando uma discussão muito produtiva sobre o resultado desse último encontro, opiniões que, sinceramente, já refletem os pensamentos de todos que participaram desse magnânimo encontro de usuários.</p>
+<pre>
+#!/usr/bin/python2
+# -*- coding: utf-8 -*-
 
-<h4>// Comments</h4>
+#
+# Coloque esse script na pasta com os arquivos dhx.
+# O resultado estará em iso-8859-1
+#
 
-<p>2008-10-08 A.F.:</p>
+#
+# Segui o tutorial em http://www.caloni.com.br/conversor-de-houaiss-para-babylon-parte-1
+#
 
-<p>Opa...</p>
+import os
 
-<p>Logo terá um album de fotos do encontro, com dezenas de fotos...</p>
+files = os.listdir('.')
 
-<p>E não sei como estará a qualidade, mas também uns vídeos de todas palestras.</p>
+for arq in files:
+    if not arq.endswith('dhx'):
+        continue
 
-<p>[]s</p>
+    print 'Abrindo &quot;%s&quot;' % arq
+    origin = open(arq, 'r')
+    target = open('%s.txt' % arq, 'w+')
 
-<p>A.F.</p>
+    char = origin.read(1)
+    while char:
+        byte = ord(char) + 0x0B
+        new_char = chr(byte % 256)
+        target.write(new_char)
+        char = origin.read(1)
 
-<hr/>
-
-<p>2008-10-14 <a href="http://dqsoft.blogspot.com">Daniel Quadros</a>:</p>
-
-<p>Eu levei máquina, mas as pilhas estavam descarregadas :(</p>
-
-<p>Estou contando com as fotos do "fotógrafo oficial".</p>
-
-<hr/>
-
-<p>2008-10-08 <a href="http://www.driverentry.com.br">Fernando Roberto</a>:</p>
-
-<p>Como assim não tem foto?</p>
-
-<p>:-)</p>
-
-<hr/>
-
-<p>2008-10-08 Caloni:</p>
-
-<p>Então, eu sou daqueles das antigas, que só leva máquina pra viagem de passeio =)</p>
-
-<p>Porém, provavelmente nosso amigo DQ irá publicar os flashes do dia. É só aguardar a "revelação".</p>
-
-<p>[]s</p>
-
+    origin.close()
+    target.close()
+</pre>
 </section>
 
 <span style="float: left;">
- <a href="a_alca_dentro_do_fio_gerou_um_bloqueio_da_morte.html">[a_alca_dentro_do_fio_gerou_um_bloqueio_da_morte]</a>
- <a href="windows_jobs_com_completion_port.html">[windows_jobs_com_completion_port]</a>
+ <a href="lambda.html">[lambda]</a>
+ <a href="remove_if.html">[remove_if]</a>
 </span>
 </div>
 </div>

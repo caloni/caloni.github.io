@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="header_inutil" title="Header Inútil"/></span>
+<section id="section_header_inutil">
+<p class="title">Header Inútil</p>
+<span class="title-heading">Caloni, 2012-03-27 computer blog</span>
+
+<p>O Visual Studio é uma ótima ferramenta para depurar rapidamente programas sendo desenvolvidos e ~~para editar vários arquivos ao mesmo tempo~~ para o resto usamos Vim. No entanto, a versão 2010 do ambiente (ainda não testei a 2011 beta) possui um pequeno deslize com sua árvore de dependências que não chega a prejudicar o desenvolvedor, mas o deixa com um bug atrás da orelha.</p>
+
+<p>Vamos supor que você crie seu super-projeto ZeroMQ e no meio dele acabe evoluindo uma nova forma de vida inútil e descartável, que aqui iremos chamar de HeaderInutil e seu fiel companheiro CppInutil:</p>
+
+<img src="/blog/img/header_inutil_opLLPIk.png"/>
+
+<p>OK. Ele não está fazendo nada, mas e daí? Compilo meu projeto normalmente e depuro ele como se nada estivesse acontecendo.</p>
+
+<pre>
+Build started 27/03/2012 11:40:32.
+_PrepareForClean:
+Deleting file &quot;Debug\ZeroMasQueCoisaProj.lastbuildstate&quot;.
+InitializeBuildStatus:
+Creating &quot;Debug\ZeroMasQueCoisaProj.unsuccessfulbuild&quot;
+  because &quot;AlwaysCreate&quot; was specified.
+ClCompile:
+stdafx.cpp
+ZeroMasQueCoisaProj.cpp
+CppInutil.cpp
+Generating Code...
+Manifest:
+Deleting file &quot;Debug\ZeroMasQueCoisaProj.exe.embed.manifest&quot;.
+LinkEmbedManifest:
+ZeroMasQueCoisaProj.vcxproj -&gt; c:\...\Debug\ZeroMasQueCoisaProj.exe
+FinalizeBuildStatus:
+Deleting file &quot;Debug\ZeroMasQueCoisaProj.unsuccessfulbuild&quot;.
+Touching &quot;Debug\ZeroMasQueCoisaProj.lastbuildstate&quot;.
+
+Build succeeded.
+
+Time Elapsed 00:00:00.73
+========== Rebuild All: 1 succeeded, 0 failed, 0 skipped ==========
+
+'ZeroMasQueCoisaProj.exe': Loaded 'C:\...\Debug\ZeroMasQueCoisaProj.exe',
+  Symbols loaded.
+'ZeroMasQueCoisaProj.exe': Loaded 'C:\Windows\SysWOW64\ntdll.dll',
+  Cannot find or open the PDB file
+'ZeroMasQueCoisaProj.exe': Loaded 'C:\Windows\SysWOW64\kernel32.dll',
+  Cannot find or open the PDB file
+'ZeroMasQueCoisaProj.exe': Loaded 'C:\Windows\SysWOW64\KernelBase.dll',
+  Cannot find or open the PDB file
+'ZeroMasQueCoisaProj.exe': Loaded 'C:\Windows\SysWOW64\msvcr100d.dll',
+  Symbols loaded.
+The program '[5212] ZeroMasQueCoisaProj.exe: Native' has exited
+  with code 0 (0x0).
+</pre>
+<p>Show.</p>
+
+<p>Mas o que acontece se eu precisar no momento do refactory (que deve, sim, existir) eu decidir remover meus arquivos inúteis?</p>
+
+<p>Continuo compilando normalmente o projeto, mas na hora de depurar...</p>
+
+<img src="/blog/img/header_inutil_header_inutil2.png"/>
+
+<p>Mas o que ocorre? Eu acabei de compilar o projeto! E se eu compilar novamente e pressionar F5, ele continua apresentando o mesmo problema!</p>
+
+<p>OK, não estou admitindo aqui o famigerado Rebuild All. Se você mantém projetos com mais de 200 arquivos, acho que deve repensar seus conceitos ao usar Rebuild All para tudo nessa vida.</p>
+
+<p>Acontece que existe uma árvore de dependências que o Visual Studio mantém para saber se seu projeto foi atualizado com tudo que tem mais de novo no que diz respeito ao File System, mas às vezes se esquece de checar o FS com o que está na solution. Por conta disso, o HeaderInutil e o CppInutil continuam dentro da árvore de dependência como zumbis.</p>
+
+<p>O que pode ser feito nesse caso (além do que os personagens de The Walking Dead costumam fazer) é configurar o arquivo devenv.exe.config (presente em %programfiles(x86)%\Microsoft Visual Studio 10.0\Common7\IDE) e adicionar as seguintes linhas após a seção configSections. (Esses passos <a href="http://blogs.msdn.com/b/vsproject/archive/2009/07/21/enable-c-project-system-logging.aspx">estão descritos no blogue da equipe do VC</a> (2026-03-28 link quebrado).)</p>
+
+<pre>
+&lt;system.diagnostics&gt;
+&lt;switches&gt;
+&lt;add name=&quot;CPS&quot; value=&quot;4&quot; /&gt;
+&lt;/switches&gt;
+&lt;/system.diagnostics&gt;
+</pre>
+<img src="/blog/img/header_inutil_header_inutil3.png"/>
+
+<p>Depois de modificar o arquivo, reinicie o Visual Studio e tente novamente apertar F5 no mesmo projeto, mas com o <a href="http://technet.microsoft.com/en-us/sysinternals/bb896647">DebugView</a> aberto.</p>
+
+<img src="/blog/img/header_inutil_header_inutil4.png"/>
+
+<p>Como um amigo meu diria: "AHÁ!!". Descobrimos o culpado.</p>
+
+<p>A solução? Nesse caso não tem jeito: dar um clean no projeto e build novamente para que o VS reconstrua a árvore de dependências. Porém, agora sabemos por que precisamos do Rebuild All. Não é RebuildAllMania.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="consumo_abusivo_de_memoria.html">[consumo_abusivo_de_memoria]</a>
+ <a href="depuracao_de_emergencia_receita_de_bolo.html">[depuracao_de_emergencia_receita_de_bolo]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

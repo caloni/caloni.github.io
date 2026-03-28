@@ -86,6 +86,132 @@ role="navigation" aria-label="main navigation">
 
 <p>E é isso. Para uma versão inicial, talvez esteja razoável. Quem confirmará serão os ansiosos usuário que, espero sinceramente, consigam seus objetivos há tempos aguardados.</p>
 
+<h4>// Comments</h4>
+
+<p>2008-11-16 Luiz Carlos Freitas:</p>
+
+<p>Bom dia Caloni.</p>
+
+<p>Parabéns pelo trabalho e dedicação.</p>
+
+<p>Infelizmente, a minha versão do Houaiss é 1.5 (atualização do 1.0, para o 2.0, mas que aparece como 1.5), e o conversor não está detectando os arquivos DEAH.</p>
+
+<p>Um abraço e muito obrigado.</p>
+
+<hr/>
+
+<p>2008-11-18 Luiz Carlos Freitas:</p>
+
+<p>Olá Caloni!</p>
+
+<p>Observando o comentário do Roberto Bechtlufft, conseguí fazer a conversão e instalar o dicionário. Parabéns e obrigado mais uma vez. Agradeço também ao Roberto Bechtlufft.</p>
+
+<hr/>
+
+<p>2008-11-23 Marcos:</p>
+
+<p>Sensacional, Caloni! Sou tradutor profissional e a chance de utilizar o Houaiss combinado com o Babylon é uma mão na roda. Muito bom!</p>
+
+<p>O seu conversor funciona perfeitamente, o Houaiss é um excelente dicionário. O que não ajuda é o próprio Babylon: quando uso a combinação Ctrl + botão direito do mouse ele, em geral, pega a palavra errada....</p>
+
+<p>Abraço!</p>
+
+<p>Marcos</p>
+
+<hr/>
+
+<p>2008-11-19 Roberto Bechtlufft:</p>
+
+<p>De nada!</p>
+
+<hr/>
+
+<p>2008-11-17 Roberto Bechtlufft:</p>
+
+<p>Aconteceu a mesma coisa aqui, com a versão 1.0 do Houaiss. O programa está buscando os arquivos em C:\Windows\Dicionário, mas por padrão, no meu Houais eles estão em C:\Arquivos de programas\Houaiss\Dicionario.</p>
+
+<p>Espero que corrija o problema, estou muito interessado. Aliás, qual é o formato do arquivo convertido, é BGL?</p>
+
+<pre>
+2008-1117 12:44:52 0312.1136 HouaissParaBabylon Starting program.
+Compilation: Nov 15 2008
+2008-1117 12:44:58 0312.1152 HouaissParaBabylon Working directory:
+C:\DOCUME~1\ROBERT~1\CONFIG~1\Temp
+2008-1117 12:44:58 0312.1152 HouaissParaBabylon Houaiss dictionary file
+does not exist: C:\WINDOWS\Dicionario\deah001.dhx
+2008-1117 12:44:58 0312.1152 HouaissParaBabylon Message code:
+0x20000000 (536870912)
+2008-1117 12:44:58 0312.1152 HouaissParaBabylon MessageDescription:
+Arquivos do dicionário Houaiss não foram encontrados. Por favor,
+reinstale o dicionário com a opção de copiar arquivos no disco
+rígido habilitada antes de efetuar a conversão.
+2008-1117 12:45:04 0312.1136 HouaissParaBabylon Finishing program
+2008-1117 12:45:04 0312.1136 HouaissParaBabylon Last error: 20000000
+2008-1117 12:45:07 0312.1136 HouaissParaBabylon Asking for path:
+Escolha o diretório de saída do arquivo de log
+2008-1117 12:45:11 0312.1136 HouaissParaBabylon Path (from user):
+C:\Documents and Settings\robertobech\Desktop
+</pre>
+<hr/>
+
+<p>2008-11-17 Roberto Bechtlufft:</p>
+
+<p>Copiei a pasta Dicionário para C:\Windows e funcionou. Vi que ele gerou um arquivo BDC... na verdade, eu queria um BGL para poder usar num programinha que uso no Linux, o Stardict. Dá para converter os dicionários BGL do Babylon para usar nele. Há alguma maneira de eu transformar esse BDC em BGL?</p>
+
+<p>Obrigado pelo seu trabalho, vai ajudar bastante.</p>
+
+<hr/>
+
+<p>2009-01-09 Tom Segev:</p>
+
+<p>Pode carregar Houaiss bgl file? Não posso converter Houaiss para Babylon. Muito obrigado.</p>
+
+<hr/>
+
+<p>2008-11-16 Caloni:</p>
+
+<p>Olá, Luiz.</p>
+
+<p>Você poderia mandar o arquivo de log gerado? Talvez seja algo simples de resolver.</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-11-21 Caloni:</p>
+
+<p>Olá, Roberto.</p>
+
+<p>O objetivo do conversor é fazer funcionar o dicionário Houaiss no Babylon. No entanto, baseado em <a href="2008-02.html#conversor_de_houaiss_para_babylon_parte_1">minhas análises e código</a> feitos para desofuscar o formato do dicionário Houaiss, é possível construir um conversor para qualquer formato aberto.</p>
+
+<p>Mesmo não tendo sido construído para isso, deduzo que você estará usando o resultado do conversor "para o bem". Então, vamos lá:</p>
+
+<p>Ao converter o dicionário, vários arquivos temporários são criados na sua pasta de temporários (normalmente a variável de ambiente %temp%). Após a fase de desencriptação ou montagem do dicionário é possível pausar o processo e copiar esses arquivos. Dessa forma acredito que você possa analisar o resultado da conversão e portar o formato para seu próprio dicionário.</p>
+
+<p>Boa sorte!</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-11-24 Caloni:</p>
+
+<p>Marcos, eu já tive esse problema com o Babylon nas versões 6 e 7. Aparentemente eles esqueceram como faziam o detector de palavras antigamente, nas ótimas versões 4 e 5.</p>
+
+<p>Uma técnica que eu uso é selecionar primeiro a palavra e depois clicar com o Babylon.</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2009-01-09 Caloni:</p>
+
+<p>Olá, Tom.</p>
+
+<p>Não, não posso. Isso seria infringir os direitos de copyright do produto Houaiss, além do arquivo ser razoavelmente grande.</p>
+
+<p>[]s</p>
+
 </section><hr/>
 
 <span style="float: left;">

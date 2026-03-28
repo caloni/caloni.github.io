@@ -302,9 +302,9 @@ role="navigation" aria-label="main navigation">
 <span id="header_inutil" title="Header Inútil"/></span>
 <section id="section_header_inutil">
 <p class="title"><a href="2012-03.html#header_inutil">#</a> Header Inútil</p>
-<span class="title-heading">Caloni, 2012-03-27 <a href="2011-10.html#depuracao_de_emergencia_receita_de_bolo">&lt;</a><a href="computer.html">computer</a><a href="2012-05.html#consumo_abusivo_de_memoria">&gt;</a><a href="2012-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_header_inutil')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2012-03-27 <a href="2011-10.html#depuracao_de_emergencia_receita_de_bolo">&lt;</a><a href="computer.html">computer</a><a href="2012-05.html#consumo_abusivo_de_memoria">&gt;</a> <a href="2011-10.html#depuracao_de_emergencia_receita_de_bolo">&lt;</a><a href="blog.html">blog</a><a href="2012-05.html#consumo_abusivo_de_memoria">&gt;</a><a href="2012-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_header_inutil')"><sup>[copy]</sup></a></span>
 
-<p>O Visual Studio é uma ótima ferramenta para depurar rapidamente programas sendo desenvolvidos e ~~para editar vários arquivos ao mesmo tempo~~ para o resto usamos Vim. No entanto, a versão 2010 do ambiente (ainda não testei a 2011 beta) possui um pequeno deslize com sua árvore de dependências que não chega a prejudica o desenvolvedor, mas o deixa com um bug atrás da orelha.</p>
+<p>O Visual Studio é uma ótima ferramenta para depurar rapidamente programas sendo desenvolvidos e ~~para editar vários arquivos ao mesmo tempo~~ para o resto usamos Vim. No entanto, a versão 2010 do ambiente (ainda não testei a 2011 beta) possui um pequeno deslize com sua árvore de dependências que não chega a prejudicar o desenvolvedor, mas o deixa com um bug atrás da orelha.</p>
 
 <p>Vamos supor que você crie seu super-projeto ZeroMQ e no meio dele acabe evoluindo uma nova forma de vida inútil e descartável, que aqui iremos chamar de HeaderInutil e seu fiel companheiro CppInutil:</p>
 
@@ -364,7 +364,7 @@ The program '[5212] ZeroMasQueCoisaProj.exe: Native' has exited
 
 <p>Acontece que existe uma árvore de dependências que o Visual Studio mantém para saber se seu projeto foi atualizado com tudo que tem mais de novo no que diz respeito ao File System, mas às vezes se esquece de checar o FS com o que está na solution. Por conta disso, o HeaderInutil e o CppInutil continuam dentro da árvore de dependência como zumbis.</p>
 
-<p>O que pode ser feito nesse caso (além do que os personagens de The Walking Dead costumam fazer) é configurar o arquivo devenv.exe.config (presente em %programfiles(x86)%\Microsoft Visual Studio 10.0\Common7\IDE) e adicionar as seguintes linhas após a seção configSections. (Esses passos <a href="http://blogs.msdn.com/b/vsproject/archive/2009/07/21/enable-c-project-system-logging.aspx">estão descritos no blogue da equipe do VC</a>.)</p>
+<p>O que pode ser feito nesse caso (além do que os personagens de The Walking Dead costumam fazer) é configurar o arquivo devenv.exe.config (presente em %programfiles(x86)%\Microsoft Visual Studio 10.0\Common7\IDE) e adicionar as seguintes linhas após a seção configSections. (Esses passos <a href="http://blogs.msdn.com/b/vsproject/archive/2009/07/21/enable-c-project-system-logging.aspx">estão descritos no blogue da equipe do VC</a> (2026-03-28 link quebrado).)</p>
 
 <pre>
 &lt;system.diagnostics&gt;
@@ -375,7 +375,7 @@ The program '[5212] ZeroMasQueCoisaProj.exe: Native' has exited
 </pre>
 <img src="/journal/img/header_inutil_header_inutil3.png"/>
 
-<p>Depois de modificar o arquivo, reinicie o Visual Studio e tente novamente apertar F5 no mesmo projeto, mas com o <a href="http://technet.microsoft.com/en-us/sysinternals/bb896647">DebugView</a>aberto.</p>
+<p>Depois de modificar o arquivo, reinicie o Visual Studio e tente novamente apertar F5 no mesmo projeto, mas com o <a href="http://technet.microsoft.com/en-us/sysinternals/bb896647">DebugView</a> aberto.</p>
 
 <img src="/journal/img/header_inutil_header_inutil4.png"/>
 

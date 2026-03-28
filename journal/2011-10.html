@@ -222,9 +222,9 @@ role="navigation" aria-label="main navigation">
 <span id="depuracao_de_emergencia_receita_de_bolo" title="Depuração de emergência: receita de bolo"/></span>
 <section id="section_depuracao_de_emergencia_receita_de_bolo">
 <p class="title"><a href="2011-10.html#depuracao_de_emergencia_receita_de_bolo">#</a> Depuração de emergência: receita de bolo</p>
-<span class="title-heading">Caloni, 2011-10-18 <a href="2011-10.html#coders_at_work_reflections_on_the_craft_of_programming">&lt;</a><a href="computer.html">computer</a><a href="2012-03.html#header_inutil">&gt;</a><a href="2011-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_depuracao_de_emergencia_receita_de_bolo')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2011-10-18 <a href="2011-10.html#coders_at_work_reflections_on_the_craft_of_programming">&lt;</a><a href="computer.html">computer</a><a href="2012-03.html#header_inutil">&gt;</a> <a href="2011-07.html#cuidado_com_variaveis_temporarias">&lt;</a><a href="blog.html">blog</a><a href="2012-03.html#header_inutil">&gt;</a><a href="2011-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_depuracao_de_emergencia_receita_de_bolo')"><sup>[copy]</sup></a></span>
 
-<p>Continuando o papo sobre <a href="http://www.caloni.com.br/depuracao-de-emergencia">o que fazer para analisar rapidamente um crash no servidor com o pacote WinDbg</a>, na maioria das vezes a exceção lançada pelo processo está diretamente relacionada com um acesso indevido à memória, o que tem diversas vantagens sobre problemas mais complexos:</p>
+<p>Continuando o papo sobre <a href="2011-07.html#depuracao_de_emergencia">o que fazer para analisar rapidamente um crash no servidor com o pacote WinDbg</a>, na maioria das vezes a exceção lançada pelo processo está diretamente relacionada com um acesso indevido à memória, o que tem diversas vantagens sobre problemas mais complexos:</p>
 
 <ul><li>Possui localização precisa de onde ocorreu a violação (inclusive com nome do arquivo-fonte e linha).</li>
 
@@ -265,21 +265,21 @@ WinDbg: &quot;mas que bagunça é essa na memória desse processo?&quot;
 0:001&gt; .symfix
 0:001&gt; .reload /f CrashOnServer.exe
 0:001&gt; kv
-Child-SP RetAddr  : Args to Child               : Call Site
-0030f918 77679198 : 00000000`00000000 `00000000 : ntdll!DbgBreakPoint
-0030f920 775e244d : 00000000`00000000 `00000000 : ntdll!DbgUiRemoteBreakin+0x38
-0030f950 00000000 : 00000000`00000000 `00000000 : ntdll!RtlUserThreadStart+0x25
+Child-SP RetAddr  : Call Site
+0030f918 77679198 : ntdll!DbgBreakPoint
+0030f920 775e244d : ntdll!DbgUiRemoteBreakin+0x38
+0030f950 00000000 : ntdll!RtlUserThreadStart+0x25
 0:001&gt; ~* kv
 
    0  Id: 1dc.978 Suspend: 1 Teb: 00000000`7efdb000 Unfrozen
-Child-SP RetAddr  : Args to Child                       : Call Site
-0008ea48 751f282c : 00000000`77770190 00000000`001dfb50 : wow64cpu!CpupSyscallStub+0x9
-0008ea50 7526d07e : 00000000`00000000 00000000`775b3501 : wow64cpu!WaitForMultipleObjects32+0x32
-0008eb10 7526c549 : 00000000`00000000 00000000`7ffe0030 : wow64!RunCpuSimulation+0xa
-0008eb60 775cae27 : 00000000`003b3710 00000000`7efdf000 : wow64!Wow64LdrpInitialize+0x429
-0008f0b0 775c72f8 : 00000000`00000000 00000000`00000000 : ntdll!LdrpInitializeProcess+0x1780
-0008f5b0 775b2ace : 00000000`0008f670 00000000`00000000 : ntdll! ?? ::FNODOBFM::`string'+0x2af20
-0008f620 00000000 : 00000000`00000000 00000000`00000000 : ntdll!LdrInitializeThunk+0xe
+Child-SP RetAddr  : Call Site
+0008ea48 751f282c : wow64cpu!CpupSyscallStub+0x9
+0008ea50 7526d07e : wow64cpu!WaitForMultipleObjects32+0x32
+0008eb10 7526c549 : wow64!RunCpuSimulation+0xa
+0008eb60 775cae27 : wow64!Wow64LdrpInitialize+0x429
+0008f0b0 775c72f8 : ntdll!LdrpInitializeProcess+0x1780
+0008f5b0 775b2ace : ntdll! ?? ::FNODOBFM::`string'+0x2af20
+0008f620 00000000 : ntdll!LdrInitializeThunk+0xe
 </pre>
 <p>Ops! Estamos rodando um processo 32 dentro de um SO 64 (Windows 7, por exemplo). Isso pode acontecer. Seguimos com o workaround .load wow64exts e .effmach x86:</p>
 
@@ -290,36 +290,35 @@ Effective machine: x86 compatible (x86)
 0:001:x86&gt; ~* kv
 
    0  Id: 1dc.978 Suspend: 1 Teb: 7efdb000 Unfrozen
-ChildEBP RetAddr  Args to Child
-001df24c 761a0bdd 00000002 001df29c 00000001 ntdll_77760000!NtWaitForMultipleObjects+0x15
-001df2e8 7727162d 001df29c 001df310 00000000 KERNELBASE!WaitForMultipleObjectsEx+0x100
-001df330 77271921 00000002 7efde000 00000000 KERNEL32!WaitForMultipleObjectsExImplementation+0xe0
-001df34c 77299b2d 00000002 001df380 00000000 KERNEL32!WaitForMultipleObjects+0x18
-001df3b8 77299bca 001df498 00000001 00000001 KERNEL32!WerpReportFaultInternal+0x186
-001df3cc 772998f8 001df498 00000001 001df468 KERNEL32!WerpReportFault+0x70
-001df3dc 77299875 001df498 00000001 38239b1e KERNEL32!BasepReportFault+0x20
-001df468 777d0df7 00000000 777d0cd4 00000000 KERNEL32!UnhandledExceptionFilter+0x1af
-001df470 777d0cd4 00000000 001dfb34 7778c550 ntdll_77760000!__RtlUserThreadStart+0x62
-001df484 777d0b71 00000000 00000000 00000000 ntdll_77760000!_EH4_CallFilterFunc+0x12
-001df4ac 777a6ac9 fffffffe 001dfb24 001df5e8 ntdll_77760000!_except_handler4+0x8e
-001df4d0 777a6a9b 001df598 001dfb24 001df5e8 ntdll_77760000!ExecuteHandler2+0x26
-001df580 7777010f 001df598 001df5e8 001df598 ntdll_77760000!ExecuteHandler+0x24
-001df584 001df598 001df5e8 001df598 001df5e8 ntdll_77760000!KiUserExceptionDispatcher+0xf
-WARNING: Frame IP not in any known module. Following frames may be wrong.
-001df9ac 010d141e 00000000 00000000 00000000 0x1df598
-001dfa90 010d19af 00000001 00321410 00321c70 CrashOnServer!main+0x2e
-    [c:\users\wanderley.caloni\documents\projetos\caloni\posts\crashonserver\crashonserver.cpp @ 13]
-001dfae0 010d17df 001dfaf4 77273677 7efde000 CrashOnServer!__tmainCRTStartup+0x1bf
+ChildEBP RetAddr  
+001df24c 761a0bdd ntdll_77760000!NtWaitForMultipleObjects+0x15
+001df2e8 7727162d KERNELBASE!WaitForMultipleObjectsEx+0x100
+001df330 77271921 KERNEL32!WaitForMultipleObjectsExImplementation+0xe0
+001df34c 77299b2d KERNEL32!WaitForMultipleObjects+0x18
+001df3b8 77299bca KERNEL32!WerpReportFaultInternal+0x186
+001df3cc 772998f8 KERNEL32!WerpReportFault+0x70
+001df3dc 77299875 KERNEL32!BasepReportFault+0x20
+001df468 777d0df7 KERNEL32!UnhandledExceptionFilter+0x1af
+001df470 777d0cd4 ntdll_77760000!__RtlUserThreadStart+0x62
+001df484 777d0b71 ntdll_77760000!_EH4_CallFilterFunc+0x12
+001df4ac 777a6ac9 ntdll_77760000!_except_handler4+0x8e
+001df4d0 777a6a9b ntdll_77760000!ExecuteHandler2+0x26
+001df580 7777010f ntdll_77760000!ExecuteHandler+0x24
+001df584 001df598 ntdll_77760000!KiUserExceptionDispatcher+0xf
+001df9ac 010d141e 
+001dfa90 010d19af CrashOnServer!main+0x2e
+    [path\caloni\posts\crashonserver\crashonserver.cpp @ 13]
+001dfae0 010d17df CrashOnServer!__tmainCRTStartup+0x1bf
     [f:\dd\vctools\crt_bld\self_x86\crt\src\crtexe.c @ 555]
-001dfae8 77273677 7efde000 001dfb34 77799f02 CrashOnServer!mainCRTStartup+0xf
+001dfae8 77273677 CrashOnServer!mainCRTStartup+0xf
     [f:\dd\vctools\crt_bld\self_x86\crt\src\crtexe.c @ 371]
-001dfaf4 77799f02 7efde000 6b3e1b48 00000000 KERNEL32!BaseThreadInitThunk+0xe
-001dfb34 77799ed5 010d1109 7efde000 00000000 ntdll_77760000!__RtlUserThreadStart+0x70
-001dfb4c 00000000 010d1109 7efde000 00000000 ntdll_77760000!_RtlUserThreadStart+0x1b
+001dfaf4 77799f02 KERNEL32!BaseThreadInitThunk+0xe
+001dfb34 77799ed5 ntdll_77760000!__RtlUserThreadStart+0x70
+001dfb4c 00000000 ntdll_77760000!_RtlUserThreadStart+0x1b
 
 #  1  Id: 1dc.1b0 Suspend: 1 Teb: 7efd8000 Unfrozen
-ChildEBP RetAddr  Args to Child
-0056ffe8 00000000 00000000 00000000 00000000 ntdll_77760000!RtlUserThreadStart
+ChildEBP RetAddr  
+0056ffe8 00000000 ntdll_77760000!RtlUserThreadStart
 </pre>
 <p>Nosso depurador favorito acusa uma pilha que contém a função WerpReportFault (Web Error Report, mas qualquer outra função com Exception no meio seria uma candidata). E, nessa mesma thread, a última linha nossa conhecida está no arquivo crashonserver.cpp:13. Isso nos revela o seguinte:</p>
 

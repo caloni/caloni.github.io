@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="depuracao_de_emergencia_receita_de_bolo" title="Depuração de emergência: receita de bolo"/></span>
+<section id="section_depuracao_de_emergencia_receita_de_bolo">
+<p class="title">Depuração de emergência: receita de bolo</p>
+<span class="title-heading">Caloni, 2011-10-18 computer blog</span>
+
+<p>Continuando o papo sobre <a href="depuracao_de_emergencia.html">o que fazer para analisar rapidamente um crash no servidor com o pacote WinDbg</a>, na maioria das vezes a exceção lançada pelo processo está diretamente relacionada com um acesso indevido à memória, o que tem diversas vantagens sobre problemas mais complexos:</p>
+
+<ul><li>Possui localização precisa de onde ocorreu a violação (inclusive com nome do arquivo-fonte e linha).</li>
+
+<li>Não corrompe a pilha (ou, se corrompe, não chega a afetá-la a ponto da thread ficar irreconhecível).</li>
+
+<li>A thread que contém a janela de crash é a culpada imediata (basta olha a pilha!).</li></ul>
+
+<p>Bom, resumindo: basta olhar a pilha! Mas, para isso ser efetivo, precisaremos do PDB do executável que gerou o crash, pois através dele é possível puxar a tal localização da violação de acesso.</p>
+
+<img src="/blog/img/depuracao_de_emergencia_receita_de_bolo_w1uEm0Y.png"/>
+
+<p>Se você mantiver executável (DLL também é executável) juntinho com seu PDB, sua vida será mais fácil e florida.</p>
+
+<img src="/blog/img/depuracao_de_emergencia_receita_de_bolo_ls9Hma0.png"/>
+
+<p>Mesmo que, em alguns momentos trágicos, apareça uma tela indesejada.</p>
+
+<img src="/blog/img/depuracao_de_emergencia_imt8kmB.png"/>
+
+<p>Seu caminho a partir dessa tela pode ser analisar um dump gerado (visto no artigo anterior) ou podemos atachar o WinDbg diretamente no processo (visto aqui e agora):</p>
+
+<img src="/blog/img/depuracao_de_emergencia_receita_de_bolo_CjXbOD1.png"/>
+
+<pre>
+WinDbg: &quot;mas que bagunça é essa na memória desse processo?&quot;
+</pre>
+<p>O comando mais útil na maioria dos casos é mostrar a pilha em modo verbose (kv e enter). Porém, antes disso, precisamos:</p>
+
+<p>1. Ajeitar o path dos símbolos.</p>
+
+<p>2. Recarregar o PDB do executável suspeito.</p>
+
+<p>3. Mostrar a pilha de todas as threads (até descobrir a culpada).</p>
+
+<p>Todos esses comandos podem ser vistos abaixo. São, respectivamente, .symfix, .reload e novamente o kv (mas para todas threads).</p>
+
+<pre>
+0:001&gt; .symfix
+0:001&gt; .reload /f CrashOnServer.exe
+0:001&gt; kv
+Child-SP RetAddr  : Call Site
+0030f918 77679198 : ntdll!DbgBreakPoint
+0030f920 775e244d : ntdll!DbgUiRemoteBreakin+0x38
+0030f950 00000000 : ntdll!RtlUserThreadStart+0x25
+0:001&gt; ~* kv
+
+   0  Id: 1dc.978 Suspend: 1 Teb: 00000000`7efdb000 Unfrozen
+Child-SP RetAddr  : Call Site
+0008ea48 751f282c : wow64cpu!CpupSyscallStub+0x9
+0008ea50 7526d07e : wow64cpu!WaitForMultipleObjects32+0x32
+0008eb10 7526c549 : wow64!RunCpuSimulation+0xa
+0008eb60 775cae27 : wow64!Wow64LdrpInitialize+0x429
+0008f0b0 775c72f8 : ntdll!LdrpInitializeProcess+0x1780
+0008f5b0 775b2ace : ntdll! ?? ::FNODOBFM::`string'+0x2af20
+0008f620 00000000 : ntdll!LdrInitializeThunk+0xe
+</pre>
+<p>Ops! Estamos rodando um processo 32 dentro de um SO 64 (Windows 7, por exemplo). Isso pode acontecer. Seguimos com o workaround .load wow64exts e .effmach x86:</p>
+
+<pre>
+0:001&gt; .load wow64exts
+0:001&gt; .effmach x86
+Effective machine: x86 compatible (x86)
+0:001:x86&gt; ~* kv
+
+   0  Id: 1dc.978 Suspend: 1 Teb: 7efdb000 Unfrozen
+ChildEBP RetAddr  
+001df24c 761a0bdd ntdll_77760000!NtWaitForMultipleObjects+0x15
+001df2e8 7727162d KERNELBASE!WaitForMultipleObjectsEx+0x100
+001df330 77271921 KERNEL32!WaitForMultipleObjectsExImplementation+0xe0
+001df34c 77299b2d KERNEL32!WaitForMultipleObjects+0x18
+001df3b8 77299bca KERNEL32!WerpReportFaultInternal+0x186
+001df3cc 772998f8 KERNEL32!WerpReportFault+0x70
+001df3dc 77299875 KERNEL32!BasepReportFault+0x20
+001df468 777d0df7 KERNEL32!UnhandledExceptionFilter+0x1af
+001df470 777d0cd4 ntdll_77760000!__RtlUserThreadStart+0x62
+001df484 777d0b71 ntdll_77760000!_EH4_CallFilterFunc+0x12
+001df4ac 777a6ac9 ntdll_77760000!_except_handler4+0x8e
+001df4d0 777a6a9b ntdll_77760000!ExecuteHandler2+0x26
+001df580 7777010f ntdll_77760000!ExecuteHandler+0x24
+001df584 001df598 ntdll_77760000!KiUserExceptionDispatcher+0xf
+001df9ac 010d141e 
+001dfa90 010d19af CrashOnServer!main+0x2e
+    [path\caloni\posts\crashonserver\crashonserver.cpp @ 13]
+001dfae0 010d17df CrashOnServer!__tmainCRTStartup+0x1bf
+    [f:\dd\vctools\crt_bld\self_x86\crt\src\crtexe.c @ 555]
+001dfae8 77273677 CrashOnServer!mainCRTStartup+0xf
+    [f:\dd\vctools\crt_bld\self_x86\crt\src\crtexe.c @ 371]
+001dfaf4 77799f02 KERNEL32!BaseThreadInitThunk+0xe
+001dfb34 77799ed5 ntdll_77760000!__RtlUserThreadStart+0x70
+001dfb4c 00000000 ntdll_77760000!_RtlUserThreadStart+0x1b
+
+#  1  Id: 1dc.1b0 Suspend: 1 Teb: 7efd8000 Unfrozen
+ChildEBP RetAddr  
+0056ffe8 00000000 ntdll_77760000!RtlUserThreadStart
+</pre>
+<p>Nosso depurador favorito acusa uma pilha que contém a função WerpReportFault (Web Error Report, mas qualquer outra função com Exception no meio seria uma candidata). E, nessa mesma thread, a última linha nossa conhecida está no arquivo crashonserver.cpp:13. Isso nos revela o seguinte:</p>
+
+<img src="/blog/img/depuracao_de_emergencia_receita_de_bolo_hnfH30b.png"/>
+
+<p>E essa situação, caro leitor, é 10% de tudo o que você precisa saber sobre WinDbg para resolver, mas que já resolve 90% dos casos. Belo custo-benefício, não?</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="header_inutil.html">[header_inutil]</a>
+ <a href="depuracao_de_emergencia.html">[depuracao_de_emergencia]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

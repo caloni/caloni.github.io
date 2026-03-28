@@ -207,6 +207,52 @@ jne | jae | ...
 
 <p>Como bem observado pelo Fernando, nem todas as funções-polegar possuem uma função para obter a causa do erro. Vide SysAllocString, ou mesmo malloc. Nesse caso, não há muito o que determinar a não ser que não foi possível alocar o recurso pedido pelo sistema. Paciência.</p>
 
+<h4>// Comments</h4>
+
+<p>2009-02-27 Alberto Fabiano:</p>
+
+<p>Olá Caloni,</p>
+
+<p>Usei hoje esta nomenclatura ao comentar com um padawan e ainda indiquei este post! Realmente este alias ficou muito bom.</p>
+
+<p>[]s</p>
+
+<p>A.F.</p>
+
+<hr/>
+
+<p>2009-01-31 <a href="http://www.driverentry.com.br">Fernando Roberto</a>:</p>
+
+<p>Muito bem explicado Lesma.</p>
+
+<p>Uma coisa importante a se notar na documentação da função a ser usada, é se esta oferece uma função-polegar. Nem todas oferecem esse recurso. É o exemplo da <a href="http://msdn.microsoft.com/en-us/library/ms221458.aspx">SysAllocString</a>.</p>
+
+<p>Somente a função-polegar indicada na documentação poderá silanizar a causa da falha de uma rotina.</p>
+
+<p>Pode parecer besteira, mas já vi experientes programadores, que na falta de uma função-polegar, chamam a função SetLastError() com ERROR_SUCCESS antes de chamar uma determinada rotina de sistema, e em seguida chamam a GetLastError() para tentar descobrir se algo deu errado durante a chamada.</p>
+
+<p>Isso não faz o menor sentido. Quando você chama uma rotina de terceiro, esta pode utilizar inúmeras chamadas de outras funções, que por sua vez, possuem funções-polegares. Mas neste caso, os valores retornados por elas só serão válidos para a rotina de terceiro que você chamou. Se a rotina de terceiro não indicar uma função-polegar, não tente usar de magia negra para descobrir a causa.</p>
+
+<p>O uso incorreto da função-"polegar" pode sinalizar um "médio" pra cima.</p>
+
+<p>Abraço,</p>
+
+<p>Fernando.</p>
+
+<hr/>
+
+<p>2009-01-31 Caloni:</p>
+
+<p>Olá, Ferdinando.</p>
+
+<p>Pelo visto eu expliquei foi muito mal =)</p>
+
+<p>A função-polegar apenas indica se ela deu certo ou não. O que você chama de função-polegar na verdade é a função-causa, que retorna aí sim o código de erro do que aconteceu (no caso de falhas).</p>
+
+<p>Contudo, bem observado que nem toda função guarda o último erro para o chamador obter posteriormente. Às vezes a função é polegar, como a SysAllocString, mas não possui uma função de causa. Por outro lado, também existem funções não-polegar que são usadas como tal. Já vi programadores tão acostumados com a idéia da função-polegar que usavam o mesmo estilo para as funções do registro (e.g. RegOpenKey) que, como sabemos, já retorna o código de erro diretamente (nesse caso o dedo médio já vem devidamente deslocado).</p>
+
+<p>[]s</p>
+
 </section><hr/>
 
 <span style="float: left;">
