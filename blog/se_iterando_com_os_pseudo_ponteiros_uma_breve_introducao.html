@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="se_iterando_com_os_pseudo_ponteiros_uma_breve_introducao" title="Se iterando com os pseudo-ponteiros: uma breve introdução"/></span>
+<section id="section_se_iterando_com_os_pseudo_ponteiros_uma_breve_introducao">
+<p class="title">Se iterando com os pseudo-ponteiros: uma breve introdução</p>
+<span class="title-heading">Caloni, 2014-06-24 computer blog</span>
+
+<p>Como <a href="remove_if.html">já vimos algumas vezes</a>, a STL não prima por interfaces intuitivas, preferindo abstrações que criem um leque de ferramentas genéricas para tratamento uniformizado de coleções de dados através de algoritmos. O problema disso é que novos programadores da linguagem terão que aprender uma maneira nova de lidar com problemas baseada na percepção dos criadores do padrão na época em que foi lançado de como seria a evolução da ciência da computação nos próximos anos. Muitos dos conceitos ali abordados realmente se tornaram padrão de facto, mas na briga pela expansão da linguagem quem perdeu por muito tempo foi o próprio desenvolvedor, que teve que se contentar com uma lista de algoritmos genéricos parcialmente compilado.</p>
+
+<p>Dito isto, a abstração dos iteradores é a coisa mais linda do mundo.</p>
+
+<img src="/blog/img/se_iterando_com_os_pseudo_ponteiros_uma_breve_introducao_0Kne7qd.jpg"/>
+
+<h2>Iteradeiros ou Ponteradores?</h2>
+
+<p>Os dois únicos conceitos que é preciso se lembrar para sempre quando se trata de iteradores é que ele:</p>
+
+<ul><li>Um iterador se comporta como um ponteiro opaco.</li>
+
+<li>O final de um contêiner está sempre um elemento além do último.</li></ul>
+
+<p>Um ponteiro pode ser iterador, mas não o contrário!</p>
+
+<p>Tudo que um ponteiro faz de útil em C/C++ foi emprestado para a STL usar em seus contêiners, e tudo em que ele é prejudicial tentou ficar de fora. E o que um ponteiro faz de útil?</p>
+
+<ul><li>Um ponteiro pode apontar para elementos sem conhecermos sua posição.</li>
+
+<li>Podemos incrementar ou decrementar ponteiros para caminhar em listas.</li>
+
+<li>Dois ponteiros podem ser subtraídos para sabermos a distância entre dois elementos.</li></ul>
+
+<pre>
+template&lt;typename T&gt;
+T VaiSomandoVaiSomando(T begin, T end)
+{
+    T current = begin;
+    T next = begin + 1;
+
+    while( next != end )
+    {
+        *next = *current + *next;
+        ++current;
+        ++next;
+    }
+
+    return current;
+}
+
+#include &lt;vector&gt;
+#include &lt;iostream&gt;
+
+int main()
+{
+    int aInts[10] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+
+    std::vector&lt;int&gt; vInts;
+    for( int i = 0; i &lt; 10; ++i )
+        vInts.push_back(i);
+
+    std::cout &lt;&lt; *VaiSomandoVaiSomando(&amp;aInts[0], &amp;aInts[10]) &lt;&lt; std::endl;
+    std::cout &lt;&lt; *VaiSomandoVaiSomando(vInts.begin(), vInts.end()) &lt;&lt; std::endl;
+}
+</pre>
+<img src="/blog/img/se_iterando_com_os_pseudo_ponteiros_uma_breve_introducao_GmNutkz.jpg"/>
+
+<p>Da mesma forma, operações como cópia, movimentação, ordenação, caotização, pode ser feito usando dois ponteiros/iteradores de dois contêiners distintos, desde que algumas regras básicas sejam seguidas, como um iterador deve sempre apontar para algo válido (ou disponibilizar alguma abstração que insira novos elementos em um contêiner menor). Veremos essas regras talvez em um próximo post sobre o tema.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="introducao_a_computacao.html">[introducao_a_computacao]</a>
+ <a href="windbg_cabo_serial.html">[windbg_cabo_serial]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

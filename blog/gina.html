@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="gina" title="Eles querem que a GINA vá embora"/></span>
+<section id="section_gina">
+<p class="title">Eles querem que a GINA vá embora</p>
+<span class="title-heading">Caloni, 2014-06-11 computer blog</span>
+
+<p>Fui convidado pela Fernanda Saraiva do programa de MVPs da Microsoft Brasil a falar sobre alguma história a respeito da evolução do Windows e como isso impactou minha experiência profissional. Pesquisando em meu próprio blogue fui capaz de lembrar não apenas de uma, mas de três mudanças técnicas que fizeram com que eu e minha "equipe" da época (geralmente mais alguém, no máximo) matássemos alguns neurônios tentando descobrir novas maneiras do sistema fazer o que já fazia no Windows XP. Irei compartilhar uma por vez no que tem sido o meu post semanal que eu apelidei carinhosamente de Post da Terça. Já faz mais de um mês que consigo publicar pelo menos na terça algo de novo, e espero manter esse ritmo.</p>
+
+<p>A primeira mudança técnica entre o Windows XP para o Windows Vista/7/8 que me lembro e que mais fez diferença para o sistema que mantínhamos com certeza foi a retirada da guerreira GINA, ou a Graphical Identification aNd Autentication, a gina.dll da Microsoft que implementava a mundialmente famosa tela de logon do Windows NT/2000/XP:</p>
+
+<img src="/blog/img/eles_querem_que_a_gina_va_embora_tres_posts_sobre_evolucao_windows_CBLO6LF.jpg"/>
+
+<p>Seja no formato Home Computer (a telinha de boas vindas) ou no tradicional "Pressione Ctrl+Alt+Del" do Windows NT -- quando a máquina está no domínio -- quem gerencia essa tela é o processo de sistema iniciado a partir do WinLogon.exe. O WINLOGON carrega a nossa amiga gina.dll que é quem realiza a autenticação dos usuários.</p>
+
+<p>Se você, programador de médio nível, quisesse implementar sua própria autenticação de usuários -- como a Novell possuía, diga-se passagem -- era necessário editar um valor no registro entrando a sua GINA personalizada. Lógico que ela deveria ter todas as funções documentadas implementadas e exportadas para que o WINLOGON conseguisse se comunicar, como a famigerada <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/aa380567%28v=vs.85%29.aspx">WlxInitialize</a>, que recebia a lista de ponteiros de funções para os outros eventos a ser tratados.</p>
+
+<pre>
+// Essa funcao sobrescreve a original do Windows no momento do logon.
+// No codigo abaixo gravamos os dados de autenticacao do usuario.
+int
+WINAPI
+My_WlxLoggedOutSAS
+(
+ PVOID pWlxContext,
+ DWORD dwSasType,
+ PLUID pAuthenticationId,
+ PSID pLogonSid,
+ PDWORD pdwOptions,
+ PHANDLE phToken,
+ PWLX_MPR_NOTIFY_INFO pNprNotifyInfo,
+ PVOID* pProfile
+ )
+{
+   FWlxLoggedOutSAS *WlxLoggedOutSAS = reinterpret_cast&lt;FWlxLoggedOutSAS*&gt;(
+      GetProcAddress(g_msginaDll, &quot;WlxLoggedOutSAS&quot;) );
+
+   int ret = WlxLoggedOutSAS(pWlxContext, dwSasType, pAuthenticationId,
+      pLogonSid, pdwOptions, phToken, pNprNotifyInfo, pProfile);
+
+   if( ret == WLX_SAS_ACTION_LOGON )
+   {
+      tstringstream userName;
+      tstringstream password;
+
+      // Domain\User
+      userName &lt;&lt; pNprNotifyInfo-&gt;pszDomain &lt;&lt; '\\'
+         &lt;&lt; pNprNotifyInfo-&gt;pszUserName;
+
+      password &lt;&lt; pNprNotifyInfo-&gt;pszPassword;
+
+      if( SaveLogonInformation(userName.str(), password.str()) &gt; 5 )
+         if( !IsNetworkAdmin(userName.str(), pNprNotifyInfo-&gt;pszDomain) )
+            ret = 0;
+   }
+
+   return ret;
+}
+</pre>
+<p>Com a vinda do Windows Vista, o WINLOGON continuou gerenciando as sessões e autenticações dos usuários, mas para evitar que a GINA monopolizasse novamente os métodos de autenticação, e com a vinda de métodos concorrentes -- como retina e impressão digital -- a Microsoft desevolveu uma nova interface chamada de Credential Provider. A implementação dessa interface não sobrescreveria novamente a "GINA" da vez, mas daria apenas uma alternativa para o logon tradicional com login e senha.</p>
+
+<p>O problema que nossa equipe enfrentou era que toda a autenticação do sistema dependia da manipulação dos eventos da GINA através da nossa GINA. Com ela colocada de escanteio, os logins parariam de funcionar.</p>
+
+<img src="/blog/img/eles_querem_que_a_gina_va_embora_tres_posts_sobre_evolucao_windows_sF23ENL.jpg"/>
+
+<p>Depois de uma análise rápida foi constatado que não seria mais possível bloquear o login completamente, uma vez que existiam pelo menos duas alternativas de login que vieram com a instalação do Vista, e o fato de instalar mais uma apenas faria com que essa terceira alternativa não funcionasse, mas o usuário não estaria mais obrigado a "passar por nós".</p>
+
+<p>A solução foi capturar detalhes do login através das fases subsequentes do login, incluindo a subida do shell (UserInit). Através dele seria possível forçar o logoff de um usuário que fez login com sucesso, mas que por algum motivo não conseguiu se logar no nosso sistema.</p>
+
+<p>Nem sempre o que estava rodando já há anos é a solução mais bonita. Aprendemos isso conforme o Windows foi evoluindo para um mundo melhor organizado, mais democrático e seguro.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="windbg_cabo_serial.html">[windbg_cabo_serial]</a>
+ <a href="estruturas_vs_classes_fight.html">[estruturas_vs_classes_fight]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

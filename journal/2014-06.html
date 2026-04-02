@@ -38,13 +38,12 @@ role="navigation" aria-label="main navigation">
 <div style="padding-bottom: 1em;"></div>
 <ul style="list-style: none;">
 
-<li><small><a href="2014-06.html#ss">SS</a></small></li>
 <li><small><a href="2014-06.html#computer_chess">Computer Chess</a></small></li>
 <li><small><a href="2014-06.html#metropolis">Metrópolis</a></small></li>
 <li><small><a href="2014-06.html#bancando_o_aguia_aka_sherlock_jr">Bancando o Águia (aka Sherlock Jr.)</a></small></li>
 <li><small><a href="2014-06.html#saida_pela_loja_de_presentes">Saída pela Loja de Presentes</a></small></li>
 <li><small><a href="2014-06.html#no_limite_do_amanha">No Limite do Amanhã</a></small></li>
-<li><small><a href="2014-06.html#eles_querem_que_a_gina_va_embora_tres_posts_sobre_evolucao_windows">Eles querem que a GINA vá embora: três posts sobre evolução Windows</a></small></li>
+<li><small><a href="2014-06.html#gina">Eles querem que a GINA vá embora</a></small></li>
 <li><small><a href="2014-06.html#malevola">Malévola</a></small></li>
 <li><small><a href="2014-06.html#armacoes_do_amor">Armações do Amor</a></small></li>
 <li><small><a href="2014-06.html#evocando_espiritos">Evocando Espíritos</a></small></li>
@@ -52,122 +51,13 @@ role="navigation" aria-label="main navigation">
 <li><small><a href="2014-06.html#amor_sem_fim">Amor Sem Fim</a></small></li>
 <li><small><a href="2014-06.html#a_culpa_e_das_estrelas">A Culpa é das Estrelas</a></small></li>
 <li><small><a href="2014-06.html#a_face_do_mal">A Face do Mal</a></small></li>
-<li><small><a href="2014-06.html#dando_cabo_do_windbg">Dando cabo do WinDbg</a></small></li>
+<li><small><a href="2014-06.html#windbg_cabo_serial">Dando cabo do WinDbg</a></small></li>
 <li><small><a href="2014-06.html#como_treinar_o_seu_dragao_2">Como Treinar o Seu Dragão 2</a></small></li>
 <li><small><a href="2014-06.html#orange_is_the_new_black_segunda_temporada">Orange is the New Black - Segunda Temporada</a></small></li>
 <li><small><a href="2014-06.html#orange_is_the_new_black_terceira_temporada">Orange is the New Black - Terceira Temporada</a></small></li>
 <li><small><a href="2014-06.html#enders_game_o_jogo_do_exterminador">Ender''s Game: O Jogo do Exterminador</a></small></li>
 <li><small><a href="2014-06.html#contos_da_noite">Contos da Noite</a></small></li>
 <li><small><a href="2014-06.html#se_iterando_com_os_pseudo_ponteiros_uma_breve_introducao">Se iterando com os pseudo-ponteiros: uma breve introdução</a></small></li></ul>
-
-<span id="ss" title="SS"/></span>
-<section id="section_ss">
-<p class="title"><a href="2014-06.html#ss">#</a> SS</p>
-<span class="title-heading">Caloni, 2014-06-03 <a href="2014-05.html#estruturas_vs_classes_fight">&lt;</a><a href="computer.html">computer</a><a href="2014-06.html#eles_querem_que_a_gina_va_embora_tres_posts_sobre_evolucao_windows">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_ss')"><sup>[copy]</sup></a></span>
-
-<p>Uma das coisas mais cretinas e difíceis para os iniciantes em C++ é conseguir formatar strings de maneira fácil, rápida e indolor. Infelizmente, a biblioteca de printf da linguagem C está fechada para reforma, pois ela é extremamente error-prone e não-intuitiva. Porém, se a printf é não-intuitiva, o que dizer &lt; &lt; daqueles &lt;&lt; sinais &lt;&lt; de &lt;&lt; flechinhas apontando para cout? Bem melhor, não?</p>
-
-<pre>
-#include &lt;iostream&gt;
-
-int main()
-{
-    int x = 0x00000001;
-    int y = 4;
-    int z = x &lt;&lt; y; // isso desloca 4 bits para a &quot;esquerda&quot;
-    std::cout &lt;&lt; z // WHAT??
-        &lt;&lt; &quot;\nestranho...&quot; &lt;&lt; std::endl; // WHAT^^2!?!?!?!??!?!
-}
-</pre>
-<img src="/journal/img/ss_tnVztzy.png"/>
-
-<p>A resposta é, pra variar, depende. Se você combinar com seu cérebro que o operador de shift que você aprendeu em C para cout não tem a mesma semântica, OK. No fundo eu acredito que os criadores dessa sobrecarga de operador pensaram sinceramente que hoje em dia quase ninguém conhece os operadores de shift binário, então tudo bem reaproveitá-lo de uma maneira mais miguxa.</p>
-
-<p>Porém, isso depende da maneira com que você usa streams C++. Vai haver momentos de sua vida que você vai se questionar por que tiraram todo o controle, a elegância e simplicidade de um bom printf, quando os <a href="http://www.caloni.com.br/programadores-de-verdade-nao-usam-java">homens eram homens</a> e sabiam configurar jumpers para instalar a nova placa EISA.</p>
-
-<pre>
-#include &lt;iostream&gt;
-#include &lt;stdlib.h&gt;
-
-int main()
-{
-    int x = 0x00AB3451;
-    // nao eh tao legivel, mas da conta do recado
-    printf(&quot;int x = 0x%08X;\n&quot;, x);
-    // pois eh, parece que melhoramos mesmo com streams...
-    std::cout &lt;&lt; &quot;int x = 0x&quot; &lt;&lt; std::hex &lt;&lt; x &lt;&lt; &quot;;&quot; &lt;&lt; std::endl;
-}
-</pre>
-<img src="/journal/img/ss_7hFREwa.png"/>
-
-<h2>A coisa mais fácil do jeito mais difícil</h2>
-
-<p>A questão dos streams fica mais complicada quando precisamos realizar atividades corriqueiras no código, como retornar uma string formatada, ou até mesmo transformar um inteiro em string.</p>
-
-<pre>
-#include &lt;iostream&gt;
-#include &lt;string&gt;
-#include &lt;sstream&gt; // digam oi para nosso novo amiguinho!
-
-std::string FuncaoCorriqueira(int x, int y)
-{
-    std::ostringstream ss; // credo, que tipo eh esse?
-    ss &lt;&lt; (x + y);
-    return ss.str();
-}
-
-int main()
-{
-    std::cout &lt;&lt; FuncaoCorriqueira(20, 42);
-}
-</pre>
-<p>Já pensou termos que criar uma função dessas sempre que quisermos converter números em string? Ou pior, ter que fazer o que fizemos dentro dessa função: declarar um ostringstream (um cout com buffer interno de string), usá-lo como cout e obter seu buffer interno através do método str. Tudo isso para converter um número para string.</p>
-
-<p>Quando uma tarefa muito comum exige mais de dois passos para ser realizada é de bom tom criarmos algum código reutilizável, certo? Um código que trará de uma vez por todas a solução final!</p>
-
-<h2>SS</h2>
-
-<pre>
-#include &lt;sstream&gt;
-
-struct ss
-{
-    template&lt;typename T&gt;
-    ss&amp; operator &lt;&lt; (const T&amp; t)
-    {
-        _ss &lt;&lt; t;
-        return *this;
-    }
-
-    operator std::string ()
-    {
-        return _ss.str();
-    }
-
-    std::ostringstream _ss;
-};
-</pre>
-<p>O código acima serve bem ao nosso propósito de formatar strings em uma linha como um cout, mas retornar uma string no lugar. Ele é simples, ele é direto, ele tem defeitos que não vem ao caso (como não suportar endl), mas pode ser usado de maneira... simples e direta!</p>
-
-<pre>
-#include &quot;ss.h&quot;
-#include &lt;iostream&gt;
-
-int main()
-{
-    for( int i = 0; i &lt; 5; ++i )
-    {
-        std::string s = ss() &lt;&lt; &quot;Teste numero &quot; &lt;&lt; i;
-        std::cout &lt;&lt; s &lt;&lt; std::endl;
-    }
-}
-</pre>
-<p>OK, o código de exemplo foi idiota, mas você pegou a ideia. Tudo que precisamos fazer para reutilizar essa pequena classe é definí-la (ss() resolve) e usá-la. Seu conversor de string retorna o buffer interno de ostringstream para nós como num passe de mágica.</p>
-
-<p>Obs.: Com certeza deve existir uma centena de bibliotecas que implementam algo do gênero, só que melhor. Essa é a típica fica isolante para continuar trabalhando.</p>
-
-</section><hr/>
-
 
 <span id="computer_chess" title="Computer Chess"/></span>
 <section id="section_computer_chess">
@@ -247,10 +137,10 @@ int main()
 </section><hr/>
 
 
-<span id="eles_querem_que_a_gina_va_embora_tres_posts_sobre_evolucao_windows" title="Eles querem que a GINA vá embora: três posts sobre evolução Windows"/></span>
-<section id="section_eles_querem_que_a_gina_va_embora_tres_posts_sobre_evolucao_windows">
-<p class="title"><a href="2014-06.html#eles_querem_que_a_gina_va_embora_tres_posts_sobre_evolucao_windows">#</a> Eles querem que a GINA vá embora: três posts sobre evolução Windows</p>
-<span class="title-heading">Caloni, 2014-06-11 <a href="2014-06.html#ss">&lt;</a><a href="computer.html">computer</a><a href="2014-06.html#dando_cabo_do_windbg">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_eles_querem_que_a_gina_va_embora_tres_posts_sobre_evolucao_windows')"><sup>[copy]</sup></a></span>
+<span id="gina" title="Eles querem que a GINA vá embora"/></span>
+<section id="section_gina">
+<p class="title"><a href="2014-06.html#gina">#</a> Eles querem que a GINA vá embora</p>
+<span class="title-heading">Caloni, 2014-06-11 <a href="2018-05.html#ss">&lt;</a><a href="computer.html">computer</a><a href="2014-06.html#windbg_cabo_serial">&gt;</a> <a href="2018-05.html#ss">&lt;</a><a href="blog.html">blog</a><a href="2014-06.html#windbg_cabo_serial">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_gina')"><sup>[copy]</sup></a></span>
 
 <p>Fui convidado pela Fernanda Saraiva do programa de MVPs da Microsoft Brasil a falar sobre alguma história a respeito da evolução do Windows e como isso impactou minha experiência profissional. Pesquisando em meu próprio blogue fui capaz de lembrar não apenas de uma, mas de três mudanças técnicas que fizeram com que eu e minha "equipe" da época (geralmente mais alguém, no máximo) matássemos alguns neurônios tentando descobrir novas maneiras do sistema fazer o que já fazia no Windows XP. Irei compartilhar uma por vez no que tem sido o meu post semanal que eu apelidei carinhosamente de Post da Terça. Já faz mais de um mês que consigo publicar pelo menos na terça algo de novo, e espero manter esse ritmo.</p>
 
@@ -419,22 +309,24 @@ My_WlxLoggedOutSAS
 </section><hr/>
 
 
-<span id="dando_cabo_do_windbg" title="Dando cabo do WinDbg"/></span>
-<section id="section_dando_cabo_do_windbg">
-<p class="title"><a href="2014-06.html#dando_cabo_do_windbg">#</a> Dando cabo do WinDbg</p>
-<span class="title-heading">Caloni, 2014-06-18 <a href="2014-06.html#eles_querem_que_a_gina_va_embora_tres_posts_sobre_evolucao_windows">&lt;</a><a href="computer.html">computer</a><a href="2014-06.html#se_iterando_com_os_pseudo_ponteiros_uma_breve_introducao">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_dando_cabo_do_windbg')"><sup>[copy]</sup></a></span>
+<span id="windbg_cabo_serial" title="Dando cabo do WinDbg"/></span>
+<section id="section_windbg_cabo_serial">
+<p class="title"><a href="2014-06.html#windbg_cabo_serial">#</a> Dando cabo do WinDbg</p>
+<span class="title-heading">Caloni, 2014-06-18 <a href="2014-06.html#gina">&lt;</a><a href="computer.html">computer</a><a href="2014-06.html#se_iterando_com_os_pseudo_ponteiros_uma_breve_introducao">&gt;</a> <a href="2014-06.html#gina">&lt;</a><a href="blog.html">blog</a><a href="2014-06.html#se_iterando_com_os_pseudo_ponteiros_uma_breve_introducao">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_windbg_cabo_serial')"><sup>[copy]</sup></a></span>
 
 <p>Na semana passada falei sobre a ideia de comentar algumas mudanças entre o Windows XP e o novo mundo Vista/7/8/ que fizeram com que adaptássemos algum código que obviamente não funcionaria mais. Falamos sobre a famigerada GINA (ou famiGINADA), e agora apenas vou comentar brevemente sobre o sistema de boot, que também mudou.</p>
 
-<p>Na verdade, pouca coisa mudou, mas foi o suficiente para dar problemas na hora de usar o WinDbg. Tradicionalmente, o boot era gerenciado no Windows através de um arquivo localizado na raiz da partição ativa (configuração da MBR) chamado bootini. Dentro dele temos uma estrutura semelhante a um .INI (duh), onde a informação que vemos lá podia ser configurada nas configurações do Computador no Windows XP.</p>
+<p>Na verdade, pouca coisa mudou, mas foi o suficiente para dar problemas na hora de usar o WinDbg. Tradicionalmente, o boot era gerenciado no Windows através de um arquivo localizado na raiz da partição ativa (configuração da MBR) chamado boot.ini. Dentro dele temos uma estrutura semelhante a um .INI (duh), onde a informação que vemos lá podia ser configurada nas configurações do Computador no Windows XP.</p>
 
 <p>Hoje em dia esse arquivo nem existe mais, o que pode dar um friozinho na barriga ("caramba, não vai mais bootar!!"). Agora, para sistemas baseados em BIOS há uma pasta Boot na raiz e um arquivo chamado bcd. Para os mais moderninhos, baseados em EFI, ele fica na partição EFI. Ah, EFI é Extensible Firmware Interface, e faz parte da especificação da UEFI (Universal blá blá blá), mais ou menos um padrão que define como deve ser feita a comunicação entre hardware e sistema operacional.</p>
 
-<p>Para a edição desse novo arquivo (ou partição) é necessário que seja usada a ferramenta BCDEdit no Windows. É ela que agora configura qual partição está ativa e, mais importante para escovadores de bits, qual pode ser depurada pela <a href="https://farm6.staticflickr.com/5510/14191895328_44a2ec8338_z.jpg">porta serial</a> através do WinDbg.</p>
+<p>Para a edição desse novo arquivo (ou partição) é necessário que seja usada a ferramenta BCDEdit no Windows. É ela que agora configura qual partição está ativa e, mais importante para escovadores de bits, qual pode ser depurada pela [porta serial] através do WinDbg.</p>
 
 <p>Porta serial? Mas que coisa antiga, hein? Pois é, muita coisa mudou desde o Windows Vista, mas algumas coisas precisam permanecer... compatíveis.</p>
 
 <p>Mas... se você precisar:</p>
+
+<img src="/journal/img/windbg_serial_port.jpg"/>
 
 </section><hr/>
 
@@ -510,9 +402,9 @@ My_WlxLoggedOutSAS
 <span id="se_iterando_com_os_pseudo_ponteiros_uma_breve_introducao" title="Se iterando com os pseudo-ponteiros: uma breve introdução"/></span>
 <section id="section_se_iterando_com_os_pseudo_ponteiros_uma_breve_introducao">
 <p class="title"><a href="2014-06.html#se_iterando_com_os_pseudo_ponteiros_uma_breve_introducao">#</a> Se iterando com os pseudo-ponteiros: uma breve introdução</p>
-<span class="title-heading">Caloni, 2014-06-24 <a href="2014-06.html#dando_cabo_do_windbg">&lt;</a><a href="computer.html">computer</a><a href="2014-07.html#introducao_a_introducao_a_computacao">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_se_iterando_com_os_pseudo_ponteiros_uma_breve_introducao')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2014-06-24 <a href="2014-06.html#windbg_cabo_serial">&lt;</a><a href="computer.html">computer</a><a href="2014-07.html#introducao_a_computacao">&gt;</a> <a href="2014-06.html#windbg_cabo_serial">&lt;</a><a href="blog.html">blog</a><a href="2014-07.html#introducao_a_computacao">&gt;</a><a href="2014-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_se_iterando_com_os_pseudo_ponteiros_uma_breve_introducao')"><sup>[copy]</sup></a></span>
 
-<p>Como <a href="http://www.caloni.com.br/remove_if-ate-remove-so-que-diferente">já vimos algumas vezes</a>, a STL não prima por interfaces intuitivas, preferindo abstrações que criem um leque de ferramentas genéricas para tratamento uniformizado de coleções de dados através de algoritmos. O problema disso é que novos programadores da linguagem terão que aprender uma maneira nova de lidar com problemas baseada na percepção dos criadores do padrão na época em que foi lançado de como seria a evolução da ciência da computação nos próximos anos. Muitos dos conceitos ali abordados realmente se tornaram padrão de facto, mas na briga pela expansão da linguagem quem perdeu por muito tempo foi o próprio desenvolvedor, que teve que se contentar com uma lista de algoritmos genéricos parcialmente compilado.</p>
+<p>Como <a href="2014-01.html#remove_if">já vimos algumas vezes</a>, a STL não prima por interfaces intuitivas, preferindo abstrações que criem um leque de ferramentas genéricas para tratamento uniformizado de coleções de dados através de algoritmos. O problema disso é que novos programadores da linguagem terão que aprender uma maneira nova de lidar com problemas baseada na percepção dos criadores do padrão na época em que foi lançado de como seria a evolução da ciência da computação nos próximos anos. Muitos dos conceitos ali abordados realmente se tornaram padrão de facto, mas na briga pela expansão da linguagem quem perdeu por muito tempo foi o próprio desenvolvedor, que teve que se contentar com uma lista de algoritmos genéricos parcialmente compilado.</p>
 
 <p>Dito isto, a abstração dos iteradores é a coisa mais linda do mundo.</p>
 
@@ -570,7 +462,7 @@ int main()
 </pre>
 <img src="/journal/img/se_iterando_com_os_pseudo_ponteiros_uma_breve_introducao_GmNutkz.jpg"/>
 
-<p>Da mesma forma, operações como cópia, movimentação, ordenação, caotização, pode ser feito usando dois ponteiros/iteradores de dois contêiners distintos, desde que algumas regras básicas sejam seguidas, como um iterador deve sempre apontar para algo válido (ou disponibilizar alguma abstração que insira novos elementos em um contêiner menor). Veremos essas regras em um próximo post sobre o tema. Apontarei para ele aqui.</p>
+<p>Da mesma forma, operações como cópia, movimentação, ordenação, caotização, pode ser feito usando dois ponteiros/iteradores de dois contêiners distintos, desde que algumas regras básicas sejam seguidas, como um iterador deve sempre apontar para algo válido (ou disponibilizar alguma abstração que insira novos elementos em um contêiner menor). Veremos essas regras talvez em um próximo post sobre o tema.</p>
 
 </section><hr/>
 

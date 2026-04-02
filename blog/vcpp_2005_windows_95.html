@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="vcpp_2005_windows_95" title="VC++ 2005 e Windows 95 não casam"/></span>
+<section id="section_vcpp_2005_windows_95">
+<p class="title">VC++ 2005 e Windows 95 não casam</p>
+<span class="title-heading">Caloni, 2006-05-26 computer blog</span>
+
+<p>Hoje foi mais um dia de surpresas com a nova versão do ambiente de programação da Microsoft. De cara descobrimos que programas que usam a nova CRT não rodam no Windows 95. Eu quero dizer: não é um projeto específico; QUALQUER projeto não irá rodar. Tentamos executar um projeto vazio e existe uma dependência da função IsDebuggerPresent nos executáveis gerados. Essa função API inexiste nessa versão do SO.</p>
+
+<p>Obs: solução não funciona na execução. Veja detalhes no final do artigo.</p>
+
+<p>Bem, esse é o tipo de coisa que pára o desenvolvimento. De repente temos um problema que pode comprometer todo o processo de migração. Uma pesquisa inicial no google e google groups não revelou muita coisa, só uma discussão em alemão sem links interessantes. Mas, alguns minutos de fuçação e busca depois e achamos este link (2026-04-02 onde está?), que documenta a tragédia: no Visual C++ 2005, nem o Windows 95 nem o Windows NT 4 são suportados.</p>
+
+<p>O que é muito justo, sabendo que a Microsoft encerrou o suporte técnico destes dois sistemas já faz algum tempo. Mas, cá entre nós, não fazer rodar no 95 só por causa do IsDebuggerPresent parece uma limitação desnecessária. Tudo bem que não é mais suportado (nós mesmos programadores já não suportamos mais esse sistema) e que talvez muito mais coisa não funcione. Mas, diabos, compile e deixe rodar. Afinal, a estabilidade já não é um forte nem do sistema operacional. O hipotético usuário de Windows 95 no século XXI não iria nem esquentar muito se um de seus programas compilados em VC8 eventualmente explodisse de vez em quando. Ele de cara já iria botar a culpa no Windows e apertar o botão de reset. O instinto Microsoft. Lembram?</p>
+
+<p>Mas, voltando ao tema do artigo:</p>
+
+<pre>
+// gs_report.c
+__declspec(noreturn) void __cdecl __report_gsfailure(void)
+{
+    /*
+  ...
+  muito código
+  ..
+  */
+#if defined (_CRTBLD) &amp;&amp; !defined (_SYSCRT)
+    DebuggerWasPresent = IsDebuggerPresent(); // AQUI!! MALEDETO!!
+    _CRT_DEBUGGER_HOOK(_CRT_DEBUGGER_GSFAILURE);
+
+#endif  /* defined (_CRTBLD) &amp;&amp; !defined (_SYSCRT) */
+    /*
+  ...
+  mais código
+  ..
+  */
+}
+
+// enquanto isso, no invarg.c ...
+_CRTIMP void __cdecl _invoke_watson(
+    const wchar_t *pszExpression,
+    const wchar_t *pszFunction,
+    const wchar_t *pszFile,
+    unsigned int nLine,
+    uintptr_t pReserved
+    )
+{
+    /*
+  ...
+  lá lá lá...
+  ..
+  */
+
+    ExceptionPointers.ExceptionRecord = &amp;ExceptionRecord;
+    ExceptionPointers.ContextRecord = &amp;ContextRecord;
+
+    wasDebuggerPresent = IsDebuggerPresent(); // AH, MUUUULEEEEKEEE!!!
+
+    /* Make sure any filter already in place is deleted. */
+    SetUnhandledExceptionFilter(NULL);
+
+    /*
+  ...
+  mais código
+  ..
+  */
+}
+</pre>
+<p>Essas duas funções de tratamento de erros e exceções presentes nos fontes da biblioteca C é que estão zoando o barraco. Nesse caso, saber onde está o problema não resolve muito. Temos os fontes, podemos alterá-los. Mas isso não significa que podemos usar uma nova CRT modificada e compilada por nós. Isso seria impor uma dependência muito severa na portabilidade do projeto. Ele mal compilaria fora daquela sala!</p>
+
+<p>Como modificar os fontes da Microsoft é uma gambi acima dos níveis a que estávamos dispostos a aceitar naquele momento (era de manhã ainda), resolvemos que as coisas precisariam ficar mais feias para chegarmos a esse ponto. Algumas alternativas sugeridas foram (por ordem de desespero):</p>
+
+<ul><li>trocar os "vcprojs" por makefiles e usar as libs do SDK (razoável, mas dá trabalho),</li>
+
+<li>manter uma solução separada para compilar uma versão só para o 95/NT (isso dá trabalho e é triste),</li>
+
+<li>usar o ambiente do VC8 mas o compilador, as bibliotecas e os headers do 7.1 (isso dá trabalho e é nojento),</li>
+
+<li>depois de compilado, alterar a IAT do binário para retirar a dependência da função... (pára! pára! alerta vermelho!)</li></ul>
+
+<p>Até que veio a solução mágica (tudo bem, não tão mágica; mas boa o suficiente para ser implementada):</p>
+
+<pre>
+//
+//solucaonaotaomagicamasboaosuficienteparaserimplementada.cpp
+//
+#include &lt;windows.h&gt;
+
+BOOL
+WINAPI
+_imp__IsDebuggerPresent(VOID)
+{
+   BOOL ret = FALSE;
+
+   // aqui podemos chamar a função de verdade, mas
+   // sem usar link estático. e rodar no 95 =)
+
+   return ret;
+}
+</pre>
+<p>Uau! Isso que eu chamo de sobrecarga de função "na marra". Se nossas mães vissem isso (e entendessem isso) iriam ficar orgulhosas.</p>
+
+<p>Vamos entender o que acontece durante o processo de link:</p>
+
+<ul><li>A CRT tem um símbolo pendente com o nome "__imp__IsDebuggerPresent@0", que significa "função exportada por uma DLL com seu nome disponível em uma LIB de interface com o nome IsDebuggerPresent, usando a convenção de chamada __stdcall e que não recebe nenhum parâmetro".</li>
+
+<li>Nós criamos uma função em nosso cpp com o nome "_imp__IsDebuggerPresent" que não recebe nenhum parâmetro e com a convenção de chamada __stdcall. O compilador coloca um underline na frente do nome (ele faz isso com todos os nomes) e, como a convenção de chamada manda, o caractere "@" seguido do número de bytes que os parâmetros da função ocupam na pilha (0 parâmetros * 4 bytes cada um = 0 bytes).</li>
+
+<li>O link começa e o linker tem uma regra de ouro: os símbolos encontrados dentro dos próprios objs tem precedência sobre os símbolos que irei encontrar nas LIBs.</li>
+
+<li>Ora, não é que o linker achou o símbolo que a CRT precisa já no nosso obj? Que coincidência!</li>
+
+<li>Esse símbolo será usado no lugar de outros símbolos eventualmente encontrados em outros lugares, como a kernel32.lib, por exemplo.</li>
+
+<li>Como esse símbolo é interno, não existe mais a dependência da função kernel32!IsDebuggerPresent. Como não existe, o executável gerado roda normalmente em um Windows 95, pois ele já não mais depende de uma função que não existe no sistema operacional.</li></ul>
+
+<p>Esse é o fim da história. Com isso conseguimos enganar o linker. Ele encontra nosso símbolo antes da kernel32.lib e usa ele no lugar. E com isso resolvemos mais um dos problemas que ocorre nos processos de migração de versão dos ambientes Microsoft. Que tal?</p>
+
+<p>PS: com essa pequena "armação" foi corrigido o problema de dependência, porém não o de execução. O programa roda quando não chamadas as funções sobrepostas. Aliás, é interessante notar que a CRT do vc referencia a função, mas acaba não chamando em uma compilação default, o que conseqüentemente aumenta o nível de revolta. Estou analisando o problema agora e, caso ache uma solução simples e plausível, colocarei em um futuro artigo. No momento peço desculpas pela publicação precipitada de uma solução não testada.</p>
+
+<h4>// Comments</h4>
+
+<p>2006-05-27 Anderson Moreira:</p>
+
+<p>Sensacional :D</p>
+
+<hr/>
+
+<p>2006-05-28 Thiago Adams:</p>
+
+<p>Na opção "Runtime Library" vocês estavão usando "Multi-threaded (/MT)" ou "Multi-threaded DLL (/MD)"?</p>
+
+<p>Não sei se faz diferença.. mas gostaria de saber se usando "Multi-threaded (/MT)" também não funciona no 95?</p>
+
+<hr/>
+
+<p>2006-05-29 Caloni:</p>
+
+<p>Sim, Thiago. Em ambas as configurações não roda no 95 por conta da função IsDebuggerPresent. Se você usar a gamb... adaptação técnica que mostrei acima, ele roda, mas de qualquer forma a Microsoft não suporta.</p>
+
+<p>[]s</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="about.html">[about]</a>
+ <a href="++blog_um_ano_de_calonicombr.html">[++blog_um_ano_de_calonicombr]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

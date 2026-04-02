@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="visual_studio_mutante" title="Por que o Visual Studio gera executáveis mutantes"/></span>
+<section id="section_visual_studio_mutante">
+<p class="title">Por que o Visual Studio gera executáveis mutantes</p>
+<span class="title-heading">Caloni, 2015-01-11 computer blog</span>
+
+<blockquote>Esse é um post antigo que encontrei no meio dos meus emails de 2006, mas que contém uma boa dica para quem já entendeu o [passo-a-passo da compilação], mas ainda tem sérios problemas quando os projetos ficam gigantes.</blockquote>
+<p>Essa é a segunda vez que encontro esse mesmo problema. Como acredito que outras almas podem estar sofrendo do mesmo mal, coloco aqui uma breve descrição de como o VC8 faz para gerar um executável que, mesmo não dependendo das DLLs de runtime, não são executados em sistemas que suportam a interpretação do ".manifest". De canja, um pequeno programa que exibe a lista dos programas instalados no sistema.</p>
+
+<p>Primeiro, precisamos de um solution que contenha um projeto console e uma LIB. O projeto console deve usar a LIB para fazer alguma coisa. No exemplo abaixo, estarei listando os programas instalados no Windows (os mostrados no painel de controle através da opção "Adicionar/remover programas".</p>
+
+<pre>
+/** library.h
+*/
+#pragma once #include &lt;string&gt; #include &lt;vector&gt;
+
+typedef std::vector&lt;std::string&gt; InstalledSoftwareList; int
+getInstalledSoftware(InstalledSoftwareList&amp;);
+
+/** library.cpp
+*/
+#include &quot;library.h&quot; #include &lt;windows.h&gt; // aqui precisamos do windows para
+as funções de registro #include &lt;tchar.h&gt; // suporte a unicode condicional
+
+#define SW_ROOT_KEY &quot;SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall&quot;
+#define SW_DISPLAY_NAME &quot;DisplayName&quot;
+
+/** Retorna o número de elementos em um array. */
+template&lt;typename T, size_t Sz&gt; DWORD SizeofArray(const T(&amp;arr)[Sz]) { return
+Sz; }
+
+/** Retorna lista com descrição de cada programa instalado no sistema. */
+int getInstalledSoftware(InstalledSoftwareList&amp; installedSoftware) { HKEY
+swRoot = NULL; DWORD err = RegOpenKeyEx(HKEY_LOCAL_MACHINE, _T(SW_ROOT_KEY),
+0, KEY_READ, &amp;swRoot);
+
+   if( err == ERROR_SUCCESS ) { DWORD swIndex = 0; TCHAR swKeyName[MAX_PATH] =
+   _T(&quot;&quot;);
+
+      // para cada chave dentro da raiz de programas instalados
+      while( (err = RegEnumKey(swRoot, swIndex++, swKeyName,
+      SizeofArray(swKeyName))) == ERROR_SUCCESS ) { HKEY swCurrent = NULL; err
+      = RegOpenKeyEx(swRoot, swKeyName, 0, KEY_READ, &amp;swCurrent);
+
+         if( err == ERROR_SUCCESS ) { CHAR swDisplay[MAX_PATH] = &quot;&quot;; // vamos
+         obter a string já em mb DWORD swDisplaySz = SizeofArray(swDisplay);
+
+            if( (err = RegQueryValueExA(swCurrent, SW_DISPLAY_NAME, 0, NULL,
+            reinterpret_cast&lt;PBYTE&gt;(swDisplay), &amp;swDisplaySz)) ==
+            ERROR_SUCCESS ) { installedSoftware.push_back(swDisplay); }
+
+            RegCloseKey(swCurrent); } }
+
+      // se não tem mais itens, então não é um erro
+      if( err == ERROR_NO_MORE_ITEMS ) err = ERROR_SUCCESS;
+      RegCloseKey(swRoot); } return int(err); }
+
+/** console.cpp
+*/
+#include &quot;../library/library.h&quot; // include da nossa lib #include &lt;algorithm&gt;
+#include &lt;iostream&gt;
+
+using namespace std;
+
+int main() { int ret; InstalledSoftwareList swList;
+
+   cout &lt;&lt; &quot;MSVC Mutant - v. beta\n&quot; &lt;&lt; &quot;by Wanderley Caloni
+   (www.caloni.com.br)\n\n&quot;;
+
+   // obtém a lista de programas instalados e exibe na tela
+   ret = getInstalledSoftware(swList);
+
+   if( ret == 0 ) { cout &lt;&lt; &quot;Programs installed on your system\n&quot; &lt;&lt;
+   &quot;=================================\n&quot;; copy(swList.begin(), swList.end(),
+   ostream_iterator&lt;string&gt;(cout, &quot;\n&quot;));
+
+   } else cout &lt;&lt; &quot;Error &quot; &lt;&lt; ret &lt;&lt; &quot; trying to list installed programs.\n&quot;;
+
+   return ret; }
+</pre>
+<p>Observação importante: para ignorar todas as estripulias da versão Debug, todos os testes foram compilados em Release.</p>
+
+<p>Primeiramente, modifico a configuração padrão dos dois projetos para não depender da DLL de runtime do VC. Isso está em Project, Properties, C/C++, Code Generation, Runtime Library. Depois executo em uma máquina virtual sem as runtimes do VC8 instaladas:</p>
+
+<pre>
+MSVC Mutant - v. beta
+by Wanderley Caloni (www.caloni.com.br)
+
+Programs installed on your system
+=================================
+Windows XP Service Pack 2
+WebFldrs XP
+VMware Tools
+</pre>
+<p>Perfeito. Exatamente o que eu queria: um executável console que não dependesse de DLL nenhuma exceto as que já estão instaladas em um Windows ordinário.</p>
+
+<p>Agora, vamos imaginar que esse é um daqueles projetos enormes de 5 * 10 ^ 42 de linhas (obs: dramatização) e que meu aplicativo console está linkado com cerca de 3 * 10 ^ 666 de LIBs. E uma delas (a library do exemplo) está com a configuração original, ou seja, com a dependência da DLL de runtime. E ela usa a STL. Provavelmente o aplicativo console não irá compilar, mas isso não é problema, pois estamos acostumados a colocar a msvcrt.lib na lista de LIBs ignoradas, pois em muitos outros casos (que não vale a pena discutir aqui) esse workaround é válido. E tudo volta a funcionar. Quer dizer, linkar:</p>
+
+<pre>
+O sistema não pode executar o programa especificado.
+</pre>
+<p>Tudo bem, meu executável não é mutante ainda. Mas agora vamos trocar a chamada da nossa função que usa STL por uma função que não usa:</p>
+
+<pre>
+/** library.h
+*/
+int doesNothing();
+
+/** library.cpp
+*/
+
+/** Essa função não faz nada. Quer dizer, ela retorna 0. Mas é só isso. */
+int doesNothing() { return 0; }
+
+/** console.cpp
+*/
+#include &quot;../library/library.h&quot; // include da nossa lib
+
+int main() { int ret;
+
+   // não faz nada. bom, chama uma função. mas isso é quase nada.
+   ret = doesNothing();
+
+   return ret; }
+Linking
+=======
+library.lib(library.obj) : warning LNK4049: locally
+ defined symbol __invalid_parameter_noinfo imported
+
+Running
+=======
+O sistema não pode executar o programa especificado.
+
+Depends
+=======
+Error: The Side-by-Side configuration information in &quot;blablabla\CONSOLE.EXE&quot;
+ contains errors.
+Falha na inicialização do aplicativo devido a configuração incorreta.
+A reinstalação do aplicativo pode resolver o problema (14001).
+</pre>
+<p>Agora sim, a mutação fez efeito! Temos um aplicativo que não depende da DLL de runtime, mas que no meio das n LIBs que ele utiliza existe uma configurada com a dependência. Ignorando a msvcrt.lib e um warning na compilação encontramos uma mensagem de erro um tanto exdrúxula.</p>
+
+<p>Até agora, a maneira que eu tenho utilizado para rastrear esse problema é não ignorar a msvcrt e ir tirando as dependências das LIBs pouco a pouco, até que ocorra o erro de símbolo duplicado. Algo assim:</p>
+
+<pre>
+MSVCRT.lib(ti_inst.obj) : error LNK2005: &quot;private: __thiscall
+type_info::type_info(class type_info const &amp;)&quot; (??0type_info@@AAE@ABV0@@Z)
+already defined in LIBCMT.lib(typinfo.obj) MSVCRT.lib(ti_inst.obj) : error
+LNK2005: &quot;private: class type_info &amp; __thiscall type_info::operator=(class
+type_info const &amp;)&quot; (??4type_info@@AAEAAV0@ABV0@@Z) already defined in
+LIBCMT.lib(typinfo.obj) LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts
+with use of other libs; use /NODEFAULTLIB:library Blablabla\console.exe :
+fatal error LNK1169: one or more multiply defined symbols found
+</pre>
+<p>Se você tiver realmente 3 * 10 ^ 666 de LIBs, boa sorte =).</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="origem_do_tipo_char.html">[origem_do_tipo_char]</a>
+ <a href="smart_shared_pointers.html">[smart_shared_pointers]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

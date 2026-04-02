@@ -41,7 +41,6 @@ role="navigation" aria-label="main navigation">
 <li><small><a href="2014-05.html#o_misterio_das_duas_irmas">O Mistério das Duas Irmãs</a></small></li>
 <li><small><a href="2014-05.html#presente_de_grego">Presente de Grego</a></small></li>
 <li><small><a href="2014-05.html#o_espetacular_homemaranha_2_a_ameaca_de_electro">O Espetacular Homem-Aranha 2: A Ameaça de Electro</a></small></li>
-<li><small><a href="2014-05.html#poker_face">Poker Face</a></small></li>
 <li><small><a href="2014-05.html#amante_a_domicilio">Amante a Domicílio</a></small></li>
 <li><small><a href="2014-05.html#o_ancora_a_lenda_de_ron_burgundy">O Âncora: A Lenda de Ron Burgundy</a></small></li>
 <li><small><a href="2014-05.html#monty_python_o_sentido_da_vida">Monty Python - O Sentido da Vida</a></small></li>
@@ -98,139 +97,6 @@ role="navigation" aria-label="main navigation">
 <span class="title-heading">Caloni, 2014-05-06 <a href="2014-05.html#presente_de_grego">&lt;</a><a href="cinema.html">cinema</a><a href="2014-05.html#o_ancora_a_lenda_de_ron_burgundy">&gt;</a> <a href="2014-05.html#presente_de_grego">&lt;</a><a href="movies.html">movies</a><a href="2014-05.html#o_ancora_a_lenda_de_ron_burgundy">&gt;</a> <a href="2014-03.html#inside_llewyn_davis_balada_de_um_homem_comum">&lt;</a><a href="miniviews.html">miniviews</a><a href="2014-06.html#evocando_espiritos">&gt;</a> <a href="2014-03.html#inside_llewyn_davis_balada_de_um_homem_comum">&lt;</a><a href="fragments.html">fragments</a><a href="2014-09.html#carrie_a_estranha_2013">&gt;</a><a href="2014-05.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_o_espetacular_homemaranha_2_a_ameaca_de_electro')"><sup>[copy]</sup></a></span>
 
 <p>Os habitantes de Nova York já estão habituados a se apinharem educadamente atrás das quase presentes barreiras de metal colocadas estrategicamente em torno de mais um embate entre o Aranha e mais um dos seus arqui-inimigos. Eles aplaudem, festejam, comem pipoca. Nós também. (...) Um ser humano que morreu (ainda que fictício), e a única coisa que conseguimos prestar atenção é na beleza da cena? (...) O resumo dessa obra de 144 minutos: visualmente belíssima, espiritualmente vazia.</p>
-
-</section><hr/>
-
-
-<span id="poker_face" title="Poker Face"/></span>
-<section id="section_poker_face">
-<p class="title"><a href="2014-05.html#poker_face">#</a> Poker Face</p>
-<span class="title-heading">Caloni, 2014-05-06 <a href="2014-04.html#code_jam_geleia_de_mocoto">&lt;</a><a href="computer.html">computer</a><a href="2014-05.html#estruturas_vs_classes_fight">&gt;</a><a href="2014-05.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_poker_face')"><sup>[copy]</sup></a></span>
-
-<p>O segundo round da segunda fase do Code Jam passou nesse sábado. Disléxico que sou, consegui fazer apenas 8 pontos -- como todo mundo -- no teste small do problema B, que envolvia apenas dois loops aninhados (a versão large fica para outro post). Na verdade, estou aqui para expressar minha gratidão ao campeonato por ter aprendido mais uma bela lição vendo o código do primeiro colocado do primeiro round, vulgo <a href="https://code.google.com/codejam/contest/2984486/scoreboard?c=2984486#vf=1">Kaizero</a>, um coreano que deu uma solução simples, rápida e prática para um problema de probabilidade tão error-prone que até os juízes do Google deram uma lambuja de alguns testes errados (sem contar que houve apenas a categoria small), e me fez pensar em quantas vezes pensamos em demasiado tentando encontrar a solução perfeita para algo que simplesmente... não precisa.</p>
-
-<p>Basta um hack e commit.</p>
-
-<h2>É a incerteza, idiota!</h2>
-
-<img src="/journal/img/poker_face_LmkKDXm.jpg"/>
-
-<p>O problema reza que existem dois algoritmos para embaralhar uma sequência numérica (de 0 a N): o bom e o ruim. Ambos traçam um loop do iníco ao fim pegando aleatoriamente um elemento da lista e trocando de lugar com o elemento que está sendo varrido no momento.</p>
-
-<img src="/journal/img/poker_face_UTQPIST.jpg"/>
-
-<p>A diferença entre o bom e o ruim é que o bom pega aleatoriamente apenas os elementos DEPOIS do elemento que está sendo varrido, enquanto o algoritmo ruim pega qualquer um dos elementos SEMPRE. Isso aparentemente e intuitivamente não parece interferir na aleatoriedade do embaralhamento, mas se levarmos ao extremo de embaralhar repetidas vezes somando a lista resultante percebemos uma tendência gritante do algoritmo ruim em manter o ordenamento inicial, ou pelo menos na média sempre tender para números menores no início e números maiores no fim, como pode ser visto nesse teste que fiz, gerado pelo Excel:</p>
-
-<img src="/journal/img/poker_face_OL0hpLv.jpg"/>
-
-<p>O que eu tentei fazer durante meu fim-de-semana retrasado e o feriado foi encontrar um detector de aleatoriedade (aliás, encontrei um bem interessante chamado <a href="http://www.fourmilab.ch/random/">ent</a>), tanto "na mão" quanto pesquisando. O que eu não imaginava foi que o teste que eu tinha feito no início usando uma simples planilha Excel era a solução óbvia (naquelas de é óbvio só depois que você vê). E foi essa a solução adotada por Kaizero.</p>
-
-<pre>
-/** @author Kaizero
-@desc Versão comentada (em português) e desofuscada do código do
-Code Jam 2014, 1A, problema 3 (Proper Shuffle)
-por Wanderley Caloni (wanderley.caloni@gmail.com).
-*/
-#pragma warning(disable:4996) // warning, pra que te quero...
-#include&lt;stdio.h&gt;
-#include&lt;algorithm&gt;
-#include&lt;vector&gt;
-#include&lt;time.h&gt;
-
-using namespace std;
-
-// as variáveis monossilábicas...
-int w[1001], C[1001][1001], O[1001];
-
-// Note que uma delas (C) é uma tabela gigantesca:
-
-// 1     2    3     4   ...  1001
-// 2
-// 3
-// ...
-// 1001
-
-// tabela verdade?
-bool v[1001];
-
-struct A
-{
-    int ord, R;
-
-    bool operator &lt;(const A &amp;p)const
-    {
-      return R &lt; p.R;
-    }
-}
-p[1000];
-
-int main()
-{
-    freopen(&quot;input.txt&quot;, &quot;r&quot;, stdin);
-    freopen(&quot;output.txt&quot;, &quot;w&quot;, stdout);
-
-    int i, TC, T, n, j;
-
-    srand((unsigned)time(NULL)); // mexendo o saco de bingo...
-
-    // a parte mais demorada: construir um contador gigante estilo
-    // Excel com 3 milhões de iterações
-    for (i = 0; i &lt; 3000000; i++)
-    {
-      // 1. Preenchemos o array sequencial.
-      for (j = 0; j &lt; 1000; j++)
-      {
-        w[j] = j;
-      }
-
-      // 2. Realizamos o algorimo ruim.
-      for (j = 0; j &lt; 1000; j++)
-      {
-        swap(w[j], w[rand() % 1000]);
-      }
-
-      // 3. Pesamos o resultado do algoritmo ruim.
-      for (j = 0; j &lt; 1000; j++)
-      {
-        C[j][w[j]]++;
-      }
-    }
-
-    // agora a parte &quot;fácil&quot;...
-
-    // ler número de casos de teste (sempre 120)
-    scanf(&quot;%d&quot;, &amp;TC);
-    for (T = 1; T &lt;= TC; T++) // iterar por cada linha
-    {
-      scanf(&quot;%d&quot;, &amp;n);
-      p[T].ord = T; // guardando sua posição
-
-      // lendo os números de todos os casos
-      for (i = 0; i &lt; n; i++)
-      {
-        scanf(&quot;%d&quot;, &amp;O[i]);
-        p[T].R += C[i][O[i]]; // mas gravando o peso de cada posição (cálculo de 3M)
-      }
-    }
-
-    // ordenando pelo peso de cada posição
-    sort(p + 1, p + TC + 1);
-    for (i = 1; i &lt;= 60; i++)
-      v[p[i].ord] = true; // metade tem que ser bom (a melhor metade)
-
-    for (i = 1; i &lt;= TC; i++)
-    {
-      printf(&quot;Case #%d: &quot;, i);
-      if (v[i])printf(&quot;GOOD\n&quot;);
-      else printf(&quot;BAD\n&quot;);
-    }
-}
-</pre>
-<p>O que ele basicamente faz é acumular os resultados de três milhões de embaralhamentos feitos pelo algoritmo ruim e inferir através dos resultados que metade é bom e metade é ruim. O ruim fica do lado desbalanceado da sequência.</p>
-
-<img src="/journal/img/poker_face_oe3heEP.jpg"/>
-
-<p>Tão óbvio, tão simples, tão elegante.</p>
 
 </section><hr/>
 
@@ -388,9 +254,9 @@ int main()
 <span id="estruturas_vs_classes_fight" title="Estruturas VS Classes: fight!"/></span>
 <section id="section_estruturas_vs_classes_fight">
 <p class="title"><a href="2014-05.html#estruturas_vs_classes_fight">#</a> Estruturas VS Classes: fight!</p>
-<span class="title-heading">Caloni, 2014-05-20 <a href="2014-05.html#poker_face">&lt;</a><a href="computer.html">computer</a><a href="2014-06.html#ss">&gt;</a><a href="2014-05.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_estruturas_vs_classes_fight')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2014-05-20 <a href="2024-08.html#poker_face">&lt;</a><a href="computer.html">computer</a><a href="2018-05.html#ss">&gt;</a> <a href="2024-08.html#poker_face">&lt;</a><a href="blog.html">blog</a><a href="2018-05.html#ss">&gt;</a><a href="2014-05.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_estruturas_vs_classes_fight')"><sup>[copy]</sup></a></span>
 
-<p>Uma dúvida besta e importante ao mesmo tempo que muitos iniciantes em C++ possuem é saber qual a diferença entre um objeto declarado como _class_ e um objeto declarado como _struct_. A causa dessa dúvida é uma linguagem que se derivou de outra (C) que não possuía classes, e portanto criou a palavra-chave _class_ para "ficar bonito", pois, na prática, não muda muita coisa. Tomemos como exemplo o código mais simples de todos:</p>
+<p>Uma dúvida besta e importante ao mesmo tempo que muitos iniciantes em C++ possuem é saber qual a diferença entre um objeto declarado como class e um objeto declarado como struct. A causa dessa dúvida é uma linguagem que se derivou de outra (C) que não possuía classes, e portanto criou a palavra-chave class para "ficar bonito", pois, na prática, não muda muita coisa. Tomemos como exemplo o código mais simples de todos:</p>
 
 <p>&lt;https://www.youtube.com/watch?v=zn7-fVtT16k&gt;</p>
 
@@ -440,9 +306,9 @@ int main()
 
 <p>Mas, então, posso criar todas minhas classes usando a palavra-chave struct?</p>
 
-<p>Isso mesmo! Nada lhe obriga tecnicamente a usar class. Porém, assim como nada lhe obriga a usar uma linha para cada comando na linguagem ¿ afinal, todos poderiam estar na mesma linha separados por ponto-e-vírgula ¿ o uso da palavra _struct_ para classes no sentido de "objetos que possuem inteligência, métodos, herança, polimorfismo e outras firulas" não se enquadra nas boas práticas dos programadores C++.</p>
+<p>Isso mesmo! Nada lhe obriga tecnicamente a usar class. Porém, assim como nada lhe obriga a usar uma linha para cada comando na linguagem -- afinal, todos poderiam estar na mesma linha separados por ponto-e-vírgula -- o uso da palavra struct para classes no sentido de "objetos que possuem inteligência, métodos, herança, polimorfismo e outras firulas" não se enquadra nas boas práticas dos programadores C++.</p>
 
-<p>Geralmente uma _struct_ é uma forma de concatenar tipos primitivos e só. Algumas liberdades além disso geralmente são permitidas, mas desencorajadas, como um construtor que inicia os membros da _struct_ com valores-default.</p>
+<p>Geralmente uma struct é uma forma de concatenar tipos primitivos e só. Algumas liberdades além disso geralmente são permitidas, mas desencorajadas, como um construtor que inicia os membros da struct com valores-default.</p>
 
 <pre>
 #include &lt;iostream&gt;

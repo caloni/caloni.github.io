@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="back_to_command_line_2" title="Voltando à linha de comando (again)"/></span>
+<section id="section_back_to_command_line_2">
+<p class="title">Voltando à linha de comando (again)</p>
+<span class="title-heading">Caloni, 2026-03-23 computer blog</span>
+
+<p>Trabalhar com Windows é um exercício de paciência constante. Junto do Visual Studio um treinamento para ser monge. Cada vez mais penso com carinho em meu aprendizado de algumas ferramentas UNIX para conseguir fazer busca e editar arquivos rapidamente. Talvez hoje com a proximidade e compatibilidade entre os dois SOs seja possível uma convivência produtiva de ferramentas feitas originalmente para terminal. O uso de IA também facilita dar alguns primeiros passos mais rápido, como por exemplo saber lidar com projetos do Visual Studio unicamente pelo terminal.</p>
+
+<p>Com base nisso comecei a migrar meu uso diário do Visual Studio para VS Code apenas com a extensão do Vim e linha de comando. A primeira barreira que encontrei foi usar o msbuild para compilar os projetos C++ e suas dependência. Acontece que aqui no trabalho os projetos possuem ponto no nome e o msbuild simplesmente não suporta-os.</p>
+
+<p>Minha primeira tentativa foi usar o arquivo vcxproj diretamente, mas ele depende de outros vcxprojs que o msbuild não encontra, provavelmente por se tratar de um projeto isolado quando executado assim.</p>
+
+<pre>
+msbuild path\My.Project.Dll.vcxproj cl : command line  error D8003: missing
+source filename [path\My.Project.Lib.vcxproj]
+</pre>
+<p>Então resolvi apelar para o nome do projeto. E qual não foi minha surpresa ao descobrir essa incompatibilidade de nomes.</p>
+
+<pre>
+grep My.Project Solution.sln
+Project(&quot;{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}&quot;) = &quot;My.Project.Dll&quot;,
+&quot;path\My.Project.Dll.vcxproj&quot;, &quot;{B0191DE5-584F-40BE-8E2B-A8EF5DB2306D}&quot;
+Project(&quot;{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}&quot;) = &quot;My.Project.Lib.Lib&quot;,
+&quot;path\My.Project.Lib.vcxproj&quot;, &quot;{3D6A78F0-57D2-4F87-8B51-7E9EBAD3872C}&quot;
+
+msbuild Solution.sln -t:&quot;My.Project.Dll&quot;
+MSBuild version 17.14.40+3e7442088 for .NET Framework
+MSBUILD : error MSB5016: The name &quot;My.Project.Dll&quot;
+contains an invalid character &quot;.&quot;.  Switch: target
+
+For switch syntax, type &quot;MSBuild -help&quot;
+</pre>
+<p>Então outra opção que tentei foi usar a GUID do projeto, o que de acordo com o Chat-GPT "sempre funciona".</p>
+
+<pre>
+msbuild Workplace.Container.sln /t:{B0191DE5-584F-40BE-8E2B-A8EF5DB2306D}
+path\AnotherProject.vcxproj : error MSB4057: The target
+&quot;{B0191DE5-584F-40BE-8E2B-A8EF5DB2306D}&quot; does not exist in the project.
+</pre>
+<p>E por fim tentei especificar no parâmetro /t, só para descobrir que nem lá é permitido usar pontos.</p>
+
+<pre>
+msbuild Solution.sln /t:&quot;path\My.Project.Dll.vcxproj&quot;
+MSBUILD : error MSB5016: The name &quot;path\My.Project.Dll.vcxproj&quot; contains an
+invalid character &quot;.&quot;.
+</pre>
+<p>Por fim, depois de muito suor e tentativas frustradas, encontro a solução: usar o arquivo vcxproj diretamente, mas com o parâmetro /p:BuildProjectReferences=true, que força compilar as dependências do projeto.</p>
+
+<pre>
+msbuild path\My.Project.Dll.vcxproj /p:BuildProjectReferences=true
+</pre>
+<p>Importante: para isso funcionar as dependências devem estar em ProjectReference e não só na ordem do .sln. Se seu projeto for antigo pode depender do .sln; aí complica, precisa atualizar as dependências também no ProjectReference.</p>
+
+<p>Este post foi inspirado em saber que (pelo menos atualmente) nem sempre a IA acerta de primeira (ou de segunda, ou de terceira... ou de quinta).</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="reversing.html">[reversing]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="estruturas_vs_classes_fight" title="Estruturas VS Classes: fight!"/></span>
+<section id="section_estruturas_vs_classes_fight">
+<p class="title">Estruturas VS Classes: fight!</p>
+<span class="title-heading">Caloni, 2014-05-20 computer blog</span>
+
+<p>Uma dúvida besta e importante ao mesmo tempo que muitos iniciantes em C++ possuem é saber qual a diferença entre um objeto declarado como class e um objeto declarado como struct. A causa dessa dúvida é uma linguagem que se derivou de outra (C) que não possuía classes, e portanto criou a palavra-chave class para "ficar bonito", pois, na prática, não muda muita coisa. Tomemos como exemplo o código mais simples de todos:</p>
+
+<p>&lt;https://www.youtube.com/watch?v=zn7-fVtT16k&gt;</p>
+
+<pre>
+struct MinhaEstrutura
+{
+};
+
+class MinhaClasse
+{
+};
+
+int main()
+{
+    MinhaEstrutura me;
+    MinhaClasse mc;
+}
+</pre>
+<p>Ele compila e roda sem problemas:</p>
+
+<img src="/blog/img/estruturas_vs_classes_fight_APlOm65.jpg"/>
+
+<p>"Estruturalmente" falando, MinhaEstrutura e MinhaClasse são idênticas, pois são os detalhes de sintaxe que diferem, e diferem pouco. Abrindo o jogo, a única diferença que poderá ser sentida em usar um ou outro é que structs possuem seus membros públicos por padrão e classes possuem seus membros privados por padrão. Apenas isso. O resto, nada muda.</p>
+
+<p>Isso pode ser visto quando adicionamos um construtor para nossos tipos de teste:</p>
+
+<pre>
+struct MinhaEstrutura
+{
+    MinhaEstrutura() {}
+};
+
+class MinhaClasse
+{
+    MinhaClasse() {}
+};
+
+int main()
+{
+    MinhaEstrutura me;
+    MinhaClasse mc;
+}
+</pre>
+<img src="/blog/img/estruturas_vs_classes_fight_vwpucpm.jpg"/>
+
+<p>Antes não havia problemas para MinhaClasse porque o construtor padrão criado para ela é público por default. Porém, explicitando no código um construtor e deixando sua privacidade ligada por padrão temos esse erro que NÃO ocorre em MinhaEstrutura.</p>
+
+<p>Mas, então, posso criar todas minhas classes usando a palavra-chave struct?</p>
+
+<p>Isso mesmo! Nada lhe obriga tecnicamente a usar class. Porém, assim como nada lhe obriga a usar uma linha para cada comando na linguagem -- afinal, todos poderiam estar na mesma linha separados por ponto-e-vírgula -- o uso da palavra struct para classes no sentido de "objetos que possuem inteligência, métodos, herança, polimorfismo e outras firulas" não se enquadra nas boas práticas dos programadores C++.</p>
+
+<p>Geralmente uma struct é uma forma de concatenar tipos primitivos e só. Algumas liberdades além disso geralmente são permitidas, mas desencorajadas, como um construtor que inicia os membros da struct com valores-default.</p>
+
+<pre>
+#include &lt;iostream&gt;
+
+struct MinhaEstrutura
+{
+    MinhaEstrutura()
+    {
+        x = 0;
+        y = 2;
+        c = 'C';
+    }
+
+    int x;
+    int y;
+    char c;
+};
+
+int main()
+{
+    MinhaEstrutura me;
+    std::cout &lt;&lt; &quot;x: &quot; &lt;&lt; me.x &lt;&lt; &quot;, y: &quot; &lt;&lt; me.y &lt;&lt; &quot;, c: &quot; &lt;&lt; me.c &lt;&lt; std::endl;
+}
+</pre>
+<img src="/blog/img/estruturas_vs_classes_fight_rdpllNf.jpg"/>
+
+<p>E, por que não, uma sobrecarga do operador de stream para imprimirmos diretamente os valores de MinhaEstrutura para a saída com apenas um comando?</p>
+
+<pre>
+#include &lt;iostream&gt;
+
+struct MinhaEstrutura
+{
+    MinhaEstrutura() { x = 0; y = 2; c = 'C'; }
+    int x; int y; char c;
+};
+
+std::ostream&amp; operator &lt;&lt; (std::ostream&amp; os, const MinhaEstrutura&amp; me)
+{
+    std::cout &lt;&lt; &quot;x: &quot; &lt;&lt; me.x &lt;&lt; &quot;, y: &quot; &lt;&lt; me.y &lt;&lt; &quot;, c: &quot; &lt;&lt; me.c;
+    return os;
+}
+
+int main()
+{
+    MinhaEstrutura me;
+    std::cout &lt;&lt; me &lt;&lt; std::endl;
+}
+</pre>
+<img src="/blog/img/estruturas_vs_classes_fight_np4trf9.jpg"/>
+
+<p>Enfim, não há nenhum limite que se aplica a uma struct além do bom senso. A criação da palavra class não foi por falta do que fazer. Ela diz claramente que estamos definindo um objeto que contém usos mais adequados à orientação a objetos de C++ do que a programação estruturada de C, e vice-versa. É uma forma de tornar o código mais legível, mas nada do outro mundo. Sabemos, no final das contas, que o compilador trata as duas (quase) da mesma maneira.</p>
+
+<p>Qual será a próxima batalha épica? Você escolhe!</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="gina.html">[gina]</a>
+ <a href="code_jam_geleia_de_mocoto.html">[code_jam_geleia_de_mocoto]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

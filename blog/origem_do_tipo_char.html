@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="origem_do_tipo_char" title="Origem do Tipo char"/></span>
+<section id="section_origem_do_tipo_char">
+<p class="title">Origem do Tipo char</p>
+<span class="title-heading">Caloni, 2015-01-26 computer ccpp blog</span>
+
+<p>Programadores C e C++, preparem-se para explodir as cabeças! No princípio... não, não. Antes do princípio, quando C era considerada a terceira letra do alfabeto e o que tínhamos eram linguagens experimentais para todos os lados, dois famigerados srs. dos Laboratórios Bell, K. Thompson e <a href="https://www.bell-labs.com/usr/dmr/www/">D. Ritchie</a>, criaram uma linguagem chamada B. E B era bom.</p>
+
+<p>O bom de B estava em sua rica expressividade. Sua gramática extremamente simples. Teoricamente a evolução da linguagem BCPL criada por Martin Richards, ela era tão simples que o manual da linguagem B consistia de apenas 30 páginas. Isso é menos do que as 32 palavras reservadas de C. As instruções eram definidas em termos de if's e goto's e as variáveis eram definidas em termos de um padrão de bits de tamanho fixo, geralmente a palavra da plataforma, que utilizada em expressões definiam seu tipo; esse padrão de bits era chamado rvalue.</p>
+
+<p>Como esse padrão de bits nunca muda de tamanho, todas as rotinas da biblioteca recebiam e retornavam sempre valores do mesmo tamanho na memória. Isso na linguagem C quer dizer que o char da época ocupava o mesmo tamanho que um int. Existia inclusive uma função que retornava o caractere de uma string na posição especificada:</p>
+
+<pre>
+// the i-th character
+// of the string is returned
+c = char( string, i );
+</pre>
+<p>Sim! Char era uma função, um conversor de "tipos". No entanto a própria variável que armazenava um char tinha o tamanho de qualquer objeto da linguagem. Esse é o motivo pelo qual, tradicionalmente, as seguintes funções recebem e retornam ints em C:</p>
+
+<pre>
+// read a character
+// from stdin
+int getchar( void );
+// writes a character
+// to stdout
+int putchar( int c );
+// sets buffers to a
+// specified character
+void *memset( void *dest,
+  int c,
+  size_t count );
+</pre>
+</section>
+
+<span style="float: left;">
+ <a href="reversing_no_telegram.html">[reversing_no_telegram]</a>
+ <a href="visual_studio_mutante.html">[visual_studio_mutante]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

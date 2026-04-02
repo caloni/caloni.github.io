@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="visual_studio_2005" title="O que muda em C++ no Visual Studio 2005"/></span>
+<section id="section_visual_studio_2005">
+<p class="title">O que muda em C++ no Visual Studio 2005</p>
+<span class="title-heading">Caloni, 2006-05-22 computer ccpp blog</span>
+
+<p>Confesso que não estava confiante, nem animado, em usar essa nova versão. Mas, enfim, o dia chegou. Essa semana instalei na minha máquina do serviço para o início da migração de nossos projetos. O processo de conversão ficou por conta de um outro colega, porém todos os problemas eram imediatamente reportados a mim (como se eu fosse o culpado ou algo do tipo pelos caprichos da equipe do VC8). Pra resumir desde o início, a visão geral que tive foi que a nova versão aumenta a compatibilidade com o C++ ISO, porém fornece novas extensões e erra em algumas mudanças que, como explico mais adiante, comprometem o aprendizado do estudante e um dos objetivos do C++.</p>
+
+<p>Observação introdutória: note que todas as minhas observações sobre as mudanças na linguagem dizem respeito ao comportamento padrão do ambiente, do jeito que está quando você instala. Mesmo que haja opções de compilação para alterar a interpretação de alguma construção da linguagem, elas não foram levadas em consideração nem foram pesquisadas a fundo. Tenho dito.</p>
+
+<h2>Fechamento duplo de templates</h2>
+
+<p>Primeiro, as boas (!?) novas. Lembram daquele conhecido problema que temos ao usar um template como parâmetro de outro? Refrescando a memória:</p>
+
+<pre>
+#include &lt;vector&gt;
+
+template&lt;typename T&gt;
+class MyTempl
+{
+   T m_x;
+};
+
+int main()
+{
+
+   std::vector&lt; MyTempl&lt; int &gt;&gt;  x; // ops, shift ou dois fecha-template?
+   std::vector &lt;MyTempl&lt; int &gt; &gt; y; // assim, sim
+}
+</pre>
+<p>Esse problema ocorre na linguagem porque um template pode receber além de um tipo uma expressão inteira constante, inclusive com operadores aritméticos, tais como mais, menos, dividir, multiplicar, e o shift:</p>
+
+<pre>
+#include &lt;vector&gt;
+
+template&lt;int T&gt;
+class MyTempl
+{
+   enum { T };
+};
+
+int main()
+{
+   // válido na linguagem. não no 2005
+   std::vector&lt;MyTempl&lt;   2 &gt;&gt; 4   &gt; &gt; x;
+   std::vector&lt;MyTempl&lt; ( 2 &gt;&gt; 4 ) &gt;&gt;  x; // válido no 2005, não na linguagem
+}
+</pre>
+<p>Erros da primeira linha:</p>
+
+<pre>
+error C2143: syntax error : missing ';' before 'constant'
+error C2059: syntax error : '&gt;'
+</pre>
+<p>Muito razoável e prática a "correção" que o pessoal faz na linguagem (tomara que seja feita no C++0x), pois é evento raro usarmos shift dentro de um parâmetro de template, e, se necessário, temos como corrigir usando parênteses (o mesmo vale para o operador de comparação menor que). Só que o código que não usa espaço no fechamento de dois templates consecutivos não é C++ padrão. Eu pessoalmente prefiro as coisas como elas são, pois já fiquei ligeiramente irritado por conta de uma outra facilidade do ambiente. O pior é que nada disso está especificado no help (procurei na lista de novidades da linguagem).</p>
+
+<h2>For Each válido para STL</h2>
+
+<p>Essa é pra dar dó de não usar. Vejam o exemplo da própria Microsoft:</p>
+
+<pre>
+// for_each_stl.cpp
+// compile with: /EHsc
+#include &lt;map&gt;
+
+#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+   int retval  = 0;
+   map&lt;const char*, int&gt; months;
+
+
+   months[&quot;january&quot;] = 31;
+   months[&quot;february&quot;] = 28;
+   months[&quot;march&quot;] = 31;
+   months[&quot;april&quot;] = 30;
+   months[&quot;may&quot;] = 31;
+   months[&quot;june&quot;] = 30;
+
+   months[&quot;july&quot;] = 31;
+   months[&quot;august&quot;] = 31;
+   months[&quot;september&quot;] = 30;
+   months[&quot;october&quot;] = 31;
+   months[&quot;november&quot;] = 30;
+   months[&quot;december&quot;] = 31;
+
+   map&lt;const char*, int&gt; months_30;
+
+   for each( pair&lt;const char*, int&gt; c in months )
+      if ( c.second == 30 )
+         months_30[c.first] = c.second;
+
+   for each( pair&lt;const char*, int&gt; c in months_30 )
+      retval++;
+
+   cout &lt;&lt; &quot;Months with 30 days = &quot; &lt;&lt; retval &lt;&lt; endl;
+}
+</pre>
+<p>Não posso negar que eu adoro o conceito do for each. A STL já implementa um no header algorithm que se utiliza de objetos-funções. Mas, cá entre nós, o uso do código dentro da própria função é show de bola. Essa é mais uma feature não-ISO para seduzir o povo. Espero não cair na tentação.</p>
+
+<h2>Macros com número de parâmetros variáveis</h2>
+
+<p>Ah, sim! Finalmente temos a muito da útil implementação de uma das inovações do padrão da linguagem C em 99. Esperava isso só pra trocar minha implementação desajeitada de chamada de trace:</p>
+
+<pre>
+#include &lt;stdio.h&gt;
+
+#ifdef _DEBUG
+#define LOG(args) log args
+#else
+#define LOG(args)
+#endif
+
+void log(const char* fmt, ...)
+{
+   va_list vList;
+   // bla bla bla
+   vprintf(fmt, vList);
+   // bla bla bla
+}
+
+int main(int argc, char* argv[])
+{
+
+   LOG((&quot;main: argc = %d.\n&quot;, argc)); // tenho que usar duplo parênteses
+}
+</pre>
+<p>Pela muy graciosa forma inventada/aceita pelo pessoal do C ISO:</p>
+
+<pre>
+#include &lt;stdio.h&gt;
+
+#ifdef _DEBUG
+#define LOG(fmt, ...) printf(fmt, __VA_ARGS__)
+#else
+#define LOG(fmt, ...)
+#endif
+
+int main(int argc, char* argv[])
+{
+   LOG(&quot;main: argc = %d.\n&quot;, argc); // agora um par de parênteses só
+}
+</pre>
+<p>Bom, talvez eu espere isso fazer parte do C++ também. Por enquanto, só seria válido em programas puramente feitos em C.</p>
+
+<p>Fora isso, pequenos detalhes em código específico foram modificados nessa versão para que o compilador estivesse em maior conformidade com as firulas do padrão. Se trata de código tão específico que me abstenho de falar sobre isso em um artigo que já vai ficar grande. Mas aos fanáticos interessados recomendo a leitura. Existe uma lista particularmente boa em "Breaking Changes in the Visual C++ 2005 Compiler".</p>
+
+<h2>O CRT da Microsoft</h2>
+
+<p>Bom, depois dessa lista imensa de mudanças não-portáveis e excitantes que o pessoal do Visual C++ fez com o compilador, nada como criticar duas mudanças que considero uma atitude prepotente e desavisada. A primeira delas diz respeito à famigerada sinalização de deprecated em todas as funções da bibioteca C que utilizam strings.</p>
+
+<p>É ruim pra mim? Claro que não. Já apanhei o que devia para aceitar com naturalidade os erros e warnings que ocorrem durante uma compilação em C. Mas é uma falta de consideração para aquela galera que está começando a fazer seus primeiros int mains e se apavora se esqueceu um ponto e vírgula. Sem contar que as clássicas funções da linguagem C receberam a inglória denominação de funções deprecated, junto com aquelas funções que não serão suportadas nas futuras versões do compilador. Isso tem uma força pejorativa ainda maior que aquela história do unmanaged code. Se você aperta F1 sobre o warning recebe, entre outras coisas, a seguinte informação:</p>
+
+<blockquote>"The compiler encountered a function that was marked with deprecated. The function may no longer be supported in a future release. You can turn this warning off with the warning pragma (example below)."</blockquote>
+<p>Só na eventualidade de clicarmos no link Security Enhancements (?) in the CRT é que passamos a entender o que está acontecendo:</p>
+
+<blockquote>"It should be noted that in this context, "deprecated" just means that a function's use is not recommended; it does not indicate that the function is scheduled to be removed from the CRT."</blockquote>
+<p>Ah, tá! Deprecated quer dizer uma coisa, mas no caso específico da CRT quer dizer outra. Agora, sim.</p>
+
+<h2>O que você não conhece não pode feri-lo</h2>
+
+<p>Pra finalizar, a máxima de C++. A turma do padrão fez de tudo para fazer essa regra valer por toda a implementação da linguagem. Se seu código não lança ou trata exceções, não existirá sobrecarga para suportar isso. Se sua classe não tem métodos virtuais, não existirá uma vtable para ela. Se não usa RTTI (com o uso de typeid ou dynamic_cast), o suporte a ela não será incluído. Nada que você não queira explicitamente que cause sobrecarga em tempo de execução será incluído "por baixo dos panos" no binário final.</p>
+
+<p>Agora, olhe o seguinte código:</p>
+
+<pre>
+#include &lt;windows.h&gt;
+
+/** Vamos fazer um exemplo convincente de uso da linguagem e não-uso da
+biblioteca C++.
+*/
+int main(int argc, char* argv[])
+{
+
+   if( argc == 2 )
+   {
+      STARTUPINFOA si = { sizeof(si) }; // inicia primeiro membro e zera resto
+      PROCESS_INFORMATION pi;
+
+      CreateProcessA(NULL, argv[1], NULL, NULL, TRUE, 0,
+         NULL, NULL, &amp;si, &amp;pi);
+   }
+}
+</pre>
+<p>Uso esse exemplo porque foi em um código parecido com esse que encontrei "a arte" que fizeram com a inicialização de structs. Se tratava de um projeto onde, por questões de espaço, evitamos usar a biblioteca C++ e qualquer feature que dela precisasse. Isso compilava e linkava perfeitamente no VC 2003. Qual não foi nossa surpresa ao descobrir que, debaixo dos panos, alguma coisa estava sendo chamada:</p>
+
+<pre>
+; 11   :   STARTUPINFOA si = { sizeof(si) }; // inicia primeiro membro e zera resto
+
+  0000a 6a 40   push  64   ; 00000040H
+  0000c 8d 44 24 18  lea  eax, DWORD PTR _si$58933[esp+92]
+  00010 6a 00   push  0
+  00012 50   push  eax
+  00013 c7 44 24 1c 44
+ 00 00 00  mov  DWORD PTR _si$58933[esp+96], 68 ; 00000044H
+  0001b e8 00 00 00 00  call  _memset ; obs: fala sério!
+</pre>
+<p>Uma chamada ao memset. Em Debug e em Release. Precisa dizer mais? Simplesmente tivemos que voltar a linkar com a LIBC porque alguém decidiu que a chamada inline ao memset ou de um simples opcode em assembly por algum motivo seria pior do que depender da LIBC. Gostaria de saber o que pensa o Matt Pietrek sobre isso, ele que desenvolveu uma LIBC mais enxuta só pra não ter que linkar com código que ele simplesmente não utiliza. Uma visão pessimista diria que a Microsoft já não está muito aí pro bom e velho C++ que prima pela economia porque agora, afinal de contas, eles têm o C++ deles. Uma visão otimista diria que esse é apenas um dos novos bugs que toda versão nova de software costuma ter, e que futuramente será corrigido. Espero que dessa vez os otimistas estejam certos.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="++blog_um_ano_de_calonicombr.html">[++blog_um_ano_de_calonicombr]</a>
+ <a href="diferencas_entre_c_e_c++_precedencia.html">[diferencas_entre_c_e_c++_precedencia]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>
