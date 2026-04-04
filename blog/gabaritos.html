@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="gabaritos" title="Gabaritos"/></span>
+<section id="section_gabaritos">
+<p class="title">Gabaritos</p>
+<span class="title-heading">Caloni, 2016-01-13 computer ccpp blog</span>
+
+<p>Um template -- ou, como é na tradução da primeira edição de The C++ Programming Language, de Bjarne Stroustrup, aqui no Brasil: gabarito -- é um molde que pode ser usado por diferentes tipos para traduzir o mesmo algoritmo, ou pelo menos a mesma intenção de algoritmo (por pela sobrecarga de operadores é possível que o comportamento de tipos diferentes pode ser diferente).</p>
+
+<p>Em C++, fazer uma função template é muito simples:</p>
+
+<pre>
+#include &lt;iostream&gt;
+
+using namespace std;
+
+template&lt;typename T&gt;
+bool Compare(T&amp; var1, T&amp; var2)
+{
+    return var1 &lt; var2;
+}
+
+int main()
+{
+    int x = 24, y = 42;
+    double dx = 100.0, dy = 10.0;
+
+    cout &lt;&lt; &quot;x is &quot; &lt;&lt; ( Compare(x, y) ? &quot;lesser&quot; : &quot;bigger&quot; ) &lt;&lt; &quot; than y\n&quot;;
+    cout &lt;&lt; &quot;dx is &quot; &lt;&lt; ( Compare(dx, dy) ? &quot;lesser&quot; : &quot;bigger&quot; ) &lt;&lt; &quot; than dy\n&quot;;
+}
+</pre>
+<img src="/blog/img/gabaritos_84Ptrvk.png"/>
+
+<p>Continuando nosso tema de fazer as mesmas coisas em C, templates não é tão simples, pois não existe de fato na linguagem. Templates são interpretados pelo compilador, que gera um esqueleto de algoritmo que é usado para preencher código de todos os tipos utilizados. Em C isso era feito usando macros. Porém, macros não fazem parte da linguagem C. É apenas uma ferramenta chamada pré-processador que substitui texto antes do programa ser compilado. É através do pré-processador que, por exemplo, os headers são incluídos em um código-fonte. Isso já foi explicado em um <a href="os_diferentes_erros_na_linguagem_c.html">artigo</a> bem velhinho, e mais recentemente em uma <a href="entendendo_a_compilacao.html">palestra</a>.</p>
+
+<pre>
+// qual o tipo de x e y? qualquer um que faça comparação
+#define MACRO(x, y) x &lt; y
+</pre>
+<p>Eu não recomendaria usar macros em C++, assim como não recomendo em C. Porém, em C é a única opção para reciclar algoritmos de maneira estática. Exceto se você usar ponteiros de função, o que adiciona pouco overhead, mas se perde, assim como a técnica de macro, a informação dos tipos. A própria libc contém uma função, <a href="http://www.cplusplus.com/reference/cstdlib/qsort/">qsort</a>, que é "genérica" através do uso de ponteiros sem tipo (void*) e ponteiro de função. A função ordena elementos de uma lista, mas para isso depende da função de comparação que é passada por parâmetro. Essa função recebe dois void* que deve comparar. Além disso, o leiaute na memória tem que ser fixo, contínuo, pois é assim que a função consegue mover os elementos. Ou seja, bem limitado.</p>
+
+<img src="/blog/img/gabaritos_3TkGFkN.png"/>
+
+<p>Dessa forma, não pretendo ensinar a usar "templates" em C, mas a usá-los em C++ com foco em C. Um amigo conhecido de vocês, o <a href="http://driverentry.com.br/">Fernando/DriverEntry</a>, utilizou essa técnica com maestria em alguns códigos kernel-mode que ele desenvolveu, e é uma maneira válida de se aproveitar de uma linguagem mais "alto nível" como C++ em ambientes limitados como o código que trabalha com o S.O.. Como a API do kernel lida com abstrações em C, seus objetos necessariamente não são objetos no sentido C++, mas os famigerados "ponteiros opacos".</p>
+
+<p>Mais sobre isso em <a href="templates_em_c.html">um próximo post</a>.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="templates_em_c.html">[templates_em_c]</a>
+ <a href="classe_objeto_contexto_metodo_polimorfismo.html">[classe_objeto_contexto_metodo_polimorfismo]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

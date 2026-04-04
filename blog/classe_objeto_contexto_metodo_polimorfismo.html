@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="classe_objeto_contexto_metodo_polimorfismo" title="Classe, objeto, contexto, método, polimorfismo"/></span>
+<section id="section_classe_objeto_contexto_metodo_polimorfismo">
+<p class="title">Classe, objeto, contexto, método, polimorfismo</p>
+<span class="title-heading">Caloni, 2016-01-12 computer ccpp blog</span>
+
+<p>No <a href="classe_objeto_contexto_metodo.html">post anterior</a> implementamos "métodos" em C usando ponteiros de função dentro de structs que eram passadas como parâmetro. Tudo isso embutido por um compilador que gera o que chamamos de instância de uma classe, ou objeto, em C++. Isso é possível graças ao contexto que é passado para uma função (que no caso de C++ é o operador implícito this, que sempre existe dentro de um método não-estático).</p>
+
+<pre>
+ClasseCpp obj;
+obj.Metodo(); // passando this implicitamente
+
+ClasseC obj;
+obj.Metodo = ClasseC_Metodo;
+obj.Metodo(&amp;obj); // passando this explicitamente
+</pre>
+<p>Para objetos não-polimórficos, o C++ não precisa mudar essa tabela de funções que os objetos de uma classe contém. No entanto, quando há pelo menos um método virtual, surge a necessidade de se criar a famigerada vtable, ou seja, justamente uma tabela de ponteiros de função, que dependem da classe instanciada (base ou algumas das derivadas). Se uma classe derivada sobrescreve um método de alguma classe base, é o endereço desse método que irá existir na vtable. Já vimos isso <a href="vtable.html">há muito tempo atrás</a> escovando os bits da vtable direto no assembly e na pilha.</p>
+
+<pre>
+#include &lt;iostream&gt;
+
+class MinhaClasse
+{
+    public:
+        void MeuMetodo()
+        {
+            MeuOutroMetodo();
+        }
+        virtual void MeuOutroMetodo()
+        {
+            MinhaPropriedade = 42;
+        }
+        int MinhaPropriedade;
+};
+
+class MinhaClasseVersao75 : public MinhaClasse
+{
+    public:
+        virtual void MeuOutroMetodo()
+        {
+            MinhaPropriedade = 75;
+        }
+};
+
+int main()
+{
+    MinhaClasse obj;
+    MinhaClasseVersao75 obj2;
+
+    obj.MeuMetodo();
+    obj2.MeuMetodo();
+
+    std::cout &lt;&lt; &quot;MinhaPropriedade (obj) = &quot; &lt;&lt; obj.MinhaPropriedade &lt;&lt; std::endl;
+    std::cout &lt;&lt; &quot;MinhaPropriedade (obj2) = &quot; &lt;&lt; obj2.MinhaPropriedade &lt;&lt; std::endl;
+}
+</pre>
+<img src="/blog/img/classe_objeto_contexto_metodo_polimorfismo_Ye5mA8L.png"/>
+
+<p>Como você deve imaginar, é possível também fazer isso em C. Basta mudar os endereços das variáveis do tipo ponteiro de função que estão na struct usada como contexto. Para ficar o mais próximo possível do "modo C++" de fazer polimorfirmo, podemos escrever hardcoded a tal vtable para os diferentes tipos de "classe":</p>
+
+<pre>
+#include &lt;stdio.h&gt;
+
+struct MinhaVTable;
+
+struct MinhaClasse
+{
+    const MinhaVTable* VTable;
+    int MinhaPropriedade;
+};
+
+struct MinhaVTable
+{
+    void (*MeuMetodo)(MinhaClasse*);
+    void (*MeuOutroMetodo)(MinhaClasse*);
+};
+
+void MinhaClasse_MeuMetodo(MinhaClasse* pThis)
+{
+    pThis-&gt;VTable-&gt;MeuOutroMetodo(pThis);
+}
+
+void MinhaClasse_MeuOutroMetodo(MinhaClasse* pThis)
+{
+    pThis-&gt;MinhaPropriedade = 42;
+}
+
+void MinhaClasse_MeuOutroMetodoVersao75(MinhaClasse* pThis)
+{
+    pThis-&gt;MinhaPropriedade = 75;
+}
+
+static const MinhaVTable g_minhaVTableOriginal = {
+  MinhaClasse_MeuMetodo, MinhaClasse_MeuOutroMetodo
+};
+
+static const MinhaVTable g_minhaVTableVersao75 = {
+  MinhaClasse_MeuMetodo, MinhaClasse_MeuOutroMetodoVersao75
+};
+
+int main()
+{
+    MinhaClasse obj = { &amp;g_minhaVTableOriginal };
+    MinhaClasse obj2 = { &amp;g_minhaVTableVersao75 };
+
+    obj.VTable-&gt;MeuMetodo(&amp;obj);
+    obj2.VTable-&gt;MeuMetodo(&amp;obj2);
+
+    printf(&quot;MinhaPropriedade (obj) = %d\n&quot;, obj.MinhaPropriedade);
+    printf(&quot;MinhaPropriedade (obj2) = %d\n&quot;, obj2.MinhaPropriedade);
+}
+</pre>
+<img src="/blog/img/classe_objeto_contexto_metodo_polimorfismo_tRAtU9d.png"/>
+
+<p>A versão C ainda tem a vantagem de não precisar de uma vtable const (embora seja adequado em situações normais de temperatura e pressão). Os "métodos" poderiam mudar caso algum estado mudasse, alguma exceção fosse disparada, mantendo o mesmo contexto, mas um comportamento (vtable) diferente. Quem utiliza muito essa estratégia é o kernel do Windows, que mexe com estruturas que contém não apenas listas ligadas genéricas, mas funções de callback que não apenas o código da Microsoft precisa chamar, mas os próprios drivers de terceiros que se preocupam com bom comportamento e guidelines que tornam o SO rodando perfeitamente.</p>
+
+<img src="/blog/img/classe_objeto_contexto_metodo_polimorfismo_k20fqVJ.gif"/>
+
+<p>O importante deste artigo é demonstrar como conceitos aparentemente complicados ou escondidos de uma linguagem como C++ podem ser compreendidos completamente utilizando apenas linguagem de alto nível no bom e velho C. Essa estratégia de descer camadas de abstração, como verá, funciona para linguagens de mais alto nível, como C# ou Java, pois ambas são implementadas em linguagens como C++. No fundo, engenharia de software é um universo multi-camadas transitando pela última camada que conhecemos -- a física. Pelo menos a última camada que ainda conhecemos.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="gabaritos.html">[gabaritos]</a>
+ <a href="classe_objeto_contexto_metodo.html">[classe_objeto_contexto_metodo]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>
