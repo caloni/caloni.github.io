@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="o_estranho_caso_do_pdb_malaformado" title="O Estranho Caso do PDB Mal-Aformado"/></span>
+<section id="section_o_estranho_caso_do_pdb_malaformado">
+<p class="title">O Estranho Caso do PDB Mal-Aformado</p>
+<span class="title-heading">Caloni, 2015-08-19 computer blog</span>
+
+<p>Era uma vez, há 13 anos atrás, um tal de Visual Studio .NET, que iria trazer a felicidade para nós, meros mortais usuários de programinhas em C com ponteiro pra lá e ponteiro pra cá. Agora a Microsoft traria para o pessoal do "baixo nível" a mais nova novidade do verão: uma IDE lenta, bugada e... bonita?</p>
+
+<p>Bem, para os que estavam acostumados com o Visual C++ 6.0, nada foi mais incômodo do que esperar carregar o programa de manhã para conseguir finalmente compilar. Ajustadas as expectativas, os projetos foram aos poucos migrados para aquela nova forma de configurar EXEs, DLLs, LIBs e OCXs.</p>
+
+<p>E eis que alguém, muito provavelmente eu mesmo, naquele momento de inspiração, criei a seguinte configuração para a geração dos PDBs, os símbolos para depurar programas no Windows:</p>
+
+<img src="/blog/img/o_estranho_caso_do_pdb_mal_formado_AmoYVLS.png"/>
+
+<p>Faz sentido, não? Afinal de contas, o PDB costuma ter o nome do projeto, e ele já está setado até em outro lugar para gerar com o mesmo nome. Nada de novo no front.</p>
+
+<img src="/blog/img/o_estranho_caso_do_pdb_mal_formado_SYoMbtq.png"/>
+
+<p>Até aí tudo bem. Aliás, tudo ficou muito bem por estranhos 13 anos.</p>
+
+<p>Até que alguém decidiu migrar para o já não tão novo Visual Studio 2013!</p>
+
+<img src="/blog/img/o_estranho_caso_do_pdb_mal_formado_YZ6v5eP.png"/>
+
+<p>E tudo correu muito bem por algumas horas... talvez 13.</p>
+
+<p>Até que a depuração de repente parou de funcionar.</p>
+
+<img src="/blog/img/o_estranho_caso_do_pdb_mal_formado_xbk6WsP.png"/>
+
+<p>Será o benedito? Ou o co-piloto?</p>
+
+<img src="/blog/img/o_estranho_caso_do_pdb_mal_formado_5ZSZu4g.png"/>
+
+<p>Pesquisando nos fóruns da vida, antro dos desesperados, achei/lembrei de um comando muito útil no WinDbg que não apenas diz se os símbolos estão "mismatch", ou seja, os símbolos ou o PDB não está combinando com o EXE, mas também por quê.</p>
+
+<p>Bom, para saber se está mismatch é aquela fórmula de bolo:</p>
+
+<pre>
+ntdll!LdrpDoDebuggerBreak+0x2b:
+77e13bad cc              int     3
+0:000&gt; .symfix
+No downstream store given, using C:\Tools\DbgTools(x86)\sym
+0:000&gt; !sym noisy
+noisy mode - symbol prompts on
+0:000&gt; .reload /f Module.exe
+SYMSRV:
+  C:\Tools\DbgTools(x86)\sym\Module.pdb\hash\Module.pdb
+  not found
+SYMSRV:
+  http://msdl.microsoft.com/download/symbols/Module.pdb/hash/Module.pdb
+  not found
+DBGHELP:
+  C:\Users\Caloni\Projects\Project\Source\_Output\bin\Debug\Module.pdb
+  - mismatched pdb
+DBGHELP: Couldn't load mismatched pdb for
+  C:\Users\Caloni\Projects\Project\Source\_Output\bin\Debug\Module.exe
+DBGHELP: Module - no symbols loaded
+</pre>
+<p>Para saber o que está errado, o famigerado !IToldYouSo</p>
+
+<img src="/blog/img/o_estranho_caso_do_pdb_mal_formado_AxapyHQ.jpg"/>
+
+<img src="/blog/img/o_estranho_caso_do_pdb_mal_formado_di9JV7u.png"/>
+
+<p>Mano, como assim?!?!? Eu acabei de compilar esse binário, eu já apaguei 15 vezes as pastas de Debug e Release, eu já rebootei mais do que o Windows me obriga a rebootar por causa das falhas de segurança.</p>
+
+<p>Pois, então, desesperançado, crio um projeto novo para comparar as configurações, e voltamos 13 anos atrás, naquele fatídico dia, e entendo por que o nome do PDB temporário não é igual. Bom, na verdade não entendo, mas intuo que tenha alguma relação:</p>
+
+<img src="/blog/img/o_estranho_caso_do_pdb_mal_formado_x19BKm4.png"/>
+
+<img src="/blog/img/o_estranho_caso_do_pdb_mal_formado_P23UaPY.png"/>
+
+<p>E, de fato. Solução? Copie as configurações usuais do "novo" Visual Studio comparando com o velho.</p>
+
+<p>Abaixo a chamada do suporte em inglês, se alguém achar o mesmo problema em algum fórum e quiser "espalhar a palavra".</p>
+
+<blockquote>Just got stuck in the same problem, but in a C++ source that has 13 years, where its first solution was in VS 2003. Comparing the Project Properties in C/C++, Output Files, Program Database File Name, I found out that the project was pointing to the same file path that Linker, Debugging, Generate Program Database File, when the normal situation is to generate a vc120.pdb. Comparing with a new project, the "right" value can't be $(OutDir)$(TargetName).pdb (ou ProjectName), but $(IntDir)vc$(PlatformToolsetVersion).pdb. That solved the problem. I hope solve another one's problem as well =)</blockquote>
+<blockquote>[]s</blockquote>
+<img src="/blog/img/o_estranho_caso_do_pdb_mal_formado_uDmJxtB.png"/>
+
+<p>Minha próxima tarefa, aparentemente, é ver como sendo sócio da <a href="https://www.linkedin.com/company/bit-forge">BitForge</a> e da <a href="http://www.intelitrader.com.br">Intelitrader</a>, e mesmo tendo já atualizado meu perfil MVP há anos, continuo sendo funcionário da UOL Diveo/Broker =/</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="indexando_simbolos_com_rapidez.html">[indexando_simbolos_com_rapidez]</a>
+ <a href="voce_sabe_o_que_esta_usando_no_seu_codigo.html">[voce_sabe_o_que_esta_usando_no_seu_codigo]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

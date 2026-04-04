@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="logs_em_servicos_e_outras_coisas" title="Logs em serviços (e outras coisas)"/></span>
+<section id="section_logs_em_servicos_e_outras_coisas">
+<p class="title">Logs em serviços (e outras coisas)</p>
+<span class="title-heading">Caloni, 2015-06-05 computer blog</span>
+
+<p>Já uso logs há muito tempo. Me lembro muito bem que quando programava em BASIC o "passou por aqui" já era útil. Depois de fazer muitas bibliotecas super-flexíveis de escrita em saídas diferentes, níveis configuráveis e uso do mais complexo ao mais banal, cheguei à seguinte conclusão:</p>
+
+<img src="/blog/img/logs_em_servicos_e_outras_coisas_p9kH1LW.jpg"/>
+
+<h3>Log("Quero um log mais simples possível (de preferência ", 15, " vezes mais simples)");</h3>
+
+<p>Vou tentar defender meu ponto de vista.</p>
+
+<p>Esse artigo do Dr. Dobbs (2026-04-03 cujo link está quebrado) explica de uma maneira bem completa como fazer uma lib de log leve e configurável. O que eu peguei desse exemplo foi a forma mais C++ de formatar as linhas, deixando para trás o estilão printf que depois de variadic templates já está datado.</p>
+
+<pre>
+#include &lt;iostream&gt;
+#include &lt;sstream&gt;
+
+inline void Log(std::ostringstream&amp; os)
+{
+    std::cout &lt;&lt; os.str() &lt;&lt; std::endl;
+}
+
+template&lt;typename First, typename...Rest &gt;
+void Log(std::ostringstream&amp; os, First parm1, Rest...parm)
+{
+    os &lt;&lt; parm1;
+    Log(os, parm...);
+}
+
+template&lt;typename...Rest &gt;
+void Log(Rest...parm)
+{
+    std::ostringstream os;
+    LogHeader(os);
+    Log(os, parm...);
+}
+</pre>
+<p>Por que eu acho a minha versão mais legal (não valendo falar que foi porque eu fiz):</p>
+
+<p>É mais simples ainda, tem poucas linhas e pode ser copiada sem peso na consciência. Pode até estar em um header que o overhead é mínimo.</p>
+
+<p>Não requer configuração de arquivo, debug output, named pipe, etc. Isso tem a ver com o uso de cada um. O próximo motivo explica melhor isso.</p>
+
+<p>Se for executado em um prompt já exibe as informações para serem filtradas; se for executado como um serviço encapsulo a saída.</p>
+
+<p>Encapsular a saída e o comportamento de um serviço hoje em dia é algo banal. Há diversos programas que fazem isso para você, sendo desnecessário programar toda aquela parte de comunicação com o Windows. O cara do DriverEntry  fez um aplicativo que faz isso (2026-04-03 ops, link quebrado), que é simples de usar e continua funcionando no Windows 8.1. Atualmente uso um outro encontrado pelo igualmente fodástico <a href="https://www.1bit.com.br">Rodrigo Strauss</a>: o Non Sucking Service Manager (seu nome já explica por que defendo utilizar o mínimo possível das firulas da Microsoft).</p>
+
+<p>Além de ser extremamente flexível e não ter falhado nas vezes que o utilizei, o NSSM consegue redirecionar a saída do aplicativo que encapsula como um serviço para um arquivo e rotacionar o arquivo por tamanho ou data (ou reexecução do serviço):</p>
+
+<img src="/blog/img/logs_em_servicos_e_outras_coisas_v12mGG3.png"/>
+
+<p>Abaixo uma receitinha básica para configurar seu aplicativo:</p>
+
+<pre>
+nssm.exe install MyService C:\Path\MyService.exe &lt;args&gt;
+nssm set MyService AppStdout C:\Path\Logs\MyService.log
+nssm set MyService AppStderr C:\Path\Logs\MyService.log
+nssm set MyService AppRotateFiles 1
+nssm set MyService AppRotateOnline 1
+nssm set MyService AppRotateBytes 10485760
+</pre>
+<p>(para quem está se perguntando, 10485760 bytes são 10 MB.)</p>
+
+<p>Com essa forma de fazer serviços, há uma dupla vantagem:</p>
+
+<ul><li>Retirar todo o código para lidar com o Service Manager do Windows das suas mãos.</li>
+
+<li>Continuar tendo um aplicativo que roda pelo prompt e já imprime seu comportamento (e pode ser redirecionado também).</li></ul>
+
+<p>E ainda uma vantagem-bônus:</p>
+
+<ul><li>Você pode executar programas-filho que o redirect para o log vai funcionar do mesmo jeito.</li></ul>
+
+<h3>Bônus final</h3>
+
+<p>Acho que cada um deve escrever no seu header o que achar melhor para depurar seus programas. No entanto, acho válido compartilhar quais são as informações que tem sido úteis para mim:</p>
+
+<pre>
+inline void LogHeader(std::ostringstream&amp; os)
+{
+    SYSTEMTIME st;
+    char buffer[48] = &quot;&quot;;
+
+    GetLocalTime(&amp;st);
+
+    sprintf_s(buffer, &quot;%04d-%02d-%02d %02d:%02d:%02d %04X.%04X %08X &quot;,
+      st.wYear, st.wMonth, st.wDay,
+      st.wHour, st.wMinute, st.wSecond,
+      GetCurrentProcessId() &amp; 0xFFFF, GetCurrentThreadId() &amp; 0xFFFF,
+      GetLastError());
+
+    os &lt;&lt; buffer;
+}
+</pre>
+</section>
+
+<span style="float: left;">
+ <a href="voce_sabe_o_que_esta_usando_no_seu_codigo.html">[voce_sabe_o_que_esta_usando_no_seu_codigo]</a>
+ <a href="depurando_ate_o_fim_do_mundo_e_de_volta_de_novo_source_server_com_github.html">[depurando_ate_o_fim_do_mundo_e_de_volta_de_novo_source_server_com_github]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

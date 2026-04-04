@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="depurando_ate_o_fim_do_mundo_e_de_volta_de_novo_source_server_com_github" title="Depurando até o fim do mundo e de volta de novo: source server com GitHub"/></span>
+<section id="section_depurando_ate_o_fim_do_mundo_e_de_volta_de_novo_source_server_com_github">
+<p class="title">Depurando até o fim do mundo e de volta de novo: source server com GitHub</p>
+<span class="title-heading">Caloni, 2015-05-26 computer blog</span>
+
+<p>Semana passada fiquei sabendo que o vídeo da <a href="https://www.infoq.com/br/presentations/depurando-ate-o-fim-do-mundo/">minha palestra</a> "Depurando até o fim do mundo" do TDC 2014 estava disponível online. Resolvi assistir para ver se aprendia alguma coisa. A despeito do palestrante não ser lá aquelas coisas, ele disse uma coisa interessante: com o Debugging Tools (WinDbg para os íntimos) seria possível além de indexar os símbolos (PDBs para os íntimos) usando o esquema de Symbol Server que a própria Microsoft adota: usar ferramentas do pacote para conseguir obter o fonte através de um símbolo indexado.</p>
+
+<p>E de onde viria esse fonte? Bom, a priori é necessário que exista algum controle de fonte para que as versões estivessem já "indexadas" nesse controle e fossem mapeados com strings internas no PDB. Através dessas strings o WinDbg ao analisar um crash dump ou até mesmo depurando um processo com o uso do PDB conseguiria baixar os fontes automagicamente desse controle de fonte, desde que ele estivesse acessível (na internet, na intranet da própria empresa, na rede, em um disco rígido externo ou na própria máquina do desenvolvedor que não quer se matar para conseguir obter a versão exata dos fontes daquele binário).</p>
+
+<p>O detalhe que o palestrante (Caloni é o nome do sujeito) citou era que já existiam scripts prontos para realizar essa tarefa para os controles de fonte mais comuns, sendo que os mais comuns são: Source Safe (?????), CVS (????????) e, claro, Subversion! (?!?!?!?!??!??!?!). OK, pelo visto o pessoal da Microsoft mora em uma caverna ou não estão muito interessados em indexar os fontes para alguns controles de fonte que estão surgindo por aí, como Git sendo um exemplo aleatório.</p>
+
+<p>Já que o tal do Caloni disse que ainda não fizeram scripts para controles mais modernos. Nenhum descentralizado ainda está na lista. Os scripts são feitos em Perl, ou seja, estão disponíveis em uma linguagem um pouco mais fácil que .BAT. Ou talvez não. De qualquer forma, não parece muito difícil de entender a dinâmica do WinDbg e simplesmente gerar o que tem que gerar dentro dos PDBs.</p>
+
+<p>Pensando nisso, resolvi fazer uma primeira versão, em Python, de um script em que você passa alguns dados e ele processa seus PDBs. Depois você pode jogá-los em um Symbol Server e quando o WinDbg encontrá-lo através de um binário analisado, este irá conter o endereço no GitHub e um comando do Curl para baixá-lo, passando a exibi-lo imediatamente na tela do WinDbg.</p>
+
+<p>O funcionamento é muito simples, mas pede muitos parâmetros (recomendo criar um batch para armazená-los). Então vejamos:</p>
+
+<ul><li>dbgtools é o caminho onde está o Debugging Tools for Windows;</li>
+
+<li>pdbpath é o caminho de onde devem ser pegos os PDBs, como um output da vida;</li>
+
+<li>projname é porque preciso do nome do projeto com escopo do usuário para compor a URL, e.g. Caloni/GitIndex;</li>
+
+<li>repo é o caminho do repositório local, pois o remoto eu já consigo pegar com o projname.</li></ul>
+
+<p>Um detalhe importante: o revno que será usado é o HEAD do repositório local. Sim, futuramente podemos adicionar esse argumento como opcional. Porém, no momento, coisas mais urgentes devem ser feitas. Uma delas é que estou usando a visualização raw do GitHub para conseguir pegar um único arquivo-fonte, e para isso uso a ferramenta curl. Ou seja, quem é de Windows vai precisar baixar uma de suas versões e deixar no path do sistema. Quem não é de Windows... o que você está fazendo com um PDB, rapaz?</p>
+
+<p>2026-04-03 Este foi um projeto embrião de onde surgiu a ideia da palestra, mas isso acabou nunca indo para a frente. Houve um momento que eu configurei um symbol server e indexei os símbolos para baixar do controle de fonte, mas os resultados ainda estavam muito crus para ser levado a sério. Hoje onde trabalho os executáveis lançados conseguem baixar os símbolos, mas fica a seu critério selecionar a versão dos fontes que melhor encaixam com essa versão. Eu diria que é a solução mais sana.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="logs_em_servicos_e_outras_coisas.html">[logs_em_servicos_e_outras_coisas]</a>
+ <a href="analisando_erros_pelo_filtro_do_file_monitor.html">[analisando_erros_pelo_filtro_do_file_monitor]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

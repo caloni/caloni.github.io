@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="classe_objeto_contexto" title="Classe, objeto, contexto"/></span>
+<section id="section_classe_objeto_contexto">
+<p class="title">Classe, objeto, contexto</p>
+<span class="title-heading">Caloni, 2016-01-10 computer ccpp blog</span>
+
+<p>Para entender conceitos simples em C++, como métodos de uma classe, ajuda muito seguir o raciocínio dos programadores C e como eles lidavam com o tipo de problema que C++ resolve elegantemente implementando um novo compilador com uma nova linguagem.</p>
+
+<p>Tomemos, por exemplo, métodos. Um método é uma função chamada dentro de um contexto. Qual o contexto? O objeto. Ou seja, uma instância específica de uma classe, que é um molde para se fazer alguma coisa.</p>
+
+<pre>
+int main()
+{
+   MinhaClasse obj;
+   obj.MeuMetodo(); // o contexto é obj, uma instância de MinhaClasse
+}
+</pre>
+<p>Para obter esse contexto, existe uma palavra-chave reservada dentro dos métodos que é o this, que está tão incrustado na linguagem que não precisa ser usado explicitamente: quando referenciamos alguma propriedade (ou um outro método) da classe, só pelo fato de estarmos dentro de um método o compilador já entende que se trata do mesmo objeto, ou mesmo contexto.</p>
+
+<pre>
+class MinhaClasse
+{
+public:
+   void MeuMetodo();
+   void MeuOutroMetodo();
+   int MinhaPropriedade;
+};
+
+void MinhaClasse::MeuMetodo()
+{
+   MinhaPropriedade = 42; // ou seja: this-&gt;MinhaPropriedade = 42;
+   MeuOutroMetodo(); // ou seja: this-&gt;MeuOutroMetodo();
+}
+</pre>
+<p>E contexto nesse sentido nada mais é que um endereço na memória para alguma coisa que nos interessa. Tal qual uma função API do Windows -- tal qual <a href="https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-findfirstfilea">FindFirstFile</a> -- que recebe ou retorna uma struct com o que precisamos, esse geralmente é o contexto procurado.</p>
+
+<pre>
+WIN32_FIND_DATA findData;
+HANDLE findH = FindFirstFile(&quot;*.txt&quot;, &amp;findData);
+
+if( findH != INVALID_HANDLE_VALUE )
+{
+   if( findData.dwFileAttributes &amp; FILE_ATTRIBUTE_ENCRYPTED )
+   {
+//...
+</pre>
+<img src="/blog/img/classe_objeto_contexto_dilbert.context.gif"/>
+
+<p>No caso de nós, que escrevemos uma "classe", o contexto é recebido "de fora":</p>
+
+<pre>
+HANDLE MyFindFirstFile(const char* pattern, LPWIN32_FIND_DATA findData)
+{
+   //...
+   findData-&gt;dwFileAttributes = FILE_ATTRIBUTE_ENCRYPTED;
+   //...
+</pre>
+<p>Tal como uma struct que definimos, ela vira o contexto. Da mesma forma, um objeto de uma classe em C++ é esse contexto. Podemos fazer a mesma coisa em C, com o trabalho adicional de especificar o "this" (isto é, o ponteiro para o contexto/struct):</p>
+
+<pre>
+struct MinhaClasse
+{
+    int MinhaPropriedade;
+};
+
+void MinhaClasse_MeuMetodo(MinhaClasse* pThis)
+{
+   pThis-&gt;MinhaPropriedade = 42;
+   ///@todo Chamar pThis-&gt;MeuOutroMetodo();
+}
+</pre>
+<p>Em um <a href="classe_objeto_contexto_metodo.html">próximo post</a> vamos ver como fazer para chamar MeuOutroMetodo a partir de uma estrutura em C.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="classe_objeto_contexto_metodo.html">[classe_objeto_contexto_metodo]</a>
+ <a href="indexando_simbolos_com_rapidez.html">[indexando_simbolos_com_rapidez]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

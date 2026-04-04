@@ -121,7 +121,7 @@ role="navigation" aria-label="main navigation">
 <span id="logs_em_servicos_e_outras_coisas" title="Logs em serviços (e outras coisas)"/></span>
 <section id="section_logs_em_servicos_e_outras_coisas">
 <p class="title"><a href="2015-06.html#logs_em_servicos_e_outras_coisas">#</a> Logs em serviços (e outras coisas)</p>
-<span class="title-heading">Caloni, 2015-06-05 <a href="2015-05.html#depurando_ate_o_fim_do_mundo_e_de_volta_de_novo_source_server_com_github">&lt;</a><a href="computer.html">computer</a><a href="2015-07.html#voce_sabe_o_que_esta_usando_no_seu_codigo">&gt;</a><a href="2015-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_logs_em_servicos_e_outras_coisas')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2015-06-05 <a href="2015-05.html#depurando_ate_o_fim_do_mundo_e_de_volta_de_novo_source_server_com_github">&lt;</a><a href="computer.html">computer</a><a href="2015-07.html#voce_sabe_o_que_esta_usando_no_seu_codigo">&gt;</a> <a href="2015-05.html#depurando_ate_o_fim_do_mundo_e_de_volta_de_novo_source_server_com_github">&lt;</a><a href="blog.html">blog</a><a href="2015-07.html#voce_sabe_o_que_esta_usando_no_seu_codigo">&gt;</a><a href="2015-06.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_logs_em_servicos_e_outras_coisas')"><sup>[copy]</sup></a></span>
 
 <p>Já uso logs há muito tempo. Me lembro muito bem que quando programava em BASIC o "passou por aqui" já era útil. Depois de fazer muitas bibliotecas super-flexíveis de escrita em saídas diferentes, níveis configuráveis e uso do mais complexo ao mais banal, cheguei à seguinte conclusão:</p>
 
@@ -131,7 +131,7 @@ role="navigation" aria-label="main navigation">
 
 <p>Vou tentar defender meu ponto de vista.</p>
 
-<p>Esse <a href="http://www.drdobbs.com/cpp/a-lightweight-logger-for-c/240147505">artigo do Dr. Dobbs</a> explica de uma maneira bem completa como fazer uma lib de log leve e configurável. O que eu peguei desse exemplo foi a forma mais C++ de formatar as linhas, deixando para trás o estilão printf que depois de variadic templates já está datado.</p>
+<p>Esse artigo do Dr. Dobbs (2026-04-03 cujo link está quebrado) explica de uma maneira bem completa como fazer uma lib de log leve e configurável. O que eu peguei desse exemplo foi a forma mais C++ de formatar as linhas, deixando para trás o estilão printf que depois de variadic templates já está datado.</p>
 
 <pre>
 #include &lt;iostream&gt;
@@ -159,13 +159,13 @@ void Log(Rest...parm)
 </pre>
 <p>Por que eu acho a minha versão mais legal (não valendo falar que foi porque eu fiz):</p>
 
-<ul><li>É mais simples ainda, tem poucas linhas e pode ser copiada sem peso na consciência. Pode até estar em um header que o overhead é mínimo.</li>
+<p>É mais simples ainda, tem poucas linhas e pode ser copiada sem peso na consciência. Pode até estar em um header que o overhead é mínimo.</p>
 
-<li>Não requer configuração de arquivo, debug output, named pipe, etc. Isso tem a ver com o uso de cada um. O próximo motivo explica melhor isso.</li>
+<p>Não requer configuração de arquivo, debug output, named pipe, etc. Isso tem a ver com o uso de cada um. O próximo motivo explica melhor isso.</p>
 
-<li>Se for executado em um prompt já exibe as informações para serem filtradas; se for executado como um serviço encapsulo a saída.</li></ul>
+<p>Se for executado em um prompt já exibe as informações para serem filtradas; se for executado como um serviço encapsulo a saída.</p>
 
-<p>Encapsular a saída e o comportamento de um serviço hoje em dia é algo banal. Há diversos programas que fazem isso para você, sendo desnecessário programar toda aquela parte de comunicação com o Windows. O <a href="http://driverentry.com.br/blog/?p=461">cara do DriverEntry</a>  fez um aplicativo que faz isso, que é simples de usar e continua funcionando no Windows 8.1. Atualmente uso um outro encontrado pelo igualmente fodástico <a href="https://www.1bit.com.br">Rodrigo Strauss</a>: o Non Sucking Service Manager (seu nome já explica por que defendo utilizar o mínimo possível das firulas da Microsoft).</p>
+<p>Encapsular a saída e o comportamento de um serviço hoje em dia é algo banal. Há diversos programas que fazem isso para você, sendo desnecessário programar toda aquela parte de comunicação com o Windows. O cara do DriverEntry  fez um aplicativo que faz isso (2026-04-03 ops, link quebrado), que é simples de usar e continua funcionando no Windows 8.1. Atualmente uso um outro encontrado pelo igualmente fodástico <a href="https://www.1bit.com.br">Rodrigo Strauss</a>: o Non Sucking Service Manager (seu nome já explica por que defendo utilizar o mínimo possível das firulas da Microsoft).</p>
 
 <p>Além de ser extremamente flexível e não ter falhado nas vezes que o utilizei, o NSSM consegue redirecionar a saída do aplicativo que encapsula como um serviço para um arquivo e rotacionar o arquivo por tamanho ou data (ou reexecução do serviço):</p>
 

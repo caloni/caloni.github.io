@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="indexando_simbolos_com_rapidez" title="Indexando símbolos com rapidez"/></span>
+<section id="section_indexando_simbolos_com_rapidez">
+<p class="title">Indexando símbolos com rapidez</p>
+<span class="title-heading">Caloni, 2015-10-28 computer blog</span>
+
+<p>Trabalhar com inúmeros projetos de diferentes clientes e diferentes binários pode ser uma loucura. Quando o mundo é Windows, algumas medidas precisam ser padronizadas para evitar a perda de informação durante todo o processo de desenvolvimento, testes, deploy e manutenção.</p>
+
+<p>A respeito do deploy e manutenção, um dos principais é manter o código sempre atualizado, limpo e asseado, além de estar dentro de pelo menos um controle de fonte, de preferência distribuído (<a href="guia_basico_de_controle_de_codigo_distribuido.html">Mercurial</a>, <a href="depurando_ate_o_fim_do_mundo_e_de_volta_de_novo_source_server_com_github.html">Git</a>, <a href="guia_basico_de_repositorios_no_bazaar.html">Bazaar</a>).</p>
+
+<p>Porém, voltando ao mundo Windows, os fontes não são apenas a única fonte de preocupação e zelo. Os binários também são importante. Binários eu digo os EXEs, DLLs geradas, além dos seus símbolos (PDBs), que contém o mapa entre aquele monte de 1s e 0s e o código-fonte de onde ele saiu.</p>
+
+<p>Nós da <a href="https://www.linkedin.com/company/bit-forge">BitForge</a> costumamos pelo menos indexar binários com fonte, através dos resources do binário. Como isso é feito? Basicamente editando o arquivo RC na parte da versão do binário e inserindo o hash do commit usado para gerar aquele binário. Com isso qualquer binário produzido possui seu pai ("use the source, Luke!"). Usamos um script em Python muito simples e muito eficaz para isso, que indexa .NET e C++ (através do Visual Studio, mas não está com muitas amarras de ambiente):</p>
+
+<pre>
+rc_new_content = re.sub(u'^.*ProductVersion.*$', product_version_string,
+  rc_original_content, flags=re.MULTILINE)
+rc_new_content = re.sub(u'^.*FILEVERSION.*$', file_version_string,
+  rc_new_content, flags=re.MULTILINE)
+</pre>
+<p>Quando algum binário parar na máquina de algum cliente em algum lugar do universo, basta olhar para os detalhes pelo Windows Explorer, e ele estará lá:</p>
+
+<img src="/blog/img/indexando_simbolos_com_rapidez_mogZt3n.png"/>
+
+<p>Através desse a2f3c... podemos capturar o commit exato de onde saiu o binário. Tudo, é claro, confiando no procedimento de toda a equipe: apenas gerar um binário a partir de um commit publicado.</p>
+
+<p>Você também pode exibir a versão dos binários em uma pasta através das colunas do Windows Explorer:</p>
+
+<img src="/blog/img/indexando_simbolos_com_rapidez_vfY2oan.png"/>
+
+<h3>Indexando símbolos e binários</h3>
+
+<p>Outro detalhe de binários é que eles vivem sendo sobrescritos. Todo "Project, Build" sobrescreve o binário anterior, que pode ter sido justamente o enviado para o cliente. Se o cliente não possuir nenhum procedimento de armazenamento de versões dos binários gerados (às vezes ele nem precisa, essa é nossa função) não há como obter os símbolos de binários que podem gerar problemas futuros (todo software tem bug).</p>
+
+<p>Para resolver isso, o mínimo que se deve fazer é super-simples e nada difícil: crie uma pasta em algum lugar, nomeie essa pasta seu servidor de símbolos, a cada novo binário que será entregue, indexe o binário e os seus símbolos. Como? Com o <a href="https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/debugger-download-tools">Debugging Tools for Windows</a>, como dizia um amigo meu, é mamão com açúcar:</p>
+
+<pre>
+&quot;c:\Tools\DbgTools(x86)\symstore&quot; add /r /f &lt;MINHA-PASTA-COM-BINÁRIOS&gt;
+  /s c:\Tools\Symbols /t &quot;IndexSymbols&quot;
+</pre>
+<p>Essa e outra técnicas de indexar fontes e binário você pode ver no meu <a href="depurando_ate_o_fim_do_mundo_e_de_volta_de_novo_source_server_com_github.html">artigo</a>, na <a href="ccppbrrio12.html">palestra</a> e <a href="https://www.youtube.com/watch?v=mZewxqlFShA">vídeo de demonstração</a>. Se você for cego, ainda tem a vantagem da áudio-narração do vídeo. Brincadeira, ainda não temos isso.</p>
+
+<h3>Simplificando</h3>
+
+<p>Com o poder do Windows Explorer, desde o Windows 95 podemos otimizar nossas tarefas nos baseando na extensão dos arquivos que estamos lidando. No caso do indexador de símbolos, eu simplesmente utilizo uma batch que contém exatamente a linha acima (com a diferença de %1 no lugar de &lt;MINHA-PASTA-COM-BINÁRIOS&gt;) que eu chamo direto do Explorer através de um comando que inseri no registro. Eis o comando:</p>
+
+<pre>
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\dllfile\shell\Index Symbols]
+
+[HKEY_CLASSES_ROOT\dllfile\shell\Index Symbols\command]
+@=&quot;cmd.exe /c c:\\tools\\indexsymbols.bat  \&quot;%1\&quot;&quot;
+</pre>
+<p>Você pode baixar um arquivo reg aqui (update 2026-04-03: não mais), copiar as linhas acima em um .reg que você gerar, ou simplesmente seguir o passo-a-passo dessas linhas e gerar seu próprio registro. Após feito isso, surgirá um novo comando para qualquer DLL que você clicar com o outro botão do mouse:</p>
+
+<img src="/blog/img/indexando_simbolos_com_rapidez_tvCCYcm.png"/>
+
+<p>Você também pode gerar o mesmo comando para EXEs, bastando realizar o mesmo passo-a-passo na pasta exefile em vez de dllfile.</p>
+
+<p>Procedimentos como esse devem ser uma coisa simples, não difícil. Programadores e pessoas são preguiçosas, e precisam de algum incentivo. E nesse caso, o incentivo é: o que você vai fazer quando der um crash com um binário que você não sabe de onde veio nem qual fonte foi usado para compilá-lo? Pois é.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="classe_objeto_contexto.html">[classe_objeto_contexto]</a>
+ <a href="o_estranho_caso_do_pdb_malaformado.html">[o_estranho_caso_do_pdb_malaformado]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

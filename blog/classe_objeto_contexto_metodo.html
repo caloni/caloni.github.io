@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="classe_objeto_contexto_metodo" title="Classe, objeto, contexto, método"/></span>
+<section id="section_classe_objeto_contexto_metodo">
+<p class="title">Classe, objeto, contexto, método</p>
+<span class="title-heading">Caloni, 2016-01-11 computer ccpp blog</span>
+
+<p>No <a href="classe_objeto_contexto.html">post anterior</a> falamos como a passagem de um endereço de uma struct consegue nos passar o contexto de um "objeto", seja em C (manualmente) ou em C++ (automagicamente pelo operador implícito this). Trocamos uma propriedade desse "objeto" em C, mas ainda não chamamos um método.</p>
+
+<p>Hoje faremos isso.</p>
+
+<p>Isso é relativamente simples quando se conhece ponteiros de função, existentes tanto em C quanto em C++. Ponteiros de função são tipos que contém endereço de uma função com assinatura específica (tipo de retorno e de argumentos). Através de um ponteiro de função é possível chamar uma função e passar alguns argumentos. Como o contexto nada mais é que um argumento, será só passá-lo como parâmetro.</p>
+
+<pre>
+bool MinhaFuncao(int x, int y)
+{
+    return x == y;
+}
+
+int main()
+{
+    bool (*PMinhaFuncao)(int, int) = MinhaFuncao;
+    PMinhaFuncao(2, 3);
+}
+</pre>
+<p>No exemplo anterior não sabíamos como chamar um método de nosso "objeto" em C:</p>
+
+<pre>
+struct MinhaClasse
+{
+    int MinhaPropriedade;
+};
+
+void MinhaClasse_MeuMetodo(MinhaClasse* pThis)
+{
+   pThis-&gt;MinhaPropriedade = 42;
+   ///@todo Chamar pThis-&gt;MeuOutroMetodo();
+}
+</pre>
+<p>Isso se torna fácil se tivermos uma nova "propriedade" na nossa struct que é um ponteiro para a função que queremos chamar.</p>
+
+<pre>
+#include &lt;stdio.h&gt;
+
+struct MinhaClasse
+{
+    int MinhaPropriedade;
+    void (*MeuMetodo)(MinhaClasse*);
+    void (*MeuOutroMetodo)(MinhaClasse*);
+};
+
+void MinhaClasse_MeuMetodo(MinhaClasse* pThis)
+{
+    pThis-&gt;MeuOutroMetodo(pThis);
+}
+
+void MinhaClasse_MeuOutroMetodo(MinhaClasse* pThis)
+{
+    pThis-&gt;MinhaPropriedade = 42;
+}
+
+int main()
+{
+    MinhaClasse obj;
+
+    obj.MinhaPropriedade = 0;
+
+    // precisamos iniciar os &quot;métodos&quot; em C; em C++ é automágico
+    obj.MeuMetodo = MinhaClasse_MeuMetodo;
+    obj.MeuOutroMetodo = MinhaClasse_MeuOutroMetodo;
+
+    obj.MeuMetodo(&amp;obj);
+    printf(&quot;MinhaPropriedade = %d&quot;, obj.MinhaPropriedade);
+}
+</pre>
+<img src="/blog/img/classe_objeto_contexto_metodo_uzfJuTC.png"/>
+
+<img src="/blog/img/classe_objeto_contexto_metodo_JLJaAsB.png"/>
+
+<p>Parece muito trabalho para algo que é feito "automagicamente" em C++, certo? Certo. Porém, agora sabemos o que acontece por baixo dos panos em C++ e que pode ser feito em C (ainda que "na mão"). Você provavelmente nunca fará esse tipo de código em C para emular C++, mas o objetivo desse código é entender como funciona, por exemplo, a vtable do C++, que permite polimorfismo.</p>
+
+<p>Mas esse é assunto para <a href="classe_objeto_contexto_metodo_polimorfismo.html">outro post</a>.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="reversing_no_telegram.html">[reversing_no_telegram]</a>
+ <a href="classe_objeto_contexto.html">[classe_objeto_contexto]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>
