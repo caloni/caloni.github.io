@@ -431,6 +431,15 @@ msbuild path\My.Project.Dll.vcxproj /p:BuildProjectReferences=true
 
 <p>Este post foi inspirado em saber que (pelo menos atualmente) nem sempre a IA acerta de primeira (ou de segunda, ou de terceira... ou de quinta).</p>
 
+<p>Update 2026-04-06: fui compilar hoje novamente e falhou. Acontece que é absolutamente necessário especificar a arquitetura e a configuração do projeto. Do contrário o msbuild não consegue montar a árvore de dependências (mesmo tendo ProjectReference no vcxproj). Então o comando completo seria:</p>
+
+<pre>
+msbuild path\My.Project.Dll.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:BuildProjectReferences=true /m
+</pre>
+<p>Obs: o /m é para paralelizar o build. Se você for tomar um café na hora é uma boa. Do contrário a máquina vira uma carroça.</p>
+
+<p>Obs. 2: curiosamente existe a mesma necessidade ao compilar um projeto dotnet, pois sem especificar o runtime identifier (-r win-x64) ele gera uma versão sem a pasta de saída configurada corretamente.</p>
+
 </section><hr/>
 
 <span style="float: left;">
