@@ -45,7 +45,7 @@ role="navigation" aria-label="main navigation">
 <p class="title"><a href="2006-04.html#erros_esquisitos">#</a> Erros esquisitos (que nenhum principiante deveria enfrentar)</p>
 <span class="title-heading">Caloni, 2006-04-10 <a href="2005-05.html#a_inteligencia_do_if_primeira_versao">&lt;</a><a href="computer.html">computer</a><a href="2006-05.html#diferencas_entre_c_e_c++_precedencia">&gt;</a> <a href="ccpp.html">ccpp</a><a href="2006-05.html#diferencas_entre_c_e_c++_precedencia">&gt;</a> <a href="2005-05.html#a_inteligencia_do_if_primeira_versao">&lt;</a><a href="blog.html">blog</a><a href="2006-05.html#diferencas_entre_c_e_c++_precedencia">&gt;</a><a href="2006-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_erros_esquisitos')"><sup>[copy]</sup></a></span>
 
-<p>A tentativa de tornar C++ mais simples de usar para tarefas simples deu um grande avanço a partir do padrão de 1998. Veja esse exemplo que lê um inteiro na entrada e escreve ele novamente na saída na base hexadecimal:</p>
+<p>A tentativa de tornar C++ mais simples de usar para tarefas mundanas deu um grande avanço a partir do padrão de 1998. Veja esse exemplo que lê um inteiro na entrada e escreve ele novamente na saída na base hexadecimal:</p>
 
 <pre>
 #include &lt;iostream&gt;
@@ -214,7 +214,15 @@ lookup
 
 <p>2006-04-19 Basilio Miranda:</p>
 
-<p>Esse prolema diz mais respeito à maturidade do compilador empregado.Realmente a maior complexidade do C++ atual gera algumas dificuldades para o fabricante do compilador. Em especial templates, STL.Mas, de qualquer modo, é necessário observar que se a linguagem requer maior complexidade das rotinas de compilação, isso já passa a ser um problema dos compiladores e não exatamente da linguagem em si mesma.No exemplo que você citou, o gcc de cara diria o seguinte: `setiosflags' undeclared.E no VC++6 ou VC++8 a mensagem seria mais ou menos assim.</p>
+<p>Esse prolema diz mais respeito à maturidade do compilador empregado.</p>
+
+<p>Realmente a maior complexidade do C++ atual gera algumas dificuldades para o fabricante do compilador. Em especial templates, STL.</p>
+
+<p>Mas, de qualquer modo, é necessário observar que se a linguagem requer maior complexidade das rotinas de compilação, isso já passa a ser um problema dos compiladores e não exatamente da linguagem em si mesma.</p>
+
+<p>No exemplo que você citou, o gcc de cara diria o seguinte: 'setiosflags' undeclared.</p>
+
+<p>E no VC++6 ou VC++8 a mensagem seria mais ou menos assim.</p>
 
 <p>Já em erros como: std::list &lt; int, int &gt; l; (personalização incorreta do allocator) já sabemos que o gcc percorrerá alguns includes mas haverá uma linha de mensagem contendo "instantiated from here" que indica a linha original do erro no fonte. É só procurá-la.</p>
 
@@ -222,7 +230,7 @@ lookup
 
 <p>Mas na linha de comando melhora: cl -GX arq.cpp -o arq.exe; na segunda linha já temos o erro.</p>
 
-<p>Acho bom ter sempre à mão o gcc para dirimir dúvidas. E, em alguns casos mais "cabeludos" a ajuda será inestimável. Um exemplo típico no Visual C++ é o "Internal Error C1001". Bug e ainda ocorre(menos) no VC7 e no VC8.</p>
+<p>Acho bom ter sempre à mão o gcc para dirimir dúvidas. E, em alguns casos mais "cabeludos" a ajuda será inestimável. Um exemplo típico no Visual C++ é o "Internal Error C1001". Bug e ainda ocorre (menos) no VC7 e no VC8.</p>
 
 <p>Uma solução imediata infalível em casos como esse é compilar com o gcc. E lá está o erro ou então não há erro e aí basta checar opções de compilação que também podem gerar o problema.</p>
 
@@ -262,7 +270,7 @@ std::list &lt; int &gt; ; // chamada ao construtor? devia explicitar...
 
 <p>Realmente o iniciante tende a ter mais problemas em C++ do que em outras linguagens. Penso que o autodidatismo em C++, ao contrário de outras, só funciona para um número muito pequeno de pessoas - pois ou o auto-aprendizado não é consistente ou absorve vícios de "tradução" da linguagem já conhecida para C++.</p>
 
-<p>E a dificuldade pode ocorrer até com mensagens de erro... Mas o foco no fundo é o mesmo: é mais complicado construir um compilador C++. Um compilador C é bem mais simples de se fazer. Cobol mais ainda, etc. Do ponto de vista do compilador a coisa piora bastante com templates (consequentemente STL). Assim, o poder que ganhamos com templates(STL incluída), abstração de tipo sem runtimes (interpretadores/alocadores de memória embutidos nos executáveis) tem esse preço - ao menos por enquanto.</p>
+<p>E a dificuldade pode ocorrer até com mensagens de erro... Mas o foco no fundo é o mesmo: é mais complicado construir um compilador C++. Um compilador C é bem mais simples de se fazer. Cobol mais ainda, etc. Do ponto de vista do compilador a coisa piora bastante com templates (consequentemente STL). Assim, o poder que ganhamos com templates (STL incluída), abstração de tipo sem runtimes (interpretadores/alocadores de memória embutidos nos executáveis) tem esse preço - ao menos por enquanto.</p>
 
 <p>Mas, voltando às dificuldades do iniciante, assumindo-se que seu ambiente seja Windows, creio que o melhor é que ele comece com o gcc ao invés do VC. Se tiver dificuldade com a linha de comando pode usar como ambiente o Dev-C++, simples mas eficaz (e free) - se for para compilar um único arquivo fonte nem é preciso criar um projeto. Ou, se for do tipo "fuçador", pode usar o Eclipse que é um ambiente poderoso, completo, totalmente multi-plataforma e também free.</p>
 
@@ -326,13 +334,13 @@ x=5;
 
 <p>Isso no VC++6. No VC++7 também, só que nas "propriedades de projeto" é possível inibir isso, mas a inibição não é o default (difícil o iniciante perceber...). JÁ no VC++8 a inibição é que passa a ser o default... Opa.. Então o cara que tinha começado a usar o VC++7 e agora vai usar o "Visual C++ 2005 express" e recompila o seu fonte, vai tomar um erro que nunca tinha aparecido antes... Eu já fui iniciante como toda a gente e não gostaria de passar por isso. Até descobrir... O cara vai fazer a pergunta: "afinal o que é C++? o que pode? o que não pode?" E o problema é que há outros casos não-padrão que ainda continuam.</p>
 
-<p>E no VC++8 (2005) há um problema extremamente sério que já comentei: o "depracated" por default para a família de funções de string.</p>
+<p>E no VC++8 (2005) há um problema extremamente sério que já comentei: o "deprecated" por default para a família de funções de string.</p>
 
-<p>O iniciante usa uma strcpy e toma uma "warning" que diz que isso é "depracated" - mas acontece que não é assim para a linguagem. E o compilador aconselha a usar uma extension microsoft. Isso é C++? O que estou aprendendo? C++ ou MS-C++? "Boas práticas" sobre buffers e strings serão aprendidas com o tempo - e há outras formas (padrão) de encaminhá-las. Mas essa warning não-padrão (e default!) só confunde o iniciante e irrita o experiente (ver artigo de Plauger no CUJ de janeiro).</p>
+<p>O iniciante usa uma strcpy e toma uma "warning" que diz que isso é "deprecated" - mas acontece que não é assim para a linguagem. E o compilador aconselha a usar uma extension microsoft. Isso é C++? O que estou aprendendo? C++ ou MS-C++? "Boas práticas" sobre buffers e strings serão aprendidas com o tempo - e há outras formas (padrão) de encaminhá-las. Mas essa warning não-padrão (e default!) só confunde o iniciante e irrita o experiente (ver artigo de Plauger no CUJ de janeiro).</p>
 
 <p>Por isso acho que a primeira pergunta do iniciante: "qual compilador C/C++ usar?" - deveria ser respondida com "aquele que estiver mais coerente com o padrão linguagem"; ou seja, aquele em que você pode testar aquilo que "é" e aquilo que "não é" C++, para não acabar aprendendo gato por lebre.</p>
 
-<p>Quanto gente eu já vi defendendo que o "x" declarado em "for ( int x; " pode ser usado legitimamente fora desse escopo? Uma porção de gente oriunda de VC.</p>
+<p>Quanta gente eu já vi defendendo que o "x" declarado em "for ( int x; " pode ser usado legitimamente fora desse escopo? Uma porção de gente oriunda de VC.</p>
 
 <p>Eis o problema. Num ambiente de treinamento, aí tudo bem, pois haverá um instrutor que pode esclarecer essas coisas e avisar das "irregularidades". E provavelmente outro compilador será pelo menos exibido. Mas para um cara sozinho isso é um problema.</p>
 
@@ -351,11 +359,11 @@ x=5;
 <p>Olha o exemplo abaixo:</p>
 
 <pre>
-std::cout &lt;&lt; \&quot;Esse numero em hexa fica \&quot;
-&lt;&lt; std::hex
-&lt;&lt; std::uppercase
-&lt;&lt; num
-&lt;&lt; \&quot;, nao fica?\\n\&quot;;
+std::cout &lt;&lt; &quot;Esse numero em hexa fica &quot;
+  &lt;&lt; std::hex
+  &lt;&lt; std::uppercase
+  &lt;&lt; num
+  &lt;&lt; &quot;, nao fica?\n&quot;;
 </pre>
 <p>mais simples né?</p>
 
@@ -385,9 +393,17 @@ std::cout &lt;&lt; \&quot;Esse numero em hexa fica \&quot;
 
 <p>Os compiladores também podem melhorar, e muito. Até porque eles ainda estão ajustando a imensidão que se tornou o padrão C++ (tanto que, até onde sei, o único compilador que implementa 100% do padrão é o da Digital Mars, com seus export template).</p>
 
-<p>Concordo que o lanco do deprecated é muito triste e totalmente lamentável. Quer mais? O ambiente do VC8 marca a palavra "array" como reservada (como int, class...). Talvez eu tenha desinstalado meu Visual 2003 cedo demais...</p>
+<p>Concordo que o lance do deprecated é muito triste e totalmente lamentável. Quer mais? O ambiente do VC8 marca a palavra "array" como reservada (como int, class...). Talvez eu tenha desinstalado meu Visual 2003 cedo demais...</p>
 
 <p>[]s</p>
+
+<hr/>
+
+<p>2026-04-07 Caloni:</p>
+
+<p>Um adendo: o artigo de P. J. Plauger que Basílio se refere se chama "Security and Standard C" e foi publicado na edição de agosto de 2005 na C/C++ Users Journal. Não encontrei online. Segue um abstract da IA:</p>
+
+<p>"In the August 2005 C/C++ Users Journal, P. J. Plauger's article "Security and Standard C" addressed Microsoft's decision to mark standard C functions like strcpy and strlen as deprecated in Visual Studio 2005. Plauger argued against this move, highlighting the conflict between Microsoft's non-standard "secure" alternatives (TR 24731) and the established C standard. The debate centered on whether compiler vendors should force non-standard, "safer" function variants onto developers, a contentious issue given Plauger's company, Dinkumware, provided the library implementation. For a similar discussion on securing C runtimes, see this Microsoft article <a href="https://learn.microsoft.com/en-us/archive/msdn-magazine/2005/may/repel-attacks-with-visual-studio-2005-safe-c-and-c-libraries">MSDN Magazine</a>."</p>
 
 </section><hr/>
 
