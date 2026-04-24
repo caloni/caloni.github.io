@@ -55,7 +55,13 @@ role="navigation" aria-label="main navigation">
 <p class="title"><a href="2011-01.html#dependencia_pedindo_carona">#</a> Dependência pedindo carona</p>
 <span class="title-heading">Caloni, 2011-01-04 <a href="2010-12.html#trabalhando_em_multiplos_ambientes">&lt;</a><a href="computer.html">computer</a><a href="2011-01.html#esse_ponteiro_vai_ate_onde">&gt;</a> <a href="2010-12.html#pos_ii_seminario_portabilidade_e_performance">&lt;</a><a href="blog.html">blog</a><a href="2011-01.html#reuniao_de_programadores_c++_ha_5_anos">&gt;</a><a href="2011-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_dependencia_pedindo_carona')"><sup>[copy]</sup></a></span>
 
-<blockquote>2026-03-13 Este artigo só se aplica a versões do Visual Studio daquela época. Hoje o compilador detecta "código morto" e o retira seletivamente (mesmo em Debug). Dessa forma, nenhum dos testes feitos aqui, caro leitor, serão reproduzidos na versão mais nova do linker. A não ser que você force um comportamento paleozoico :).</blockquote>
+<pre>
+2026-03-13 Este artigo só se aplica a versões do Visual Studio
+daquela época. Hoje o compilador detecta &quot;código morto&quot; e o retira
+seletivamente (mesmo em Debug). Dessa forma, nenhum dos testes feitos
+aqui, caro leitor, serão reproduzidos na versão mais nova do linker.
+A não ser que você force um comportamento paleozoico :).
+</pre>
 <p>Mesmo as vezes que você não queira, algumas dependências pedem carona e o compilador deixa entrar. Daí mesmo que você não use uma função API, ela acaba te atazanando a vida.</p>
 
 <p>Foi o caso da ToolHelp32 no Windows NT 4.</p>
@@ -74,10 +80,17 @@ role="navigation" aria-label="main navigation">
 
 <p>Um recurso muito útil para ver essas funções é o Dependency Walker, meu amigo de infância:</p>
 
-<blockquote>Update 2026-03-13: a última versão disponível é de 2006, então talvez não seja uma boa ideia usá-lo agora; prefira o dumpbin das ferramentas do Visual Studio.</blockquote>
+<pre>
+Update 2026-03-13: a última versão disponível é de 2006, então
+talvez não seja uma boa ideia usá-lo agora; prefira o dumpbin das
+ferramentas do Visual Studio.
+</pre>
 <img src="/journal/img/dependencia_pedindo_carona_depends_process32_not_found2.png"/>
 
-<blockquote>"Mas, Caloni, eu nem uso essa função! Como ela pode ser necessária?"</blockquote>
+<pre>
+&quot;Mas, Caloni, eu nem uso essa função! Como ela pode ser
+necessária?&quot;
+</pre>
 <p>Pois é. As coisas nem sempre acabam sendo como o esperado. Se você possuir uma LIB, por exemplo, e nela existirem duas funções, como abaixo, e você se limitar a usar em seu programa apenas a primeira, todas as dependências da segunda também irão parar no executável final.</p>
 
 <pre>

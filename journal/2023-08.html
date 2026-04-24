@@ -146,19 +146,29 @@ role="navigation" aria-label="main navigation">
 
 <p>Buscando no registro pelo nome dessa interface existe uma entrada em `HKEY_CLASSES_ROOT\Interface\{b5decd05-58ef-4cd3-ae25-d177bcbcea9e}` aonde existe uma subkey `ProxyStubClsid32`. Essa subkey, de acordo com o MSDN, é usado para traduzir um IID -- ID de Interface -- para um CLSID -- ID de classe. Nas palavras do MSDN (em inglês, por favor): "Maps an IID to a CLSID in 32-bit proxy DLLs".</p>
 
-<blockquote>If you add interfaces, you must use this entry to register them (32-bit systems) so that OLE can find the appropriate remoting code to establish interprocess communication.</blockquote>
+<pre>
+If you add interfaces, you must use this entry to register them
+(32-bit systems) so that OLE can find the appropriate remoting code to
+establish interprocess communication.
+</pre>
 <p>Eu acredito que a mesma lógica se aplica a ambientes de 64 bits, que é o caso do Windows 10 onde estou analisando.</p>
 
 <p>Então esse ID é um CLSID para o código de um proxy que irá me ajudar a chamar esta interface `IUserDeviceRegManagerStatics`. Tudo bem, vamos lá. O valor default dentro dessa subkey é `{65704743-2513-4987-9fc9-826bbedde743}` e eu devo fazer a busca por este ID dentro de `HKEY_CLASSES_ROOT\CLSID`, já que se trata de um ID de classe. Eu encontro. O valor default dessa chave diz "UserDeviceRegistration", então eu penso ser este o cara que estou procurando.</p>
 
 <p>Existe uma chave `InProcServer32` dentro desta chave. Novamente vamos à documentação, e de acordo com o MSDN:</p>
 
-<blockquote>Registers a 32-bit in-process server and specifies the threading model of the apartment the server can run in.</blockquote>
+<pre>
+Registers a 32-bit in-process server and specifies the threading model
+of the apartment the server can run in.
+</pre>
 <p>Isso faz todo o sentido, porque o valor default para esta mesma chave é "C:\Windows\System32\UserDeviceRegistration.dll"  e existe uma string `ThreadingModel` também especificando "Both". Olhando para as funções exportadas por esta DLL `UserDeviceRegistration.dll` são listadas as bem conhecidas `DllCanUnloadNow`, `DllGetActivationFactory` e `DllGetClassObject`. Isso é bê-a-bá de COM. O código que eu quero usar deve carregar esta DLL e chamar `DllGetActivationFactory` ou `DllGetClassObject` para obter um ponteiro para uma classe implementando esta interface ou um proxy para chamar esta classe remotamente.</p>
 
 <p>Ao analisar pelo OleView pela `IUserDeviceRegManagerStatics` não há uma biblioteca de tipos com os nomes dos métodos e argumentos. Existe uma vtable genérica com algumas procedures chamadas "Proc1", "Proc2" e assim por diante. Já que desde minha sessão de debugging anterior eu vi um monte de funções RPC sendo chamadas eu irei assumir que `UserDeviceRegistration!DllGetActivationFactory` está sendo chamada. E, mais uma vez, de acordo com o MSDN, este entry point:</p>
 
-<blockquote>Retrieves the activation factory from a DLL that contains activatable Windows Runtime classes.</blockquote>
+<pre>
+Retrieves the activation factory from a DLL that contains activatable
+Windows Runtime classes.
+</pre>
 <p>That's a bingo! Windows Runtime classes é o que estou procurando mesmo. Como eu já estudei anteriormente, isso bate com o retorno desta função: um ponteiro para a interface `IActivationFactory`. A entrada deste argumento é uma `HSTRING`, que é uma nova string definida pela Windows Runtime para strings imutáveis das linguagens mais populares, como C# e JS. E, mais uma vez, isso explica porque em minhas sessões de debug observei um monte de chamadas a `WindowsDeleteString`. Quando você começa a fazer reversa começa a ouvir ecos de sessões passadas para conseguir montar o quebra-cabeças.</p>
 
 <p>Com tudo isso que descobri resolvi colocar um breakpoint no evento de load desta DLL.</p>
@@ -329,7 +339,15 @@ bp AAD_Core!Windows::Internal::UserDeviceRegistration
 
 <p>Por isso reli minhas anotações sobre <a href="2020-09.html#flow">o livro de Mihaly Csikszentmihalyi</a> sobre como estruturar nossa consciência de forma a conseguir aos poucos alinhar a energia psíquica a maior parte do tempo possível. E deve ser aos poucos, já que o "eu" não pode se sentir impelido a fazer algo; ele precisa entender dentro de si o que ele quer fazer mais que tudo na vida.</p>
 
-<blockquote>Uma artista original começa um novo trabalho com uma forte intuição e objetivos indefinidos, se mantém modificando o trabalho em resposta a resultados inesperados que surgiram, e termina com um trabalho concluído que não lembra em nada o que havia imaginado no começo. Se a artista é responsável pelos seus sentimentos internos, sabe o que ela gosta e o que ela não gosta, e presta atenção ao que está acontecendo, um bom trabalho está prestes a emergir.</blockquote>
+<pre>
+Uma artista original começa um novo trabalho com uma forte intuição
+e objetivos indefinidos, se mantém modificando o trabalho em resposta
+a resultados inesperados que surgiram, e termina com um trabalho
+concluído que não lembra em nada o que havia imaginado no começo.
+Se a artista é responsável pelos seus sentimentos internos, sabe o
+que ela gosta e o que ela não gosta, e presta atenção ao que está
+acontecendo, um bom trabalho está prestes a emergir.
+</pre>
 <p>Dentro dos meus recortes compilei e agrupei esta lista de ações em dicas mais compactadas e temáticas dos ensinamentos do livro para induzir um call to action mais pragmático:</p>
 
 <h2>Seja estoico</h2>
@@ -362,24 +380,96 @@ bp AAD_Core!Windows::Internal::UserDeviceRegistration
 
 <li>Desenvolva habilidades para oportunidades disponíveis.</li></ul>
 
-<blockquote>The solution is to gradually BECOME FREE OF SOCIETAL REWARDS and learn how to substitute for them rewards that are under one's own powers. This is not to say that we should abandon every goal endorsed by society; rather, it means that, in addition to or instead of the goals others use to bribe us with, we develop a set of our own.</blockquote>
-<blockquote>(...) unless a person LEARNS TO SET GOALS AND TO RECOGNIZE AND GAUGE FEEDBACK (...) she will not enjoy them (activities).</blockquote>
-<blockquote>Because most jobs, and home life in general, lack the pressing demands of flow experiences, concentration is rarely so intense that preoccupations and anxieties can be automatically ruled out. Consequently the ordinary state of mind involves unexpected and frequent episodes of entropy interfering with the smooth run of psychic energy.</blockquote>
-<blockquote>Some things we are initially forced to do against our will turn out in the course of time to be intrinsically rewarding.</blockquote>
-<blockquote>When a society suffers from anomie, flow is made difficult because it is not clear what is worth investing psychic energy in; when it suffers from alienation the problem is that one cannot invest psychic energy in what is clearly desirable.</blockquote>
-<blockquote>Gradually I learned to be indifferent to myself and my deficiencies; I came to CENTER MY ATTENTION INCREASINGLY UPON EXTERNAL OBJECTS: the state of the world, various branches of knowledge, individuals for whom I felt affection.</blockquote>
-<blockquote>(...) the easiest step toward improving the quality of life consists in simply LEARNING TO CONTROL THE BODY AND ITS SENSES.</blockquote>
-<blockquote>(a) to SET AN OVERALL GOAL, AND AS MANY SUBGOALS as are realistically feasible; (b) to FIND WAYS OF MEASURING PROGRESS in terms of the goals chosen; (c) to KEEP CONCENTRATING ON WHAT ONE IS DOING, and to KEEP MAKING FINER AND FINER DISTINCTIONS IN THE CHALLENGES INVOLVED IN THE ACTIVITY; (d) to DEVELOP THE SKILLS NECESSARY TO INTERACT WITH THE OPPORTUNITIES AVAILABLE; and (e) to KEEP RAISING THE STAKES if the activity becomes boring.</blockquote>
-<blockquote>Leisure that uses up external resources, however, often requires less attention, and as a consequence it generally provides less memorable rewards.</blockquote>
-<blockquote>(...) the importance of personally TAKING CONTROL OF THE DIRECTION OF LEARNING FROM THE VERY FIRST STEPS cannot be stressed enough. If a person feels coerced to read a certain book, to follow a given course because that is supposed to be the way to do it, learning will go against the grain. But if the decision is to take that same route because of an inner feeling of rightness, the learning will be relatively effortless and enjoyable.</blockquote>
-<blockquote>Giving up the self with its instincts, habits, and desires is so unnatural an act that only someone supremely in control can accomplish it.</blockquote>
-<blockquote>(...) keeping order in the mind from within is very difficult. We need external goals, external stimulation, external feedback to keep attention directed. And WHEN EXTERNAL INPUT IS LACKING, ATTENTION BEGINS TO WANDER, AND THOUGHTS BECOME CHAOTIC -- resulting in the state we have called "psychic entropy" (...)</blockquote>
-<blockquote>Even pain is better than the chaos that seeps into an unfocused mind. Hurting oneself, whether physically or emotionally, ensures that attention can be focused on something that, although painful, is at least controllable -- since we are the ones causing it.</blockquote>
-<blockquote>The ultimate test for the ability to control the quality of experience is what a person does in solitude, with no external demands to give structure to attention. It is relatively easy to become involved with a job, to enjoy the company of friends, to be entertained in a theater or at a concert. But what happens when we are left to our own devices? Alone, when the dark night of the soul descends, are we forced into frantic attempts to distract the mind from its coming? Or are we able to take on activities that are not only enjoyable, but make the self grow?</blockquote>
-<blockquote>A person who rarely gets bored, who does not constantly need a favorable external environment to enjoy the moment, has passed the test for having achieved a creative life.</blockquote>
-<blockquote>If a person is unwilling to ADJUST PERSONAL GOALS WHEN STARTING A RELATIONSHIP, then a lot of what subsequently happens in that relationship will produce disorder in the person's consciousness, because novel patterns of interaction will conflict with old patterns of expectation.</blockquote>
-<blockquote>The process of discovering new goals in life is in many respects similar to that by which an artist goes about creating an original work of art. Whereas a conventional artist starts painting a canvas knowing what she wants to paint, and holds to her original intention until the work is finished, an original artist with equal technical training commences with a deeply felt but undefined goal in mind, keeps modifying the picture in response to the unexpected colors and shapes emerging on the canvas, and ends up with a finished work that probably will not resemble anything she started out with. If the artist is responsive to her inner feelings, knows what she likes and does not like, and pays attention to what is happening on the canvas, a good painting is bound to emerge. On the other hand, if she holds on to a preconceived notion of what the painting should look like, without responding to the possibilities suggested by the forms developing before her, the painting is likely to be trite.</blockquote>
-<blockquote>For an autotelic person, the primary goals emerge from experience evaluated in consciousness, and therefore from the self proper.</blockquote>
+<pre>
+The solution is to gradually BECOME FREE OF SOCIETAL REWARDS and learn
+how to substitute for them rewards that are under one's own powers.
+This is not to say that we should abandon every goal endorsed by
+society; rather, it means that, in addition to or instead of the goals
+others use to bribe us with, we develop a set of our own.
+(...) unless a person LEARNS TO SET GOALS AND TO RECOGNIZE AND GAUGE
+FEEDBACK (...) she will not enjoy them (activities).
+Because most jobs, and home life in general, lack the pressing demands
+of flow experiences, concentration is rarely so intense that
+preoccupations and anxieties can be automatically ruled out.
+Consequently the ordinary state of mind involves unexpected and
+frequent episodes of entropy interfering with the smooth run of
+psychic energy.
+Some things we are initially forced to do against our will turn out in
+the course of time to be intrinsically rewarding.
+When a society suffers from anomie, flow is made difficult because it
+is not clear what is worth investing psychic energy in; when it
+suffers from alienation the problem is that one cannot invest psychic
+energy in what is clearly desirable.
+Gradually I learned to be indifferent to myself and my deficiencies; I
+came to CENTER MY ATTENTION INCREASINGLY UPON EXTERNAL OBJECTS: the
+state of the world, various branches of knowledge, individuals for
+whom I felt affection.
+(...) the easiest step toward improving the quality of life consists
+in simply LEARNING TO CONTROL THE BODY AND ITS SENSES.
+(a) to SET AN OVERALL GOAL, AND AS MANY SUBGOALS as are realistically
+feasible; (b) to FIND WAYS OF MEASURING PROGRESS in terms of the goals
+chosen; (c) to KEEP CONCENTRATING ON WHAT ONE IS DOING, and to KEEP
+MAKING FINER AND FINER DISTINCTIONS IN THE CHALLENGES INVOLVED IN THE
+ACTIVITY; (d) to DEVELOP THE SKILLS NECESSARY TO INTERACT WITH THE
+OPPORTUNITIES AVAILABLE; and (e) to KEEP RAISING THE STAKES if the
+activity becomes boring.
+Leisure that uses up external resources, however, often requires less
+attention, and as a consequence it generally provides less memorable
+rewards.
+(...) the importance of personally TAKING CONTROL OF THE DIRECTION OF
+LEARNING FROM THE VERY FIRST STEPS cannot be stressed enough. If a
+person feels coerced to read a certain book, to follow a given course
+because that is supposed to be the way to do it, learning will go
+against the grain. But if the decision is to take that same route
+because of an inner feeling of rightness, the learning will be
+relatively effortless and enjoyable.
+Giving up the self with its instincts, habits, and desires is so
+unnatural an act that only someone supremely in control can accomplish
+it.
+(...) keeping order in the mind from within is very difficult. We need
+external goals, external stimulation, external feedback to keep
+attention directed. And WHEN EXTERNAL INPUT IS LACKING, ATTENTION
+BEGINS TO WANDER, AND THOUGHTS BECOME CHAOTIC -- resulting in the
+state we have called &quot;psychic entropy&quot; (...)
+Even pain is better than the chaos that seeps into an unfocused mind.
+Hurting oneself, whether physically or emotionally, ensures that
+attention can be focused on something that, although painful, is at
+least controllable -- since we are the ones causing it.
+The ultimate test for the ability to control the quality of experience
+is what a person does in solitude, with no external demands to give
+structure to attention. It is relatively easy to become involved with
+a job, to enjoy the company of friends, to be entertained in a theater
+or at a concert. But what happens when we are left to our own devices?
+Alone, when the dark night of the soul descends, are we forced into
+frantic attempts to distract the mind from its coming? Or are we able
+to take on activities that are not only enjoyable, but make the self
+grow?
+A person who rarely gets bored, who does not constantly need a
+favorable external environment to enjoy the moment, has passed the
+test for having achieved a creative life.
+If a person is unwilling to ADJUST PERSONAL GOALS WHEN STARTING A
+RELATIONSHIP, then a lot of what subsequently happens in that
+relationship will produce disorder in the person's consciousness,
+because novel patterns of interaction will conflict with old patterns
+of expectation.
+The process of discovering new goals in life is in many respects
+similar to that by which an artist goes about creating an original
+work of art. Whereas a conventional artist starts painting a canvas
+knowing what she wants to paint, and holds to her original intention
+until the work is finished, an original artist with equal technical
+training commences with a deeply felt but undefined goal in mind,
+keeps modifying the picture in response to the unexpected colors and
+shapes emerging on the canvas, and ends up with a finished work that
+probably will not resemble anything she started out with. If the
+artist is responsive to her inner feelings, knows what she likes and
+does not like, and pays attention to what is happening on the canvas,
+a good painting is bound to emerge. On the other hand, if she holds on
+to a preconceived notion of what the painting should look like,
+without responding to the possibilities suggested by the forms
+developing before her, the painting is likely to be trite.
+For an autotelic person, the primary goals emerge from experience
+evaluated in consciousness, and therefore from the self proper.
+</pre>
 </section><hr/>
 
 
@@ -656,8 +746,14 @@ struct HSTRING {
 <p class="title"><a href="2023-08.html#em_sua_propria_companhia_seneca">#</a> Em sua própria companhia (Sêneca)</p>
 <span class="title-heading">Caloni, 2023-08-30 <a href="2023-04.html#edsger_dijkstra_without_pencil_and_paper">&lt;</a><a href="quotes.html">quotes</a><a href="2023-09.html#the_dogmatic_the_academic_the_sceptic">&gt;</a><a href="2023-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_em_sua_propria_companhia_seneca')"><sup>[copy]</sup></a></span>
 
-<blockquote>"Nada, a meu ver, é melhor prova de uma mente bem ordenada do que a capacidade de um homem parar exatamente onde está e passar algum tempo em sua própria companhia."</blockquote>
-<blockquote>Sêneca e a Mente Ordenada</blockquote>
+<pre>
+&quot;Nada, a meu ver, é melhor prova de uma mente bem ordenada do que a
+capacidade de um homem parar exatamente onde está e passar algum
+tempo em sua própria companhia.&quot;
+
+
+Sêneca e a Mente Ordenada
+</pre>
 </section><hr/>
 
 <span style="float: left;">

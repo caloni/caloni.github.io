@@ -99,8 +99,12 @@ role="navigation" aria-label="main navigation">
 <p class="title"><a href="2007-08.html#dogmas">#</a> Dogmas</p>
 <span class="title-heading">Caloni, 2007-08-01 <a href="quotes.html">quotes</a><a href="2007-09.html#preconceito">&gt;</a> <a href="self.html">self</a><a href="2007-09.html#preconceito">&gt;</a> <a href="now.html">now</a><a href="2007-09.html#preconceito">&gt;</a><a href="2007-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_dogmas')"><sup>[copy]</sup></a></span>
 
-<blockquote>Os dogmas são prisões formadas por conceitos coletivos.</blockquote>
-<blockquote>Tolle, Eckhart (O Poder do Agora, 1997)</blockquote>
+<pre>
+Os dogmas são prisões formadas por conceitos coletivos.
+
+
+Tolle, Eckhart (O Poder do Agora, 1997)
+</pre>
 </section><hr/>
 
 
@@ -534,7 +538,13 @@ int main()
 
 <p>Com <a href="http://driverentry.com.br/blog/?p=415">o exemplo de GINA stub</a> (2026-03-27 link quebrado) do Ferdinando desenvolvi uma versão um pouco mais perigosa, da época de laboratório da faculdade. Se trata igualmente de uma GINA que se aproveita da implementação da GINA original, porém na hora de autenticar um usuário ela captura os dados do logon (usuário e senha) e grava em uma parte do registro acessível apenas pelo sistema (lembre-se que a GINA, por fazer parte do WinLogon, roda na conta de sistema).</p>
 
-<blockquote>É claro que para utilizar essa GINA, você deve possuir direitos de administração, ou conhecer alguma brecha de segurança. Eu optei pela segunda opção, já que não tinha a primeira. Podemos dizer apenas que o artigo sobre falhas de segurança relacionadas a usuários avançados do Russinovich pôde resolver meu problema.</blockquote>
+<pre>
+É claro que para utilizar essa GINA, você deve possuir direitos de
+administração, ou conhecer alguma brecha de segurança. Eu optei
+pela segunda opção, já que não tinha a primeira. Podemos dizer
+apenas que o artigo sobre falhas de segurança relacionadas a
+usuários avançados do Russinovich pôde resolver meu problema.
+</pre>
 <h4>// Comments</h4>
 
 <p>2008-07-09 Jardel Weyrich:</p>
@@ -673,7 +683,11 @@ junction c:\library\ddk &quot;path where is winddk&quot;
 </pre>
 <p>E é isso aí. A partir de agora tanto as pastas originais quanto os junctions criados para elas respondem como se fossem a mesma coisa, porém com paths diferentes.</p>
 
-<blockquote>"Neo, sooner or later, you're going to realize, just as I did, that there's a different between knowing the path... and walking the path..."</blockquote>
+<pre>
+&quot;Neo, sooner or later, you're going to realize, just as I did, that
+there's a different between knowing the path... and walking the
+path...&quot;
+</pre>
 <p>No Windows Vista os junctions também funcionam para arquivos e possuem seu próprio aplicativo nativo, o mklink.exe. Porém, ele chama os links para diretórios de junctions (em português, junções) e os links para arquivos de links mesmo. Você pode notar uma pequena gamb.. adaptação técnica ao mudarem o nome da pasta "Documents and Settings" para "Users" (ou "Usuários", na versão em português). Esse link é extremamente necessário para a compatibilidade daqueles aplicativos feitos às pressas que não se importam em perguntar para o sistema onde está a pasta de documentos do usuário, fixando o path como se ele fosse estar sempre lá.</p>
 
 </section><hr/>
@@ -815,7 +829,11 @@ void _tmain(void)
 </pre>
 <p>Outra observação que poderia ter ajudado na hora de codificar seria dar uma olhada no que os caras escrevem na seção de advertências (remarks) da documentação:</p>
 
-<blockquote>To compile an application that uses this function, define the _WIN32_WINNT macro as 0x0500 or later. For more information, see Using the Windows Headers.</blockquote>
+<pre>
+To compile an application that uses this function, define the
+_WIN32_WINNT macro as 0x0500 or later. For more information, see Using
+the Windows Headers.
+</pre>
 <p>Podemos também notar pela definição do COMPUTER_NAME_FORMAT dentro do main que o código estava no meio do caminho de cometer um sacrilégio: declarar funções e estruturas que já estão definidas nos headers da API. Portanto, se você já encontrou algum código parecido com esse, é hora de colocar em prática algumas teorias de refactoring.</p>
 
 </section><hr/>
@@ -960,7 +978,11 @@ void DebugLoop()
 
 <p>Para conseguir saber as funções das quais um executável obtém o endereço através da primeira técnica podemos utilizar o mundialmente famoso Dependency Walker. Ele nos mostrará quais DLLs ele utiliza e quais funções por DLL ele quer o endereço. Ele também nos avisa sobre as DLLs que estão utilizando delay load, uma técnica inventada no Visual Studio para que os executáveis não dependam estaticamente de APIs muito novas que podem não existir em versões do Windows mais antigas. Com o (carinhosamente chamado) Depends também é possível fazer hook de chamadas de API utilizando a opção profiling (F7), mas não costuma funcionar muito bem com trojans, pois eles capotam antes que alguma coisa interessante ocorra.</p>
 
-<blockquote>Update 2026-01-29: a última versão disponível é de 2006, então talvez não seja uma boa ideia usá-lo agora; prefira o dumpbin das ferramentas do Visual Studio.</blockquote>
+<pre>
+Update 2026-01-29: a última versão disponível é de 2006, então
+talvez não seja uma boa ideia usá-lo agora; prefira o dumpbin das
+ferramentas do Visual Studio.
+</pre>
 <p>O importante do Dependency Walker para o WinDbg é que com um editor é possível copiar todas as funções exibidas em sua interface para um editor, usar um pouco de regular expressions e criar uma batelada de breakpoints:</p>
 
 <pre>
