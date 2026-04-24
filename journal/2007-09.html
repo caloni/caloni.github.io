@@ -55,12 +55,8 @@ role="navigation" aria-label="main navigation">
 <p class="title"><a href="2007-09.html#preconceito">#</a> Preconceito</p>
 <span class="title-heading">Caloni, 2007-09-01 <a href="2007-08.html#dogmas">&lt;</a><a href="quotes.html">quotes</a><a href="2007-10.html#tedio">&gt;</a> <a href="2007-08.html#dogmas">&lt;</a><a href="self.html">self</a><a href="2007-10.html#tedio">&gt;</a> <a href="2007-08.html#dogmas">&lt;</a><a href="now.html">now</a><a href="2007-10.html#tedio">&gt;</a><a href="2007-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_preconceito')"><sup>[copy]</sup></a></span>
 
-<pre>
-Reduzir uma pessoa a um conceito já é uma forma de violência.
-
-
-Tolle, Eckhart (O Poder do Agora, 1997)
-</pre>
+<blockquote>Reduzir uma pessoa a um conceito já é uma forma de violência.</blockquote>
+<blockquote>Tolle, Eckhart (O Poder do Agora, 1997)</blockquote>
 </section><hr/>
 
 
@@ -73,13 +69,7 @@ Tolle, Eckhart (O Poder do Agora, 1997)
 
 <img src="/journal/img/historia_do_windows_parte_40_windows_95.png"/>
 
-<pre>
-Bem, o &quot;novo conceito&quot; de threads já havia sido implementado no
-Windows NT desde o seu rascunho e já existia no início do projeto,
-mas não no velho Windows 3.1 de 16 bits, que foi a versão anterior
-ao 95. Parte dos requisitos do sistema foi que ele seria compatível
-com o NT no nível de aplicativo, o que de fato aconteceu.
-</pre>
+<blockquote>Bem, o "novo conceito" de threads já havia sido implementado no Windows NT desde o seu rascunho e já existia no início do projeto, mas não no velho Windows 3.1 de 16 bits, que foi a versão anterior ao 95. Parte dos requisitos do sistema foi que ele seria compatível com o NT no nível de aplicativo, o que de fato aconteceu.</blockquote>
 <p>Para esse milagre da multiplicação das threads acontecer a Microsoft foi obrigada a portar boa parte do código de 16 bits para 32 e entrar em modo protegido. Mesmo assim, um legado razoável do MS-DOS permaneceu debaixo dos panos suportando o novo sistema operacional através de suas interrupções e código residente. Ou seja, havia ainda partes do SO rodando em modo real.</p>
 
 <p>Com o lançamento da nova versão do NT foi necessário modernizar a interface para ser compatível com o Windows 95, o que fez com que o Windows 4.0 fosse mais bonitinho. No entanto, o núcleo dos dois sistemas era completamente diferente. Enquanto um era 32 bits puro desde o primeiro int main, o outro era um sistema de compatibilidade para fornecer um Windows caseiro que fosse vendável e desse à Microsoft o retorno financeiro esperado. Deu certo por um bom tempo, até a chegada do Windows XP, que uniu as duas famílias de sistemas operacionais, pois descontinuou o Windows ME e tornou o Windows 2000 Professional mais amigável para o uso geral.</p>
@@ -210,10 +200,7 @@ Mas se não for bem legal, pelo menos tem um monte de mulher.&quot;
 
 <p>Hoje foi um belo dia para engenharia reversa e análise de proteções. Dois ótimos programas vieram ao meu conhecimento: um monitor de chamadas de API e um monitor de chamadas de COM (complementando o primeiro, que não monitora funções depois que CoCreateInstance foi chamado). Além de que no site do primeiro programa - de algum entusiasta do bom e velho Assembly Win32, diga-se de passagem - encontrei o código-fonte para mais uma técnica antidebugging, o que nos leva de volta para a já consagrada série de técnicas antidepuração.</p>
 
-<pre>
-Update 2026-01-31: estes sites já não existe mais, então removi os
-links.
-</pre>
+<blockquote>Update 2026-01-31: estes sites já não existe mais, então removi os links.</blockquote>
 <p>O objetivo dessa proteção é detectar se, após o executável ter sido iniciado, algum depurador metido a besta tentou atachar-se no processo criado, ou seja, tentou iniciar o processo de depuração após o aplicativo já ter iniciada a execução. Isso é possível - de certa forma trivial - na maioria dos depuradores (se não todos), como o Visual Studio e o WinDbg. Diferente da técnica de ocupar a DebugPort, que impede a ação de attach, a proteção nesse caso não protege diretamente; apenas permite que o processo saiba do suposto ataque antes de entregar o controle ao processo depurador.</p>
 
 <p>O código que eu encontrei nada mais faz do que se aproveitar de uma peculiaridade do processo de attach: ao disparar o evento, a função ntdll!DbgUiRemoteBreakin é chamada. Ora, se é chamada, é lá que devemos estar, certo? O código, então, insere um breakpoint hardcoded no início dessa função para capturar esse evento. Update 2026-01-31: este código não está mais disponível, mas graças ao Chat-GPT foi fácil reconstruí-lo. Optei por uma versão em C puro:</p>
@@ -780,17 +767,7 @@ int main()
 
 <p>O mais impressionante no Builder era que desde o começo, na versão 1, já tínhamos aquela palheta maravilhosa cheio de todos os controles que já faziam parte do Windows 95. Tudo isso por causa de uma estratégia simples e eficaz: os componentes são os mesmos do Delphi. O que o C++ Builder adicionou foi uma camada de interface para que C++ e Object Pascal conversassem. O resultado disso é espantoso: é possível programar em C++ puro, chamar APIs diretamente, e ainda usar os componentes em Delphi, além de também poder desenvolver em Delphi e mesclar ambas as linguagens em um projeto. É possível até usar herança entre componentes escritos em Delphi e C++ Builder.</p>
 
-<pre>
-Quando entrei na Scua comecei a trabalhar profissionalmente com o C++
-Builder, ao desenvolver o aplicativo de administração do software de
-controle de acesso. Na época não tínhamos muito tempo para perder
-desenvolvendo tudo em Win32 API ou usar algo mais rústico como a MFC,
-que é mais parecido com a finada biblioteca OWL do que com a VCL (a
-biblioteca visual de componentes usada pela Borland para Delphi e
-Builder). E não, usar Visual Basic não era uma alternativa. Como a
-produtividade estava em jogo, hoje tenho certeza que fizemos uma boa
-escolha.
-</pre>
+<blockquote>Quando entrei na Scua comecei a trabalhar profissionalmente com o C++ Builder, ao desenvolver o aplicativo de administração do software de controle de acesso. Na época não tínhamos muito tempo para perder desenvolvendo tudo em Win32 API ou usar algo mais rústico como a MFC, que é mais parecido com a finada biblioteca OWL do que com a VCL (a biblioteca visual de componentes usada pela Borland para Delphi e Builder). E não, usar Visual Basic não era uma alternativa. Como a produtividade estava em jogo, hoje tenho certeza que fizemos uma boa escolha.</blockquote>
 <p>Eu gostava do C++ Builder antigo: sem frescura de registrar componentes e sem necessidade de instalação. Até hoje uso a versão 1.0 para brincar de vez em quando, pois é relativamente pequena; apenas copio para uma pasta e ainda funciona muito bem.</p>
 
 <p>Mas desde que o mundo gerenciado veio à tona, para instalar esse singelo produto da Borland você vai precisar de alguns pré-requisitos da Microsoft:</p>
@@ -865,15 +842,7 @@ escolha.
 
 <p>O aprendizado de qualquer idioma deve estar focado em um objetivo. Se o objetivo é se comunicar, conversação é importante. Se você deseja ser um business man, um vocabulário mais específico deve ser aprendido. No nosso caso, em que a santa leitura técnica de cada dia é a necessidade básica, alguns passos básicos em inglês instrumental é um ótimo começo para começar a desvendar 80% da internet.</p>
 
-<pre>
-Note, contudo, que inglês instrumental não é muito bem visto por
-escolas conceituadas de idiomas, tanto por ensinar um inglês limitado
-quanto por criar vícios de linguagem. O importante a lembrar nesse
-caso é: estamos usando o inglês como uma ferramenta de compreensão
-de textos que são úteis para nosso trabalho. Se o
-interesse/necessidade do inglês for maior, deve-se passar para as
-próximas dicas.
-</pre>
+<blockquote>Note, contudo, que inglês instrumental não é muito bem visto por escolas conceituadas de idiomas, tanto por ensinar um inglês limitado quanto por criar vícios de linguagem. O importante a lembrar nesse caso é: estamos usando o inglês como uma ferramenta de compreensão de textos que são úteis para nosso trabalho. Se o interesse/necessidade do inglês for maior, deve-se passar para as próximas dicas.</blockquote>
 <p>Seguem alguns primeiros passos para começar a se aventurar:</p>
 
 <ul><li>Procure estudar as palavras mais faladas no idioma.</li>
@@ -898,12 +867,7 @@ próximas dicas.
 
 <p>Nesse momento, o importante é fazer a transição escrito-falado. Por isso, tente ouvir podcasts em que o texto falado está disponível para leitura. Dessa forma é possível acompanhar os dois. Eu costumava ouvir o Word for the Wise da Merriam-Webster, por ser curto e interessante. Mas o ideal é unir o útil ao agradável, e nisso com certeza um podcast de tecnologia seria muito melhor.</p>
 
-<pre>
-Trapaceando: no começo, é comum haver divergências de pronúncia ou
-falta da capacidade de ouvir (listening). Você pode sempre apelar
-para as pronúncias disponíveis nos dicionários online, como o
-Merriam-Webster. Ouça um milhão de vezes para pegar o jeito.
-</pre>
+<blockquote>Trapaceando: no começo, é comum haver divergências de pronúncia ou falta da capacidade de ouvir (listening). Você pode sempre apelar para as pronúncias disponíveis nos dicionários online, como o Merriam-Webster. Ouça um milhão de vezes para pegar o jeito.</blockquote>
 <p>Depois de obter um feeling básico sobre o que é escrito e o que é falado pode-se partir para estudos mais ousados e voltados para o aprendizado da língua de fato. Sabendo da facilidade que já obtivemos em traduzir textos e ouvir, considero as tarefas abaixo ideais para chegarmos ao tão sonhado language aquisition:</p>
 
 <ul><li>Ouvir música em inglês e ler a letra (original e traduzida). Uma boa banda para começar são os Beatles, cujo inglês britânico é fácil de entender.</li>

@@ -52,10 +52,7 @@ role="navigation" aria-label="main navigation">
 
 <p>O Dispose sem parâmetros é público e existe para ser chamado pelo usuário, direta ou indiretamente (using). Ele deve chamar o Dispose protegido passando o parâmetro disposing como true. Deve avisar o GC para não chamar o finalizer, já que não devemos chamar o Dispose protegido de novo. Isso deve ser feito mesmo que não exista um finalizer na classe, pois as classes base podem conter, agora ou no futuro. A Microsoft também recomenda porque pode ser que no futuro a própria classe tenha, o que parece tão gambiarrento quanto você imagina. Se ainda não te convenci, a Microsoft obriga por contrato (documentado) que você deve sempre desabilitar.</p>
 
-<pre>
-If your type implements IDisposable, Dispose() should always call
-GC.SuppressFinalize(this) even if the class has no finalizer.
-</pre>
+<blockquote>If your type implements IDisposable, Dispose() should always call GC.SuppressFinalize(this) even if the class has no finalizer.</blockquote>
 <p>No entanto, se a classe não tem recursos não gerenciados e está selada, ou seja, não haverá subclasse com finalizer, você pode adotar um pattern mais simples, sem Dispose(disposing), sem finalizer e portanto sem chamar GC.SupressFinalizer. E se sua classe não tem nenhum recurso disposable você ainda pode apenas implementar o Dispose público vazio.</p>
 
 <p>Para evitar gerenciar recursos nativos você pode usar a classe SafeHandle, que como já lida com o finalizer internamente evita a necessidade da classe que usa chamar a supressão.</p>
@@ -90,13 +87,8 @@ GC.SuppressFinalize(this) even if the class has no finalizer.
 <p class="title"><a href="2025-11.html#ser_programador_wanderley_caloni">#</a> Ser programador (Wanderley Caloni)</p>
 <span class="title-heading">Caloni, 2025-11-22 <a href="2025-09.html#padroes_de_pensamento">&lt;</a><a href="quotes.html">quotes</a><a href="2025-12.html#what_actually_makes_you_senior">&gt;</a><a href="2025-11.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_ser_programador_wanderley_caloni')"><sup>[copy]</sup></a></span>
 
-<pre>
-Tratar cada novo código com tanta seriedade como se fosse a última
-versão é descartar a alegria e virtude de ser um programador.
-
-
-Não é sobre funcionar, mas descobrir como as coisas não funcionam.
-</pre>
+<blockquote>Tratar cada novo código com tanta seriedade como se fosse a última versão é descartar a alegria e virtude de ser um programador.</blockquote>
+<blockquote>Não é sobre funcionar, mas descobrir como as coisas não funcionam.</blockquote>
 </section><hr/>
 
 <span style="float: left;">
