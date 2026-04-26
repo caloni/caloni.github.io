@@ -57,7 +57,8 @@ role="navigation" aria-label="main navigation">
 
 <p>Essas ferramentas são nativas do ambiente Linux, mas podem ser instaladas no Windows através do Cygwin, do Mingw ou nativamente através das ferramentas GnuWin32.</p>
 
-<blockquote>Update 2026-02-20: desde muitos anos tenho usado de adicionar no path do sistema algumas pastas da instalação do Git. Lá existem todas essas ferramentas e muito mais.</blockquote>
+<p>Update 2026-02-20: desde muitos anos tenho usado de adicionar no path do sistema algumas pastas da instalação do Git. Lá existem todas essas ferramentas e muito mais.</p>
+
 <p>O que eu queria era processar a saída de um programa de forma que eu tivesse a lista de todas as extensões dos arquivos. Por exemplo, para a seguinte entrada:</p>
 
 <pre>
@@ -121,7 +122,8 @@ programa | sed -e &quot;s/^.*\\//&quot; -e &quot;s/.*\.\(.*\)/\1/&quot; | sort -
 </pre>
 <p>Os caracteres .*[]^$\ dão problemas se usados sem escape no sed, pois fazem parte dos comandos para procurar expressões regulares. Use-os com o caractere de escape `\`.</p>
 
-<blockquote>Obs 2026-02-20: O comando sort do Windows pode entrar em conflito com o sort da GNU. Nesse caso é preciso especificar o path completo do sort correto ou colocar o path das ferramentas GNU com prioridade maior que as do system32, o que eu não recomendo.</blockquote>
+<p>Obs de 2026-02-20: O comando sort do Windows pode entrar em conflito com o sort da GNU. Nesse caso é preciso especificar o path completo do sort correto ou colocar o path das ferramentas GNU com prioridade maior que as do system32, o que eu não recomendo.</p>
+
 <p>Para concatenar comandos no sed, use sempre -e "comando". A ordem de execução dos comandos é a ordem em que eles são inseridos na linha de comando, ou seja, podemos confiar que no segundo comando o primeiro já terá sido executado e assim por diante.</p>
 
 <p>Para fazer o escape das barras do caminho de um arquivo temos que usar o conjunto `\/` (obs.: caminhos em formato Unix). Para evitar esse uso enfadonho podemos substituir o caractere de divisão do comando s colocando-o na frente:</p>
