@@ -45,7 +45,7 @@ role="navigation" aria-label="main navigation">
 <li><small><a href="2018-02.html#rango">Rango</a></small></li>
 <li><small><a href="2018-02.html#a_odisseia">A Odisseia</a></small></li>
 <li><small><a href="2018-02.html#caloni_palestrando_sobre_bitcoins_antes_de_virar_muito_modinha">Caloni Palestrando Sobre Bitcoins Antes De Virar (Muito) Modinha</a></small></li>
-<li><small><a href="2018-02.html#variaveis_static_local_nunca_sao_inicializadas_se_voce_nao_chama_sua_funcao">Variáveis static local Nunca São Inicializadas Se Você Não Chama Sua Função</a></small></li>
+<li><small><a href="2018-02.html#variaveis_estaticas_locais_sao_timidas">Variáveis estáticas locais são tímidas</a></small></li>
 <li><small><a href="2018-02.html#viva_a_vida_e_uma_festa">Viva: A Vida é uma Festa</a></small></li>
 <li><small><a href="2018-02.html#operacao_red_sparrow">Operação Red Sparrow</a></small></li>
 <li><small><a href="2018-02.html#comedians_in_car_getting_coffee">Comedians In Car Getting Coffee</a></small></li>
@@ -186,10 +186,10 @@ role="navigation" aria-label="main navigation">
 </section><hr/>
 
 
-<span id="variaveis_static_local_nunca_sao_inicializadas_se_voce_nao_chama_sua_funcao" title="Variáveis static local Nunca São Inicializadas Se Você Não Chama Sua Função"/></span>
-<section id="section_variaveis_static_local_nunca_sao_inicializadas_se_voce_nao_chama_sua_funcao">
-<p class="title"><a href="2018-02.html#variaveis_static_local_nunca_sao_inicializadas_se_voce_nao_chama_sua_funcao">#</a> Variáveis static local Nunca São Inicializadas Se Você Não Chama Sua Função</p>
-<span class="title-heading">Caloni, 2018-02-20 <a href="2018-01.html#como_parsear_argc_argv_para_um_map_stl">&lt;</a><a href="computer.html">computer</a><a href="2018-03.html#contra_o_array_de_100_bytes_e_suficiente">&gt;</a><a href="2018-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_variaveis_static_local_nunca_sao_inicializadas_se_voce_nao_chama_sua_funcao')"><sup>[copy]</sup></a></span>
+<span id="variaveis_estaticas_locais_sao_timidas" title="Variáveis estáticas locais são tímidas"/></span>
+<section id="section_variaveis_estaticas_locais_sao_timidas">
+<p class="title"><a href="2018-02.html#variaveis_estaticas_locais_sao_timidas">#</a> Variáveis estáticas locais são tímidas</p>
+<span class="title-heading">Caloni, 2018-02-20 <a href="2018-01.html#como_parsear_argc_argv_para_um_map_stl">&lt;</a><a href="computer.html">computer</a><a href="2018-03.html#contra_o_array_de_100_bytes">&gt;</a> <a href="2018-01.html#como_achar_erros_no_printf_via_dump">&lt;</a><a href="blog.html">blog</a><a href="2018-03.html#contra_o_array_de_100_bytes">&gt;</a><a href="2018-02.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_variaveis_estaticas_locais_sao_timidas')"><sup>[copy]</sup></a></span>
 
 <p>Uma dúvida muito comum dos programadores iniciantes em C/C++ diz respeito às variáveis static que são declaradas dentro de um escopo, como uma função. Sabemos que se ela fosse declarada global, fora de qualquer escopo, ela seria inicializada antes do main ser chamado, como diz este trecho de alguém que pesquisou a respeito:</p>
 
@@ -285,7 +285,7 @@ c:\Projects\caloni\projects&gt;
 </pre>
 <p>O problema disso é que é possível que duas threads chamem func() "ao mesmo tempo", gerando uma dupla inicialização caso a implementação da libc não seja thread-safe. E a menos que o padrão especifique que essa inicialização deva ser thread safe, melhor fazer as coisas direito.</p>
 
-<p>Mas, a título de curiosidade, é bom saber que o Visual Studio 2017 essa parte da libc já possui um mecanismo de proteção, como o sugestivo nome _tls_index já indica:</p>
+<p>Mas, a título de curiosidade, é bom saber que no Visual Studio 2017 essa parte da libc já possui um mecanismo de proteção, como o sugestivo nome _tls_index já indica:</p>
 
 <pre>
 c:\Projects\caloni\projects&gt;cl /EHsc /Zi static_local_sample.cpp

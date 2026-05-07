@@ -440,7 +440,7 @@ map &lt;C-J&gt; :tnext&lt;CR&gt;
 <span id="readfile_assincrono_pode_ser_sincrono_quando_voce_menos_espera" title="ReadFile assíncrono pode ser síncrono quando você menos espera"/></span>
 <section id="section_readfile_assincrono_pode_ser_sincrono_quando_voce_menos_espera">
 <p class="title"><a href="2017-01.html#readfile_assincrono_pode_ser_sincrono_quando_voce_menos_espera">#</a> ReadFile assíncrono pode ser síncrono quando você menos espera</p>
-<span class="title-heading">Caloni, 2017-01-16 <a href="2016-12.html#usando_clang_no_visual_studio">&lt;</a><a href="computer.html">computer</a><a href="2017-01.html#warning_de_nivel_4">&gt;</a><a href="2017-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_readfile_assincrono_pode_ser_sincrono_quando_voce_menos_espera')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2017-01-16 <a href="2016-12.html#usando_clang_no_visual_studio">&lt;</a><a href="computer.html">computer</a><a href="2017-01.html#warning_de_nivel_4">&gt;</a> <a href="2016-11.html#quantos_handles_sua_aplicacao_esta_abrindo">&lt;</a><a href="blog.html">blog</a><a href="2017-01.html#warning_de_nivel_4">&gt;</a><a href="2017-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_readfile_assincrono_pode_ser_sincrono_quando_voce_menos_espera')"><sup>[copy]</sup></a></span>
 
 <p>Ano passado tive alguns problemas em um projeto que se comunicava com um dispositivo em firmware pela USB. Estávamos utilizando uma biblioteca open source do GitHub que parecia estar bem testada e mantida. Porém, não exatamente para nossos objetivos.</p>
 
@@ -569,9 +569,9 @@ if (!ReadFile(hFile,
 <span id="warning_de_nivel_4" title="Warning de nível 4"/></span>
 <section id="section_warning_de_nivel_4">
 <p class="title"><a href="2017-01.html#warning_de_nivel_4">#</a> Warning de nível 4</p>
-<span class="title-heading">Caloni, 2017-01-17 <a href="2017-01.html#readfile_assincrono_pode_ser_sincrono_quando_voce_menos_espera">&lt;</a><a href="computer.html">computer</a><a href="2017-02.html#android_protobuf_mock_configuravel">&gt;</a><a href="2017-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_warning_de_nivel_4')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2017-01-17 <a href="2017-01.html#readfile_assincrono_pode_ser_sincrono_quando_voce_menos_espera">&lt;</a><a href="computer.html">computer</a><a href="2017-02.html#android_protobuf_mock_configuravel">&gt;</a> <a href="2017-01.html#readfile_assincrono_pode_ser_sincrono_quando_voce_menos_espera">&lt;</a><a href="blog.html">blog</a><a href="2017-02.html#pacotes_perdidos_do_nuget_em_projetos_c++_no_visual_studio">&gt;</a><a href="2017-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_warning_de_nivel_4')"><sup>[copy]</sup></a></span>
 
-<p>Você já colocou aquele seu projeto favorito em /W4? Por padrão, o Visual Studio cria seus projetos com o nível de warnings e 3, porque o nível 4 é muito, muito chato. No entanto, algumas vezes ele serve para que seu código não fique apenas correto, mas bem documentado e apresentável. Vamos tentar?</p>
+<p>Você já colocou aquele seu projeto favorito em /W4? Por padrão, o Visual Studio cria seus projetos com o nível de warnings 3, porque o nível 4 é muito, muito chato. No entanto, algumas vezes ele serve para que seu código não fique apenas correto, mas bem documentado e apresentável. Vamos tentar?</p>
 
 <pre>
 1&gt;------ Build started: Project: tioserver, Configuration: Debug x64 ------
@@ -731,7 +731,7 @@ int socket_receive(SOCKET socket, void* buffer, int len, const unsigned* timeout
             // C4701: potentially uninitialized local variable 'start' used
         time_left = *timeout_in_seconds - (int)(time(NULL) - start);
 </pre>
-<p>A correção é simples: inicialize a bota das suas variáveis zero (ou determine qual o comportamento no caso else).</p>
+<p>A correção é simples: inicialize a bota das suas variáveis em zero ou determine qual o comportamento no caso else.</p>
 
 <p>Vamos dar uma olhada em um dos outros warnings:</p>
 
