@@ -503,12 +503,48 @@ role="navigation" aria-label="main navigation">
 <span id="meu_novo_parseador_de_argc_argv" title="Meu Novo Parseador de Argc Argv"/></span>
 <section id="section_meu_novo_parseador_de_argc_argv">
 <p class="title"><a href="2018-08.html#meu_novo_parseador_de_argc_argv">#</a> Meu Novo Parseador de Argc Argv</p>
-<span class="title-heading">Caloni, 2018-08-21 <a href="2018-07.html#visual_studio_e_seu_depurador_comentado">&lt;</a><a href="computer.html">computer</a><a href="2018-08.html#getarg">&gt;</a> <a href="2017-09.html#c++_moderno_arranca_os_cabelos_por_voce_stdmove_e_classes_simples">&lt;</a><a href="ccpp.html">ccpp</a><a href="2019-08.html#some_things_i_learned_in_a_hacker_rank_exercise">&gt;</a><a href="2018-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_meu_novo_parseador_de_argc_argv')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2018-08-21 <a href="2018-07.html#visual_studio_e_seu_depurador_comentado">&lt;</a><a href="computer.html">computer</a><a href="2018-08.html#getarg">&gt;</a> <a href="2017-09.html#c++_moderno_arranca_os_cabelos_por_voce_stdmove_e_classes_simples">&lt;</a><a href="ccpp.html">ccpp</a><a href="2019-08.html#some_things_i_learned_in_a_hacker_rank_exercise">&gt;</a> <a href="2018-07.html#python27_protobuf_py2exe_e_build_exe">&lt;</a><a href="blog.html">blog</a><a href="2018-08.html#getarg">&gt;</a><a href="2018-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_meu_novo_parseador_de_argc_argv')"><sup>[copy]</sup></a></span>
 
-<p>Eis que me deparo com um projeto onde não posso usar STL. Ou seja, nada de map nem string. Isso quer dizer que minha função bonita e completa de parseamento de argumentos argc/argv não pode ser usado. Essa é uma má notícia. A boa notícia é que achei uma forma muito mais simples e à prova de falhas de fazer isso. Ele basicamente percorre o array argv em busca do nome do parâmetro enviado para a função. Uma vez que ele encontre ele retorna o próximo elemento. Na falta de próximo elemento ele simplesmente retorna uma string vazia que não é nulo, mas já indica que há o parâmetro na lista de argumento.</p>
+<p>Eis que me deparo com um projeto onde não posso usar STL. Ou seja, nada de map nem string. Isso quer dizer que <a href="https://gist.github.com/Caloni/5b9ccc66722a1b235f4aab8251822cdb">minha função</a> bonita e completa de parseamento de argumentos argc/argv não pode ser usado. Essa é uma má notícia. A boa notícia é que achei uma forma muito mais simples e à prova de falhas de fazer isso. Ele basicamente percorre o array argv em busca do nome do parâmetro enviado para a função. Uma vez que ele encontre ele retorna o próximo elemento. Na falta de próximo elemento ele simplesmente retorna uma string vazia que não é nulo, mas já indica que há o parâmetro na lista de argumento.</p>
 
-<p>&lt;https://gist.github.com/Caloni/5b9ccc66722a1b235f4aab8251822cdb&gt;</p>
+<pre>
+/** Interpreta argumentos da linha de comando (versão raiz).
 
+@author Wanderley Caloni &lt;wanderley.caloni@gmail.com.br&gt;
+@date 2018-08
+
+           ---      --- 
+    argv: | * |--&gt; | * | &quot;testbin&quot;
+           ---      --- 
+                    --- 
+                   | * | &quot;foo&quot;
+                    --- 
+                    --- 
+                   | * | &quot;100&quot;
+                    --- 
+            --- 
+     argc: | 3 |
+            --- 
+    
+*/
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+const char* GetArg(int argc, char* argv[], const char* arg)
+{
+    for (int i = 1; i &lt; argc; ++i)
+    {
+        if( strcmp(argv[i], arg) == 0 )
+        {
+            if( i &lt; argc - 1 )
+                return argv[i+1];
+            else
+                return &quot;&quot;;
+        }
+    }
+    return NULL;
+}
+</pre>
 <p>Essa função é tão simples, e tem tão poucas dependências (strcmp) que você pode usá-la em praticamente qualquer programa que use argc/argv e que use os parâmetros dos mais complexos. Ao chamar essa função se passa o argc e o argv recebido no main e o terceiro argumento é apenas o nome de um argumento válido que pode ser recebido via linha de comando. O resultado é um ponteiro (obtido no próprio argv) da próxima string ou uma string C vazia constante (não precisa de alocação) se for o último argv. E caso ele não ache o retorno é NULL. Seu uso comum é uma linha apenas, ou uma linha para cada argumento buscado. Sua complexidade é linear, mas, ei, quem está querendo performance no início do programa?</p>
 
 <p>Uma última observação: dependendo do uso você pode ou não usar o retorno, e ele possui semântica booleana, pois caso o argumento não exista o retorno é NULL e por isso não cai dentro do if (pois NULL traduzido em booleano é false). Eis uma função para copiar e colar abusivamente.</p>
@@ -771,11 +807,11 @@ role="navigation" aria-label="main navigation">
 <span id="getarg" title="GetArg: the ultimate badass argv/argc parser"/></span>
 <section id="section_getarg">
 <p class="title"><a href="2018-08.html#getarg">#</a> GetArg: the ultimate badass argv/argc parser</p>
-<span class="title-heading">Caloni, 2018-08-30 <a href="2018-08.html#meu_novo_parseador_de_argc_argv">&lt;</a><a href="computer.html">computer</a><a href="2018-09.html#vcpkg_internals_como_o_gerenciador_de_pacotes_da_m$_funciona_por_dentro">&gt;</a><a href="2018-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_getarg')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2018-08-30 <a href="2018-08.html#meu_novo_parseador_de_argc_argv">&lt;</a><a href="computer.html">computer</a><a href="2018-09.html#vcpkg_internals_como_o_gerenciador_de_pacotes_da_m$_funciona_por_dentro">&gt;</a> <a href="2018-08.html#meu_novo_parseador_de_argc_argv">&lt;</a><a href="blog.html">blog</a><a href="2018-09.html#vcpkg_internals_como_o_gerenciador_de_pacotes_da_m$_funciona_por_dentro">&gt;</a><a href="2018-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_getarg')"><sup>[copy]</sup></a></span>
 
 <p>Sim, eu acho que já resumi o suficiente meu parseador de argv/argc no meu <a href="2018-08.html#meu_novo_parseador_de_argc_argv">último artigo sobre o tema</a>. Sim, eu também acho que a <a href="2018-01.html#como_parsear_argc_argv_para_um_map_stl">versão com STL</a> bonitinha (mas ordinária). A questão agora não são as dependências, mas o uso no dia-a-dia: precisa ter o argc nessa equação?</p>
 
-<p>A resposta é não. Pois, como sabemos, o padrão C/C++ nos informa que o argv é um array de ponteiros de strings C que termina em nulo. Sabemos que ele termina, então o argc é apenas um helper para sabermos de antemão onde ele termina. Mas quando precisamos, por exemplo, passar o argv/argc para uma thread Windows, que aceita apenas um argumento mágico, talvez minha versão antiga não seja tão eficaz, pois isso vai exibir que eu aloque memória de um struct que contenha ambas as variáveis, etc. Por que não simplesmente utilizar apenas o argv?</p>
+<p>A resposta é não. Pois, como sabemos, o padrão C/C++ nos informa que o argv é um array de ponteiros de strings C que termina em nulo. Sabemos que ele termina, então o argc é apenas um helper para sabermos de antemão onde ele termina. Mas quando precisamos, por exemplo, passar o argv/argc para uma thread Windows, que aceita apenas um argumento mágico, talvez minha versão antiga não seja tão eficaz, pois isso vai evitar que eu aloque memória de um struct que contenha ambas as variáveis, etc. Por que não simplesmente utilizar apenas o argv?</p>
 
 <img src="/journal/img/getarg_asi80x3.png"/>
 

@@ -56,9 +56,8 @@ role="navigation" aria-label="main navigation">
 <li><small><a href="2018-05.html#deadpool_2">Deadpool 2</a></small></li>
 <li><small><a href="2018-05.html#kakegurui">Kakegurui</a></small></li>
 <li><small><a href="2018-05.html#boost_meta_state_machine">Boost Meta State Machine</a></small></li>
-<li><small><a href="2018-05.html#ss">SSL e seu limite de pacote</a></small></li>
 <li><small><a href="2018-05.html#desejo_de_matar_1974">Desejo de Matar (1974)</a></small></li>
-<li><small><a href="2018-05.html#ss">SSL e seu limite de pacote</a></small></li>
+<li><small><a href="2018-05.html#ssl_tls_e_o_limite_de_16_kb">SSL, TLS e o limite de 16 KB</a></small></li>
 <li><small><a href="2018-05.html#extraordinario">Extraordinário</a></small></li>
 <li><small><a href="2018-05.html#pantera_negra">Pantera Negra</a></small></li>
 <li><small><a href="2018-05.html#the_room">The Room</a></small></li>
@@ -451,9 +450,9 @@ role="navigation" aria-label="main navigation">
 <span id="boost_meta_state_machine" title="Boost Meta State Machine"/></span>
 <section id="section_boost_meta_state_machine">
 <p class="title"><a href="2018-05.html#boost_meta_state_machine">#</a> Boost Meta State Machine</p>
-<span class="title-heading">Caloni, 2018-05-21 <a href="2018-04.html#lista_ligada_ta_ligado">&lt;</a><a href="computer.html">computer</a><a href="2018-05.html#ss">&gt;</a><a href="2018-05.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_boost_meta_state_machine')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2018-05-21 <a href="2018-04.html#lista_ligada_ta_ligado">&lt;</a><a href="computer.html">computer</a><a href="2018-05.html#ssl_tls_e_o_limite_de_16_kb">&gt;</a><a href="2018-05.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_boost_meta_state_machine')"><sup>[copy]</sup></a></span>
 
-<p>O Boost Meta State Machine (MSM for short) é uma das duas bibliotecas mais famosinhas de state machine do Boost. Ela é uma versão estática que permite incluir chamadas para as entradas e saídas de um estado baseado em eventos. A sua principal vantagem é poder visualizar toda a máquina de estado em um só lugar, e sua principal desvantagem é pertecer ao Boost, o que quer dizer que você vai precisar fazer seu terceiro doutorado e ler uma documentação imensa sobre UML antes de conseguir produzir alguma coisa. Ou ler este artigo de 10 minutos tops.</p>
+<p>O Boost Meta State Machine (MSM for short) é uma das duas bibliotecas mais famosinhas de state machine do Boost. Ela é uma versão estática que permite incluir chamadas para as entradas e saídas de um estado baseado em eventos. A sua principal vantagem é poder visualizar toda a máquina de estado em um só lugar, e sua principal desvantagem é pertencer ao Boost, o que quer dizer que você vai precisar fazer seu terceiro doutorado e ler uma documentação imensa sobre UML antes de conseguir produzir alguma coisa. Ou ler este artigo de 10 minutos tops.</p>
 
 <pre>
 #include &lt;iostream&gt;
@@ -543,12 +542,28 @@ namespace MyStateMachine
         typedef On initial_state
 
         struct transition_table :mpl::vector&lt;
-            //          Start Event           Next  Action
-            msmf::Row &lt; On,   Events::Event1, On,   msmf::none, msmf::none &gt;,
-            msmf::Row &lt; On,   Events::Event2, Tick, msmf::none, msmf::none &gt;,
-            msmf::Row &lt; Tick, Events::Event3, Tick, msmf::none, msmf::none &gt;,
-            msmf::Row &lt; Tick, Events::Event1, On,   msmf::none, msmf::none &gt;,
-            msmf::Row &lt; Tick, Events::Event2, Off,  msmf::none, msmf::none &gt;
+            msmf::Row&lt;
+            // Start, Event
+               On, Events::Event1,
+            // Next, Action
+               On, msmf::none, msmf::none
+            &gt;,
+            msmf::Row&lt;
+              On, Events::Event2,
+              Tick, msmf::none, msmf::none
+            &gt;,
+            msmf::Row&lt;
+              Tick, Events::Event3,
+              Tick, msmf::none, msmf::none
+            &gt;,
+            msmf::Row&lt;
+              Tick, Events::Event1,
+              On, msmf::none, msmf::none
+            &gt;,
+            msmf::Row&lt;
+              Tick, Events::Event2,
+              Off, msmf::none, msmf::none
+            &gt;
         &gt; {};
     };
 
@@ -643,40 +658,6 @@ int TestPathway()
 </section><hr/>
 
 
-<span id="ss" title="SSL e seu limite de pacote"/></span>
-<section id="section_ss">
-<p class="title"><a href="2018-05.html#ss">#</a> SSL e seu limite de pacote</p>
-<span class="title-heading">Caloni, 2018-05-22 <a href="2014-05.html#estruturas_vs_classes_fight">&lt;</a><a href="computer.html">computer</a><a href="2014-06.html#gina">&gt;</a><a href="2018-05.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_ss')"><sup>[copy]</sup></a></span>
-
-<p>O protocolo TLS/SSL tem por objetivo criar uma camada de criptografia assimétrica para a aplicação. E quando eu falo em camada não estou me referindo às camadas OSI. Nem às camadas TCP/IP. Isso porque o SSL não se encaixa em nenhuma das duas. Ele interfere com muitas, inclusive a aplicação. E aprendi isso a duras penas: na ponta do depurador.</p>
-
-<p>O pacote SSL tem um limite de 16 KB, ou 16384 bytes. Esse é o limite que será respeitado por qualquer implementação do protocolo, o que inclui o uso de <a href="https://www.boost.org/doc/libs/1_66_0/doc/html/boost_asio.html">Boost.Asio</a> e seu uso da <a href="https://www.openssl.org/">OpenSSL</a>. O que isso quer dizer na teoria é que você não pode trafegar sentido server=&gt;client nada maior que 16k bytes. O que isso quer dizer na prática é que sua aplicação não pode escrever mais que 16k bytes de uma vez no socket que vai dar pau.</p>
-
-<p>Sim, a camada de aplicação tem que estar ligada que existe SSL abaixo dela.</p>
-
-<p>Isso quer dizer que este snippet de código, por exemplo:</p>
-
-<pre>
-_sock.write_some(::boost::asio::buffer(output.data(), output.size()), err);
-</pre>
-<p>Não é inocente e não funciona sempre. Se _sock for um socket cuja comunicação está encriptada por SSL (em outras palavras -- em Boostês -- ele for um ssl_socket) você precisa escrever output em pequenas quantidades. Como em outra implementação inocente:</p>
-
-<pre>
-do
-{
-    size_t sz = std::min((size_t) LESS_THAN_16_KB, output.size());
-    _sock.write_some(::boost::asio::buffer(output.data(), sz), err);
-    output.erase(0, sz);
-}
-while (err.value() == boost::system::errc::success &amp;&amp; output.size() &gt; 0 );
-</pre>
-<p>Se isso não for feito e a ponta server escrever, digamos, 512KB, ou 17KB, ou qualquer coisa acima de 16KB, ela irá receber... 16 KB. E acabou. O resto se perder.</p>
-
-<p>Portanto, quando for mexer com SSL, esqueça OSI e esqueça TCP/IP. As coisas funcionam de uma maneira muito mais esotérica que qualquer programador de redes jamais viu, e jamais verá.</p>
-
-</section><hr/>
-
-
 <span id="desejo_de_matar_1974" title="Desejo de Matar (1974)"/></span>
 <section id="section_desejo_de_matar_1974">
 <p class="title"><a href="2018-05.html#desejo_de_matar_1974">#</a> Desejo de Matar (1974)</p>
@@ -697,49 +678,72 @@ while (err.value() == boost::system::errc::success &amp;&amp; output.size() &gt;
 </section><hr/>
 
 
-<span id="ss" title="SSL e seu limite de pacote"/></span>
-<section id="section_ss">
-<p class="title"><a href="2018-05.html#ss">#</a> SSL e seu limite de pacote</p>
-<span class="title-heading">Caloni, 2018-05-22 <a href="2014-05.html#estruturas_vs_classes_fight">&lt;</a><a href="computer.html">computer</a><a href="2014-06.html#gina">&gt;</a><a href="2018-05.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_ss')"><sup>[copy]</sup></a></span>
+<span id="ssl_tls_e_o_limite_de_16_kb" title="SSL, TLS e o limite de 16 KB"/></span>
+<section id="section_ssl_tls_e_o_limite_de_16_kb">
+<p class="title"><a href="2018-05.html#ssl_tls_e_o_limite_de_16_kb">#</a> SSL, TLS e o limite de 16 KB</p>
+<span class="title-heading">Caloni, 2018-05-22 <a href="2018-05.html#boost_meta_state_machine">&lt;</a><a href="computer.html">computer</a><a href="2018-07.html#manipulando_mouse_e_teclado_no_windows">&gt;</a> <a href="2018-04.html#lista_ligada_ta_ligado">&lt;</a><a href="blog.html">blog</a><a href="2018-07.html#vcpkg_gerenciador_de_libs_c++_para_linux_mac_os_e_windows">&gt;</a><a href="2018-05.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_ssl_tls_e_o_limite_de_16_kb')"><sup>[copy]</sup></a></span>
 
-<p><p>O protocolo TLS/SSL tem por objetivo criar uma camada de criptografia assimétrica para a aplicação. E quando eu falo em camada não estou me referindo às camadas OSI. Nem às camadas TCP/IP. Isso porque o SSL não se encaixa em nenhuma das duas. Ele interfere com muitas, inclusive a aplicação. E aprendi isso a duras penas: na ponta do depurador.</p>
-</p>
+<p>Em 2026-05-09 fiz um update com a ajuda do Chat-GPT que me corrigiu em alguns pontos. Ele é meio centrão, então fui tirando os exageros do meu texto original como "esqueça TCP" e "você vai perder dados se usar Boost::Asio". Fiquem apenas com a versão medíocre e sem alma ou discussão de nossas futuras vidas tecnológicas.</p>
 
-<p><p>O pacote SSL tem um limite de 16 KB, ou 16384 bytes. Esse é o limite que será respeitado por qualquer implementação do protocolo, o que inclui o uso de <a href="https://www.boost.org/doc/libs/1_66_0/doc/html/boost_asio.html">Boost.Asio</a> e seu uso da <a href="https://www.openssl.org/">OpenSSL</a>. O que isso quer dizer na teoria é que você não pode trafegar sentido server=&gt;client nada maior que 16k bytes. O que isso quer dizer na prática é que sua aplicação não pode escrever mais que 16k bytes de uma vez no socket que vai dar pau.</p>
-</p>
+<p>O protocolo TLS (ou SSL) tem por objetivo criar uma camada de criptografia assimétrica para a aplicação. E quando eu falo em camada não estou me referindo exatamente às camadas OSI nem às camadas TCP/IP. Isso porque TLS é uma dessas tecnologias que atravessam abstrações: formalmente ele fica entre aplicação e transporte, mas na prática influencia desde buffering até o comportamento esperado da própria aplicação.</p>
 
-<p><p>Sim, a camada de aplicação tem que estar ligada que existe SSL abaixo dela.</p>
-</p>
+<p>E aprendi isso a duras penas: na ponta do depurador.</p>
 
-<p><p>Isso quer dizer que este snippet de código, por exemplo:</p>
-</p>
+<p>O TLS trabalha internamente com records de até 16 KB de payload (16384 bytes). Isso não significa que você não possa enviar buffers maiores que isso. Na prática, implementações como OpenSSL fragmentam automaticamente os dados em múltiplos records TLS.</p>
+
+<p>O problema aparece quando usamos APIs como write_some, que não garantem o envio integral do buffer em uma única chamada. Isso já é verdade para sockets TCP normais, mas em conexões SSL/TLS o comportamento costuma ficar mais evidente.</p>
+
+<p>Em outras palavras: o erro não é enviar 512 KB. O erro é assumir que uma única chamada enviará tudo.</p>
+
+<p>Isso quer dizer que este snippet de código, por exemplo:</p>
 
 <pre>
-&lt;pre&gt;
-_sock.write_some(::boost::asio::buffer(output.data(), output.size()), err);
-&lt;/pre&gt;
-
+_sock.write_some(
+  boost::asio::buffer(
+    output.data(),
+    output.size()
+  ), err);
 </pre>
-<p><p>Não é inocente e não funciona sempre. Se _sock for um socket cuja comunicação está encriptada por SSL (em outras palavras -- em Boostês -- ele for um ssl_socket) você precisa escrever output em pequenas quantidades. Como em outra implementação inocente:</p>
-</p>
+<p>É inocente e não funciona sempre. Não porque SSL “corta” os dados em 16 KB, mas porque write_some pode escrever apenas parte do buffer. O restante continua pendente.</p>
+
+<p>O detalhe importante é que write_some retorna quantos bytes foram efetivamente enviados:</p>
 
 <pre>
-&lt;pre&gt;
+size_t sent =
+  _sock.write_some(
+    boost::asio::buffer(
+      output.data(),
+      output.size()
+    ), err);
+</pre>
+<p>Portanto, se você realmente quiser controlar manualmente os envios, precisa remover apenas os bytes efetivamente transmitidos:</p>
+
+<pre>
 do
 {
-    size_t sz = std::min((size_t) LESS_THAN_16_KB, output.size());
-    _sock.write_some(::boost::asio::buffer(output.data(), sz), err);
-    output.erase(0, sz);
+  size_t chunk =
+    std::min((size_t)16384, output.size());
+
+  size_t sent =
+    _sock.write_some(
+      boost::asio::buffer(output.data(), chunk),
+      err);
+
+  output.erase(0, sent);
 }
-while (err.value() == boost::system::errc::success &amp;amp;&amp;amp; output.size() &amp;gt; 0 );
-&lt;/pre&gt;
-
+while (
+  err.value() == boost::system::errc::success &amp;&amp;
+  !output.empty());
 </pre>
-<p><p>Se isso não for feito e a ponta server escrever, digamos, 512KB, ou 17KB, ou qualquer coisa acima de 16KB, ela irá receber... 16 KB. E acabou. O resto se perder.</p>
-</p>
+<p>Na prática, porém, o mais comum é simplesmente deixar o Boost.Asio cuidar disso usando `boost::asio::write`, que já faz internamente o loop necessário até transmitir todo o buffer:</p>
 
-<p><p>Portanto, quando for mexer com SSL, esqueça OSI e esqueça TCP/IP. As coisas funcionam de uma maneira muito mais esotérica que qualquer programador de redes jamais viu, e jamais verá.</p>
-</p>
+<pre>
+boost::asio::write(
+  _sock,
+  boost::asio::buffer(output),
+  err);
+</pre>
+<p>TLS é um bom lembrete de que abstrações de rede vazam. Em algum momento, toda aplicação precisa entender como os bytes realmente trafegam.</p>
 
 </section><hr/>
 

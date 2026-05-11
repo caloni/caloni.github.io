@@ -1,0 +1,143 @@
+﻿<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="python27_protobuf_py2exe_e_build_exe" title="Python27, protobuf, py2exe e build_exe"/></span>
+<section id="section_python27_protobuf_py2exe_e_build_exe">
+<p class="title">Python27, protobuf, py2exe e build_exe</p>
+<span class="title-heading">Caloni, 2018-07-14 computer blog</span>
+
+<p>Para quem está tentando compilar um executável usando py2exe e protobuf, #ficadica: desista. Ele não vai funcionar ou se funcionar vai dar trabalho. Em vez disso melhor usar build_exe (através do pacote cx_freeze), que é um esquema marotinho que permite configurar tudo e há apenas um patchzinho que precisa ser feito.</p>
+
+<p>Para entender como as coisas dão errado primeiro vamos instalar os requisitos de um pacote fictício em um ambiente virtualizado do Python (para evitar mexer na instalação padrão):</p>
+
+<pre>
+virtualenv python27
+New python executable in blablabla\python27\Scripts\python.exe
+Installing setuptools, pip, wheel...done.
+</pre>
+<p>Depois instalamos os requisitos de nosso pacote fictício:</p>
+
+<pre>
+python27\Scripts\activate.bat
+(python27) pushd blablabla\MyFictionalPackage
+(python27) blablabla\MyFictionalPackage&gt;pip install -r requirements.txt
+Installing protobuf, pyodbc, etc.
+</pre>
+<p>Agora vem a hora do erro. O protobuf que foi instalado possui um pequeno bug que impede que o build_exe obtenha essa dependência corretamente na hora de gerar o executável:</p>
+
+<pre>
+(python27) blablabla\MyFictionalPackage&gt;python setup.py build_exe
+running build_exe
+Traceback (most recent call last):
+  // ... long lines of errors
+  &quot;blablabla\python27\lib\site-packages\cx_Freeze\finder.py&quot;
+  , line 351, in _ImportModule
+    raise ImportError(&quot;No module named %r&quot; % name)
+ImportError: No module named 'google.protobuf'
+</pre>
+<p>Para fazer funcionar há um pequeno patch: criar um arquivo __init__.py dentro da pasta google onde está instalado o pacote do protobuf. A ramificação do pacote fica em size-packages, google, protobuf. Você precisa criar este __init__.py dentro da pasta google. Após essa pequena operação já será possível gerar o executável com sucesso:</p>
+
+<pre>
+(python27) blablabla\MyFictionalPackage&gt;python setup.py build_exe
+running build_exe
+copying blablabla\python27\lib\site-packages\cx_Freeze\bases\Console.exe -&gt;
+build\exe.win32-2.7\MyFictionalPackage.exe
+copying C:\WINDOWS\SYSTEM32\python27.dll -&gt; build\exe.win32-2.7\python27.dll
+install pywin32 extensions first
+writing zip file build\exe.win32-2.7\lib\library.zip
+
+  Name                      File
+  ----                      ----
+long list of files
+
+Missing modules:
+long list of modules
+This is not necessarily a problem - 
+the modules may not be needed on this platform.
+
+copying file1 -&gt;
+file2
+etc
+</pre>
+<p>Agora ao listarmos os executáveis gerados encontraremos nosso amigo fictício:</p>
+
+<pre>
+(python27) blablabla\MyFictionalPackage&gt;dir /s /b *.exe
+blablabla\MyFictionalPackage\build\exe.win32-2.7\MyFictionalPackage.exe
+</pre>
+<p>Nota: conteúdo do arquivo setup.py:</p>
+
+<pre>
+import sys
+import os
+from cx_Freeze import setup, Executable
+
+exe = [
+  Executable('MyFictionalPackage.py')
+]
+
+option = { 'build_exe' : {
+    'path' : sys.path.append(os.getcwd()),
+    'includes' : ['google.protobuf', 'pkgutil',
+                  'pyodbc', 'decimal'],
+  }
+}
+
+setup(name = &quot;teste_cx_Freeze&quot;,
+  version = &quot;0.1&quot;,
+  description = &quot;&quot;,
+  options = option,
+  executables=exe
+)
+</pre>
+</section>
+
+<span style="float: left;">
+ <a href="mailto:wanderley.caloni@gmail.com?subject=Comment%20about%3A%20Python27%2C%20protobuf%2C%20py2exe%20e%20build_exe">[comment]</a>
+ <a href="vcpkg_gerenciador_de_libs_c++_para_linux_mac_os_e_windows.html">[Vcpkg: gerenciador de libs c++ para Linux, Mac OS... e Windows!]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>
