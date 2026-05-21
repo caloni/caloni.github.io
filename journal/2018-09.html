@@ -631,7 +631,7 @@ c:\Libs\vcpkg\installed\x86-windows\share\bitforge
 <p class="title"><a href="2018-09.html#coroutine_internals">#</a> Coroutine Internals</p>
 <span class="title-heading">Caloni, 2018-09-18 <a href="2018-09.html#vcpkg_internals_como_o_gerenciador_de_pacotes_da_m$_funciona_por_dentro">&lt;</a><a href="computer.html">computer</a><a href="2018-10.html#boostbind_e_os_erros_escrotos">&gt;</a><a href="2018-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_coroutine_internals')"><sup>[copy]</sup></a></span>
 
-<p>Uma corrotinas é um mecanismo de troca de contexto onde apenas uma thread está envolvida. Ela me faz lembrar do Windows 3.0, não exatamente por não existirem threads (e não existiam mesmo), mas pelo caráter cooperativo dos diferentes códigos.</p>
+<p>Uma corrotina é um mecanismo de troca de contexto onde apenas uma thread está envolvida. Ela me faz lembrar do Windows 3.0, não exatamente por não existirem threads (e não existiam mesmo), mas pelo caráter cooperativo dos diferentes códigos.</p>
 
 <p>Só que no caso do Windows se a rotina de impressão travasse todo o sistema congelava.</p>
 
@@ -672,7 +672,7 @@ int main()
 
 <p>Oh, oh! A stack de cooperative nos indica que ela não partiu do main, apesar de ter sido chamada através da construção de `coroutine&lt;void&gt;::pull_type`. O método sink chamado logo após imprimir "Hello" deve colocar essa rotina para dormir, voltando o controle para main. Vamos ver como isso é feito.</p>
 
-<p>&lt;https://www.youtube.com/embed/xoAxig6vdTM&gt;</p>
+<p>https://www.youtube.com/watch?v=xoAxig6vdTM</p>
 
 <p>Oh, não. O depurador do Visual Studio está fazendo caquinha, pois rodando passo-a-passo voltei para a mesma função cooperative sem passar pelo main. No entanto, a vírgula ", " foi impressa.</p>
 
