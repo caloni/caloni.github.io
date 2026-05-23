@@ -63,7 +63,7 @@ int main()
 </pre>
 <p>Tirando o fato que o fonte é candidato forte ao <a href="http://www.ioccc.org">The International Obfuscated C Code Contest</a>, o pessoal do linux disse para ele que o dito cujo não compilava no GCC, e que em algum lugar naquelas 4 linhas dentro do main alguma coisa não era padrão da linguagem.</p>
 
-<p>Procurado para resolver o problema, dado minha inata vocação para <a href="2007-12.html#curiosidades_inuteis_o_operador_de_subscrito_em_c">assuntos aleatórios</a>, resolvi resolver as coisas no bom e velho Visual Studio 2003. Afinal de contas, ele compila fontes em C, também. Basta alterarmos a extensão de um fonte de .cpp para .c. E foi o que eu fiz. Foi assim que encontrei o seguinte erro de compilação, que não ocorre ao compilar o mesmo fonte em um arquivo C++:</p>
+<p>Procurado para resolver o problema, dado minha inata vocação para <a href="2007-12.html#curiosidades_inuteis_o_operador_de_subscrito_em_c">assuntos aleatorios</a>, resolvi resolver as coisas no bom e velho Visual Studio 2003. Afinal de contas, ele compila fontes em C, também. Basta alterarmos a extensão de um fonte de .cpp para .c. E foi o que eu fiz. Foi assim que encontrei o seguinte erro de compilação, que não ocorre ao compilar o mesmo fonte em um arquivo C++:</p>
 
 <pre>
 error C2106: '=' : left operand must be l-value
@@ -79,7 +79,7 @@ error C2106: '=' : left operand must be l-value
 | [R2L] =   ?:  [L2R] |
 | [L2R] ,   ,   [L2R] |
 </pre>
-<p>Nota-se que no final da tabela existe uma inversão na precedência entre ooperador condicional ternário e os operadores de atribuição; isso semcontar que a ordem de avaliação também muda. Em C, o operador ternário éavaliado da direita pra esquerda (R2L, Right to Left), enquanto em C++ daesquerda pra direita (L2R), aliás como a maioria na tabela completa. Isso vai fazer com que, na linha 6, a mesma expressão tenha diferentes interpretações para cada linguagem.</p>
+<p>Nota-se que no final da tabela existe uma inversão na precedência entre o operador condicional ternário e os operadores de atribuição; isso sem contar que a ordem de avaliação também muda. Em C, o operador ternário é avaliado da direita pra esquerda (R2L, Right to Left), enquanto em C++ da esquerda pra direita (L2R), aliás como a maioria na tabela completa. Isso vai fazer com que, na linha 6, a mesma expressão tenha diferentes interpretações para cada linguagem.</p>
 
 <p>Para entender passo a passo o problema, vamos destrinchar a segunda parte do laço for da linha 6:</p>
 
@@ -106,7 +106,7 @@ error C2106: '=' : left operand must be l-value
   :
   (f1 = 12), f1 &lt;= 11;
 </pre>
-<p>2026-03-22 Antigamente meus códigos possuíam cores e havia uma separaçãoaqui entre vermelho, verde e azul. Eu removi o parágrafo descrevendo aordem de precedência por cores e reformatei o código para explicitar pelosparênteses a ordem a ser seguida.</p>
+<p>2026-03-22 Antigamente meus códigos possuíam cores e havia uma separação aqui entre vermelho, verde e azul. Eu removi o parágrafo descrevendo a ordem de precedência por cores e reformatei o código para explicitar pelos parênteses a ordem a ser seguida.</p>
 
 <p>Agora analisemos em C. Nessa linguagem, ao contrário de C++, os operadores ternários possuem precedência maior que os operadores de atribuição, e são avaliados da direita para a esquerda. Isso quer dizer que primeiro o último operador ternário é avaliado, ignorando a atribuição mais à direita, e depois o primeiro operador ternário é avaliado. Só depois disso que a atribuição mais à direita é feita:</p>
 
@@ -172,7 +172,7 @@ int main()
 
 <p>2006-05-03 Daniel Quadros:</p>
 
-<p>Felizmente eu costumo usar parenteses ao invés de depender da precedênciados operadores. Por exemplo, eu escreveria ((f1==11)&amp;&amp;(s!=5)). Além disso,já passei da fase de economizar linhas e colunas no fonte. A minha versãopara a tabuada (não reproduzindo a esquisitice do fator 0 na segunda metade)seria:</p>
+<p>Felizmente eu costumo usar parenteses ao invés de depender da precedência dos operadores. Por exemplo, eu escreveria ((f1==11)&amp;&amp;(s!=5)). Além disso, já passei da fase de economizar linhas e colunas no fonte. A minha versão para a tabuada (não reproduzindo a esquisitice do fator 0 na segunda metade) seria:</p>
 
 <pre>
 #include &lt; stdio.h &gt;
@@ -186,10 +186,10 @@ int main()
    for (f1 = 1; f1 &lt;= 10; f1++)
    {
     for (f2 = 1+s; f2 &lt;= (5+s); f2++)
-     printf (&quot;%dx%d=%d%c&quot;, f2, f1, f1*f2, (f2==5+s) ? \'\\n\': \'\\t\');
+     printf (&quot;%dx%d=%d%c&quot;, f2, f1, f1*f2, (f2==5+s) ? '\n': '\t');
    }
    if (s != 5)
-    putchar(\'\\n\');
+    putchar('\n');
   }
 
   return 0;
@@ -496,7 +496,7 @@ int main(int argc, char* argv[])
 <span id="vcpp_2005_windows_95" title="VC++ 2005 e Windows 95 não casam"/></span>
 <section id="section_vcpp_2005_windows_95">
 <p class="title"><a href="2006-05.html#vcpp_2005_windows_95">#</a> VC++ 2005 e Windows 95 não casam</p>
-<span class="title-heading">Caloni, 2006-05-26 <a href="2006-05.html#visual_studio_2005">&lt;</a><a href="computer.html">computer</a><a href="2020-09.html#historia_do_windows">&gt;</a> <a href="2006-05.html#visual_studio_2005">&lt;</a><a href="blog.html">blog</a><a href="2007-06.html#about">&gt;</a><a href="2006-05.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_vcpp_2005_windows_95')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2006-05-26 <a href="2006-05.html#visual_studio_2005">&lt;</a><a href="computer.html">computer</a><a href="2006-11.html#historia_do_windows">&gt;</a> <a href="2006-05.html#visual_studio_2005">&lt;</a><a href="blog.html">blog</a><a href="2007-06.html#about">&gt;</a><a href="2006-05.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_vcpp_2005_windows_95')"><sup>[copy]</sup></a></span>
 
 <p>Hoje foi mais um dia de surpresas com a nova versão do ambiente de programação da Microsoft. De cara descobrimos que programas que usam a nova CRT não rodam no Windows 95. Eu quero dizer: não é um projeto específico; QUALQUER projeto não irá rodar. Tentamos executar um projeto vazio e existe uma dependência da função IsDebuggerPresent nos executáveis gerados. Essa função API inexiste nessa versão do SO.</p>
 
@@ -637,7 +637,7 @@ _imp__IsDebuggerPresent(VOID)
 
 <span style="float: left;">
  <a href="2006-04.html">[2006-04]</a>
- <a href="2007-06.html">[2007-06]</a>
+ <a href="2006-11.html">[2006-11]</a>
 </span>
 </div>
 </div>
