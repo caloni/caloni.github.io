@@ -1362,9 +1362,9 @@ int sockMerchant(int n, vector&lt;int&gt; ar)
 
 <img src="/journal/img/segment_tree_segment_tree.png"/>
 
-<p>Dessa forma, podemos concluir que o espaço ocupado por uma árvore binária para implementar um segment tree completo deve ocupar por volta de `2*N-1`, o espaço para implementar uma árvore binária completa com N folhas.</p>
+<p>Dessa forma, podemos concluir que o espaço ocupado por uma árvore binária para implementar um segment tree completo deve ocupar por volta de <code>2*N-1</code>, o espaço para implementar uma árvore binária completa com N folhas.</p>
 
-<p>No entanto, o tamanho para estocar uma segment tree não é esse, mas tipicamente `4*N`. O motivo disso é que nós precisamos de `2*next_power_of_two(N)-1` para garantir que as divisões da árvore todas vão estar representadas, mas como custa processamento descobrir qual a próxima potência de 2 que é maior que N uma aproximação válida é usar `4*N`.</p>
+<p>No entanto, o tamanho para estocar uma segment tree não é esse, mas tipicamente <code>4*N</code>. O motivo disso é que nós precisamos de <code>2*next_power_of_two(N)-1</code> para garantir que as divisões da árvore todas vão estar representadas, mas como custa processamento descobrir qual a próxima potência de 2 que é maior que N uma aproximação válida é usar <code>4*N</code>.</p>
 
 <p>Vamos observar a implementação de uma árvore de segmentos. A primeira coisa é alocar o espaço necessário em um vetor. Digamos que nossa árvore irá conter os intervalos de 1 a 1000 (inclusive).</p>
 
@@ -1531,7 +1531,7 @@ int main() {
 <p class="title"><a href="2023-04.html#hash_table_giratoria">#</a> Hash Table Giratória</p>
 <span class="title-heading">Caloni, 2023-04-19 <a href="2023-04.html#segment_tree">&lt;</a><a href="computer.html">computer</a><a href="2023-04.html#edsger_dijkstra_without_pencil_and_paper">&gt;</a> <a href="2023-04.html#segment_tree">&lt;</a><a href="interview.html">interview</a><a href="2023-04.html#hacker_rank_array_part_1">&gt;</a><a href="2023-04.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_hash_table_giratoria')"><sup>[copy]</sup></a></span>
 
-<p>Ainda estudando e praticando testes de entrevista me veio essa em que seja possível realizar somas para todas as chaves de uma hash table. Curioso, nunca tinha pensado nesta feature. Imagine que temos uma tabela de hash entre inteiros em que `{ 1: 8, 2: 9 }`. A chave corresponde ao hash.</p>
+<p>Ainda estudando e praticando testes de entrevista me veio essa em que seja possível realizar somas para todas as chaves de uma hash table. Curioso, nunca tinha pensado nesta feature. Imagine que temos uma tabela de hash entre inteiros em que <code>{ 1: 8, 2: 9 }</code>. A chave corresponde ao hash.</p>
 
 <pre>
 | -5: | -4: | -3: | -2: | -1: | 0: | 1:8 | 2:9 | 3: | 4: | 5: |...
@@ -1595,7 +1595,7 @@ vector&lt;int&gt;* FindItem(HashTable&amp; hashTable, int key) {
     return nullptr;
 }
 </pre>
-<p>Uma parte importante no código acima é entender que a hash function apenas pega o resto da divisão do tamanho da tabela. Porém, o método de subscrito da tabela considera onde ela começa, o `currentPosition`, que pode ser em qualquer lugar, dependendo das movimentações do usuário.</p>
+<p>Uma parte importante no código acima é entender que a hash function apenas pega o resto da divisão do tamanho da tabela. Porém, o método de subscrito da tabela considera onde ela começa, o <code>currentPosition</code>, que pode ser em qualquer lugar, dependendo das movimentações do usuário.</p>
 
 <pre>
 int actualPosition = (currentPosition + position) % tableSize;
@@ -1999,9 +1999,9 @@ long arrayManipulation(int n, vector&lt;vector&lt;int&gt;&gt; queries) {
 </pre>
 <h2>Left Rotation</h2>
 
-<p>To solve the <a href="https://www.hackerrank.com/challenges/ctci-array-left-rotation">left rotation problem</a> in C++ is somewhat easy, since there is already an algorithm in STL to do that: `std::rotate`. Anyway, I didn't know that before my first implementation, that was to create a new vector and copy the old vector to the new one obeying the new positions.</p>
+<p>To solve the <a href="https://www.hackerrank.com/challenges/ctci-array-left-rotation">left rotation problem</a> in C++ is somewhat easy, since there is already an algorithm in STL to do that: <code>std::rotate</code>. Anyway, I didn't know that before my first implementation, that was to create a new vector and copy the old vector to the new one obeying the new positions.</p>
 
-<p>However, the last version of the solution of this issue was using the `std::rotate` function, that is a simple, elegant algorithm:</p>
+<p>However, the last version of the solution of this issue was using the <code>std::rotate</code> function, that is a simple, elegant algorithm:</p>
 
 <pre>
 template &lt;class ForwardIterator&gt;

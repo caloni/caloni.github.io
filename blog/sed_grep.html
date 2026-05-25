@@ -120,19 +120,19 @@ h
 <pre>
 programa | sed -e &quot;s/^.*\\//&quot; -e &quot;s/.*\.\(.*\)/\1/&quot; | sort -u
 </pre>
-<p>Os caracteres .*[]^$\ dão problemas se usados sem escape no sed, pois fazem parte dos comandos para procurar expressões regulares. Use-os com o caractere de escape `\`.</p>
+<p>Os caracteres .*[]^$\ dão problemas se usados sem escape no sed, pois fazem parte dos comandos para procurar expressões regulares. Use-os com o caractere de escape <code>\</code>.</p>
 
 <p>Obs de 2026-02-20: O comando sort do Windows pode entrar em conflito com o sort da GNU. Nesse caso é preciso especificar o path completo do sort correto ou colocar o path das ferramentas GNU com prioridade maior que as do system32, o que eu não recomendo.</p>
 
 <p>Para concatenar comandos no sed, use sempre -e "comando". A ordem de execução dos comandos é a ordem em que eles são inseridos na linha de comando, ou seja, podemos confiar que no segundo comando o primeiro já terá sido executado e assim por diante.</p>
 
-<p>Para fazer o escape das barras do caminho de um arquivo temos que usar o conjunto `\/` (obs.: caminhos em formato Unix). Para evitar esse uso enfadonho podemos substituir o caractere de divisão do comando s colocando-o na frente:</p>
+<p>Para fazer o escape das barras do caminho de um arquivo temos que usar o conjunto <code>\/</code> (obs.: caminhos em formato Unix). Para evitar esse uso enfadonho podemos substituir o caractere de divisão do comando s colocando-o na frente:</p>
 
 <pre>
 s/path\/muito\/muito\/longo.cpp/outropath\/muito\/muito\/longo.cpp/
 s#/path/muito/muito/longo.cpp#/outropath/muito/muito/longo.cpp#
 </pre>
-<p>Para agrupar expressõe, use sempre `\(` e `\)`. É o contrário do uso dos caracteres especiais. Coisas de Unix.</p>
+<p>Para agrupar expressõe, use sempre <code>\(</code> e <code>\)</code>. É o contrário do uso dos caracteres especiais. Coisas de Unix.</p>
 
 <h4>// Comments</h4>
 

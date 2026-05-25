@@ -276,7 +276,7 @@ role="navigation" aria-label="main navigation">
 <span id="visual_studio_unit_test_c++" title="Visual Studio Unit Test (C++)"/></span>
 <section id="section_visual_studio_unit_test_c++">
 <p class="title"><a href="2019-05.html#visual_studio_unit_test_c++">#</a> Visual Studio Unit Test (C++)</p>
-<span class="title-heading">Caloni, 2019-05-06 <a href="2019-04.html#const_int_pointer_var">&lt;</a><a href="computer.html">computer</a><a href="2019-05.html#coroutines_em_c_picoro">&gt;</a><a href="2019-05.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_visual_studio_unit_test_c++')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2019-05-06 <a href="2019-04.html#const_int_pointer_var">&lt;</a><a href="computer.html">computer</a><a href="2019-05.html#coroutines_em_c_picoro">&gt;</a> <a href="2019-04.html#const_int_pointer_var">&lt;</a><a href="blog.html">blog</a><a href="2019-05.html#coroutines_em_c_picoro">&gt;</a><a href="2019-05.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_visual_studio_unit_test_c++')"><sup>[copy]</sup></a></span>
 
 <p>Desde o Visual Studio 2015 há suporte a unit tests em C++ automatizado na IDE. Porém, a partir do VS 2017 15.5 o suporte aumentou drasticamente, vindo embutidos os suportes para as bibliotecas de teste Google Test, Boost.Test e CTest. Além, é claro, do Microsoft Unit Testing Framework for C++, o caseiro da M$.</p>
 
@@ -448,27 +448,27 @@ namespace Microsoft{ namespace VisualStudio {namespace CppUnitTestFramework
 <span id="coroutines_em_c_picoro" title="Coroutines Em C: Picoro"/></span>
 <section id="section_coroutines_em_c_picoro">
 <p class="title"><a href="2019-05.html#coroutines_em_c_picoro">#</a> Coroutines Em C: Picoro</p>
-<span class="title-heading">Caloni, 2019-05-08 <a href="2019-05.html#visual_studio_unit_test_c++">&lt;</a><a href="computer.html">computer</a><a href="2019-05.html#c_resolve_tudo_clos">&gt;</a><a href="2019-05.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_coroutines_em_c_picoro')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2019-05-08 <a href="2019-05.html#visual_studio_unit_test_c++">&lt;</a><a href="computer.html">computer</a><a href="2019-05.html#c_resolve_tudo_clos">&gt;</a> <a href="2019-05.html#visual_studio_unit_test_c++">&lt;</a><a href="blog.html">blog</a><a href="2019-05.html#c_resolve_tudo_orientacao_a_objetos_com_polimorfismo">&gt;</a><a href="2019-05.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_coroutines_em_c_picoro')"><sup>[copy]</sup></a></span>
 
 <p>Tantas linguagens hoje em dia tentando implementar a abstração de corrotinas e inserindo mais camadas de abstração (fibras e cereais)... há duas implementações já no Boost, ambas dependendo de uma biblioteca de contexto de stack que é dependente de arquitetura (programada em Assembly).</p>
 
 <p>E aqui está a linguagem C com sua elegância, minimalismo e a filosofia "just works", por mais ou menos 50 anos.</p>
 
-<p>Estava pesquisando sobre bibliotecas de corrotinas em C e encontrei a <a href="http://dotat.at/cgi/~fanf/dotat/~fanf/dotat/git/picoro.git">Picoro</a>, de Tony Finch. O repositório pode ser baixado em git://git.chiark.greenend.org.uk/~fanf/picoro.git. Três coisas me encantaram nela:</p>
+<p>Estava pesquisando sobre bibliotecas de corrotinas em C e encontrei a <a href="http://dotat.at/cgi/~fanf/dotat/~fanf/dotat/git/picoro.git">Picoro</a>, de Tony Finch. Três coisas me encantaram nela:</p>
 
 <p>1. portabilidade (fácil de testar em qualquer arquitetura).</p>
 
-<p>2. simplificade (um header e um .c com menos de 200 linhas, e a maioria são comentários).</p>
+<p>2. simplicidade (um header e um .c com menos de 200 linhas, e a maioria são comentários).</p>
 
 <p>3. manutenção (o último commit é de 2010, ou seja, ninguém mais mexeu nela por nove anos).</p>
 
 <p>Ela é uma biblioteca feita para resolver o problema mais básico de toda corrotina: troca de contexto. Isso é feito de maneira descentralizada, embora ela inicie com uma corrotina principal: a primeira que constrói uma corrotina. A partir dessa é possível criar outras e dar resume em qualquer uma delas que não tenha terminado.</p>
 
-<p>A linguagem C já implementa troca de contexto através das funções padrão `setjmp` e `longjmp`. Há um tipo dependente de arquitetura, `jmp_buf`, que é usado para guardar o contexto. O salto é feito no estilo da função `fork` do Unix, ou seja, não há inclusão de mais nenhuma sintaxe diferente do usual: é um if que retorna 0 (contexto principal) ou não-0 (estamos em outro contexto).</p>
+<p>A linguagem C já implementa troca de contexto através das funções padrão <code>setjmp</code> e <code>longjmp</code>. Há um tipo dependente de arquitetura, <code>jmp_buf</code>, que é usado para guardar o contexto. O salto é feito no estilo da função <code>fork</code> do Unix, ou seja, não há inclusão de mais nenhuma sintaxe diferente do usual: é um if que retorna 0 (contexto principal) ou não-0 (estamos em outro contexto).</p>
 
-<p>O picoro organiza tudo isso em torno de uma lista ligada. Aliás, de duas listas ligadas: `running` e `idle`, onde o head de cada uma delas é usado para verificar se há corrotinas paradas ou em execução. Há algumas regras básicas para que tudo funcione. Por exemplo, uma corrotina que já foi executada até o final ou que está bloqueada pela chamada de `resume` não pode ser posta para rodar.</p>
+<p>O picoro organiza tudo isso em torno de uma lista ligada. Aliás, de duas listas ligadas: <code>running</code> e <code>idle</code>, onde o head de cada uma delas é usado para verificar se há corrotinas paradas ou em execução. Há algumas regras básicas para que tudo funcione. Por exemplo, uma corrotina que já foi executada até o final ou que está bloqueada pela chamada de <code>resume</code> não pode ser posta para rodar.</p>
 
-<p>Vamos começar com um exemplo simples: apenas um corrotina que recebe um inteiro e incrementa três vezes. A cada vez que ele incrementa ele devolve o controle de execução via yield. O `main` cria três dessas corrotinas e dá resume em cada uma delas três vezes, finalizando a execução de todas. Ao final, o counter final é de 9.</p>
+<p>Vamos começar com um exemplo simples: apenas uma corrotina que recebe um inteiro e incrementa três vezes. A cada vez que ele incrementa ele devolve o controle de execução via yield. O <code>main</code> cria três dessas corrotinas e dá resume em cada uma delas três vezes, finalizando a execução de todas. Ao final, o counter final é de 9.</p>
 
 <pre>
 #include &quot;..\picoro\picoro.h&quot;
@@ -506,7 +506,7 @@ int main()
     return 0;
 }
 </pre>
-<p>É importante observar que o uso de troca de contexto pode facilmente consumir a pilha, pois ela está sendo compartilhada com muitas funções em paralelo. Para reservar espaço a `coroutine_start` aloca um array de 16 KB (fixo). Esses detalhes de implementação podem ser alterados, pois a biblioteca é tão mínima e simples de entender que construir qualquer coisa em cima dela é trivial.</p>
+<p>É importante observar que o uso de troca de contexto pode facilmente consumir a pilha, pois ela está sendo compartilhada com muitas funções em paralelo. Para reservar espaço a <code>coroutine_start</code> aloca um array de 16 KB (fixo). Esses detalhes de implementação podem ser alterados, pois a biblioteca é tão mínima e simples de entender que construir qualquer coisa em cima dela é trivial.</p>
 
 </section><hr/>
 
@@ -774,7 +774,7 @@ int main()
 <span id="c_resolve_tudo_orientacao_a_objetos_com_polimorfismo" title="C Resolve Tudo: Orientação a Objetos (com Polimorfismo)"/></span>
 <section id="section_c_resolve_tudo_orientacao_a_objetos_com_polimorfismo">
 <p class="title"><a href="2019-05.html#c_resolve_tudo_orientacao_a_objetos_com_polimorfismo">#</a> C Resolve Tudo: Orientação a Objetos (com Polimorfismo)</p>
-<span class="title-heading">Caloni, 2019-05-17 <a href="2019-05.html#c_resolve_tudo_clos">&lt;</a><a href="computer.html">computer</a><a href="2019-05.html#c_resolve_tudo_goto">&gt;</a><a href="2019-05.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_c_resolve_tudo_orientacao_a_objetos_com_polimorfismo')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2019-05-17 <a href="2019-05.html#c_resolve_tudo_clos">&lt;</a><a href="computer.html">computer</a><a href="2019-05.html#c_resolve_tudo_goto">&gt;</a> <a href="2019-05.html#coroutines_em_c_picoro">&lt;</a><a href="blog.html">blog</a><a href="2019-05.html#c_resolve_tudo_goto">&gt;</a><a href="2019-05.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_c_resolve_tudo_orientacao_a_objetos_com_polimorfismo')"><sup>[copy]</sup></a></span>
 
 <p>Como programadores há um vício em nossas cabeças que é estar constantemente buscando a bala de prata, ou seja, a solução final e única para todos os nossos problemas de implementação. Com o tempo e alguma experiência descobrimos que tal coisa não existe, mas até lá nos encantamos com esse ou aquele framework, e claro, com essa ou aquela linguagem.</p>
 
@@ -784,7 +784,7 @@ int main()
 
 <p>Mas aí você deve estar se perguntando: "supor que uma linguagem resolve tudo não é estar defendendo também uma bala de prata?". A resposta é sim e não. Sim, é uma bala de prata se você pensar que pode fazer do zero sites e interfaces gráficas modernas em C puro. Mas a resposta também é não porque eu estou trabalhando em uma outra camada, aquela em que as soluções que ficam pra sempre são implementadas. Estou falando de pensar sempre na linguagem C quando estiver interessado no funcionamento das outras soluções.</p>
 
-<p>Esse mindset propost tem como objetivo impedir que você pense que as outras soluções são mágicas porque se você consegue pensar em C ela é real. Se tem algo que a linguagem C não é esse algo é mágica. C é uma simples abstração de uma máquina virtual que se relaciona de maneira muito íntima com as implementações em assembly de várias arquiteturas. Mágica é algo que te impede de enxergar em que momento uma solução se encontra com o hardware. C nunca irá te impedir de fazer isso.</p>
+<p>Esse mindset proposto tem como objetivo impedir que você pense que as outras soluções são mágicas porque se você consegue pensar em C ela é real. Se tem algo que a linguagem C não resolve esse algo é mágica. C é uma simples abstração de uma máquina virtual que se relaciona de maneira muito íntima com as implementações em assembly de várias arquiteturas. Mágica é algo que te impede de enxergar em que momento uma solução se encontra com o hardware. C nunca irá te impedir de fazer isso.</p>
 
 <p>Dito isto, vamos analisar algumas balas de prata e entender como em C isso é implementado para revelar a mágica.</p>
 
@@ -816,7 +816,7 @@ int main()
     obj.method(10);
 }
 </pre>
-<p>A sobrecarga se torna algo trivial, bem documentada através dos nomes das funções que você está chamando. Tudo fica às claras, nada implícito, nada disse que me disse. Se eu chamo um método NewMyClass2 é óbvio que estou construindo uma segunda versão baseada na primeira, e posso inclusive comparar para ver se os métodos são originais ou sobrescritos com `obj.method == &amp;method`, por exemplo. Além disso, é possível realizar composições de tipos onde alguns métodos são sobrescritos enquanto outros são compostos por chamadas duplas, triplas. Não há qualquer limitação ao polimorfismo exceto o que você define.</p>
+<p>A sobrecarga se torna algo trivial, bem documentada através dos nomes das funções que você está chamando. Tudo fica às claras, nada implícito, nada disse-que-me-disse. Se eu chamo um método NewMyClass2 é óbvio que estou construindo uma segunda versão baseada na primeira, e posso inclusive comparar para ver se os métodos são originais ou sobrescritos com <code>obj.method == &amp;method</code>, por exemplo. Além disso, é possível realizar composições de tipos onde alguns métodos são sobrescritos enquanto outros são compostos por chamadas duplas, triplas. Não há qualquer limitação ao polimorfismo exceto o que você define.</p>
 
 <pre>
 struct MyClass
@@ -1514,7 +1514,7 @@ int main()
 <span id="c_resolve_tudo_goto" title="C Resolve Tudo: goto"/></span>
 <section id="section_c_resolve_tudo_goto">
 <p class="title"><a href="2019-05.html#c_resolve_tudo_goto">#</a> C Resolve Tudo: goto</p>
-<span class="title-heading">Caloni, 2019-05-28 <a href="2019-05.html#c_resolve_tudo_orientacao_a_objetos_com_polimorfismo">&lt;</a><a href="computer.html">computer</a><a href="2019-07.html#como_publicar_seu_blog_em_hugo_para_ebook">&gt;</a><a href="2019-05.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_c_resolve_tudo_goto')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2019-05-28 <a href="2019-05.html#c_resolve_tudo_orientacao_a_objetos_com_polimorfismo">&lt;</a><a href="computer.html">computer</a><a href="2019-07.html#como_publicar_seu_blog_em_hugo_para_ebook">&gt;</a> <a href="2019-05.html#c_resolve_tudo_orientacao_a_objetos_com_polimorfismo">&lt;</a><a href="blog.html">blog</a><a href="2019-07.html#como_publicar_seu_blog_em_hugo_para_ebook">&gt;</a><a href="2019-05.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_c_resolve_tudo_goto')"><sup>[copy]</sup></a></span>
 
 <p>Para quem decide usar a linguagem C para resolver tudo, a gota da água é o goto. Ele é flexível, cabe em (quase) qualquer ponto do código e tem 1001 utilidades. O goto é o bombril da engenharia de software.</p>
 

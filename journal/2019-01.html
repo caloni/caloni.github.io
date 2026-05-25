@@ -105,7 +105,7 @@ role="navigation" aria-label="main navigation">
 <span id="bug_no_boost_asio_usando_funcao_acceptex_do_winsock" title="Bug no Boost Asio usando função AcceptEx do Winsock"/></span>
 <section id="section_bug_no_boost_asio_usando_funcao_acceptex_do_winsock">
 <p class="title"><a href="2019-01.html#bug_no_boost_asio_usando_funcao_acceptex_do_winsock">#</a> Bug no Boost Asio usando função AcceptEx do Winsock</p>
-<span class="title-heading">Caloni, 2019-01-06 <a href="2018-12.html#a_maneira_errada_de_comecar_um_projeto_e_com_visual_studio">&lt;</a><a href="computer.html">computer</a><a href="2019-03.html#debug_remoto_no_visual_studio_2010_ou_superior">&gt;</a><a href="2019-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_bug_no_boost_asio_usando_funcao_acceptex_do_winsock')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2019-01-06 <a href="2018-12.html#a_maneira_errada_de_comecar_um_projeto_e_com_visual_studio">&lt;</a><a href="computer.html">computer</a><a href="2019-03.html#debug_remoto_no_visual_studio_2010_ou_superior">&gt;</a> <a href="2018-12.html#a_maneira_errada_de_comecar_um_projeto_e_com_visual_studio">&lt;</a><a href="blog.html">blog</a><a href="2019-04.html#code_jam_2019_qualification_round">&gt;</a><a href="2019-01.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_bug_no_boost_asio_usando_funcao_acceptex_do_winsock')"><sup>[copy]</sup></a></span>
 
 <p>Depois de um mês de correção e mais um ou dois meses preparando um compilado do que ocorreu no software que estamos mantendo, foi descoberta uma situação muito peculiar que ocorre tanto em Windows XP quanto no Windows 10, mas que no 10 tem uma correção bem-educada e no XP... bom, nem tanto.</p>
 
@@ -200,7 +200,7 @@ ClientSocket = socket(result-&gt;ai_family, result-&gt;ai_socktype, result-&gt;a
 
 <h2>Solução #1 (Windows Vista ou superior): InitializeProcThreadAttributeList e UpdateProcThreadAttribute</h2>
 
-<p>A solução para evitar handles herdáveis que não são desejáveis é proposta pelo Raymond Chen <a href="https://blogs.msdn.microsoft.com/oldnewthing/20111216-00/?p=8873/">em seu blog</a>: usar as API InitializeProcThreadAttributeList e UpdateProcThreadAttribute. Com isso é possível especificar quais handles podem ser herdados pelo processo_filho, e obviamente iremos colocar na lista apenas os arquivos de entrada e saída padrão (obs: não duplicar saída_padrão com erro_padrão quando ambos são o mesmo arquivo/handle).</p>
+<p>A solução para evitar handles herdáveis que não são desejáveis é proposta pelo Raymond Chen em seu blog: usar as API InitializeProcThreadAttributeList e UpdateProcThreadAttribute. Com isso é possível especificar quais handles podem ser herdados pelo processo_filho, e obviamente iremos colocar na lista apenas os arquivos de entrada e saída padrão (obs: não duplicar saída_padrão com erro_padrão quando ambos são o mesmo arquivo/handle).</p>
 
 <h2>Solução #2 (Windows XP): Ad Hoc</h2>
 
@@ -220,7 +220,7 @@ ClientSocket = socket(result-&gt;ai_family, result-&gt;ai_socktype, result-&gt;a
 
 <p>Já para o Boost.Asio será necessário um estudo de impacto e o envio de uma proposta de correção (ou uso de um patch em que a criação do socket cliente deve ser feita sem herança). Isso pode potencialmente quebrar o funcionamento de outros tipos de programas que dependem direta ou indiretamente da herança de todos os sockets, ou talvez o Boost.Asio tenha uma maneira educada de entregar o controle da criação de sockets dependente de implementação. Eu não sei. Este é um próximo passo da pesquisa.</p>
 
-<p>Update (2019-01-07): Embora use a função WSASocketW o Boost.Asio não suporta a parametrização das flags, e sua implementação não é sobrecarregável, fazendo parte do namespace socket_opt. Foi criado <a href="https://github.com/boostorg/asio/issues/190">um issue</a> no GitHub do projeto Boost.Asio para ver os comentários e colocações da equipe. No aguardo.</p>
+<p>Update (2019-01-07): Embora use a função WSASocketW o Boost.Asio não suporta a parametrização das flags, e sua implementação não é sobrecarregável, fazendo parte do namespace socket_opt. Foi criado <a href="https://github.com/chriskohlhoff/asio/issues/665">um issue</a> no GitHub do projeto Boost.Asio para ver os comentários e colocações da equipe. No aguardo.</p>
 
 </section><hr/>
 

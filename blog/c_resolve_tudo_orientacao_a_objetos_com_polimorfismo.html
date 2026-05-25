@@ -1,0 +1,243 @@
+﻿<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="c_resolve_tudo_orientacao_a_objetos_com_polimorfismo" title="C Resolve Tudo: Orientação a Objetos (com Polimorfismo)"/></span>
+<section id="section_c_resolve_tudo_orientacao_a_objetos_com_polimorfismo">
+<p class="title">C Resolve Tudo: Orientação a Objetos (com Polimorfismo)</p>
+<span class="title-heading">Caloni, 2019-05-17 computer blog</span>
+
+<p>Como programadores há um vício em nossas cabeças que é estar constantemente buscando a bala de prata, ou seja, a solução final e única para todos os nossos problemas de implementação. Com o tempo e alguma experiência descobrimos que tal coisa não existe, mas até lá nos encantamos com esse ou aquele framework, e claro, com essa ou aquela linguagem.</p>
+
+<p>As linguagens que são criadas depois da revolução dos computadores pessoais querem facilitar a vida do programador médio embutindo soluções já testadas por <a href="programadores_de_verdade_nao_usam_java.html">programadores de verdade</a> e evitando a todo custo que o código incorra em erros comuns. Além disso, há movimentos nas comunidades e no mercado que geram tendências que influenciam essas linguagens, o que explica design patterns, orientação a objetos, programação funcional, xp, scrum, devops e qualquer outra bala de prata que vá se solidificando.</p>
+
+<p>Expliquei tudo isso para chegar no tema deste artigo: você pode fazer tudo isso usando linguagem C.</p>
+
+<p>Mas aí você deve estar se perguntando: "supor que uma linguagem resolve tudo não é estar defendendo também uma bala de prata?". A resposta é sim e não. Sim, é uma bala de prata se você pensar que pode fazer do zero sites e interfaces gráficas modernas em C puro. Mas a resposta também é não porque eu estou trabalhando em uma outra camada, aquela em que as soluções que ficam pra sempre são implementadas. Estou falando de pensar sempre na linguagem C quando estiver interessado no funcionamento das outras soluções.</p>
+
+<p>Esse mindset proposto tem como objetivo impedir que você pense que as outras soluções são mágicas porque se você consegue pensar em C ela é real. Se tem algo que a linguagem C não resolve esse algo é mágica. C é uma simples abstração de uma máquina virtual que se relaciona de maneira muito íntima com as implementações em assembly de várias arquiteturas. Mágica é algo que te impede de enxergar em que momento uma solução se encontra com o hardware. C nunca irá te impedir de fazer isso.</p>
+
+<p>Dito isto, vamos analisar algumas balas de prata e entender como em C isso é implementado para revelar a mágica.</p>
+
+<h2>Orientação a Objetos</h2>
+
+<p>A Orientação a Objetos se divide em algumas features. Algumas não vale a pena falar aqui, como tratar tudo como objeto. C já faz isso através de structs. Você pode montar uma struct que possua métodos, inclusive, através de ponteiros para função. E esses métodos já são sobrecarregáveis e virtuais.</p>
+
+<pre>
+struct MyClass
+{
+    int x, y;
+    void (*method)(int);
+};
+
+void method(int x)
+{
+}
+
+struct MyClass NewMyClass()
+{
+    struct MyClass ret = { 0, 0 };
+    ret.method = &amp;method;
+    return ret;
+}
+
+int main()
+{
+    struct MyClass obj = NewMyClass();
+    obj.method(10);
+}
+</pre>
+<p>A sobrecarga se torna algo trivial, bem documentada através dos nomes das funções que você está chamando. Tudo fica às claras, nada implícito, nada disse-que-me-disse. Se eu chamo um método NewMyClass2 é óbvio que estou construindo uma segunda versão baseada na primeira, e posso inclusive comparar para ver se os métodos são originais ou sobrescritos com <code>obj.method == &amp;method</code>, por exemplo. Além disso, é possível realizar composições de tipos onde alguns métodos são sobrescritos enquanto outros são compostos por chamadas duplas, triplas. Não há qualquer limitação ao polimorfismo exceto o que você define.</p>
+
+<pre>
+struct MyClass
+{
+    int x, y;
+    void (*method)(int);
+};
+
+void method(int x)
+{
+}
+
+struct MyClass NewMyClass()
+{
+    struct MyClass ret = { 0, 0 };
+    ret.method = &amp;method;
+    return ret;
+}
+
+void method2(int x)
+{
+}
+
+struct MyClass NewMyClass2()
+{
+    struct MyClass ret = NewMyClass();
+    ret.method = &amp;method2;
+    return ret;
+}
+
+int main()
+{
+    struct MyClass obj = NewMyClass2();
+    obj.method(10);
+}
+</pre>
+<p>Os métodos são "estáticos" por default (não há contexto), o que aliás facilita programação funcional, mas você pode buscar contexto onde te interessa, passando como parâmetro toda a "classe", seja por valor ou referência, ou passando até uma versão parcial dela. Há inúmeras maneiras de construir um objeto em C, pois ele não está restrito às regras de sintaxe da definição da linguagem, uma vez que é você que define. Além disso, como você deve ter percebido, para declarar tipos de structs é necessário o uso dessa palavra-chave, mas a linguagem C já possui um sistema de typedef para trocar convenientemente qualquer definição de tipo como um nome único.</p>
+
+<pre>
+#include &lt;stdio.h&gt;
+
+typedef struct SCalc
+{
+    int (*sum)(int, int);
+    int (*mult)(struct SCalc*, int, int);
+
+} Calc;
+
+int calc_sum(int x, int y)
+{
+    return x + y;
+}
+
+int calc_mult(Calc* calc, int x, int y)
+{
+    int ret = 0;
+    int i;
+    for( i = 0; i &lt; x; ++i )
+        ret = calc-&gt;sum(ret, y);
+    return ret;
+}
+
+Calc CalcNew()
+{
+    Calc calc;
+    calc.sum = &amp;calc_sum;
+    calc.mult = &amp;calc_mult;
+    return calc;
+}
+
+int main()
+{
+    Calc calc = CalcNew();
+    int x = 10, y = 32;
+    int z = calc.sum(x, y);
+    int k = calc.mult(&amp;calc, z, y);
+    printf(&quot;%d + %d = %d, %d * %d = %d\n&quot;, x, y, z, z, y, k);
+}
+10 + 32 = 42, 42 * 32 = 1344
+</pre>
+<p>Note que podemos ao redefinir a função de soma a de multiplicação também é alterada, mesmo não alterando seu funcionamento (mas alterando uma função que ela usa).</p>
+
+<pre>
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+typedef struct SCalc
+{
+    int (*sum)(int, int);
+    int (*mult)(struct SCalc*, int, int);
+
+} Calc;
+
+int calc_sum(int x, int y)
+{
+    return x + y;
+}
+
+int calc_mult(Calc* calc, int x, int y)
+{
+    int ret = 0;
+    int i;
+    for( i = 0; i &lt; x; ++i )
+        ret = calc-&gt;sum(ret, y);
+    return ret;
+}
+
+Calc CalcNew()
+{
+    Calc calc;
+    calc.sum = &amp;calc_sum;
+    calc.mult = &amp;calc_mult;
+    return calc;
+}
+
+int calc_cat(int x, int y)
+{
+    char buf[100];
+    int ret;
+    sprintf(buf, &quot;%d%d&quot;, x, y);
+    ret = atoi(buf);
+    return ret;
+}
+
+Calc BizarreCalcNew()
+{
+    Calc calc = CalcNew();
+    calc.sum = &amp;calc_cat;
+    return calc;
+}
+
+int main()
+{
+    Calc calc = BizarreCalcNew();
+    int x = 1, y = 1;
+    int z = calc.sum(x, y);
+    int k = calc.mult(&amp;calc, z, y);
+    printf(&quot;%d + %d = %d, %d * %d = %d\n&quot;, x, y, z, z, y, k);
+}
+10 + 32 = 1032, 1032 * 32 = 2147483647
+</pre>
+<p>Este é apenas um exemplo besta de polimorfismo, além de um exemplo trivial de como OO em C é infinitamente mais rico e mais complexo. Está nas mãos do programador definir até onde vai a solução proposta. E é bom saber que não existe bala de prata.</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="mailto:wanderley.caloni@gmail.com?subject=Comment%20about%3A%20C%20Resolve%20Tudo%3A%20Orienta%C3%A7%C3%A3o%20a%20Objetos%20%28com%20Polimorfismo%29">[comment]</a>
+ <a href="c_resolve_tudo_goto.html">[C Resolve Tudo: goto]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

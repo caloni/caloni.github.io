@@ -84,7 +84,7 @@ int main()
     int sz2 = a2.size(); // error C2039: 'Size': is not a member of 'Adapter2'
 }
 </pre>
-<p>Agora, sim. O código existe; não é mais apenas um "gabarito", termo que foi a tradução de template na primeira edição de A Linguagem de Programação C++ (agora até que faz sentido esse termo). E enquanto `Size&lt;Adapter1&gt;` gera um código 100% correto `Size&lt;Adapter2&gt;` não, pois seu único membro não se chama Size.</p>
+<p>Agora, sim. O código existe; não é mais apenas um "gabarito", termo que foi a tradução de template na primeira edição de A Linguagem de Programação C++ (agora até que faz sentido esse termo). E enquanto <code>Size&lt;Adapter1&gt;</code> gera um código 100% correto <code>Size&lt;Adapter2&gt;</code> não, pois seu único membro não se chama Size.</p>
 
 </section><hr/>
 
@@ -789,7 +789,7 @@ uma entrada em um índice remissivo com outras menções à mesma palavra.&quot;
 <p class="title"><a href="2024-07.html#mock_de_timer_em_moq">#</a> Mock de Timer em Moq</p>
 <span class="title-heading">Caloni, 2024-07-17 <a href="2024-07.html#se_nao_instanciou_o_template_nao_tem_nada_de_errado">&lt;</a><a href="computer.html">computer</a><a href="2024-08.html#dividindo_o_assembly_para_conquistar">&gt;</a><a href="2024-07.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_mock_de_timer_em_moq')"><sup>[copy]</sup></a></span>
 
-<p>Acabou o dia e ainda não consegui terminar este mock dos infernos. Estou tentando criar o primeiro exemplo que usa dois wrappers nunca antes *mockados* (incluindo um timer), mas ficou faltando mockar o `System.Timer`. O teste já funciona, mas ele é obrigado a dar um *sleep* pra esperar o timer terminar.</p>
+<p>Acabou o dia e ainda não consegui terminar este mock dos infernos. Estou tentando criar o primeiro exemplo que usa dois wrappers nunca antes *mockados* (incluindo um timer), mas ficou faltando mockar o <code>System.Timer</code>. O teste já funciona, mas ele é obrigado a dar um *sleep* pra esperar o timer terminar.</p>
 
 <p>O método que precisa ser testado é chamado como trigger deste timer. O teste constroi o objeto e chama um outro método de início que inicia o timer. O teste é quando o timer dispara a chamada do *callback*.</p>
 
@@ -808,7 +808,7 @@ A a;
 a.init();
 }
 </pre>
-<p>Meu objetivo era que na chamada de `timer.init()` ele já rode o callback.</p>
+<p>Meu objetivo era que na chamada de <code>timer.init()</code> ele já rode o callback.</p>
 
 <p>Mockar o timer foi a primeira ideia que me deram no stack overflow. Podem haver outras ideias. O cara do Stack Overflow falou que o timer do dotnet não dá essa flexibilidade, então teria que criar um adapter.</p>
 
@@ -822,18 +822,18 @@ a.init();
 
 <li>Caloni: "Boa!"</li></ul>
 
-<p>Você, caro urso, me deu uma ideia: simplificar a interface de start do `TimeWrapper` (esse é o nome da classe no basecode) e usar o resultado como uma implementação dummy, mas acho que já pensei num jeito de resolver que é ligeiramente diferente: ao final da tarefa ele chama um `timer.Restart` e daí é só ir acumulando estado.</p>
+<p>Você, caro urso, me deu uma ideia: simplificar a interface de start do <code>TimeWrapper</code> (esse é o nome da classe no basecode) e usar o resultado como uma implementação dummy, mas acho que já pensei num jeito de resolver que é ligeiramente diferente: ao final da tarefa ele chama um <code>timer.Restart</code> e daí é só ir acumulando estado.</p>
 
 <p>Fiz desse jeito, que ficou bem tosco para falar a verdade, mas só de comentar na issue o TL já deu o toque pra funcionar direito. Tem que usar esta construção bizarra:</p>
 
 <pre>
 _timer.Raise(m =&gt; m.Elapsed += null, new EventArgs() as ElapsedEventArgs);
 </pre>
-<p>Com isso não precisa construir nenhuma classe e disparar o mock do `TimerWrapper` quando quiser.</p>
+<p>Com isso não precisa construir nenhuma classe e disparar o mock do <code>TimerWrapper</code> quando quiser.</p>
 
-<p>A variável `_timer` no caso é um `Mock&lt;TimerWrapper&gt;` e o método `Raise` pode ser usado para disparar eventos. Isso resolve esta saga.</p>
+<p>A variável <code>_timer</code> no caso é um <code>Mock&lt;TimerWrapper&gt;</code> e o método <code>Raise</code> pode ser usado para disparar eventos. Isso resolve esta saga.</p>
 
-<p>A próxima seria entender o que é necessário para que o Visual Studio pare de reclamar que `new EventArgs() as ElapsedEventArgs` pode ser null. Bom, ele pode mesmo. Porém, não tem como construir um `ElapsedEventArgs` sozinho no código. Ideias?</p>
+<p>A próxima seria entender o que é necessário para que o Visual Studio pare de reclamar que <code>new EventArgs() as ElapsedEventArgs</code> pode ser null. Bom, ele pode mesmo. Porém, não tem como construir um <code>ElapsedEventArgs</code> sozinho no código. Ideias?</p>
 
 </section><hr/>
 

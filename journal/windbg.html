@@ -61,15 +61,15 @@ role="navigation" aria-label="main navigation">
 </td></tr>
 <tr><td>
 <b><a href="2023-10.html#como_inspecionar_chamadas_com_remotas_olhando_a_informacao_de_marshaling">Como inspecionar chamadas COM remotas olhando a informação de marshaling</a></b>
-<small><i>2023-10-03 reversing_tag windbg  Esta dica é para começar uma análise de reversa quando você deseja entender quais informações estão sendo trafegadas por uma chamada COM remota, ou seja, entre processos distintos. Isso vale para WinRT e para o COM tradicional. De uma forma ou de outra a chamada irá passar por `combase!NdrExtpProxySendReceive` e outras funções de RPC relacionadas, além das novas funções de ALPC, em especial `ntdll!NtAlpcSendWaitReceivePort`. Existem várias de marshaling e unmarshaling, mas o mais importante é centralizar na função que envia e recebe bytes e analisar estes bytes. Eles são a versão serializada dos parâmetro sendo trafegados.</small></i>
+<small><i>2023-10-03 reversing_tag windbg  Esta dica é para começar uma análise de reversa quando você deseja entender quais informações estão sendo trafegadas por uma chamada COM remota, ou seja, entre processos distintos. Isso vale para WinRT e para o COM tradicional. De uma forma ou de outra a chamada irá passar por <code>combase!NdrExtpProxySendReceive</code> e outras funções de RPC relacionadas, além das novas funções de ALPC, em especial <code>ntdll!NtAlpcSendWaitReceivePort</code>. Existem várias de marshaling e unmarshaling, mas o mais importante é centralizar na função que envia e recebe bytes e analisar estes bytes. Eles são a versão serializada dos parâmetro sendo trafegados.</small></i>
 </td></tr>
 <tr><td>
 <b><a href="2023-10.html#como_colocar_breakpoint_nas_chamadas_a_outputdebugstring">Como colocar breakpoint nas chamadas a OutputDebugString</a></b>
-<small><i>2023-10-03 reversing_tag windbg  Usando `sxe out` é possível parar a execução de um programa sendo depurado pelo WinDbg sempre que ele disparar alguma saída para o depurador através da função OutputDebugString. Isso permite em nossa sessão de debug descobrir de onde vem a chamada, pois o depurador para e podemos usar o comando `k` para dar uma espiada.</small></i>
+<small><i>2023-10-03 reversing_tag windbg  Usando <code>sxe out</code> é possível parar a execução de um programa sendo depurado pelo WinDbg sempre que ele disparar alguma saída para o depurador através da função OutputDebugString. Isso permite em nossa sessão de debug descobrir de onde vem a chamada, pois o depurador para e podemos usar o comando <code>k</code> para dar uma espiada.</small></i>
 </td></tr>
 <tr><td>
 <b><a href="2023-10.html#como_investigar_a_vtable_de_uma_interface_ou_objeto_com">Como investigar a vtable de uma interface ou objeto COM</a></b>
-<small><i>2023-10-03 reversing_tag windbg  Uma vez que você encontre onde está a `vtable` -- por exemplo, como o primeiro parâmetro da chamada em um método, vide [convenção de chamadas do x64] -- liste no WinDbg os endereços contidos neste endereço (o parâmetro `L` é a quantidade de bytes para mostrar):</small></i>
+<small><i>2023-10-03 reversing_tag windbg  Uma vez que você encontre onde está a <code>vtable</code> -- por exemplo, como o primeiro parâmetro da chamada em um método, vide [convenção de chamadas do x64] -- liste no WinDbg os endereços contidos neste endereço (o parâmetro <code>L</code> é a quantidade de bytes para mostrar):</small></i>
 </td></tr>
 <tr><td>
 <b><a href="2008-05.html#aprendendo_conceitos_essenciais_do_windbg">Aprendendo rapidamente conceitos essenciais do WinDbg</a></b>

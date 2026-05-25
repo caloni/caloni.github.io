@@ -51,7 +51,7 @@ role="navigation" aria-label="main navigation">
 <span id="vcpkg_internals_como_o_gerenciador_de_pacotes_da_m$_funciona_por_dentro" title="Vcpkg Internals: como o gerenciador de pacotes da M$ funciona por dentro ("/></span>
 <section id="section_vcpkg_internals_como_o_gerenciador_de_pacotes_da_m$_funciona_por_dentro">
 <p class="title"><a href="2018-09.html#vcpkg_internals_como_o_gerenciador_de_pacotes_da_m$_funciona_por_dentro">#</a> Vcpkg Internals: como o gerenciador de pacotes da M$ funciona por dentro (</p>
-<span class="title-heading">Caloni, 2018-09-12 <a href="2018-08.html#getarg">&lt;</a><a href="computer.html">computer</a><a href="2018-09.html#coroutine_internals">&gt;</a> <a href="2018-08.html#getarg">&lt;</a><a href="blog.html">blog</a><a href="2023-07.html#reversing_no_telegram">&gt;</a><a href="2018-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_vcpkg_internals_como_o_gerenciador_de_pacotes_da_m$_funciona_por_dentro')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2018-09-12 <a href="2018-08.html#getarg">&lt;</a><a href="computer.html">computer</a><a href="2018-09.html#coroutine_internals">&gt;</a> <a href="2018-08.html#getarg">&lt;</a><a href="blog.html">blog</a><a href="2018-09.html#coroutine_internals">&gt;</a><a href="2018-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_vcpkg_internals_como_o_gerenciador_de_pacotes_da_m$_funciona_por_dentro')"><sup>[copy]</sup></a></span>
 
 <p>Depois de entender mais ou menos como funciona o vcpkg é hora de realmente entrar no código e entender qual a grande sacada dessa ferramenta da Microsoft.</p>
 
@@ -629,7 +629,7 @@ c:\Libs\vcpkg\installed\x86-windows\share\bitforge
 <span id="coroutine_internals" title="Coroutine Internals"/></span>
 <section id="section_coroutine_internals">
 <p class="title"><a href="2018-09.html#coroutine_internals">#</a> Coroutine Internals</p>
-<span class="title-heading">Caloni, 2018-09-18 <a href="2018-09.html#vcpkg_internals_como_o_gerenciador_de_pacotes_da_m$_funciona_por_dentro">&lt;</a><a href="computer.html">computer</a><a href="2018-10.html#boostbind_e_os_erros_escrotos">&gt;</a><a href="2018-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_coroutine_internals')"><sup>[copy]</sup></a></span>
+<span class="title-heading">Caloni, 2018-09-18 <a href="2018-09.html#vcpkg_internals_como_o_gerenciador_de_pacotes_da_m$_funciona_por_dentro">&lt;</a><a href="computer.html">computer</a><a href="2018-10.html#boostbind_e_os_erros_escrotos">&gt;</a> <a href="2018-09.html#vcpkg_internals_como_o_gerenciador_de_pacotes_da_m$_funciona_por_dentro">&lt;</a><a href="blog.html">blog</a><a href="2018-10.html#boostbind_e_os_erros_escrotos">&gt;</a><a href="2018-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_coroutine_internals')"><sup>[copy]</sup></a></span>
 
 <p>Uma corrotina é um mecanismo de troca de contexto onde apenas uma thread está envolvida. Ela me faz lembrar do Windows 3.0, não exatamente por não existirem threads (e não existiam mesmo), mas pelo caráter cooperativo dos diferentes códigos.</p>
 
@@ -670,7 +670,7 @@ int main()
 
 <img src="/journal/img/coroutine_internals_WJeFtYq.png"/>
 
-<p>Oh, oh! A stack de cooperative nos indica que ela não partiu do main, apesar de ter sido chamada através da construção de `coroutine&lt;void&gt;::pull_type`. O método sink chamado logo após imprimir "Hello" deve colocar essa rotina para dormir, voltando o controle para main. Vamos ver como isso é feito.</p>
+<p>Oh, oh! A stack de cooperative nos indica que ela não partiu do main, apesar de ter sido chamada através da construção de <code>coroutine&lt;void&gt;::pull_type</code>. O método sink chamado logo após imprimir "Hello" deve colocar essa rotina para dormir, voltando o controle para main. Vamos ver como isso é feito.</p>
 
 <p>https://www.youtube.com/watch?v=xoAxig6vdTM</p>
 
@@ -809,7 +809,7 @@ inline void push()
 
 <img src="/journal/img/coroutine_internals_uQ7WYl8.png"/>
 
-<p>Usando o comando `k = BasePtr StackPtr InstructionPtr` passando o conteúdo de sp como o stack pointer o Windbg deve mostrar a pilha de todas as formas possíveis (especificar se terá FPO, mostrar código-fonte, argumentos, etc). Para a demonstração live fica bom ter um loop "eterno" para poder repetir a análise quantas vezes forem necessárias:</p>
+<p>Usando o comando <code>k = BasePtr StackPtr InstructionPtr</code> passando o conteúdo de sp como o stack pointer o Windbg deve mostrar a pilha de todas as formas possíveis (especificar se terá FPO, mostrar código-fonte, argumentos, etc). Para a demonstração live fica bom ter um loop "eterno" para poder repetir a análise quantas vezes forem necessárias:</p>
 
 <pre>
 void cooperative(coroutine&lt;void&gt;::push_type &amp;sink)

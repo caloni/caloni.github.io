@@ -336,12 +336,12 @@ ordenar_numeros() {
 
 ordenar_numeros $1 $2 $3
 </pre>
-<p>Como você deve ter percebido, mesmo lendo o primeiro script da sua vida, variáveis em bash script começam com `$`. As variáveis de `$0` a `$9` são os argumentos do programa, mas de resto pode ser um nome qualquer e usado em qualquer lugar, mas caso você precise tornar o nome não-ambíguo é importante colocar entre chaves:</p>
+<p>Como você deve ter percebido, mesmo lendo o primeiro script da sua vida, variáveis em bash script começam com <code>$</code>. As variáveis de <code>$0</code> a <code>$9</code> são os argumentos do programa, mas de resto pode ser um nome qualquer e usado em qualquer lugar, mas caso você precise tornar o nome não-ambíguo é importante colocar entre chaves:</p>
 
 <pre>
 [ ${var}text -ne $vartext ]
 </pre>
-<p>Comandos são terminados por nova-linha ou por ponto-e-vírgula, não tendo briga para ninguém. Dois comandos não podem conviver um do lado do outro e dar bom. É por isso que caso você queira fazer um `if-then` na mesma linha precisa colocar um ponto-e-vírgula antes de usar o `then`:</p>
+<p>Comandos são terminados por nova-linha ou por ponto-e-vírgula, não tendo briga para ninguém. Dois comandos não podem conviver um do lado do outro e dar bom. É por isso que caso você queira fazer um <code>if-then</code> na mesma linha precisa colocar um ponto-e-vírgula antes de usar o <code>then</code>:</p>
 
 <pre>
 for i in &quot;${numeros[@]}&quot;; do
@@ -360,7 +360,7 @@ if [ $i -le $menor ]; then
 <pre>
 set -e
 </pre>
-<p>O uso do parâmetro `-e` é para sair imediatamente caso qualquer comando dê ruim. Além disso, há a possibilidade de setar funções de saída para limpar coisas deixadas pelo caminho. É o garbage collector do script. Há <a href="https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html">outras opções</a> para modificar o comportamento do shell.</p>
+<p>O uso do parâmetro <code>-e</code> é para sair imediatamente caso qualquer comando dê ruim. Além disso, há a possibilidade de setar funções de saída para limpar coisas deixadas pelo caminho. É o garbage collector do script. Há <a href="https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html">outras opções</a> para modificar o comportamento do shell.</p>
 
 <p>A opção de limpeza pode ser setada através do <a href="https://linuxhint.com/bash_trap_command/">comando trap</a>. O comando trap permite associar chamadas de funções aos diferentes tipos de sinais que o programa pode receber. Por exemplo, abaixo é setada a função de limpeza para quando o script sair.</p>
 
@@ -374,7 +374,7 @@ cleanup() {
     done
 }
 </pre>
-<p>Note esta técnica utilizada para incluir operações de limpeza dentro de um array, o `cl_stack`. No decorrer da execução do script se houver a necessidade de adicionar mais uma operação de limpeza o usuário deve incluir esta operação neste array.</p>
+<p>Note esta técnica utilizada para incluir operações de limpeza dentro de um array, o <code>cl_stack</code>. No decorrer da execução do script se houver a necessidade de adicionar mais uma operação de limpeza o usuário deve incluir esta operação neste array.</p>
 
 <pre>
 cl_stack+=( &quot;kill pid&quot; )
@@ -418,19 +418,19 @@ case    esac   coproc   select   function
 </pre>
 <h2>Evaluation</h2>
 
-<p>Avaliações de expressões e comandos é um dos pedaços mais úteis em scripts bash. Você pode capturar a saída de um comando e guardar em uma variável ou usar uma variável como entrada de um comando, além de criar novas variáveis através da montagem de um ou mais comandos com outras strings. Em geral tudo que está dentro de `$()` pode ser usado como um minishell que irá executar e entregar o output.</p>
+<p>Avaliações de expressões e comandos é um dos pedaços mais úteis em scripts bash. Você pode capturar a saída de um comando e guardar em uma variável ou usar uma variável como entrada de um comando, além de criar novas variáveis através da montagem de um ou mais comandos com outras strings. Em geral tudo que está dentro de <code>$()</code> pode ser usado como um minishell que irá executar e entregar o output.</p>
 
 <pre>
 tmpdir=$(mktemp -d)
 mountdir=$(pwd)/subdir
 echo &quot;Today is $(date). What a lovely, lovely day!&quot;
 </pre>
-<p>Evaluation precisa de redirects às vezes, e às vezes não precisa de nenhum (`/dev/null`). No exemplo abaixo nós queremos o id do usuário de um arquivo sem nos preocupar com a saída de erro.</p>
+<p>Evaluation precisa de redirects às vezes, e às vezes não precisa de nenhum (<code>/dev/null</code>). No exemplo abaixo nós queremos o id do usuário de um arquivo sem nos preocupar com a saída de erro.</p>
 
 <pre>
 uid=$(stat -c %u ${mountdir}/data/file 2&gt; /dev/null)
 </pre>
-<p>A saída de erro é o file descriptor 2, e por isso foi usada a construção `2&gt;` em vez do simples `&gt;`, que redirecionaria o file descriptor 1, que é a saída padrão. O file descriptor 0, caso não tenha adivinhado ainda, é a entrada padrão, que pode ser obtida com a flechinha invertida `&lt;`. Resumo:</p>
+<p>A saída de erro é o file descriptor 2, e por isso foi usada a construção <code>2&gt;</code> em vez do simples <code>&gt;</code>, que redirecionaria o file descriptor 1, que é a saída padrão. O file descriptor 0, caso não tenha adivinhado ainda, é a entrada padrão, que pode ser obtida com a flechinha invertida <code>&lt;</code>. Resumo:</p>
 
 <pre>
 | sinal | nome    | file descriptor |
@@ -482,9 +482,9 @@ fi
 </pre>
 <h3>Brinde</h3>
 
-<ul><li>Você pode inverter uma condição colocando um “!” na frente; `if [ ! -f regularfile ]; then`</li>
+<ul><li>Você pode inverter uma condição colocando um “!” na frente; <code>if [ ! -f regularfile ]; then</code></li>
 
-<li>Você pode combinar condições usando certos operadores como -a (AND) e -o (OR); `if [ $foo -ge 3 -a $foo -lt 10 ]; then`</li>
+<li>Você pode combinar condições usando certos operadores como -a (AND) e -o (OR); <code>if [ $foo -ge 3 -a $foo -lt 10 ]; then</code></li>
 
 <li>As mesmas condições e regras podem ser usadas em outros comandos como while e until.</li></ul>
 
@@ -510,7 +510,7 @@ if [[ &quot;$title&quot; =~ [^a-zA-Z0-9\ ] ]]; then
 
 <ul><li>Operadores AND e OR são short-circuit;</li>
 
-<li>0 = true, >0 = false (C-like); por isso há comandos como `if ! tar etc; then "Error"; fi`.</li></ul>
+<li>0 = true, >0 = false (C-like); por isso há comandos como <code>if ! tar etc; then "Error"; fi</code>.</li></ul>
 
 <h3>Brinde: switch-case</h3>
 
@@ -726,7 +726,7 @@ case $1 in
 </pre>
 <h2>Debugging</h2>
 
-<p>Para depurar scripts bash use o parâmetro `-x` para conseguir ver a execução de cada linha.</p>
+<p>Para depurar scripts bash use o parâmetro <code>-x</code> para conseguir ver a execução de cada linha.</p>
 
 <pre>
 bash -x sort-number.sh 1 2 3
@@ -753,7 +753,7 @@ bash -x sort-number.sh 1 2 3
 + echo maior=3, menor=1, media=2.00
 maior=3, menor=1, media=2.00
 </pre>
-<p>Ou se você precisar depurar apenas uma parte do script pode ligar e desligar o modo `-x` dentro do próprio script usando a mudança de modos como já aprendemos no começo deste artigo.</p>
+<p>Ou se você precisar depurar apenas uma parte do script pode ligar e desligar o modo <code>-x</code> dentro do próprio script usando a mudança de modos como já aprendemos no começo deste artigo.</p>
 
 <pre>
 for i in &quot;${numeros[@]}&quot;; do
