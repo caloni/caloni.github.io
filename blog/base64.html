@@ -45,9 +45,9 @@ role="navigation" aria-label="main navigation">
 
 <p>No meio dos meus artigos pendentes, encontrei esse, de Luiz Rocha, que fala sobre a dificuldade de entender o que seria Base64:</p>
 
-<p>"Salve Caloni. Já leio o seu site a algum tempo. Realmente acho complicado, alguns eu nem entendo =D.  Mais eh o seguinte, eu estou montando um projeto, mas eu não entendo nada de trabalhar com binários. Então pesquisei na internet, e achei um algoritmo que pode me ajudar, <a href="http://base64.sourceforge.net/b64.c">na lógica</a>. É o base64 mas eu não entendi como ele converte e desconverte em binário. Será que vc pode me ajudar, obrigado!!"</p>
+<p>"Salve Caloni. Já leio o seu site a algum tempo. Realmente acho complicado, alguns eu nem entendo =D.  Mais eh o seguinte, eu estou montando um projeto, mas eu não entendo nada de trabalhar com binários. Então pesquisei na internet, e achei um algoritmo que pode me ajudar, "na lógica". É o base64 mas eu não entendi como ele converte e desconverte em binário. Será que vc pode me ajudar, obrigado!!"</p>
 
-<p>Não é a primeira pessoa que pede informações sobre algo específico demais para explicar (para isso existe a <a href="http://en.wikipedia.org/wiki/Base64">Wikipedia</a> e o <a href="http://www.google.com/search?q=base64">Google</a>, não?). No meio da minha escrita, percebi que já havia escrito sobre os fundamentos do conhecimento por trás da criação do Base64, conhecimento esse, acredito eu, todo programador que quer sair do lugar com os próprios pés deve ter.</p>
+<p>Não é a primeira pessoa que pede informações sobre algo específico demais para explicar (para isso existe a <a href="http://en.wikipedia.org/wiki/Base64">Base64 da Wikipedia</a> e o Google, não?). No meio da minha escrita, percebi que já havia escrito sobre os fundamentos do conhecimento por trás da criação do Base64, conhecimento esse, acredito eu, todo programador que quer sair do lugar com os próprios pés deve ter.</p>
 
 <ul><li><a href="basico_do_basico_assembly.html">Básico do básico: assembly</a></li>
 
@@ -67,7 +67,7 @@ role="navigation" aria-label="main navigation">
 
 <p>Para colocar a mão na massa:</p>
 
-<ul><li><a href="visual_studio_configurar_projetos.html">Configurando seus projetos no Visual Studio</a></li>
+<ul><li>"Configurando seus projetos no Visual Studio"</li>
 
 <li><a href="visual_studio_criar_lib.html">Como criar uma LIB no Visual Studio</a></li></ul>
 
@@ -83,13 +83,13 @@ role="navigation" aria-label="main navigation">
 
 <p>Como isso é possível?</p>
 
-<p>A solução não é tão obscura quanto possa parecer. Se um programador médio tivesse esse problema e nenhuma solução existisse ainda, ele faria o que sempre fez para resolver problemas desse tipo: codificar a mensagem na forma permitida. Isso já é feito com o próprio texto, que é apenas <a href="basico_do_basico_binario.html">uma interpretação de tabelas de caracteres</a>.</p>
+<p>A solução não é tão obscura quanto possa parecer. Se um programador médio tivesse esse problema e nenhuma solução existisse ainda, ele faria o que sempre fez para resolver problemas desse tipo: codificar a mensagem na forma permitida. Isso já é feito com o próprio texto, que é apenas uma interpretação de tabelas de caracteres.</p>
 
 <p>Tudo que é necessário fazer é o contrário, mas usando a mesma lógica: montar uma tabela de caracteres válidos e traduzir para um conteúdo binário, sendo que todas as combinações possíveis devem caber nessa tabela.</p>
 
 <p>A forma mais básica binária de comunicação é um byte, constituído por 8 bits, que combinados darão 2^8 entradas em nossa tabela, que precisaria de 256 caracteres diferentes. Como isso ultrapassa o limite dos protocolos que estamos lidando, que em sua maioria utilizam a tabela ascii básica, que possui 128 posições, sendo que algumas posições não possuem caracteres imprimíveis, decidiu-se usar o múltiplo anterior: 64 posições, o que nos dá a chance de codificar 6 bits de cada vez (2^6).</p>
 
-<p>Esse padrão de codificação se chama Base64. Se quiser mais detalhes, basta ler a <a href="http://tools.ietf.org/html/rfc989">RFC</a>, que é pequena e muito simples de se ler.</p>
+<p>Esse padrão de codificação se chama Base64. Se quiser mais detalhes, basta ler a <a href="http://tools.ietf.org/html/rfc989">RFC 989</a>, que é pequena e muito simples de se ler.</p>
 
 <p>Agora, como codificar essa solução? Só entendendo o básico, é claro.</p>
 

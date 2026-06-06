@@ -54,7 +54,7 @@ role="navigation" aria-label="main navigation">
 <li><small><a href="2011-03.html#houaiss_no_kindle">Houaiss no Kindle</a></small></li>
 <li><small><a href="2011-03.html#passe_livre">Passe Livre</a></small></li>
 <li><small><a href="2011-03.html#bazaar_com_subversion">Bazaar com Subversion</a></small></li>
-<li><small><a href="2011-03.html#arca_russa">Arca Russa</a></small></li>
+<li><small><a href="2011-03.html#arca_russa">A Arca Russa</a></small></li>
 <li><small><a href="2011-03.html#atividade_paranormal_toquio">Atividade Paranormal Tóquio (Toshikazu Nagae, 2010)</a></small></li>
 <li><small><a href="2011-03.html#o_julgamento_do_diabo">O Julgamento do Diabo</a></small></li>
 <li><small><a href="2011-03.html#sucker_punch_mundo_surreal">Sucker Punch: Mundo Surreal</a></small></li></ul>
@@ -64,7 +64,7 @@ role="navigation" aria-label="main navigation">
 <p class="title"><a href="2011-03.html#vtable">#</a> VTable</p>
 <span class="title-heading">Caloni, 2011-03-01 <a href="2011-02.html#mudanca">&lt;</a><a href="computer.html">computer</a><a href="2011-03.html#projeto_daytoday">&gt;</a> <a href="2011-02.html#mudanca">&lt;</a><a href="blog.html">blog</a><a href="2011-03.html#base64">&gt;</a><a href="2011-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_vtable')"><sup>[copy]</sup></a></span>
 
-<p>Acho que na breve história desse blogue nunca contei a história do vtable. No máximo fizemos um <a href="2007-09.html#hook_de_com_no_windbg">hookzinho nos métodos de um componente COM</a>. Mas só.</p>
+<p>Acho que na breve história desse blogue nunca contei a história do vtable. No máximo fizemos um <a href="hook_de_com_no_windbg">hookzinho nos métodos de um componente COM</a>. Mas só.</p>
 
 <p>Não encontro uma analogia simples, assim, de cabeça. Então vou contar no cru, mesmo. Talvez seja até mais divertido.</p>
 
@@ -180,9 +180,9 @@ windbg vtable3.exe
 
 <p>No meio dos meus artigos pendentes, encontrei esse, de Luiz Rocha, que fala sobre a dificuldade de entender o que seria Base64:</p>
 
-<p>"Salve Caloni. Já leio o seu site a algum tempo. Realmente acho complicado, alguns eu nem entendo =D.  Mais eh o seguinte, eu estou montando um projeto, mas eu não entendo nada de trabalhar com binários. Então pesquisei na internet, e achei um algoritmo que pode me ajudar, <a href="http://base64.sourceforge.net/b64.c">na lógica</a>. É o base64 mas eu não entendi como ele converte e desconverte em binário. Será que vc pode me ajudar, obrigado!!"</p>
+<p>"Salve Caloni. Já leio o seu site a algum tempo. Realmente acho complicado, alguns eu nem entendo =D.  Mais eh o seguinte, eu estou montando um projeto, mas eu não entendo nada de trabalhar com binários. Então pesquisei na internet, e achei um algoritmo que pode me ajudar, "na lógica". É o base64 mas eu não entendi como ele converte e desconverte em binário. Será que vc pode me ajudar, obrigado!!"</p>
 
-<p>Não é a primeira pessoa que pede informações sobre algo específico demais para explicar (para isso existe a <a href="http://en.wikipedia.org/wiki/Base64">Wikipedia</a> e o <a href="http://www.google.com/search?q=base64">Google</a>, não?). No meio da minha escrita, percebi que já havia escrito sobre os fundamentos do conhecimento por trás da criação do Base64, conhecimento esse, acredito eu, todo programador que quer sair do lugar com os próprios pés deve ter.</p>
+<p>Não é a primeira pessoa que pede informações sobre algo específico demais para explicar (para isso existe a <a href="http://en.wikipedia.org/wiki/Base64">Base64 da Wikipedia</a> e o Google, não?). No meio da minha escrita, percebi que já havia escrito sobre os fundamentos do conhecimento por trás da criação do Base64, conhecimento esse, acredito eu, todo programador que quer sair do lugar com os próprios pés deve ter.</p>
 
 <ul><li><a href="2009-01.html#basico_do_basico_assembly">Básico do básico: assembly</a></li>
 
@@ -202,7 +202,7 @@ windbg vtable3.exe
 
 <p>Para colocar a mão na massa:</p>
 
-<ul><li><a href="2008-02.html#visual_studio_configurar_projetos">Configurando seus projetos no Visual Studio</a></li>
+<ul><li>"Configurando seus projetos no Visual Studio"</li>
 
 <li><a href="2008-05.html#visual_studio_criar_lib">Como criar uma LIB no Visual Studio</a></li></ul>
 
@@ -218,13 +218,13 @@ windbg vtable3.exe
 
 <p>Como isso é possível?</p>
 
-<p>A solução não é tão obscura quanto possa parecer. Se um programador médio tivesse esse problema e nenhuma solução existisse ainda, ele faria o que sempre fez para resolver problemas desse tipo: codificar a mensagem na forma permitida. Isso já é feito com o próprio texto, que é apenas <a href="2008-12.html#basico_do_basico_binario">uma interpretação de tabelas de caracteres</a>.</p>
+<p>A solução não é tão obscura quanto possa parecer. Se um programador médio tivesse esse problema e nenhuma solução existisse ainda, ele faria o que sempre fez para resolver problemas desse tipo: codificar a mensagem na forma permitida. Isso já é feito com o próprio texto, que é apenas uma interpretação de tabelas de caracteres.</p>
 
 <p>Tudo que é necessário fazer é o contrário, mas usando a mesma lógica: montar uma tabela de caracteres válidos e traduzir para um conteúdo binário, sendo que todas as combinações possíveis devem caber nessa tabela.</p>
 
 <p>A forma mais básica binária de comunicação é um byte, constituído por 8 bits, que combinados darão 2^8 entradas em nossa tabela, que precisaria de 256 caracteres diferentes. Como isso ultrapassa o limite dos protocolos que estamos lidando, que em sua maioria utilizam a tabela ascii básica, que possui 128 posições, sendo que algumas posições não possuem caracteres imprimíveis, decidiu-se usar o múltiplo anterior: 64 posições, o que nos dá a chance de codificar 6 bits de cada vez (2^6).</p>
 
-<p>Esse padrão de codificação se chama Base64. Se quiser mais detalhes, basta ler a <a href="http://tools.ietf.org/html/rfc989">RFC</a>, que é pequena e muito simples de se ler.</p>
+<p>Esse padrão de codificação se chama Base64. Se quiser mais detalhes, basta ler a <a href="http://tools.ietf.org/html/rfc989">RFC 989</a>, que é pequena e muito simples de se ler.</p>
 
 <p>Agora, como codificar essa solução? Só entendendo o básico, é claro.</p>
 
@@ -382,7 +382,7 @@ windbg vtable3.exe
 
 <p>Jim Carrey em Motion Capture é, em poucas palavras, inusitadamente fabuloso. O trabalho feito em seu personagem, protagonista do clássico conto de Charles Dickens, que se mantém homônimo no título original, é, de longe, um trabalho rebuscado tanto nas expressões quanto nos movimentos do boneco através dos cenários igualmente trabalhados à exaustão.</p>
 
-<p>Portanto, é uma pena que o aspecto estético desse tipo de filme ainda peque pela estranheza que gera ao vermos figuras humanas não exatamente reais, e tão pouco virtuais. E apesar de ter havido uma evolução considerável desde o último trabalho utilizando essa técnica (O Expresso Polar), em nada se compara ao uso legítimo e otimizado em Avatar, facilitado por usar criaturas da imaginação.</p>
+<p>Portanto, é uma pena que o aspecto estético desse tipo de filme ainda peque pela estranheza que gera ao vermos figuras humanas não exatamente reais, e tão pouco virtuais. E apesar de ter havido uma evolução considerável desde o último trabalho utilizando essa técnica (O Expresso Polar), em nada se compara ao uso legítimo e otimizado em <a href="2019-03.html#avatar">Avatar</a>, facilitado por usar criaturas da imaginação.</p>
 
 <p>Para os fãs do livro, a caracterização das cenas não perde em nada no aspecto descritivo. Porém, a noção que temos de Scrooge no original é de que ele é uma pessoa muito mais maldosa e mesquinha, o que não transparece na interpretação de Carrey justamente pelo filme ter um teor e um foco maior no público infantil e familiar.</p>
 
@@ -489,9 +489,9 @@ C:\Projetos\caloni&gt;bzr qlog
 </section><hr/>
 
 
-<span id="arca_russa" title="Arca Russa"/></span>
+<span id="arca_russa" title="A Arca Russa"/></span>
 <section id="section_arca_russa">
-<p class="title"><a href="2011-03.html#arca_russa">#</a> Arca Russa</p>
+<p class="title"><a href="2011-03.html#arca_russa">#</a> A Arca Russa</p>
 <span class="title-heading">Caloni, 2011-03-28 <a href="2011-03.html#atividade_paranormal_toquio">&lt;</a><a href="cinema.html">cinema</a><a href="2011-03.html#sucker_punch_mundo_surreal">&gt;</a> <a href="2011-03.html#atividade_paranormal_toquio">&lt;</a><a href="movies.html">movies</a><a href="2011-03.html#sucker_punch_mundo_surreal">&gt;</a><a href="2011-03.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_arca_russa')"><sup>[copy]</sup></a></span>
 
 <p>Arca Russa é uma experiência que, como cinéfilos que somos, devemos assistir para aprender o que uma técnica como o plano-sequência consegue em termos de narrativa.</p>

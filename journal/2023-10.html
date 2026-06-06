@@ -77,7 +77,7 @@ role="navigation" aria-label="main navigation">
 
 <p>Esta dica é para começar uma análise de reversa quando você deseja entender quais informações estão sendo trafegadas por uma chamada COM remota, ou seja, entre processos distintos. Isso vale para WinRT e para o COM tradicional. De uma forma ou de outra a chamada irá passar por <code>combase!NdrExtpProxySendReceive</code> e outras funções de RPC relacionadas, além das novas funções de ALPC, em especial <code>ntdll!NtAlpcSendWaitReceivePort</code>. Existem várias de marshaling e unmarshaling, mas o mais importante é centralizar na função que envia e recebe bytes e analisar estes bytes. Eles são a versão serializada dos parâmetro sendo trafegados.</p>
 
-<p>Outra informação útil ao colocar um breakpoint nesta função é a stack, que vai informar de onde veio a construção ou descontrução dos parâmetros. Existe a informação do número da procedure também, que aliada ao interface ID sendo chamado pode junto com <a href="2023-06.html#onboarding_no_baixo_nivel">OleViewDotNet</a> dar informações de qual a assinatura do método sendo chamada. Uma passada pelo <a href="https://hex-rays.com/ida-free/">IDA</a> pode ajudar também em entender o código. Exige conhecimentos de assembly e <a href="2023-04.html#x64_deep_dive">convenção de chamada</a>.</p>
+<p>Outra informação útil ao colocar um breakpoint nesta função é a stack, que vai informar de onde veio a construção ou descontrução dos parâmetros. Existe a informação do número da procedure também, que aliada ao interface ID sendo chamado pode junto com "OleViewDotNet" dar informações de qual a assinatura do método sendo chamada. Uma passada pelo <a href="https://hex-rays.com/ida-free/">IDA</a> pode ajudar também em entender o código. Exige conhecimentos de assembly e convenção de chamada.</p>
 
 </section><hr/>
 
@@ -119,7 +119,7 @@ role="navigation" aria-label="main navigation">
 <p class="title"><a href="2023-10.html#como_investigar_a_vtable_de_uma_interface_ou_objeto_com">#</a> Como investigar a vtable de uma interface ou objeto COM</p>
 <span class="title-heading">Caloni, 2023-10-03 <a href="2023-09.html#traffic">&lt;</a><a href="reversing_tag.html">reversing_tag</a><a href="2023-10.html#como_colocar_breakpoint_nas_chamadas_a_outputdebugstring">&gt;</a> <a href="2008-05.html#aprendendo_conceitos_essenciais_do_windbg">&lt;</a><a href="windbg.html">windbg</a><a href="2023-10.html#como_colocar_breakpoint_nas_chamadas_a_outputdebugstring">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_como_investigar_a_vtable_de_uma_interface_ou_objeto_com')"><sup>[copy]</sup></a></span>
 
-<p>Uma vez que você encontre onde está a <code>vtable</code> -- por exemplo, como o primeiro parâmetro da chamada em um método, vide <a href="2023-04.html#x64_deep_dive">convenção de chamadas do x64</a> -- liste no WinDbg os endereços contidos neste endereço (o parâmetro <code>L</code> é a quantidade de bytes para mostrar):</p>
+<p>Uma vez que você encontre onde está a <code>vtable</code> -- por exemplo, como o primeiro parâmetro da chamada em um método, vide convenção de chamadas do x64 -- liste no WinDbg os endereços contidos neste endereço (o parâmetro <code>L</code> é a quantidade de bytes para mostrar):</p>
 
 <pre>
 dp &lt;address&gt; L50
@@ -161,7 +161,7 @@ Windows_Security_Authentication_Web_Core!_security_cookie (
 <p class="title"><a href="2023-10.html#flow_com_enfase_na_teoria_de_sistemas">#</a> Flow com ênfase na teoria de sistemas</p>
 <span class="title-heading">Caloni, 2023-10-03 <a href="2023-09.html#biblia_sagrada_levitico">&lt;</a><a href="books.html">books</a><a href="2023-10.html#beginning_mathematical_logic_a_study_guide_de_peter_smith">&gt;</a> <a href="2023-08.html#em_sua_propria_companhia_seneca">&lt;</a><a href="self.html">self</a><a href="2024-01.html#multiplas_leituras_a_respeito_do_self">&gt;</a> <a href="2023-08.html#flow_pragmatico">&lt;</a><a href="flow.html">flow</a><a href="2025-05.html#apanhado_sobre_o_flow_de_cada_dia">&gt;</a><a href="2023-10.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_flow_com_enfase_na_teoria_de_sistemas')"><sup>[copy]</sup></a></span>
 
-<p>Reli pela enésima vez minhas anotações sobre Flow, aquele <a href="2020-09.html#flow">livro do Mihaly Csikszentmihalyi</a>, e venho dessa vez com anotações das anotações com ênfase na teoria de sistemas. O resumo é que o self, esse sistema dinâmico que reconhecemos como nós, pode ser expandido ao se acoplar a qualquer outro sistema onde invistamos energia psíquica. Porém, para isso funcionar, devemos reorientar nossa atenção e focar, ou seja, empreender nossa energia psíquica, muito mais no sistema que está sendo a atividade do momento e muito menos em nós mesmos ou em outros inputs externos que não faz parte do sistema e que é apenas entropia. É quando o self vira o sistema que nós podemos resgatar novas informações que irão ser adicionadas ao sistema original. A isso chamamos aprendizado do mundo. Nosso ser se expande e nosso organismo ressoa em harmonia.</p>
+<p>Reli pela enésima vez minhas anotações sobre Flow, aquele livro do Mihaly Csikszentmihalyi, e venho dessa vez com anotações das anotações com ênfase na teoria de sistemas. O resumo é que o self, esse sistema dinâmico que reconhecemos como nós, pode ser expandido ao se acoplar a qualquer outro sistema onde invistamos energia psíquica. Porém, para isso funcionar, devemos reorientar nossa atenção e focar, ou seja, empreender nossa energia psíquica, muito mais no sistema que está sendo a atividade do momento e muito menos em nós mesmos ou em outros inputs externos que não faz parte do sistema e que é apenas entropia. É quando o self vira o sistema que nós podemos resgatar novas informações que irão ser adicionadas ao sistema original. A isso chamamos aprendizado do mundo. Nosso ser se expande e nosso organismo ressoa em harmonia.</p>
 
 <img src="/journal/img/flow.jpg"/>
 
@@ -269,12 +269,12 @@ Windows_Security_Authentication_Web_Core!_security_cookie (
 // Gets the activation factory for the specified runtime class.
 Copy
 HRESULT RoGetActivationFactory(
-  [in]  HSTRING activatableClassId,
-  [in]  REFIID  iid,
+  in  HSTRING activatableClassId,
+  in  REFIID  iid,
   [out] void    **factory
 );
 </pre>
-<p>Sabendo como <a href="2023-08.html#hstring">obter a string raw de uma HSTRING</a> basta colocar um breakpoint no WinDbg que imprima esta string e siga vazando:</p>
+<p>Sabendo como <a href="hstring">obter a string raw de uma HSTRING</a> basta colocar um breakpoint no WinDbg que imprima esta string e siga vazando:</p>
 
 <pre>
 bp combase!_RoGetActivationFactory &quot;du poi(@rcx+0x10) ; g&quot;
@@ -399,21 +399,21 @@ Windows.Storage.Streams.DataReader
 
 <p>Não vou poder participar da Mostra desse ano, pois estarei muito ocupado bebendo vinho no Chile. Porém, para os que ficam, fora novos diretores achei uns repetidos que pode ser interessante dar uma olhada ou escapar da sessão.</p>
 
-<p>Taika Waititi, por exemplo, que estreou com <a href="loucos_por_nada.html">Loucos por Nada</a> e terminou em Hollywood com aquela <a href="2020-02.html#jojo_rabbit">comédia infantil sobre Hitler</a>, mas que no meio fez um mockumentary de vampiro, o divertidíssimo <a href="2018-10.html#o_que_fazemos_nas_sombras">O Que Fazemos nas Sombras</a>.</p>
+<p>Taika Waititi, por exemplo, que estreou com "Loucos por Nada" e terminou em Hollywood com aquela comédia infantil sobre Hitler, mas que no meio fez um mockumentary de vampiro, o divertidíssimo <a href="2018-10.html#o_que_fazemos_nas_sombras">O Que Fazemos nas Sombras</a>.</p>
 
 <p>Ou o sempre atordoado ou atordoante Manoel de Oliveira, de <a href="2011-05.html#singularidades_de_uma_rapariga_loura">Singularidades de uma Rapariga Loura</a>.</p>
 
 <p>Haverá clássicos como Wim Wenders, do experimento 3D bem-sucedido <a href="2012-04.html#pina">Pina</a> e o amável <a href="2021-03.html#o_ceu_de_lisboa">O Céu de Lisboa</a>, que assisti em Poços de Caldas no meio da pandemia levando o tocador de DVD.</p>
 
-<p>Michel Gondry explorando sempre sua <a href="2014-01.html#natureza_quase_humana">Natureza Quase Humana</a>. Gondry também já dirigiu a atriz de Amélie Poulain no adorável <a href="2015-07.html#a_espuma_dos_dias">A Espuma dos Dias</a> e Jim Carrey com Kate Winslet no absolutamente admirável <a href="2018-08.html#brilho_eterno_de_uma_mente_sem_lembrancas">Brilho Eterno de uma Mente Sem Lembranças</a>.</p>
+<p>Michel Gondry explorando sempre sua <a href="2014-01.html#natureza_quase_humana">Natureza Quase Humana</a>. Gondry também já dirigiu a atriz de <a href="2014-12.html#amelie_poulain">O Fabuloso Destino de Amélie Poulain</a> no adorável <a href="2015-07.html#a_espuma_dos_dias">A Espuma dos Dias</a> e Jim Carrey com Kate Winslet no absolutamente admirável <a href=".html">Brilho Eterno de uma Mente Sem Lembranças</a>.</p>
 
 <p>O documentarista James Marsh, do clássico <a href="2014-03.html#o_equilibrista">O Equilibrista</a> e Project Nim, além de filmes bleh como <a href="2018-01.html#a_teoria_de_tudo">A Teoria de Tudo</a>.</p>
 
-<p>Craig Gillespie, que dirigiu aquele filme que <a href="2014-09.html#a_garota_ideal">Ryan Gosling namora uma boneca inflável</a>, além de dirigir Margot Robbie em seu melhor trabalho, <a href="2018-01.html#eu_tonya">Eu, Tonya</a>.</p>
+<p>Craig Gillespie, que dirigiu aquele filme que "Ryan Gosling namora uma boneca inflável", além de dirigir Margot Robbie em seu melhor trabalho, <a href="2018-01.html#eu_tonya">Eu, Tonya</a>.</p>
 
 <p>Benoît Jacquot, do imersivo drama <a href="2015-04.html#tres_coracoes">Três Corações</a> e do médio <a href="2019-10.html#o_ultimo_amor_de_casanova">O Último Amor de Casanova</a>.</p>
 
-<p>Dziga Vertov, ou o russo <a href="2015-09.html#man_with_a_movie_camera">Com uma Câmera na Mão</a>, ou até mesmo <a href="2022-04.html#a_história_da_guerra_civil">A História da Guerra Civil</a>, filme soviético do partido (é claro).</p>
+<p>Dziga Vertov, ou o russo "Com uma Câmera na Mão", ou até mesmo <a href="2022-04.html#a_história_da_guerra_civil">A História da Guerra Civil</a>, filme soviético do partido (é claro).</p>
 
 <p>Tomasz Wasilewski, de <a href="2016-12.html#estados_unidos_pelo_amor">Estados Unidos Pelo Amor</a> (sinceramente não me lembro muito desse filme).</p>
 

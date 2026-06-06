@@ -100,7 +100,7 @@ void StartBruteForceThread()
     &amp;g_bruteForceThreadId);
 }
 </pre>
-<p>Para quem está acompanhando <a href="2006-11.html#historia_do_windows">a série de artigos sobre o Windows</a> deve lembrar que assim como na criação de janelas, na criação de uma thread é passada uma função de callback. Só que diferente de uma função de janela, essa função não é executada na mesma thread que criou a janela, mas é um novo "int main" para uma nova linha de execução, que irá rodar em paralelo com a primeira. Essa segunda linha de execução termina quando retornamos dessa função, que no nosso exemplo é nunca, mas poderia ser quando fosse terminada sua tarefa.</p>
+<p>Para quem está acompanhando <a href="historia_do_windows">a série de artigos sobre o Windows</a> deve lembrar que assim como na criação de janelas, na criação de uma thread é passada uma função de callback. Só que diferente de uma função de janela, essa função não é executada na mesma thread que criou a janela, mas é um novo "int main" para uma nova linha de execução, que irá rodar em paralelo com a primeira. Essa segunda linha de execução termina quando retornamos dessa função, que no nosso exemplo é nunca, mas poderia ser quando fosse terminada sua tarefa.</p>
 
 <img src="/journal/img/historia_do_windows_parte_40_threads_pwdbreaker_windows.png"/>
 
@@ -468,17 +468,17 @@ IMalloc : public IUnknown
 {
   public:
   virtual void *STDMETHODCALLTYPE Alloc(
-    /* [in] */ SIZE_T cb) = 0;
+    /* in */ SIZE_T cb) = 0;
 
   virtual void *STDMETHODCALLTYPE Realloc(
-    /* [in] */ void *pv,
-    /* [in] */ SIZE_T cb) = 0;
+    /* in */ void *pv,
+    /* in */ SIZE_T cb) = 0;
 
   virtual void STDMETHODCALLTYPE Free(
-    /* [in] */ void *pv) = 0;
+    /* in */ void *pv) = 0;
 
   virtual SIZE_T STDMETHODCALLTYPE GetSize(
-    /* [in] */ void *pv) = 0;
+    /* in */ void *pv) = 0;
 
   virtual int STDMETHODCALLTYPE DidAlloc(
     void *pv) = 0;

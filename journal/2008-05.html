@@ -509,7 +509,7 @@ message:
 
 <p>Nessas horas o único que pode nos ajudar é o kernel debugger.</p>
 
-<p>Os depuradores do pacote Debugging Tools (especialmente o ntsd e o cdb) suportam o funcionamento em modo proxy, ou seja, eles apenas redirecionam a saída e os comandos entre as duas pontas da depuração (o depurador e o depurado). Isso é comumente usado em <a href="2008-03.html#windbg_a_distancia">depuração remota</a> e <a href="http://www.driverentry.com.br">depuração de kernel</a>, quando o sistema inteiro está congelado. O objetivo aqui é conseguir os dois: depurar remotamente um processo em um sistema que está travado.</p>
+<p>Os depuradores do pacote Debugging Tools (especialmente o ntsd e o cdb) suportam o funcionamento em modo proxy, ou seja, eles apenas redirecionam a saída e os comandos entre as duas pontas da depuração (o depurador e o depurado). Isso é comumente usado em <a href="windbg_a_distancia">depuração remota</a> e <a href="http://www.driverentry.com.br">depuração de kernel</a>, quando o sistema inteiro está congelado. O objetivo aqui é conseguir os dois: depurar remotamente um processo em um sistema que está travado.</p>
 
 <p>Para isso podemos nos utilizar do parâmetro -d, que manda o depurador redirecionar toda saída e controle para o depurador de kernel. Para que isso funcione o depurador já deve estar atachado no sistema-alvo. A coisa funciona mais ou menos assim:</p>
 
@@ -758,7 +758,7 @@ else
 
 <p>O MouseTool originalmente foi uma ferramente de fonte aberto. Isso significa que a última versão do código-fonte está disponível, certo? Errado. Na verdade, eu não consegui, por mais que tentasse achar,  a versão para baixar do código.</p>
 
-<p>Felizmente meu amigo <a href="http://marcioandreyoliveira.blogspot.com/search/label/GMouseTool">Marcio Andrey</a> já havia baixado o fonte algum tempo atrás e, assim como eu, ele gostaria de torná-lo disponível para todos que gostassem de usá-lo e alterá-lo. Por isso que estou publicando-o aqui. Ele é gratuito e aberto. Façam o que quiserem com ele =).</p>
+<p>Felizmente meu amigo Marcio Andrey já havia baixado o fonte algum tempo atrás (update 2026-06-06 mas não mais disponível) e, assim como eu, ele gostaria de torná-lo disponível para todos que gostassem de usá-lo e alterá-lo. Por isso que estou publicando-o aqui. Ele é gratuito e aberto. Façam o que quiserem com ele =).</p>
 
 <p>Vamos aproveitar o código-fonte e mostrar como explorar um código não escrito por nós. Normalmente as primeiras coisas a fazer são: baixar o arquivo compactado e descompactá-lo dentro de uma nova pasta. Dessa forma encontramos o arquivo de projeto (nesse caso, MouseTool.dsw) e tentamos abri-lo. Falhando de início miseravelmente porque acredito que ninguém mais utilize a versão do Visual Studio que abre isso.</p>
 
@@ -830,7 +830,7 @@ else
 
 <p>Update 2026-02-20: Many years ago I switched from this solution to <a href="https://nssm.cc/">NSSM</a>, which I highly recommend. It has been used in robust products and avoids having to maintain redundant code to support programs that weren't designed to be services, but need to run independently of the user's account.</p>
 
-<p>The biggest advantage running an application as a service, interactive or not, is to allow its start before a logon be performed. An example that happens to me is the need of debugging a <a href="2007-08.html#gina_x_credential_provider">GINA</a>. In order to do this, I need the Visual Studio remote debugger be started before logon. The easiest and fastest solution is to run Msvcmon, the server part of debugging, as a service.</p>
+<p>The biggest advantage running an application as a service, interactive or not, is to allow its start before a logon be performed. An example that happens to me is the need of debugging a "GINA". In order to do this, I need the Visual Studio remote debugger be started before logon. The easiest and fastest solution is to run Msvcmon, the server part of debugging, as a service.</p>
 
 <p>Today I've figured out a pretty interesting shortcut to achieve it.</p>
 
