@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+
+<span id="vcpkg-gerenciador-de-libs-cpp-para-linux-mac-os-e-windows" title="Vcpkg: gerenciador de libs c++ para Linux, Mac OS... e Windows!"/></span>
+<section id="section_vcpkg-gerenciador-de-libs-cpp-para-linux-mac-os-e-windows">
+<p class="title">Vcpkg: gerenciador de libs c++ para Linux, Mac OS... e Windows!</p>
+<span class="title-heading">Caloni, 2018-07-14 computer blog</span>
+
+<p>O ambiente padronizado de bibliotecas C/C++ dos sistemas UNIX é motivo de inveja dos programadores Windows por séculos. Mas, finalmente, a Microsoft tem acordado diante da ressurreição do C++, com seus novos bug fixes e new deprecated features.</p>
+
+<p>E com isso uma série de atividades permearam a evolução da ferramenta de desenvolvimento da Microsoft, o Visual Studio:</p>
+
+<ul><li>Updates frequentes</li>
+
+<li>Projetos internos lançados como open source no GitHub</li>
+
+<li>Compra do GitHub</li>
+
+<li>Suporte a mais de um compilador (como clang)</li>
+
+<li>Depuração Linux (Ubuntu) dentro do Windows</li>
+
+<li>Ambiente Linux (Ubuntu) dentro do Windows</li>
+
+<li>Pesado suporte ao CMake</li>
+
+<li>Ambiente padronizado de bibliotecas para Windows, Linux e Mac OS (vcpkg)</li>
+
+<li>Suporte à compilação de bibliotecas clássicas dos ambientes UNIX via vcpkg</li>
+
+<li>Deploy de suas próprias bibliotecas padronizadas via vcpkg</li></ul>
+
+<p>Usar o vcpkg no Windows é tão simples que parece mágica. Ou Linux.</p>
+
+<p>Para instalar você só precisa seguir o passo-a-passo do GitHub deles e usar PowerShell. O prompt PS faz tudo automático. O vcpkg é basicamente um conjunto de CMakes que fazem o serviço direito e conseguem compilar quase 1000 libs, a maioria nascidas no Linux, e integrar diretamente com projetos do VS2017.</p>
+
+<p>Para provar todo o seu poder vamos usar a pior lib de todas: GTK.</p>
+
+<p>O GTK não é apenas uma biblioteca, mas um conjunto de infinitas dependências. Há um tutorial gigantesco para compilar para Windows (defasado) e novos problemas surgem cada vez que alguém tenta utilizá-lo. Eu gastei mais de 40 horas para entender esses problemas compilando todas as dependências (estava em 95%) quando surgiu o vcpkg e jogou todos meus esforços no lixo (ainda bem).</p>
+
+<p>Com o vcpkg tudo que é necessário fazer é rodar o comando de install com o nome da lib e toda a compilação é feita automaticamente. Depois disso, se não houver paths de include nos seus projetos do Visual Studio ele próprio irá levar em conta o path de instalação dessas libs (compilação e link). Parece mágica mesmo para quem passou décadas se matando para compilar alguma coisa que preste no Windows e que veio do Linux.</p>
+
+<p>Vantagens do vcpkg:</p>
+
+<ul><li>Economia de tempo (de pesquisa, de compilação, de tudo)</li>
+
+<li>Uniformidade no uso das libs</li>
+
+<li>Flexibilidade para colocar suas próprias libs</li></ul>
+
+<p>Desvantagens do vcpkg:</p>
+
+<ul><li>Apenas as libs mais novas estão sendo suportadas (e não há suporte para Visual Studio mais antigo, nem SOs mais antigos como XP).</li>
+
+<li>Usuário Linux nenhum no mundo vai querer usar (motivo: Microsoft e este já é um problema resolvido neste mundo)</li>
+
+<li>Depende de um gerenciador proprietário (se bem que é tudo open source e não há restrições como o Java; qualquer um pode montar seu repositório).</li></ul>
+
+</section>
+
+
+<span style="float: left;">
+ <a href="mailto:wanderley.caloni@gmail.com?subject=Comment%20about%3A%20Vcpkg%3A%20gerenciador%20de%20libs%20c%2B%2B%20para%20Linux%2C%20Mac%20OS...%20e%20Windows%21">[comment]</a>
+ <a href="meu-novo-parseador-de-argc-argv.html">[Meu Novo Parseador de Argc Argv]</a>
+
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

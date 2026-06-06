@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+
+<span id="coroutines-em-c-picoro" title="Coroutines Em C: Picoro"/></span>
+<section id="section_coroutines-em-c-picoro">
+<p class="title">Coroutines Em C: Picoro</p>
+<span class="title-heading">Caloni, 2019-05-08 computer blog</span>
+
+<p>Tantas linguagens hoje em dia tentando implementar a abstração de corrotinas e inserindo mais camadas de abstração (fibras e cereais)... há duas implementações já no Boost, ambas dependendo de uma biblioteca de contexto de stack que é dependente de arquitetura (programada em Assembly).</p>
+
+<p>E aqui está a linguagem C com sua elegância, minimalismo e a filosofia "just works", por mais ou menos 50 anos.</p>
+
+<p>Estava pesquisando sobre bibliotecas de corrotinas em C e encontrei a <a href="http://dotat.at/cgi/~fanf/dotat/~fanf/dotat/git/picoro.git">Picoro</a>, de Tony Finch. Três coisas me encantaram nela:</p>
+
+<p>1. portabilidade (fácil de testar em qualquer arquitetura).</p>
+
+<p>2. simplicidade (um header e um .c com menos de 200 linhas, e a maioria são comentários).</p>
+
+<p>3. manutenção (o último commit é de 2010, ou seja, ninguém mais mexeu nela por nove anos).</p>
+
+<p>Ela é uma biblioteca feita para resolver o problema mais básico de toda corrotina: troca de contexto. Isso é feito de maneira descentralizada, embora ela inicie com uma corrotina principal: a primeira que constrói uma corrotina. A partir dessa é possível criar outras e dar resume em qualquer uma delas que não tenha terminado.</p>
+
+<p>A linguagem C já implementa troca de contexto através das funções padrão <code>setjmp</code> e <code>longjmp</code>. Há um tipo dependente de arquitetura, <code>jmp_buf</code>, que é usado para guardar o contexto. O salto é feito no estilo da função <code>fork</code> do Unix, ou seja, não há inclusão de mais nenhuma sintaxe diferente do usual: é um if que retorna 0 (contexto principal) ou não-0 (estamos em outro contexto).</p>
+
+<p>O picoro organiza tudo isso em torno de uma lista ligada. Aliás, de duas listas ligadas: <code>running</code> e <code>idle</code>, onde o head de cada uma delas é usado para verificar se há corrotinas paradas ou em execução. Há algumas regras básicas para que tudo funcione. Por exemplo, uma corrotina que já foi executada até o final ou que está bloqueada pela chamada de <code>resume</code> não pode ser posta para rodar.</p>
+
+<p>Vamos começar com um exemplo simples: apenas uma corrotina que recebe um inteiro e incrementa três vezes. A cada vez que ele incrementa ele devolve o controle de execução via yield. O <code>main</code> cria três dessas corrotinas e dá resume em cada uma delas três vezes, finalizando a execução de todas. Ao final, o counter final é de 9.</p>
+
+<pre>
+#include &quot;..\picoro\picoro.h&quot;
+#include &lt;stdio.h&gt;
+
+void* mycoroutine(void* arg)
+{
+    int* counter = (int*) arg;
+    (*counter) += 1;
+    yield(arg);
+    (*counter) += 1;
+    yield(arg);
+    (*counter) += 1;
+    return arg;
+}
+
+int main()
+{
+    int counter = 0;
+    int i;
+    coro coroutines[3];
+    int maxi = sizeof(coroutines) / sizeof(coro);
+
+    for (i = 0; i &lt; maxi; ++i)
+      coroutines[i] = coroutine(mycoroutine);
+
+    for (i = 0; i &lt; maxi; ++i)
+      resume(coroutines[i], &amp;counter);
+    for (i = 0; i &lt; maxi; ++i)
+      resume(coroutines[i], &amp;counter);
+    for (i = 0; i &lt; maxi; ++i)
+      resume(coroutines[i], &amp;counter);
+
+    printf(&quot;final counter: %d\n&quot;, counter);
+    return 0;
+}
+</pre>
+<p>É importante observar que o uso de troca de contexto pode facilmente consumir a pilha, pois ela está sendo compartilhada com muitas funções em paralelo. Para reservar espaço a <code>coroutine_start</code> aloca um array de 16 KB (fixo). Esses detalhes de implementação podem ser alterados, pois a biblioteca é tão mínima e simples de entender que construir qualquer coisa em cima dela é trivial.</p>
+
+</section>
+
+
+<span style="float: left;">
+ <a href="mailto:wanderley.caloni@gmail.com?subject=Comment%20about%3A%20Coroutines%20Em%20C%3A%20Picoro">[comment]</a>
+ <a href="c-resolve-tudo-orientacao-a-objetos-com-polimorfismo.html">[C Resolve Tudo: Orientação a Objetos (com Polimorfismo)]</a>
+
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

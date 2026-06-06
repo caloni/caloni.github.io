@@ -1,0 +1,329 @@
+﻿<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+
+<span id="coroutine-internals" title="Coroutine Internals"/></span>
+<section id="section_coroutine-internals">
+<p class="title">Coroutine Internals</p>
+<span class="title-heading">Caloni, 2018-09-18 computer blog</span>
+
+<p>Uma corrotina é um mecanismo de troca de contexto onde apenas uma thread está envolvida. Ela me faz lembrar do Windows 3.0, não exatamente por não existirem threads (e não existiam mesmo), mas pelo caráter cooperativo dos diferentes códigos.</p>
+
+<p>Só que no caso do Windows se a rotina de impressão travasse todo o sistema congelava.</p>
+
+<p>A volta das corrotinas via C++ moderno ocorre, para variar, no Boost. E a arquitetura é simples: mantenha um histórico das stacks das diferentes tasks da thread. Vamos pegar o caso mais simples da Boost.Coroutine para analisar:</p>
+
+<pre>
+// Já existe uma nova versão de Coroutine, a 2, e a 1 está sendo abandonada.
+#define BOOST_COROUTINES_NO_DEPRECATION_WARNING
+#include &lt;boost/coroutine/all.hpp&gt;
+#include &lt;iostream&gt;
+
+using namespace boost::coroutines;
+
+void cooperative(coroutine&lt;void&gt;::push_type &amp;sink)
+{
+    std::cout &lt;&lt; &quot;Hello&quot;;
+    sink();
+    std::cout &lt;&lt; &quot;world&quot;;
+}
+
+int main()
+{
+    coroutine&lt;void&gt;::pull_type source{ cooperative };
+    std::cout &lt;&lt; &quot;, &quot;;
+    source();
+    std::cout &lt;&lt; &quot;!\n&quot;;
+}
+</pre>
+<p>Se você já é um programador esperto já deve ter percebido que na saída do prompt será impresso "Hello, world!", com a vírgula no meio sendo impressa pela função main e as duas palavras da ponta pela função cooperative, ainda que ela seja chamada apenas uma vez.</p>
+
+<p>Note que falei chamada porque se a stack não retornou da função ela não terminou ainda seu trabalho. Não houve o "return". Outra forma de entender isso é que ela é chamada aos poucos. Enfim, deixo para você a discussão semântica. O fato é que a saída é "Hello, world":</p>
+
+<img src="/blog/img/coroutine_internals_bPO1fFa.png"/>
+
+<p>Vamos depurar.</p>
+
+<img src="/blog/img/coroutine_internals_WJeFtYq.png"/>
+
+<p>Oh, oh! A stack de cooperative nos indica que ela não partiu do main, apesar de ter sido chamada através da construção de <code>coroutine&lt;void&gt;::pull_type</code>. O método sink chamado logo após imprimir "Hello" deve colocar essa rotina para dormir, voltando o controle para main. Vamos ver como isso é feito.</p>
+
+<p>https://www.youtube.com/watch?v=xoAxig6vdTM</p>
+
+<p>Oh, não. O depurador do Visual Studio está fazendo caquinha, pois rodando passo-a-passo voltei para a mesma função cooperative sem passar pelo main. No entanto, a vírgula ", " foi impressa.</p>
+
+<img src="/blog/img/coroutine_internals_S1Ywlhl.png"/>
+
+<p>Para conseguirmos depurar diferentes rotinas dentro da mesma thread é imperativo entendermos como o mecanismo de troca de contexto funciona por baixo dos panos. Para isso nada como depurar as próprias trocas de contexto.</p>
+
+<pre>
+typedef void ( * coroutine_fn)( push_coroutine&lt; void &gt; &amp;);
+
+explicit pull_coroutine( coroutine_fn fn, attributes const&amp; attrs = attributes() )
+{
+    // create a stack-context
+    stack_context stack_ctx;
+    stack_allocator stack_alloc;
+    // allocate the coroutine-stack
+    stack_alloc.allocate( stack_ctx, attrs.size);
+    BOOST_ASSERT( 0 != stack_ctx.sp);
+    // typedef of internal coroutine-type
+    typedef detail::pull_coroutine_object&lt;
+        push_coroutine&lt; void &gt;, void, coroutine_fn, stack_allocator
+    &gt;                                       object_t;
+    // reserve space on top of coroutine-stack for internal coroutine-type
+    std::size_t size = stack_ctx.size - sizeof( object_t);
+    BOOST_ASSERT( 0 != size);
+    void * sp = static_cast&lt; char * &gt;( stack_ctx.sp) - sizeof( object_t);
+    BOOST_ASSERT( 0 != sp);
+    // placement new for internal coroutine
+    impl_ = new ( sp) object_t(
+            boost::forward&lt; coroutine_fn &gt;( fn), attrs,
+            detail::preallocated( sp, size, stack_ctx), stack_alloc);
+    BOOST_ASSERT( impl_);
+    impl_-&gt;pull();
+}
+</pre>
+<p>O tamanho total da stack reservada no Windows é de 1 MB, mas a granuralidade padrão é de 64 KB ("que é suficiente para qualquer um" - Gates, Bill). Então é por isso que quando o Boost aloca uma stack com atributos padrões esse é o tamanho que vemos (65536).</p>
+
+<p>"The default size for the reserved and initially committed stack memory is specified in the executable file header. Thread or fiber creation fails if there is not enough memory to reserve or commit the number of bytes requested. The default stack reservation size used by the linker is 1 MB. To specify a different default stack reservation size for all threads and fibers, use the STACKSIZE statement in the module definition (.def) file. The operating system rounds up the specified size to the nearest multiple of the system's allocation granularity (typically 64 KB). To retrieve the allocation granularity of the current system, use the GetSystemInfo function."</p>
+
+<img src="/blog/img/coroutine_internals_0dMVf0k.png"/>
+
+<p>Detalhe curioso de arquitetura x86 (32 bits): na hora de alocar, o sp (stack pointer) aponta para o final da pilha. Isso porque no x86 a pilha cresce "para baixo".</p>
+
+<pre>
+ctx.sp = static_cast&lt; char * &gt;( limit) + ctx.size;
+</pre>
+<p>Logo em seguida, no topo da pilha, é empilhado o objeto da corrotina:</p>
+
+<pre>
+typedef pull_coroutine_object&lt;push_coroutine,
+coroutine_fn, stack_allocator&gt; object_t;
+void * sp = static_cast&lt;char*&gt;(stack_ctx.sp) - sizeof( object_t);
+impl_ = new (sp) object_t(boost::forward&lt;coroutine_fn&gt;(fn), attrs,
+detail::preallocated(sp, size, stack_ctx), stack_alloc);
+</pre>
+<p>Bom, entrando mais a fundo na implementação de corrotinas do Boost, temos o objeto pull_coroutine_impl, que possui flags, ponteiro para exceção e o contexto do chamador e do chamado para se localizar.</p>
+
+<pre>
+template&lt;&gt;
+class pull_coroutine_impl&lt; void &gt; : private noncopyable
+{
+protected:
+    int                     flags_;
+    exception_ptr           except_;
+    coroutine_context   *   caller_;
+    coroutine_context   *   callee_;
+</pre>
+<p>O coroutine_context possui elementos já conhecidos de quem faz hook de função: trampolins. Ou seja, funções usadas para realizar saltos incondicionais de um ponto a outro do código independente de contexto. Na minha época de hooks isso se fazia alocando memória na heap e escrevendo o código assembly necessário para realizar o pulo, geralmente de uma colinha de uma função naked (funções naked não possuem prólogo e epílogo, que são partes do código que montam e desmontam contextos dentro da pilha, responsável pela montagem dos frames com ponto de retorno, variáveis locais, argumentos).</p>
+
+<pre>
+// class hold stack-context and coroutines execution-context
+class BOOST_COROUTINES_DECL coroutine_context
+{
+private:
+    template&lt; typename Coro &gt;
+    friend void trampoline( context::detail::transfer_t);
+    template&lt; typename Coro &gt;
+    friend void trampoline_void( context::detail::transfer_t);
+    template&lt; typename Coro &gt;
+    friend void trampoline_pull( context::detail::transfer_t);
+    template&lt; typename Coro &gt;
+    friend void trampoline_push( context::detail::transfer_t);
+    template&lt; typename Coro &gt;
+    friend void trampoline_push_void( context::detail::transfer_t);
+
+    preallocated            palloc_;
+    context::detail::fcontext_t     ctx_;
+</pre>
+<p>A função que faz a mágica do pulo do gato é a pull, que muda o estado da rotina para running e realiza o salto de contexto. Vamos analisar essa parte com muita calma.</p>
+
+<pre>
+inline void pull()
+{
+    BOOST_ASSERT( ! is_running() );
+    BOOST_ASSERT( ! is_complete() );
+
+    flags_ |= flag_running;
+    param_type to( this);
+    param_type * from(
+            static_cast&lt; param_type * &gt;(
+                caller_-&gt;jump(
+                    * callee_,
+                    &amp; to) ) );
+    flags_ &amp;= ~flag_running;
+    if ( from-&gt;do_unwind) throw forced_unwind();
+    if ( except_) rethrow_exception( except_);
+}
+</pre>
+<p>Quem desfaz a mágica, "desempilhando" o contexto para voltar ao chamador da corrotina (através do contexto apenas, não da pilha) é a função push.</p>
+
+<pre>
+inline void push()
+{
+    BOOST_ASSERT( ! is_running() );
+    BOOST_ASSERT( ! is_complete() );
+
+    flags_ |= flag_running;
+    param_type to( this);
+    param_type * from(
+            static_cast&lt; param_type * &gt;(
+                caller_-&gt;jump(
+                    * callee_,
+                    &amp; to) ) );
+    flags_ &amp;= ~flag_running;
+    if ( from-&gt;do_unwind) throw forced_unwind();
+    if ( except_) rethrow_exception( except_);
+}
+</pre>
+<p>Com os dados disponíveis nos objetos de contexto (no exemplo do main, a variável source) é possível pelo Windbg analisar qualquer tipo de stack com o comando k.</p>
+
+<img src="/blog/img/coroutine_internals_mDcM4jk.png"/>
+
+<p>A variável de uma coroutine contém o contexto do chamador e do chamado. Quando houver a necessidade de explorar uma pilha não-ativa é preciso obter o valor de sp através dessa variável. Ela fica um pouco escondida, mas está lá. Acredite.</p>
+
+<img src="/blog/img/coroutine_internals_uQ7WYl8.png"/>
+
+<p>Usando o comando <code>k = BasePtr StackPtr InstructionPtr</code> passando o conteúdo de sp como o stack pointer o Windbg deve mostrar a pilha de todas as formas possíveis (especificar se terá FPO, mostrar código-fonte, argumentos, etc). Para a demonstração live fica bom ter um loop "eterno" para poder repetir a análise quantas vezes forem necessárias:</p>
+
+<pre>
+void cooperative(coroutine&lt;void&gt;::push_type &amp;sink)
+{
+    while( g_stopAll == false )
+    {
+        boost::this_thread::sleep_for(
+          boost::chrono::milliseconds(1000));
+        sink();
+        std::cout &lt;&lt; &quot;Hello&quot;;
+        boost::this_thread::sleep_for(
+          boost::chrono::milliseconds(1000));
+        sink();
+        std::cout &lt;&lt; &quot;world&quot;;
+    }
+}
+
+int main()
+{
+    coroutine&lt;void&gt;::pull_type source{ cooperative };
+
+    while( g_stopAll == false )
+    {
+        source();
+        std::cout &lt;&lt; &quot;, &quot;;
+        source();
+        std::cout &lt;&lt; &quot;!\n&quot;;
+    }
+}
+</pre>
+<img src="/blog/img/coroutine_internals_bBIzRrm.png"/>
+
+<pre>
+0:000&gt; ~kvn
+ # RetAddr
+00 00f39668 coroutines_cooperative!cooperative+0xa0
+  [coroutines_cooperative.cpp @ 19]
+01 00f18b5b coroutines_cooperative!boost::coroutines
+  ::detail::pull_coroutine_object
+  &lt;boost::coroutines::push_coroutine&lt;void&gt;,void,void
+  (__cdecl*)(boost::coroutines::push_coroutine&lt;void&gt; &amp;)
+  ,boost::coroutines::basic_standard_stack_allocator
+  &lt;boost::coroutines::stack_traits&gt; &gt;::run+0xf8
+  [pull_coroutine_object.hpp @ 281]
+02 54261075 coroutines_cooperative!boost::coroutines
+  ::detail::trampoline_pull&lt;boost::coroutines
+  ::detail::pull_coroutine_object&lt;boost::coroutines
+  ::push_coroutine&lt;void&gt;,void,void
+  (__cdecl*)(boost::coroutines::push_coroutine&lt;void&gt; &amp;)
+  ,boost::coroutines::basic_standard_stack_allocator
+  &lt;boost::coroutines::stack_traits&gt; &gt; &gt;+0x9b
+  [trampoline_pull.hpp @ 42]
+03 ffffffff boost_context_vc141_mt_gd_x32_1_67!make_fcontext+0x75
+...
+0a coroutines_cooperative!boost::coroutines::detail
+  ::pull_coroutine_object&lt;boost::coroutines
+  ::push_coroutine&lt;void&gt;,void,void
+  (__cdecl*)(boost::coroutines::push_coroutine&lt;void&gt; &amp;)
+  ,boost::coroutines::basic_standard_stack_allocator
+  &lt;boost::coroutines::stack_traits&gt; &gt;::`vftable'
+
+.detach
+</pre>
+<p>Dica: É importante detachar do processo, mesmo que estejamos analisando em modo não-invasivo, porque a porta de Debug pode ser ocupada e o Visual Studio vai ficar pra sempre esperando receber eventos de debug que ele não vai mais receber.</p>
+
+<p>Após rodarmos novamente o programa ele pára no main. Podemos atachar com o WinDbg quantas vezes precisarmos:</p>
+
+<pre>
+0:000&gt; ~*kvn
+
+.  0  Id: 1b50.a58 Suspend: 1 Teb: 00b8c000 Unfrozen
+ # RetAddr
+00 00f3cc8e coroutines_cooperative!main+0x9a
+  [coroutines_cooperative.cpp @ 32]
+01 00f3cb27 coroutines_cooperative!invoke_main+0x1e
+  [exe_common.inl @ 78]
+02 00f3c9bd coroutines_cooperative!__scrt_common_main_seh+0x157
+  [exe_common.inl @ 288]
+03 00f3cd08 coroutines_cooperative!__scrt_common_main+0xd
+  [exe_common.inl @ 331]
+04 760f8654 coroutines_cooperative!mainCRTStartup+0x8
+  [exe_main.cpp @ 17]
+05 77c24a47 KERNEL32!BaseThreadInitThunk+0x24
+06 77c24a17 ntdll!__RtlUserThreadStart+0x2f
+07 00000000 ntdll!_RtlUserThreadStart+0x1b
+</pre>
+</section>
+
+
+<span style="float: left;">
+ <a href="mailto:wanderley.caloni@gmail.com?subject=Comment%20about%3A%20Coroutine%20Internals">[comment]</a>
+ <a href="boostbind-e-os-erros-escrotos.html">[Boost.Bind e os Erros Escrotos]</a>
+
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>
