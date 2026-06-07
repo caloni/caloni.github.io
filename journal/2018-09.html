@@ -630,8 +630,8 @@ c:\Libs\vcpkg\installed\x86-windows\share\bitforge
 
 <span id="coroutine-internals" title="Coroutine Internals"/></span>
 <section id="section_coroutine-internals">
-<p class="title"><a href="2018-09.html#coroutine-internals">#</a> Coroutine Internals</p>
-<span class="title-heading">Caloni, 2018-09-18 <a href="2018-09.html#vcpkg-internals-como-o-gerenciador-de-pacotes-da-m-funciona-por-dentro">&lt;</a><a href="computer.html">computer</a><a href="2018-10.html#boostbind-e-os-erros-escrotos">&gt;</a> <a href="2018-09.html#vcpkg-internals-como-o-gerenciador-de-pacotes-da-m-funciona-por-dentro">&lt;</a><a href="blog.html">blog</a><a href="2018-10.html#boostbind-e-os-erros-escrotos">&gt;</a><a href="2018-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_coroutine-internals')"><sup>[copy]</sup></a></span>
+<p class="title"><a href="2018-09.html#coroutine-internals">#</a> <a class="external" href="https://www.youtube.com/watch?v=xoAxig6vdTM">Coroutine Internals</a></p>
+<span class="title-heading">Caloni, 2018-09-18 <a href="2018-09.html#vcpkg-internals-como-o-gerenciador-de-pacotes-da-m-funciona-por-dentro">&lt;</a><a href="computer.html">computer</a><a href="2018-10.html#boostbind-e-os-erros-escrotos">&gt;</a> <a href="2018-09.html#vcpkg-internals-como-o-gerenciador-de-pacotes-da-m-funciona-por-dentro">&lt;</a><a href="blog.html">blog</a><a href="2018-10.html#boostbind-e-os-erros-escrotos">&gt;</a> <a href="2018-08.html#jejum-intermitente-e-nutricionistas-em-furia">&lt;</a><a href="blogging.html">blogging</a><a href="2018-10.html#cha-verde-feito-como-na-russia-russian-tea-howto-for-linux-hackers">&gt;</a><a href="2018-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_coroutine-internals')"><sup>[copy]</sup></a></span>
 
 <p>Uma corrotina é um mecanismo de troca de contexto onde apenas uma thread está envolvida. Ela me faz lembrar do Windows 3.0, não exatamente por não existirem threads (e não existiam mesmo), mas pelo caráter cooperativo dos diferentes códigos.</p>
 
@@ -673,8 +673,6 @@ int main()
 <img src="/journal/img/coroutine_internals_WJeFtYq.png"/>
 
 <p>Oh, oh! A stack de cooperative nos indica que ela não partiu do main, apesar de ter sido chamada através da construção de <code>coroutine&lt;void&gt;::pull_type</code>. O método sink chamado logo após imprimir "Hello" deve colocar essa rotina para dormir, voltando o controle para main. Vamos ver como isso é feito.</p>
-
-<p>https://www.youtube.com/watch?v=xoAxig6vdTM</p>
 
 <p>Oh, não. O depurador do Visual Studio está fazendo caquinha, pois rodando passo-a-passo voltei para a mesma função cooperative sem passar pelo main. No entanto, a vírgula ", " foi impressa.</p>
 

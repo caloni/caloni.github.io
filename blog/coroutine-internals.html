@@ -40,8 +40,8 @@ role="navigation" aria-label="main navigation">
 
 <span id="coroutine-internals" title="Coroutine Internals"/></span>
 <section id="section_coroutine-internals">
-<p class="title">Coroutine Internals</p>
-<span class="title-heading">Caloni, 2018-09-18 computer blog</span>
+<p class="title"><a class="external" href="https://www.youtube.com/watch?v=xoAxig6vdTM">Coroutine Internals</a></p>
+<span class="title-heading">Caloni, 2018-09-18 computer blog blogging</span>
 
 <p>Uma corrotina é um mecanismo de troca de contexto onde apenas uma thread está envolvida. Ela me faz lembrar do Windows 3.0, não exatamente por não existirem threads (e não existiam mesmo), mas pelo caráter cooperativo dos diferentes códigos.</p>
 
@@ -83,8 +83,6 @@ int main()
 <img src="/blog/img/coroutine_internals_WJeFtYq.png"/>
 
 <p>Oh, oh! A stack de cooperative nos indica que ela não partiu do main, apesar de ter sido chamada através da construção de <code>coroutine&lt;void&gt;::pull_type</code>. O método sink chamado logo após imprimir "Hello" deve colocar essa rotina para dormir, voltando o controle para main. Vamos ver como isso é feito.</p>
-
-<p>https://www.youtube.com/watch?v=xoAxig6vdTM</p>
 
 <p>Oh, não. O depurador do Visual Studio está fazendo caquinha, pois rodando passo-a-passo voltei para a mesma função cooperative sem passar pelo main. No entanto, a vírgula ", " foi impressa.</p>
 
