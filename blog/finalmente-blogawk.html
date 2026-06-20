@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+
+<span id="finalmente-blogawk" title="Finalmente blogawk"/></span>
+<section id="section_finalmente-blogawk">
+<p class="title">Finalmente blogawk</p>
+<span class="title-heading">2023-08-20 computer projects blog</span>
+
+<p>Fiquei muito empolgado com a solução awk que converte meus posts para um epub "carregável" em um leitor de ebook e no computador e parti para usar a mesma estratégia em meu blog para abandonar dessa vez o Hugo, um renderizador de sites estáticos feito em golang extremamente rápido, mas que não está dando conta dos meus mais de 4000 posts.</p>
+
+<p>O maior peso dessa conversão é o file system. A leitura e escrita de milhares de arquivos, mesmo que não seja feita nenhuma conversão, por si só já é a parte mais pesada. Sendo assim, adotei duas estratégias de otimização: usar 1) um único arquivo de leitura e 2) um arquivo por mês na escrita. Com esses dois passos eu consigo aplicar a leitura deste arquivo pelo script awk em um passo só. De quebra, as mudanças sistêmicas no blogue serão muito mais fáceis.</p>
+
+<p>Esse foi o maior economizador de tempo. Gerar 4000 novas entradas no file system do Windows estava custando caro, em torno de um minuto. Transformar isso em uns 300 arquivos fez a escrita levar de dois a três segundos!</p>
+
+<p>A tradução do site para awk levou no total uns dois dias. A ideia foi copiar o HTML gerado pelo Hugo e fazer os mapeamentos de data, tags e estruturas de listagem no awk, que lida com isso através de seus arrays dinâmicos com muita facilidade e rapidez.</p>
+
+<p>Um ponto de atenção aos novatos do awk que eu destacaria dessa experiência é sobre as variáveis. Exceto os argumentos de funções, todas as variáveis são globais, o que pode dar alguns pesadelos quando há mais de um uso do mesmo nome, especialmente quando há diferença entre tipos escalares e arrays. Se eu fosse fazer do zero novamente eu não economizaria na largura dos nomes e nos prefixos, como g_ para denotar as globais. Um truque muito bom do awk também é declarar variáveis da função como parâmetros que não são recebíveis pelo chamador. Há <a href="https://www.gnu.org/software/gawk/manual/gawk.html#Variable-Scope">uma convenção</a> de separar por espaços os parâmetros reais dos locais.</p>
+
+<p>De resto, agora tenho a liberdade de renderizar meu blogue em questão de segundos. Aposentei a estrutura do Hugo e estou usando awk para gerar tanto o blogue quanto o ebook.</p>
+
+<p>Não achei justo fazer benchmarks de comparação com o Hugo pelo motivo do file system já citado e também pelas diferentes estratégias adotadas. Pelo própria estrutura engessada e necessária do Hugo em unir estrutura de arquivos fontes e estrutura final do saite eu sei que não seria viável continuar usando a ferramenta.</p>
+
+<p>Além disso, awk me dará a liberdade que gostaria de indexar pesadamente meus textos com o poder dos arrays associativos de awk. Já conhecia eles do PHP, mas agora que conheci os do awk estou pensando seriamente em adotar para outros tipos de tratamento de texto. Talvez até use para minhas finanças pessoais.</p>
+
+</section>
+
+
+<span style="float: left;">
+ <a href="mailto:wanderley.caloni@gmail.com?subject=Comment%20about%3A%20Finalmente%20blogawk">[comment]</a>
+ <a href="explorando-a-hstring.html">[Explorando a HSTRING]</a>
+
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

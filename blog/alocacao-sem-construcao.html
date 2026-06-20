@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+
+<span id="alocacao-sem-construcao" title="Alocação sem construção"/></span>
+<section id="section_alocacao-sem-construcao">
+<p class="title">Alocação sem construção</p>
+<span class="title-heading">2024-06-11 computer blog</span>
+
+<p>Meu amigo está mexendo com allocator e fez o seguinte teste, o que pode dar a ideia errada para o iniciante, porque testei aqui e deu tudo certo:</p>
+
+<pre>
+#include &lt;iostream&gt;
+
+struct A {
+    A() = default;
+    uint64_t x;
+};
+
+int main()
+{
+    auto alloc = std::allocator&lt;A&gt;();
+    A* p = alloc.allocate(2);
+    p[1].x = 10;
+}
+</pre>
+<p>Porém, ele não havia revelado que a “struct” que ele usou não era dessas sem complexidade alguma, mas a std::string, que depende da construção porque possui membros que controlam o estado do objeto. E aí sim apenas alocar o espaço na memória não é suficiente. É preciso construir o objeto chamando o construtor.</p>
+
+<pre>
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+struct A {
+    A() = default;
+    uint64_t x;
+    std::string y; // new member
+};
+
+int main()
+{
+    auto alloc = std::allocator&lt;A&gt;();
+    A* p = alloc.allocate(2);
+    p[1].y = &quot;y&quot;; // crash
+}
+</pre>
+<p>Ao depurar a chamada ao <code>operator =</code> que chama por sua vez o método <code>std::string::assign</code> é possível ver que o objeto está com os membros <code>size</code> e <code>capacity</code> com lixo. O que faz sentido, já que o construtor dessa string nunca foi chamado.</p>
+
+<pre>
+- this  0x00000216888f5858 &lt;Error reading characters of string.&gt;
+std::string *
+   [size]  14829735431805717965  unsigned __int64
+   [capacity]  14829735431805717965  unsigned __int64
++ [allocator]  allocator  std::_Compressed_pair&lt;
+std::allocator&lt;char&gt;,std::_String_val&lt;std::_Simple_types&lt;char&gt;&gt;,1&gt;
+   [0]  &lt;Unable to read memory&gt;  char
+</pre>
+<p>Para corrigir isso podemos usar o que C++ chama de placement new: uma construção de objeto em memória previamente disponível.</p>
+
+<pre>
+A* p = alloc.allocate(2);
+new (p) A[2]; // remember to use new array operator!
+</pre>
+</section>
+
+
+<span style="float: left;">
+ <a href="mailto:wanderley.caloni@gmail.com?subject=Comment%20about%3A%20Aloca%C3%A7%C3%A3o%20sem%20constru%C3%A7%C3%A3o">[comment]</a>
+ <a href="se-nao-instanciou-o-template-nao-tem-nada-de-errado.html">[Se não instanciou o template não tem nada de errado]</a>
+
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

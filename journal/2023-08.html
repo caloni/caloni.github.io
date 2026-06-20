@@ -138,7 +138,7 @@ role="navigation" aria-label="main navigation">
 <span id="descobrir-ativacao-de-classes-winrt" title="Descobrir ativação de classes WinRT"/></span>
 <section id="section_descobrir-ativacao-de-classes-winrt">
 <p class="title"><a href="2023-08.html#descobrir-ativacao-de-classes-winrt">#</a> Descobrir ativação de classes WinRT</p>
-<span class="title-heading">2023-08-13 <a href="2023-07.html#boasvindas-ao-canal-de-reversing-do-telegrama">&lt;</a><a href="computer.html">computer</a><a href="2023-08.html#finalmente-blogawk">&gt;</a> <a href="2023-07.html#boasvindas-ao-canal-de-reversing-do-telegrama">&lt;</a><a href="reversing_tag.html">reversing_tag</a><a href="2023-08.html#explorando-a-hstring">&gt;</a><a href="2023-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_descobrir-ativacao-de-classes-winrt')"><sup>[copy]</sup></a></span>
+<span class="title-heading">2023-08-13 <a href="2023-07.html#boasvindas-ao-canal-de-reversing-do-telegrama">&lt;</a><a href="computer.html">computer</a><a href="2023-08.html#finalmente-blogawk">&gt;</a> <a href="2023-07.html#boasvindas-ao-canal-de-reversing-do-telegrama">&lt;</a><a href="reversing_tag.html">reversing_tag</a><a href="2023-08.html#explorando-a-hstring">&gt;</a> <a href="2023-07.html#boasvindas-ao-canal-de-reversing-do-telegrama">&lt;</a><a href="blog.html">blog</a><a href="2023-08.html#finalmente-blogawk">&gt;</a><a href="2023-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_descobrir-ativacao-de-classes-winrt')"><sup>[copy]</sup></a></span>
 
 <p>A Windows Runtime nada mais é que o COM repaginado. O COM já previa o uso de proxies para comunicação remota entre processos. A WinRT adicionou mais uma interface e uma função. Vou neste post descrever o processo pelo qual descobri como funciona o registro de um dispositivo no Azure Active Directory (AAD).</p>
 
@@ -296,17 +296,11 @@ bp AAD_Core!Windows::Internal::UserDeviceRegistration
 <span id="finalmente-blogawk" title="Finalmente blogawk"/></span>
 <section id="section_finalmente-blogawk">
 <p class="title"><a href="2023-08.html#finalmente-blogawk">#</a> Finalmente blogawk</p>
-<span class="title-heading">2023-08-20 <a href="2023-08.html#descobrir-ativacao-de-classes-winrt">&lt;</a><a href="computer.html">computer</a><a href="2023-08.html#explorando-a-hstring">&gt;</a> <a href="2023-06.html#why-i-will-also-build-my-own-shitty-static-site-generator">&lt;</a><a href="projects.html">projects</a><a href="2024-08.html#tentei-dividir-um-post-em-dois-mas">&gt;</a><a href="2023-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_finalmente-blogawk')"><sup>[copy]</sup></a></span>
+<span class="title-heading">2023-08-20 <a href="2023-08.html#descobrir-ativacao-de-classes-winrt">&lt;</a><a href="computer.html">computer</a><a href="2023-08.html#explorando-a-hstring">&gt;</a> <a href="2023-06.html#why-i-will-also-build-my-own-shitty-static-site-generator">&lt;</a><a href="projects.html">projects</a><a href="2024-08.html#tentei-dividir-um-post-em-dois-mas">&gt;</a> <a href="2023-08.html#descobrir-ativacao-de-classes-winrt">&lt;</a><a href="blog.html">blog</a><a href="2023-08.html#explorando-a-hstring">&gt;</a><a href="2023-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_finalmente-blogawk')"><sup>[copy]</sup></a></span>
 
 <p>Fiquei muito empolgado com a solução awk que converte meus posts para um epub "carregável" em um leitor de ebook e no computador e parti para usar a mesma estratégia em meu blog para abandonar dessa vez o Hugo, um renderizador de sites estáticos feito em golang extremamente rápido, mas que não está dando conta dos meus mais de 4000 posts.</p>
 
-<p>O maior peso dessa conversão é o file system. A leitura e escrita de milhares de arquivos, mesmo que não seja feita nenhuma conversão, por si só já é a parte mais pesada. Sendo assim, adotei duas estratégias de otimização:</p>
-
-<p>1. Usar um único arquivo de leitura.</p>
-
-<p>Com isso eu consigo aplicar a leitura deste arquivo pelo script awk em um passo só. De quebra, as mudanças sistêmicas no blogue serão muito mais fáceis.</p>
-
-<p>1. Usar um arquivo por mês na escrita.</p>
+<p>O maior peso dessa conversão é o file system. A leitura e escrita de milhares de arquivos, mesmo que não seja feita nenhuma conversão, por si só já é a parte mais pesada. Sendo assim, adotei duas estratégias de otimização: usar 1) um único arquivo de leitura e 2) um arquivo por mês na escrita. Com esses dois passos eu consigo aplicar a leitura deste arquivo pelo script awk em um passo só. De quebra, as mudanças sistêmicas no blogue serão muito mais fáceis.</p>
 
 <p>Esse foi o maior economizador de tempo. Gerar 4000 novas entradas no file system do Windows estava custando caro, em torno de um minuto. Transformar isso em uns 300 arquivos fez a escrita levar de dois a três segundos!</p>
 
@@ -316,7 +310,7 @@ bp AAD_Core!Windows::Internal::UserDeviceRegistration
 
 <p>De resto, agora tenho a liberdade de renderizar meu blogue em questão de segundos. Aposentei a estrutura do Hugo e estou usando awk para gerar tanto o blogue quanto o ebook.</p>
 
-<p>Não achei justo fazer benchmarks de comparação com o Hugo pelo motivo do file system já citado e também pelas diferentes estratégias adotadas. Pelo própria estrutura engessada e necessáriado Hugo em unir estrutura de arquivos fontes e estrutura final do saite eu sei que não seria viável continuar usando a ferramenta.</p>
+<p>Não achei justo fazer benchmarks de comparação com o Hugo pelo motivo do file system já citado e também pelas diferentes estratégias adotadas. Pelo própria estrutura engessada e necessária do Hugo em unir estrutura de arquivos fontes e estrutura final do saite eu sei que não seria viável continuar usando a ferramenta.</p>
 
 <p>Além disso, awk me dará a liberdade que gostaria de indexar pesadamente meus textos com o poder dos arrays associativos de awk. Já conhecia eles do PHP, mas agora que conheci os do awk estou pensando seriamente em adotar para outros tipos de tratamento de texto. Talvez até use para minhas finanças pessoais.</p>
 
@@ -412,7 +406,7 @@ bp AAD_Core!Windows::Internal::UserDeviceRegistration
 <span id="explorando-a-hstring" title="Explorando a HSTRING"/></span>
 <section id="section_explorando-a-hstring">
 <p class="title"><a href="2023-08.html#explorando-a-hstring">#</a> <a class="external" href="https://learn.microsoft.com/en-us/windows/win32/api/winstring/">Explorando a HSTRING</a></p>
-<span class="title-heading">2023-08-21 <a href="2023-08.html#finalmente-blogawk">&lt;</a><a href="computer.html">computer</a><a href="2023-09.html#uwp-apps-nao-funcionam-com-proxy-de-loopback-resolvido">&gt;</a> <a href="2023-08.html#descobrir-ativacao-de-classes-winrt">&lt;</a><a href="reversing_tag.html">reversing_tag</a><a href="2023-09.html#uwp-apps-nao-funcionam-com-proxy-de-loopback-resolvido">&gt;</a> <a href="2023-07.html#boasvindas-ao-canal-de-reversing-do-telegrama">&lt;</a><a href="blogging.html">blogging</a><a href="2023-09.html#traffic">&gt;</a><a href="2023-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_explorando-a-hstring')"><sup>[copy]</sup></a></span>
+<span class="title-heading">2023-08-21 <a href="2023-08.html#finalmente-blogawk">&lt;</a><a href="computer.html">computer</a><a href="2023-09.html#uwp-apps-nao-funcionam-com-proxy-de-loopback-resolvido">&gt;</a> <a href="2023-08.html#descobrir-ativacao-de-classes-winrt">&lt;</a><a href="reversing_tag.html">reversing_tag</a><a href="2023-09.html#uwp-apps-nao-funcionam-com-proxy-de-loopback-resolvido">&gt;</a> <a href="2023-08.html#finalmente-blogawk">&lt;</a><a href="blog.html">blog</a><a href="2023-09.html#uwp-apps-nao-funcionam-com-proxy-de-loopback-resolvido">&gt;</a> <a href="2023-07.html#boasvindas-ao-canal-de-reversing-do-telegrama">&lt;</a><a href="blogging.html">blogging</a><a href="2023-09.html#traffic">&gt;</a><a href="2023-08.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_explorando-a-hstring')"><sup>[copy]</sup></a></span>
 
 <p>Estava me enveredando hoje nos bytes usados para montar e demonstar os argumentos de uma interface COM proxy da WinRT quando quis saber qual era o leiaute da nova string do Windows, a HSTRING, usada na WinRT e em todo o ecossistema dos Universal apps.</p>
 
@@ -486,7 +480,7 @@ layout:
 <pre>
 struct HSTRING {
   BOOL Reference;     // +0x00
-  UINT32 Lenght;      // +0x04
+  UINT32 Length;      // +0x04
   UINT64 Unused2;
   PCWSTR RawString;   // +0x10
   UINT32 RefCounter;  // +0x18

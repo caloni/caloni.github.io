@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+
+<span id="corrigindo-epub-encoding" title="Corrigindo EPUB encoding"/></span>
+<section id="section_corrigindo-epub-encoding">
+<p class="title">Corrigindo EPUB encoding</p>
+<span class="title-heading">2024-02-06 computer books blog</span>
+
+<p>Ontem baixei um livro do libgen.is em EPUB em inglês e ele estava legível mesmo com os sinais bizarros da língua inglesa, como asquelas aspas abre-e-fecha ou aquele travessão que era comum na época da datilografia como dois travessões unidos. No entanto, ao converter para Kindle com o kindlegen.exe tudo isso virou caracteres mais bizarros que um programador reconhece como UTF8 não-reconhecido pela máquina. Coisas como: €™, â€œ, â€™, â€œ.</p>
+
+<p>É possível ler, já que todo o resto permanece na confortável zona dos 127 bits da tabela ASCII. Contudo, inglês tem muito apóstrofe e travessão. Às vezes demora algum tempo para decodificar um apóstrofe seguido de um travessão ou vice-versa.</p>
+
+<p>Então resolvi dar uma olhada no arquivo EPUB original. Descompactei e abri o arquivo de introdução do livro, um XHTML dentro da subpasta OEBPS, onde geralmente fica o conteúdo (alguns, como eu em meu blogue, usam a subpasta EPUB, também válida). O arquivo é um XHTML, mas dentro parece HTML, começando assim:</p>
+
+<pre>
+&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; xml:lang=&quot;en&quot;&gt;
+&lt;head&gt;
+</pre>
+<p>No meu blogue cada arquivo XHTML gerado para conversão EPUB utiliza no início uma chave XML:</p>
+
+<pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+</pre>
+<p>Como eu sei que esses caracteres especiais funcionam no meu Kindle quando leio a conversão de EPUB para MOBI, apenas fiz o necessário: adicionei esta linha no começo de cada XHTML do EPUB original. O resto foi compactar novamente o arquivo EPUB e rodar o kindlegen.exe para este arquivo.</p>
+
+<p>Não é tão simples compactar um EPUB válido. É necessário zipar sem compactação o arquivo mimetype antes de colocar o resto. Em Windows não há um caminho fácil. Como eu gastei algum tempo no conversor do meu blogue, segue abaixo o código em Python para quem precisar:</p>
+
+<pre>
+import os
+import zipfile
+
+def zipdir(path, ziph):
+  # ziph is zipfile handle
+  paths = os.listdir(path)
+  for p in paths:
+    p = os.path.join(path, p) # Make the path relative
+    if os.path.isdir(p): # Recursive case
+      zipdir(p, ziph)
+    else:
+      ziph.write(p) # Write the file to the zipfile
+
+with zipfile.ZipFile('caloni.epub', 'w', compression=zipfile.ZIP_STORED) as zipf:
+  zipf.writestr(&quot;mimetype&quot;, &quot;application/epub+zip&quot;)
+with zipfile.ZipFile('caloni.epub', 'a', compression=zipfile.ZIP_DEFLATED, compresslevel=5) as zipf:
+  zipdir('EPUB', zipf)
+  zipdir('META-INF', zipf)
+</pre>
+<p>Após isso apenas um <code>kindlegen.exe ebook.epub</code> e tenho um MOBI com caracteres bizarros da língua inglesa funcionando. Para os curiosos de qual livro é este, apenas cito que ele estranhamente não é vendido na Amazon do Brazil. Ou seja, é daqueles ebooks que é mais fácil baixar do que comprar (o que invalida o preço da compra, que, afinal de contas, é para isso que gastamos nosso dinheiro, não?).</p>
+
+</section>
+
+
+<span style="float: left;">
+ <a href="mailto:wanderley.caloni@gmail.com?subject=Comment%20about%3A%20Corrigindo%20EPUB%20encoding">[comment]</a>
+ <a href="tail-recursion-in-loop-while.html">[Tail recursion in loop while]</a>
+
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

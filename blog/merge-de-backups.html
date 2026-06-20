@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+
+<span id="merge-de-backups" title="Merge de backups"/></span>
+<section id="section_merge-de-backups">
+<p class="title">Merge de backups</p>
+<span class="title-heading">2024-01-28 computer blog</span>
+
+<p>Resolvi acabar de vez com os backups independentes das inúmeras versões do blogue e juntar em um único histórico. Para isso recorri ao bom e velho merge clássico, apenas juntando linhas de história não-relacionadas.</p>
+
+<h2>Preparativos</h2>
+
+<p>Antes de tudo é preciso ter todas as pastas com os repos locais acessíveis. Eles irão virar branches dentro do repo atual. Dentro de seu repositório atual use o comando <code>git fetch</code> para "baixar" o conteúdo dos outros repos "remotos". Em Windows o drive <code>C:</code> começa em <code>/c/</code>. Eu tenho quatro repositórios que foram criados de maneira independente em meus backups.</p>
+
+<pre>
+git fetch /c/Users/caloni/projects/blog/old_repo master:old_repo
+</pre>
+<p>Depois ao observar  a data do último commit de cada repo podemos traçar a cronologia de qual o mais antigo para o mais novo:</p>
+
+<pre>
+git log -1 oldest_repo
+commit bd55f443417a56c2f717f53d35508420a10bda51 (HEAD -&gt; oldest_repo)
+Date:   Sat Mar 7 21:01:39 2015 -0300
+
+git log -1 old_repo
+commit 6a2eea4c5e876b602c789c1b727a01c2e0159af1 (old_repo)
+Date:   Tue Mar 22 09:01:39 2016 -0300
+
+git log -1 not_so_old_repo
+commit 343c713273bf273ab8439af15de817f6335e00ab (not_so_old_repo)
+Date:   Tue Jul 11 14:13:50 2017 -0300
+
+git log -1 master
+commit 0de0e65389aaca984a48eb5294e224dbdcdda1b5 (origin/master, origin/HEAD, master)
+Date:   Sat Jan 27 09:00:49 2024 -0300
+</pre>
+<p>Com base nisso renomeamos a branch master do repositório atual para current e a branch com o commit mais antigo para master. A ideia é começar com a master mais antiga e ir mergeando as outras branches até chegar na current. Ao final teremos uma master com todo o histórico passado, ainda que não-relacionado.</p>
+
+<pre>
+git checkout master
+git branch -m current
+git checkout oldest_repo
+git branch -m master
+</pre>
+<p>O resto é uma sequência de comandos merge sem o commit para antes limparmos o diretório de trabalho e reproduzirmos o estado exato dos arquivos no último commit de cada branch. Para isso é mais fácil apagar todos os arquivos e copiar os arquivos que estão em cada um dos repos.</p>
+
+<pre>
+git merge --allow-unrelated-histories -X theirs --no-commit next_repo
+rm -fr *
+cp -r ../next_repo/* .
+git commit
+</pre>
+<p>Por fim podemos apagar as branches de repos remotos, colocar tag nos merges feitos ou nenhum dos dois. A organização é sua. Todo o histórico está junto agora. Pode apagar os backups.</p>
+
+</section>
+
+
+<span style="float: left;">
+ <a href="mailto:wanderley.caloni@gmail.com?subject=Comment%20about%3A%20Merge%20de%20backups">[comment]</a>
+ <a href="corrigindo-epub-encoding.html">[Corrigindo EPUB encoding]</a>
+
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>
