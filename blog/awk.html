@@ -1,0 +1,169 @@
+﻿<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+
+<span id="awk" title="Awk"/></span>
+<section id="section_awk">
+<p class="title">Awk</p>
+<span class="title-heading">2020-06-07 computer blog</span>
+
+<h2>Introduction</h2>
+
+<p>Meu amigo sugeriu que aprender awk poderia ser útil de várias maneiras. Uma delas para organizar finanças pessoais. Dei uma lida em alguns tutoriais, sendo que o melhor custo benefício foi o <a href="https://ferd.ca/awk-in-20-minutes.html">Awk in 20 Minutes</a>, de Fred Hebert (ele é o mesmo autor de um livro sobre erlang). Gostei. É sobre tratamento de texto como sed, mas em uma versão estendida e criada na época com a mesma sintaxe de C.</p>
+
+<p>Agora que vou <a href="https://github.com/Caloni/lectures/blob/master/awk.pdf">palestrar sobre</a> no Native Floripa de 2022 eu dei uma olhada em outro tutorial muito bom que eu vou chamar de <a href="https://www.grymoire.com/Unix/Awk.html">Tutorial from an Experient Mind</a>, de Bruce Barnett. Ele vai um pouco além porque é de alguém interessado em contar alguns macetes que dão uma visão mais interna da linguagem. E para referência eu considero o <a href="https://www.gnu.org/software/gawk/manual/gawk.html">Gawk Guide</a> como um ótimo compilado.</p>
+
+<h2>1977</h2>
+
+<p>Por ela ser uma ferramenta antiga, criada por Alfred Aho, Peter Weinberger e Brian Kernighan na década de 70, AWK usa conceitos antigos, como field e record. Ela foi criada para formatar texto em formato de planilha, ou banco de dados. Um field, ou campo, é uma coluna na planilha, e um record, ou registro, é uma linha dessa planilha. Imagine que você pode usar awk para manipular e extrair dados de qualquer texto que contenha esse padrão, sendo que os detalhes como o separador de campos e registros, por padrão espaço e nova-linha, podem ser alterados no começo do programa ou via parâmetros.</p>
+
+<pre>
+BEGIN {
+  print &quot;FS:&quot;, FS;
+  print &quot;RS:&quot;, RS;
+  print &quot;OFS:&quot;, OFS;
+  print &quot;ORS:&quot;, ORS;
+}
+{
+  print &quot;NF:&quot;, NF
+  print &quot;NR:&quot;, NR
+  print &quot;$0:&quot;, $0;
+  print &quot;$1:&quot;, $1;
+  print &quot;$2:&quot;, $2;
+  print &quot;$NR:&quot;, $NR;
+  print &quot;&quot;;
+}
+</pre>
+<h2>One line at a time</h2>
+
+<pre>
+pattern { action }
+        { action }
+pattern
+</pre>
+<p>Se não houver padrão então a ação é executada sempre. Se não houver ação, então sempre que o padrão for encontrado em uma linha o programa imprime a linha. Ou seja, há um valor default para padrão e ação.</p>
+
+<pre>
+awk '/test/'
+awk '{ print }'
+awk '/test/ { print }'
+awk '{ if( $0 ~ &quot;test&quot; ) print }'
+awk '{ if( $0 ~ &quot;test&quot; ) print $2 }'
+</pre>
+<p>Awk maintains a delicate balance between being a line-oriented utility like grep and a full programming language. - Andy Oram.</p>
+
+<h2>Program</h2>
+
+<p>Um Hello World interessante do AWK é imprimir a lista de arquivos e seus proprietários de uma pasta se baseando no comando <code>ls -l</code>. Isso demonstra os conceitos básicos da linguagem e ainda é útil.</p>
+
+<pre>
+pattern { action }
+
+BEGIN { print &quot;START&quot; }
+      { print         }
+END   { print &quot;STOP&quot;  }
+
+BEGIN { print &quot;File\tOwner&quot;}
+{ print $9, &quot;\t&quot;, $3}
+END { print &quot; - DONE -&quot; }
+
+ls -l | awk '{ print $9, &quot;\t&quot;, $3}'
+</pre>
+<h2>How to run</h2>
+
+<p>O uso do parâmetro <code>-f</code> é para conseguirmos rodar programas AWK sem se preocupar se ele é um script. Dessa forma ele funciona como se fosse um bash script:</p>
+
+<pre>
+#!/bin/sh
+# Linux users have to change $8 to $9
+awk '
+BEGIN { print &quot;File\tOwner&quot; }
+{ print $8, &quot;\t&quot;, $3}
+END { print &quot; - DONE -&quot; }
+'
+</pre>
+<h2>Tricks</h2>
+
+<ul><li>Awk tem internamente dois tipos primitivos (fora o array associativo): <code>float</code> e <code>string</code>.</li>
+
+<li>Awk converte "123X" em 0; Nawk converte em 123.</li>
+
+<li>A value of 0 is false, while anything else is true.</li>
+
+<li>Undefined variables has the value of 0.</li>
+
+<li>Unlike AWK, NAWK lets you use booleans as integers.</li>
+
+<li>A positional variable is not a special variable, but a function triggered by the dollar sign.</li>
+
+<li>All interpreter scripts accept one and only one argument; so, <code>/bin/awk -f</code>.</li></ul>
+
+<h2>Research</h2>
+
+<ul><li><a href="awk-and-dna.html">AWK and DNA</a></li>
+
+<li>AWK and Stack Overflow</li></ul>
+
+<h2>Reference</h2>
+
+<ul><li><a href="https://ferd.ca/awk-in-20-minutes.html">Awk in 20 Minutes</a>, de Fred Hebert.</li>
+
+<li><a href="https://www.grymoire.com/Unix/Awk.html">Tutorial from an Experient Mind</a>, de Bruce Barnett.</li>
+
+<li><a href="https://www.gnu.org/software/gawk/manual/gawk.html">Gawk Guide</a>.</li></ul>
+
+</section>
+
+
+<span style="float: left;">
+ <a href="mailto:wanderley.caloni@gmail.com?subject=Comment%20about%3A%20Awk">[comment]</a>
+ <a href="batalha.html">[Batalha]</a>
+
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

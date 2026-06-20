@@ -1,0 +1,165 @@
+﻿<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+
+<span id="hacker-rank-warm-up" title="Hacker Rank Warm Up"/></span>
+<section id="section_hacker-rank-warm-up">
+<p class="title"><a class="external" href="https://www.hackerrank.com/interview/interview-preparation-kit">Hacker Rank Warm Up</a></p>
+<span class="title-heading">2023-04-16 computer interview blog english blogging</span>
+
+<p>Here I am doing interview exercise tests at Hacker Rank. I am trying to recap what I've been doing the last two months before going on. Let's see what I learned, starting with the Warm Up exercises.</p>
+
+<h2>Counting Valleys</h2>
+
+<p>To solve the <a href="https://www.hackerrank.com/challenges/counting-valleys">counting valleys problem</a> keep a valley counter that only increments when the hiker is coming up to the sea level. Monitor the altitude and the new altitude and compare. If the altitude was negative (into a valley) and the new altitude is zero (sea level) then that's a new valley to count. This strategy avoid to count valleys inside valleys before the hiker gets up to sea level.</p>
+
+<p>This solution has a complexity of O(n).</p>
+
+<pre>
+int countingValleys(int steps, string path) {
+    int valleys = 0;
+    int altitude = 0;
+
+    for (int s = 0; s &lt; steps; ++s)
+    {
+        int step = path[s] == 'D' ? -1 : 1;
+        int newAltitude = altitude + step;
+
+        if (altitude &lt; 0 &amp;&amp; newAltitude == 0)
+        {
+            valleys++;
+        }
+        altitude = newAltitude;
+    }
+
+    return valleys;
+}
+</pre>
+<h2>Cloud Jump</h2>
+
+<p>To solve the <a href="https://www.hackerrank.com/challenges/jumping-on-the-clouds">cloud jump problem</a> create a loop and advance current position until finished. Try the double jump at first and ordinary jump else by incrementing position by 1 or 2 and incrementing jump counter. If in the end position just increment and get out of the loop. Return the jump counter.</p>
+
+<p>This solution has a complexity of O(n).</p>
+
+<pre>
+int jumpingOnClouds(vector&lt;int&gt; c) {
+    int jumps = 0;
+    size_t i = 0;
+
+    while (i &lt; c.size()) {
+        if (i &lt; c.size() - 2 &amp;&amp; c[i + 2] == 0) {
+            i += 2;
+            ++jumps;
+        }
+        else if (i &lt; c.size() - 1) {
+            i += 1;
+            ++jumps;
+        }
+        else {
+            i += 1;
+        }
+    }
+
+    return jumps;
+}
+</pre>
+<h2>Repeated Strings</h2>
+
+<p>To solve the <a href="https://www.hackerrank.com/challenges/repeated-string">repeated string problem</a> we count the 'a' occurrences for the full unique string and divide n by the size of the unique string size, getting the number of times we need to multiply the full occurrences.</p>
+
+<p>For the partial string after the number of full unique strings we format this string and count independently this last part.</p>
+
+<p>The total of occurrences is calculated multiplying the times there will be full unique strings and sum up the partial string 'a' occurrences.</p>
+
+<p>This algorithm has a complexity of O(n) because we got to count every char.</p>
+
+<pre>
+long repeatedString(string s, long n) {
+    long fullOccur = (long) count(s.begin(), s.end(), 'a');
+    long fullMult = n / s.size();
+    string partialStr = s.substr(0, n % s.size());
+    long partialOccur = (long) count(partialStr.begin(), partialStr.end(), 'a');
+    return fullOccur * fullMult + partialOccur;
+}
+</pre>
+<h2>Sales by Match</h2>
+
+<p>To solve the <a href="https://www.hackerrank.com/challenges/sock-merchant">sales by match</a> problem we traverse all the array of socks and keep inserting and deleting a set of colors. If the current color is not found in the set we insert it. If the current color is found we increase a pair counter and remove the color from the set. The next time the same color appears it will be inserted again waiting for its pair.</p>
+
+<p>The complexity of this solution is O(N), since we have to traverse all array of socks.</p>
+
+<pre>
+int sockMerchant(int n, vector&lt;int&gt; ar)
+{
+    int ret = 0;
+    set&lt;int&gt; colors;
+    for (int color : ar)
+    {
+        if (colors.find(color) != colors.end())
+        {
+            ret++;
+            colors.erase(color);
+        }
+        else
+        {
+            colors.insert(color);
+        }
+    }
+    return ret;
+}
+</pre>
+</section>
+
+
+<span style="float: left;">
+ <a href="mailto:wanderley.caloni@gmail.com?subject=Comment%20about%3A%20Hacker%20Rank%20Warm%20Up">[comment]</a>
+ <a href="arvore-de-segmentos.html">[Árvore de segmentos]</a>
+
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>
