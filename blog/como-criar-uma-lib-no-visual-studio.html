@@ -1,0 +1,225 @@
+﻿<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+
+<span id="como-criar-uma-lib-no-visual-studio" title="Como criar uma LIB no Visual Studio"/></span>
+<section id="section_como-criar-uma-lib-no-visual-studio">
+<p class="title">Como criar uma LIB no Visual Studio</p>
+<span class="title-heading">2008-05-29 computer blog</span>
+
+<p>Quando se está começando no ramo, alguns detalhes nunca vêm à tona para o programador novato. Ele simplesmente vai codando até se sentir satisfeito com o prazer que é proporcionado pela prática da arte dos deuses de silício.</p>
+
+<p>Isso, em termos práticos, quer dizer que todo o fonte vai ser escrito no mesmo ".c", que aliás talvez nem se dê ao luxo de possuir seu próprio ".h": pra quê, se as funções são amigas de infância e já se conhecem?</p>
+
+<p>No começo não existe nenhum problema, mesmo. O fonte vai ser pequeno. A coisa só complica quando não dá mais pra se achar no meio de tantos gotos e ifs aninhados. Talvez nessa hora o programador já-não-tão-novato até tenha descoberto que é possível criar vários arquivos-fonte e reuni-los em um negócio chamado projeto, e que existem IDEs, como o Visual Studio, que organizam esses tais projetos.</p>
+
+<p>A partir daí, para chegar em uma LIB, já é meio caminho andado.</p>
+
+<p>"Mas, afinal de contas, pra que eu preciso de uma LIB, mesmo?"</p>
+
+<p>Boa pergunta. Uma LIB, ou biblioteca, nada mais é do que um punhado de ".obj" colocados todos no mesmo arquivo, geralmente um ".lib". Esses ".obj" são o resultado da compilação de seus respectivos ".c" de origem.</p>
+
+<img src="/blog/img/como_criar_uma_lib_no_visual_studio_salada2.gif"/>
+
+<p>Alguns acreditam ser esse negócio de LIB uma pura perda de tempo, pois existem trocentas configurações diferentes (e incompatíveis) e trocentas compilações diferentes para gerenciar. Outros acham que o problema está no tempo de compilação, enquanto outros defendem o uso dos ".obj" de maneira separada. Esse artigo não presume que nem um nem outro seja melhor. Apenas ensina o que você precisa saber para criar sua primeira LIB usando o Visual Studio Express.</p>
+
+<p>Vamos lá?</p>
+
+<p>Após abrir o VS, tudo que precisamos fazer é ir em New, Project, e escolher a configuração de "Win32 Project":</p>
+
+<img src="/blog/img/como_criar_uma_lib_no_visual_studio_myfirstlib.png"/>
+
+<p>A seguir, escolhemos nas opções do assistente criar uma "Static library", e desmarcamos a opção de "Precompiled header" para evitar má sorte logo no primeiro projeto de LIB (má sorte significa horas procurando erros incríveis que você só irá fazer desaparecer se recompilar tudo com o uso do famigerado "Rebuild All"; espero que isso dê certo para você, para mim não tem funcionado).</p>
+
+<img src="/blog/img/como_criar_uma_lib_no_visual_studio_myfirstlib2.png"/>
+
+<p>E pronto! Temos um projeto de LIB completo, funcional e... um tanto inútil. Mas, calma lá. Ainda não terminamos.</p>
+
+<img src="/blog/img/como_criar_uma_lib_no_visual_studio_myfirstlib3.png"/>
+
+<p>Conforme o programador consegue se livrar das maldições das mil dependências, aos poucos ele vai conseguindo novas funções genéricas e encaixáveis para colocar em sua coleção de objs.  Essa com certeza não é uma tarefa fácil, mas ei, quem disse que esse trampo de programador seria fácil?</p>
+
+<p>Vamos imaginar que você é muito do sem imaginação (típico de pessoas que mantêm blogues) e criou duas funções lindíssimas que somam e multiplicam dois números:</p>
+
+<pre>
+int sum(int a, int b)
+{
+    return a + b;
+}
+
+int mult(int a, int b)
+{
+    return a * b;
+}
+</pre>
+<p>Não são aquelas coisas, mas são genéricas e, até certo ponto, "úteis" para o nosso exemplo.</p>
+
+<p>Agora, tudo que temos que fazer é criar dois arquivos: mymath.c e mymath.h. No mymath.c, colocamos   as funções acima exatamente como estão. No mymath.h, colocamos apenas as declarações dessas duas funções, apenas para avisar outros ".c" que existem duas funções que fazem coisas incríveis nessa nossa LIB.</p>
+
+<pre>
+/* soma dois números */
+int sum(int a, int b);
+
+/* multiplica dois números */
+int mult(int a, int b);
+</pre>
+<p>Adicionamos esses dois arquivos ao projeto (se já não estão), e voilà!</p>
+
+<pre>
+------ Build started: Project: MyFirstLib, Configuration: Debug Win32 ------
+Compiling...
+mymath.c
+Creating library...
+Build log was saved at &quot;file://c:\Projects\temp\MyFirstLib\Debug\BuildLog.htm&quot;
+MyFirstLib - 0 error(s), 0 warning(s)
+========== Build: 1 succeeded, 0 failed, 0 up-to-date, 0 skipped ==========
+</pre>
+<p>Para usar uma LIB temos inúmeras maneiras de fazê-lo. A mais simples que eu conheço é criar um novo projeto no mesmo Solution de sua LIB. Um console, por exemplo:</p>
+
+<img src="/blog/img/como_criar_uma_lib_no_visual_studio_myfirstlib4.png"/>
+
+<img src="/blog/img/como_criar_uma_lib_no_visual_studio_myfirstlib5.png"/>
+
+<img src="/blog/img/como_criar_uma_lib_no_visual_studio_myfirstlib6.png"/>
+
+<p>Se você seguiu todos os passos direitinho, e eu estou assumindo que você já sabia como criar um projeto console, sua saída da compilação talvez seja mais ou menos essa:</p>
+
+<pre>
+------ Build started: Project: MyFirstCmd, Configuration: Debug Win32 ------
+Compiling...
+mycmd.c
+Linking...
+mycmd.obj : error LNK2019: unresolved external symbol mult referenced in function main
+mycmd.obj : error LNK2019: unresolved external symbol sum referenced in function main
+c:\Projects\temp\MyFirstLib\Debug\MyFirstCmd.exe : fatal error LNK1120: 2 unresolved externals
+Build log was saved at &quot;file://c:\Projects\temp\MyFirstCmd\Debug\BuildLog.htm&quot;
+MyFirstCmd - 3 error(s), 0 warning(s)
+========== Build: 0 succeeded, 1 failed, 1 up-to-date, 0 skipped ==========
+</pre>
+<p>Dois erros! Ele não achou os símbolos mult e sum. Mas eles estão logo ali! E agora?</p>
+
+<p>Nada a temer: tudo que temos que fazer é falar para o Solution que o projeto myfirstcmd depende do projeto myfirstlib:</p>
+
+<img src="/blog/img/como_criar_uma_lib_no_visual_studio_myfirstlib7.png"/>
+
+<img src="/blog/img/como_criar_uma_lib_no_visual_studio_myfirstlib8.png"/>
+
+<pre>
+------ Build started: Project: MyFirstCmd, Configuration: Debug Win32 ------
+Linking...
+Embedding manifest...
+Microsoft (R) Windows (R) Resource Compiler Version 6.0.5724.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+Build log was saved at &quot;file://c:\Projects\temp\MyFirstCmd\Debug\BuildLog.htm&quot;
+MyFirstCmd - 0 error(s), 0 warning(s)
+========== Build: 1 succeeded, 0 failed, 1 up-to-date, 0 skipped ==========
+</pre>
+<p>Isso resolve o problema de organização e compilação quando temos dezenas de ".c" espalhados pelo projeto. Existem melhores alternativas, mais bem organizadas e estruturadas, inclusive lingüisticamente falando. No entanto, tudo tem sua hora, e só se deve preocupar-se com isso quando sua solução tiver algumas dezenas de ".lib". Até lá!</p>
+
+<h4>// Comments</h4>
+
+<p>2008-05-30 <a href="http://bcsanches.wordpress.com">Bruno Sanches</a>:</p>
+
+<p>Bela explicação de como criar uma lib. Um outro detalhe que server de estimulo é que no visual 2005 as libs são compiladas em paralelo se a sua maquina for multicore (se tiver dois cores, por exemplo, vai compilar duas libs ao mesmo tempo). No visual 2008 isso parece que ocorre para arquivos do projeto tambem. Sei que esse nao eh um real motivo para se criar uma lib, mas acelera bastante a compilacao.</p>
+
+<hr/>
+
+<p>2008-05-30 <a href="http://dqsoft.blogspot.com">Daniel Quadros</a>:</p>
+
+<p>A grande motivação para gerar uma lib é facilitar o reaproveitamento de código, usando a mesma lib em vários projetos. Um outro uso frequente (mais comum com a prima dinâmica da lib, a dll) é para fornecer uma interface (API) para outros programadores.</p>
+
+<p>Obs.: a saída do compilador na figura não seria .obj ao invés de .c ? ;)</p>
+
+<hr/>
+
+<p>2008-08-05 Julimar:</p>
+
+<p>Muito bacana seu tutorial. sou iniciante e finalmente consegui fazer minha primeira biblioteca, que emoção. Valeu</p>
+
+<hr/>
+
+<p>2008-05-30 Caloni:</p>
+
+<p>Olá, Bruno.</p>
+
+<p>O Visual Studio 2005 já compilava múltiplos arquivos do mesmo projeto em paralelo com o uso de multithreading. Acredito que esse esquema independa da organização em LIBs e projetos executáveis. Porém, vou dar uma olhada nas novidades por trás da nova versão, valeu a dica.</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-05-30 Caloni:</p>
+
+<p>Olá, DQ!</p>
+
+<p>Concordo com os objetivos de uma LIB, acredito que faltou falar sobre isso no artigo. No entanto, existem outras organizações. Seria possível compartilhar apenas o código-fonte entre projetos, com a vantagem de não precisar se aventurar nas mil e uma configurações e conflitos que o VS oferece aos pobres programadores iniciantes. Também seria possível compartilhar ".objs" soltos em uma pasta. No entanto, confesso que em todos os projetos que participei em empresas, todos usavam LIBs e DLLs.</p>
+
+<p>Sobre o desenho, você está 100% certo! Corrigido e valeu pela dica.</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-08-06 Caloni:</p>
+
+<p>Olá, Julimar.</p>
+
+<p>Fico contente que o tutorial tenha sido útil para quem está começando. Essa foi a intenção =)</p>
+
+<p>[]s</p>
+
+</section>
+
+
+<span style="float: left;">
+ <a href="mailto:wanderley.caloni@gmail.com?subject=Comment%20about%3A%20Como%20criar%20uma%20LIB%20no%20Visual%20Studio">[comment]</a>
+ <a href="resultado-do-seminario-ccpp.html">[Resultado do Seminário CCPP]</a>
+
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

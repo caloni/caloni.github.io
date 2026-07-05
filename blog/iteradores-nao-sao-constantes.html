@@ -1,0 +1,182 @@
+﻿<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+
+<span id="iteradores-nao-sao-constantes" title="Iteradores não são constantes"/></span>
+<section id="section_iteradores-nao-sao-constantes">
+<p class="title">Iteradores não são constantes</p>
+<span class="title-heading">2008-03-04 computer blog</span>
+
+<p>Um bug que já encontrei uma dúzia de vezes entre os novatos da STL é a utilização de iteradores como se eles não fossem mudar nunca. Porém, a verdade é bem diferente: iteradores se tornam inválidos sim, e com muito mais freqüência do que normalmente se imagina. Entre as situações em que iteradores podem mudar estão as seguintes:</p>
+
+<ul><li>Inserção de novo elemento no contêiner</li>
+
+<li>Remoção de novo elemento no contêiner</li>
+
+<li>Redimensionamento no tamanho do contêiner</li></ul>
+
+<p>Por exemplo, o tradicional código do exemplo abaixo contém o tradicional erro de iterador inválido:</p>
+
+<pre>
+for( container::iterator it = obj.begin(); it != obj.end(); ++it )
+{
+  if( it-&gt;member == 0 ) // condição para apagar elemento
+  {
+    obj.erase(it);  // a partir daqui it é inválido,
+                    // e não adianta incrementá-lo
+  }
+}
+</pre>
+<p>Para operações como essa, o retorno geralmente nos dá uma dica de para onde vamos na varredura do contêiner. No caso do método erase, o retorno é o próximo iterador válido, ou o final (retornado pelo método end). Um código mais esperto gera um erro mais sutil:</p>
+
+<pre>
+for( container::iterator it = obj.begin(); it != obj.end(); ++it )
+{
+  if( it-&gt;member == 0 ) // condição para apagar elemento
+  {
+    it = obj.erase(it); // ótimo, atualizou it. só
+                        // que se ele for o final,
+                        // será incrementado
+  }
+}
+</pre>
+<p>Algo de errado irá acontecer se o elemento removido for o último localizado no contêiner. Porém, mesmo que não for, um item será pulado durante a iteração, pois o iterador apontando para o próximo elemento será incrementado antes de passar pelo loop.</p>
+
+<p>Esse é um erro comum para os acostumados com outros tipos de iteração (ex: ponteiros) e que não estudaram os princípios básicos da STL, entre eles o da reutilização de algoritmos. Se fosse usado este princípio, nada disso teria acontecido:</p>
+
+<pre>
+struct remove_if_zero
+{
+  bool operator() (ObjElement&amp; element)
+  {
+    return element-&gt;member == 0;
+  }
+};
+
+obj.remove_if( remove_if_zero() ); // pronto!
+</pre>
+<p>Quando precisamos fazer algo nos elementos de um contêiner STL, é quase certo que existirá um algoritmo genérico para essa tarefa, seja no próprio contêiner ou na forma de função (<code>&lt;algorithm&gt;</code>). Nunca se esqueça disso na hora de desenvolver seus próprios algoritmos e não precisará reinventar a roda todos os dias.</p>
+
+<h4>// Comments</h4>
+
+<p>2008-04-18 Luiz Salamon:</p>
+
+<p>Recentemente coloquei <a href="http://groups.google.com/group/ccppbrasil/browse_thread/thread/1e444ab3067baf55">um post na lista CCPPBRASIL</a> sobre um problema que tive recentemente. Na verdade resolvi com o uso de sincronicação, mas gostaria de sua sugestão, pois penso que deveria existir uma forma mais simples de resolver o problema.</p>
+
+<p>Reproduzindo o texto:</p>
+
+<p>Partindo do código abaixo, que simplifica a situação real onde o problema se apresentou, tenho um problema que resolvi por sincronização, pois o sistema é multithread.</p>
+
+<pre>
+map map_test;
+map::iterator iter_map_test;
+
+map_test [ &quot;AAAAA&quot; ] = &quot;11111&quot;;
+map_test [ &quot;BBBBB&quot; ] = &quot;22222&quot;;
+map_test [ &quot;CCCCC&quot; ] = &quot;33333&quot;;
+
+// iterator esta apontando para uma posição válida
+iter_map_test = map_test.find (&quot;BBBBB&quot;);
+
+// neste ponto o iterator deixa de ser válido
+map_test.erase (&quot;BBBBB&quot;);
+</pre>
+<p>A questão é como faço para verificar se o iterator iter_map_test é válido ? Pois qualquer operação que tento a partir do momento que o mesmo fica inválido causa uma exceção.</p>
+
+<hr/>
+
+<p>2008-03-06 <a href="http://paginas.terra.com.br/informatica/thiago_adams/">Thiago R Adams</a>:</p>
+
+<p>Uma curiosidade é que o map não retorna o iterator no erase.</p>
+
+<p>Mas a implementação da STL que vem no VC++ retorna. Tive este problema uma vez quando fui compilar um código no gcc. Eu não imaginava que isso não era padrão.</p>
+
+<p>Mas vendo <a href="http://msdn2.microsoft.com/en-us/library/z2f3cb7h.aspx">a documentação da msdn</a> tem uma nota:</p>
+
+<p>"This return type does not conform to the C++ standard."</p>
+
+<p>A solução sem usar o retorno é:</p>
+
+<pre>
+if (condition)
+  map.erase(it++);
+else
+  ++it;
+</pre>
+<hr/>
+
+<p>2008-04-22 Caloni:</p>
+
+<p>Olá, Luiz.</p>
+
+<p>As respostas da lista de discussão foram ótimas, e de fato não há muito o que fazer (2026-03-23 exceto talvez o comentário do Thiago acima). Considere um iterador um ponteiro que não aponta mais para nada válido. Nesse caso, não há como você validá-lo.</p>
+
+<p>[]s</p>
+
+<hr/>
+
+<p>2008-03-23 Caloni:</p>
+
+<p>Olá, Thiago.</p>
+
+<p>Mais um problema com a compatibilidade do Visual Studio. Desse jeito foi começar a usar o GCC para meus testes.</p>
+
+<p>Valeu o aviso!</p>
+
+<p>[]s</p>
+
+</section>
+
+
+<span style="float: left;">
+ <a href="mailto:wanderley.caloni@gmail.com?subject=Comment%20about%3A%20Iteradores%20n%C3%A3o%20s%C3%A3o%20constantes">[comment]</a>
+ <a href="estranho.html">[Estranho]</a>
+
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

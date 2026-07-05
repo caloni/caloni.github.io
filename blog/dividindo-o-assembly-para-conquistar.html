@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+
+<span id="dividindo-o-assembly-para-conquistar" title="Dividindo o assembly para conquistar"/></span>
+<section id="section_dividindo-o-assembly-para-conquistar">
+<p class="title">Dividindo o assembly para conquistar</p>
+<span class="title-heading">2024-08-23 computer blog</span>
+
+<p>"Cada problema que eu resolvo se torna uma regra que serve mais tarde para resolver outros problemas." Rene Descartes.</p>
+
+<p>Hoje usei uma técnica que é bem intuitiva durante o debugging, mas que pode servir para outros cenários de engenharia reversa.</p>
+
+<p>Cansado de tentar entender onde estava a chamada de uma função que fazia um certo app ser ativado por um link peguei o executável responsável para depurar seu assembly.</p>
+
+<p>O programa tem o funcionamento bem simples: ele recebe um argumento  de alguma forma ativa uma instância do aplicativo principal em execução para abrir o link passado como parâmetro.</p>
+
+<p>Para encontrar a chamada da Windows API que faz a coisa acontecer eu poderia passar horas depurando passo a passo até entender a lógica por trás do assembly. No entanto, e aí que está o pulo do gato, eu posso também executar dezenas de vezes e ir “cercando” o ponto onde o app faz a ativação.</p>
+
+<p>Para isso basta ir depurando cada execução até ocorrer a ativação. Quando descobrir que após uma chamada o app é ativado basta salvar este ponto e executar novamente o mesmo comando com este novo ponto em breakpoint. Repita até chegar em uma função API ou alguma thread ou algum comando para uma worker thread (algo muito comum hoje em Windows Apps).</p>
+
+<p>Dependendo da forma com que é implementado isso pode levar de alguns minutos a talvez uma hora ou duas. Mas com certeza será mais rápido que ir todo o código passo a passo.</p>
+
+</section>
+
+
+<span style="float: left;">
+ <a href="mailto:wanderley.caloni@gmail.com?subject=Comment%20about%3A%20Dividindo%20o%20assembly%20para%20conquistar">[comment]</a>
+ <a href="programming.html">[Programming]</a>
+
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

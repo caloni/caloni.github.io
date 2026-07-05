@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+
+<span id="ssl-tls-e-o-limite-de-16-kb" title="SSL, TLS e o limite de 16 KB"/></span>
+<section id="section_ssl-tls-e-o-limite-de-16-kb">
+<p class="title">SSL, TLS e o limite de 16 KB</p>
+<span class="title-heading">2018-05-22 computer blog</span>
+
+<p>Em 2026-05-09 fiz um update com a ajuda do Chat-GPT que me corrigiu em alguns pontos. Ele é meio centrão, então fui tirando os exageros do meu texto original como "esqueça TCP" e "você vai perder dados se usar Boost::Asio". Fiquem apenas com a versão medíocre e sem alma ou discussão de nossas futuras vidas tecnológicas.</p>
+
+<p>O protocolo TLS (ou SSL) tem por objetivo criar uma camada de criptografia assimétrica para a aplicação. E quando eu falo em camada não estou me referindo exatamente às camadas OSI nem às camadas TCP/IP. Isso porque TLS é uma dessas tecnologias que atravessam abstrações: formalmente ele fica entre aplicação e transporte, mas na prática influencia desde buffering até o comportamento esperado da própria aplicação.</p>
+
+<p>E aprendi isso a duras penas: na ponta do depurador.</p>
+
+<p>O TLS trabalha internamente com records de até 16 KB de payload (16384 bytes). Isso não significa que você não possa enviar buffers maiores que isso. Na prática, implementações como OpenSSL fragmentam automaticamente os dados em múltiplos records TLS.</p>
+
+<p>O problema aparece quando usamos APIs como write_some, que não garantem o envio integral do buffer em uma única chamada. Isso já é verdade para sockets TCP normais, mas em conexões SSL/TLS o comportamento costuma ficar mais evidente.</p>
+
+<p>Em outras palavras: o erro não é enviar 512 KB. O erro é assumir que uma única chamada enviará tudo.</p>
+
+<p>Isso quer dizer que este snippet de código, por exemplo:</p>
+
+<pre>
+_sock.write_some(
+  boost::asio::buffer(
+    output.data(),
+    output.size()
+  ), err);
+</pre>
+<p>É inocente e não funciona sempre. Não porque SSL “corta” os dados em 16 KB, mas porque write_some pode escrever apenas parte do buffer. O restante continua pendente.</p>
+
+<p>O detalhe importante é que write_some retorna quantos bytes foram efetivamente enviados:</p>
+
+<pre>
+size_t sent =
+  _sock.write_some(
+    boost::asio::buffer(
+      output.data(),
+      output.size()
+    ), err);
+</pre>
+<p>Portanto, se você realmente quiser controlar manualmente os envios, precisa remover apenas os bytes efetivamente transmitidos:</p>
+
+<pre>
+do
+{
+  size_t chunk =
+    std::min((size_t)16384, output.size());
+
+  size_t sent =
+    _sock.write_some(
+      boost::asio::buffer(output.data(), chunk),
+      err);
+
+  output.erase(0, sent);
+}
+while (
+  err.value() == boost::system::errc::success &amp;&amp;
+  !output.empty());
+</pre>
+<p>Na prática, porém, o mais comum é simplesmente deixar o Boost.Asio cuidar disso usando <code>boost::asio::write</code>, que já faz internamente o loop necessário até transmitir todo o buffer:</p>
+
+<pre>
+boost::asio::write(
+  _sock,
+  boost::asio::buffer(output),
+  err);
+</pre>
+<p>TLS é um bom lembrete de que abstrações de rede vazam. Em algum momento, toda aplicação precisa entender como os bytes realmente trafegam.</p>
+
+</section>
+
+
+<span style="float: left;">
+ <a href="mailto:wanderley.caloni@gmail.com?subject=Comment%20about%3A%20SSL%2C%20TLS%20e%20o%20limite%20de%2016%20KB">[comment]</a>
+ <a href="python27-protobuf-py2exe-e-buildexe.html">[Python27, protobuf, py2exe e build_exe]</a>
+
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

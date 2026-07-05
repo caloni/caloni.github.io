@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+
+<span id="descobrir-ativacao-de-classes-winrt" title="Descobrir ativação de classes WinRT"/></span>
+<section id="section_descobrir-ativacao-de-classes-winrt">
+<p class="title">Descobrir ativação de classes WinRT</p>
+<span class="title-heading">2023-08-13 computer reversing_tag blog</span>
+
+<p>A Windows Runtime nada mais é que o COM repaginado. O COM já previa o uso de proxies para comunicação remota entre processos. A WinRT adicionou mais uma interface e uma função. Vou neste post descrever o processo pelo qual descobri como funciona o registro de um dispositivo no Azure Active Directory (AAD).</p>
+
+<p>O teste feito é logar no Microsoft Teams com uma conta de empresa pertencente a um domínio federado, o que significa que para fazer o login existe um plugin feito pela empresa que será carregado e autenticar o usuário. TL;DR isto é feito por um processo chamado <code>Microsoft.AAD.BrokerPlugin.exe</code>, que usa WinRT para se comunicar com o servidor AAD e com o sistema.</p>
+
+<p>Analisando o disassembly pelo IDA e realizando algumas sessões de debug eu estava caminhando pela interface <code>IUserDeviceRegManagerStatics</code> que havia encontrado anteriormente. Eu sabia que essa interface estava por trás do registro da máquina porque depois que alguns de seus métodos são chamados o comando <code>dsregcmd.exe /status</code> lista o computador como joined dentro do AAD e se você for na parte de contas do usuário naquela tela de configurações do Windows irá aparecer a mesma conta usada para logar no Teams.</p>
+
+<p>Buscando no registro pelo nome dessa interface existe uma entrada em <code>HKEY_CLASSES_ROOT\Interface\{b5decd05-58ef-4cd3-ae25-d177bcbcea9e}</code> aonde existe uma subkey <code>ProxyStubClsid32</code>. Essa subkey, de acordo com o MSDN, é usado para traduzir um IID -- ID de Interface -- para um CLSID -- ID de classe. Nas palavras do MSDN (em inglês, por favor): "Maps an IID to a CLSID in 32-bit proxy DLLs".</p>
+
+<p>"If you add interfaces, you must use this entry to register them (32-bit systems) so that OLE can find the appropriate remoting code to establish interprocess communication."</p>
+
+<p>Eu acredito que a mesma lógica se aplica a ambientes de 64 bits, que é o caso do Windows 10 onde estou analisando.</p>
+
+<p>Então esse ID é um CLSID para o código de um proxy que irá me ajudar a chamar esta interface <code>IUserDeviceRegManagerStatics</code>. Tudo bem, vamos lá. O valor default dentro dessa subkey é <code>{65704743-2513-4987-9fc9-826bbedde743}</code> e eu devo fazer a busca por este ID dentro de <code>HKEY_CLASSES_ROOT\CLSID</code>, já que se trata de um ID de classe. Eu encontro. O valor default dessa chave diz "UserDeviceRegistration", então eu penso ser este o cara que estou procurando.</p>
+
+<p>Existe uma chave <code>InProcServer32</code> dentro desta chave. Novamente vamos à documentação, e de acordo com o MSDN:</p>
+
+<p>"Registers a 32-bit in-process server and specifies the threading model of the apartment the server can run in."</p>
+
+<p>Isso faz todo o sentido, porque o valor default para esta mesma chave é "C:\Windows\System32\UserDeviceRegistration.dll"  e existe uma string <code>ThreadingModel</code> também especificando "Both". Olhando para as funções exportadas por esta DLL <code>UserDeviceRegistration.dll</code> são listadas as bem conhecidas <code>DllCanUnloadNow</code>, <code>DllGetActivationFactory</code> e <code>DllGetClassObject</code>. Isso é bê-a-bá de COM. O código que eu quero usar deve carregar esta DLL e chamar <code>DllGetActivationFactory</code> ou <code>DllGetClassObject</code> para obter um ponteiro para uma classe implementando esta interface ou um proxy para chamar esta classe remotamente.</p>
+
+<p>Ao analisar pelo OleView pela <code>IUserDeviceRegManagerStatics</code> não há uma biblioteca de tipos com os nomes dos métodos e argumentos. Existe uma vtable genérica com algumas procedures chamadas "Proc1", "Proc2" e assim por diante. Já que desde minha sessão de debugging anterior eu vi um monte de funções RPC sendo chamadas eu irei assumir que <code>UserDeviceRegistration!DllGetActivationFactory</code> está sendo chamada. E, mais uma vez, de acordo com o MSDN, este entry point:</p>
+
+<p>"Retrieves the activation factory from a DLL that contains activatable Windows Runtime classes."</p>
+
+<p>That's a bingo! Windows Runtime classes é o que estou procurando mesmo. Como eu já estudei anteriormente, isso bate com o retorno desta função: um ponteiro para a interface <code>IActivationFactory</code>. A entrada deste argumento é uma <code>HSTRING</code>, que é uma nova string definida pela Windows Runtime para strings imutáveis das linguagens mais populares, como C# e JS. E, mais uma vez, isso explica porque em minhas sessões de debug observei um monte de chamadas a <code>WindowsDeleteString</code>. Quando você começa a fazer reversa começa a ouvir ecos de sessões passadas para conseguir montar o quebra-cabeças.</p>
+
+<p>Com tudo isso que descobri resolvi colocar um breakpoint no evento de load desta DLL.</p>
+
+<pre>
+sxe ld:UserDeviceRegistration.dll
+</pre>
+<p>Repito o procedimento de registro de máquina e o breakpoint é ativado. Estou pronto para agora colocar um breakpoint na <code>DllGetActivationFactory</code>. Porém, tenho um insight neste momento. Eu me lembro que posso usar o Process Explorer para buscar no sistema inteiro quem é que está usando a mesma DLL que estou de olho. Afinal de contas, se ela é a interface para se comunicar com a implementação, faz sentido que dentro dela exista a implementação.</p>
+
+<p>E com isso eu encontro a <code>RuntimeBroker.exe</code>, processo iniciado quase ao mesmo tempo que o BrokerPlugin. Coincidência? Acho que não.</p>
+
+<p>Isso significa que agora eu posso depurar tanto o BrokerPlugin quanto a RuntimeBroker e usar os símbolos da DLL em comum para encontrar quais funções deverão ser chamadas de ambos os lados, já apostando que o método chave seria <code>CUserDeviceRegManagerStatic::WorkplaceJoin</code>, já que eu já encontrei este método em sessões passadas e seu nome faz todo sentido.</p>
+
+<p>Na minha primeira tentativa o breakpoint não disparou. Busco, então, por nomes de funções semelhantes:</p>
+
+<pre>
+x UserDeviceRegistration!Windows::Internal
+::UserDeviceRegistration::CUserDeviceRegManagerStatic::*
+</pre>
+<p>Já que estou interessado no macro coloco breakpoint em todos os métodos da classe. Faço isso também do lado do BrokerPlugin e seus métodos dentro de <code>UserDeviceRegistration::IUserDeviceRegManagerStatics</code>. Posso acompanhar o fluxo sem parar usando um parâmetro bem esperto nos breakpoints do WinDbg: um comando qualquer. Nesse caso uso imprimir o nome da função chamada e o comando <code>g</code>, que segue a execução sem parar. Por exemplos (RuntimeBroker e BrokerPlugin, respectivamente):</p>
+
+<pre>
+bp UserDeviceRegistration!Windows::Internal
+::UserDeviceRegistration::CUserDeviceRegManagerStatic
+::DelegatedWorkplaceJoinWithRequestId
+&quot;.echotime; .echo UserDeviceRegistration!Windows::Internal
+::UserDeviceRegistration::CUserDeviceRegManagerStatic
+::DelegatedWorkplaceJoinWithRequestId; g&quot;
+
+bp AAD_Core!Windows::Internal::UserDeviceRegistration
+::IUserDeviceRegManagerStatics::GetJoinInfo
+&quot;.echotime; .echo AAD_Core!Windows::Internal::UserDeviceRegistration
+::IUserDeviceRegManagerStatics::GetJoinInfo; g&quot;
+</pre>
+<p>Com isso eu descobri qual o processo e qual a classe envolvida neste processo de registro de máquina. Graças também aos símbolos disponibilizados pela Microsoft fica muito mais fácil entender o fluxo. Pretendo usar esta técnica mais vezes no futuro.</p>
+
+</section>
+
+
+<span style="float: left;">
+ <a href="mailto:wanderley.caloni@gmail.com?subject=Comment%20about%3A%20Descobrir%20ativa%C3%A7%C3%A3o%20de%20classes%20WinRT">[comment]</a>
+ <a href="finalmente-blogawk.html">[Finalmente blogawk]</a>
+
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

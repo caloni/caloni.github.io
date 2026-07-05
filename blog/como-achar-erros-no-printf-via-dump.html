@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+
+<span id="como-achar-erros-no-printf-via-dump" title="Como Achar Erros no Printf via Dump"/></span>
+<section id="section_como-achar-erros-no-printf-via-dump">
+<p class="title">Como Achar Erros no Printf via Dump</p>
+<span class="title-heading">2018-01-25 computer blog</span>
+
+<p>Às vezes, e apenas às vezes, é útil ter um dump do processo que acabou de capotar e ter um singelo backup do pdb (arquivo de símbolos) dos binários envolvidos nessa tragédia. Com alguns cliques pontuais e uma análise simples da stack, da variável e do código envolvido é possível chegar em um veredito sem muitas controversas se foi isso mesmo que gerou o crash. No caso peguei hoje um caso assim.</p>
+
+<h2>Stack</h2>
+
+<p>Abrir um dump (dmp) pode ser feito pelo Visual Studio, Windbg ou sua ferramenta de análise favorita. Mais importante que isso é carregar seus símbolos adequadamente.</p>
+
+<img src="/blog/img/como_achar_erros_no_printf_via_dump_NhkhrJa.png"/>
+
+<p>Com o dump e símbolos abertos é possível analisar a stack de chamadas, o que nos revela que há um problema em uma função de Log. Como se trata de uma versão release não há muita informação da pilha, que pode fazer parte de uma stack modificada (otimização de código). Portanto, tudo que vier é lucro. Como variáveis.</p>
+
+<h2>Variable</h2>
+
+<p>Demos sorte e é possível ver o que tem na variável de format, a mais importante de uma função de log estilo printf, pois geralmente é ela a responsável pelas dores de cabeça infernais.</p>
+
+<img src="/blog/img/como_achar_erros_no_printf_via_dump_uOkd4VF.png"/>
+
+<p>Através dessa string é possível buscar no código usando grep, vim ou até o Visual Studio. Com isso reduzimos nosso escopo de busca ao mínimo.</p>
+
+<h2>Code</h2>
+
+<img src="/blog/img/como_achar_erros_no_printf_via_dump_rAo1T0H.png"/>
+
+<p>E voilà! Temos uma chamada de log que teoricamente teria que passar uma string C, mas não passa nada. Isso quer dizer que a função de printf irá procurar na pilha pelo endereço de uma string, mas irá encontrar um endereço aleatório. Lendo esse endereço, que tem ótimas chances de ser inválido, ele irá capotar. Para dores de cabeças mais intensas, ele irá capotar aleatoriamente (ou na máquina do chefe, o mais provável).</p>
+
+<p>E assim terminamos mais uma sessão simples e rápida de debug. Quer dizer, simples e rápida para quem tem 20 anos de experiência nessas coisas. Os estagiários devem ter ficado de cabelos em pé.</p>
+
+</section>
+
+
+<span style="float: left;">
+ <a href="mailto:wanderley.caloni@gmail.com?subject=Comment%20about%3A%20Como%20Achar%20Erros%20no%20Printf%20via%20Dump">[comment]</a>
+ <a href="variaveis-estaticas-locais-sao-timidas.html">[Variáveis estáticas locais são tímidas]</a>
+
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

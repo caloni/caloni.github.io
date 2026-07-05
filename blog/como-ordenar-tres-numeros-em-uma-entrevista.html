@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+
+<span id="como-ordenar-tres-numeros-em-uma-entrevista" title="Como Ordenar Três Números em Uma Entrevista"/></span>
+<section id="section_como-ordenar-tres-numeros-em-uma-entrevista">
+<p class="title">Como Ordenar Três Números em Uma Entrevista</p>
+<span class="title-heading">2021-05-13 computer blog</span>
+
+<p>O primeiro exercício pedido ao candidato para a vaga de programação na <a href="http://www.intelitrader.com.br">Intelitrader</a> é fazer uma função que receba três números e informe entre eles qual o maior, o menor e a média dos três. Sim, eu sei, absurdamente fácil, não? Porém, mesmo assim, a grande maioria dos "programadores" que entrevisto perde mais de meia-hora em um exercício simples desse. O motivo, acredito eu, é que a lógica de programação está cada vez mais em baixa. Pensar se tornou tristemente um requisito opcional em uma vaga de programação.</p>
+
+<p>No meio de uma entrevista, entediado, resolvi eu mesmo ir resolvendo enquanto aguardava o candidato. Imaginei o que eu, como hipotético candidato, faria para resolver esse exercício da maneira mais rápida. Meu objetivo não era apenas cuspir código, mas entender qual o raciocínio envolvido na obtenção de uma lógica simples dessa.</p>
+
+<p>Então vamos lá. A primeira coisa que eu pensei é fazer em Python. Porque programar em Python um código desses dá para fazer em qualquer editor, inclusive na web. Inclusive em um papel de pão.</p>
+
+<p>A segunda coisa que eu pensei é em já criar a função recebendo os três números, mas em não usá-los no cálculo, porque usar três nomes de variáveis para decidir qual é o maior e menor seria um pé no saco cheio de ifs e elses. Melhor rodar um loop que alimenta o maior e o menor de todos. Sabendo disso eu crio duas variáveis, maior e menor:</p>
+
+<pre>
+def func(a, b, c):
+  maior = 0
+  menor = 100000000
+  nums = [ a, b, c ]
+</pre>
+<p>Eu inicializo maior com o "menor valor possível", zero, e menor com o "maior valor possível", no caso um número muito grande. É o maior possível? Não, mas já resolve o problema para números médios e grandes. Caso o entrevistador questionasse essa parte do código eu poderia simplesmente pesquisar qual o maior valor representável por um inteiro em Python para inicializar corretamente. Para um problema em que a resposta precisa ser dada em alguns minutos está de bom tamanho.</p>
+
+<p>Por fim, meu loop que verifica qual o menor e maior varre o array que criei e no final eu sei que o menor e maior valor estarão nas variáveis de mesmo nome.</p>
+
+<pre>
+for n in nums:
+  if n &gt; maior:
+    maior = n
+  if n &lt; menor:
+    menor = n
+</pre>
+<p>E a média é obtida somando os três números dividido por três, me lembrando que pode ser um número quebrado, então é melhor que seja um ponto flutuante, o que eu consigo dividindo por 3.0 em vez de 3.</p>
+
+<pre>
+print(&quot;media: &quot;, (a + b + c) / 3.0);
+</pre>
+<p>O conjunto da obra é bem simples e intuitivo. Não precisou de muito raciocínio. O maior desafio, em minha opinião, é manter a calma, entender o problema, e abordar da maneira que consuma menos tempo e esforço intelectual, os recursos escassos do desafio.</p>
+
+<pre>
+def func(a, b, c):
+  maior = 0
+  menor = 100000000
+  nums = [ a, b, c ]
+  for n in nums:
+    if n &gt; maior:
+      maior = n
+    if n &lt; menor:
+      menor = n
+  print(&quot;maior: &quot;, maior);
+  print(&quot;menor: &quot;, menor);
+  print(&quot;media: &quot;, (a + b + c) / 3.0);
+</pre>
+<p>Não precisa ser a melhor solução do mundo, mas já é uma solução boa o suficiente. Justamente o que a Intelitrader pede aos seus candidatos e funcionários. =)</p>
+
+</section>
+
+
+<span style="float: left;">
+ <a href="mailto:wanderley.caloni@gmail.com?subject=Comment%20about%3A%20Como%20Ordenar%20Tr%C3%AAs%20N%C3%BAmeros%20em%20Uma%20Entrevista">[comment]</a>
+ <a href="meditacao-e-self-debugging.html">[Meditação é self debugging]</a>
+
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+
+<span id="meu-novo-parseador-de-argc-argv" title="Meu Novo Parseador de Argc Argv"/></span>
+<section id="section_meu-novo-parseador-de-argc-argv">
+<p class="title">Meu Novo Parseador de Argc Argv</p>
+<span class="title-heading">2018-08-21 computer ccpp blog</span>
+
+<p>Eis que me deparo com um projeto onde não posso usar STL. Ou seja, nada de map nem string. Isso quer dizer que <a href="https://gist.github.com/Caloni/5b9ccc66722a1b235f4aab8251822cdb">minha função</a> bonita e completa de parseamento de argumentos argc/argv não pode ser usado. Essa é uma má notícia. A boa notícia é que achei uma forma muito mais simples e à prova de falhas de fazer isso. Ele basicamente percorre o array argv em busca do nome do parâmetro enviado para a função. Uma vez que ele encontre ele retorna o próximo elemento. Na falta de próximo elemento ele simplesmente retorna uma string vazia que não é nulo, mas já indica que há o parâmetro na lista de argumento.</p>
+
+<pre>
+/** Interpreta argumentos da linha de comando (versão raiz).
+
+@author Wanderley Caloni &lt;wanderley.caloni@gmail.com.br&gt;
+@date 2018-08
+
+           ---      --- 
+    argv: | * |--&gt; | * | &quot;testbin&quot;
+           ---      --- 
+                    --- 
+                   | * | &quot;foo&quot;
+                    --- 
+                    --- 
+                   | * | &quot;100&quot;
+                    --- 
+            --- 
+     argc: | 3 |
+            --- 
+    
+*/
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+const char* GetArg(int argc, char* argv[], const char* arg)
+{
+    for (int i = 1; i &lt; argc; ++i)
+    {
+        if( strcmp(argv[i], arg) == 0 )
+        {
+            if( i &lt; argc - 1 )
+                return argv[i+1];
+            else
+                return &quot;&quot;;
+        }
+    }
+    return NULL;
+}
+</pre>
+<p>Essa função é tão simples, e tem tão poucas dependências (strcmp) que você pode usá-la em praticamente qualquer programa que use argc/argv e que use os parâmetros dos mais complexos. Ao chamar essa função se passa o argc e o argv recebido no main e o terceiro argumento é apenas o nome de um argumento válido que pode ser recebido via linha de comando. O resultado é um ponteiro (obtido no próprio argv) da próxima string ou uma string C vazia constante (não precisa de alocação) se for o último argv. E caso ele não ache o retorno é NULL. Seu uso comum é uma linha apenas, ou uma linha para cada argumento buscado. Sua complexidade é linear, mas, ei, quem está querendo performance no início do programa?</p>
+
+<p>Uma última observação: dependendo do uso você pode ou não usar o retorno, e ele possui semântica booleana, pois caso o argumento não exista o retorno é NULL e por isso não cai dentro do if (pois NULL traduzido em booleano é false). Eis uma função para copiar e colar abusivamente.</p>
+
+</section>
+
+
+<span style="float: left;">
+ <a href="mailto:wanderley.caloni@gmail.com?subject=Comment%20about%3A%20Meu%20Novo%20Parseador%20de%20Argc%20Argv">[comment]</a>
+ <a href="getarg-the-ultimate-badass-argvargc-parser.html">[GetArg: the ultimate badass argv/argc parser]</a>
+
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,147 @@
+﻿<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+
+<span id="readfile-assincrono-pode-ser-sincrono-quando-voce-menos-espera" title="ReadFile assíncrono pode ser síncrono quando você menos espera"/></span>
+<section id="section_readfile-assincrono-pode-ser-sincrono-quando-voce-menos-espera">
+<p class="title">ReadFile assíncrono pode ser síncrono quando você menos espera</p>
+<span class="title-heading">2017-01-16 computer blog</span>
+
+<p>Ano passado tive alguns problemas em um projeto que se comunicava com um dispositivo em firmware pela USB. Estávamos utilizando uma biblioteca open source do GitHub que parecia estar bem testada e mantida. Porém, não exatamente para nossos objetivos.</p>
+
+<p>O problema da lib <a href="https://github.com/signal11/hidapi">hidapi</a> era que a comunicação usb era feita de forma assíncrona. Isso no Windows é feito com a mesma função de I/O (ReadFile/WriteFile) só que passando um argumento opcional chamado de overlapped. Esse argumento é um ponteiro para uma estrutura que irá ser preenchida assim que o I/O for concluído. E quando é isso? Deve-se esperar pelo handle ser sinalizado (em outras palavras, dando um Sleep ou WaitForSingleObject neste handle).</p>
+
+<p>O funcionamento padrão via overlapped é bem simples: faça a operação de I/O (passando a estrutura) e verifique o retorno. Ele deve ser FALSE e o retorno do próximo GetLastError deve ser ERROR_IO_PENDING. Bom, descrevendo a operação ela não parece ser tão intuitiva. Mas funciona:</p>
+
+<pre>
+if (!ReadFile(hFile,
+                 pDataBuf,
+                 dwSizeOfBuffer,
+                 &amp;NumberOfBytesRead,
+                 &amp;osReadOperation )
+   {
+      if (GetLastError() != ERROR_IO_PENDING)
+      {
+         // Some other error occurred while reading the file.
+         ErrorReadingFile();
+         ExitProcess(0);
+      }
+      else
+         // Operation has been queued and
+         // will complete in the future.
+         fOverlapped = TRUE;
+   }
+</pre>
+<p>A questão que nós encontramos nesse projeto apenas aconteceu porque após a operação de I/O assíncrona a thread responsável por retornar o resultado ficava em wait eterno ou dava timeout. Ambas as situações são normais e esperadas. Ficar aguardando para sempre um device acontece quando este simplesmente não responde com nenhum dado. E dar timeout acontece quando não queremos aguardar o device para sempre (WaitForSingleObject(handle, 1000), por exemplo, daria timeout depois de 1 segundo, ou 1000 milissegundos).</p>
+
+<p>O motivo da thread nunca retornar (ou dar timeout), porém, não estava em nenhuma dessas situações. Ao monitorar o tráfego usb se verificou que o device respondia em tempo hábil. O problema estava mais embaixo (ou mais em cima): a hidapi não se comportava conforme o MSDN mandava. Há uma situação não-mapeada nessa lib.</p>
+
+<p>Erros ao chamar a API do Win32 são comuns exatamente porque esta é uma lib arcaica, pouco intuitiva com diferentes tipos de exceções. No caso de uma operação assíncrona com overlapped, se você ler as tantas páginas da <a href="https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-readfile">função ReadFile</a>, por exemplo, vai acabar encontrando um adendo escondido no meio da documentação:</p>
+
+<img src="/blog/img/readfile_assincrono_pode_ser_sincrono_quando_voce_menos_espera_sJDJHii.png"/>
+
+<p>Este <a href="https://support.microsoft.com/en-us/kb/156932">adendo</a> possui a informação que ninguém ainda sabia porque... porque a Microsoft é uma chuva oras =)</p>
+
+<p>"If, on the other hand, an operation is completed immediately, then &amp;NumberOfBytesRead passed into ReadFile is valid for the number of bytes read. In this case, ignore the OVERLAPPED structure passed into ReadFile; do not use it with GetOverlappedResult or WaitForSingleObject."</p>
+
+<p>Ou seja, em caso da função ReadFile (ou WriteFile) retornar TRUE em uma operação assíncrona/overlapped, isso quer dizer que a operação foi concluída com sucesso de forma síncrona, não sendo necessário aguardar o I/O ser concluído. Na verdade, é um pouco mais específico: o WaitForSingleObject não deve ser chamado. No nosso caso, ao chamá-lo, criávamos uma espera eterna, já que o I/O não seria mais sinalizado (porque deveria? a operação já foi concluída!).</p>
+
+<p>Uma colinha da M$ de como deve ser feito o tratamento:</p>
+
+<pre>
+   if (!ReadFile(hFile,
+                 pDataBuf,
+                 dwSizeOfBuffer,
+                 &amp;NumberOfBytesRead,
+                 &amp;osReadOperation )
+   {
+      if (GetLastError() != ERROR_IO_PENDING)
+      {
+         // Some other error occurred while reading the file.
+         ErrorReadingFile();
+         ExitProcess(0);
+      }
+      else
+         // Operation has been queued and
+         // will complete in the future.
+         fOverlapped = TRUE;
+   }
+   else
+      // Operation has completed immediately.
+      fOverlapped = FALSE;
+
+   if (fOverlapped)
+   {
+      // Wait for the operation to complete before continuing.
+      // You could do some background work if you wanted to.
+      if (GetOverlappedResult( hFile,
+                               &amp;osReadOperation,
+                               &amp;NumberOfBytesTransferred,
+                               TRUE))
+         ReadHasCompleted(NumberOfBytesTransferred);
+      else
+         // Operation has completed, but it failed.
+         ErrorReadingFile();
+   }
+   else
+      ReadHasCompleted(NumberOfBytesRead);
+</pre>
+<p>Após essa correção no projeto as coisas começaram a funcionar normalmente.</p>
+
+<p>A BitForge fez a alteração em <a href="https://github.com/bitforgebr/hidapi/commit/132e03f37e8ab8c95ee264e1cfbeef6b2ed39a5b">um fork próprio</a> da hidapi e enviou o pull request para os mantenedores oficiais da hidapi, a signal11. Esta é mais uma lição de que, em se tratando de I/O, as coisas difíceis que o kernel às vezes faz lá embaixo acabam refletindo aqui em cima. Às vezes até na própria API!</p>
+
+</section>
+
+
+<span style="float: left;">
+ <a href="mailto:wanderley.caloni@gmail.com?subject=Comment%20about%3A%20ReadFile%20ass%C3%ADncrono%20pode%20ser%20s%C3%ADncrono%20quando%20voc%C3%AA%20menos%20espera">[comment]</a>
+ <a href="warning-de-nivel-4.html">[Warning de nível 4]</a>
+
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

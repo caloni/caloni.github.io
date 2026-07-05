@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+
+<span id="contra-o-array-de-100-bytes" title="Contra o array de 100 bytes"/></span>
+<section id="section_contra-o-array-de-100-bytes">
+<p class="title">Contra o array de 100 bytes</p>
+<span class="title-heading">2018-03-11 computer blog</span>
+
+<p>Desde o C++ moderno (pós-03) o uso de arrays de tamanho fixo estão se tornando depreciados. E por um bom motivo: você nunca sabe realmente qual o tamanho que você precisa para um array de bytes até você saber. Daí a próxima grande questão é: "como gerenciar essa memória dinâmica de forma efetiva?". E a resposta moderna sempre é: "não faça isso você mesmo". Eis o porquê:</p>
+
+<pre>
+#include &lt;string.h&gt;
+#include &lt;iostream&gt;
+
+char* LegacyFunction()
+{
+    char* ret = (char*) malloc(100);
+    strcpy(ret, &quot;old old string&quot;);
+    return ret;
+}
+
+void WideStringFunction(wchar_t* mbString)
+{
+    std::wcout &lt;&lt; mbString &lt;&lt; L'\n';
+}
+
+int main()
+{
+    char* legacyString = LegacyFunction();
+    size_t legacyLen = strlen(legacyString);
+     // espalhando a merda de alocar dinamicamente
+    wchar_t* convertedString = new wchar_t[legacyLen+1]
+    mbstowcs(convertedString, legacyString, legacyLen+1);
+    WideStringFunction( convertedString );
+    free(legacyString);
+     // espalhando a merda de desalocar manualmente
+    free(convertedString)
+}
+</pre>
+<p>Quando lidamos com funções legadas elas se misturam de tal maneira com código novo que a merda da alocação/desalocação dinâmica manual vai se espalhando também. A não ser que a gente comece a usar o novo modelo RAII e deixe a memória ser gerenciada automaticamente:</p>
+
+<pre>
+#include &lt;string.h&gt;
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+char* LegacyFunction()
+{
+    char* ret = (char*) malloc(100);
+    strcpy(ret, &quot;old old string&quot;);
+    return ret;
+}
+
+void WideStringFunction(wchar_t* mbString)
+{
+    std::wcout &lt;&lt; mbString &lt;&lt; L'\n';
+}
+
+int main()
+{
+    char* legacyString = LegacyFunction();
+    size_t legacyLen = strlen(legacyString);
+    // a STL que se vira pra alocar
+    std::vector&lt;wchar_t&gt; convertedString(legacyLen+1)
+    mbstowcs(&amp;convertedString[0], legacyString, legacyLen+1);
+    WideStringFunction(&amp;convertedString[0]);
+    free(legacyString);
+    // a STL que se vira pra desalocar convertedString
+}
+</pre>
+<p>Note que estamos obtendo o endereço do primeiro elemento do nosso vector STL porque, desde o padrão C++0x03, <a href="https://herbsutter.com/2008/04/07/cringe-not-vectors-are-guaranteed-to-be-contiguous/">vetores são garantidos que serão contínuos</a>. Essa garantia de leiaute de memória pode facilitar muitos usos de vector que estavam dependentes da implementação. O exemplo acima é apenas o mais simples deles, mas imagine que qualquer tipo de memória contígua cujo tamanho é desconhecido em tempo de compilação pode ser deixado seu gerenciamento para a STL cuidar.</p>
+
+<p>Ah, e a partir do C++11 podemos usar vector::data() para obter os dados sem deferenciar o primeiro elemento. Particularmente acho mais expressiva a sintaxe dos arrays, mas fica a gosto do freguês.</p>
+
+</section>
+
+
+<span style="float: left;">
+ <a href="mailto:wanderley.caloni@gmail.com?subject=Comment%20about%3A%20Contra%20o%20array%20de%20100%20bytes">[comment]</a>
+ <a href="lista-ligada-ta-ligado.html">[Lista Ligada; tá Ligado?]</a>
+
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

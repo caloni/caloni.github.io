@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+
+<span id="dbaccess" title="DBAccess"/></span>
+<section id="section_dbaccess">
+<p class="title">DBAccess</p>
+<span class="title-heading">2016-08-16 computer blog</span>
+
+<p>Bancos de dados são uma dor de cabeça para o desenvolvedor acessar. Quase tão motivation killer quanto as configurações do .NET. Se for um programador em C++ para Windows, então, desista.</p>
+
+<p>O DBAccess é mais um dos códigos-fonte desenterrados dos meus backups. Esse eu usei já em vários projetos, porque é simples e rápido de usar.</p>
+
+<pre>
+class DBAccess
+{
+public:
+    /// Factory para base de dados específica.
+    /// @param database Pode ser &quot;sqlite&quot; ou &quot;oledb&quot;.
+    static DBAccess* CreateDBAccess(const std::string&amp; database);
+
+    typedef std::string ColumnName;
+    typedef std::vector&lt;std::string&gt; Rows;
+    typedef std::map&lt;ColumnName, Rows&gt; RowSet;
+
+    virtual ~DBAccess() { }
+
+    virtual bool Connect(const std::string&amp; connectionString) = 0;
+    virtual bool Disconnect() = 0;
+
+    /// Executa uma instrução SQL e retorna opcionalmente os resultados (se for uma query).
+    virtual bool Execute(const std::string&amp; command, RowSet* response = 0) = 0;
+};
+</pre>
+<p>Sua função é abstrair a abertura de um banco de dados, sua execução e sua saída. Para isso ele cria uma interface simples que usa STL. Por debaixo dos panos, usa OLEDB, que abstrai qualquer coisa, só precisando de instalar o driver e aprender qual <a href="https://www.connectionstrings.com/">das 500 mil combinações</a> é a string de conexão correta. Para não ter que usar outras funções para coisas simples como sqlite, foi incluído seu suporte (que é mais uma tradução entre interfaces), necessitando para seu uso daquele projeto do sqlite que contém um header e um .c (pelo jeito o pessoal desse projeto também gosta de simplificar as coisas).</p>
+
+<p>O código que trata o OLEDB é um pouco grande (umas 300 linhas) por conta da manipulação dos componentes COM. Porém, feito decentemente, faça uma vez e use um milhão (ainda falta fazer alguns unit tests, aliás).</p>
+
+<pre>
+IDataInitialize* pIDataInitialize;
+IDBInitialize* pIDBInitialize;
+IDBCreateSession* pIDBCreateSession;
+IDBCreateCommand* pIDBCreateCommand;
+</pre>
+<p>É um bom projeto para entender o uso da minha batidíssima biblioteca de parsear argumentos argv/argc (Args.cpp/h) e a mais batidíssima ainda biblioteca de Log, que utiliza variadic templates para se livrar da maldição dos crashs causados pela falta de tipagem do printf e derivados (em Log.cpp/h).</p>
+
+<p>Além disso, observe como o uso de interface permite que os headers específicos do que tem que ser feito (e.g. oledb.h, atlbase.h, msdasc.h, sqlite.h e até windows.h) não precisa necessariamente estar presente no header da interface (oledb.h), e como o uso de um factory em um método estático da interface permite que a junção das tecnologias envolvidas fique apenas no oledb.cpp. Dessa forma, para retirar ou acrescentar novas formas de comunicação com um banco de dados é muito simples.</p>
+
+<p>PS: A publicação do DBAccess foi inspirada na thread iniciada por Spagiari no C++]/C++].</p>
+
+</section>
+
+
+<span style="float: left;">
+ <a href="mailto:wanderley.caloni@gmail.com?subject=Comment%20about%3A%20DBAccess">[comment]</a>
+ <a href="programa-mae-foca.html">[Programa, Mãe Foca!]</a>
+
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>
