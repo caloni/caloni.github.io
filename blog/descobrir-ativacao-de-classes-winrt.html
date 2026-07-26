@@ -47,7 +47,7 @@ role="navigation" aria-label="main navigation">
 
 <p>Analisando o disassembly pelo IDA e realizando algumas sessões de debug eu estava caminhando pela interface <code>IUserDeviceRegManagerStatics</code> que havia encontrado anteriormente. Eu sabia que essa interface estava por trás do registro da máquina porque depois que alguns de seus métodos são chamados o comando <code>dsregcmd.exe /status</code> lista o computador como joined dentro do AAD e se você for na parte de contas do usuário naquela tela de configurações do Windows irá aparecer a mesma conta usada para logar no Teams.</p>
 
-<p>Buscando no registro pelo nome dessa interface existe uma entrada em <code>HKEY_CLASSES_ROOT\Interface\{b5decd05-58ef-4cd3-ae25-d177bcbcea9e}</code> aonde existe uma subkey <code>ProxyStubClsid32</code>. Essa subkey, de acordo com o MSDN, é usado para traduzir um IID -- ID de Interface -- para um CLSID -- ID de classe. Nas palavras do MSDN (em inglês, por favor): "Maps an IID to a CLSID in 32-bit proxy DLLs".</p>
+<p>Buscando no registro pelo nome dessa interface existe uma entrada em <code>HKEY_CLASSES_ROOT\Interface\{b5decd05-58ef-4cd3-ae25-d177bcbcea9e}</code> aonde existe uma subkey <code>ProxyStubClsid32</code>. Essa subkey, de acordo com o MSDN, é usada para traduzir um IID -- ID de Interface -- para um CLSID -- ID de classe. Nas palavras do MSDN (em inglês, por favor): "Maps an IID to a CLSID in 32-bit proxy DLLs".</p>
 
 <p>"If you add interfaces, you must use this entry to register them (32-bit systems) so that OLE can find the appropriate remoting code to establish interprocess communication."</p>
 
