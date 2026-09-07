@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="cpp-moderno-arranca-os-cabelos-por-voce-stdmove-e-classes-simples" title="C++ Moderno Arranca os Cabelos por Você (std::move e classes simples)."/></span>
+<section id="section_cpp-moderno-arranca-os-cabelos-por-voce-stdmove-e-classes-simples">
+<p class="title">C++ Moderno Arranca os Cabelos por Você (std::move e classes simples).</p>
+<span class="title-heading">2017-09-26 ccpp blog</span>
+
+<p>Um dos <a href="https://groups.google.com/forum/#!topic/ccppbrasil/-AC9U7J-0Zg">últimos posts</a> no grupo CCPPBR do Thiago Adams chama mais uma vez a atenção para a complexidade infinita que linguagens como C++ estão preferindo tomar. Esta é a geração que irá sofrer as dores de compatibilidade com o passado mais que todas as outras que virão.</p>
+
+<p>Isso porque mudanças pontuais que vão sendo aplicadas na linguagem e biblioteca, como *move semantics*, não cabe mais em exemplos de livrinhos de C++ para iniciantes da década de 90:</p>
+
+<pre>
+#include &lt;string.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;memory&gt;
+
+struct X
+{
+    char * pString = 0;
+    X() {}
+    X(const char* s)
+    {
+        pString = _strdup(s);
+    }
+    ~X()
+    {
+        free(pString);
+    }
+};
+
+int main()
+{
+    X x1;
+    const X x2(&quot;a&quot;);
+    x1 = std::move(x2);
+
+    return 0;
+}
+</pre>
+<p>Neste singelo exemplo, que está errado by design, a classe X não se preocupa em proteger-se de cópias simples. Mas o programador também não se protege da ignorância e usa std::move como se ele magicamente movesse referências const, o que é absurdo.</p>
+
+<p>!<a href="http://imgur.com/">imgur</a>(cpp_arranca_os_cabelos_por_voce_zi5GJxE.png)</p>
+
+<p>A questão, porém, não é sobre qual é o problema no código, mas os aspectos de design de C++ que podem levar futuros programadores a se depararem com o mesmo problema em versões multicamadas de complexidade. Este é um exemplo óbvio, mas até quando será?</p>
+
+<p>Esta crítica pode levar (pelo menos) para dois diferentes caminhos:</p>
+
+<ul><li>O funcionamento do std::move não é intuitivo e pode levar a erros semânticos ("se usar o move estou movendo referências"); programador não conhece o funcionamento por completo.</li>
+
+<li>Em C++ o esforço de manter uma classe é muito maior hoje do que em 98/03 ("tomar cuidado com reference, const reference, rvalue reference..."); isso concordo; as mudanças são bem-intencionadas, mas a linguagem é velha com alguns esqueletos que podem começar a balançar.</li></ul>
+
+<p>C++, assim como o Brasil, desde o começo nunca foi para amadores. Hoje em dia ele é impossível. Ouço galera falar que está ficando lindo, mas, francamente, está virando é um ninho de cobras. Mantenedores de bibliotecas, se não estão já arrancando os cabelos, deveriam começar.</p>
+
+<p>Mas talvez com C++ 17+ os cabelos passem a cair sozinho...</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="mailto:wanderley.caloni@gmail.com?subject=Comment%20about%3A%20C%2B%2B%20Moderno%20Arranca%20os%20Cabelos%20por%20Voc%C3%AA%20%28std%3A%3Amove%20e%20classes%20simples%29.">[comment]</a>
+ <a href="inscricoes-para-o-14o-ccppbrsp.html">[Inscrições para o 14o. CCPPBRSP]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>

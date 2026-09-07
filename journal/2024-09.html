@@ -38,7 +38,6 @@ role="navigation" aria-label="main navigation">
 <div style="padding-bottom: 1em;"></div>
 <ul style="list-style: none;">
 
-<li><small><a href="2024-09.html#txt2blog-mais-formas-de-link-ajustes-e-melhorias">Txt2Blog: Mais formas de link (ajustes e melhorias)</a></small></li>
 <li><small><a href="2024-09.html#etchart-estate-torrontes-2022">Etchart Estate Torrontés 2022</a></small></li>
 <li><small><a href="2024-09.html#all-language-is-but-a-poor-translation-franz-kafka">All language is but a poor translation (Franz Kafka)</a></small></li>
 <li><small><a href="2024-09.html#as-branquelas">As Branquelas</a></small></li>
@@ -54,34 +53,6 @@ role="navigation" aria-label="main navigation">
 <li><small><a href="2024-09.html#como-degustar-cafe-e-vinho">Como degustar café e vinho</a></small></li>
 <li><small><a href="2024-09.html#software-architecture-in-practice-len-bass-paul-clements-rick-kazman">Software Architecture in Practice (Len Bass, Paul Clements, Rick Kazman)</a></small></li>
 <li><small><a href="2024-09.html#what-if">What If</a></small></li></ul>
-
-<span id="txt2blog-mais-formas-de-link-ajustes-e-melhorias" title="Txt2Blog: Mais formas de link (ajustes e melhorias)"/></span>
-<section id="section_txt2blog-mais-formas-de-link-ajustes-e-melhorias">
-<p class="title"><a href="2024-09.html#txt2blog-mais-formas-de-link-ajustes-e-melhorias">#</a> Txt2Blog: Mais formas de link (ajustes e melhorias)</p>
-<span class="title-heading">2024-09-01 <a href="projects.html#txt2blog-mais-formas-de-link-ajustes-e-melhorias">projects</a><a href="2024-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_txt2blog-mais-formas-de-link-ajustes-e-melhorias')"><sup>[copy]</sup></a></span>
-
-<p>Dei uma reformada no script awk que estava com muitas variáveis globais (agora são poucas e reconhecíveis) e aproveitei para remover os links de busca por outros artigos por links diretos para os artigos. Para conseguir isso eu tive que rodar um script antes no arquivo inteiro dos posts para localizar onde ficarão os posts para depois conseguir linkar na hora de renderizar os mesmos posts. Isso resolve apenas uma questão pendente com os links. Há mais alguns acertos e melhorias do tema que é justamente o motivo de eu ter feito o próprio script de geração de blogs: metadados.</p>
-
-<p>O primeiro ajuste é um bug que existe ao referenciar posts com o mesmo slug. Como é possível que isso exista em meses diferentes (cada capítulo do blog, ou página html, são os posts de um mês), fica indefinido a qual post o texto se refere se ele usa um slug ambíguo. Para resolver isso algumas soluções são possíveis. A melhor delas talvez seja referenciar todos os posts com o mesmo slug. Afinal de contas, se o slug é o mesmo é muito provável que ele se refira ao mesmo tema (dois ou mais textos sobre o mesmo filme, por exemplo).</p>
-
-<p>Um segundo ajuste é considerar o mês/chapter sempre que for utilizar um slug (o que corrigiria outros problemas com indexação e listagem) e utilizar o slug mais recente como o default. Ainda não estou certo se utilizar um default é uma solução viável, pois pode haver ambiguidades não-planejadas e tira a liberdade do autor em especificar exatamente a qual texto ele se refere. O autor poderia teoricamente referenciar de duas formas: ou com o chapter em mente ou um slug qualquer que pode ser usado como coringa (o mais novo ou a listagem completa de slugs ambíguos). De repente o slug se torne um identificador atemporal sobre um mesmo tema (já que o título, que pode ser diferente, pode dar conta do resto).</p>
-
-<p>Um outro desejo que nutro sobre metadados é a possibilidade de linkar temas mais esparsos que tags. O uso indiscriminado de tags já foi pensado e isso geraria um desconforto muito grande em manter tudo isso sincronizado, muito embora ele possa precisar se usado como um peso que o autor define para certo tema. A dualidade aqui é entre o peso que o autor deve poder atribuir a um tema versus o peso oculto que uma certa busca pode ter. Exemplifico.</p>
-
-<p>Imagine que você como autor queira eventualmente falar sobre [Keanu Reeves]. Em dado texto sobre [John Wick] você irá ressaltar algum traço específico de sua personalidade. Em outro, sobre uma revisita a <a href="2011-12.html#matrix">Matrix</a>, irá comentar em um parágrafo sobre a trajetória do ator. A pergunta é: você, autor, gostaria de juntar esses parágrafos espalhados sobre um ator em uma tag, ou seria mais interessante conseguir apontar diretamente para os parágrafos em si? Ou, ainda, será que o próprio leitor (você no futuro ou um leitor de verdade) deveria conseguir fazer esta busca? Concluindo a pergunta: os metadados mais emergem como consequência da criação de conteúdo ou eles são parte da criação ou do retrabalho em cima do conteúdo?</p>
-
-<p>Mas divago. Vamos aos links práticos.</p>
-
-<p>Notas de rodapé global, por exemplo. Seria muito útil (seria?) através de um nome marcado com colchetes em um ou mais posts apontar para um verbete de um dicionário ou algo do gênero?</p>
-
-<p>Não esquecer também das notas de rodapé locais, essas mais úteis ainda. Seriam itens numerados (ou autonumeráveis) cujo conteúdo estará no blog ao final do texto e em um livro no rodapé da página (e em um ebook em um link de nota de rodapé).</p>
-
-<p>Um índice onosmático ou temático precisa ser construído através de alguma marcação específica no post ou no parágrafo que será usado como referência (de preferência o parágrafo). Talvez valha a pena indexar os parágrafos de um post (ou do mês/chapter) por números crescentes e itens indexáveis em cada parágrafo podem se reunir em um índice onosmático ou algo do tipo em uma página específica. Para isso acontecer é uma modificação relativamente simples no script, mas complicada de se trabalhar em todos os textos.</p>
-
-<p>Não que qualquer outra estratégia já não seja por si só trabalhar novamente os textos. Trabalhar metadados talvez seja mais uma questão de revisão do que de autoindexar conteúdo gerado. O peso de um termo está em ele existir no texto ou no autor colocar ênfase?</p>
-
-</section><hr/>
-
 
 <span id="etchart-estate-torrontes-2022" title="Etchart Estate Torrontés 2022"/></span>
 <section id="section_etchart-estate-torrontes-2022">
@@ -132,7 +103,7 @@ role="navigation" aria-label="main navigation">
 <span id="listas-a-implementacao-e-a-morte" title="Listas: a implementação e a morte"/></span>
 <section id="section_listas-a-implementacao-e-a-morte">
 <p class="title"><a href="2024-09.html#listas-a-implementacao-e-a-morte">#</a> Listas: a implementação e a morte</p>
-<span class="title-heading">2024-09-08 <a href="projects.html#listas-a-implementacao-e-a-morte">projects</a><a href="2024-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_listas-a-implementacao-e-a-morte')"><sup>[copy]</sup></a></span>
+<span class="title-heading">2024-09-08<a href="2024-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_listas-a-implementacao-e-a-morte')"><sup>[copy]</sup></a></span>
 
 <p>Implementei suporte a listas no blogue e comecei a vomitar listas temáticas, como os meus textos de Breaking Bad, House of Cards e outros, apagando o post com a lista dos textos relacionados com estas séries. A ideia era permitir uma indexação diferente de tags, um conjunto menor, que não precisa ser mantido, mas ao mesmo tempo categorizado sob a mesma alcunha.</p>
 
@@ -164,7 +135,7 @@ role="navigation" aria-label="main navigation">
 <span id="the-awk-programming-language-alfred-aho" title="The AWK Programming Language (Alfred Aho)"/></span>
 <section id="section_the-awk-programming-language-alfred-aho">
 <p class="title"><a href="2024-09.html#the-awk-programming-language-alfred-aho">#</a> The AWK Programming Language (Alfred Aho)</p>
-<span class="title-heading">2024-09-14 <a href="books.html#the-awk-programming-language-alfred-aho">books</a><a href="2024-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_the-awk-programming-language-alfred-aho')"><sup>[copy]</sup></a></span>
+<span class="title-heading">2024-09-14 <a href="clippings.html#the-awk-programming-language-alfred-aho">clippings</a><a href="2024-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_the-awk-programming-language-alfred-aho')"><sup>[copy]</sup></a></span>
 
 <p>Acabei de ler o The Awk Programming Language. Livraço. Impressionante a qualidade de escrita dos autores da época. É uma carta aberta de programadores para programadores. Seguem recortes que fiz durante a leitura.</p>
 
@@ -224,7 +195,7 @@ role="navigation" aria-label="main navigation">
 <span id="the-algorithm-design-manual-steven-s-skiena" title="The Algorithm Design Manual (Steven S. Skiena)"/></span>
 <section id="section_the-algorithm-design-manual-steven-s-skiena">
 <p class="title"><a href="2024-09.html#the-algorithm-design-manual-steven-s-skiena">#</a> The Algorithm Design Manual (Steven S. Skiena)</p>
-<span class="title-heading">2024-09-14 <a href="books.html#the-algorithm-design-manual-steven-s-skiena">books</a><a href="2024-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_the-algorithm-design-manual-steven-s-skiena')"><sup>[copy]</sup></a></span>
+<span class="title-heading">2024-09-14<a href="2024-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_the-algorithm-design-manual-steven-s-skiena')"><sup>[copy]</sup></a></span>
 
 <p>Acordei no meio da noite pensando em como remover um elemento de uma árvore, aí eu desisti de criar minha própria solução. Baixei The Algorithm Design Manual e Cormen para aprender. Um lapso temporário.</p>
 
@@ -274,7 +245,7 @@ role="navigation" aria-label="main navigation">
 <span id="anarchism-vs-objectivism-by-harry-binswanger-e-outros-textos-filosoficos" title="Anarchism vs. Objectivism by Harry Binswanger (e outros textos filosóficos)"/></span>
 <section id="section_anarchism-vs-objectivism-by-harry-binswanger-e-outros-textos-filosoficos">
 <p class="title"><a href="2024-09.html#anarchism-vs-objectivism-by-harry-binswanger-e-outros-textos-filosoficos">#</a> <a class="external" href="https://www.hbletter.com/objectivism-vs-anarchism/">Anarchism vs. Objectivism by Harry Binswanger (e outros textos filosóficos)</a></p>
-<span class="title-heading">2024-09-18 <a href="philosophy.html#anarchism-vs-objectivism-by-harry-binswanger-e-outros-textos-filosoficos">philosophy</a> <a href="blogging.html#anarchism-vs-objectivism-by-harry-binswanger-e-outros-textos-filosoficos">blogging</a><a href="2024-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_anarchism-vs-objectivism-by-harry-binswanger-e-outros-textos-filosoficos')"><sup>[copy]</sup></a></span>
+<span class="title-heading">2024-09-18 <a href="blogging.html#anarchism-vs-objectivism-by-harry-binswanger-e-outros-textos-filosoficos">blogging</a><a href="2024-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_anarchism-vs-objectivism-by-harry-binswanger-e-outros-textos-filosoficos')"><sup>[copy]</sup></a></span>
 
 <p>Um texto bem longo e denso. Um desafio e tanto resumi-lo.</p>
 
@@ -336,7 +307,7 @@ role="navigation" aria-label="main navigation">
 <span id="informacao-nao-e-conhecimento" title="Informação não é conhecimento"/></span>
 <section id="section_informacao-nao-e-conhecimento">
 <p class="title"><a href="2024-09.html#informacao-nao-e-conhecimento">#</a> Informação não é conhecimento</p>
-<span class="title-heading">2024-09-20 <a href="essays.html#informacao-nao-e-conhecimento">essays</a><a href="2024-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_informacao-nao-e-conhecimento')"><sup>[copy]</sup></a></span>
+<span class="title-heading">2024-09-20<a href="2024-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_informacao-nao-e-conhecimento')"><sup>[copy]</sup></a></span>
 
 <p>A informação do meu blogue não me serve de nada a não ser como reafirmação do conhecimento interno que mantenho. Essa minha máquina de estados única e exclusiva da minha linha de vida. Talvez algo sirva para alguém em algum momento, mas nunca será a essência do que procuro. O conhecimento em si se separa da informação quando este se transforma em um processo internalizado do ser. Um algoritmo. É este algoritmo a parte mais importante do uso da informação.</p>
 
@@ -384,7 +355,7 @@ role="navigation" aria-label="main navigation">
 <span id="software-architecture-in-practice-len-bass-paul-clements-rick-kazman" title="Software Architecture in Practice (Len Bass, Paul Clements, Rick Kazman)"/></span>
 <section id="section_software-architecture-in-practice-len-bass-paul-clements-rick-kazman">
 <p class="title"><a href="2024-09.html#software-architecture-in-practice-len-bass-paul-clements-rick-kazman">#</a> Software Architecture in Practice (Len Bass, Paul Clements, Rick Kazman)</p>
-<span class="title-heading">2024-09-20 <a href="books.html#software-architecture-in-practice-len-bass-paul-clements-rick-kazman">books</a><a href="2024-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_software-architecture-in-practice-len-bass-paul-clements-rick-kazman')"><sup>[copy]</sup></a></span>
+<span class="title-heading">2024-09-20<a href="2024-09.html"> <sup>[up]</sup></a> <a href="javascript:;" onclick="copy_clipboard('section#section_software-architecture-in-practice-len-bass-paul-clements-rick-kazman')"><sup>[copy]</sup></a></span>
 
 <p>Mais um da série de livros para preencher lacunas nos meus conhecimentos técnicos. Seguem recortes finais (não continuarei lendo).</p>
 
