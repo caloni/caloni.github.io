@@ -1,0 +1,102 @@
+﻿<!DOCTYPE html>
+<html lang="en-us" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Blogue do Caloni</title>
+<meta name="author" content="Caloni" />
+<meta name="generator" content="https://github.com/caloni/journal">
+<meta property="og:title" content="Blogue do Caloni"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="http://www.caloni.com.br"/>
+<meta property="og:image" content="/blog/img/about-brand.png"/>
+<meta property="og:description" content="Write for computers, people and food."/>
+<link href="/blog/index.xml" rel="feed" type="application/rss+xml" title="Blogue do Caloni"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="/blog/css/jquery-ui.css"/>
+<script src="/blog/js/jquery-1.12.4.js"></script>
+<script src="/blog/js/jquery-ui.js"></script>
+<script src="/blog/js/copy_clipboard.js"></script>
+<script src="/blog/js/list.js"></script>
+<link rel="icon" href="/blog/img/favicon.ico"/>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column">
+<nav class="navbar has-shadow is-white"
+role="navigation" aria-label="main navigation">
+<div class="container">
+<div class="navbar-brand">
+&nbsp;
+<a class="navbar-item" href="index.html">
+<div class="is-4"><b>Blogue do Caloni</b></div>
+</a>
+</div>
+</div>
+</nav>
+<div class="container">
+<div class="column">
+<div style="min-height:56vh">
+<div style="padding-bottom: 1em;"></div>
+<span id="o-bug-do-sublinhado-azul-fantasma-no-google-docs-para-android-e-como-contornalo" title="O Bug do Sublinhado Azul Fantasma no Google Docs para Android (e como contorná-lo)"/></span>
+<section id="section_o-bug-do-sublinhado-azul-fantasma-no-google-docs-para-android-e-como-contornalo">
+<p class="title">O Bug do Sublinhado Azul Fantasma no Google Docs para Android (e como contorná-lo)</p>
+<span class="title-heading">2026-10-29 computer debug ia blog</span>
+
+<p>_Este é o primeiro texto que eu não escrevi. Fiz a investigação, pedi para a IA escrever e revisei. Está bom o suficiente e serve como aprendizado._</p>
+
+<p>Se você utiliza o aplicativo do Google Docs no Android para escrever ou revisar textos longos, é bem provável que já tenha se deparado com uma situação frustrante: de repente, palavras perfeitamente corretas ganham um sublinhado azul contínuo, poluindo o texto sem motivo aparente.</p>
+
+<p>A reação natural é tentar desativar todas as opções de correção ortográfica no teclado (como o Gboard), no próprio Android e até na versão web do Google Docs. No entanto, o sublinhado continua reaparecendo.</p>
+
+<p>Recentemente, investiguei a fundo esse comportamento no app para entender o que realmente causa essa marcação fantasma e como é possível escrever sem esse ruído visual.</p>
+
+<h2>O Diagnóstico: O que realmente causa o sublinhado?</h2>
+
+<p>Diferente do sublinhado vermelho (usualmente associado a erros de digitação) ou do traço do teclado durante a composição, esse sublinhado azul em palavras corretas surge de forma assíncrona. Você abre o documento, começa a editar um parágrafo e, após alguns segundos, o app aplica a marcação — mesmo sem o cursor estar próximo à palavra.</p>
+
+<p>Após testar e isolar todas as camadas do sistema, as seguintes etapas foram verificadas:</p>
+
+<ul><li>Serviço de Verificação Ortográfica do Android: Desativado nas configurações do sistema.</li>
+
+<li>Configurações de Teclado (Gboard): Autocorreção e verificação ortográfica desligadas.</li>
+
+<li>Preferências da Conta na Web (Desktop): Sugestões gramaticais e de ortografia desmarcadas em docs.google.com.</li>
+
+<li>Idioma do Sistema: Alinhado para evitar divergências no dicionário nativo.</li></ul>
+
+<p>Mesmo com todas as travas desativadas, o sublinhado persistia.</p>
+
+<h2>O teste definitivo: A análise em segundo plano</h2>
+
+<p>O teste decisivo para isolar o problema foi colocar o dispositivo em Modo Avião (offline):</p>
+
+<p>Em Modo Avião: Durante edições contínuas sem conexão à internet, o parágrafo permaneceu completamente limpo, sem exibir nenhum sublinhado.</p>
+
+<p>Com Conexão Reestabelecida: Assim que o Wi-Fi ou dados móveis foram reativados, o app enviou o bloco de texto para os servidores e trouxe a marcação azul de volta em segundos.</p>
+
+<p>Isso comprova que se trata de um bug ou limitação de comportamento do próprio app do Google Docs para Android. O aplicativo ignora as bandeiras de preferência do usuário configuradas localmente e na conta, forçando uma requisição em segundo plano aos servidores do Google para aplicar análises de estilo e gramática server-side.</p>
+
+<h2>O Workaround: Como escrever sem distrações</h2>
+
+<p>Como a causa está na rotina do aplicativo que força a busca por sugestões na nuvem, as configurações padrão do app não resolvem o problema até que o Google envie uma atualização de correção.</p>
+
+<p>Atualmente, a solução mais eficaz para quem busca um ambiente de escrita limpo é:</p>
+
+<p>Escrever e editar no Modo Avião: Ao desativar temporariamente a conexão com a internet enquanto escreve, você impede que o aplicativo faça a requisição remota, mantendo a interface totalmente livre dos sublinhados indesejados. Ao finalizar o texto, basta reconectar para sincronizar o documento na nuvem.</p>
+
+<p>Você já passou por essa mesma experiência usando o Google Docs no celular ou encontrou outro comportamento parecido em apps de escrita móvel? Deixe seu comentário!</p>
+
+</section>
+
+<span style="float: left;">
+ <a href="mailto:wanderley.caloni@gmail.com?subject=Comment%20about%3A%20O%20Bug%20do%20Sublinhado%20Azul%20Fantasma%20no%20Google%20Docs%20para%20Android%20%28e%20como%20contorn%C3%A1-lo%29">[comment]</a>
+</span>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div class="container">
+</div>
+<div class="intentionally-blank"></div>
+</footer>
+</body>
+</html>
