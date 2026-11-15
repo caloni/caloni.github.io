@@ -43,25 +43,14 @@ role="navigation" aria-label="main navigation">
 <button id="randombutton" style="font-size: 1rem;" onclick="window.location = randomPost;">random</button>
 <div><big><b><span style="visibility: hidden; padding: 5px;" name="results" id="results">...</span></b></big></div>
 <table class="sortable" style="width: 100%;">
-<tr id="encontrando-o-hive-de-aps-uwp"><td>
-<b><a href="2023-11.html#encontrando-o-hive-de-aps-uwp">Encontrando o hive de aps UWP</a></b>
-<small><i>2023-11-04 reversing  Aplicativos UWP não possuem direitos de administração. Por isso eles não conseguem carregar um hive de registro como especificado pela API do Windows. A solução, portanto, é mudar o sistema operacional.</small></i>
+<tr id="experiencia-com-ia-ate-agora"><td>
+<b><a href="2026-06.html#experiencia-com-ia-ate-agora">Experiência com IA até agora</a></b>
+<small><i>2026-06-23 reversing ai  Disclaimer: não escrevo código no serviço há meses. Estou como escalation que manja de debugging. Depois que descubro o que tem que ser feito delegam pra algum jovem batucar código com a IA. Minha experiência com modelos é em reversing de codebase e investigações junto ao SO e leitura de logs do sistema.</small></i>
 </td></tr>
-<tr id="como-saber-quais-classes-winrt-estao-sendo-ativadas"><td>
-<b><a href="2023-10.html#como-saber-quais-classes-winrt-estao-sendo-ativadas">Como saber quais classes winrt estão sendo ativadas</a></b>
-<small><i>2023-10-05 reversing  Quando analisando o comportamento de programas Windows que usam winrt é sempre útil dar uma olhada nas classes sendo ativadas. Uma função-chave para isso é a "RoGetActivationFactory": Sabendo como obter a string raw de uma HSTRING (vide "Explorando a HSTRING") basta colocar um breakpoint no WinDbg que imprima esta string e siga vazando:</small></i>
-</td></tr>
-<tr id="como-inspecionar-chamadas-com-remotas-olhando-a-informacao-de-marshaling"><td>
-<b><a href="2023-10.html#como-inspecionar-chamadas-com-remotas-olhando-a-informacao-de-marshaling">Como inspecionar chamadas COM remotas olhando a informação de marshaling</a></b>
-<small><i>2023-10-03 reversing  Esta dica é para começar uma análise de reversa quando você deseja entender quais informações estão sendo trafegadas por uma chamada COM remota, ou seja, entre processos distintos. Isso vale para WinRT e para o COM tradicional. De uma forma ou de outra a chamada irá passar por <code>combase!NdrExtpProxySendReceive</code> e outras funções de RPC relacionadas, além das novas funções de ALPC, em especial <code>ntdll!NtAlpcSendWaitReceivePort</code>. Existem várias de marshaling e unmarshaling, mas o mais importante é centralizar na função que envia e recebe bytes e analisar estes bytes. Eles são a versão serializada dos parâmetro sendo trafegados.</small></i>
-</td></tr>
-<tr id="como-colocar-breakpoint-nas-chamadas-a-outputdebugstring"><td>
-<b><a href="2023-10.html#como-colocar-breakpoint-nas-chamadas-a-outputdebugstring">Como colocar breakpoint nas chamadas a OutputDebugString</a></b>
-<small><i>2023-10-03 reversing  Usando <code>sxe out</code> é possível parar a execução de um programa sendo depurado pelo WinDbg sempre que ele disparar alguma saída para o depurador através da função OutputDebugString. Isso permite em nossa sessão de debug descobrir de onde vem a chamada, pois o depurador para e podemos usar o comando <code>k</code> para dar uma espiada.</small></i>
-</td></tr>
-<tr id="como-investigar-a-vtable-de-uma-interface-ou-objeto-com"><td>
-<b><a href="2023-10.html#como-investigar-a-vtable-de-uma-interface-ou-objeto-com">Como investigar a vtable de uma interface ou objeto COM</a></b>
-<small><i>2023-10-03 reversing  Uma vez que você encontre onde está a <code>vtable</code> -- por exemplo, como o primeiro parâmetro da chamada em um método, vide convenção de chamadas do x64 -- liste no WinDbg os endereços contidos neste endereço (o parâmetro <code>L</code> é a quantidade de bytes para mostrar):</small></i>
+<tr id="introducao-ao-debugging-tools-for-windows-usando-o-logger-para-monitorar-apis"><td>
+<img src="/journal/img/introducao_ao_debugging_tools_for_windows_windbg.png"/>
+<b><a href="2007-06.html#introducao-ao-debugging-tools-for-windows-usando-o-logger-para-monitorar-apis">Introdução ao Debugging Tools for Windows (usando o Logger para monitorar APIs)</a></b>
+<small><i>2007-06-20 computer reversing windbg blog  2025-10-05: Hoje o Logger está desatualizado e não recomendo mais seu uso. Há ferramentas melhores, como API Monitor, além de ser possível você mesmo desenvolver com a lib Detours. O WinDbg é uma ferramenta obrigatória em uma das minhas mais divertidas tarefas aqui na Open: engenharia reversa de cavalos de tróia. Não tenho o código-fonte desses programas, não posso executá-los em minha própria máquina e não consigo fazer tudo que preciso usando apenas o depurador integrado do Visual Studio (como remontar o assembly do programa, por exemplo). Tudo isso faz do WinDbg a alternativa perfeita (senão uma das únicas). É um depurador que permite ser usado tanto através de janelas quanto através de comandos, o que permite um aprendizado em doses homeopáticas: comece com as janelas e aos poucos ganhe o controle total. Conseqüentemente cada dia aprendo um comando novo ou um novo uso para um comando que já conheço.</small></i>
 </td></tr>
 </table>
 <span style="float: left;">
